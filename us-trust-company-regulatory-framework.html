@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>U.S. Trust Company Regulatory Framework</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+
+/* ===== DESIGN TOKENS ===== */
+:root {
+  --bg:            #ffffff;
+  --bg2:           #f7f6f3;
+  --bg3:           #f0ede8;
+  --border:        rgba(0,0,0,0.10);
+  --border-med:    rgba(0,0,0,0.18);
+  --border-strong: rgba(0,0,0,0.28);
+  --text:          #1a1916;
+  --text2:         #5a574f;
+  --text3:         #8c8880;
+  --accent:        #1a3a6b;
+  --accent-bg:     #e8edf7;
+  --accent-text:   #1a3a6b;
+  --warn:          #7a4a00;
+  --warn-bg:       #fef3dc;
+  --warn-text:     #7a4a00;
+  --danger:        #7a1a1a;
+  --danger-bg:     #fde8e8;
+  --danger-text:   #7a1a1a;
+  --success:       #1a5c2e;
+  --success-bg:    #e8f5ec;
+  --success-text:  #1a5c2e;
+  --neutral-bg:    #efefed;
+  --neutral-text:  #5a574f;
+  --radius:        10px;
+  --radius-sm:     6px;
+  --sans:          'DM Sans', system-ui, sans-serif;
+  --serif:         'Libre Baskerville', Georgia, serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:            #18171a;
+    --bg2:           #211f25;
+    --bg3:           #2a2830;
+    --border:        rgba(255,255,255,0.09);
+    --border-med:    rgba(255,255,255,0.16);
+    --border-strong: rgba(255,255,255,0.28);
+    --text:          #edeae4;
+    --text2:         #a09b94;
+    --text3:         #6b6660;
+    --accent:        #5b8de8;
+    --accent-bg:     #1a2440;
+    --accent-text:   #8ab0f0;
+    --warn:          #e0a830;
+    --warn-bg:       #2a2010;
+    --warn-text:     #e8bf70;
+    --danger:        #e05050;
+    --danger-bg:     #2a1010;
+    --danger-text:   #f08080;
+    --success:       #40b060;
+    --success-bg:    #0e2018;
+    --success-text:  #70d090;
+    --neutral-bg:    #2c2a32;
+    --neutral-text:  #a09b94;
+  }
+}
+
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg3);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== LAYOUT ===== */
+.page-wrap {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 0 20px 60px;
+}
+
+/* ===== HEADER ===== */
+.site-header {
+  padding: 40px 0 32px;
+  border-bottom: 0.5px solid var(--border-med);
+  margin-bottom: 32px;
+}
+
+.header-eyebrow {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 10px;
+}
+
+.header-title {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+  line-height: 1.25;
+}
+
+.header-sub {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.6;
+}
+
+.header-meta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+/* ===== PILLS ===== */
+.pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  font-family: var(--sans);
+  white-space: nowrap;
+}
+.pill-b { background: var(--accent-bg); color: var(--accent-text); }
+.pill-g { background: var(--success-bg); color: var(--success-text); }
+.pill-a { background: var(--warn-bg); color: var(--warn-text); }
+.pill-r { background: var(--danger-bg); color: var(--danger-text); }
+.pill-n { background: var(--neutral-bg); color: var(--neutral-text); }
+
+/* ===== CARD ===== */
+.card {
+  background: var(--bg);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+/* ===== TAB NAV ===== */
+.tc-nav {
+  display: flex;
+  gap: 0;
+  background: var(--bg);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 4px;
+  margin-bottom: 24px;
+  overflow-x: auto;
+}
+
+.tc-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  border-radius: 7px;
+  padding: 9px 14px;
+  font-size: 13px;
+  font-family: var(--sans);
+  color: var(--text2);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .14s, color .14s;
+  min-width: 120px;
+}
+
+.tc-btn:hover { color: var(--text); }
+
+.tc-btn.on {
+  background: var(--bg2);
+  color: var(--text);
+  font-weight: 500;
+  box-shadow: inset 0 0 0 0.5px var(--border-med);
+}
+
+/* ===== SECTIONS ===== */
+.tc-sec { display: none; }
+.tc-sec.on { display: block; }
+
+/* ===== ACCORDION ===== */
+.acc-hd {
+  width: 100%;
+  background: none;
+  border: none;
+  border-top: 0.5px solid var(--border);
+  padding: 14px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  font-family: var(--sans);
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+  gap: 12px;
+}
+
+.acc-hd:hover { color: var(--text2); }
+.acc-hd-left { display: flex; align-items: center; gap: 10px; }
+
+.acc-icon {
+  font-size: 20px;
+  color: var(--text3);
+  flex-shrink: 0;
+  line-height: 1;
+  font-weight: 300;
+  transition: transform .2s;
+}
+
+.acc-body {
+  display: none;
+  padding: 2px 0 16px;
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.75;
+}
+
+.acc-body.open { display: block; }
+.acc-body em { font-style: italic; }
+.acc-body strong { font-weight: 500; color: var(--text); }
+
+/* ===== POWER TOGGLE ===== */
+.pw-tog {
+  display: flex;
+  gap: 0;
+  background: var(--bg2);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+  margin-bottom: 20px;
+}
+
+.pw-btn {
+  flex: 1;
+  border: none;
+  background: none;
+  padding: 9px 14px;
+  font-size: 13px;
+  font-family: var(--sans);
+  cursor: pointer;
+  border-radius: 5px;
+  color: var(--text2);
+  transition: all .14s;
+}
+
+.pw-btn.on {
+  background: var(--bg);
+  color: var(--text);
+  font-weight: 500;
+  box-shadow: 0 0 0 0.5px var(--border-med);
+}
+
+/* ===== CHARTER GRID ===== */
+.charter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.ccard {
+  background: var(--bg);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+}
+
+.ccard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  gap: 10px;
+}
+
+.ccard-eyebrow {
+  font-size: 11px;
+  color: var(--text3);
+  margin-bottom: 3px;
+}
+
+.ccard-title {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.arow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  border-bottom: 0.5px solid var(--border);
+  font-size: 12px;
+  gap: 10px;
+}
+
+.arow:last-child { border-bottom: none; }
+.alab { color: var(--text2); flex-shrink: 0; }
+.aval { text-align: right; font-size: 12px; }
+
+.ccard-note {
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.6;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 0.5px solid var(--border);
+}
+
+/* ===== CALLOUT ===== */
+.callout {
+  padding: 14px 18px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  border-left: 3px solid var(--accent);
+  background: var(--accent-bg);
+  margin-top: 14px;
+}
+
+.callout-title {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 5px;
+  color: var(--text);
+}
+
+.callout-body {
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.7;
+}
+
+.callout-warn {
+  border-left-color: var(--warn);
+  background: var(--warn-bg);
+}
+
+.callout-success {
+  border-left-color: var(--success);
+  background: var(--success-bg);
+}
+
+/* ===== OCC TIMELINE TOGGLE ===== */
+.tline {
+  display: flex;
+  gap: 0;
+  background: var(--bg2);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+}
+
+.tl-btn {
+  flex: 1;
+  border: none;
+  background: none;
+  padding: 8px 10px;
+  font-size: 12px;
+  font-family: var(--sans);
+  cursor: pointer;
+  border-radius: 5px;
+  color: var(--text2);
+  transition: all .14s;
+  white-space: nowrap;
+}
+
+.tl-btn.on {
+  background: var(--bg);
+  color: var(--text);
+  font-weight: 500;
+  box-shadow: 0 0 0 0.5px var(--border-med);
+}
+
+.occ-era { display: none; }
+.occ-era.on { display: block; }
+
+.ocard {
+  background: var(--bg);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin-bottom: 12px;
+}
+
+.ocard-landmark { border-color: var(--success); }
+
+.ocard-h {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  gap: 12px;
+}
+
+.ocard-title { font-size: 14px; font-weight: 500; margin-bottom: 3px; }
+.ocard-sub { font-size: 12px; color: var(--text2); }
+.ocard-body { font-size: 13px; color: var(--text2); line-height: 1.7; margin-bottom: 10px; }
+.ocard-body em { font-style: italic; }
+.ocard-body strong { font-weight: 500; color: var(--text); }
+
+.pill-row { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* ===== GENIUS STATS ===== */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.stat-box {
+  background: var(--bg2);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  text-align: center;
+}
+
+.stat-num { font-size: 22px; font-weight: 500; margin-bottom: 4px; }
+.stat-lbl { font-size: 11px; color: var(--text2); }
+.stat-blue { color: var(--accent-text); }
+.stat-warn { color: var(--warn-text); }
+.stat-green { color: var(--success-text); }
+
+/* ===== GENIUS CONTENT ===== */
+.gcard {
+  background: var(--bg2);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin-bottom: 10px;
+}
+
+.gcardh {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+
+.gcardp {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.7;
+}
+
+/* ===== INTRO TEXT ===== */
+.intro-text {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.75;
+  margin-bottom: 18px;
+}
+
+/* ===== FOOTER ===== */
+.site-footer {
+  margin-top: 48px;
+  padding-top: 20px;
+  border-top: 0.5px solid var(--border);
+  font-size: 12px;
+  color: var(--text3);
+  line-height: 1.6;
+}
+
+/* ===== SECTION TITLE ===== */
+.section-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-med); border-radius: 3px; }
+
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <p class="header-eyebrow">Regulatory Reference &nbsp;·&nbsp; Updated 2025–2026</p>
+    <h1 class="header-title">U.S. Trust Company Regulation</h1>
+    <p class="header-sub">Charter types · Fiduciary &amp; non-fiduciary powers · Operating pain points · OCC approvals &amp; policy activity · GENIUS Act impact</p>
+    <div class="header-meta">
+      <span class="pill pill-n">State nondepository trust cos.</span>
+      <span class="pill pill-n">Bank trust departments</span>
+      <span class="pill pill-n">National trust companies (OCC)</span>
+      <span class="pill pill-a">GENIUS Act overlay</span>
+    </div>
+  </header>
+
+  <!-- TAB NAV -->
+  <nav class="tc-nav" aria-label="Tool sections">
+    <button class="tc-btn on" onclick="tcTab('charter',this)">Charter types</button>
+    <button class="tc-btn" onclick="tcTab('powers',this)">Trust powers</button>
+    <button class="tc-btn" onclick="tcTab('pain',this)">Pain points</button>
+    <button class="tc-btn" onclick="tcTab('occ',this)">OCC activity</button>
+    <button class="tc-btn" onclick="tcTab('genius',this)">GENIUS Act</button>
+  </nav>
+
+  <!-- ========== CHARTER TYPES ========== -->
+  <section id="tc-charter" class="tc-sec on" aria-label="Charter types">
+    <p class="intro-text">Four primary charter structures govern U.S. trust companies — each conferring distinct regulatory authority, supervisory relationships, and operational scope. The choice of charter is the single most consequential decision in structuring a trust institution.</p>
+
+    <div class="charter-grid">
+
+      <div class="ccard">
+        <div class="ccard-header">
+          <div>
+            <p class="ccard-eyebrow">State-chartered</p>
+            <p class="ccard-title">Nondepository Trust Company</p>
+          </div>
+          <span class="pill pill-a">State</span>
+        </div>
+        <div>
+          <div class="arow"><span class="alab">Primary regulator</span><span class="aval" style="font-weight:500;">State banking dept.</span></div>
+          <div class="arow"><span class="alab">Deposit authority</span><span class="aval"><span class="pill pill-r">None</span></span></div>
+          <div class="arow"><span class="alab">FDIC insured</span><span class="aval"><span class="pill pill-r">No</span></span></div>
+          <div class="arow"><span class="alab">CRA obligations</span><span class="aval"><span class="pill pill-g">None</span></span></div>
+          <div class="arow"><span class="alab">Multi-state ops</span><span class="aval">CSBS NCA or state license</span></div>
+          <div class="arow"><span class="alab">Federal law anchor</span><span class="aval">BSA, 31 USC 5312</span></div>
+          <div class="arow"><span class="alab">Fiduciary law</span><span class="aval">State trust code</span></div>
+          <div class="arow"><span class="alab">CIF authority</span><span class="aval"><span class="pill pill-r">No (state law varies)</span></span></div>
+        </div>
+        <p class="ccard-note">Dominant vehicle for dynasty trusts and family offices. South Dakota, Delaware, Nevada, Wyoming, and Alaska offer the most favorable frameworks — no rule against perpetuities, directed trust statutes, and strong privacy protections.</p>
+      </div>
+
+      <div class="ccard">
+        <div class="ccard-header">
+          <div>
+            <p class="ccard-eyebrow">State-chartered bank</p>
+            <p class="ccard-title">Trust Department</p>
+          </div>
+          <span class="pill pill-a">State</span>
+        </div>
+        <div>
+          <div class="arow"><span class="alab">Primary regulator</span><span class="aval" style="font-weight:500;">State + FDIC or Fed</span></div>
+          <div class="arow"><span class="alab">Deposit authority</span><span class="aval"><span class="pill pill-g">Yes</span></span></div>
+          <div class="arow"><span class="alab">FDIC insured</span><span class="aval"><span class="pill pill-g">Yes (deposits)</span></span></div>
+          <div class="arow"><span class="alab">CRA obligations</span><span class="aval"><span class="pill pill-r">Yes</span></span></div>
+          <div class="arow"><span class="alab">Multi-state ops</span><span class="aval">Interstate branching + state approval</span></div>
+          <div class="arow"><span class="alab">Federal law anchor</span><span class="aval">FDI Act; BSA</span></div>
+          <div class="arow"><span class="alab">Fiduciary law</span><span class="aval">State trust code + banking law</span></div>
+          <div class="arow"><span class="alab">CIF authority</span><span class="aval"><span class="pill pill-a">State law varies</span></span></div>
+        </div>
+        <p class="ccard-note">Traditional vehicle for community and regional bank wealth management. Fiduciary powers separately approved by state regulator. Dual supervision under FDIC (state nonmember) or Federal Reserve (state member).</p>
+      </div>
+
+      <div class="ccard">
+        <div class="ccard-header">
+          <div>
+            <p class="ccard-eyebrow">OCC-chartered (limited purpose)</p>
+            <p class="ccard-title">National Trust Company</p>
+          </div>
+          <span class="pill pill-b">Federal</span>
+        </div>
+        <div>
+          <div class="arow"><span class="alab">Primary regulator</span><span class="aval" style="font-weight:500;">OCC</span></div>
+          <div class="arow"><span class="alab">Deposit authority</span><span class="aval"><span class="pill pill-r">None</span></span></div>
+          <div class="arow"><span class="alab">FDIC insured</span><span class="aval"><span class="pill pill-r">No</span></span></div>
+          <div class="arow"><span class="alab">CRA obligations</span><span class="aval"><span class="pill pill-g">None (typically)</span></span></div>
+          <div class="arow"><span class="alab">Multi-state ops</span><span class="aval">Federal preemption (partial)</span></div>
+          <div class="arow"><span class="alab">Federal law anchor</span><span class="aval">12 USC 92a; 12 CFR Pt. 9</span></div>
+          <div class="arow"><span class="alab">Fiduciary law</span><span class="aval">Federal (preempts in part)</span></div>
+          <div class="arow"><span class="alab">CIF authority</span><span class="aval"><span class="pill pill-g">Yes (12 CFR 9.18)</span></span></div>
+        </div>
+        <p class="ccard-note">Increasingly attractive for digital asset custody and stablecoin issuance under the GENIUS Act. OCC preemption of state law narrowed by <em>Cantero v. Bank of America</em> (2024). No CRA; no deposit insurance assessment.</p>
+      </div>
+
+      <div class="ccard">
+        <div class="ccard-header">
+          <div>
+            <p class="ccard-eyebrow">OCC-chartered full bank</p>
+            <p class="ccard-title">National Bank Trust Department</p>
+          </div>
+          <span class="pill pill-b">Federal</span>
+        </div>
+        <div>
+          <div class="arow"><span class="alab">Primary regulator</span><span class="aval" style="font-weight:500;">OCC + FDIC</span></div>
+          <div class="arow"><span class="alab">Deposit authority</span><span class="aval"><span class="pill pill-g">Yes</span></span></div>
+          <div class="arow"><span class="alab">FDIC insured</span><span class="aval"><span class="pill pill-g">Yes (deposits)</span></span></div>
+          <div class="arow"><span class="alab">CRA obligations</span><span class="aval"><span class="pill pill-r">Yes</span></span></div>
+          <div class="arow"><span class="alab">Multi-state ops</span><span class="aval">Interstate branching (IBBEA)</span></div>
+          <div class="arow"><span class="alab">Federal law anchor</span><span class="aval">NBA; 12 USC 92a; 12 CFR Pt. 9</span></div>
+          <div class="arow"><span class="alab">Fiduciary law</span><span class="aval">Federal (broadly preempts)</span></div>
+          <div class="arow"><span class="alab">CIF authority</span><span class="aval"><span class="pill pill-g">Yes (12 CFR 9.18)</span></span></div>
+        </div>
+        <p class="ccard-note">The dominant structure for large-institution trust operations (BNY Mellon, JPMorgan Private Bank, State Street). Fiduciary powers separately approved; governed by 12 CFR Part 9. Full federal preemption of most conflicting state banking laws.</p>
+      </div>
+
+    </div>
+
+    <div class="callout">
+      <p class="callout-title">CSBS Nationwide Cooperative Agreement (NCA)</p>
+      <p class="callout-body">State nondepository trust companies may use the CSBS NCA to obtain multi-state trust authority without individual state licensing in each host state. The NCA designates the home-state regulator as lead supervisor and streamlines exam coordination through CSBS. Not all states participate; individual licensing remains required in non-participating jurisdictions. The NCA is distinct from state MTL licensing frameworks that apply to money transmission.</p>
+    </div>
+  </section>
+
+  <!-- ========== POWERS ========== -->
+  <section id="tc-powers" class="tc-sec" aria-label="Trust powers">
+
+    <div class="pw-tog">
+      <button class="pw-btn on" onclick="pwSw('fid',this)">Fiduciary powers</button>
+      <button class="pw-btn" onclick="pwSw('nonfid',this)">Non-fiduciary powers</button>
+    </div>
+
+    <!-- FIDUCIARY -->
+    <div id="pw-fid">
+      <p class="intro-text">Fiduciary powers require the trust company to act in the interests of another — beneficiaries, heirs, or plan participants — and carry heightened legal obligations: duty of loyalty, duty of care, prudent investor rule, and duty to inform and account. Authority must be explicitly granted by the chartering authority and is governed by state trust law (or 12 CFR Part 9 for national institutions).</p>
+
+      <button class="acc-hd" onclick="tog(this)">
+        <span class="acc-hd-left"><span class="pill pill-b">Core</span>Personal &amp; Corporate Trustee</span>
+        <span class="acc-icon">+</span>
+      </button>
+      <div class="acc-body">Act as trustee under a trust instrument with discretionary authority over trust assets. Encompasses the full suite of trustee duties: investment management (subject to the Uniform Prudent Investor Act in adopting states), discretionary distribution decisions, trust administration, beneficiary accounting, and trust termination. Corporate trustees must maintain trust record systems separate from bank general ledger assets. <strong>Regulatory note:</strong> Collective Investment Funds (CIFs, 12 CFR §9.18) allow national trust company trustees to commingle assets of multiple trusts for investment purposes without registering as an investment company — a significant competitive advantage over state-chartered nondepositories in many states.</div>
+
+      <button class="acc-hd" onclick="tog(this)">
+        <span class="acc-hd-left"><span class="pill pill-b">Core</span>Executor / Administrator of Estates</span>
+        <span class="acc-icon">+</span>
+      </button>
+      <div class="acc-body">Court-supervised administration of a decedent's probate estate. Duties include: marshaling and inventorying estate assets, paying valid debts and claims, filing the decedent's final income tax returns and any estate tax return (Form 706), and distributing the net estate to heirs or legatees per the will or intestacy laws. Trust companies serving as executor are subject to state probate court jurisdiction in addition to their chartering regulator. The fiduciary duty runs to all interested parties, including creditors prior to distribution.</div>
+
+      <button class="acc-hd" onclick="tog(this)">
+        <span class="acc-hd-left"><span class="pill pill-b">Core</span>Guardian / Conservator</span>
+        <span class="acc-icon">+</span>
+      </button>
+      <div class="acc-body">Court-appointed management of the person or property of an incapacitated individual. Conservatorship (property) is more common for corporate trust companies than guardianship (person). Subject to intensive court oversight, mandatory accountings, and best-interest standards that may be more stringent than the prudent investor rule. Many trust companies treat conservatorship as a niche capacity given the oversight burden and limited fee potential relative to trust administration.</div>
+
+      <button class="acc-hd" onclick="tog(this)">
+        <span class="acc-hd-left"><span class="pill pill-b">Investment</span>Discretionary Investment Manager</span>
+        <span class="acc-icon">+</span>
+      </button>
+      <div class="acc-body">Exercise of investment discretion over client assets as a fiduciary. Trust companies with these powers are generally exempt from SEC investment adviser registration under Advisers Act §202(a)(11)(A) (the "bank" exemption), provided they do not hold themselves out as investment advisers and their advisory services are solely incidental to their trust business. This exemption is a critical structural advantage — trust companies managing significant AUM avoid dual registration and attendant compliance costs. State-chartered institutions must confirm availability of analogous state RIA exemptions in each jurisdiction where they operate.</div>
+
+      <button class="acc-hd" onclick="tog(this)">
+        <span class="acc-hd-left"><span class="pill pill-b">Institutional</span>Indenture Trustee</span>
+        <span class="acc-icon">+</span>
+      </button>
+      <div class="acc-body">Act as trustee under a bond indenture, representing the collective interests of bondholders. Governed by the Trust Indenture Act of 1939 (TIA) for public debt issuances above $5M. The indenture trustee's pre-default duties are largely ministerial (administering payments, maintaining records); post-default, the trustee assumes a more active fiduciary role. A trust company serving as indenture trustee must comply with TIA eligibility requirements, including minimum capital requirements and absence of conflicting interests with the issuer.</div>
+
+      <button class="acc-hd" onclick="tog(this)">
+        <span class="acc-hd-left"><span class="pill pill-b">Institutional</span>ERISA Trustee / Plan Fiduciary</span>
+        <span class="acc-icon">+</span>
+      </button>
+      <div class="acc-body">Hold and manage assets of ERISA-covered employee benefit plans as a named fiduciary or discretionary trustee. Subject to DOL oversight, ERISA's exclusive benefit rule, prohibited transaction restrictions (ERISA §406), and co-fiduciary liability. Trust companies holding plan assets must maintain segregated plan asset accounts. DOL's expanded fiduciary rule framework creates additional exposure for trust companies providing investment advice in connection with plan assets, even outside formal trustee arrangements.</div>
+
+      <button class="acc-hd" onclick="tog(this)">
+        <span class="acc-hd-left"><span class="pill pill-a">Directed</span>Directed Trustee</span>
+        <span class="acc-icon">+</span>
+      </button>
+      <div class="acc-body">Act as trustee under a directed trust structure, following the investment or distribution directions of an "investment trust advisor" or "distribution trust advisor" (trust protector in some state frameworks). The directed trustee's duties are limited — primarily the duty to follow directions unless they are "manifestly contrary" to the trust terms or would constitute a serious breach. However, the directed trustee retains fiduciary obligations for trust administration (custody, accounting, tax compliance) and cannot delegate these away. South Dakota's directed trust statute (SDCL Ch. 55-1B) is the most extensively developed, enabling bifurcation of trustee authority with the greatest clarity. <strong>Pain point:</strong> In states without directed trust statutes, the legal framework for limiting co-trustee liability is unsettled, creating uncertainty for national trust companies serving as directed trustees under trusts governed by those states' laws.</div>
+
+      <button class="acc-hd" onclick="tog(this)">
+        <span class="acc-hd-left"><span class="pill pill-b">Institutional</span>Collective Investment Fund (CIF) Management</span>
+        <span class="acc-icon">+</span>
+      </button>
+      <div class="acc-body">Available to national trust companies and national bank trust departments under 12 CFR §9.18. CIFs allow the commingling of trust assets from multiple accounts for investment management purposes. They are not registered as investment companies under the Investment Company Act, and participation interests are not "securities" for most purposes — a significant structural advantage. CIF participation is restricted to fiduciary accounts maintained by the bank. State law equivalents (common trust funds) vary widely; not all states authorize them for state nondepository trust companies, creating meaningful competitive disadvantage.</div>
+    </div>
+
+    <!-- NON-FIDUCIARY -->
+    <div id="pw-nonfid" style="display:none;">
+      <p class="intro-text">Non-fiduciary powers do not create a relationship requiring the trust company to subordinate its interests to those of another party. The company acts as agent, custodian, or counterparty — bound by contract, not fiduciary duty. This distinction is critical for liability exposure, regulatory classification, and — under the GENIUS Act — for stablecoin issuance authority.</p>
+
+      <button class="acc-hd" onclick="tog(this)">
+        <span class="acc-hd-left"><span class="pill pill-g">Custody</span>Non-Discretionary Custodial Services</span>
+        <span class="acc-icon">+</span>
+      </button>
+      <div class="acc-body">Hold and safekeep assets per client instruction, without discretionary authority. No fiduciary duty beyond reasonable care in safekeeping. The modern growth area: digital asset custody. OCC Interpretive Letter 1183 (May 2025) confirmed that national banks and national trust companies may provide crypto asset custody services — including holding private keys and operating as qualified custodians — as a permissible non-fiduciary banking activity, without a supervisory non-objection letter. State frameworks vary: Wyoming's qualified custodian statute (Wyo. Stat. §13-12-101 et seq.) and South Dakota's digital asset custody laws offer the most comprehensive state frameworks outside the OCC pathway.</div>
+
+      <button class="acc-hd" onclick="tog(this)">
+        <span class="acc-hd-left"><span class="pill pill-g">Agency</span>Directed Agent</span>
+        <span class="acc-icon">+</span>
+      </button>
+      <div class="acc-body">Execute specific transactions or administrative functions per the principal's directions, with no independent judgment. Common uses: executing trades directed by an investment manager, processing cash receipts, maintaining records, preparing account statements. Avoids fiduciary classification but creates contractual liability for failure to follow directions correctly. Often combined with custodial services (trust company holds assets and executes directed transactions).</div>
+
+      <button class="acc-hd" onclick="tog(this)">
+        <span class="acc-hd-left"><span class="pill pill-g">Agency</span>Escrow Agent</span>
+        <span class="acc-icon">+</span>
+      </button>
+      <div class="acc-body">Hold funds or assets pending satisfaction of specified conditions set forth in an escrow agreement — typically in M&amp;A transactions, real estate closings, or commercial contracts. When acting pursuant to an escrow agreement (not a trust), the trust company acts as an agent subject to contractual duties, not as a fiduciary to the parties. The legal distinction matters: escrow agents who exercise discretion (e.g., resolving ambiguous conditions) risk reclassification as fiduciaries by courts. Escrow functions may implicate state money transmission licensing depending on the structure.</div>
+
+      <button class="acc-hd" onclick="tog(this)">
+        <span class="acc-hd-left"><span class="pill pill-g">Debt Markets</span>Bond Paying Agent / Registrar</span>
+        <span class="acc-icon">+</span>
+      </button>
+      <div class="acc-body">Maintain bondholder records (registrar) and/or process principal and interest payments on bond issuances as agent for the issuer (paying agent). Purely ministerial and contractual in nature — no fiduciary duty to bondholders unless separately constituted as indenture trustee. For public company bonds, acting as transfer agent requires SEC registration under Exchange Act §17A. Trust companies frequently combine paying agent, registrar, and indenture trustee functions for a single bond issuance.</div>
+
+      <button class="acc-hd" onclick="tog(this)">
+        <span class="acc-hd-left"><span class="pill pill-a">Emerging</span>Stablecoin Issuance (GENIUS Act PPSI)</span>
+        <span class="acc-icon">+</span>
+      </button>
+      <div class="acc-body">Under the GENIUS Act (passed Senate, June 2025), a national trust company may apply to the OCC for authorization as a "Permitted Payment Stablecoin Issuer" (PPSI). Stablecoin issuance is a non-fiduciary activity — the trust company issues a token redeemable 1:1 for reserve assets, and stablecoin holders are creditors, not beneficiaries of a trust. Key GENIUS Act requirements for PPSIs: (1) 1:1 reserve backing with approved assets; (2) monthly reserve attestation; (3) prohibition on commingling reserve assets with operational funds; (4) no payment of yield or interest to stablecoin holders; (5) annual audit for issuers exceeding $50B outstanding; (6) bankruptcy-remote reserve asset structure. <strong>Unresolved tension:</strong> A trust company acting simultaneously as PPSI and as fiduciary trustee faces potential conflicts of interest the GENIUS Act does not explicitly resolve.</div>
+
+      <button class="acc-hd" onclick="tog(this)">
+        <span class="acc-hd-left"><span class="pill pill-a">Emerging</span>Digital Asset Custody (Non-Discretionary)</span>
+        <span class="acc-icon">+</span>
+      </button>
+      <div class="acc-body">Safekeeping of cryptocurrency and other digital assets as a non-discretionary custodian — holding private keys, managing wallet infrastructure, facilitating on-chain settlement. Following OCC IL 1183 (2025) and the rescission of SAB 121 (replaced by SAB 122, 2025), the principal barriers to national trust company digital asset custody have been substantially reduced: institutions no longer need a supervisory non-objection letter, and the balance-sheet liability treatment of SAB 121 no longer applies. Remaining issues: defining the scope of "custody" under state UCC Article 8 amendments; settlement finality in on-chain environments; collateral and rehypothecation restrictions under state custody law.</div>
+    </div>
+
+  </section>
+
+  <!-- ========== PAIN POINTS ========== -->
+  <section id="tc-pain" class="tc-sec" aria-label="Operating pain points">
+    <p class="intro-text">Operating a trust company in the United States involves navigating a fragmented, multi-layered regulatory environment. The following are the primary structural pain points — many of which have become more acute as digital asset activities and the GENIUS Act introduce new regulatory overlays.</p>
+
+    <button class="acc-hd" onclick="tog(this)">
+      <span class="acc-hd-left"><span class="pill pill-r">High</span>Multi-State Licensing Complexity</span>
+      <span class="acc-icon">+</span>
+    </button>
+    <div class="acc-body">A state-chartered nondepository trust company operating nationally faces three unsatisfying paths: (1) Individual state licensing — expensive, time-consuming, and subject to distinct capital, examination, and reporting requirements in each state; (2) CSBS Nationwide Cooperative Agreement — streamlines supervision but is not universally adopted and does not eliminate all host-state obligations; (3) OCC national trust charter — provides federal preemption, but that preemption is partial and has been narrowed by <em>Cantero v. Bank of America</em> (2024), where the Supreme Court held that NBA preemption requires more than "significant interference" — restoring meaningful state regulatory authority over national bank incidental activities. Digital asset custody companies have found state-by-state MTL exposure analysis particularly burdensome, as trust activities and money transmission can overlap depending on structure and state law.</div>
+
+    <button class="acc-hd" onclick="tog(this)">
+      <span class="acc-hd-left"><span class="pill pill-r">High</span>Regulatory Fragmentation</span>
+      <span class="acc-icon">+</span>
+    </button>
+    <div class="acc-body">A trust company may simultaneously answer to multiple regulators with overlapping jurisdictions and no coordinating mechanism: (1) State banking/financial regulator (chartering authority); (2) FinCEN (BSA/AML compliance); (3) FDIC (if state-chartered with deposits); (4) Federal Reserve (if state member bank or BHC subsidiary); (5) SEC (if exercising investment discretion above RIA thresholds, or acting as transfer agent for public companies); (6) DOL (if managing ERISA plan assets); (7) CFTC (if digital asset activities implicate commodity interests); (8) OCC (if nationally chartered); (9) CFPB (if a larger participant). Exam cycles may overlap, conflict, or create coverage gaps. No single federal coordinator exists for trust-specific regulation — CSBS and the OCC each claim primacy in different contexts, and Congress has not resolved the tension.</div>
+
+    <button class="acc-hd" onclick="tog(this)">
+      <span class="acc-hd-left"><span class="pill pill-a">Moderate</span>Capital Requirement Variation</span>
+      <span class="acc-icon">+</span>
+    </button>
+    <div class="acc-body">There is no uniform minimum capital standard across trust company charter types. South Dakota allows trust company organization with as little as $200,000 in minimum capital for a limited-purpose trust company. OCC imposes risk-weighted capital requirements calibrated to the institution's activities under 12 CFR Part 3. State banks with trust departments are subject to full banking capital requirements regardless of the proportion of revenue from trust activities. Capital planning for a nondepository trust company is complicated by digital asset price volatility (which can generate operational risk losses without the institution holding the assets on its own balance sheet), and by the absence of FDIC deposit insurance, which removes access to FDIC's resolution mechanisms as a backstop.</div>
+
+    <button class="acc-hd" onclick="tog(this)">
+      <span class="acc-hd-left"><span class="pill pill-r">High</span>Federal Reserve Master Account Access</span>
+      <span class="acc-icon">+</span>
+    </button>
+    <div class="acc-body">Trust companies without deposit-taking authority — particularly nondepository national trust companies and state-chartered nondepository trust companies — are categorically ineligible for Tier 1 (automatic) access to Federal Reserve master accounts under the Fed's August 2022 Final Guidelines. Tier 3 (extensive discretionary review, no defined timeline) applies to non-insured institutions. Without a master account, a trust company must use a correspondent bank to access Fed payment rails — adding cost, credit risk to the correspondent, and operational complexity. The 10th Circuit upheld the Fed's discretionary authority to deny master accounts in <em>Custodia Bank v. Federal Reserve Bank of Kansas City</em> (2024), leaving nondepository trust companies with no legal entitlement to direct settlement access. This directly affects the ability of national trust companies to compete in payment and settlement markets — an area where GENIUS Act stablecoin issuers need reliable settlement infrastructure.</div>
+
+    <button class="acc-hd" onclick="tog(this)">
+      <span class="acc-hd-left"><span class="pill pill-a">Moderate</span>BSA / AML Compliance Burden</span>
+      <span class="acc-icon">+</span>
+    </button>
+    <div class="acc-body">Trust companies are "financial institutions" under the BSA (31 USC 5312(a)(2)) and subject to FinCEN's full AML/CFT compliance framework. FinCEN's 2024 AML/CFT Program Rule (effective January 1, 2026) requires covered financial institutions to adopt risk-based AML/CFT programs — replacing the prior pillar-based approach with a more flexible but analytically demanding risk-assessment model. For trust companies, two areas create particular complexity: (1) Beneficial ownership identification — identifying the natural persons who ultimately control or benefit from trust accounts requires careful case-by-case analysis; FinCEN's trust beneficial ownership guidance remains incomplete relative to the granularity required by the 2024 rule. (2) Corporate Transparency Act (CTA, effective 2024) — while trust companies themselves are typically exempt reporting companies, their trust accounts may hold interests in entities that are reporting companies, creating information-gathering obligations that fall on the trust company as a practical matter.</div>
+
+    <button class="acc-hd" onclick="tog(this)">
+      <span class="acc-hd-left"><span class="pill pill-a">Moderate</span>Fiduciary Duty Standard Variation</span>
+      <span class="acc-icon">+</span>
+    </button>
+    <div class="acc-body">State trust law is not uniform. As of 2025, approximately 35 states have adopted the Uniform Trust Code (UTC); others operate under distinct common law or statutory frameworks. Louisiana's civil law tradition creates particular divergence. The Uniform Prudent Investor Act (UPIA) has broad but not universal adoption. Directed trust statutes — which allow bifurcation of trustee duties from investment authority — vary dramatically: South Dakota's framework (SDCL §55-1B-2 et seq.) is the most permissive and explicitly delineates directed trustee liability; not all states have adopted directed trust frameworks. A trust company operating across multiple jurisdictions must calibrate its fiduciary compliance to the applicable law of each trust — which may be the law of the trust situs, the law of the trustee's principal office, or the law designated in the trust instrument (to the extent the choice-of-law designation is valid in the governing jurisdiction).</div>
+
+    <button class="acc-hd" onclick="tog(this)">
+      <span class="acc-hd-left"><span class="pill pill-a">Moderate</span>Digital Asset Regulatory Uncertainty</span>
+      <span class="acc-icon">+</span>
+    </button>
+    <div class="acc-body">Despite OCC IL 1183 (2025) and the rescission of SEC SAB 121, significant legal uncertainty persists: (1) State law characterization of digital assets — how do digital assets fit within the UCC framework for investment property, negotiable instruments, or general intangibles? Several states (Wyoming, Texas, Utah, California) have enacted digital asset-specific UCC amendments, but uniform treatment is absent. (2) Bankruptcy treatment — in a trust company insolvency, are client digital assets "entrusted" property belonging to clients, or estate property? The answer depends on how the custody relationship is characterized under applicable state law. (3) Qualified custodian status under the Investment Advisers Act — the SEC has not issued definitive guidance on digital asset custody by trust companies. (4) Insurance — no FDIC-equivalent backstop exists for digital assets held in trust custody; private insurance markets are limited and expensive.</div>
+
+    <button class="acc-hd" onclick="tog(this)">
+      <span class="acc-hd-left"><span class="pill pill-r">Emerging</span>GENIUS Act Compliance Overlay</span>
+      <span class="acc-icon">+</span>
+    </button>
+    <div class="acc-body">For trust companies seeking PPSI authorization, the GENIUS Act creates an entirely new compliance layer on top of existing trust regulation. Key friction points: (1) Reserve asset management — the requirement to maintain 1:1 reserves while operating as a fiduciary raises questions about whether trust company investment staff can manage reserve assets without creating conflicts with fiduciary clients; (2) No yield prohibition — prohibiting interest or yield payments to stablecoin holders limits product design flexibility and creates competitive pressure from offshore issuers and DeFi protocols; (3) Insolvency priority — GENIUS Act bankruptcy protections for reserve assets must be reconciled with state trust law concepts of beneficial ownership; (4) Dual oversight — for state-chartered trust companies above $10B in stablecoins outstanding, the Act imposes federal oversight in addition to state supervision; (5) Preemption scope — GENIUS Act preemption of state stablecoin laws "to the extent inconsistent" with federal requirements leaves significant interpretive space and potential for state-level litigation.</div>
+
+    <button class="acc-hd" onclick="tog(this)">
+      <span class="acc-hd-left"><span class="pill pill-n">Structural</span>CIF Inaccessibility for State Nondepositories</span>
+      <span class="acc-icon">+</span>
+    </button>
+    <div class="acc-body">Collective Investment Funds (CIFs) — available to national trust companies under 12 CFR §9.18 — allow commingled management of trust assets without registration under the Investment Company Act. This is a major competitive advantage: CIFs can replicate mutual fund-like investment efficiency while avoiding full SEC registration, disclosure, and governance requirements. State-chartered nondepository trust companies generally cannot access CIFs; they must use individually managed accounts (costly at lower AUM levels) or registered common trust funds (subject to state securities law). The inability to offer CIF-equivalent vehicles disadvantages state trust companies in institutional and pension trust markets and creates pressure toward obtaining national trust charters solely for CIF access — even where state law would otherwise be preferable.</div>
+
+  </section>
+
+  <!-- ========== OCC ACTIVITY ========== -->
+  <section id="tc-occ" class="tc-sec" aria-label="OCC activity and approvals">
+    <p class="intro-text">OCC trust company chartering activity has followed the broader arc of federal crypto policy — expansive in 2021, cautious in 2022–2024, and sharply permissive under the post-January 2025 administration. The GENIUS Act and OCC Interpretive Letter 1183 (May 2025) mark the current frontier.</p>
+
+    <div class="tline">
+      <button class="tl-btn on" onclick="occEra('2021',this)">2021 — Conditional Approvals</button>
+      <button class="tl-btn" onclick="occEra('2022',this)">2022–2024 — Pullback</button>
+      <button class="tl-btn" onclick="occEra('2025',this)">2025–Present — Gould Era</button>
+    </div>
+
+    <!-- 2021 -->
+    <div id="occ-2021" class="occ-era on">
+
+      <div class="ocard">
+        <div class="ocard-h">
+          <div>
+            <p class="ocard-title">Anchorage Digital Bank</p>
+            <p class="ocard-sub">Conditional National Trust Bank Charter · January 2021</p>
+          </div>
+          <span class="pill pill-b">National Trust Bank</span>
+        </div>
+        <p class="ocard-body">First federal charter granted to a crypto-native institution. Anchorage received a conditional national trust bank charter — a limited-purpose national bank organized under 12 USC 92a with fiduciary and trust powers but without general deposit-taking authority. The charter authorizes digital asset custody, settlement, and staking services in a trust capacity. The conditional approval was subject to OCC's ongoing supervisory review and fulfillment of capital and operational requirements. Anchorage converted from a South Dakota state trust charter to pursue the federal charter — demonstrating the pull of OCC preemption and national trust bank powers even for institutions already holding favorable state charters.</p>
+        <div class="pill-row"><span class="pill pill-g">Digital asset custody</span><span class="pill pill-g">Staking services</span><span class="pill pill-b">Limited-purpose national trust bank</span><span class="pill pill-n">No general deposit authority</span></div>
+      </div>
+
+      <div class="ocard">
+        <div class="ocard-h">
+          <div>
+            <p class="ocard-title">Protego Trust Company</p>
+            <p class="ocard-sub">Preliminary Conditional Approval — National Trust Charter · February 2021</p>
+          </div>
+          <span class="pill pill-a">Trust-Only</span>
+        </div>
+        <p class="ocard-body">OCC issued a preliminary conditional approval for Protego to operate as a national trust company focused on digital asset custody and settlement services for institutional clients. The approval was subject to an 18-month organizational period to satisfy all conditions. Protego's conditional approval ultimately lapsed without the institution achieving final charter approval — an outcome that illustrated the significant operational gap between a preliminary conditional approval and a fully operational charter under the OCC's phased framework. The lapse also reflected the broader supervisory cooling that followed the 2022 crypto market disruptions.</p>
+        <div class="pill-row"><span class="pill pill-g">Digital asset custody</span><span class="pill pill-g">Settlement</span><span class="pill pill-r">Conditional approval lapsed</span></div>
+      </div>
+
+      <div class="ocard">
+        <div class="ocard-h">
+          <div>
+            <p class="ocard-title">Paxos National Trust</p>
+            <p class="ocard-sub">Preliminary Conditional Approval — National Trust Charter · April 2021</p>
+          </div>
+          <span class="pill pill-a">Trust-Only</span>
+        </div>
+        <p class="ocard-body">OCC issued a preliminary conditional approval for Paxos — operator of PAX stablecoin and BUSD — to operate as a national trust company for digital asset custody and stablecoin issuance. Paxos operated under its New York state trust charter (NYDFS) while pursuing the federal application. The January 2023 NYDFS enforcement action requiring Paxos to cease minting BUSD raised additional questions about the federal application's trajectory. Paxos subsequently announced intent to renew pursuit of the federal charter under the more permissive Gould-era OCC, positioning the national trust charter as its GENIUS Act PPSI pathway.</p>
+        <div class="pill-row"><span class="pill pill-g">Stablecoin issuance</span><span class="pill pill-g">Digital asset custody</span><span class="pill pill-a">Status: renewed pursuit (2025)</span></div>
+      </div>
+
+      <div class="callout callout-warn">
+        <p class="callout-title">OCC Chartering Process — Key Phases</p>
+        <p class="callout-body">The OCC's trust company chartering process involves: (1) Prefiling meeting; (2) Formal application; (3) Preliminary conditional approval — sets conditions and an 18-month organizational period; (4) Interim charter (allows organization); (5) Final charter upon satisfaction of all conditions. The gap between preliminary conditional approval and an operational charter can be substantial — requiring capital raising, management hires, and OCC supervisory verification at each stage. Multiple 2021-era applicants never bridged this gap.</p>
+      </div>
+    </div>
+
+    <!-- 2022 -->
+    <div id="occ-2022" class="occ-era">
+
+      <div class="ocard">
+        <div class="ocard-h">
+          <div>
+            <p class="ocard-title">Interagency Crypto Risk Statements</p>
+            <p class="ocard-sub">Joint OCC / FDIC / Fed Guidance · 2022–2023</p>
+          </div>
+          <span class="pill pill-n">Policy</span>
+        </div>
+        <p class="ocard-body">The OCC, FDIC, and Federal Reserve issued a series of interagency statements — including the January 2023 Joint Statement on Crypto-Asset Risks to Banking Organizations and February 2023 Joint Statement on Liquidity Risks from Crypto-Asset Market Vulnerabilities — that effectively communicated supervisory skepticism about bank and trust company engagement with crypto markets. The supervisory non-objection process became a de facto moratorium on new charter approvals and restricted expansion of existing institutions' digital asset activities. Trust company applicants received no movement on pending applications during this period.</p>
+        <div class="pill-row"><span class="pill pill-r">De facto chartering pause</span><span class="pill pill-a">Heightened supervisory scrutiny</span></div>
+      </div>
+
+      <div class="ocard">
+        <div class="ocard-h">
+          <div>
+            <p class="ocard-title">SEC Staff Accounting Bulletin 121</p>
+            <p class="ocard-sub">SEC · March 2022 — Rescinded January 2025 (SAB 122)</p>
+          </div>
+          <span class="pill pill-r">Capital Constraint</span>
+        </div>
+        <p class="ocard-body">Though issued by the SEC (not OCC), SAB 121's requirement that banks and trust companies record digital assets held in custody as balance sheet liabilities — with corresponding regulatory capital requirements — effectively made digital asset custody economically unviable for most large regulated institutions. SAB 121 applied to all entities registered with the SEC, including bank holding companies subject to consolidated capital requirements. The Biden-era SEC veto of a congressional resolution to rescind SAB 121 prolonged its effect through 2024. Rescinded and replaced by SAB 122 (January 2025), which restored general off-balance-sheet accounting treatment for custodied digital assets subject to existing GAAP guidance.</p>
+        <div class="pill-row"><span class="pill pill-r">On-balance-sheet liability requirement</span><span class="pill pill-g">Rescinded January 2025 (SAB 122)</span></div>
+      </div>
+
+      <div class="ocard">
+        <div class="ocard-h">
+          <div>
+            <p class="ocard-title">Custodia Bank v. Federal Reserve Bank of Kansas City</p>
+            <p class="ocard-sub">10th Circuit · 2024 — Master Account Denial Upheld</p>
+          </div>
+          <span class="pill pill-r">Adverse Precedent</span>
+        </div>
+        <p class="ocard-body">The 10th Circuit upheld the Federal Reserve Bank of Kansas City's denial of a master account to Custodia Bank (a Wyoming Special Purpose Depository Institution), affirming that the Federal Reserve retains broad discretionary authority to deny master account access to non-federally-insured institutions. Although Custodia is a state-chartered depository institution rather than a trust company, the decision directly affects nondepository national trust companies seeking master account access — confirming that Tier 3 institutions have no legally enforceable entitlement to a master account and that the Fed's discretion is effectively unreviewable on the merits.</p>
+        <div class="pill-row"><span class="pill pill-r">No legal entitlement to master account</span><span class="pill pill-a">Tier 3 review discretionary</span></div>
+      </div>
+    </div>
+
+    <!-- 2025 -->
+    <div id="occ-2025" class="occ-era">
+
+      <div class="ocard ocard-landmark">
+        <div class="ocard-h">
+          <div>
+            <p class="ocard-title">OCC Interpretive Letter 1183</p>
+            <p class="ocard-sub">OCC · May 2025 — Crypto Activities for National Banks &amp; Trust Companies</p>
+          </div>
+          <span class="pill pill-g">Landmark</span>
+        </div>
+        <p class="ocard-body">IL 1183 confirmed that national banks and federal savings associations — including national trust companies — may engage in certain cryptocurrency activities as permissible banking activities <strong>without obtaining a prior supervisory non-objection:</strong> (1) cryptocurrency custody (holding private keys); (2) stablecoin issuance and holding of stablecoin reserves; (3) participation in blockchain node validation; (4) execution of crypto buy/sell transactions on behalf of customers. The letter eliminated the advance-approval requirement that had functioned as a de facto barrier and aligned OCC policy with a broad interpretation of permissible national bank powers under the National Bank Act.</p>
+        <div class="pill-row"><span class="pill pill-g">No prior supervisory approval required</span><span class="pill pill-g">Custody permissible</span><span class="pill pill-g">Stablecoin reserves permissible</span><span class="pill pill-g">Node validation permissible</span></div>
+      </div>
+
+      <div class="ocard">
+        <div class="ocard-h">
+          <div>
+            <p class="ocard-title">Withdrawal from Interagency Crypto Statements</p>
+            <p class="ocard-sub">OCC · March 2025</p>
+          </div>
+          <span class="pill pill-b">Policy Reversal</span>
+        </div>
+        <p class="ocard-body">The OCC withdrew from the January 2023 interagency joint statement on crypto-asset risks and the February 2023 joint statement on liquidity risks from crypto markets, effectively rescinding its participation in the regulatory communications that had signaled institutional skepticism toward digital asset activities. The FDIC simultaneously rescinded its own restrictive crypto guidance. The practical effect: OCC examiners are no longer directed to treat digital asset activities at national trust companies with heightened skepticism or to require advance approval before institutions engage in activities permissible under IL 1183.</p>
+        <div class="pill-row"><span class="pill pill-g">Prior risk statements rescinded</span><span class="pill pill-a">Examiner guidance updated</span></div>
+      </div>
+
+      <div class="ocard">
+        <div class="ocard-h">
+          <div>
+            <p class="ocard-title">Renewed Trust Charter Application Pipeline</p>
+            <p class="ocard-sub">Multiple Applicants · 2025–2026</p>
+          </div>
+          <span class="pill pill-a">In Process</span>
+        </div>
+        <p class="ocard-body">The permissive OCC posture under Comptroller Jonathan Gould (confirmed January 2025) has prompted a new wave of national trust company and national bank charter applications from crypto-native institutions, stablecoin issuers, and fintech companies seeking federal preemption and OCC's PPSI approval pathway under the GENIUS Act. The OCC has confirmed restoration of an active prefiling meeting process for trust charter applicants — a process that had been effectively suspended during 2022–2024. The GENIUS Act creates an additional structural incentive: PPSI authorization requires OCC approval for federally chartered entities, directing a new category of applicants toward the national trust charter pathway rather than the state-chartered alternatives.</p>
+        <div class="pill-row"><span class="pill pill-a">Applications filed</span><span class="pill pill-a">Active prefiling discussions</span><span class="pill pill-b">PPSI pathway as primary driver</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========== GENIUS ACT ========== -->
+  <section id="tc-genius" class="tc-sec" aria-label="GENIUS Act">
+    <p class="intro-text">The Guiding and Establishing National Innovation for U.S. Stablecoins Act (GENIUS Act) passed the Senate 66–32 in June 2025, creating the first comprehensive federal framework for payment stablecoins. For trust companies, it represents the most significant legislative change to permissible trust company activities in decades — and the greatest source of new regulatory complexity.</p>
+
+    <div class="stat-grid">
+      <div class="stat-box">
+        <p class="stat-num stat-blue">1:1</p>
+        <p class="stat-lbl">Reserve backing required</p>
+      </div>
+      <div class="stat-box">
+        <p class="stat-num stat-warn">$10B</p>
+        <p class="stat-lbl">Threshold for federal oversight of state issuers</p>
+      </div>
+      <div class="stat-box">
+        <p class="stat-num stat-green">3</p>
+        <p class="stat-lbl">Issuer pathways (federal, large state, small state)</p>
+      </div>
+    </div>
+
+    <p class="section-title">How the GENIUS Act structures trust company participation</p>
+
+    <div class="gcard">
+      <p class="gcardh">Permitted Payment Stablecoin Issuer (PPSI) — Trust Company Pathway</p>
+      <p class="gcardp">A national trust company may apply to the OCC for authorization as a PPSI. A state-chartered trust company issuing stablecoins above $10B in outstanding supply requires both state authorization and a federal examination/oversight regime administered by the applicable federal banking agency. State-chartered trust companies below the $10B threshold may operate under state oversight alone, subject to state stablecoin laws meeting minimum GENIUS Act standards. This tiered structure mirrors — but is not identical to — the dual banking system's state-federal architecture, creating a new supervisory dynamic that CSBS has engaged closely on behalf of state regulators.</p>
+    </div>
+
+    <div class="gcard">
+      <p class="gcardh">Reserve Requirements</p>
+      <p class="gcardp">PPSIs must maintain 1:1 reserves in approved high-quality liquid assets: U.S. Treasury securities with maturities of 93 days or less; Federal Reserve deposits; overnight reverse repurchase agreements collateralized by Treasuries; FDIC-insured deposits; and (with limitations) other approved instruments. Reserves must be segregated from the PPSI's operational funds. Commingling is prohibited. Monthly reserve attestation by management is required; annual independent audit for issuers with more than $50 billion in outstanding stablecoins.</p>
+    </div>
+
+    <div class="gcard">
+      <p class="gcardh">No Yield to Holders</p>
+      <p class="gcardp">The GENIUS Act prohibits PPSIs from paying interest, yield, or any form of return to stablecoin holders. This provision — intended to prevent payment stablecoins from functioning as deposit substitutes attracting depositors away from insured banks — is among the most contested. It limits product design flexibility and creates competitive asymmetry with offshore issuers and DeFi protocols that distribute yield to token holders. Trust companies that manage reserves as a fiduciary (e.g., investing in Treasuries) may retain reserve income, but cannot pass it through to holders.</p>
+    </div>
+
+    <div class="gcard">
+      <p class="gcardh">Bankruptcy Protections and Holder Priority</p>
+      <p class="gcardp">Reserve assets must be structured to achieve bankruptcy remoteness — stablecoin holders have priority claims over reserve assets in a PPSI insolvency. The statute requires that reserve assets not be available to general creditors. For trust companies, the intersection of the GENIUS Act's bankruptcy framework with state trust law concepts of beneficial ownership and fiduciary administration requires careful structural analysis: reserve assets held in trust for stablecoin holders (a potential structure) would be governed by state trust law, while GENIUS Act priority rights apply as a matter of federal law — and the interaction is not clearly addressed by either framework.</p>
+    </div>
+
+    <div class="gcard">
+      <p class="gcardh">Preemption of State Stablecoin Laws</p>
+      <p class="gcardp">The GENIUS Act preempts state stablecoin laws "to the extent inconsistent" with its requirements — a formulation that leaves significant interpretive space. States with their own stablecoin frameworks (including Wyoming, which enacted stablecoin legislation through its SPDI framework) will need to evaluate whether their laws conflict. The preemption provision is likely to generate litigation from states asserting that their frameworks provide additional consumer protections that survive the preemption standard. CSBS has monitored the legislation closely; the final preemption scope and the definition of "inconsistent" will significantly affect state supervisory authority over state-chartered trust company stablecoin issuers above $10B.</p>
+    </div>
+
+    <div class="gcard">
+      <p class="gcardh">Unresolved Tensions with Trust Law Doctrine</p>
+      <p class="gcardp">The GENIUS Act was drafted with deposit-taking banks as the primary institutional reference — its provisions do not clearly account for the trust law framework governing trust company operations. Key unresolved questions: (1) Can a trust company's investment discretion over reserve assets create fiduciary conflicts with stablecoin holder interests? (2) Where reserve assets are managed by the same institution acting as trustee for unrelated trust accounts, what segregation and conflict management requirements apply? (3) Does the prohibition on yield to stablecoin holders conflict with a trustee's duty to make trust property productive where the stablecoin trust is structured as a trust for the benefit of holders? These questions will require OCC regulatory guidance, state regulatory interpretation, and — almost certainly — litigation to resolve.</p>
+    </div>
+
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <p><strong style="font-weight:500;">Sources &amp; methodology:</strong> This reference tool draws on primary regulatory sources including the National Bank Act (12 USC), 12 CFR Part 9 (OCC fiduciary regulations), the Bank Secrecy Act (31 USC 5312), FinCEN guidance, OCC Interpretive Letters (including IL 1183, May 2025), the CSBS Nationwide Cooperative Agreement, published GENIUS Act text (Senate-passed, June 2025), and publicly available OCC chartering materials. Court citations: <em>Cantero v. Bank of America</em> (U.S. 2024); <em>Custodia Bank v. Federal Reserve Bank of Kansas City</em> (10th Cir. 2024).</p>
+    <p style="margin-top:10px;"><strong style="font-weight:500;">Disclaimer:</strong> This tool is a regulatory reference for informational purposes only and does not constitute legal advice. Verify all primary sources before relying on this content for compliance or legal determinations. GENIUS Act provisions reflect the Senate-passed text and may differ from final enacted law.</p>
+    <p style="margin-top:10px; color:var(--text3);">Compiled May 2026 · Conference of State Bank Supervisors research use</p>
+  </footer>
+
+</div>
+
+<script>
+function tcTab(id, btn) {
+  document.querySelectorAll('.tc-sec').forEach(s => s.classList.remove('on'));
+  document.querySelectorAll('.tc-btn').forEach(b => b.classList.remove('on'));
+  document.getElementById('tc-' + id).classList.add('on');
+  btn.classList.add('on');
+}
+
+function pwSw(id, btn) {
+  document.getElementById('pw-fid').style.display = id === 'fid' ? 'block' : 'none';
+  document.getElementById('pw-nonfid').style.display = id === 'nonfid' ? 'block' : 'none';
+  document.querySelectorAll('.pw-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+function tog(btn) {
+  const body = btn.nextElementSibling;
+  const open = body.classList.toggle('open');
+  btn.querySelector('.acc-icon').textContent = open ? '−' : '+';
+}
+
+function occEra(id, btn) {
+  document.querySelectorAll('.occ-era').forEach(e => e.classList.remove('on'));
+  document.querySelectorAll('.tl-btn').forEach(b => b.classList.remove('on'));
+  document.getElementById('occ-' + id).classList.add('on');
+  btn.classList.add('on');
+}
+</script>
+
+</body>
+</html>

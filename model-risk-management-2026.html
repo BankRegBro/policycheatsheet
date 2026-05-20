@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Model Risk Management Guidance — SR 11-7 vs 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:        #1B354A;
+    --navy-mid:    #1e3d56;
+    --indigo:      #2A2D71;
+    --blue:        #4879AA;
+    --blue-dim:    rgba(72,121,170,0.14);
+    --teal:        #05A08E;
+    --teal-dim:    rgba(5,160,142,0.14);
+    --red:         #c0392b;
+    --red-dim:     rgba(192,57,43,0.12);
+    --white:       #FFFFFF;
+    --neutral:     #EDEFF3;
+    --muted:       #7B8BA3;
+    --border:      rgba(72,121,170,0.22);
+    --card:        rgba(27,53,74,0.93);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'Source Serif 4', Georgia, serif;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 15% 0%,   rgba(5,160,142,0.07) 0%, transparent 55%),
+      radial-gradient(ellipse at 85% 100%, rgba(42,45,113,0.45) 0%, transparent 55%),
+      repeating-linear-gradient(0deg,  transparent, transparent 79px, rgba(72,121,170,0.035) 80px),
+      repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(72,121,170,0.035) 80px);
+  }
+
+  /* ── HEADER ── */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 26px 40px 20px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(27,53,74,0.97);
+    backdrop-filter: blur(14px);
+  }
+  .header-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 5px; opacity: 0.85;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 21px; font-weight: 700; color: var(--white); line-height: 1.25;
+  }
+  header h1 em { color: var(--teal); font-style: normal; }
+  .header-badges { display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap; align-items: center; }
+  .vbadge {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    padding: 3px 10px; border-radius: 2px; letter-spacing: 0.07em; text-transform: uppercase;
+  }
+  .vbadge-old { background: rgba(123,139,163,0.15); color: var(--muted); border: 1px solid rgba(123,139,163,0.3); }
+  .vbadge-new { background: var(--teal-dim); color: var(--teal); border: 1px solid rgba(5,160,142,0.4); }
+  .vbadge-joint { background: rgba(42,45,113,0.3); color: #9fa3e0; border: 1px solid rgba(42,45,113,0.5); }
+  .arrow { color: var(--muted); font-size: 13px; line-height: 2; }
+
+  /* ── TABS ── */
+  .tabs {
+    border-bottom: 1px solid var(--border);
+    display: flex; gap: 0; padding: 0 40px;
+    background: rgba(27,53,74,0.95); overflow-x: auto;
+  }
+  .tab {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 0.07em; text-transform: uppercase;
+    padding: 12px 20px; cursor: pointer;
+    color: var(--muted); border-bottom: 2px solid transparent;
+    white-space: nowrap; transition: all 0.2s;
+  }
+  .tab:hover { color: var(--white); }
+  .tab.active { color: var(--teal); border-bottom-color: var(--teal); }
+
+  /* ── LAYOUT ── */
+  .container { padding: 30px 40px; max-width: 1380px; margin: 0 auto; }
+  .panel { animation: fadeUp 0.3s ease both; }
+  .hidden { display: none !important; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal);
+    margin-bottom: 18px; display: flex; align-items: center; gap: 12px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-bottom: 26px;
+  }
+  @media(max-width:800px) { .stats-bar { grid-template-columns: repeat(3,1fr); } }
+  .stat-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 4px;
+    padding: 15px 18px; text-align: center;
+  }
+  .stat-number {
+    font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 700;
+    line-height: 1; margin-bottom: 4px;
+  }
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    letter-spacing: 0.11em; text-transform: uppercase; color: var(--muted);
+  }
+
+  /* ── FILTER ── */
+  .filter-bar { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; align-items: center; }
+  .filter-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; margin-right: 4px; }
+  .filter-btn {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.07em;
+    text-transform: uppercase; padding: 5px 13px; border-radius: 2px; cursor: pointer;
+    border: 1px solid var(--border); background: transparent; color: var(--muted);
+    transition: all 0.2s;
+  }
+  .filter-btn:hover { color: var(--white); border-color: rgba(72,121,170,0.5); }
+  .filter-btn.active { color: var(--blue); border-color: var(--blue); background: var(--blue-dim); }
+
+  /* ── CHANGE CARDS ── */
+  .changes-grid { display: grid; gap: 14px; }
+  .change-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 4px;
+    overflow: hidden; transition: all 0.22s; animation: fadeUp 0.4s ease both;
+  }
+  .change-card:hover { border-color: rgba(72,121,170,0.5); transform: translateY(-1px); }
+
+  .card-header {
+    display: flex; align-items: center; gap: 12px; padding: 13px 20px;
+    cursor: pointer; user-select: none; border-bottom: 1px solid transparent; transition: border-color 0.2s;
+  }
+  .card-header:hover { border-bottom-color: var(--border); }
+
+  .type-badge {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em;
+    text-transform: uppercase; padding: 3px 8px; border-radius: 2px; font-weight: 500; flex-shrink: 0;
+  }
+  .badge-new     { background: var(--teal-dim); color: var(--teal); border: 1px solid rgba(5,160,142,0.35); }
+  .badge-changed { background: var(--blue-dim); color: #6b9dc4;     border: 1px solid rgba(72,121,170,0.35); }
+  .badge-removed { background: var(--red-dim);  color: #e07060;     border: 1px solid rgba(231,76,60,0.3); }
+  .badge-ai      { background: rgba(42,45,113,0.25); color: #9fa3e0; border: 1px solid rgba(42,45,113,0.5); }
+
+  .card-title { font-family: 'Playfair Display', serif; font-size: 14.5px; font-weight: 600; color: var(--white); flex: 1; }
+  .card-sig { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.09em; text-transform: uppercase; flex-shrink: 0; }
+  .sig-h { color: #e74c3c; } .sig-m { color: var(--blue); } .sig-l { color: var(--muted); }
+  .chevron { color: var(--muted); transition: transform 0.22s; font-size: 11px; flex-shrink: 0; }
+  .card-header.open .chevron { transform: rotate(90deg); }
+
+  .card-body { display: none; padding: 0 20px 20px; border-top: 1px solid var(--border); }
+  .card-body.open { display: block; }
+
+  .diff-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  @media(max-width:750px) { .diff-cols { grid-template-columns: 1fr; } }
+
+  .diff-col-head {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: 0.11em; text-transform: uppercase; margin-bottom: 9px;
+    padding-bottom: 6px; border-bottom: 1px solid var(--border);
+  }
+  .dch-old { color: var(--muted); } .dch-new { color: var(--teal); }
+
+  .diff-text { font-size: 13.5px; line-height: 1.75; color: var(--muted); font-style: italic; }
+  .diff-text.live { color: var(--neutral); font-style: normal; }
+
+  .hl-add { background: rgba(5,160,142,0.18); color: var(--teal); padding: 1px 3px; border-radius: 2px; }
+  .hl-del { background: rgba(231,76,60,0.18); color: #e74c3c; padding: 1px 3px; text-decoration: line-through; border-radius: 2px; }
+  .hl-chg { background: var(--blue-dim); color: #6b9dc4; padding: 1px 3px; border-radius: 2px; }
+  .hl-ai  { background: rgba(42,45,113,0.3); color: #b0b4f0; padding: 1px 3px; border-radius: 2px; }
+
+  .analysis-box {
+    margin-top: 16px; padding: 14px 16px;
+    background: rgba(72,121,170,0.07); border-left: 3px solid var(--blue); border-radius: 0 3px 3px 0;
+  }
+  .analysis-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--blue); margin-bottom: 6px;
+  }
+  .analysis-text { font-size: 13px; line-height: 1.72; color: var(--neutral); }
+
+  /* ── TIMELINE ── */
+  .timeline {
+    display: flex; align-items: center; gap: 0; margin-bottom: 26px;
+    background: var(--card); border: 1px solid var(--border); border-radius: 4px;
+    padding: 16px 24px; overflow-x: auto;
+  }
+  .tl-node { display: flex; flex-direction: column; align-items: center; gap: 5px; flex-shrink: 0; }
+  .tl-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--blue); }
+  .tl-dot.old { background: var(--muted); }
+  .tl-dot.teal { background: var(--teal); }
+  .tl-date { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.07em; }
+  .tl-label { font-size: 11px; color: var(--white); font-weight: 600; text-align: center; }
+  .tl-line { flex: 1; height: 1px; background: var(--border); margin: 0 14px; min-width: 30px; }
+
+  /* ── COMPARISON PANEL ── */
+  .cmp-panel {
+    background: var(--card); border: 1px solid rgba(42,45,113,0.45); border-radius: 4px;
+    overflow: hidden; margin-bottom: 18px;
+  }
+  .cmp-panel-hdr {
+    background: linear-gradient(135deg, rgba(42,45,113,0.22), rgba(42,45,113,0.06));
+    padding: 15px 22px; display: flex; align-items: center; gap: 12px;
+    border-bottom: 1px solid rgba(42,45,113,0.28); cursor: pointer;
+  }
+  .cmp-panel-title { font-family: 'Playfair Display', serif; font-size: 15px; color: var(--white); flex: 1; }
+  .cmp-panel-sub { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: #7b7fc0; }
+  .cmp-body { display: none; }
+  .cmp-body.open { display: block; }
+
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+  @media(max-width:900px) { .three-col { grid-template-columns: 1fr; } }
+  .cmp-col { padding: 20px 22px; border-right: 1px solid var(--border); }
+  .cmp-col:last-child { border-right: none; }
+  .cmp-col-title {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em;
+    text-transform: uppercase; margin-bottom: 14px; padding-bottom: 7px; border-bottom: 1px solid var(--border);
+  }
+  .ct-old { color: var(--muted); }
+  .ct-new { color: var(--teal); }
+  .ct-ai  { color: #9fa3e0; }
+
+  .cmp-item { margin-bottom: 13px; padding-bottom: 13px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .cmp-item:last-child { border-bottom: none; margin-bottom: 0; }
+  .cmp-item-lbl { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 4px; }
+  .cmp-item-txt { font-size: 13px; line-height: 1.65; color: var(--white); }
+
+  /* ── SECTION MAP ── */
+  .section-map {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px;
+  }
+  @media(max-width:700px) { .section-map { grid-template-columns: 1fr; } }
+  .sm-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 4px;
+    padding: 16px 20px;
+  }
+  .sm-title { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); margin-bottom: 10px; }
+  .sm-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+  .sm-old { width: 44%; font-size: 12px; color: var(--muted); font-style: italic; padding-right: 6px; border-right: 1px solid var(--border); }
+  .sm-arrow { color: var(--teal); font-size: 11px; flex-shrink: 0; margin-top: 2px; }
+  .sm-new { width: 56%; font-size: 12px; color: var(--neutral); }
+  .sm-tag { font-family: 'JetBrains Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 5px; border-radius: 2px; margin-left: 5px; display: inline-block; vertical-align: middle; }
+  .sm-tag-new { background: var(--teal-dim); color: var(--teal); border: 1px solid rgba(5,160,142,0.3); }
+  .sm-tag-rm  { background: var(--red-dim); color: #e07060; border: 1px solid rgba(231,76,60,0.25); }
+  .sm-tag-rv  { background: var(--blue-dim); color: #6b9dc4; border: 1px solid rgba(72,121,170,0.3); }
+
+  /* ── SIGNIFICANCE TABLE ── */
+  .sig-table { background: var(--card); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead tr { background: rgba(72,121,170,0.10); border-bottom: 1px solid var(--border); }
+  th { padding: 11px 18px; text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.09em; color: var(--blue); font-weight: 500; text-transform: uppercase; }
+  td { padding: 11px 18px; vertical-align: middle; }
+  tbody tr { border-bottom: 1px solid rgba(255,255,255,0.05); }
+  tbody tr:nth-child(even) { background: rgba(255,255,255,0.018); }
+
+  .bar-wrap { display:flex; align-items:center; gap:8px; }
+  .bar-track { width: 60px; height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; }
+  .bar-fill  { height: 100%; border-radius: 2px; }
+  .bar-label { font-family:'JetBrains Mono',monospace; font-size:10px; }
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--navy); }
+  ::-webkit-scrollbar-thumb { background: var(--indigo); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- ══════════ HEADER ══════════ -->
+<header>
+  <div>
+    <div class="header-eyebrow">Interagency Supervisory Guidance · MRM Comparison Tool</div>
+    <h1>Model Risk Management Guidance<br><em>SR 11-7 / OCC 2011-12 → April 2026 Update</em></h1>
+    <div class="header-badges">
+      <span class="vbadge vbadge-old">SR 11-7 · April 2011</span>
+      <span class="arrow">→</span>
+      <span class="vbadge vbadge-new">OCC Bulletin 2026-13 · April 17, 2026</span>
+      <span class="vbadge vbadge-joint">Fed · FDIC · OCC Joint</span>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;">
+      <span style="display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)"><span style="width:8px;height:8px;background:var(--teal);border-radius:50%;display:inline-block"></span>New Provision</span>
+      <span style="display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)"><span style="width:8px;height:8px;background:var(--blue);border-radius:50%;display:inline-block"></span>Revised</span>
+      <span style="display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)"><span style="width:8px;height:8px;background:#e74c3c;border-radius:50%;display:inline-block"></span>Removed</span>
+      <span style="display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)"><span style="width:8px;height:8px;background:#9fa3e0;border-radius:50%;display:inline-block"></span>AI-Specific</span>
+    </div>
+  </div>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('changes',this)">Line-by-Line Changes</div>
+  <div class="tab" onclick="switchTab('structure',this)">Document Structure</div>
+  <div class="tab" onclick="switchTab('ai',this)">AI &amp; Technology</div>
+  <div class="tab" onclick="switchTab('matrix',this)">Significance Matrix</div>
+</div>
+
+<!-- ══════════ TAB: CHANGES ══════════ -->
+<div id="tab-changes" class="container panel">
+
+  <div class="stats-bar">
+    <div class="stat-card"><div class="stat-number" style="color:var(--teal)">6</div><div class="stat-label">New Provisions</div></div>
+    <div class="stat-card"><div class="stat-number" style="color:#6b9dc4">9</div><div class="stat-label">Revised</div></div>
+    <div class="stat-card"><div class="stat-number" style="color:#e74c3c">4</div><div class="stat-label">Removed</div></div>
+    <div class="stat-card"><div class="stat-number" style="color:#9fa3e0">3</div><div class="stat-label">AI-Specific Carve-Outs</div></div>
+    <div class="stat-card"><div class="stat-number" style="color:var(--white)">15</div><div class="stat-label">Years Between Editions</div></div>
+  </div>
+
+  <div class="timeline">
+    <div class="tl-node">
+      <div class="tl-dot old"></div>
+      <div class="tl-date">April 2011</div>
+      <div class="tl-label">SR 11-7 /<br>OCC 2011-12</div>
+    </div>
+    <div class="tl-line"></div>
+    <div class="tl-node" style="opacity:0.55">
+      <div class="tl-dot old"></div>
+      <div class="tl-date">2018–2022</div>
+      <div class="tl-label">ML/AI Adoption<br>Escalates</div>
+    </div>
+    <div class="tl-line"></div>
+    <div class="tl-node" style="opacity:0.55">
+      <div class="tl-dot old"></div>
+      <div class="tl-date">Nov 2023</div>
+      <div class="tl-label">ChatGPT Era<br>Begins</div>
+    </div>
+    <div class="tl-line"></div>
+    <div class="tl-node" style="opacity:0.55">
+      <div class="tl-dot old"></div>
+      <div class="tl-date">2025</div>
+      <div class="tl-label">Agencies Signal<br>MRM Review</div>
+    </div>
+    <div class="tl-line"></div>
+    <div class="tl-node">
+      <div class="tl-dot teal"></div>
+      <div class="tl-date">Apr 17, 2026</div>
+      <div class="tl-label">Joint Interagency<br>Revised Guidance</div>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-btn active" onclick="filter('all',this)">All</button>
+    <button class="filter-btn" onclick="filter('new',this)">New</button>
+    <button class="filter-btn" onclick="filter('changed',this)">Revised</button>
+    <button class="filter-btn" onclick="filter('removed',this)">Removed</button>
+    <button class="filter-btn" onclick="filter('ai',this)">AI-Specific</button>
+  </div>
+
+  <div class="section-label">Provision Analysis</div>
+  <div class="changes-grid" id="changes-grid">
+
+    <!-- ① CHANGED: Scope — Asset Threshold Introduced -->
+    <div class="change-card" data-type="changed">
+      <div class="card-header" onclick="tog(this)">
+        <span class="type-badge badge-changed">Revised</span>
+        <span class="card-title">Scope Explicitly Limited — $30B Asset Threshold Introduced</span>
+        <span class="card-sig sig-h">▲ High</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-cols">
+          <div>
+            <div class="diff-col-head dch-old">SR 11-7 · April 2011</div>
+            <div class="diff-text">Applied to <span class="hl-del">all banks</span>. Acknowledged that practical application "should be customized to be commensurate with a bank's risk exposures" and that steps for a community bank "might be significantly less involved." No explicit size threshold or bright-line exclusion.</div>
+          </div>
+          <div>
+            <div class="diff-col-head dch-new">OCC Bulletin 2026-13 · April 2026</div>
+            <div class="diff-text live">Guidance is expected to be <span class="hl-add">most relevant to banking organizations with over $30 billion in total assets</span>. Smaller institutions are generally excluded, consistent with a tailored supervisory approach. Exception carved out for sub-$30B institutions with significant model exposure outside traditional community banking.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">This is a structural break from SR 11-7, which applied principles to all banks with model usage. The $30B threshold creates a bright-line applicable to the same asset tier used in the tailored capital and liquidity rules under the 2019 capital simplification rules. Below-threshold institutions retain the obligation to have risk-appropriate MRM practices, but are presumptively not subject to these specific expectations. For community banks and mid-size regionals, this removes the shadow of non-compliance that SR 11-7 created even for straightforward model deployments.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ② NEW: Non-Enforceable Status Explicit -->
+    <div class="change-card" data-type="new">
+      <div class="card-header" onclick="tog(this)">
+        <span class="type-badge badge-new">New</span>
+        <span class="card-title">Guidance Explicitly Non-Enforceable — Supervisory Criticism Disclaimed</span>
+        <span class="card-sig sig-h">▲ High</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-cols">
+          <div>
+            <div class="diff-col-head dch-old">SR 11-7 · April 2011</div>
+            <div class="diff-text">Framed as setting out <span class="hl-del">"supervisory expectations"</span> and described what banks "should" do in prescriptive terms throughout. Widely interpreted by examiners as establishing enforceable de facto standards despite its guidance status.</div>
+          </div>
+          <div>
+            <div class="diff-col-head dch-new">OCC Bulletin 2026-13 · April 2026</div>
+            <div class="diff-text live">Explicitly states: "This guidance does not set forth <span class="hl-add">enforceable standards or prescriptive requirements</span>; accordingly, <span class="hl-add">non-compliance with this guidance will not result in supervisory criticism</span> against a banking organization." Footnote reserves supervisory action only for violations of law or unsafe/unsound practices from insufficient MRM.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">This is the single most operationally significant change in the document. SR 11-7, while technically guidance, functioned as de facto binding standards in examination practice—MRM shortfalls against SR 11-7 routinely produced MRAs. The explicit non-enforceable disclaimer directly addresses examiner practice and creates a legal firewall against mechanical SR 11-7-style citations. The footnote carve-out (unsafe/unsound practices may still lead to action) preserves examiner discretion at the extremes while eliminating formulaic citation risk for good-faith deviations.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ③ CHANGED: Model Definition — Narrowed -->
+    <div class="change-card" data-type="changed">
+      <div class="card-header" onclick="tog(this)">
+        <span class="type-badge badge-changed">Revised</span>
+        <span class="card-title">Model Definition Narrowed — Spreadsheets and Rule-Based Systems Excluded</span>
+        <span class="card-sig sig-h">▲ High</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-cols">
+          <div>
+            <div class="diff-col-head dch-old">SR 11-7 · April 2011</div>
+            <div class="diff-text">Model is <span class="hl-del">"a quantitative method, system, or approach that applies statistical, economic, financial, or mathematical theories, techniques, and assumptions."</span> Three components: information input, processing, reporting. Explicitly included quantitative approaches with qualitative or expert-judgment inputs if output is quantitative. Very broad—caught many tools.</div>
+          </div>
+          <div>
+            <div class="diff-col-head dch-new">OCC Bulletin 2026-13 · April 2026</div>
+            <div class="diff-text live">Model is <span class="hl-add">"a complex quantitative method, system, or approach that applies statistical, economic, or financial theories."</span> Explicitly excludes: <span class="hl-add">simple arithmetic calculations (including spreadsheets)</span>, <span class="hl-add">deterministic rule-based processes</span>, and <span class="hl-add">software without statistical/economic/financial theory</span> in its design or use. Drops the three-component framework. Drops "mathematical" from theory types. Drops "techniques and assumptions" from the characterization.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">The addition of "complex" as a modifier and the explicit exclusions (spreadsheets, rule-based systems) meaningfully narrow the universe of tools subject to MRM requirements. Under SR 11-7, many institutions captured decision-tree logic, scorecard models, and even sophisticated spreadsheets in their model inventories to avoid examination risk. The 2026 definition focuses MRM resources on genuinely statistical and theory-grounded tools. The loss of "mathematical" from the theory list is noteworthy—it may signal that pure mathematical optimization tools without economic underpinning are outside scope. The three-component framework's removal simplifies the definitional test.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ④ AI: Generative/Agentic AI Carved Out -->
+    <div class="change-card" data-type="ai">
+      <div class="card-header" onclick="tog(this)">
+        <span class="type-badge badge-ai">AI-Specific</span>
+        <span class="card-title">Generative AI and Agentic AI Explicitly Excluded from MRM Scope</span>
+        <span class="card-sig sig-h">▲ High</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-cols">
+          <div>
+            <div class="diff-col-head dch-old">SR 11-7 · April 2011</div>
+            <div class="diff-text">No mention of AI, machine learning, or generative models. Predates modern AI deployment in banking. "Data-driven quantitative decision-making tools" broadly encompassed emerging tech as it arose—causing SR 11-7 to be stretched to cover ML models through examiner interpretation.</div>
+          </div>
+          <div>
+            <div class="diff-col-head dch-new">OCC Bulletin 2026-13 · April 2026</div>
+            <div class="diff-text live">Footnote 3 states: "<span class="hl-ai">Generative AI and agentic AI models are novel and rapidly evolving. As such, they are not within the scope of this guidance.</span>" However, general risk management and governance practices should guide controls for out-of-scope tools. The guidance's principles apply to <span class="hl-add">traditional statistical and quantitative models and non-generative, non-agentic AI models</span>.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">This is a deliberate regulatory carve-out with significant practical implications. The agencies effectively acknowledged that fitting generative AI governance into a 2011 MRM framework would be an awkward retrofit—and declined to do so. The carve-out creates a regulatory gap: institutions deploying LLMs for credit decisions, document analysis, or customer-facing functions do not have a clear MRM framework to follow. The agencies preserve the general principle that good governance applies, but explicitly decline to specify what that means for generative AI. This gap is likely to be filled by separate guidance, and institutions should watch for agency AI risk management frameworks (OCC's AI risk management guidance, NIST AI RMF adoption) to fill this void.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑤ NEW: Model Materiality Formally Introduced -->
+    <div class="change-card" data-type="new">
+      <div class="card-header" onclick="tog(this)">
+        <span class="type-badge badge-new">New</span>
+        <span class="card-title">Model Materiality — Formal Two-Axis Framework (Exposure × Purpose)</span>
+        <span class="card-sig sig-h">▲ High</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-cols">
+          <div>
+            <div class="diff-col-head dch-old">SR 11-7 · April 2011</div>
+            <div class="diff-text">Materiality discussed informally: "where model failure would have a particularly harmful impact on a bank's financial condition, a bank's model risk management framework should be more extensive." No structured materiality framework. No formal axes of assessment.</div>
+          </div>
+          <div>
+            <div class="diff-col-head dch-new">OCC Bulletin 2026-13 · April 2026</div>
+            <div class="diff-text live">Introduces formal two-axis materiality framework:<br><br>• <span class="hl-add">Model Exposure</span> — significance of model output to business decisions; tied to portfolio size; quantitatively measurable.<br>• <span class="hl-add">Model Purpose</span> — qualitative; nature and importance of use; regulatory compliance and financial risk management models deemed higher risk.<br><br><span class="hl-add">Model Materiality</span> = exposure + purpose combined. Explicitly permits reduced oversight for models deemed immaterial, with monitoring for potential future materiality.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">The formalization of a materiality framework is a significant structural improvement over SR 11-7. It provides a conceptual anchor for model tiering—an industry practice that was implicitly endorsed but never formally blessed. The two-axis structure (exposure = quantitative, purpose = qualitative) allows institutions to formally designate lower-tier models for reduced oversight without examination risk. The explicit permission to deem models immaterial and reduce oversight accordingly (while monitoring for future materiality) gives institutions a policy hook for model inventory rationalization that SR 11-7 did not provide.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑥ CHANGED: Validation Independence Deprioritized -->
+    <div class="change-card" data-type="changed">
+      <div class="card-header" onclick="tog(this)">
+        <span class="type-badge badge-changed">Revised</span>
+        <span class="card-title">Validation Independence — Organizational Structure Deprioritized; Review Quality Elevated</span>
+        <span class="card-sig sig-h">▲ High</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-cols">
+          <div>
+            <div class="diff-col-head dch-old">SR 11-7 · April 2011</div>
+            <div class="diff-text">Validation <span class="hl-del">"should be done by people who are not responsible for development or use and do not have a stake in whether a model is determined to be valid."</span> Independence reflected in <span class="hl-del">separate reporting lines</span>, compensation practices, corporate culture. Required explicit authority, stature, and commitment from higher management. Three-part framework: incentives, competence, influence.</div>
+          </div>
+          <div>
+            <div class="diff-col-head dch-new">OCC Bulletin 2026-13 · April 2026</div>
+            <div class="diff-text live">"The quality of validation process depends on <span class="hl-add">the rigor and effectiveness of the review rather than on organizational structure</span> of the banking organization's risk management function." Emphasizes <span class="hl-add">technical knowledge and modeling expertise</span> as the primary enablers. Retains the concept of effective challenge but removes the prescriptive independence-by-org-chart framework.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">This is among the most significant conceptual shifts in the document. SR 11-7's emphasis on separate reporting lines and organizational independence created structural model validation units at virtually every large bank—often regardless of whether that structure actually improved review quality. The 2026 guidance explicitly reframes quality as the goal, not structure. This gives institutions flexibility to restructure validation functions based on what actually produces rigorous review rather than what achieves organizational separation for its own sake. It may also reduce the examination friction around cases where a highly qualified developer conducts validation work, provided the review is genuinely rigorous and documented.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑦ CHANGED: "Implementation" Removed from Section Title -->
+    <div class="change-card" data-type="changed">
+      <div class="card-header" onclick="tog(this)">
+        <span class="type-badge badge-changed">Revised</span>
+        <span class="card-title">Model Implementation as Separate Category Eliminated — Merged into Development</span>
+        <span class="card-sig sig-m">◆ Medium</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-cols">
+          <div>
+            <div class="diff-col-head dch-old">SR 11-7 · April 2011</div>
+            <div class="diff-text">Section IV titled: <span class="hl-del">"Model Development, Implementation, and Use."</span> Separate discussion of "Model Development and Implementation" as a subsection with distinct requirements around embedding models in information systems, data flow management, controls, and testing of system integration. Treated implementation as a discrete, high-risk stage.</div>
+          </div>
+          <div>
+            <div class="diff-col-head dch-new">OCC Bulletin 2026-13 · April 2026</div>
+            <div class="diff-text live">Section IV titled: <span class="hl-add">"Model Development and Model Use."</span> Implementation-specific requirements folded into development. No separate implementation subsection. Emphasis shifts from system-embedding mechanics to <span class="hl-add">alignment with model purpose and business use</span>, and on collaborative engagement between developers and users.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">The removal of implementation as a distinct stage reflects the evolution of model deployment infrastructure. In 2011, embedding a model in bank systems was a significant technical project with distinct risk. Modern API-based, cloud-deployed, and vendor-hosted models make the development/implementation boundary far less clear. The 2026 guidance's consolidation reflects this reality. It also shifts focus from IT integration risk to conceptual alignment risk—ensuring models are used for their intended purpose, which is the more prevalent failure mode in contemporary model deployments.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑧ CHANGED: Effective Challenge — Streamlined -->
+    <div class="change-card" data-type="changed">
+      <div class="card-header" onclick="tog(this)">
+        <span class="type-badge badge-changed">Revised</span>
+        <span class="card-title">Effective Challenge — Retained but Streamlined; Influence Requirement Softened</span>
+        <span class="card-sig sig-m">◆ Medium</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-cols">
+          <div>
+            <div class="diff-col-head dch-old">SR 11-7 · April 2011</div>
+            <div class="diff-text">Effective challenge defined as "critical analysis by <span class="hl-del">objective, informed parties</span>" requiring three elements: <span class="hl-del">incentives</span> (separation, compensation practices), <span class="hl-del">competence</span> (technical expertise), and <span class="hl-del">influence</span> (explicit authority, stature, management commitment). Influence described as requiring "explicit authority" and "commitment and support from higher levels of management."</div>
+          </div>
+          <div>
+            <div class="diff-col-head dch-new">OCC Bulletin 2026-13 · April 2026</div>
+            <div class="diff-text live">Effective challenge defined as "critical analysis conducted by <span class="hl-add">objective experts</span>" throughout the model lifecycle. Requires <span class="hl-add">appropriate expertise</span>, <span class="hl-add">sufficient independence to maintain objectivity</span>, and <span class="hl-add">organizational standing and influence to effect any change</span>. Incentives/compensation framework removed. Three-part taxonomy collapsed into a single sentence.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">The simplification of effective challenge removes the prescriptive three-part framework without eliminating the core concept. The removal of explicit incentive/compensation language reduces the examination hook for challenging MRM compensation structures. The retention of "organizational standing and influence" preserves the substance of the influence requirement while dropping the specific mechanics. The shift from "objective, informed parties" to "objective experts" elevates the technical bar while loosening the independence requirement—consistent with the broader move away from organizational-structure-as-independence.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑨ NEW: Aggregate Risk Formalized -->
+    <div class="change-card" data-type="changed">
+      <div class="card-header" onclick="tog(this)">
+        <span class="type-badge badge-changed">Revised</span>
+        <span class="card-title">Aggregate Model Risk — More Explicit Articulation with Portfolio-Level Framing</span>
+        <span class="card-sig sig-m">◆ Medium</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-cols">
+          <div>
+            <div class="diff-col-head dch-old">SR 11-7 · April 2011</div>
+            <div class="diff-text">Aggregate model risk addressed through: "Aggregate model risk is affected by interaction and dependencies among models; reliance on common assumptions, data, or methodologies; and any other factors that could adversely affect several models and their outputs at the same time." Discussed in context of risk management generally.</div>
+          </div>
+          <div>
+            <div class="diff-col-head dch-new">OCC Bulletin 2026-13 · April 2026</div>
+            <div class="diff-text live">Sound practice explicitly involves <span class="hl-add">assessing model risk both individually and in aggregate</span>. Aggregate risk language retained and slightly refined: "reflects interactions and dependencies among models; reliance on common assumptions, data, or methodologies; and any other factors that could adversely affect several models and their outputs simultaneously." Model inventory explicitly supports aggregate-level assessment.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">The explicit "individually and in aggregate" formulation elevates aggregate risk assessment as a standalone requirement rather than an embedded consideration. This is practically significant as institutions deploy suites of interconnected AI and ML models that feed each other's outputs—aggregate risk from correlated model failures is a genuine systemic concern. The explicit linkage to model inventory (which must support both individual and aggregate assessment) creates an operational connection between inventory management and enterprise risk assessment.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑩ CHANGED: Internal Audit Role Clarified -->
+    <div class="change-card" data-type="changed">
+      <div class="card-header" onclick="tog(this)">
+        <span class="type-badge badge-changed">Revised</span>
+        <span class="card-title">Internal Audit Role — Explicitly Bounded to Evaluating MRM Practices, Not Performing Them</span>
+        <span class="card-sig sig-m">◆ Medium</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-cols">
+          <div>
+            <div class="diff-col-head dch-old">SR 11-7 · April 2011</div>
+            <div class="diff-text">Internal audit discussed as a governance mechanism but <span class="hl-del">no explicit prohibition on IA performing model development or validation</span>. Governance section discussed IA role in broader terms of oversight without clearly delineating what IA should not do. Ambiguity led to varying practices across institutions.</div>
+          </div>
+          <div>
+            <div class="diff-col-head dch-new">OCC Bulletin 2026-13 · April 2026</div>
+            <div class="diff-text live">"Internal audit <span class="hl-add">would generally not duplicate model risk management activities such as model development or validation</span>. Instead, internal audit's role is generally to <span class="hl-add">evaluate whether the model risk management practices are rigorous and effective</span> and whether related policies are implemented accordingly."</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">This mirrors the Fed's supervisory operating principles update on internal audit reliance for MRA/MRIA validation—a consistent delineation of what IA should and should not do in a risk management context. The guidance places IA in the fourth-line role of evaluating MRM governance rather than performing validation. This is an important signal for institutions where IA has served as a backstop validator when the formal validation function is under-resourced. It also reduces examination pressure to use IA as a compensating control for validation gaps.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑪ CHANGED: Validation Timing — Urgent Use Exception -->
+    <div class="change-card" data-type="changed">
+      <div class="card-header" onclick="tog(this)">
+        <span class="type-badge badge-changed">Revised</span>
+        <span class="card-title">Pre-Use Validation Timing — Urgent Business Need Exception Formalized</span>
+        <span class="card-sig sig-m">◆ Medium</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-cols">
+          <div>
+            <div class="diff-col-head dch-old">SR 11-7 · April 2011</div>
+            <div class="diff-text">Stated that <span class="hl-del">"if it is not feasible to conduct necessary validation activities prior to model use because of data paucity or other limitations, that fact should be documented."</span> Required compensating controls and communication to users, senior management. Framed as exception due to data/feasibility constraints only—not business urgency.</div>
+          </div>
+          <div>
+            <div class="diff-col-head dch-new">OCC Bulletin 2026-13 · April 2026</div>
+            <div class="diff-text live">Validation generally occurs prior to first use. However, <span class="hl-add">"certain circumstances (e.g., an urgent business need) may necessitate using the model before validation is completed."</span> Sound practice in such cases: greater attention to limitations, informing relevant stakeholders, and appropriate controls (e.g., <span class="hl-add">placing limits on model use or more closely monitoring its performance</span>).</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">SR 11-7 only contemplated pre-use validation deferral for technical/data reasons. The explicit addition of "urgent business need" as a recognized exception reflects the pace of modern model deployment. Rapid product launches, competitive pressure, and market windows create scenarios where institutions deploy models before validation is complete. Formalizing this exception—with appropriate guardrails—provides a regulatory safe harbor for good-faith urgent deployments that previously operated in a gray zone under SR 11-7.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑫ NEW: Model Inventory Explicitly Required -->
+    <div class="change-card" data-type="new">
+      <div class="card-header" onclick="tog(this)">
+        <span class="type-badge badge-new">New</span>
+        <span class="card-title">Model Inventory — Explicitly Required as Common Industry Practice</span>
+        <span class="card-sig sig-m">◆ Medium</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-cols">
+          <div>
+            <div class="diff-col-head dch-old">SR 11-7 · April 2011</div>
+            <div class="diff-text">Model inventory not specifically called out as a standalone governance requirement. Implied through general governance and controls discussion. Institutions maintained inventories as a practical matter but no explicit standard was articulated in the guidance text.</div>
+          </div>
+          <div>
+            <div class="diff-col-head dch-new">OCC Bulletin 2026-13 · April 2026</div>
+            <div class="diff-text live">"It is <span class="hl-add">common industry practice</span> for banking organizations to maintain a comprehensive set of information for models under development or in use." Inventory must contain <span class="hl-add">sufficient information to understand model risks</span> and support <span class="hl-add">effective model risk management at the individual and aggregate levels</span>. Varying levels of detail appropriate to reflect different model complexity.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">Codifying the model inventory as an explicit standard, while labeling it "common industry practice" rather than a prescriptive requirement, achieves a middle ground: institutions that lack inventories cannot claim SR 11-7 ambiguity as cover, while the non-enforceable framing limits mechanical examination citations. The explicit linkage of inventory requirements to both individual and aggregate risk management is operationally significant—it means inventory content must support enterprise-level risk assessment, not just individual model tracking.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑬ AI: Non-Generative AI Explicitly In-Scope -->
+    <div class="change-card" data-type="ai">
+      <div class="card-header" onclick="tog(this)">
+        <span class="type-badge badge-ai">AI-Specific</span>
+        <span class="card-title">Traditional ML / Non-Generative AI Confirmed In-Scope; Interpretability Recognized</span>
+        <span class="card-sig sig-h">▲ High</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-cols">
+          <div>
+            <div class="diff-col-head dch-old">SR 11-7 · April 2011</div>
+            <div class="diff-text">No AI/ML-specific provisions. Conceptual soundness validation required review of "documented evidence in support of all model choices, including the overall theoretical construction." Standard assumed model mechanics were interpretable through conventional statistical theory. No recognition that some models resist theoretical explanation.</div>
+          </div>
+          <div>
+            <div class="diff-col-head dch-new">OCC Bulletin 2026-13 · April 2026</div>
+            <div class="diff-text live">Principles apply to <span class="hl-add">traditional statistical and quantitative models and non-generative, non-agentic AI models</span>. Conceptual soundness validation now acknowledges that while <span class="hl-add">evaluating theoretical construction may be important for some models</span>, other assessments—such as <span class="hl-add">interpretability measures or benchmarking to other models</span>—may be more practical for others.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">This provision resolves the longstanding tension between SR 11-7's theory-centric validation framework and black-box ML model deployment. SR 11-7 required validation to assess "overall theoretical construction"—a standard that many ML models (random forests, gradient boosting, neural networks) cannot satisfy in the same way as linear regression. The explicit acknowledgment that interpretability measures and benchmarking may substitute for theoretical construction assessment provides a validation pathway for ML models without requiring a theoretical framework that may not exist. This is a significant accommodation to modern modeling practice.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑭ CHANGED: Conceptual Soundness — Benchmarking Alternative -->
+    <div class="change-card" data-type="changed">
+      <div class="card-header" onclick="tog(this)">
+        <span class="type-badge badge-changed">Revised</span>
+        <span class="card-title">Conceptual Soundness Validation — Alternatives to Theory Assessment Permitted</span>
+        <span class="card-sig sig-m">◆ Medium</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-cols">
+          <div>
+            <div class="diff-col-head dch-old">SR 11-7 · April 2011</div>
+            <div class="diff-text">Conceptual soundness: <span class="hl-del">"assessing the quality of the model design and construction… review of documentation and empirical evidence supporting the methods used… ensuring judgment exercised in model design is consistent with published research and with sound industry practice."</span> Heavily theory- and literature-grounded. Required developmental evidence and consistent with published research.</div>
+          </div>
+          <div>
+            <div class="diff-col-head dch-new">OCC Bulletin 2026-13 · April 2026</div>
+            <div class="diff-text live">"Validating conceptual soundness involves assessing and documenting model design (including key modeling choices, assumptions, qualitative judgments, and data selection), construction, and developmental testing. While evaluating <span class="hl-add">theoretical construction may be important for some models</span>, other assessments—such as <span class="hl-add">interpretability measures or benchmarking to other models</span>—may be more practical for other models."</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">The shift from a uniform theory-assessment standard to a model-appropriate assessment framework reflects the proliferation of ML and proprietary vendor models. The acknowledgment that benchmarking and interpretability tools may substitute for theoretical construction review is especially significant for vendor model validation—a persistent pain point where SR 11-7's theoretical review standard was difficult to satisfy without access to underlying model code. The 2026 guidance provides examination cover for rigorous benchmarking-based validation in lieu of source-code review.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑮ REMOVED: Detailed Conservatism Guidance -->
+    <div class="change-card" data-type="removed">
+      <div class="card-header" onclick="tog(this)">
+        <span class="type-badge badge-removed">Removed</span>
+        <span class="card-title">Detailed Conservatism Guidance — Capital Buffer and Adjustment Framework Dropped</span>
+        <span class="card-sig sig-m">◆ Medium</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-cols">
+          <div>
+            <div class="diff-col-head dch-old">SR 11-7 · April 2011</div>
+            <div class="diff-text">Extensive guidance on conservatism: banks should "<span class="hl-del">explicitly adjust model inputs or calculations to produce more severe or adverse model output</span>"; warned that conservatism must be demonstrated, not just claimed; required sensitivity analysis or stress testing to substantiate conservative claims; noted that banks may "<span class="hl-del">hold an additional cushion of capital to protect against potential losses associated with model risk</span>." Warning against excessive conservatism discouraging model improvement.</div>
+          </div>
+          <div>
+            <div class="diff-col-head dch-new">OCC Bulletin 2026-13 · April 2026</div>
+            <div class="diff-text live">No equivalent conservatism framework. References to model limitations, overlays, and adjustments retained in context of ongoing monitoring, but the detailed prescriptive guidance on how to demonstrate conservatism, use capital buffers, and avoid false conservatism claims is entirely removed.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">The conservatism framework in SR 11-7 was designed for the post-2008 crisis environment, where underestimation of tail risk was the dominant failure mode. Removing it reflects both the shift toward risk-based proportionality and a concern that the prescriptive conservatism framework had become a mechanism for mechanical criticism of model outputs rather than a genuine risk management tool. The removal may reduce examiner ability to challenge model output calibration on conservatism grounds absent a specific showing of inaccuracy or material risk.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑯ REMOVED: Detailed Reporting/Communication Requirements -->
+    <div class="change-card" data-type="removed">
+      <div class="card-header" onclick="tog(this)">
+        <span class="type-badge badge-removed">Removed</span>
+        <span class="card-title">Prescriptive Report Design Requirements — "Clear and Comprehensible" Standard Dropped</span>
+        <span class="card-sig sig-l">● Low</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-cols">
+          <div>
+            <div class="diff-col-head dch-old">SR 11-7 · April 2011</div>
+            <div class="diff-text">Specific guidance on reports: <span class="hl-del">"Reports used for business decisionmaking play a critical role in model risk management. Such reports should be clear and comprehensible and take into account the fact that decision makers and modelers often come from quite different backgrounds and may interpret the contents in different ways."</span> Also required reports to provide range of estimates for scenarios.</div>
+          </div>
+          <div>
+            <div class="diff-col-head dch-new">OCC Bulletin 2026-13 · April 2026</div>
+            <div class="diff-text live">Documentation section covers: supporting continuity of operations, tracking recommendations, responses and exceptions, managing model remediation. General documentation adequacy standard retained but the specific report design requirements for business decision-makers are not reproduced.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">Modest impact. The removal of the specific reporting communication standard simplifies the guidance without materially changing practical requirements. Documentation requirements broadly cover what SR 11-7's reporting section addressed. The focus shifts from communication design to operational documentation utility.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑰ REMOVED: Conclusion Section -->
+    <div class="change-card" data-type="removed">
+      <div class="card-header" onclick="tog(this)">
+        <span class="type-badge badge-removed">Removed</span>
+        <span class="card-title">Section VII Conclusion — Eliminated from Document Structure</span>
+        <span class="card-sig sig-l">● Low</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-cols">
+          <div>
+            <div class="diff-col-head dch-old">SR 11-7 · April 2011</div>
+            <div class="diff-text">Seven sections including a formal <span class="hl-del">Section VII Conclusion</span> that summarized key themes and reiterated the importance of model risk management as a comprehensive discipline integrated across the institution.</div>
+          </div>
+          <div>
+            <div class="diff-col-head dch-new">OCC Bulletin 2026-13 · April 2026</div>
+            <div class="diff-text live">Seven sections (Introduction through Vendor/Third-Party), no conclusion. Guidance ends with vendor model risk management discussion. Structural streamlining consistent with the overall move toward a more concise document.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">Stylistic rather than substantive. The conclusion's removal reflects the overall move toward a leaner, more operational document. SR 11-7's conclusion was primarily summary material; its absence does not affect substantive guidance.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑱ NEW: User–Developer Engagement Elevated -->
+    <div class="change-card" data-type="new">
+      <div class="card-header" onclick="tog(this)">
+        <span class="type-badge badge-new">New</span>
+        <span class="card-title">Developer–User Constructive Engagement — Elevated as a Positive Practice</span>
+        <span class="card-sig sig-l">● Low</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-cols">
+          <div>
+            <div class="diff-col-head dch-old">SR 11-7 · April 2011</div>
+            <div class="diff-text">User challenge treated with significant <span class="hl-del">skepticism</span>: described as often "weak," "not comprehensive," and "asymmetric." Users "less likely to challenge an outcome that results in an advantage for them." Model risk was "not low simply because outcomes appear favorable." Nature and motivation of user input should be "evaluated carefully."</div>
+          </div>
+          <div>
+            <div class="diff-col-head dch-new">OCC Bulletin 2026-13 · April 2026</div>
+            <div class="diff-text live">"<span class="hl-add">Input from model users can enhance model development by providing business context and practical insights.</span>" "<span class="hl-add">Constructive engagement</span> around model design and assumptions <span class="hl-add">strengthens both model understanding and model quality</span>." Business managers "may raise questions about the methods or assumptions, particularly when the outcomes are unexpected"—framed positively.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">SR 11-7's skeptical treatment of model user input reflected post-crisis concerns about business-line pressure on model assumptions (e.g., mortgage prepayment, credit loss calibration) that contributed to pre-2008 losses. The 2026 guidance's more positive framing of user-developer engagement reflects a shift toward collaborative model development practices, particularly relevant for modern ML and AI models where business context is essential to defining appropriate use cases and output interpretation. The risk remains that user influence could compromise model integrity, but the guidance now treats this as a governance matter rather than a structural suspicion.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑲ AI: No Generative AI MRM Standard — Gap Acknowledged -->
+    <div class="change-card" data-type="ai">
+      <div class="card-header" onclick="tog(this)">
+        <span class="type-badge badge-ai">AI-Specific</span>
+        <span class="card-title">Regulatory Gap — No Generative AI MRM Framework; Separate Guidance Expected</span>
+        <span class="card-sig sig-h">▲ High</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-cols">
+          <div>
+            <div class="diff-col-head dch-old">SR 11-7 · April 2011</div>
+            <div class="diff-text">N/A — predates generative AI deployment in banking.</div>
+          </div>
+          <div>
+            <div class="diff-col-head dch-new">OCC Bulletin 2026-13 · April 2026</div>
+            <div class="diff-text live">Generative and agentic AI are <span class="hl-ai">explicitly out of scope</span>. Agencies note these are "novel and rapidly evolving." General risk management and governance principles "should guide" controls for out-of-scope tools. No specific framework, validation standard, or inventory requirement articulated for LLMs, foundation models, or agentic AI pipelines deployed in banking contexts.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">The acknowledged gap is itself a policy choice with significant near-term implications. Institutions deploying generative AI for credit analysis, regulatory reporting, BSA/AML screening, or customer service now operate without a formal agency MRM framework. The agencies' acknowledgment of the gap implicitly invites institutions to rely on non-agency frameworks (NIST AI RMF, ISO 42001, FSOC AI guidance, or internal frameworks) for generative AI governance. Examiners will likely probe GenAI governance under general "unsafe or unsound" authority and enterprise risk management standards rather than citing specific MRM requirements—creating examination uncertainty that this guidance was presumably designed to reduce.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /changes-grid -->
+</div>
+
+<!-- ══════════ TAB: STRUCTURE ══════════ -->
+<div id="tab-structure" class="container panel hidden">
+
+  <div class="section-label">Document Architecture Comparison</div>
+
+  <div class="section-map">
+    <div class="sm-card">
+      <div class="sm-title">Section Structure Mapping</div>
+      <div class="sm-row">
+        <div class="sm-old">I. Introduction</div>
+        <div class="sm-arrow">→</div>
+        <div class="sm-new">I. Introduction <span class="sm-tag sm-tag-rv">Revised</span></div>
+      </div>
+      <div class="sm-row">
+        <div class="sm-old">II. Purpose and Scope</div>
+        <div class="sm-arrow">→</div>
+        <div class="sm-new">II. Purpose and Scope <span class="sm-tag sm-tag-rv">Scoped to $30B+</span></div>
+      </div>
+      <div class="sm-row">
+        <div class="sm-old">III. Overview of MRM</div>
+        <div class="sm-arrow">→</div>
+        <div class="sm-new">III. Overview of Model Risk and MRM <span class="sm-tag sm-tag-rv">Revised</span></div>
+      </div>
+      <div class="sm-row">
+        <div class="sm-old">IV. Development, <em>Implementation</em>, and Use</div>
+        <div class="sm-arrow">→</div>
+        <div class="sm-new">IV. Model Development and Model Use <span class="sm-tag sm-tag-rm">Impl. Removed</span></div>
+      </div>
+      <div class="sm-row">
+        <div class="sm-old">V. Model Validation</div>
+        <div class="sm-arrow">→</div>
+        <div class="sm-new">V. Model Validation and Monitoring <span class="sm-tag sm-tag-rv">Monitoring Added</span></div>
+      </div>
+      <div class="sm-row">
+        <div class="sm-old">VI. Governance, <em>Policies</em>, and Controls</div>
+        <div class="sm-arrow">→</div>
+        <div class="sm-new">VI. Governance and Controls <span class="sm-tag sm-tag-rm">Policies Absorbed</span></div>
+      </div>
+      <div class="sm-row">
+        <div class="sm-old">VII. Conclusion</div>
+        <div class="sm-arrow">→</div>
+        <div class="sm-new">VII. Vendor and Other Third-Party Products <span class="sm-tag sm-tag-new">Elevated</span></div>
+      </div>
+      <div class="sm-row">
+        <div class="sm-old" style="font-style:normal;color:#e07060;">— (embedded in governance)</div>
+        <div class="sm-arrow">→</div>
+        <div class="sm-new" style="color:#e07060;">Conclusion: <em>Removed</em> <span class="sm-tag sm-tag-rm">Dropped</span></div>
+      </div>
+    </div>
+
+    <div class="sm-card">
+      <div class="sm-title">Subsection Changes Within Sections</div>
+      <div class="sm-row">
+        <div class="sm-old">Three-component model definition</div>
+        <div class="sm-arrow">→</div>
+        <div class="sm-new">Removed; streamlined definition <span class="sm-tag sm-tag-rm">Removed</span></div>
+      </div>
+      <div class="sm-row">
+        <div class="sm-old">Model Use (skeptical framing)</div>
+        <div class="sm-arrow">→</div>
+        <div class="sm-new">Model Use (collaborative framing) <span class="sm-tag sm-tag-rv">Reframed</span></div>
+      </div>
+      <div class="sm-row">
+        <div class="sm-old">Ongoing monitoring (embedded in validation)</div>
+        <div class="sm-arrow">→</div>
+        <div class="sm-new">Ongoing Model Monitoring (standalone subsection) <span class="sm-tag sm-tag-new">Elevated</span></div>
+      </div>
+      <div class="sm-row">
+        <div class="sm-old">Validation independence (reporting lines)</div>
+        <div class="sm-arrow">→</div>
+        <div class="sm-new">Review quality over structure <span class="sm-tag sm-tag-rv">Reframed</span></div>
+      </div>
+      <div class="sm-row">
+        <div class="sm-old">Model inventory (implied)</div>
+        <div class="sm-arrow">→</div>
+        <div class="sm-new">Model inventory (explicit standalone) <span class="sm-tag sm-tag-new">Explicit</span></div>
+      </div>
+      <div class="sm-row">
+        <div class="sm-old">Conservatism framework</div>
+        <div class="sm-arrow">→</div>
+        <div class="sm-new">Not reproduced <span class="sm-tag sm-tag-rm">Removed</span></div>
+      </div>
+      <div class="sm-row">
+        <div class="sm-old">Vendor models (embedded in governance)</div>
+        <div class="sm-arrow">→</div>
+        <div class="sm-new">Section VII (standalone, elevated) <span class="sm-tag sm-tag-new">Elevated</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Thematic Shifts</div>
+
+  <div class="cmp-panel">
+    <div class="cmp-panel-hdr" onclick="togPanel(this)">
+      <span style="font-size:18px">🔄</span>
+      <div style="flex:1">
+        <div class="cmp-panel-title">Philosophy Comparison — SR 11-7 vs 2026</div>
+        <div class="cmp-panel-sub">Prescriptive Expectations → Risk-Based Principles</div>
+      </div>
+      <span class="chevron" style="font-size:13px">▶</span>
+    </div>
+    <div class="cmp-body open">
+      <div class="three-col">
+        <div class="cmp-col">
+          <div class="cmp-col-title ct-old">SR 11-7 · 2011 Philosophy</div>
+          <div class="cmp-item"><div class="cmp-item-lbl">Orientation</div><div class="cmp-item-txt">Post-crisis: risk avoidance, conservative calibration, suspicion of model overconfidence</div></div>
+          <div class="cmp-item"><div class="cmp-item-lbl">Applicability</div><div class="cmp-item-txt">All banks with model usage; scale of compliance varies but obligations apply universally</div></div>
+          <div class="cmp-item"><div class="cmp-item-lbl">Enforcement Status</div><div class="cmp-item-txt">Technically guidance; functioned as de facto binding standard via examination practice</div></div>
+          <div class="cmp-item"><div class="cmp-item-lbl">Validation Model</div><div class="cmp-item-txt">Independence-by-structure; separate reporting lines; three-part challenge framework</div></div>
+          <div class="cmp-item"><div class="cmp-item-lbl">Technology Horizon</div><div class="cmp-item-txt">Statistical/econometric models; early adoption of quantitative risk tools; pre-ML/AI deployment</div></div>
+        </div>
+        <div class="cmp-col">
+          <div class="cmp-col-title ct-new">2026 Revised Philosophy</div>
+          <div class="cmp-item"><div class="cmp-item-lbl">Orientation</div><div class="cmp-item-txt">Tailored, proportionate: right-size MRM to institution complexity and model materiality</div></div>
+          <div class="cmp-item"><div class="cmp-item-lbl">Applicability</div><div class="cmp-item-txt">Primarily $30B+ institutions; sub-threshold institutions have separate, lighter-touch expectation</div></div>
+          <div class="cmp-item"><div class="cmp-item-lbl">Enforcement Status</div><div class="cmp-item-txt">Explicitly non-enforceable; supervisory criticism disclaimed; principles over prescription</div></div>
+          <div class="cmp-item"><div class="cmp-item-lbl">Validation Model</div><div class="cmp-item-txt">Quality-of-review over organizational structure; expertise and rigor as primary standards</div></div>
+          <div class="cmp-item"><div class="cmp-item-lbl">Technology Horizon</div><div class="cmp-item-txt">Traditional ML included; GenAI/agentic AI carved out; interpretability and benchmarking recognized</div></div>
+        </div>
+        <div class="cmp-col">
+          <div class="cmp-col-title ct-ai">Industry/Examiner Impact</div>
+          <div class="cmp-item"><div class="cmp-item-lbl">Model Inventory</div><div class="cmp-item-txt">Institutions may rationalize inventories, removing low-materiality tools without examination risk under SR 11-7's broad definition</div></div>
+          <div class="cmp-item"><div class="cmp-item-lbl">Validation Structure</div><div class="cmp-item-txt">Institutions may restructure validation units based on expertise concentration rather than reporting-line separation</div></div>
+          <div class="cmp-item"><div class="cmp-item-lbl">Vendor Models</div><div class="cmp-item-txt">Benchmarking and interpretability-based validation explicitly recognized—reduces source-code access pressure for proprietary models</div></div>
+          <div class="cmp-item"><div class="cmp-item-lbl">GenAI Gap</div><div class="cmp-item-txt">Institutions deploying LLMs must rely on internal frameworks or non-agency standards; examination uncertainty persists</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════ TAB: AI ══════════ -->
+<div id="tab-ai" class="container panel hidden">
+
+  <div class="section-label">Artificial Intelligence and Technology Provisions</div>
+
+  <div class="cmp-panel">
+    <div class="cmp-panel-hdr" onclick="togPanel(this)">
+      <span style="font-size:18px">🤖</span>
+      <div style="flex:1">
+        <div class="cmp-panel-title">The AI Boundary — What Is and Is Not Covered</div>
+        <div class="cmp-panel-sub">Generative AI · Agentic AI · Traditional ML · Vendor Models</div>
+      </div>
+      <span class="chevron" style="font-size:13px">▶</span>
+    </div>
+    <div class="cmp-body open">
+      <div style="padding:20px 24px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
+          <div style="background:rgba(5,160,142,0.08);border:1px solid rgba(5,160,142,0.25);border-radius:4px;padding:18px 20px">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;">✓ In Scope — MRM Principles Apply</div>
+            <div style="font-size:13px;line-height:1.7;color:var(--neutral)">
+              <div style="margin-bottom:8px;">• Traditional statistical models (regression, time-series, factor models)</div>
+              <div style="margin-bottom:8px;">• Econometric and financial theory models</div>
+              <div style="margin-bottom:8px;">• Machine learning models that are <em>non-generative and non-agentic</em> (gradient boosting, random forests, SVMs, feedforward neural networks for classification/scoring)</div>
+              <div style="margin-bottom:8px;">• Vendor-supplied quantitative models</div>
+              <div>• Models supporting credit scoring, DFAST/CCAR, CECL, AML risk scoring, interest rate risk, market risk</div>
+            </div>
+          </div>
+          <div style="background:rgba(192,57,43,0.08);border:1px solid rgba(192,57,43,0.25);border-radius:4px;padding:18px 20px">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#e07060;margin-bottom:12px;">✗ Out of Scope — Separate Framework Needed</div>
+            <div style="font-size:13px;line-height:1.7;color:var(--neutral)">
+              <div style="margin-bottom:8px;">• <strong>Generative AI</strong> — LLMs, foundation models, text/image/code generation (GPT-4, Claude, Llama, Gemini in banking contexts)</div>
+              <div style="margin-bottom:8px;">• <strong>Agentic AI</strong> — autonomous AI systems taking multi-step actions, tool-using models, AI agents in workflows</div>
+              <div style="margin-bottom:8px;">• <strong>Simple arithmetic / spreadsheets</strong> — no longer in scope (new exclusion)</div>
+              <div>• <strong>Deterministic rule-based systems</strong> — expert systems, decision trees without statistical inference</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:rgba(42,45,113,0.2);border:1px solid rgba(42,45,113,0.4);border-radius:4px;padding:18px 20px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#9fa3e0;margin-bottom:12px;">⚠ Gray Zone — Classification Unclear</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+            <div>
+              <div style="font-size:12px;font-weight:600;color:#b0b4f0;margin-bottom:5px">RAG / Retrieval-Augmented Models</div>
+              <div style="font-size:12px;line-height:1.6;color:var(--muted)">LLMs augmented with structured data for credit or risk decisions. Generative backbone likely excludes from scope, but outputs drive quantitative decisions—uncertain classification.</div>
+            </div>
+            <div>
+              <div style="font-size:12px;font-weight:600;color:#b0b4f0;margin-bottom:5px">Hybrid ML + Expert System</div>
+              <div style="font-size:12px;line-height:1.6;color:var(--muted)">ML scoring model with rule-based override logic. Statistical component in scope; deterministic override layer excluded. Combined governance unclear.</div>
+            </div>
+            <div>
+              <div style="font-size:12px;font-weight:600;color:#b0b4f0;margin-bottom:5px">Fine-Tuned Open-Source LLMs for Classification</div>
+              <div style="font-size:12px;line-height:1.6;color:var(--muted)">An LLM fine-tuned purely for binary classification (fraud/not fraud). Generative architecture but non-generative use. The guidance's exclusion may not cleanly apply.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding:0 24px 20px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:#e74c3c;margin-bottom:12px;display:flex;align-items:center;gap:8px">⚑ Key Governance Implications of the GenAI Gap</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div style="padding:14px;background:rgba(192,57,43,0.07);border:1px solid rgba(192,57,43,0.2);border-radius:3px">
+            <div style="font-size:12px;font-weight:600;color:#e07060;margin-bottom:5px">No Formal Validation Standard for LLMs</div>
+            <div style="font-size:12px;line-height:1.6;color:var(--muted)">Banks deploying LLMs for document analysis, regulatory Q&A, or customer-facing credit decisions have no agency-approved validation methodology. Benchmarking, red-teaming, and evaluation frameworks are self-defined.</div>
+          </div>
+          <div style="padding:14px;background:rgba(192,57,43,0.07);border:1px solid rgba(192,57,43,0.2);border-radius:3px">
+            <div style="font-size:12px;font-weight:600;color:#e07060;margin-bottom:5px">Examination Coverage Still Applies</div>
+            <div style="font-size:12px;line-height:1.6;color:var(--muted)">Out-of-scope from MRM guidance doesn't mean out-of-scope from examination. Examiners can cite unsafe/unsound practices for inadequate GenAI governance under the general carve-out preserved in Footnote 1.</div>
+          </div>
+          <div style="padding:14px;background:rgba(192,57,43,0.07);border:1px solid rgba(192,57,43,0.2);border-radius:3px">
+            <div style="font-size:12px;font-weight:600;color:#e07060;margin-bottom:5px">ECOA / Fair Lending Intersection Unresolved</div>
+            <div style="font-size:12px;line-height:1.6;color:var(--muted)">GenAI models used in adverse action notices, credit evaluation, or marketing segmentation intersect ECOA/Regulation B obligations regardless of MRM scope. Consumer protection frameworks may require validation-like discipline even without MRM citation authority.</div>
+          </div>
+          <div style="padding:14px;background:rgba(192,57,43,0.07);border:1px solid rgba(192,57,43,0.2);border-radius:3px">
+            <div style="font-size:12px;font-weight:600;color:#e07060;margin-bottom:5px">Third-Party Risk Fills Part of the Gap</div>
+            <div style="font-size:12px;line-height:1.6;color:var(--muted)">Where GenAI tools are sourced from vendors, OCC Bulletin 2023-17 (third-party risk management) applies and requires due diligence, ongoing monitoring, and contract rights. Third-party risk frameworks may effectively impose MRM-like discipline on vendor GenAI.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════ TAB: MATRIX ══════════ -->
+<div id="tab-matrix" class="container panel hidden">
+  <div class="section-label">Significance Matrix — All Changes</div>
+  <div class="sig-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Provision</th>
+          <th>Type</th>
+          <th>Significance</th>
+          <th>Institution Impact</th>
+          <th>Examiner Impact</th>
+        </tr>
+      </thead>
+      <tbody id="matrix-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+// ── Matrix Data ──
+const matrixRows = [
+  { name:"Scope Limited to $30B+ Institutions",            type:"changed", sig:"High",   inst:"High",   exam:"High" },
+  { name:"Non-Enforceable Status Explicit",                type:"new",     sig:"High",   inst:"High",   exam:"High" },
+  { name:"Model Definition Narrowed",                      type:"changed", sig:"High",   inst:"High",   exam:"Medium" },
+  { name:"Generative/Agentic AI Carved Out",               type:"ai",      sig:"High",   inst:"High",   exam:"High" },
+  { name:"Model Materiality Framework Introduced",         type:"new",     sig:"High",   inst:"High",   exam:"Medium" },
+  { name:"Validation Independence Deprioritized",          type:"changed", sig:"High",   inst:"High",   exam:"High" },
+  { name:"Implementation Stage Eliminated",                type:"changed", sig:"Medium", inst:"Medium", exam:"Medium" },
+  { name:"Effective Challenge Streamlined",                type:"changed", sig:"Medium", inst:"Medium", exam:"Medium" },
+  { name:"Aggregate Risk More Explicit",                   type:"changed", sig:"Medium", inst:"Medium", exam:"Low" },
+  { name:"Internal Audit Role Bounded",                    type:"changed", sig:"Medium", inst:"Medium", exam:"Medium" },
+  { name:"Urgent Use Exception Formalized",                type:"changed", sig:"Medium", inst:"Medium", exam:"Low" },
+  { name:"Model Inventory Explicitly Required",            type:"new",     sig:"Medium", inst:"Medium", exam:"Medium" },
+  { name:"Non-Generative ML In-Scope; Interpretability OK",type:"ai",      sig:"High",   inst:"High",   exam:"Medium" },
+  { name:"Conceptual Soundness Alternatives Permitted",    type:"changed", sig:"Medium", inst:"High",   exam:"Medium" },
+  { name:"Conservatism Framework Removed",                 type:"removed", sig:"Medium", inst:"Medium", exam:"Medium" },
+  { name:"Report Design Requirements Removed",             type:"removed", sig:"Low",    inst:"Low",    exam:"Low" },
+  { name:"Conclusion Section Removed",                     type:"removed", sig:"Low",    inst:"Low",    exam:"Low" },
+  { name:"Developer–User Engagement Elevated",             type:"new",     sig:"Low",    inst:"Low",    exam:"Low" },
+  { name:"GenAI Governance Gap Acknowledged",              type:"ai",      sig:"High",   inst:"High",   exam:"High" },
+];
+
+function typeHTML(t) {
+  if (t === 'new')     return '<span class="type-badge badge-new">New</span>';
+  if (t === 'changed') return '<span class="type-badge badge-changed">Revised</span>';
+  if (t === 'removed') return '<span class="type-badge badge-removed">Removed</span>';
+  return '<span class="type-badge badge-ai">AI-Specific</span>';
+}
+function barColor(s) {
+  return s === 'High' ? '#e74c3c' : s === 'Medium' ? '#4879AA' : '#7B8BA3';
+}
+function barWidth(s) {
+  return s === 'High' ? 100 : s === 'Medium' ? 60 : 25;
+}
+function barHTML(s) {
+  const c = barColor(s), w = barWidth(s);
+  return `<div class="bar-wrap"><div class="bar-track"><div class="bar-fill" style="width:${w}%;background:${c}"></div></div><span class="bar-label" style="color:${c}">${s}</span></div>`;
+}
+
+const tbody = document.getElementById('matrix-tbody');
+matrixRows.forEach((r,i) => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td style="color:var(--neutral)">${r.name}</td><td>${typeHTML(r.type)}</td><td>${barHTML(r.sig)}</td><td>${barHTML(r.inst)}</td><td>${barHTML(r.exam)}</td>`;
+  tbody.appendChild(tr);
+});
+
+// ── Toggle card ──
+function tog(hdr) {
+  const body = hdr.nextElementSibling;
+  const open = body.classList.contains('open');
+  body.classList.toggle('open', !open);
+  hdr.classList.toggle('open', !open);
+}
+
+// ── Toggle panel ──
+function togPanel(hdr) {
+  const body = hdr.nextElementSibling;
+  const chev = hdr.querySelector('.chevron');
+  const open = body.classList.contains('open');
+  body.classList.toggle('open', !open);
+  chev.style.transform = open ? '' : 'rotate(90deg)';
+}
+
+// ── Filter ──
+function filter(type, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.change-card').forEach(c => {
+    c.classList.toggle('hidden', type !== 'all' && c.dataset.type !== type);
+  });
+}
+
+// ── Tab switch ──
+function switchTab(id, el) {
+  document.querySelectorAll('[id^="tab-"]').forEach(t => t.classList.add('hidden'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.remove('hidden');
+  el.classList.add('active');
+}
+</script>
+</body>
+</html>

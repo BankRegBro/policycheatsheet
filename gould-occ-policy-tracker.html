@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comptroller Jonathan V. Gould — OCC Policy Action Tracker</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #ffffff;
+    --bg-secondary: #f7f6f3;
+    --bg-tertiary: #f0efe9;
+    --text: #1a1a18;
+    --text-secondary: #5a5a56;
+    --text-tertiary: #9a9994;
+    --border: rgba(0,0,0,0.10);
+    --border-mid: rgba(0,0,0,0.18);
+    --border-strong: rgba(0,0,0,0.28);
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --accent: #1a3a5c;
+    --accent-light: #e8eef5;
+    --accent-text: #0c2a44;
+    --gold: #b8860b;
+    --gold-light: #fdf5dc;
+    --gold-text: #7a5700;
+    --green-bg: #eaf3de;
+    --green-text: #27500a;
+    --amber-bg: #faeeda;
+    --amber-text: #633806;
+    --info-bg: #e6f1fb;
+    --info-text: #0c447c;
+    --gray-bg: #f1efe8;
+    --gray-text: #444441;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1a;
+      --bg-secondary: #252522;
+      --bg-tertiary: #2e2e2b;
+      --text: #f0efe8;
+      --text-secondary: #a8a79f;
+      --text-tertiary: #6a6a62;
+      --border: rgba(255,255,255,0.10);
+      --border-mid: rgba(255,255,255,0.18);
+      --border-strong: rgba(255,255,255,0.28);
+      --accent: #4a7fa8;
+      --accent-light: #1a2a3a;
+      --accent-text: #b5d4f4;
+      --gold: #d4a017;
+      --gold-light: #2a2010;
+      --gold-text: #fac775;
+      --green-bg: #173404;
+      --green-text: #c0dd97;
+      --amber-bg: #412402;
+      --amber-text: #fac775;
+      --info-bg: #042c53;
+      --info-text: #b5d4f4;
+      --gray-bg: #2c2c2a;
+      --gray-text: #d3d1c7;
+    }
+  }
+
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: var(--bg-tertiary);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem 1rem;
+    line-height: 1.6;
+  }
+
+  .page-shell {
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  /* ── Header ── */
+  .masthead {
+    background: var(--bg);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem 2rem 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .masthead-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 1rem;
+  }
+  .seal {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Georgia', serif;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: .04em;
+    flex-shrink: 0;
+  }
+  .masthead h1 {
+    font-family: 'Georgia', serif;
+    font-size: 20px;
+    font-weight: normal;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .masthead-sub {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 3px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+  .masthead-lede {
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    border-top: 0.5px solid var(--border);
+    padding-top: 1rem;
+    line-height: 1.65;
+  }
+
+  /* ── Metrics ── */
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 1.25rem;
+  }
+  @media (max-width: 600px) { .metrics { grid-template-columns: repeat(2, 1fr); } }
+  .metric {
+    background: var(--bg);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: .875rem 1rem;
+  }
+  .metric-val {
+    font-family: 'Georgia', serif;
+    font-size: 24px;
+    color: var(--text);
+  }
+  .metric-lbl {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    color: var(--text-tertiary);
+    margin-top: 3px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+  }
+
+  /* ── Tabs ── */
+  .tabs-wrapper {
+    background: var(--bg);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .tab-nav {
+    display: flex;
+    border-bottom: 0.5px solid var(--border);
+    overflow-x: auto;
+    background: var(--bg-secondary);
+  }
+  .tab-btn {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    padding: 10px 18px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: color .15s, border-color .15s;
+  }
+  .tab-btn:hover { color: var(--text); background: var(--bg-tertiary); }
+  .tab-btn.active { color: var(--text); font-weight: 600; border-bottom-color: var(--accent); }
+
+  .tab-panel { display: none; padding: 1.5rem 2rem; }
+  .tab-panel.active { display: block; }
+
+  .pillar-intro {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin-bottom: 1.25rem;
+    padding: .875rem 1.1rem;
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  }
+
+  /* ── Action cards ── */
+  .actions-list { display: flex; flex-direction: column; gap: 10px; }
+  .action-card {
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: border-color .15s;
+  }
+  .action-card:hover { border-color: var(--border-mid); }
+  .action-card.open { border-color: var(--border-strong); }
+  .action-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: .875rem 1.1rem;
+    cursor: pointer;
+    background: var(--bg);
+  }
+  .action-date {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10.5px;
+    color: var(--text-tertiary);
+    white-space: nowrap;
+    min-width: 88px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+  }
+  .action-title {
+    font-family: 'Georgia', serif;
+    font-size: 14px;
+    color: var(--text);
+    flex: 1;
+    line-height: 1.35;
+  }
+  .badge {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    padding: 2px 9px;
+    border-radius: 20px;
+    white-space: nowrap;
+    letter-spacing: .03em;
+    font-weight: 600;
+  }
+  .badge-final    { background: var(--green-bg);  color: var(--green-text); }
+  .badge-proposed { background: var(--amber-bg);  color: var(--amber-text); }
+  .badge-guidance { background: var(--info-bg);   color: var(--info-text); }
+  .badge-approved { background: var(--green-bg);  color: var(--green-text); }
+  .badge-review   { background: var(--gray-bg);   color: var(--gray-text); }
+  .badge-active   { background: var(--info-bg);   color: var(--info-text); }
+  .badge-signal   { background: var(--gold-light); color: var(--gold-text); }
+
+  .caret {
+    font-size: 10px;
+    color: var(--text-tertiary);
+    transition: transform .2s;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+  .action-card.open .caret { transform: rotate(180deg); }
+
+  .action-detail {
+    display: none;
+    padding: .875rem 1.1rem 1rem;
+    border-top: 0.5px solid var(--border);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    background: var(--bg-secondary);
+  }
+  .action-card.open .action-detail { display: block; }
+  .impact-tag {
+    display: inline-block;
+    margin-top: .7rem;
+    font-size: 11px;
+    color: var(--text-secondary);
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 0.5px solid var(--border-mid);
+    background: var(--bg);
+  }
+
+  /* ── Timeline ── */
+  .filter-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+  }
+  .filter-btn {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 0.5px solid var(--border-mid);
+    background: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: all .15s;
+  }
+  .filter-btn:hover { background: var(--bg-secondary); color: var(--text); }
+  .filter-btn.active { background: var(--bg-tertiary); color: var(--text); border-color: var(--border-strong); font-weight: 600; }
+
+  .tl-item { display: flex; gap: 10px; margin-bottom: 14px; }
+  .tl-spine { display: flex; flex-direction: column; align-items: center; width: 14px; flex-shrink: 0; }
+  .tl-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-top: 3px; flex-shrink: 0; }
+  .tl-line { width: 1px; background: var(--border-mid); flex: 1; margin-top: 4px; min-height: 24px; }
+  .tl-date {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10.5px;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    min-width: 96px;
+    padding-top: 2px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .tl-body { flex: 1; padding-bottom: 10px; }
+  .tl-title {
+    font-family: 'Georgia', serif;
+    font-size: 13.5px;
+    color: var(--text);
+    line-height: 1.35;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .tl-desc {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+    line-height: 1.55;
+  }
+  .tl-cat {
+    font-size: 10px;
+    padding: 1px 8px;
+    border-radius: 20px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 600;
+  }
+  .cat-community { background: var(--info-bg); color: var(--info-text); }
+  .cat-preemption { background: var(--amber-bg); color: var(--amber-text); }
+  .cat-charter { background: var(--green-bg); color: var(--green-text); }
+  .cat-debanking { background: var(--gray-bg); color: var(--gray-text); }
+
+  /* ── Footer ── */
+  .footer {
+    margin-top: 1.5rem;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11.5px;
+    color: var(--text-tertiary);
+    text-align: center;
+    line-height: 1.6;
+  }
+  .footer a { color: var(--text-secondary); }
+</style>
+</head>
+<body>
+<div class="page-shell">
+
+  <div class="masthead">
+    <div class="masthead-top">
+      <div class="seal">OCC</div>
+      <div>
+        <h1>Comptroller Jonathan V. Gould — Policy Action Tracker</h1>
+        <p class="masthead-sub">32nd Comptroller of the Currency &nbsp;·&nbsp; Confirmed July 10, 2025 &nbsp;·&nbsp; Actions through May 2026</p>
+      </div>
+    </div>
+    <p class="masthead-lede">Gould has moved aggressively since confirmation to reset the OCC's supervisory posture — reducing regulatory burden on community banks, aggressively defending and expanding NBA preemption authority, and opening the door to fintech and digital asset charters under the GENIUS Act framework. This tracker organizes his major actions across three policy pillars.</p>
+  </div>
+
+  <div class="metrics">
+    <div class="metric"><div class="metric-val">17+</div><div class="metric-lbl">Significant actions</div></div>
+    <div class="metric"><div class="metric-val">12</div><div class="metric-lbl">States subject to preemption determination</div></div>
+    <div class="metric"><div class="metric-val">6.9%</div><div class="metric-lbl">Est. capital req. reduction</div></div>
+    <div class="metric"><div class="metric-val">1st</div><div class="metric-lbl">Fintech bank approved (Erebor)</div></div>
+  </div>
+
+  <div class="tabs-wrapper">
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="switchTab('community', this)">Community bank relief</button>
+      <button class="tab-btn" onclick="switchTab('preemption', this)">Federal preemption</button>
+      <button class="tab-btn" onclick="switchTab('charter', this)">Fintech &amp; new charters</button>
+      <button class="tab-btn" onclick="switchTab('timeline', this)">Full timeline</button>
+    </div>
+
+    <!-- Community Bank Relief -->
+    <div id="panel-community" class="tab-panel active">
+      <p class="pillar-intro">Gould has made reducing regulatory burden on community banks a centerpiece of his tenure, targeting examination frequency, BSA/AML compliance costs, CRA burden, capital requirements, and the politically charged use of "reputation risk" in supervision.</p>
+      <div class="actions-list">
+
+        <div class="action-card" onclick="toggleCard(this)">
+          <div class="action-head">
+            <span class="action-date">Jul 14, 2025</span>
+            <span class="action-title">Disparate impact removed from Fair Lending handbook</span>
+            <span class="badge badge-final">Final</span>
+            <span class="caret">▼</span>
+          </div>
+          <div class="action-detail">
+            The OCC removed references to disparate impact liability from the Fair Lending booklet of the Comptroller's Handbook and instructed examiners to no longer examine for disparate impact. This was among Gould's earliest post-confirmation actions and was followed by similar moves at the FDIC (August 2025) and NCUA (September 2025). The change narrows fair lending examination to intentional discrimination and removes disparate impact as a supervisory tool.
+            <br><span class="impact-tag">Narrows fair lending examination; removes disparate impact as an examiner basis for criticism</span>
+          </div>
+        </div>
+
+        <div class="action-card" onclick="toggleCard(this)">
+          <div class="action-head">
+            <span class="action-date">Oct 6, 2025</span>
+            <span class="action-title">Risk-based examination tailoring for community banks</span>
+            <span class="badge badge-final">Final</span>
+            <span class="caret">▼</span>
+          </div>
+          <div class="action-detail">
+            The OCC removed fixed examination requirements and shifted to risk-based scoping and frequency — reducing the supervisory footprint for community banks that pose lower risk. Gould framed this as preserving the value of the federal charter while eliminating unproductive reporting requirements. Applies to all OCC-supervised community banks (generally institutions with assets under $30 billion).
+            <br><span class="impact-tag">Reduces examination burden; frequency and scope now proportionate to each institution's risk profile</span>
+          </div>
+        </div>
+
+        <div class="action-card" onclick="toggleCard(this)">
+          <div class="action-head">
+            <span class="action-date">Oct 7, 2025</span>
+            <span class="action-title">Proposed rule: eliminate reputation risk from supervision</span>
+            <span class="badge badge-final">Final (Apr 2026)</span>
+            <span class="caret">▼</span>
+          </div>
+          <div class="action-detail">
+            Jointly with the FDIC, the OCC proposed — and finalized in April 2026 — a rule prohibiting criticism or adverse action against banks based on "reputation risk." The rule explicitly bars regulators from encouraging debanking of customers on the basis of political, social, cultural, or religious views, or lawful business activity. Gould stated reputation risk "has been used as a pretext for decisions that have nothing to do with safety and soundness." Effective June 6, 2026.
+            <br><span class="impact-tag">Eliminates a longstanding examination category used to pressure banks on politically disfavored customers</span>
+          </div>
+        </div>
+
+        <div class="action-card" onclick="toggleCard(this)">
+          <div class="action-head">
+            <span class="action-date">Nov 24, 2025</span>
+            <span class="action-title">Tailored BSA/AML examination procedures for community banks</span>
+            <span class="badge badge-guidance">Guidance</span>
+            <span class="caret">▼</span>
+          </div>
+          <div class="action-detail">
+            The OCC issued supplementary guidance calibrating BSA/AML examination procedures to community banks' generally low levels of money laundering and terrorist financing risk. Concurrently, data collection requirements on community banks were reduced. Gould has identified BSA/AML compliance as a key area where banks feel "put between a rock and a hard place" by examiners — facing potential criticism whether they file SARs or not.
+            <br><span class="impact-tag">Reduces BSA/AML compliance costs for lower-risk community banks; cuts data reporting requirements</span>
+          </div>
+        </div>
+
+        <div class="action-card" onclick="toggleCard(this)">
+          <div class="action-head">
+            <span class="action-date">Dec 17, 2025</span>
+            <span class="action-title">Simplified CRA strategic plan for community banks</span>
+            <span class="badge badge-proposed">Proposed</span>
+            <span class="caret">▼</span>
+          </div>
+          <div class="action-detail">
+            The OCC proposed a simplified CRA strategic plan option enabling community banks to tailor their CRA examination to local credit needs, community capacity, product offerings, and business strategy. The proposal provides clearer guidance on measurable goals and reduces the complexity of CRA planning for smaller institutions. Gould stated community banks "by definition are focused on meeting the financial needs of their communities."
+            <br><span class="impact-tag">Enables community banks to demonstrate CRA performance on their own terms rather than one-size-fits-all metrics</span>
+          </div>
+        </div>
+
+        <div class="action-card" onclick="toggleCard(this)">
+          <div class="action-head">
+            <span class="action-date">Mar 19, 2026</span>
+            <span class="action-title">Capital framework modernization proposals</span>
+            <span class="badge badge-proposed">Proposed</span>
+            <span class="caret">▼</span>
+          </div>
+          <div class="action-detail">
+            At the FDIC board meeting, Gould supported two proposals to modernize the regulatory capital framework for banking organizations of all sizes. The OCC estimates an aggregate 6.9% reduction in minimum binding capital requirements under the standardized approach for OCC-supervised banks, and a 3.4% reduction for the largest institutions under the expanded risk-based approach. The proposals also simplify capital calculations by eliminating parallel risk-weight methodologies.
+            <br><span class="impact-tag">Increases lending capacity; partial rollback of post-2008 Basel III capital requirements</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Federal Preemption -->
+    <div id="panel-preemption" class="tab-panel">
+      <p class="pillar-intro">A central Gould priority has been defending — and proactively expanding — NBA preemption authority, following adverse First and Ninth Circuit rulings on state escrow-interest laws. His approach combines formal rulemaking, amicus engagement, and a political coalition strategy described as returning the OCC to its early-2000s posture of aggressive preemption defense.</p>
+      <div class="actions-list">
+
+        <div class="action-card" onclick="toggleCard(this)">
+          <div class="action-head">
+            <span class="action-date">Oct 7, 2025</span>
+            <span class="action-title">Statement supporting state bank preemption parity</span>
+            <span class="badge badge-signal">Policy signal</span>
+            <span class="caret">▼</span>
+          </div>
+          <div class="action-detail">
+            In an unusual move, Gould issued a statement as FDIC board member explicitly supporting state-chartered bank preemption rights — noting that 1997 Riegle-Neal Act amendments put state banks on parity with national banks for preemption of host state laws, and that §27 of the FDI Act provides interest rate preemption. He encouraged the FDIC to take additional steps to support these congressionally-granted rights. This acknowledged that preemption benefits are not exclusive to the federal charter.
+            <br><span class="impact-tag">Notable: signals OCC support for state bank preemption rights — relevant to CSBS and state supervisors seeking parity</span>
+          </div>
+        </div>
+
+        <div class="action-card" onclick="toggleCard(this)">
+          <div class="action-head">
+            <span class="action-date">Nov 2025</span>
+            <span class="action-title">Three-part preemption defense strategy announced</span>
+            <span class="badge badge-signal">Policy signal</span>
+            <span class="caret">▼</span>
+          </div>
+          <div class="action-detail">
+            Speaking at the Clearing House annual conference, Gould laid out a three-part strategy in response to adverse First Circuit (Conti v. Citizens Bank) and Ninth Circuit (Kivett v. Flagstar Bank) rulings finding the National Bank Act does not override state escrow-interest laws: (1) proactively file amicus briefs defending preemption regulations; (2) work with Treasury to update preemption regulations; and (3) mobilize industry and political allies to protect the national bank charter. He described rebuilding preemption's "political legitimacy" as essential.
+            <br><span class="impact-tag">Sets strategic framework; first comprehensive OCC preemption defense posture since early 2000s</span>
+          </div>
+        </div>
+
+        <div class="action-card" onclick="toggleCard(this)">
+          <div class="action-head">
+            <span class="action-date">Dec 30, 2025</span>
+            <span class="action-title">Proposed preemption determination: state escrow interest laws (12 states)</span>
+            <span class="badge badge-proposed">Proposed</span>
+            <span class="caret">▼</span>
+          </div>
+          <div class="action-detail">
+            The OCC published two concurrent NPRs. The first codifies national banks' power to establish mortgage escrow accounts and exercise business judgment over their terms — including whether to pay interest. The second is a formal preemption determination under Dodd-Frank §25b concluding that the National Bank Act preempts New York's interest-on-escrow law (Gen. Oblig. Law §5-601) and the substantively equivalent laws of 11 other states. The OCC characterized federal preemption as "a critical tool for reducing unnecessary burden, enabling local and national prosperity, and unleashing economic growth." Comments closed January 29, 2026.
+            <br><span class="impact-tag">Would eliminate mandatory escrow interest for national banks across 12 states; ongoing litigation context remains uncertain</span>
+          </div>
+        </div>
+
+        <div class="action-card" onclick="toggleCard(this)">
+          <div class="action-head">
+            <span class="action-date">Ongoing 2025–26</span>
+            <span class="action-title">Amicus briefs in escrow preemption litigation</span>
+            <span class="badge badge-active">Active</span>
+            <span class="caret">▼</span>
+          </div>
+          <div class="action-detail">
+            The OCC has filed amicus briefs in active First and Ninth Circuit cases arguing that state escrow interest and interchange fee restriction laws can disrupt uniform management of deposit-related services and justify federal preemption under the Barnett Bank standard. Courts have thus far rejected the OCC's position, citing Dodd-Frank's requirement for case-by-case preemption analysis and the Supreme Court's Cantero v. Bank of America framework. Outcome remains contested.
+            <br><span class="impact-tag">Outcome uncertain; appellate courts have not deferred to OCC post-Cantero; formal rulemaking may be more durable path</span>
+          </div>
+        </div>
+
+        <div class="action-card" onclick="toggleCard(this)">
+          <div class="action-head">
+            <span class="action-date">Jan 12, 2026</span>
+            <span class="action-title">NPRM: trust bank charter — non-fiduciary activity authority</span>
+            <span class="badge badge-proposed">Proposed</span>
+            <span class="caret">▼</span>
+          </div>
+          <div class="action-detail">
+            The OCC issued an NPRM to amend 12 C.F.R. §5.20 to clarify that national banks chartered as trust companies may engage in non-fiduciary activities in addition to fiduciary activities. The OCC characterized this as codifying a "well settled" point. This has significant implications for novel trust charter applicants — including fintech and digital asset firms — seeking broad operating authority under a national trust bank charter.
+            <br><span class="impact-tag">Expands functional scope of trust bank charters; directly facilitates stablecoin and fintech charter strategies</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Fintech & New Charters -->
+    <div id="panel-charter" class="tab-panel">
+      <p class="pillar-intro">Gould has cleared the path for non-traditional and fintech bank charters at a pace not seen in recent years — granting conditional approval to Erebor Bank (the first new fintech bank of the Trump era) and positioning the OCC as the primary federal regulator for stablecoin issuers under the GENIUS Act.</p>
+      <div class="actions-list">
+
+        <div class="action-card" onclick="toggleCard(this)">
+          <div class="action-head">
+            <span class="action-date">Oct 15, 2025</span>
+            <span class="action-title">Conditional charter approval: Erebor Bank, N.A.</span>
+            <span class="badge badge-approved">Approved</span>
+            <span class="caret">▼</span>
+          </div>
+          <div class="action-detail">
+            The OCC granted conditional approval for the national bank charter of Erebor Bank, N.A. (Columbus, Ohio), a fintech startup associated with defense technology entrepreneur Palmer Luckey and backed by Peter Thiel. The Wall Street Journal described it as the first new bank approved in the Trump 2.0 era. The FDIC approved deposit insurance on December 16, 2025. Erebor was positioned as a tech-forward replacement for Silicon Valley Bank. The approval drew scrutiny from Sen. Elizabeth Warren, who raised concerns about the bank's fundraising memo citing its "political network" and "unique connectivity to banking regulators" including Comptroller Gould.
+            <br><span class="impact-tag">First fintech national bank charter under Gould; signals open-door posture toward novel charter applicants</span>
+          </div>
+        </div>
+
+        <div class="action-card" onclick="toggleCard(this)">
+          <div class="action-head">
+            <span class="action-date">Jan 7, 2026</span>
+            <span class="action-title">World Liberty Financial stablecoin trust bank application</span>
+            <span class="badge badge-review">Under review</span>
+            <span class="caret">▼</span>
+          </div>
+          <div class="action-detail">
+            World Liberty Financial (WLF) — co-founded by President Trump and his sons, and issuer of the USD1 stablecoin — submitted an OCC application for a "national trust bank purpose-built for stablecoin services." Under the GENIUS Act (signed in summer 2025), the OCC is the primary regulator of federally licensed stablecoin issuers. Sen. Warren requested Gould delay review of the application given the President's financial interest in the applicant; Gould previously declined to answer "hypothetical questions" about WLF. The application remains under review.
+            <br><span class="impact-tag">High-profile test case for OCC stablecoin charter authority under the GENIUS Act</span>
+          </div>
+        </div>
+
+        <div class="action-card" onclick="toggleCard(this)">
+          <div class="action-head">
+            <span class="action-date">2025–26</span>
+            <span class="action-title">GENIUS Act implementation: OCC as stablecoin primary regulator</span>
+            <span class="badge badge-active">Active</span>
+            <span class="caret">▼</span>
+          </div>
+          <div class="action-detail">
+            Congress passed the GENIUS Act in summer 2025, designating the OCC as the primary federal regulator for federally licensed stablecoin issuers. Gould has highlighted GENIUS Act implementation as a central 2025–26 priority in congressional testimony, positioning the OCC to charter and supervise both bank and non-bank stablecoin issuers. The OCC's trust charter clarification (January 2026 NPRM) is directly relevant to structuring stablecoin operations under a national trust bank charter.
+            <br><span class="impact-tag">Dramatically expands OCC's jurisdiction into digital asset issuance; competes with state money transmitter licensing regimes</span>
+          </div>
+        </div>
+
+        <div class="action-card" onclick="toggleCard(this)">
+          <div class="action-head">
+            <span class="action-date">Sep 2025</span>
+            <span class="action-title">Debanking enforcement targeting digital asset firms</span>
+            <span class="badge badge-active">Active</span>
+            <span class="caret">▼</span>
+          </div>
+          <div class="action-detail">
+            Gould announced that the OCC — pursuant to President Trump's executive order on fair banking access — was investigating the largest national banks for potentially unlawful debanking of digital asset companies and other lawful businesses. The OCC stated it would use the licensing process, CRA exam process, consumer complaints, and third-party databases to surface debanking. OCC-supervised banks were put on notice they would be held accountable for unlawful debanking practices.
+            <br><span class="impact-tag">Signals OCC as an ally of crypto and fintech firms seeking account access; ongoing investigation of largest national banks</span>
+          </div>
+        </div>
+
+        <div class="action-card" onclick="toggleCard(this)">
+          <div class="action-head">
+            <span class="action-date">Mar 26, 2026</span>
+            <span class="action-title">FSOC nonbank designation: OCC supports rolled-back framework</span>
+            <span class="badge badge-signal">Position taken</span>
+            <span class="caret">▼</span>
+          </div>
+          <div class="action-detail">
+            At the March 2026 FSOC meeting, Gould issued a statement supporting a proposed framework reverting to a more limited approach to nonbank SIFI designation. Drawing on his own experience representing MetLife during FSOC's prior designation effort, Gould called the prior approach "among the most egregious abuses of government power" he had witnessed in 25 years. The OCC's support for a constrained FSOC framework reduces systemic risk label pressure on large fintech firms and non-bank financial companies.
+            <br><span class="impact-tag">Reduces regulatory exposure for large fintechs that might otherwise face bank-like systemic oversight</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Full Timeline -->
+    <div id="panel-timeline" class="tab-panel">
+      <div class="filter-row">
+        <button class="filter-btn active" onclick="filterTl('all', this)">All actions</button>
+        <button class="filter-btn" onclick="filterTl('community', this)">Community banks</button>
+        <button class="filter-btn" onclick="filterTl('preemption', this)">Preemption</button>
+        <button class="filter-btn" onclick="filterTl('charter', this)">Charters &amp; fintech</button>
+        <button class="filter-btn" onclick="filterTl('debanking', this)">Debanking</button>
+      </div>
+      <div class="timeline" id="tl-container"></div>
+    </div>
+
+  </div><!-- /tabs-wrapper -->
+
+  <div class="footer">
+    Sources: OCC News Releases, Federal Register NPRs, Congressional Testimony, ABA Banking Dive, Gibson Dunn, Sullivan &amp; Cromwell, Arnold &amp; Porter, Bradley Arant analyses &nbsp;·&nbsp; Compiled May 2026
+  </div>
+
+</div><!-- /page-shell -->
+
+<script>
+const tlData = [
+  { date: "Jul 10, 2025", title: "Senate confirms Gould as 32nd Comptroller", desc: "Nominated Feb 11, 2025; confirmed July 10, 2025. Sworn in by Deputy Secretary Faulkender. Takes over from Acting Comptroller Rodney Hood.", cats: ["all"] },
+  { date: "Jul 14, 2025", title: "Disparate impact removed from Fair Lending handbook", desc: "OCC instructs examiners to no longer examine for disparate impact liability. FDIC follows in August; NCUA in September 2025.", cats: ["all", "community"] },
+  { date: "Sep 8, 2025", title: "OCC actions to depoliticize banking", desc: "Debanking bulletin issued; OCC clarifies that CRA and licensing reviews will consider a bank's history of unlawful debanking.", cats: ["all", "debanking", "charter"] },
+  { date: "Oct 6, 2025", title: "Risk-based examination tailoring for community banks", desc: "Fixed exam requirements removed; examination scope and frequency calibrated to each institution's risk profile.", cats: ["all", "community"] },
+  { date: "Oct 7, 2025", title: "Proposed rule: eliminate reputation risk from supervision", desc: "Joint OCC-FDIC NPRM. Prohibits adverse action based on reputation risk. Finalized April 2026; effective June 6, 2026.", cats: ["all", "community", "debanking"] },
+  { date: "Oct 7, 2025", title: "Statement supporting state bank preemption parity", desc: "Gould signals OCC backing for Riegle-Neal and FDI Act §27 state bank preemption rights at FDIC board meeting.", cats: ["all", "preemption"] },
+  { date: "Oct 15, 2025", title: "Conditional charter approval: Erebor Bank, N.A.", desc: "First fintech national bank charter of the Trump era; Palmer Luckey / Peter Thiel-backed Columbus, Ohio startup.", cats: ["all", "charter"] },
+  { date: "Nov 5, 2025", title: "OCC debanking investigation announced", desc: "Gould announces review of largest banks' practices toward crypto and lawful business customers at Clearing House conference.", cats: ["all", "debanking", "charter"] },
+  { date: "Nov 13, 2025", title: "Three-part preemption defense strategy announced", desc: "Amicus briefs, Treasury collaboration, industry coalition — in response to adverse 1st and 9th Circuit rulings.", cats: ["all", "preemption"] },
+  { date: "Nov 24, 2025", title: "Tailored BSA/AML procedures and reduced data collection", desc: "Supplementary guidance calibrates AML exams to community bank risk profiles; data reporting requirements cut.", cats: ["all", "community"] },
+  { date: "Dec 16, 2025", title: "FDIC approves Erebor Bank deposit insurance", desc: "Completes the twin approval (OCC charter + FDIC deposit insurance) for Erebor Bank, N.A.", cats: ["all", "charter"] },
+  { date: "Dec 17, 2025", title: "Simplified CRA strategic plan proposed", desc: "Community banks may tailor CRA exams to local credit needs, capacity, and product offerings.", cats: ["all", "community"] },
+  { date: "Dec 30, 2025", title: "Preemption determination NPRs: escrow interest laws (12 states)", desc: "OCC proposes to preempt NY and 11 other states' escrow interest mandates under NBA §25b.", cats: ["all", "preemption"] },
+  { date: "Jan 7, 2026", title: "World Liberty Financial applies for stablecoin trust bank charter", desc: "Trump-family crypto venture files OCC application for national trust bank built for stablecoin services.", cats: ["all", "charter"] },
+  { date: "Jan 12, 2026", title: "NPRM: trust bank non-fiduciary activity authority", desc: "Codifies that trust-chartered national banks may engage in non-fiduciary activities — facilitates novel charter structures.", cats: ["all", "preemption", "charter"] },
+  { date: "Feb 26, 2026", title: "Senate Banking Committee testimony", desc: "Gould testifies on OCC priorities: risk tolerance reset, debanking, capital standards, GENIUS Act implementation.", cats: ["all", "community", "charter"] },
+  { date: "Mar 19, 2026", title: "Capital framework modernization proposed", desc: "6.9% aggregate reduction in minimum capital requirements for OCC-supervised banks under the standardized approach.", cats: ["all", "community"] },
+  { date: "Mar 26, 2026", title: "OCC supports rolled-back FSOC nonbank designation framework", desc: "Gould calls prior nonbank designation approach an 'egregious abuse of government power'; supports constrained FSOC framework.", cats: ["all", "charter"] },
+  { date: "Apr 15, 2026", title: "Reputation risk final rule adopted", desc: "Joint OCC-FDIC final rule banning reputation risk from supervision. Effective June 6, 2026.", cats: ["all", "community", "debanking"] }
+];
+
+const catColors = { community: "cat-community", preemption: "cat-preemption", charter: "cat-charter", debanking: "cat-debanking" };
+const catLabels = { community: "Community banks", preemption: "Preemption", charter: "Charter / fintech", debanking: "Debanking" };
+
+function renderTl(filter) {
+  const c = document.getElementById("tl-container");
+  c.innerHTML = "";
+  const items = tlData.filter(d => d.cats.includes(filter));
+  items.forEach((item, i) => {
+    const mainCat = item.cats.find(x => x !== "all");
+    const colorClass = mainCat ? catColors[mainCat] : "";
+    const label = mainCat ? catLabels[mainCat] : "";
+    const isLast = i === items.length - 1;
+    c.innerHTML += `<div class="tl-item">
+      <div class="tl-date">${item.date}</div>
+      <div class="tl-spine">
+        <div class="tl-dot"></div>
+        ${!isLast ? `<div class="tl-line"></div>` : ""}
+      </div>
+      <div class="tl-body">
+        <div class="tl-title">${item.title}${mainCat ? `<span class="tl-cat ${colorClass}">${label}</span>` : ""}</div>
+        <div class="tl-desc">${item.desc}</div>
+      </div>
+    </div>`;
+  });
+}
+renderTl("all");
+
+function filterTl(cat, btn) {
+  document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  renderTl(cat);
+}
+
+function switchTab(id, btn) {
+  document.querySelectorAll(".tab-btn").forEach(t => t.classList.remove("active"));
+  document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+  btn.classList.add("active");
+  document.getElementById("panel-" + id).classList.add("active");
+}
+
+function toggleCard(el) {
+  const wasOpen = el.classList.contains("open");
+  document.querySelectorAll(".action-card.open").forEach(c => c.classList.remove("open"));
+  if (!wasOpen) el.classList.add("open");
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Policy Cheat Sheet — a working catalogue of U.S. financial services regulation, read from the primary source.">
+<title>Policy Cheat Sheet · A working catalogue of U.S. financial services regulation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,400..700&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   POLICY CHEAT SHEET — Gallery Editorial
+   ============================================================ */
+
+:root{
+  --paper:#f1ede2;
+  --paper-2:#e8e3d3;
+  --paper-deep:#ddd8c5;
+  --ink:#1c1b16;
+  --ink-soft:#3a382e;
+  --muted:#8a8678;
+  --line:#d4cfbe;
+  --line-mid:#b8b39e;
+  --accent:#7a1f2b;
+  --accent-deep:#5a141f;
+  --accent-tint:rgba(122,31,43,.08);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Archivo',sans-serif;
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  /* subtle paper texture */
+  background-image:
+    radial-gradient(circle at 20% 30%,rgba(28,27,22,.012) 0%,transparent 50%),
+    radial-gradient(circle at 80% 70%,rgba(28,27,22,.012) 0%,transparent 50%);
+}
+::selection{background:var(--accent);color:var(--paper)}
+
+a{color:inherit;text-decoration:none}
+img,svg{display:block;max-width:100%}
+
+.mono{font-family:'JetBrains Mono',monospace;letter-spacing:.18em;text-transform:uppercase;font-size:11px}
+.serif{font-family:'Fraunces',serif}
+
+/* ============================================================
+   MASTHEAD
+   ============================================================ */
+.masthead{
+  border-bottom:2px solid var(--ink);
+  padding:clamp(28px,4vw,52px) clamp(22px,5vw,80px) clamp(40px,7vw,96px);
+  position:relative;
+  overflow:hidden;
+}
+.masthead::before{
+  /* faint corner rule decoration */
+  content:"";
+  position:absolute;
+  top:clamp(28px,4vw,52px);
+  right:clamp(22px,5vw,80px);
+  width:14px;height:14px;
+  border-top:1.5px solid var(--ink);
+  border-right:1.5px solid var(--ink);
+}
+.masthead::after{
+  content:"";
+  position:absolute;
+  bottom:clamp(40px,7vw,96px);
+  left:clamp(22px,5vw,80px);
+  width:14px;height:14px;
+  border-bottom:1.5px solid var(--ink);
+  border-left:1.5px solid var(--ink);
+}
+.masthead-kicker{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:14px;
+  padding-bottom:clamp(36px,6vw,64px);
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+}
+.masthead-kicker .dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--accent);margin:0 8px;vertical-align:middle}
+.masthead h1{
+  font-family:'Fraunces',serif;
+  font-weight:300;
+  font-size:clamp(56px,13vw,196px);
+  line-height:.88;
+  letter-spacing:-.025em;
+  font-variation-settings:"opsz" 144;
+}
+.masthead h1 em{
+  font-style:italic;
+  font-weight:400;
+  color:var(--accent);
+}
+.masthead h1 .pdot{color:var(--accent);font-style:normal}
+.masthead-sub{
+  display:grid;
+  grid-template-columns:minmax(0,2fr) minmax(0,1.2fr);
+  gap:clamp(32px,5vw,80px);
+  margin-top:clamp(36px,5vw,72px);
+  align-items:end;
+}
+@media(max-width:760px){.masthead-sub{grid-template-columns:1fr;gap:28px}}
+.masthead-sub p{
+  font-size:clamp(16px,1.6vw,20px);
+  line-height:1.55;
+  color:var(--ink-soft);
+  max-width:46ch;
+  font-family:'Fraunces',serif;
+  font-weight:400;
+  font-style:italic;
+}
+.masthead-sub p em{font-style:normal;color:var(--ink)}
+.masthead-meta{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+  text-align:right;
+}
+@media(max-width:760px){.masthead-meta{text-align:left}}
+.masthead-meta div{margin-bottom:6px}
+.masthead-meta div b{color:var(--ink);font-weight:500}
+
+/* ============================================================
+   COLOPHON
+   ============================================================ */
+.colophon{
+  border-bottom:1px solid var(--line-mid);
+  padding:clamp(28px,4vw,48px) clamp(22px,5vw,80px);
+  background:var(--paper-2);
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  gap:clamp(24px,4vw,56px);
+  align-items:start;
+}
+@media(max-width:760px){
+  .colophon{grid-template-columns:1fr;gap:18px}
+}
+.colophon-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  color:var(--accent);
+  white-space:nowrap;
+  padding-top:4px;
+}
+.colophon-body{
+  font-family:'Fraunces',serif;
+  font-size:clamp(15px,1.4vw,17px);
+  line-height:1.65;
+  color:var(--ink-soft);
+  max-width:74ch;
+}
+.colophon-body strong{color:var(--ink);font-weight:500}
+.colophon-nav{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+  text-align:right;
+  line-height:2;
+  white-space:nowrap;
+}
+@media(max-width:760px){.colophon-nav{text-align:left}}
+.colophon-nav a{display:block;transition:color .15s ease}
+.colophon-nav a:hover{color:var(--accent)}
+.colophon-nav a::before{content:"§ ";color:var(--accent)}
+
+/* ============================================================
+   SECTIONS
+   ============================================================ */
+.section{
+  padding:clamp(48px,7vw,112px) clamp(22px,5vw,80px) clamp(56px,8vw,128px);
+  border-bottom:2px solid var(--ink);
+  position:relative;
+}
+.section:last-of-type{border-bottom:1px solid var(--line-mid)}
+.section-head{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:clamp(20px,3vw,48px);
+  align-items:start;
+  padding-bottom:clamp(36px,5vw,64px);
+  margin-bottom:clamp(36px,5vw,72px);
+  border-bottom:1px solid var(--line-mid);
+}
+.section-roman{
+  font-family:'Fraunces',serif;
+  font-weight:300;
+  font-size:clamp(60px,9vw,140px);
+  line-height:.85;
+  color:var(--accent);
+  font-style:italic;
+  letter-spacing:-.03em;
+}
+.section-meta{padding-top:clamp(8px,1.5vw,20px)}
+.section-kicker{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+  margin-bottom:14px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.section-kicker::after{
+  content:"";
+  flex:1;
+  max-width:120px;
+  height:1px;
+  background:var(--line-mid);
+}
+.section-name{
+  font-family:'Fraunces',serif;
+  font-weight:400;
+  font-size:clamp(30px,4.4vw,58px);
+  line-height:1;
+  letter-spacing:-.015em;
+  margin-bottom:18px;
+}
+.section-name em{font-style:italic;color:var(--accent)}
+.section-desc{
+  font-family:'Fraunces',serif;
+  font-size:clamp(15px,1.4vw,18px);
+  line-height:1.6;
+  color:var(--ink-soft);
+  max-width:58ch;
+  font-style:italic;
+}
+
+/* ============================================================
+   PLATES (catalog entries)
+   ============================================================ */
+.plates{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:0;
+  border-top:1px solid var(--line-mid);
+  border-left:1px solid var(--line-mid);
+}
+@media(max-width:860px){.plates{grid-template-columns:1fr}}
+
+.plate{
+  display:grid;
+  grid-template-columns:minmax(140px,38%) 1fr;
+  gap:clamp(18px,2.5vw,32px);
+  padding:clamp(24px,3vw,44px) clamp(24px,3vw,40px) clamp(28px,3.5vw,48px);
+  border-right:1px solid var(--line-mid);
+  border-bottom:1px solid var(--line-mid);
+  position:relative;
+  background:var(--paper);
+  transition:background .35s ease;
+  opacity:0;
+  transform:translateY(20px);
+  animation:reveal .8s ease forwards;
+}
+.plate:nth-child(1){animation-delay:.05s}
+.plate:nth-child(2){animation-delay:.12s}
+.plate:nth-child(3){animation-delay:.19s}
+.plate:nth-child(4){animation-delay:.26s}
+.plate:nth-child(5){animation-delay:.33s}
+@keyframes reveal{to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:520px){
+  .plate{grid-template-columns:1fr;gap:14px}
+}
+
+.plate:hover{background:var(--paper-2)}
+.plate:hover .symbol-frame{border-color:var(--accent);background:var(--accent-tint)}
+.plate:hover .symbol-frame .accent-fill{fill:var(--accent)}
+.plate:hover .symbol-frame .accent-stroke{stroke:var(--accent)}
+.plate:hover .symbol-frame svg{transform:scale(1.04) rotate(-1deg)}
+.plate:hover .plate-num{color:var(--accent)}
+.plate:hover .plate-title{color:var(--accent-deep)}
+.plate:hover .plate-link .arrow{transform:translateX(6px)}
+
+.symbol-frame{
+  aspect-ratio:1/1;
+  border:1px solid var(--ink);
+  background:var(--paper-deep);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+  transition:border-color .25s ease, background .25s ease;
+  overflow:hidden;
+}
+.symbol-frame::before,
+.symbol-frame::after{
+  content:"";
+  position:absolute;
+  width:8px;height:8px;
+  border:1px solid var(--ink);
+  background:var(--paper);
+}
+.symbol-frame::before{top:-1px;left:-1px;border-right:none;border-bottom:none}
+.symbol-frame::after{bottom:-1px;right:-1px;border-left:none;border-top:none}
+.symbol-frame svg{
+  width:62%;height:62%;
+  color:var(--ink);
+  transition:transform .4s cubic-bezier(.2,.8,.2,1);
+}
+.symbol-frame .accent-fill{fill:var(--ink);transition:fill .25s ease}
+.symbol-frame .accent-stroke{stroke:var(--ink);transition:stroke .25s ease}
+.symbol-frame .plate-stamp{
+  position:absolute;
+  bottom:6px;left:6px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:8px;
+  letter-spacing:.18em;
+  color:var(--ink-soft);
+  text-transform:uppercase;
+}
+
+.plate-body{display:flex;flex-direction:column;min-width:0}
+.plate-meta{
+  display:flex;align-items:baseline;gap:14px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+  margin-bottom:14px;
+  flex-wrap:wrap;
+}
+.plate-num{color:var(--ink);font-weight:500;transition:color .2s ease}
+.plate-section{color:var(--muted)}
+.plate-section::before{content:"— "}
+
+.plate-title{
+  font-family:'Fraunces',serif;
+  font-weight:400;
+  font-size:clamp(20px,2.2vw,28px);
+  line-height:1.1;
+  letter-spacing:-.015em;
+  margin-bottom:12px;
+  transition:color .2s ease;
+}
+.plate-title em{font-style:italic}
+
+.plate-desc{
+  font-family:'Fraunces',serif;
+  font-size:14px;
+  line-height:1.55;
+  color:var(--ink-soft);
+  margin-bottom:16px;
+  font-weight:400;
+}
+
+.plate-tags{
+  display:flex;flex-wrap:wrap;gap:6px;
+  margin-bottom:18px;
+  margin-top:auto;
+}
+.plate-tags span{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9.5px;
+  letter-spacing:.08em;
+  color:var(--ink-soft);
+  border:1px solid var(--line-mid);
+  padding:4px 7px 3px;
+  background:var(--paper);
+  white-space:nowrap;
+}
+.plate:hover .plate-tags span{border-color:var(--ink-soft)}
+
+.plate-link{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--ink);
+  padding:8px 0;
+  border-top:1px solid var(--ink);
+  align-self:flex-start;
+  position:relative;
+  width:100%;
+  justify-content:space-between;
+}
+.plate-link .arrow{
+  display:inline-block;
+  transition:transform .25s ease;
+  color:var(--accent);
+  font-size:14px;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.atlas-footer{
+  padding:clamp(36px,5vw,72px) clamp(22px,5vw,80px) clamp(48px,6vw,96px);
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:32px;
+  align-items:end;
+  background:var(--paper-2);
+}
+@media(max-width:760px){.atlas-footer{grid-template-columns:1fr}}
+.atlas-footer .mark{
+  font-family:'Fraunces',serif;
+  font-weight:300;
+  font-style:italic;
+  font-size:clamp(28px,4vw,42px);
+  line-height:1;
+  letter-spacing:-.02em;
+  color:var(--ink);
+}
+.atlas-footer .mark span{color:var(--accent)}
+.atlas-footer .meta{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+  text-align:right;
+  line-height:1.9;
+}
+@media(max-width:760px){.atlas-footer .meta{text-align:left}}
+.atlas-footer .meta div b{color:var(--ink);font-weight:500}
+.atlas-footer .meta a{transition:color .15s ease}
+.atlas-footer .meta a:hover{color:var(--accent)}
+
+/* ============================================================
+   PRINT SHEET (final colophon strip)
+   ============================================================ */
+.print-strip{
+  border-top:1px solid var(--ink);
+  padding:18px clamp(22px,5vw,80px);
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:14px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--ink);
+  background:var(--ink);
+  color:var(--paper);
+}
+.print-strip .acc{color:var(--accent)}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     MASTHEAD
+     ============================================================ -->
+<header class="masthead" id="top">
+  <div class="masthead-kicker">
+    <span><b style="color:var(--ink)">Vol. I</b><span class="dot"></span>No. 1<span class="dot"></span>Catalogue Edition</span>
+    <span>U.S. Financial Services · Primary Source</span>
+    <span>Rev. May 2026</span>
+  </div>
+
+  <h1>Policy<br>Cheat <em>Sheet</em><span class="pdot">.</span></h1>
+
+  <div class="masthead-sub">
+    <p>A working catalogue of U.S. financial services regulation — <em>guidance, rule text, and legislation read from the primary source, with conclusions front-loaded.</em></p>
+    <div class="masthead-meta">
+      <div><b>13</b> plates &middot; <b>3</b> sections</div>
+      <div>Federal banking · State coordination</div>
+      <div>Maintained anonymously</div>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+     COLOPHON
+     ============================================================ -->
+<section class="colophon" id="about">
+  <div class="colophon-label">About<br>this catalogue</div>
+  <p class="colophon-body">
+    Maintained <strong>anonymously</strong> by a U.S. banking policy practitioner working across state and federal supervision. Each plate distills a specific rule, piece of guidance, piece of legislation, or structural feature of the dual banking system into a single working document. <strong>Methodology favors statute and rule text over secondary commentary; conclusions are front-loaded.</strong> Plates are revised as agency actions and legislative posture evolve.
+  </p>
+  <nav class="colophon-nav">
+    <a href="#section-i">Rules &amp; Guidance</a>
+    <a href="#section-ii">Reform Trackers</a>
+    <a href="#section-iii">Structural Frameworks</a>
+  </nav>
+</section>
+
+<!-- ============================================================
+     SECTION I — RULES & GUIDANCE
+     ============================================================ -->
+<section class="section" id="section-i">
+  <header class="section-head">
+    <span class="section-roman">I.</span>
+    <div class="section-meta">
+      <div class="section-kicker">Section One</div>
+      <h2 class="section-name">Rules &amp; <em>Guidance</em></h2>
+      <p class="section-desc">Plates that map a specific federal rule, piece of supervisory guidance, or examiner framework against its primary-source text. The brief is always: what does the rule actually say, and where does it depart from what came before.</p>
+    </div>
+  </header>
+
+  <div class="plates">
+
+    <!-- 01 Model Risk Management 2026 -->
+    <article class="plate">
+      <div class="symbol-frame">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <!-- nested validation layers -->
+          <rect x="14" y="14" width="72" height="72" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="3 3"/>
+          <rect x="26" y="26" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.4"/>
+          <rect x="38" y="38" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <rect x="46" y="46" width="8" height="8" class="accent-fill"/>
+          <!-- diagonal cross-comparison -->
+          <line x1="14" y1="14" x2="86" y2="86" class="accent-stroke" stroke-width="0.6" stroke-dasharray="1 3"/>
+        </svg>
+        <span class="plate-stamp">№ 01</span>
+      </div>
+      <div class="plate-body">
+        <div class="plate-meta"><span class="plate-num">Plate 01</span><span class="plate-section">Rules &amp; Guidance</span></div>
+        <h3 class="plate-title">Model Risk Management <em>2026</em></h3>
+        <p class="plate-desc">A side-by-side reading of <strong>FIL-15-2026</strong> against <strong>SR 11-7</strong>, mapping where the federal agencies' new model risk guidance retains, sharpens, or quietly narrows the 2011 baseline.</p>
+        <div class="plate-tags"><span>FIL-15-2026</span><span>SR 11-7</span><span>12 CFR Pt. 30</span></div>
+        <a class="plate-link" href="model-risk-management-2026.html"><span>View plate</span><span class="arrow">→</span></a>
+      </div>
+    </article>
+
+    <!-- 02 GENIUS Act Dashboard -->
+    <article class="plate">
+      <div class="symbol-frame">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <!-- hexagonal stablecoin token -->
+          <polygon points="50,12 84,32 84,68 50,88 16,68 16,32" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <polygon points="50,26 71,38 71,62 50,74 29,62 29,38" fill="none" stroke="currentColor" stroke-width="0.8"/>
+          <!-- reserves split -->
+          <line x1="50" y1="12" x2="50" y2="88" stroke="currentColor" stroke-width="0.6"/>
+          <line x1="16" y1="32" x2="84" y2="68" stroke="currentColor" stroke-width="0.4" opacity=".4"/>
+          <line x1="16" y1="68" x2="84" y2="32" stroke="currentColor" stroke-width="0.4" opacity=".4"/>
+          <circle cx="50" cy="50" r="6" class="accent-fill"/>
+        </svg>
+        <span class="plate-stamp">№ 02</span>
+      </div>
+      <div class="plate-body">
+        <div class="plate-meta"><span class="plate-num">Plate 02</span><span class="plate-section">Rules &amp; Guidance</span></div>
+        <h3 class="plate-title">GENIUS Act <em>Dashboard</em></h3>
+        <p class="plate-desc">A working framework for how the GENIUS Act applies to OCC-supervised stablecoin issuers — including the <strong>FDIC CALMA framework</strong>, reserve composition, and statutory tripwires.</p>
+        <div class="plate-tags"><span>GENIUS Act</span><span>FDIC CALMA</span><span>12 USC § 1818</span></div>
+        <a class="plate-link" href="genius-act-dashboard.html"><span>View plate</span><span class="arrow">→</span></a>
+      </div>
+    </article>
+
+    <!-- 03 AML/CFT Program Rule Navigator -->
+    <article class="plate">
+      <div class="symbol-frame">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <!-- funnel -->
+          <path d="M 14 20 L 86 20 L 60 50 L 60 78 L 40 78 L 40 50 Z" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="22" y1="30" x2="78" y2="30" stroke="currentColor" stroke-width="0.6" opacity=".5"/>
+          <line x1="30" y1="38" x2="70" y2="38" stroke="currentColor" stroke-width="0.6" opacity=".5"/>
+          <line x1="38" y1="46" x2="62" y2="46" stroke="currentColor" stroke-width="0.6" opacity=".5"/>
+          <!-- output drops -->
+          <circle cx="50" cy="86" r="3.2" class="accent-fill"/>
+          <circle cx="50" cy="94" r="1.8" class="accent-fill" opacity=".5"/>
+        </svg>
+        <span class="plate-stamp">№ 03</span>
+      </div>
+      <div class="plate-body">
+        <div class="plate-meta"><span class="plate-num">Plate 03</span><span class="plate-section">Rules &amp; Guidance</span></div>
+        <h3 class="plate-title">AML/CFT Program Rule <em>Navigator</em></h3>
+        <p class="plate-desc">A clause-anchored walkthrough of the <strong>2026 FinCEN and FDIC AML/CFT Program Rule proposals</strong>, grounded in the rule text itself rather than secondary commentary.</p>
+        <div class="plate-tags"><span>31 CFR § 1020.210</span><span>FinCEN NPRM</span><span>FDIC FIL</span></div>
+        <a class="plate-link" href="aml-cft-program-rule-navigator.html"><span>View plate</span><span class="arrow">→</span></a>
+      </div>
+    </article>
+
+    <!-- 04 UFIRS / CAMELS 2026 -->
+    <article class="plate">
+      <div class="symbol-frame">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <!-- hexagonal radar — 6 CAMELS components -->
+          <polygon points="50,16 79,33 79,67 50,84 21,67 21,33" fill="none" stroke="currentColor" stroke-width="1.4"/>
+          <polygon points="50,28 68,38 68,62 50,72 32,62 32,38" fill="none" stroke="currentColor" stroke-width="0.8" opacity=".7"/>
+          <!-- spokes -->
+          <line x1="50" y1="50" x2="50" y2="16" stroke="currentColor" stroke-width="0.7"/>
+          <line x1="50" y1="50" x2="79" y2="33" stroke="currentColor" stroke-width="0.7"/>
+          <line x1="50" y1="50" x2="79" y2="67" stroke="currentColor" stroke-width="0.7"/>
+          <line x1="50" y1="50" x2="50" y2="84" stroke="currentColor" stroke-width="0.7"/>
+          <line x1="50" y1="50" x2="21" y2="67" stroke="currentColor" stroke-width="0.7"/>
+          <line x1="50" y1="50" x2="21" y2="33" stroke="currentColor" stroke-width="0.7"/>
+          <!-- letters on points -->
+          <circle cx="50" cy="50" r="4" class="accent-fill"/>
+          <circle cx="50" cy="16" r="2.5" class="accent-fill"/>
+        </svg>
+        <span class="plate-stamp">№ 04</span>
+      </div>
+      <div class="plate-body">
+        <div class="plate-meta"><span class="plate-num">Plate 04</span><span class="plate-section">Rules &amp; Guidance</span></div>
+        <h3 class="plate-title">UFIRS CAMELS 2026 <em>Change Briefing</em></h3>
+        <p class="plate-desc">What changed in the Uniform Financial Institutions Rating System in 2026, and how examiner expectations shift in practice across the six CAMELS components.</p>
+        <div class="plate-tags"><span>UFIRS</span><span>FFIEC</span><span>FIL-2026</span></div>
+        <a class="plate-link" href="ufirs-camels-2026-change-briefing.html"><span>View plate</span><span class="arrow">→</span></a>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION II — REFORM TRACKERS
+     ============================================================ -->
+<section class="section" id="section-ii">
+  <header class="section-head">
+    <span class="section-roman">II.</span>
+    <div class="section-meta">
+      <div class="section-kicker">Section Two</div>
+      <h2 class="section-name">Reform <em>Trackers</em></h2>
+      <p class="section-desc">Live records of regulatory and legislative reform — what each agency principal or sponsor has said on the record, what they have moved on, and where the gap between rhetoric and rule sits.</p>
+    </div>
+  </header>
+
+  <div class="plates">
+
+    <!-- 05 Bank Merger Reform Scorecard -->
+    <article class="plate">
+      <div class="symbol-frame">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <!-- two merging circles -->
+          <circle cx="36" cy="50" r="24" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <circle cx="64" cy="50" r="24" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <!-- intersection accent -->
+          <path d="M 50 30 A 24 24 0 0 1 50 70 A 24 24 0 0 1 50 30 Z" class="accent-fill" opacity=".85"/>
+          <!-- scorecard tick -->
+          <path d="M 42 50 L 48 56 L 58 44" fill="none" stroke="var(--paper)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="plate-stamp">№ 05</span>
+      </div>
+      <div class="plate-body">
+        <div class="plate-meta"><span class="plate-num">Plate 05</span><span class="plate-section">Reform Trackers</span></div>
+        <h3 class="plate-title">Bank Merger Reform <em>Scorecard</em></h3>
+        <p class="plate-desc">A live scorecard of pending bank M&amp;A reform across the FDIC, OCC, and Federal Reserve — tracking <strong>OCC threshold alignment</strong>, HHI modernization, and rural de minimis treatment.</p>
+        <div class="plate-tags"><span>12 CFR § 5.33</span><span>HHI</span><span>FDIC Statement</span></div>
+        <a class="plate-link" href="bank-merger-reform-scorecard.html"><span>View plate</span><span class="arrow">→</span></a>
+      </div>
+    </article>
+
+    <!-- 06 Gould OCC Policy Tracker -->
+    <article class="plate">
+      <div class="symbol-frame">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <!-- trajectory arrow with milestones -->
+          <path d="M 14 78 Q 32 70, 44 58 T 76 28" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <circle cx="14" cy="78" r="3" fill="currentColor"/>
+          <circle cx="34" cy="68" r="2.5" fill="currentColor"/>
+          <circle cx="54" cy="50" r="2.5" fill="currentColor"/>
+          <circle cx="68" cy="36" r="2.5" fill="currentColor"/>
+          <!-- arrowhead -->
+          <path d="M 76 28 L 86 22 L 80 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          <circle cx="86" cy="22" r="4" class="accent-fill"/>
+        </svg>
+        <span class="plate-stamp">№ 06</span>
+      </div>
+      <div class="plate-body">
+        <div class="plate-meta"><span class="plate-num">Plate 06</span><span class="plate-section">Reform Trackers</span></div>
+        <h3 class="plate-title">Gould OCC Policy <em>Tracker</em></h3>
+        <p class="plate-desc">A running record of OCC policy moves under <strong>Comptroller Gould</strong> — chartering decisions, preemption posture, supervisory letters, and licensing precedent.</p>
+        <div class="plate-tags"><span>OCC Bulletins</span><span>12 CFR Pt. 5</span><span>Licensing</span></div>
+        <a class="plate-link" href="gould-occ-policy-tracker.html"><span>View plate</span><span class="arrow">→</span></a>
+      </div>
+    </article>
+
+    <!-- 07 HR 941 Small Lender Act -->
+    <article class="plate">
+      <div class="symbol-frame">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <!-- bill / legislation -->
+          <rect x="24" y="14" width="52" height="72" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="32" y1="28" x2="68" y2="28" stroke="currentColor" stroke-width="1.2"/>
+          <line x1="32" y1="36" x2="68" y2="36" stroke="currentColor" stroke-width="0.8"/>
+          <line x1="32" y1="44" x2="68" y2="44" stroke="currentColor" stroke-width="0.8"/>
+          <line x1="32" y1="52" x2="56" y2="52" stroke="currentColor" stroke-width="0.8"/>
+          <line x1="32" y1="60" x2="64" y2="60" stroke="currentColor" stroke-width="0.8"/>
+          <!-- signature/seal -->
+          <path d="M 32 72 Q 38 68, 44 72 T 56 72" fill="none" class="accent-stroke" stroke-width="1.4"/>
+          <circle cx="64" cy="74" r="3.5" class="accent-fill"/>
+        </svg>
+        <span class="plate-stamp">№ 07</span>
+      </div>
+      <div class="plate-body">
+        <div class="plate-meta"><span class="plate-num">Plate 07</span><span class="plate-section">Reform Trackers</span></div>
+        <h3 class="plate-title">H.R. 941 Small Lender <em>Act</em></h3>
+        <p class="plate-desc">A plain-text reading of <strong>H.R. 941</strong> — what it would change, who it covers, and where it sits on the legislative calendar in the House Financial Services Committee.</p>
+        <div class="plate-tags"><span>H.R. 941</span><span>HFSC</span><span>Community Banks</span></div>
+        <a class="plate-link" href="hr941-small-lender-act.html"><span>View plate</span><span class="arrow">→</span></a>
+      </div>
+    </article>
+
+    <!-- 08 CSBS Comment Letters -->
+    <article class="plate">
+      <div class="symbol-frame">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <!-- envelope -->
+          <rect x="14" y="28" width="72" height="48" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M 14 28 L 50 56 L 86 28" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="14" y1="76" x2="42" y2="52" stroke="currentColor" stroke-width="0.8"/>
+          <line x1="86" y1="76" x2="58" y2="52" stroke="currentColor" stroke-width="0.8"/>
+          <!-- wax seal -->
+          <circle cx="76" cy="22" r="6" class="accent-fill"/>
+          <circle cx="76" cy="22" r="3" fill="none" stroke="var(--paper)" stroke-width="0.8"/>
+        </svg>
+        <span class="plate-stamp">№ 08</span>
+      </div>
+      <div class="plate-body">
+        <div class="plate-meta"><span class="plate-num">Plate 08</span><span class="plate-section">Reform Trackers</span></div>
+        <h3 class="plate-title">CSBS Comment <em>Letters</em></h3>
+        <p class="plate-desc">A working archive of comment letters and policy positions filed with federal banking agencies, organized by <strong>docket</strong>, recipient, and substantive position.</p>
+        <div class="plate-tags"><span>CSBS</span><span>Multi-docket</span><span>State-Federal</span></div>
+        <a class="plate-link" href="csbs-comment-letters.html"><span>View plate</span><span class="arrow">→</span></a>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION III — STRUCTURAL FRAMEWORKS
+     ============================================================ -->
+<section class="section" id="section-iii">
+  <header class="section-head">
+    <span class="section-roman">III.</span>
+    <div class="section-meta">
+      <div class="section-kicker">Section Three</div>
+      <h2 class="section-name">Structural <em>Frameworks</em></h2>
+      <p class="section-desc">The architecture beneath the headlines — chartering authority, preemption, agency jurisdiction, and the long arc of how U.S. banking got to its present configuration. The reference layer for every other plate.</p>
+    </div>
+  </header>
+
+  <div class="plates">
+
+    <!-- 09 History of Banking -->
+    <article class="plate">
+      <div class="symbol-frame">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <!-- timeline -->
+          <line x1="10" y1="50" x2="90" y2="50" stroke="currentColor" stroke-width="1.4"/>
+          <line x1="18" y1="42" x2="18" y2="58" stroke="currentColor" stroke-width="1.2"/>
+          <line x1="32" y1="44" x2="32" y2="56" stroke="currentColor" stroke-width="1"/>
+          <line x1="46" y1="40" x2="46" y2="60" stroke="currentColor" stroke-width="1.4"/>
+          <line x1="58" y1="44" x2="58" y2="56" stroke="currentColor" stroke-width="1"/>
+          <line x1="72" y1="38" x2="72" y2="62" class="accent-stroke" stroke-width="1.8"/>
+          <line x1="86" y1="44" x2="86" y2="56" stroke="currentColor" stroke-width="1"/>
+          <!-- year ticks -->
+          <text x="18" y="74" font-family="JetBrains Mono" font-size="6" fill="currentColor" text-anchor="middle" opacity=".5">1791</text>
+          <text x="46" y="74" font-family="JetBrains Mono" font-size="6" fill="currentColor" text-anchor="middle" opacity=".5">1864</text>
+          <text x="72" y="74" font-family="JetBrains Mono" font-size="6" fill="currentColor" text-anchor="middle" opacity=".85">1933</text>
+        </svg>
+        <span class="plate-stamp">№ 09</span>
+      </div>
+      <div class="plate-body">
+        <div class="plate-meta"><span class="plate-num">Plate 09</span><span class="plate-section">Structural Frameworks</span></div>
+        <h3 class="plate-title">History of <em>Banking</em></h3>
+        <p class="plate-desc">A long-arc timeline of U.S. banking structure — from the First Bank of the United States to the dual-charter system as it stands today, with the inflection points called out.</p>
+        <div class="plate-tags"><span>Nat'l Bank Act 1864</span><span>Glass-Steagall</span><span>Dodd-Frank</span></div>
+        <a class="plate-link" href="history-of-banking.html"><span>View plate</span><span class="arrow">→</span></a>
+      </div>
+    </article>
+
+    <!-- 10 Fed Supervisory Comp -->
+    <article class="plate">
+      <div class="symbol-frame">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <!-- comparison bars -->
+          <line x1="14" y1="82" x2="86" y2="82" stroke="currentColor" stroke-width="1"/>
+          <rect x="22" y="44" width="14" height="38" fill="currentColor"/>
+          <rect x="42" y="30" width="14" height="52" fill="none" stroke="currentColor" stroke-width="1.4"/>
+          <rect x="62" y="56" width="14" height="26" class="accent-fill"/>
+          <!-- comparison rule -->
+          <line x1="22" y1="22" x2="76" y2="22" stroke="currentColor" stroke-width="0.7" stroke-dasharray="2 2"/>
+          <text x="29" y="18" font-family="JetBrains Mono" font-size="6" fill="currentColor" opacity=".6" text-anchor="middle">FED</text>
+          <text x="49" y="18" font-family="JetBrains Mono" font-size="6" fill="currentColor" opacity=".6" text-anchor="middle">FDIC</text>
+          <text x="69" y="18" font-family="JetBrains Mono" font-size="6" fill="currentColor" opacity=".6" text-anchor="middle">OCC</text>
+        </svg>
+        <span class="plate-stamp">№ 10</span>
+      </div>
+      <div class="plate-body">
+        <div class="plate-meta"><span class="plate-num">Plate 10</span><span class="plate-section">Structural Frameworks</span></div>
+        <h3 class="plate-title">Fed Supervisory <em>Comp</em></h3>
+        <p class="plate-desc">A direct comparison of <strong>Federal Reserve supervisory practice</strong> against the FDIC and OCC — examination cadence, capital review, and merger jurisdiction.</p>
+        <div class="plate-tags"><span>FRA § 11</span><span>12 USC § 1818</span><span>BHCA</span></div>
+        <a class="plate-link" href="fed-supervisory-comp.html"><span>View plate</span><span class="arrow">→</span></a>
+      </div>
+    </article>
+
+    <!-- 11 US Trust Company Regulatory Framework -->
+    <article class="plate">
+      <div class="symbol-frame">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <!-- vault / keyhole -->
+          <rect x="20" y="20" width="60" height="60" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <circle cx="50" cy="50" r="22" fill="none" stroke="currentColor" stroke-width="1.2"/>
+          <!-- keyhole -->
+          <circle cx="50" cy="44" r="6" class="accent-fill"/>
+          <path d="M 47 48 L 47 60 L 53 60 L 53 48 Z" class="accent-fill"/>
+          <!-- bolts -->
+          <circle cx="26" cy="26" r="1.5" fill="currentColor"/>
+          <circle cx="74" cy="26" r="1.5" fill="currentColor"/>
+          <circle cx="26" cy="74" r="1.5" fill="currentColor"/>
+          <circle cx="74" cy="74" r="1.5" fill="currentColor"/>
+        </svg>
+        <span class="plate-stamp">№ 11</span>
+      </div>
+      <div class="plate-body">
+        <div class="plate-meta"><span class="plate-num">Plate 11</span><span class="plate-section">Structural Frameworks</span></div>
+        <h3 class="plate-title">U.S. Trust Company <em>Regulatory Framework</em></h3>
+        <p class="plate-desc">How state-chartered and OCC-chartered trust companies are supervised, including the <strong>CSBS Nationwide Cooperative Agreement</strong>, MTL exposure, and federal preemption posture.</p>
+        <div class="plate-tags"><span>12 CFR Pt. 9</span><span>CSBS NCA</span><span>State Law</span></div>
+        <a class="plate-link" href="us-trust-company-regulatory-framework.html"><span>View plate</span><span class="arrow">→</span></a>
+      </div>
+    </article>
+
+    <!-- 12 OCC Preemption Timeline -->
+    <article class="plate">
+      <div class="symbol-frame">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <!-- stacked layers, accent extending -->
+          <line x1="14" y1="28" x2="58" y2="28" stroke="currentColor" stroke-width="2.4"/>
+          <line x1="14" y1="42" x2="50" y2="42" stroke="currentColor" stroke-width="2.4"/>
+          <line x1="14" y1="56" x2="88" y2="56" class="accent-stroke" stroke-width="3"/>
+          <line x1="14" y1="70" x2="46" y2="70" stroke="currentColor" stroke-width="2.4"/>
+          <line x1="14" y1="84" x2="54" y2="84" stroke="currentColor" stroke-width="2.4"/>
+          <!-- left margin rule -->
+          <line x1="14" y1="22" x2="14" y2="90" stroke="currentColor" stroke-width="0.8"/>
+          <!-- pin on the accent line -->
+          <circle cx="88" cy="56" r="3" class="accent-fill"/>
+        </svg>
+        <span class="plate-stamp">№ 12</span>
+      </div>
+      <div class="plate-body">
+        <div class="plate-meta"><span class="plate-num">Plate 12</span><span class="plate-section">Structural Frameworks</span></div>
+        <h3 class="plate-title">OCC Preemption <em>Timeline</em></h3>
+        <p class="plate-desc">A timeline of OCC preemption authority — statute, regulation, and litigation — through the Dodd-Frank standard at <strong>12 USC § 25b</strong> and the recent reassertions.</p>
+        <div class="plate-tags"><span>12 USC § 25b</span><span>Cuomo v. Clearing House</span><span>Cantero</span></div>
+        <a class="plate-link" href="occ-preemption-timeline.html"><span>View plate</span><span class="arrow">→</span></a>
+      </div>
+    </article>
+
+    <!-- 13 Regulatory Map -->
+    <article class="plate">
+      <div class="symbol-frame">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <!-- compass rose -->
+          <circle cx="50" cy="50" r="34" fill="none" stroke="currentColor" stroke-width="1"/>
+          <circle cx="50" cy="50" r="22" fill="none" stroke="currentColor" stroke-width="0.6" stroke-dasharray="2 3"/>
+          <!-- N (accent) -->
+          <polygon points="50,18 55,50 50,46 45,50" class="accent-fill"/>
+          <!-- S -->
+          <polygon points="50,82 45,50 50,54 55,50" fill="none" stroke="currentColor" stroke-width="1"/>
+          <!-- E -->
+          <polygon points="82,50 50,45 54,50 50,55" fill="currentColor"/>
+          <!-- W -->
+          <polygon points="18,50 50,55 46,50 50,45" fill="none" stroke="currentColor" stroke-width="1"/>
+          <!-- center -->
+          <circle cx="50" cy="50" r="2" fill="currentColor"/>
+          <!-- N label -->
+          <text x="50" y="14" font-family="JetBrains Mono" font-size="7" fill="currentColor" text-anchor="middle">N</text>
+        </svg>
+        <span class="plate-stamp">№ 13</span>
+      </div>
+      <div class="plate-body">
+        <div class="plate-meta"><span class="plate-num">Plate 13</span><span class="plate-section">Structural Frameworks</span></div>
+        <h3 class="plate-title">Regulatory <em>Map</em></h3>
+        <p class="plate-desc">A working map of the federal–state supervisory architecture: <strong>who charters, who examines, who enforces</strong>, and where authority overlaps across the dual banking system.</p>
+        <div class="plate-tags"><span>FDIC</span><span>OCC</span><span>FRB</span><span>CSBS</span></div>
+        <a class="plate-link" href="regulatory-map.html"><span>View plate</span><span class="arrow">→</span></a>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="atlas-footer">
+  <div class="mark">Policy Cheat <em>Sheet</em><span>.</span></div>
+  <div class="meta">
+    <div><b>Vol. I &middot; No. 1</b> &middot; Rev. May 2026</div>
+    <div>Primary-source methodology &middot; Conclusions front-loaded</div>
+    <div>Maintained anonymously &middot; <a href="#top">↑ back to top</a></div>
+  </div>
+</footer>
+
+<div class="print-strip">
+  <span>End of Catalogue &middot; <span class="acc">Plates 01 — 13</span></span>
+  <span>U.S. Financial Services Regulation</span>
+  <span>Set in Fraunces, Archivo &amp; JetBrains Mono</span>
+</div>
+
+<script>
+// Re-trigger reveal animations per section when entering viewport
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const plates = e.target.querySelectorAll('.plate');
+      plates.forEach((p,i)=>{
+        p.style.animationDelay = (0.05 + i*0.07) + 's';
+      });
+      io.unobserve(e.target);
+    }
+  });
+},{threshold:0.05});
+
+document.querySelectorAll('.section .plates').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

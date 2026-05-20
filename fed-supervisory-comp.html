@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fed Supervisory Operating Principles — Comparison Tool</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0d1b2a;
+    --navy-mid: #162234;
+    --navy-light: #1e3050;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-dim: rgba(201,168,76,0.15);
+    --red: #c0392b;
+    --red-dim: rgba(192,57,43,0.12);
+    --green: #27ae60;
+    --green-dim: rgba(39,174,96,0.12);
+    --amber: #d4860a;
+    --amber-dim: rgba(212,134,10,0.12);
+    --text: #e8e4d9;
+    --text-muted: #8a9bb5;
+    --border: rgba(201,168,76,0.2);
+    --card: rgba(22,34,52,0.9);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--navy);
+    color: var(--text);
+    font-family: 'Source Serif 4', Georgia, serif;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 20% 0%, rgba(201,168,76,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 100%, rgba(13,27,42,0.8) 0%, transparent 60%),
+      repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(201,168,76,0.03) 80px),
+      repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(201,168,76,0.03) 80px);
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 28px 40px 22px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,27,42,0.97);
+    backdrop-filter: blur(12px);
+  }
+  .header-left {}
+  .header-seal {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    opacity: 0.8;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  header h1 span { color: var(--gold); }
+  .header-meta {
+    display: flex;
+    gap: 16px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+  }
+  .version-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 3px 10px;
+    border-radius: 2px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .v-old { background: rgba(138,155,181,0.15); color: var(--text-muted); border: 1px solid rgba(138,155,181,0.3); }
+  .v-new { background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(201,168,76,0.4); }
+
+  /* ─── LEGEND ─── */
+  .legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 2px;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.04em;
+  }
+  .legend-item:hover { color: var(--text); border-color: var(--border); }
+  .legend-item.active { color: var(--text); border-color: var(--gold); background: var(--gold-dim); }
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot-new { background: var(--green); }
+  .dot-changed { background: var(--gold); }
+  .dot-removed { background: var(--red); }
+  .dot-insight { background: #7c6fcd; }
+
+  /* ─── TABS ─── */
+  .tabs {
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 0;
+    padding: 0 40px;
+    background: rgba(13,27,42,0.95);
+    overflow-x: auto;
+  }
+  .tab {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 12px 20px;
+    cursor: pointer;
+    color: var(--text-muted);
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* ─── MAIN LAYOUT ─── */
+  .container { padding: 32px 40px; max-width: 1400px; margin: 0 auto; }
+
+  /* ─── CHANGE CARDS ─── */
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .changes-grid {
+    display: grid;
+    gap: 16px;
+  }
+
+  .change-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: all 0.25s;
+    animation: fadeUp 0.4s ease both;
+  }
+  .change-card:hover { border-color: rgba(201,168,76,0.45); transform: translateY(-1px); }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+  .card-header:hover { border-bottom-color: var(--border); }
+
+  .change-type-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+  .badge-new { background: var(--green-dim); color: var(--green); border: 1px solid rgba(39,174,96,0.3); }
+  .badge-changed { background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); }
+  .badge-removed { background: var(--red-dim); color: #e74c3c; border: 1px solid rgba(231,76,60,0.3); }
+
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    flex: 1;
+  }
+  .card-significance {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+  .sig-high { color: #e74c3c; }
+  .sig-med { color: var(--amber); }
+  .sig-low { color: var(--text-muted); }
+
+  .chevron {
+    color: var(--text-muted);
+    transition: transform 0.25s;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+  .card-header.open .chevron { transform: rotate(90deg); }
+
+  .card-body {
+    display: none;
+    padding: 0 20px 20px;
+    border-top: 1px solid var(--border);
+  }
+  .card-body.open { display: block; }
+
+  .diff-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 16px;
+  }
+  @media (max-width: 800px) { .diff-columns { grid-template-columns: 1fr; } }
+
+  .diff-col-header {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .old-header { color: var(--text-muted); }
+  .new-header { color: var(--gold); }
+
+  .diff-text {
+    font-size: 13.5px;
+    line-height: 1.75;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+  .diff-text.updated { color: var(--text); font-style: normal; }
+
+  .highlight-added { background: rgba(39,174,96,0.18); color: #4eca8b; padding: 1px 3px; border-radius: 2px; }
+  .highlight-removed { background: rgba(231,76,60,0.18); color: #e74c3c; padding: 1px 3px; text-decoration: line-through; border-radius: 2px; }
+  .highlight-changed { background: var(--gold-dim); color: var(--gold-light); padding: 1px 3px; border-radius: 2px; }
+
+  .analysis-box {
+    margin-top: 16px;
+    padding: 14px 16px;
+    background: rgba(201,168,76,0.06);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 3px 3px 0;
+  }
+  .analysis-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .analysis-text { font-size: 13px; line-height: 1.7; color: var(--text); }
+
+  /* ─── INSIGHT PANEL (FDIC/OCC) ─── */
+  .insight-panel {
+    background: var(--card);
+    border: 1px solid rgba(124,111,205,0.35);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .insight-panel-header {
+    background: linear-gradient(135deg, rgba(124,111,205,0.15), rgba(124,111,205,0.05));
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid rgba(124,111,205,0.25);
+    cursor: pointer;
+  }
+  .insight-icon { font-size: 18px; }
+  .insight-panel-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    color: var(--text);
+    flex: 1;
+  }
+  .insight-panel-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: #9d8fe0;
+  }
+
+  .insight-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+  }
+  @media (max-width: 900px) { .insight-grid { grid-template-columns: 1fr; } }
+
+  .insight-col {
+    padding: 20px 24px;
+    border-right: 1px solid var(--border);
+  }
+  .insight-col:last-child { border-right: none; }
+
+  .insight-col-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .fdic-title { color: #5dade2; }
+  .occ-title { color: #82e0aa; }
+  .fed-title { color: var(--gold); }
+
+  .insight-item {
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .insight-item:last-child { border-bottom: none; margin-bottom: 0; }
+  .insight-item-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+  }
+  .insight-item-text { font-size: 13px; line-height: 1.65; color: var(--text); }
+
+  .tension-box {
+    padding: 20px 24px;
+    border-top: 1px solid var(--border);
+    background: rgba(192,57,43,0.04);
+  }
+  .tension-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #e74c3c;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tension-items { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 700px) { .tension-items { grid-template-columns: 1fr; } }
+
+  .tension-item {
+    padding: 12px;
+    background: rgba(192,57,43,0.08);
+    border: 1px solid rgba(192,57,43,0.2);
+    border-radius: 3px;
+  }
+  .tension-item-title { font-size: 12px; font-weight: 600; color: #e07060; margin-bottom: 5px; }
+  .tension-item-text { font-size: 12px; line-height: 1.6; color: var(--text-muted); }
+
+  /* ─── SUMMARY STATS ─── */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  @media (max-width: 700px) { .stats-bar { grid-template-columns: 1fr 1fr; } }
+
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 16px 20px;
+    text-align: center;
+  }
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* ─── FILTER BAR ─── */
+  .filter-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .filter-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-right: 4px;
+  }
+  .filter-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 2px;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    transition: all 0.2s;
+  }
+  .filter-btn:hover { color: var(--text); border-color: rgba(201,168,76,0.4); }
+  .filter-btn.active { color: var(--gold); border-color: var(--gold); background: var(--gold-dim); }
+
+  /* ─── HIDDEN ─── */
+  .hidden { display: none !important; }
+
+  /* ─── PANEL BODIES ─── */
+  .panel-body { animation: fadeUp 0.3s ease both; }
+  .insight-body { display: none; }
+  .insight-body.open { display: block; }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--navy); }
+  ::-webkit-scrollbar-thumb { background: var(--navy-light); border-radius: 3px; }
+
+  /* ─── TIMELINE ─── */
+  .timeline {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 28px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 16px 24px;
+    overflow-x: auto;
+  }
+  .timeline-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .timeline-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+  .timeline-dot.old { background: var(--text-muted); }
+  .timeline-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+  }
+  .timeline-label { font-size: 12px; color: var(--text); font-weight: 600; }
+  .timeline-line { flex: 1; height: 1px; background: var(--border); margin: 0 16px; min-width: 40px; }
+  .timeline-event {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+    opacity: 0.6;
+  }
+  .timeline-event-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-muted); }
+  .timeline-event-date { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text-muted); }
+  .timeline-event-label { font-size: 11px; color: var(--text-muted); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <div class="header-seal">Board of Governors · Division of Supervision and Regulation</div>
+    <h1>Statement of Supervisory Operating Principles<br><span>Change Analysis Tool</span></h1>
+    <div class="header-meta">
+      <span class="version-badge v-old">Original · Oct 29, 2025</span>
+      <span style="color:var(--text-muted); font-size:13px; line-height:1.8;">→</span>
+      <span class="version-badge v-new">Updated · Apr 30, 2026</span>
+    </div>
+  </div>
+  <div class="legend">
+    <div class="legend-item" onclick="filterCards('all')" id="filter-all" data-filter="all">All Changes</div>
+    <div class="legend-item" onclick="filterCards('new')" id="filter-new" data-filter="new">
+      <span class="dot dot-new"></span>New Provisions
+    </div>
+    <div class="legend-item" onclick="filterCards('changed')" id="filter-changed" data-filter="changed">
+      <span class="dot dot-changed"></span>Revised Language
+    </div>
+    <div class="legend-item" onclick="filterCards('removed')" id="filter-removed" data-filter="removed">
+      <span class="dot dot-removed"></span>Removed
+    </div>
+  </div>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('changes', this)">Line-by-Line Changes</div>
+  <div class="tab" onclick="switchTab('fdic-occ', this)">Agency Comparison</div>
+  <div class="tab" onclick="switchTab('significance', this)">Significance Matrix</div>
+</div>
+
+<!-- ─────────── CHANGES TAB ─────────── -->
+<div id="tab-changes" class="container panel-body">
+
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-number" style="color:var(--green)">8</div>
+      <div class="stat-label">New Provisions</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" style="color:var(--gold)">7</div>
+      <div class="stat-label">Revised Provisions</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" style="color:#e74c3c">1</div>
+      <div class="stat-label">Removed Provisions</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" style="color:var(--text-muted)">3</div>
+      <div class="stat-label">Unchanged Core Items</div>
+    </div>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-node">
+      <div class="timeline-dot old"></div>
+      <div class="timeline-date">Aug 6, 2025</div>
+      <div class="timeline-label" style="font-size:11px; color:var(--text-muted)">VCS Bowman Priorities</div>
+    </div>
+    <div class="timeline-line"></div>
+    <div class="timeline-node">
+      <div class="timeline-dot old"></div>
+      <div class="timeline-date">Oct 29, 2025</div>
+      <div class="timeline-label">Original Statement</div>
+    </div>
+    <div class="timeline-line"></div>
+    <div class="timeline-event">
+      <div class="timeline-event-dot"></div>
+      <div class="timeline-event-date">Nov–Mar</div>
+      <div class="timeline-event-label">Staff Feedback Period</div>
+    </div>
+    <div class="timeline-line"></div>
+    <div class="timeline-node">
+      <div class="timeline-dot"></div>
+      <div class="timeline-date">Apr 30, 2026</div>
+      <div class="timeline-label">Updated Statement</div>
+    </div>
+  </div>
+
+  <div class="section-label">Provision-by-Provision Analysis</div>
+
+  <div class="changes-grid" id="changes-grid">
+
+    <!-- ① NEW: Primary Objectives Codified -->
+    <div class="change-card" data-type="new">
+      <div class="card-header" onclick="toggleCard(this)">
+        <span class="change-type-badge badge-new">New</span>
+        <span class="card-title">Primary Objectives Formally Codified</span>
+        <span class="card-significance sig-high">▲ High Significance</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-columns">
+          <div>
+            <div class="diff-col-header old-header">Oct 2025 · Original</div>
+            <div class="diff-text">Not present. Guidance opened directly with bullet points on examiner priorities without first articulating overarching objectives.</div>
+          </div>
+          <div>
+            <div class="diff-col-header new-header">Apr 2026 · Updated</div>
+            <div class="diff-text updated">Two explicit primary objectives are now stated at the top: (1) identify as early as possible significant threats to safety and soundness and to U.S. financial stability, and any violation of law or regulation; (2) encourage or direct each supervised organization to take appropriate, proportionate action to eliminate or mitigate those threats as promptly as possible.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">Codifying the primary objectives at the document's outset creates a legal and supervisory anchor point. The explicit reference to "U.S. financial stability" as a co-equal objective alongside safety and soundness of individual firms signals that macro-prudential considerations are built into the framework—not merely implicated. This mirrors the dual mandate structure and will govern how examiners frame escalation decisions going forward.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ② CHANGED: GLB Deference Standard -->
+    <div class="change-card" data-type="changed">
+      <div class="card-header" onclick="toggleCard(this)">
+        <span class="change-type-badge badge-changed">Revised</span>
+        <span class="card-title">GLB Deference Standard: "Impossible" → "Not Reasonably Possible"</span>
+        <span class="card-significance sig-high">▲ High Significance</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-columns">
+          <div>
+            <div class="diff-col-header old-header">Oct 2025 · Original</div>
+            <div class="diff-text">Fed staff should not conduct their own examination of depository institution subsidiaries <span class="highlight-removed">unless it is impossible</span> for the Fed to rely on the examination of the primary supervisor.<br><br>Trigger: primary supervisor does not share <span class="highlight-removed">sufficient information</span>.</div>
+          </div>
+          <div>
+            <div class="diff-col-header new-header">Apr 2026 · Updated</div>
+            <div class="diff-text updated">Fed staff should not conduct their own examination <span class="highlight-added">unless it is not reasonably possible</span> to rely on the primary supervisor's examination.<br><br>Trigger: primary supervisor does not provide <span class="highlight-added">timely access to all supervisory information</span> in their possession.<br><br>Also changed: "to the <span class="highlight-removed">maximum</span> extent possible" → "to the <span class="highlight-added">fullest</span> extent possible."</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">This is arguably the most consequential change for state-federal regulatory coordination. "Impossible" set an extremely high bar—an absolute standard that could justify Fed override of state examiners in almost any circumstance where the Fed simply disagreed with methodology. "Not reasonably possible" is a lower threshold, but the new trigger requiring "timely access to <em>all</em> supervisory information" actually tightens information-sharing requirements on state supervisors. For CSBS members: this is a double-edged sword. The Fed is more clearly required to defer to state work, but states must ensure their information-sharing is comprehensive and timely or risk triggering independent Fed examination.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ③ CHANGED: Internal Audit Reliance -->
+    <div class="change-card" data-type="changed">
+      <div class="card-header" onclick="toggleCard(this)">
+        <span class="change-type-badge badge-changed">Revised</span>
+        <span class="card-title">Internal Audit Reliance for MRA/MRIA Validation — Expanded Criteria</span>
+        <span class="card-significance sig-med">◆ Medium Significance</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-columns">
+          <div>
+            <div class="diff-col-header old-header">Oct 2025 · Original</div>
+            <div class="diff-text">Fed staff should not perform their own duplicative validations <span class="highlight-removed">unless the firm's internal audit is rated unsatisfactory</span>. Staff should rely on internal audit when that function is rated satisfactory.</div>
+          </div>
+          <div>
+            <div class="diff-col-header new-header">Apr 2026 · Updated</div>
+            <div class="diff-text updated">Fed staff should not perform their own duplicative validations unless (1) <span class="highlight-added">Board or Reserve Bank staff has determined that internal audit is ineffective or unsatisfactory</span>, (2) <span class="highlight-added">the firm has no internal audit function</span>, or (3) <span class="highlight-added">internal audit has not validated the remediation</span>.<br><br>Staff should <span class="highlight-added">assess</span> internal audit's validation and, if satisfactory, rely on it—rather than simply relying when rated satisfactory.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">The original provision was binary: satisfactory rating = rely on internal audit; unsatisfactory = duplicate. The update introduces a third trigger (internal audit hasn't yet completed a validation) and refines the verb from "rely on" to "assess and, if satisfactory, rely on"—inserting a formal review step. This is a meaningful procedural refinement that retains examiner judgment while preventing reflexive duplication. The "effectiveness" language also elevates the standard beyond a formal rating.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ④ CHANGED: Remediation Sustainability -->
+    <div class="change-card" data-type="changed">
+      <div class="card-header" onclick="toggleCard(this)">
+        <span class="change-type-badge badge-changed">Revised</span>
+        <span class="card-title">Remediation Sustainability — Response Mechanism Specified</span>
+        <span class="card-significance sig-med">◆ Medium Significance</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-columns">
+          <div>
+            <div class="diff-col-header old-header">Oct 2025 · Original</div>
+            <div class="diff-text">Do not delay termination of an MRA/MRIA to test sustainability over time. Instead, <span class="highlight-removed">monitor sustainability after termination and hold the firm accountable if the deficiency reappears</span>.</div>
+          </div>
+          <div>
+            <div class="diff-col-header new-header">Apr 2026 · Updated</div>
+            <div class="diff-text updated">Do not delay termination. Instead, terminate as promptly as possible after remediation. If remediation turns out not to be sustainable, <span class="highlight-added">issue a new MRA or MRIA, or take more forceful action</span>.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">The original language was vague ("hold the firm accountable"). The update specifies the mechanism: a new MRA/MRIA or escalation to enforcement action. This creates a cleaner process that avoids open-ended supervisory limbo while preserving accountability. Banks now have clearer path to termination without fear of perpetual monitoring, but also clear consequence if issues resurface.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑤ CHANGED: LISCC → GSIB -->
+    <div class="change-card" data-type="changed">
+      <div class="card-header" onclick="toggleCard(this)">
+        <span class="change-type-badge badge-changed">Revised</span>
+        <span class="card-title">Portfolio Label: LISCC → GSIB (Structural Redesignation)</span>
+        <span class="card-significance sig-med">◆ Medium Significance</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-columns">
+          <div>
+            <div class="diff-col-header old-header">Oct 2025 · Original</div>
+            <div class="diff-text">The <span class="highlight-removed">LISCC</span> and LFBO portfolios should no longer conduct horizontal reviews unless benefits outweigh costs.</div>
+          </div>
+          <div>
+            <div class="diff-col-header new-header">Apr 2026 · Updated</div>
+            <div class="diff-text updated">The <span class="highlight-added">GSIB</span> and LFBO portfolios should no longer conduct horizontal reviews unless benefits outweigh costs.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">The replacement of "LISCC" (Large Institution Supervision Coordinating Committee) with "GSIB" reflects the formal elimination of the LISCC supervisory program structure under the Bowman-era restructuring. The LISCC had been a specialized supervisory program with dedicated teams for the largest U.S. and foreign banking organizations. Transitioning to GSIB terminology aligns supervision language with the Basel designation and reduces the specialized coordinating-committee overlay. Substantively, the horizontal review restriction is unchanged—the significance is structural.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑥ CHANGED: FHLB Caveat -->
+    <div class="change-card" data-type="changed">
+      <div class="card-header" onclick="toggleCard(this)">
+        <span class="change-type-badge badge-changed">Revised</span>
+        <span class="card-title">FHLB Liquidity — Statutory Carve-Out Added</span>
+        <span class="card-significance sig-low">● Low Significance</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-columns">
+          <div>
+            <div class="diff-col-header old-header">Oct 2025 · Original</div>
+            <div class="diff-text">Examiners should not discourage firms from including FHLB liquidity in their liquidity management or internal stress tests. [No carve-out.]</div>
+          </div>
+          <div>
+            <div class="diff-col-header new-header">Apr 2026 · Updated</div>
+            <div class="diff-text updated">Examiners should not discourage firms from including FHLB liquidity in their management or stress tests <span class="highlight-added">unless required by law or regulation</span>.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">A modest but legally important clarification. The added carve-out preserves examiner authority where statutory or regulatory requirements mandate different treatment of contingent liquidity sources. This prevents the operating principle from conflicting with existing LCR, NSFR, or other liquidity requirements that may restrict how certain funding sources are counted.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑦ CHANGED: MRA Plain Language -->
+    <div class="change-card" data-type="changed">
+      <div class="card-header" onclick="toggleCard(this)">
+        <span class="change-type-badge badge-changed">Revised</span>
+        <span class="card-title">MRA/MRIA Language Standard: "Person of Ordinary Intelligence" → "Typical Bank Employee"</span>
+        <span class="card-significance sig-med">◆ Medium Significance</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-columns">
+          <div>
+            <div class="diff-col-header old-header">Oct 2025 · Original</div>
+            <div class="diff-text">MRAs/MRIAs must be written with sufficient specificity so that <span class="highlight-removed">a person of ordinary intelligence</span> can readily know what the deficiency is and what a non-deficient state would be.</div>
+          </div>
+          <div>
+            <div class="diff-col-header new-header">Apr 2026 · Updated</div>
+            <div class="diff-text updated">MRAs/MRIAs must be communicated in <span class="highlight-added">plain language</span>, describing deficiencies with sufficient specificity so that <span class="highlight-added">a typical bank employee</span> can readily know what the deficiency is and what a non-deficient state would be.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">"Person of ordinary intelligence" is a due process standard borrowed from constitutional vagueness doctrine. "Typical bank employee" is industry-specific and more contextually demanding—it assumes domain knowledge and sets the clarity bar in the context of regulated entities. The explicit addition of "plain language" as a standalone requirement signals this is not merely about technical sufficiency but about accessible, actionable communication. This may reduce litigation risk around vague MRAs while also raising the quality bar for examiners.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑧ CHANGED: MRA/MRIA Standard Codified -->
+    <div class="change-card" data-type="changed">
+      <div class="card-header" onclick="toggleCard(this)">
+        <span class="change-type-badge badge-changed">Revised</span>
+        <span class="card-title">MRA/MRIA Issuance Standard — Formally Codified with Probability/Severity Tests</span>
+        <span class="card-significance sig-high">▲ High Significance</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-columns">
+          <div>
+            <div class="diff-col-header old-header">Oct 2025 · Original</div>
+            <div class="diff-text">MRAs and MRIAs should prioritize deficiencies that could have a material impact on a firm's financial condition. <span class="highlight-removed">Work is underway to provide more specific guidance.</span><br><br>Enforcement actions: <span class="highlight-removed">work is underway to clarify this standard.</span></div>
+          </div>
+          <div>
+            <div class="diff-col-header new-header">Apr 2026 · Updated</div>
+            <div class="diff-text updated">MRA/MRIA: May be issued based on safety and soundness threats only if there is a <span class="highlight-added">significant probability of significant harm</span> or significant actual harm to the firm's financial condition.<br><br>Enforcement action: Only if there is an <span class="highlight-added">abnormal probability of abnormal harm</span> (defined as substantially higher than normal or significant).<br><br><span class="highlight-added">Quantitative tests</span> under development. Two clear sufficiency tests: (1) estimated loss would cause the firm to be less than well-capitalized, or (2) significant cash outflow within a short period.<br><br>VCS or delegate may grant exceptions to the probability and severity standards.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">This is the most technically significant provision in the updated statement. The original document acknowledged the standard was changing but deferred specifics. The update delivers a two-tiered probability-severity framework: "significant harm" for MRAs/MRIAs vs. "abnormal harm" for enforcement actions, with "abnormal" defined as substantially higher than normal. The quantitative tests—less than well-capitalized, or significant cash outflow—provide bright-line anchors. This represents a fundamental shift from a qualitative, examiner-discretion model toward a quasi-quantitative threshold model, with serious implications for how supervisory findings are challenged and defended.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑨ NEW: Exit Meeting Alignment -->
+    <div class="change-card" data-type="new">
+      <div class="card-header" onclick="toggleCard(this)">
+        <span class="change-type-badge badge-new">New</span>
+        <span class="card-title">Exit Meeting Alignment Requirement</span>
+        <span class="card-significance sig-med">◆ Medium Significance</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-columns">
+          <div>
+            <div class="diff-col-header old-header">Oct 2025 · Original</div>
+            <div class="diff-text">Not present.</div>
+          </div>
+          <div>
+            <div class="diff-col-header new-header">Apr 2026 · Updated</div>
+            <div class="diff-text updated">There should not be any <span class="highlight-added">material differences</span> between the supervisory criticisms communicated in the final exit meeting and those contained in the written examination report.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">This provision addresses a longstanding industry complaint: findings that appear or expand in written reports without having been raised in the exit meeting, leaving institutions unable to respond before the record is set. The requirement creates a procedural transparency obligation and reduces the risk of surprise post-examination findings. It also effectively limits the ability of senior reviewers to add findings after the fact without re-engaging the institution.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑩ NEW: Supervisory Ratings Weighting -->
+    <div class="change-card" data-type="new">
+      <div class="card-header" onclick="toggleCard(this)">
+        <span class="change-type-badge badge-new">New</span>
+        <span class="card-title">CAMELS Ratings — Management Component Weight Capped</span>
+        <span class="card-significance sig-high">▲ High Significance</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-columns">
+          <div>
+            <div class="diff-col-header old-header">Oct 2025 · Original</div>
+            <div class="diff-text">Supervisory ratings should accurately reflect an institution's financial condition and material financial risks. [Ratings weighting guidance was not in original.]</div>
+          </div>
+          <div>
+            <div class="diff-col-header new-header">Apr 2026 · Updated</div>
+            <div class="diff-text updated">The <span class="highlight-added">management and risk management components of CAMELS and RFI/C(D) ratings should not be given more weight than the other components</span> in determining a firm's composite rating. All component ratings should be considered and weighed based on their materiality to the institution.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">Under prior practice, the "M" (Management) component in CAMELS often served as a mechanism to downgrade composite ratings even when financial metrics were sound—a point of significant industry frustration, particularly for well-capitalized institutions subject to aggressive enforcement actions driven by governance criticism. This provision directly constrains that practice, requiring composite ratings to reflect the weighted materiality of all components. This has direct implications for enforcement action thresholds, dividend restrictions, and acquisition approvals that are triggered by composite ratings.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑪ NEW: Self-ID Safe Harbor -->
+    <div class="change-card" data-type="new">
+      <div class="card-header" onclick="toggleCard(this)">
+        <span class="change-type-badge badge-new">New</span>
+        <span class="card-title">Self-Identification Safe Harbor — Presumptive Demotion to Supervisory Observation</span>
+        <span class="card-significance sig-high">▲ High Significance</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-columns">
+          <div>
+            <div class="diff-col-header old-header">Oct 2025 · Original</div>
+            <div class="diff-text">Not present.</div>
+          </div>
+          <div>
+            <div class="diff-col-header new-header">Apr 2026 · Updated</div>
+            <div class="diff-text updated">If a Board-supervised institution <span class="highlight-added">self-identifies a deficiency that would otherwise satisfy the MRA/MRIA standard</span> and promptly begins remediating that deficiency in a manner determined to be reasonable by supervisory staff, the deficiency will <span class="highlight-added">presumptively be treated as a supervisory observation</span> rather than an MRA or MRIA.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">This is a significant incentive for proactive risk management and transparency. The provision creates a structural reward for banks that find and fix their own problems before examiners do. This is particularly consequential for the interaction between internal audit, compliance programs, and the examination cycle. Banks with robust self-assessment functions will now have a tangible regulatory benefit. The "presumptively" qualifier preserves examiner discretion to override in exceptional cases, maintaining flexibility without eliminating the incentive structure.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑫ NEW: Bank Complaint Mechanism -->
+    <div class="change-card" data-type="new">
+      <div class="card-header" onclick="toggleCard(this)">
+        <span class="change-type-badge badge-new">New</span>
+        <span class="card-title">Bank Compliance Reporting Mechanism Established</span>
+        <span class="card-significance sig-med">◆ Medium Significance</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-columns">
+          <div>
+            <div class="diff-col-header old-header">Oct 2025 · Original</div>
+            <div class="diff-text">Not present. No formal channel for supervised entities to report non-compliance with supervisory principles.</div>
+          </div>
+          <div>
+            <div class="diff-col-header new-header">Apr 2026 · Updated</div>
+            <div class="diff-text updated">A Board-supervised banking organization is encouraged to <span class="highlight-added">report a failure to comply with any of the supervisory operating principles</span> by contacting the Head of Supervision of the relevant Reserve Bank or the Board's Deputy Director for Supervision.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">This is a novel accountability mechanism with no real precedent in Federal Reserve supervisory guidance. It effectively creates a feedback loop in which supervised institutions can escalate examiner conduct that deviates from stated principles—without having to resort to formal appeals or political channels. This has dual significance: it creates soft accountability pressure on examiners, and it signals that the Board views the operating principles as binding internal policy rather than mere aspirational guidance.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑬ NEW: Troubled Institution Resolution -->
+    <div class="change-card" data-type="new">
+      <div class="card-header" onclick="toggleCard(this)">
+        <span class="change-type-badge badge-new">New</span>
+        <span class="card-title">Early Resolution of Troubled IDIs — DIF Cost Minimization</span>
+        <span class="card-significance sig-med">◆ Medium Significance</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-columns">
+          <div>
+            <div class="diff-col-header old-header">Oct 2025 · Original</div>
+            <div class="diff-text">Not present.</div>
+          </div>
+          <div>
+            <div class="diff-col-header new-header">Apr 2026 · Updated</div>
+            <div class="diff-text updated">Board and Reserve Bank supervisory staff should facilitate <span class="highlight-added">early resolution of troubled insured depository institutions</span> to minimize the long-term cost to the Deposit Insurance Fund as contemplated by 12 U.S.C. 1823 note.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">The explicit statutory citation to 12 U.S.C. 1823 note (the least-cost resolution requirement) is telling. It anchors the Fed's supervisory behavior to FDIC's resolution framework, reinforcing interagency coordination around troubled institutions. The provision also signals concern about prolonged regulatory forbearance—requiring supervisors to actively move toward resolution rather than extend hope for recovery. This could affect how the Fed treats institutions in extended MOU or consent order situations.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑭ NEW: Forward-Looking Tools -->
+    <div class="change-card" data-type="new">
+      <div class="card-header" onclick="toggleCard(this)">
+        <span class="change-type-badge badge-new">New</span>
+        <span class="card-title">Forward-Looking Supervisory Tools — Continuous Improvement Mandate</span>
+        <span class="card-significance sig-low">● Low Significance</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-columns">
+          <div>
+            <div class="diff-col-header old-header">Oct 2025 · Original</div>
+            <div class="diff-text">Not present.</div>
+          </div>
+          <div>
+            <div class="diff-col-header new-header">Apr 2026 · Updated</div>
+            <div class="diff-text updated">Board and Reserve Bank supervisory staff should work together to <span class="highlight-added">maintain, develop, and continuously improve forward-looking tools</span> to identify significant threats to safety and soundness and to U.S. financial stability.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">This provision is directional rather than immediately operational—a mandate to invest in supervisory analytics and early-warning systems. In context with the VCS Bowman focus on identifying risks "as early as possible," this foreshadows potential changes to off-site monitoring programs and supervisory stress testing methodologies. It may also relate to the quantitative tests for "significant harm" noted in the MRA/MRIA standard, which are explicitly described as still under development.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑮ REMOVED: Vague Enforcement Standard Placeholder -->
+    <div class="change-card" data-type="removed">
+      <div class="card-header" onclick="toggleCard(this)">
+        <span class="change-type-badge badge-removed">Resolved</span>
+        <span class="card-title">Placeholder Language for Enforcement Standard Removed (Now Codified)</span>
+        <span class="card-significance sig-med">◆ Medium Significance</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-columns">
+          <div>
+            <div class="diff-col-header old-header">Oct 2025 · Original</div>
+            <div class="diff-text">The original statement contained the following: <span class="highlight-removed">"Our interpretation of the statutory standard for issuing enforcement actions based on an unsafe or unsound practice will also be changing (work is underway to clarify this standard)."</span></div>
+          </div>
+          <div>
+            <div class="diff-col-header new-header">Apr 2026 · Updated</div>
+            <div class="diff-text updated">Replaced with fully articulated standards: the "abnormal probability of abnormal harm" test, the definition of "abnormal," the exception mechanism, the good-faith standard, and quantitative sufficiency tests.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">The resolution of the placeholder language is itself significant. The five-month gap between the original and updated statements gave industry, staff, and outside counsel time to anticipate and prepare for substantive changes. The resulting "abnormal harm" standard goes further than many expected—introducing a quasi-quantitative burden-of-proof framework that fundamentally changes how enforcement actions must be justified and documented.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /changes-grid -->
+</div>
+
+<!-- ─────────── FDIC/OCC COMPARISON TAB ─────────── -->
+<div id="tab-fdic-occ" class="container panel-body hidden">
+
+  <div class="section-label">Interagency Divergence Analysis</div>
+
+  <div class="insight-panel">
+    <div class="insight-panel-header" onclick="toggleInsight(this)">
+      <span class="insight-icon">⚖️</span>
+      <div style="flex:1">
+        <div class="insight-panel-title">Material Risk Threshold — Comparative Framework</div>
+        <div class="insight-panel-sub">Federal Reserve vs. FDIC vs. OCC · 2025–2026</div>
+      </div>
+      <span class="chevron" style="font-size:14px">▶</span>
+    </div>
+    <div class="insight-body open">
+      <div class="insight-grid">
+        <div class="insight-col">
+          <div class="insight-col-title fdic-title">FDIC · Material Risk Approach</div>
+          <div class="insight-item">
+            <div class="insight-item-label">Primary Framework</div>
+            <div class="insight-item-text">Risk-Focused Examination (RFE) philosophy centers on identifying "material risks" to earnings, capital, and liquidity. Chairman Hill's FDIC has emphasized right-sizing examination intensity to actual risk exposure.</div>
+          </div>
+          <div class="insight-item">
+            <div class="insight-item-label">Threshold Language</div>
+            <div class="insight-item-text">FDIC uses "material adverse effect" on the institution's financial condition as the primary threshold for supervisory action—a standard drawn from examination manuals and FDI Act Section 8 authority. The term "material" is used qualitatively, defined by examiner judgment against risk categories.</div>
+          </div>
+          <div class="insight-item">
+            <div class="insight-item-label">MRA/MRIA Equivalent</div>
+            <div class="insight-item-text">FDIC uses Matters Requiring Board Attention (MRBAs) and Violations of Laws and Regulations. The FDIC's threshold for formal findings has historically been more discretionary and tied to exam cycle findings rather than a stated probability-severity test.</div>
+          </div>
+          <div class="insight-item">
+            <div class="insight-item-label">2025–2026 Direction</div>
+            <div class="insight-item-text">Hill's FDIC has reduced examination burden for well-rated community banks, signaled movement away from "process-oriented" criticism, and moved toward concentrating supervisory attention on financial fundamentals—directionally aligned with the Fed's new posture, but without codifying probability/severity thresholds.</div>
+          </div>
+        </div>
+        <div class="insight-col">
+          <div class="insight-col-title occ-title">OCC · Risk-Based Supervision</div>
+          <div class="insight-item">
+            <div class="insight-item-label">Primary Framework</div>
+            <div class="insight-item-text">OCC's Comptroller's Handbook defines eight risk categories (credit, interest rate, liquidity, price, operational, compliance, strategic, reputational). Supervisory intensity is calibrated to each category's magnitude and direction, with a separate risk assessment for each.</div>
+          </div>
+          <div class="insight-item">
+            <div class="insight-item-label">Threshold Language</div>
+            <div class="insight-item-text">OCC uses "matters requiring attention" (MRAs) under a standard that focuses on practices "inconsistent with safe and sound banking" or violations of law. OCC Acting Comptroller Paulson aligned with deregulatory posture in 2025—reducing examination burden and refocusing on quantifiable risk metrics.</div>
+          </div>
+          <div class="insight-item">
+            <div class="insight-item-label">MRA Standard</div>
+            <div class="insight-item-text">OCC's MRA framework does not currently codify a probability-severity threshold equivalent to the Fed's new "significant harm" test. OCC relies on examiner judgment within a risk framework, with less formalized internal escalation doctrine.</div>
+          </div>
+          <div class="insight-item">
+            <div class="insight-item-label">Key Distinction</div>
+            <div class="insight-item-text">OCC supervision of national banks is direct (not holding-company layered), avoiding the GLB deference question entirely. OCC also explicitly supervises trust activities, fintech charters, and stablecoin issuers—areas where its risk tolerance diverges from FDIC and Fed.</div>
+          </div>
+        </div>
+        <div class="insight-col">
+          <div class="insight-col-title fed-title">Federal Reserve · Updated Approach</div>
+          <div class="insight-item">
+            <div class="insight-item-label">Primary Framework</div>
+            <div class="insight-item-text">The updated statement creates the most formalized threshold structure of the three agencies: a two-tiered probability-severity framework distinguishing MRA/MRIA ("significant harm") from enforcement actions ("abnormal harm"), with developing quantitative tests.</div>
+          </div>
+          <div class="insight-item">
+            <div class="insight-item-label">Threshold Language</div>
+            <div class="insight-item-text">"Significant probability of significant harm" for MRAs/MRIAs; "abnormal probability of abnormal harm" (defined as substantially higher than normal) for enforcement actions. Two bright-line quantitative tests: below well-capitalized, or significant cash outflow in a short period.</div>
+          </div>
+          <div class="insight-item">
+            <div class="insight-item-label">Key Distinction</div>
+            <div class="insight-item-text">The Fed is the only agency to formally define "abnormal" harm and to commit to developing quantitative tests for the threshold. This creates a more legalized, burden-of-proof-like structure than either the FDIC's qualitative "material adverse effect" or the OCC's risk-category framework.</div>
+          </div>
+          <div class="insight-item">
+            <div class="insight-item-label">Unique Features</div>
+            <div class="insight-item-text">Self-ID safe harbor; bank complaint reporting channel; GLB deference codification; CAMELS component weighting constraint—none of which have direct equivalents in FDIC or OCC supervisory guidance.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tension-box">
+        <div class="tension-label">⚠ Key Divergences and Potential Tensions</div>
+        <div class="tension-items">
+          <div class="tension-item">
+            <div class="tension-item-title">Quantitative Threshold vs. FDIC Qualitative "Material Risk"</div>
+            <div class="tension-item-text">The Fed's developing probability-severity tests may create divergent outcomes for the same institution reviewed by different primary regulators. A state member bank might face a more rigorous bright-line test from the Fed than a comparable state nonmember bank faces from the FDIC—undermining competitive neutrality.</div>
+          </div>
+          <div class="tension-item">
+            <div class="tension-item-title">Self-ID Safe Harbor Has No FDIC/OCC Parallel</div>
+            <div class="tension-item-text">The Fed's presumptive downgrade to a supervisory observation for self-identified deficiencies creates a significant incentive structure that doesn't exist at FDIC or OCC. Dual-regulated institutions may face inconsistent treatment of the same self-disclosed finding depending on which agency's standards govern.</div>
+          </div>
+          <div class="tension-item">
+            <div class="tension-item-title">GLB Deference Codification vs. OCC Direct Examination</div>
+            <div class="tension-item-text">The Fed's strengthened (but still conditional) GLB deference framework applies only to its holding-company supervisory role. OCC's direct examination of national bank subsidiaries is entirely outside GLB deference—creating potential for duplicative findings at the subsidiary level that the Fed is constrained from challenging at the BHC level.</div>
+          </div>
+          <div class="tension-item">
+            <div class="tension-item-title">CAMELS Weighting Constraint Not Mirrored at FDIC</div>
+            <div class="tension-item-text">The Fed's explicit directive that the "M" component cannot outweigh other CAMELS components in determining composite ratings has no stated equivalent at the FDIC. For state member banks co-examined by both, the composite rating determination process may reflect different weighting philosophies, complicating appeals and enforcement thresholds.</div>
+          </div>
+          <div class="tension-item">
+            <div class="tension-item-title">Enforcement Threshold Divergence Creates Arbitrage Risk</div>
+            <div class="tension-item-text">The Fed's "abnormal harm" standard for enforcement actions is definitionally higher than a plain reading of FDIC's "unsafe or unsound practice" authority under Section 8. Institutions subject to both may face different enforcement postures for the same conduct—raising both competitive equity and systemic risk management concerns.</div>
+          </div>
+          <div class="tension-item">
+            <div class="tension-item-title">Bank Complaint Channel Is Unprecedented</div>
+            <div class="tension-item-text">The Fed's new mechanism allowing supervised institutions to report examiner non-compliance with operating principles has no analog at FDIC or OCC. This creates asymmetric accountability: Fed-supervised institutions have an explicit escalation path, while similarly situated institutions at other agencies must rely on informal channels or the formal appeals process.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">State-Federal Coordination Implications</div>
+
+  <div class="insight-panel">
+    <div class="insight-panel-header" onclick="toggleInsight(this)">
+      <span class="insight-icon">🏛</span>
+      <div style="flex:1">
+        <div class="insight-panel-title">Dual Banking System Impact — CSBS & State Regulator Perspective</div>
+        <div class="insight-panel-sub">GLB Deference · State Member Bank Examination · Information Sharing</div>
+      </div>
+      <span class="chevron" style="font-size:14px">▶</span>
+    </div>
+    <div class="insight-body open">
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 24px; padding: 20px 24px;">
+        <div>
+          <div class="insight-col-title" style="color:var(--gold); font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:14px; padding-bottom:8px; border-bottom:1px solid var(--border);">Favorable Developments for States</div>
+          <div class="insight-item">
+            <div class="insight-item-label">Strengthened GLB Deference (With Caveats)</div>
+            <div class="insight-item-text">Moving from "maximum extent" to "fullest extent" and from "impossible" to "not reasonably possible" reinforces state examination primacy. For BHC supervision, the Fed should rely on state bank supervisor work unless information sharing breaks down—reducing redundant examination burden on state-chartered institutions.</div>
+          </div>
+          <div class="insight-item">
+            <div class="insight-item-label">AEP Reliance Codified</div>
+            <div class="insight-item-text">The alternate-year examination program provision, while present in the original, now sits within a strengthened deference framework. State banking agencies conducting alternating-year exams should face less Federal Reserve second-guessing of findings and methodology.</div>
+          </div>
+          <div class="insight-item">
+            <div class="insight-item-label">Proportionality Principle Reinforced</div>
+            <div class="insight-item-text">The resource allocation directive (more resources on large/complex, less on small/less complex) aligns with CSBS's longstanding position that community banks should not face examination intensity calibrated for systemically important institutions.</div>
+          </div>
+        </div>
+        <div>
+          <div class="insight-col-title" style="color:#e74c3c; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:14px; padding-bottom:8px; border-bottom:1px solid var(--border);">Risks and Watch Areas</div>
+          <div class="insight-item">
+            <div class="insight-item-label">"Timely Access to All Information" Trigger</div>
+            <div class="insight-item-text">The new trigger for Fed override—failure to provide "timely access to all supervisory information"—sets a demanding standard. States with confidentiality constraints on sharing certain examination materials could inadvertently trigger the "not reasonably possible" exception, leading to direct Fed examination of state-chartered subsidiaries.</div>
+          </div>
+          <div class="insight-item">
+            <div class="insight-item-label">Patchwork Threshold Standards</div>
+            <div class="insight-item-text">The Fed's codified probability-severity thresholds create a regulatory standard that may diverge from FDIC standards applied to structurally similar state nonmember banks. State regulators co-examining state member banks may face pressure to align with the Fed's new thresholds—or risk apparent inconsistency.</div>
+          </div>
+          <div class="insight-item">
+            <div class="insight-item-label">No Equivalent FDIC Reform Pending</div>
+            <div class="insight-item-text">The FDIC has signaled similar directional shifts under Chairman Hill but has not codified an equivalent operating principles statement with comparable specificity. This creates a regulatory gap where state member banks benefit from Fed operating principles that don't apply to identically situated state nonmember banks.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─────────── SIGNIFICANCE MATRIX TAB ─────────── -->
+<div id="tab-significance" class="container panel-body hidden">
+
+  <div class="section-label">Change Significance Matrix</div>
+
+  <div style="background:var(--card); border:1px solid var(--border); border-radius:4px; overflow:hidden;">
+    <table style="width:100%; border-collapse:collapse; font-size:13px;">
+      <thead>
+        <tr style="background:rgba(201,168,76,0.08); border-bottom:1px solid var(--border);">
+          <th style="padding:12px 20px; text-align:left; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.1em; color:var(--gold); font-weight:500; text-transform:uppercase;">Provision</th>
+          <th style="padding:12px 16px; text-align:center; font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-muted); font-weight:500; text-transform:uppercase;">Type</th>
+          <th style="padding:12px 16px; text-align:center; font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-muted); font-weight:500; text-transform:uppercase;">Significance</th>
+          <th style="padding:12px 16px; text-align:center; font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-muted); font-weight:500; text-transform:uppercase;">Industry Impact</th>
+          <th style="padding:12px 16px; text-align:center; font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-muted); font-weight:500; text-transform:uppercase;">State Impact</th>
+        </tr>
+      </thead>
+      <tbody id="matrix-body">
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+const matrixData = [
+  { name: "Primary Objectives Codified", type: "new", sig: "High", industry: "Medium", state: "Medium" },
+  { name: "GLB Deference: 'Impossible' → 'Not Reasonably Possible'", type: "changed", sig: "High", industry: "High", state: "High" },
+  { name: "Internal Audit Reliance Criteria Expanded", type: "changed", sig: "Medium", industry: "High", state: "Low" },
+  { name: "Remediation Sustainability Response Specified", type: "changed", sig: "Medium", industry: "High", state: "Low" },
+  { name: "LISCC → GSIB Redesignation", type: "changed", sig: "Medium", industry: "Medium", state: "Low" },
+  { name: "FHLB Liquidity — Statutory Carve-Out Added", type: "changed", sig: "Low", industry: "Medium", state: "Low" },
+  { name: "MRA Language: 'Typical Bank Employee' Standard", type: "changed", sig: "Medium", industry: "High", state: "Medium" },
+  { name: "MRA/MRIA Probability-Severity Standard Codified", type: "changed", sig: "High", industry: "High", state: "High" },
+  { name: "Exit Meeting Alignment Requirement", type: "new", sig: "Medium", industry: "High", state: "Medium" },
+  { name: "CAMELS 'M' Component Weight Capped", type: "new", sig: "High", industry: "High", state: "Medium" },
+  { name: "Self-Identification Safe Harbor", type: "new", sig: "High", industry: "High", state: "Low" },
+  { name: "Bank Complaint Reporting Channel", type: "new", sig: "Medium", industry: "Medium", state: "Low" },
+  { name: "Early Resolution of Troubled IDIs", type: "new", sig: "Medium", industry: "Medium", state: "Medium" },
+  { name: "Forward-Looking Tools Mandate", type: "new", sig: "Low", industry: "Low", state: "Low" },
+  { name: "Enforcement Standard Placeholder Resolved", type: "removed", sig: "Medium", industry: "High", state: "Medium" },
+];
+
+function getTypeHTML(t) {
+  if (t === 'new') return '<span class="change-type-badge badge-new">New</span>';
+  if (t === 'changed') return '<span class="change-type-badge badge-changed">Revised</span>';
+  return '<span class="change-type-badge badge-removed">Resolved</span>';
+}
+function getSigColor(s) {
+  if (s === 'High') return '#e74c3c';
+  if (s === 'Medium') return 'var(--amber)';
+  return 'var(--text-muted)';
+}
+function getImpactBar(s) {
+  const w = s === 'High' ? 100 : s === 'Medium' ? 60 : 25;
+  const c = getSigColor(s);
+  return `<div style="display:flex;align-items:center;gap:8px;justify-content:center"><div style="width:60px;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden"><div style="width:${w}%;height:100%;background:${c};border-radius:2px"></div></div><span style="font-size:11px;color:${c};font-family:'JetBrains Mono',monospace">${s}</span></div>`;
+}
+
+const tbody = document.getElementById('matrix-body');
+matrixData.forEach((row, i) => {
+  const tr = document.createElement('tr');
+  tr.style.cssText = `border-bottom:1px solid rgba(255,255,255,0.05); ${i%2===0?'background:rgba(255,255,255,0.015)':''}`;
+  tr.innerHTML = `
+    <td style="padding:12px 20px; color:var(--text); line-height:1.4">${row.name}</td>
+    <td style="padding:12px 16px; text-align:center">${getTypeHTML(row.type)}</td>
+    <td style="padding:12px 16px; text-align:center">${getImpactBar(row.sig)}</td>
+    <td style="padding:12px 16px; text-align:center">${getImpactBar(row.industry)}</td>
+    <td style="padding:12px 16px; text-align:center">${getImpactBar(row.state)}</td>
+  `;
+  tbody.appendChild(tr);
+});
+
+// ─── Toggle Card ───
+function toggleCard(header) {
+  const body = header.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  header.classList.toggle('open', !isOpen);
+}
+
+// ─── Toggle Insight Panel ───
+function toggleInsight(header) {
+  const body = header.nextElementSibling;
+  const chevron = header.querySelector('.chevron');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  chevron.style.transform = isOpen ? '' : 'rotate(90deg)';
+}
+
+// ─── Filter Cards ───
+function filterCards(type) {
+  document.querySelectorAll('[id^="filter-"]').forEach(el => el.classList.remove('active'));
+  const cards = document.querySelectorAll('.change-card');
+  cards.forEach(card => {
+    if (type === 'all' || card.dataset.type === type) {
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+  const target = document.getElementById('filter-' + type);
+  if (target) target.classList.add('active');
+}
+
+// ─── Switch Tab ───
+function switchTab(tab, el) {
+  document.querySelectorAll('[id^="tab-"]').forEach(t => t.classList.add('hidden'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.remove('hidden');
+  el.classList.add('active');
+}
+
+// Init: set "all" filter active
+document.getElementById('filter-all').classList.add('active');
+</script>
+</body>
+</html>

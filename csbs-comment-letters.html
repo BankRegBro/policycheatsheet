@@ -1,0 +1,2335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSBS Comment Letters · A Policy Compendium 2017–2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1814;
+    --ink-2: #4a463e;
+    --ink-3: #6b6558;        /* tightened from #8a847a for WCAG AA contrast on paper */
+    --paper: #f5efe2;
+    --paper-2: #ebe3d2;
+    --paper-3: #ddd2bb;
+    --card: #fbf7ec;
+    --rule: #d4c8ad;
+    --rule-light: #e3d8bf;
+    --accent: #7a1c1c;
+    --accent-2: #a83838;
+    --highlight: #e8d99c;
+    --tag-bg: #ebe3d2;
+    --tag-text: #4a463e;
+    --serif: 'Newsreader', Georgia, serif;
+    --sans: 'IBM Plex Sans', system-ui, sans-serif;
+    --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.55;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--highlight); color: var(--ink); }
+
+  .masthead {
+    border-bottom: 1px solid var(--rule);
+    padding: 32px 40px 28px;
+    background: var(--paper);
+    position: relative;
+  }
+  .masthead-inner { max-width: 1400px; margin: 0 auto; }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-3);
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 42px;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 14px;
+    font-variation-settings: "opsz" 32;
+  }
+  /* Dropped the weight change — italic + maroon does the work */
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .deck {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 17px;
+    line-height: 1.4;
+    color: var(--ink-2);
+    max-width: 760px;
+    font-weight: 300;
+    font-variation-settings: "opsz" 18;
+  }
+  .stats-strip {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    margin-top: 28px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: 16px 0;
+  }
+  .stat { padding: 0 24px; border-right: 1px solid var(--rule-light); }
+  .stat:last-child { border-right: 0; }
+  .stat:first-child { padding-left: 0; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 32px;
+    font-weight: 400;
+    color: var(--accent);
+    line-height: 1;
+    font-variation-settings: "opsz" 24;
+  }
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-3);
+    margin-top: 6px;
+  }
+  .stat-link { cursor: pointer; transition: color 0.1s; background: none; border: 0; padding: 0; text-align: left; display: block; }
+  .stat-link:hover .stat-num { color: var(--ink); }
+  .stat-link:hover .stat-label { color: var(--ink); }
+  .stat-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
+  .timeline-section {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px 40px 0;
+  }
+  .timeline-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-3);
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .timeline-label span:last-child { font-style: italic; font-family: var(--serif); text-transform: none; letter-spacing: 0; color: var(--ink-2); font-size: 13px; }
+  .timeline { width: 100%; height: 90px; display: block; }
+  .timeline-axis {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-3);
+    padding: 4px 4px 0;
+    letter-spacing: 0.05em;
+  }
+  .era-band {
+    display: flex;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    color: var(--ink-3);
+    letter-spacing: 0.05em;
+    margin-top: 6px;
+    border-top: 1px solid var(--rule-light);
+    padding-top: 4px;
+  }
+  .era-band span {
+    text-align: center;
+    border-right: 1px dotted var(--rule);
+    padding: 2px 0;
+  }
+  .era-band span:last-child { border-right: 0; }
+  .era-band .era-ryan    { color: #5a5547; }
+  .era-band .era-cooper  { color: #6b4a32; }
+  .era-band .era-milhorn { color: var(--accent); font-weight: 500; }
+
+  .layout {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 48px;
+    padding: 32px 40px 80px;
+    align-items: start;
+  }
+  .sidebar {
+    position: sticky;
+    top: 20px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    padding-right: 8px;
+  }
+  .sidebar::-webkit-scrollbar { width: 6px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--paper-3); border-radius: 3px; }
+
+  .search-wrap { margin-bottom: 24px; position: relative; }
+  .search-input {
+    width: 100%;
+    padding: 10px 14px 10px 14px;
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--ink);
+    transition: border-color 0.15s;
+  }
+  .search-input:focus { outline: none; border-color: var(--accent); }
+  .search-input::placeholder { color: var(--ink-3); font-style: italic; font-family: var(--serif); }
+  .search-hint {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--ink-3);
+    letter-spacing: 0.08em;
+    text-align: right;
+    margin-top: 4px;
+    text-transform: uppercase;
+  }
+  .search-hint kbd {
+    font-family: var(--mono);
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 1px 4px;
+    font-size: 9px;
+    color: var(--ink-2);
+  }
+
+  .filter-group { margin-bottom: 24px; }
+  .filter-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-3);
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .filter-label .help { font-size: 11px; color: var(--ink-3); font-family: var(--serif); font-style: italic; text-transform: none; letter-spacing: 0; cursor: help; }
+
+  .topic-list { list-style: none; }
+  .topic-item {
+    padding: 6px 0;
+    font-size: 13px;
+    cursor: pointer;
+    color: var(--ink-2);
+    transition: color 0.1s;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px dotted transparent;
+    line-height: 1.3;
+  }
+  .topic-item:hover { color: var(--accent); }
+  .topic-item.active { color: var(--accent); font-weight: 500; border-bottom-color: var(--accent); }
+  .topic-item .count {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-3);
+    margin-left: 8px;
+    flex-shrink: 0;
+  }
+  .topic-item.active .count { color: var(--accent-2); }
+
+  .filter-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .pill {
+    font-family: var(--sans);
+    font-size: 11px;
+    padding: 3px 8px;
+    background: transparent;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    color: var(--ink-2);
+    cursor: pointer;
+    transition: all 0.1s;
+    line-height: 1.5;
+  }
+  .pill:hover { border-color: var(--ink-2); }
+  .pill.active {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+  .pill.through-pill {
+    display: flex; align-items: center; gap: 6px;
+  }
+  .pill .th-dot {
+    display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+  }
+  .th-dot.th-federalism { background: var(--accent); }
+  .th-dot.th-admin-process { background: #6b4a32; }
+  .th-dot.th-tailored-substance { background: #2f5d3a; }
+
+  .pill.era-pill {
+    display: flex; align-items: center; gap: 6px;
+  }
+  .era-mark {
+    display: inline-block; width: 8px; height: 8px;
+    border-radius: 1px;
+  }
+  .era-mark.era-ryan { background: #5a5547; }
+  .era-mark.era-cooper { background: #6b4a32; }
+  .era-mark.era-milhorn { background: var(--accent); }
+
+  .main { min-width: 0; }
+  .controls-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--rule);
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .results-count {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--ink-2);
+    font-size: 15px;
+    font-variation-settings: "opsz" 16;
+  }
+  .results-count strong { font-style: normal; color: var(--accent); font-weight: 500; }
+  .active-chips {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-left: 12px;
+  }
+  .chip {
+    font-family: var(--mono);
+    font-size: 10px;
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    color: var(--ink-2);
+    padding: 2px 6px 2px 8px;
+    border-radius: 2px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .chip:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .chip .x { font-weight: 600; opacity: 0.7; margin-left: 2px; }
+
+  .sort-control {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+  .sort-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-3);
+    margin-right: 8px;
+  }
+  .sort-btn {
+    font-family: var(--sans);
+    font-size: 12px;
+    padding: 4px 10px;
+    background: transparent;
+    border: 1px solid var(--rule);
+    color: var(--ink-2);
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.1s;
+  }
+  .sort-btn:hover { color: var(--ink); border-color: var(--ink-3); }
+  .sort-btn.active {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+
+  .toolbar-extras {
+    margin-left: auto;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .icon-btn {
+    font-family: var(--mono);
+    font-size: 10px;
+    background: transparent;
+    border: 1px solid var(--rule);
+    color: var(--ink-2);
+    padding: 4px 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: all 0.1s;
+  }
+  .icon-btn:hover { color: var(--ink); border-color: var(--ink-2); background: var(--card); }
+
+  .topic-group { margin-bottom: 40px; }
+  .topic-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .topic-number {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    letter-spacing: 0.1em;
+  }
+  .topic-title {
+    font-family: var(--serif);
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--ink);
+    flex: 1;
+    line-height: 1.1;
+    font-variation-settings: "opsz" 20;
+  }
+  .topic-meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .topic-arc {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink-2);
+    margin-bottom: 18px;
+    padding: 10px 14px;
+    background: var(--paper-2);
+    border-left: 2px solid var(--accent);
+    line-height: 1.5;
+    font-variation-settings: "opsz" 14;
+  }
+
+  .letter-card {
+    padding: 18px 0;
+    border-bottom: 1px solid var(--rule-light);
+    display: grid;
+    grid-template-columns: 88px 1fr;
+    gap: 20px;
+    cursor: pointer;
+    transition: background 0.1s, padding-left 0.15s;
+    position: relative;
+  }
+  .letter-card:hover { background: var(--card); padding-left: 6px; }
+  .letter-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; background: var(--card); }
+  .letter-card:last-child { border-bottom: 0; }
+  .letter-card::after {
+    content: "›";
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--serif);
+    color: var(--ink-3);
+    font-size: 24px;
+    opacity: 0;
+    transition: opacity 0.15s, right 0.15s;
+  }
+  .letter-card:hover::after { opacity: 1; right: 4px; }
+
+  .letter-date {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-2);
+    line-height: 1.3;
+    padding-top: 2px;
+  }
+  .letter-date .year {
+    font-family: var(--serif);
+    font-size: 20px;
+    color: var(--accent);
+    display: block;
+    line-height: 1;
+    margin-bottom: 2px;
+    font-weight: 400;
+    font-variation-settings: "opsz" 18;
+  }
+  .letter-date .era-mark {
+    margin-top: 6px;
+    opacity: 0.7;
+  }
+
+  .letter-body { min-width: 0; padding-right: 20px; }
+  .letter-title {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.25;
+    margin-bottom: 6px;
+    font-variation-settings: "opsz" 16;
+  }
+  .letter-meta {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--ink-2);          /* was ink-3 — bumped for AA contrast */
+    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+    align-items: center;
+  }
+  .letter-meta-item { display: inline-flex; align-items: center; gap: 4px; }
+  .letter-meta-label { color: var(--ink-3); font-style: italic; font-family: var(--serif); }
+  .agency-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    padding: 2px 6px;
+    letter-spacing: 0.05em;
+    border-radius: 2px;
+  }
+  .vehicle-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    background: transparent;
+    color: var(--ink-3);
+    padding: 2px 6px;
+    border: 1px solid var(--rule);
+    letter-spacing: 0.05em;
+    border-radius: 2px;
+  }
+  .sig-mark {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .th-marks {
+    display: inline-flex;
+    gap: 3px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .th-marks .th-dot {
+    width: 5px; height: 5px; border-radius: 50%; display: inline-block;
+  }
+
+  .letter-position {
+    font-size: 14px;
+    color: var(--ink-2);
+    line-height: 1.55;
+    margin-bottom: 8px;
+  }
+  .letter-quote {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink);
+    padding: 8px 0 8px 16px;
+    border-left: 2px solid var(--highlight);
+    margin-top: 8px;
+    position: relative;
+    font-variation-settings: "opsz" 14;
+  }
+  .letter-quote::before {
+    content: "\201C";
+    font-family: var(--serif);
+    font-size: 32px;
+    color: var(--accent);
+    line-height: 1;
+    position: absolute;
+    left: 4px;
+    top: -2px;
+    font-style: normal;
+  }
+  .letter-quote-text { padding-left: 18px; display: block; }
+
+  .empty-state {
+    padding: 60px 20px;
+    text-align: center;
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--ink-3);
+    font-size: 18px;
+  }
+
+  .footer {
+    max-width: 1400px;
+    margin: 60px auto 0;
+    padding: 32px 40px;
+    border-top: 1px solid var(--rule);
+    font-size: 13px;
+    color: var(--ink-2);     /* was ink-3 — bumped for AA */
+    line-height: 1.6;
+  }
+  .footer h3 {
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 8px;
+    margin-top: 16px;
+  }
+  .footer h3:first-child { margin-top: 0; }
+  .footer p { margin-bottom: 8px; }
+  .footer .through-key {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-right: 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-2);
+  }
+
+  /* Modal */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(26, 24, 20, 0.5);
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    z-index: 100;
+    padding: 40px 20px;
+    overflow-y: auto;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal {
+    background: var(--paper);
+    max-width: 720px;
+    width: 100%;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 40px 44px 36px;
+    position: relative;
+    margin: auto;
+    box-shadow: 0 24px 60px rgba(26, 24, 20, 0.18);
+  }
+  .modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: transparent;
+    border: 1px solid var(--rule);
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+    color: var(--ink-2);
+    font-size: 16px;
+    font-family: var(--sans);
+    line-height: 1;
+    border-radius: 2px;
+    transition: all 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-close:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .modal-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-3);
+    margin-bottom: 10px;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-right: 50px;
+  }
+  .modal-eyebrow .agency-tag { background: var(--paper-2); }
+  .modal-title {
+    font-family: var(--serif);
+    font-size: 26px;
+    line-height: 1.15;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 14px;
+    font-variation-settings: "opsz" 24;
+    letter-spacing: -0.005em;
+  }
+  .modal-meta {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink-2);
+    line-height: 1.5;
+    padding-bottom: 18px;
+    margin-bottom: 22px;
+    border-bottom: 1px solid var(--rule);
+    font-variation-settings: "opsz" 14;
+  }
+  .modal-meta .label {
+    font-style: normal;
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-3);
+    margin-right: 6px;
+  }
+  .modal-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: -8px 0 18px;
+  }
+  .modal-tags .through-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 2px;
+    background: var(--paper-2);
+    color: var(--ink-2);
+    border: 1px solid var(--rule);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .modal-section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-3);
+    margin-bottom: 14px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--rule-light);
+  }
+  .modal-prose {
+    font-family: var(--serif);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink);
+    margin-bottom: 24px;
+    font-variation-settings: "opsz" 14;
+  }
+  .modal-bullets {
+    list-style: none;
+    margin-bottom: 24px;
+    padding: 0;
+  }
+  .modal-bullets li {
+    position: relative;
+    padding: 10px 0 10px 22px;
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--ink);
+    border-bottom: 1px dotted var(--rule-light);
+  }
+  .modal-bullets li:last-child { border-bottom: 0; }
+  .modal-bullets li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    top: 10px;
+    color: var(--accent);
+    font-family: var(--serif);
+    font-weight: 400;
+  }
+  /* Unified quote treatment — pale-yellow border, maroon glyph everywhere */
+  .modal-quote {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--ink);
+    padding: 14px 18px 14px 22px;
+    background: var(--paper-2);
+    border-left: 2px solid var(--highlight);
+    margin-bottom: 24px;
+    position: relative;
+    font-variation-settings: "opsz" 14;
+  }
+  .modal-quote::before {
+    content: "\201C";
+    font-family: var(--serif);
+    font-size: 40px;
+    position: absolute;
+    top: 4px;
+    left: 6px;
+    color: var(--accent);
+    font-style: normal;
+    line-height: 1;
+  }
+  .modal-quote-text { display: block; padding-left: 22px; }
+
+  .modal-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-top: 8px;
+  }
+  .modal-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--paper);
+    background: var(--accent);
+    padding: 11px 18px;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: background 0.1s;
+    letter-spacing: 0.01em;
+  }
+  .modal-link:hover { background: var(--ink); }
+  .modal-link.fallback {
+    background: transparent;
+    color: var(--ink-2);
+    border: 1px solid var(--rule);
+  }
+  .modal-link.fallback:hover { background: var(--paper-2); color: var(--ink); border-color: var(--ink-3); }
+  .modal-link-note {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 12px;
+    color: var(--ink-3);
+    flex: 1;
+    min-width: 200px;
+    font-variation-settings: "opsz" 12;
+  }
+  .modal-share {
+    font-family: var(--mono);
+    font-size: 10px;
+    background: transparent;
+    border: 1px solid var(--rule);
+    color: var(--ink-2);
+    padding: 9px 12px;
+    border-radius: 2px;
+    cursor: pointer;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: all 0.1s;
+  }
+  .modal-share:hover { color: var(--ink); border-color: var(--ink-2); background: var(--card); }
+  .modal-share.copied { color: #2f5d3a; border-color: #2f5d3a; }
+
+  body.modal-open { overflow: hidden; }
+
+  /* Mobile */
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; gap: 24px; padding: 24px 20px 60px; }
+    .sidebar { position: static; max-height: none; }
+    .masthead { padding: 24px 20px 20px; }
+    .timeline-section { padding: 16px 20px 0; }
+    .footer { padding: 24px 20px; }
+    h1 { font-size: 32px; }
+    .stats-strip { grid-template-columns: repeat(2, 1fr); }
+    .stat { border-right: 0; border-bottom: 1px solid var(--rule-light); padding: 12px 16px 12px 0; }
+    .controls-bar { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .toolbar-extras { margin-left: 0; }
+    .letter-card { grid-template-columns: 72px 1fr; gap: 14px; padding-right: 16px; }
+    .letter-body { padding-right: 0; }
+    .letter-card::after { display: none; }
+    .modal { padding: 32px 24px 28px; }
+    .modal-title { font-size: 22px; }
+    .modal-eyebrow { padding-right: 56px; }
+    .search-wrap.sticky-mobile {
+      position: sticky;
+      top: 0;
+      padding-top: 8px;
+      background: var(--paper);
+      z-index: 10;
+    }
+  }
+
+  /* Print — keep timeline visible (it's the one-page overview) */
+  @media print {
+    .sidebar, .controls-bar, .toolbar-extras, .modal-backdrop { display: none; }
+    .layout { grid-template-columns: 1fr; }
+    body { background: white; }
+    .letter-card { break-inside: avoid; }
+    .topic-group { break-inside: avoid-page; }
+    .timeline-section { page-break-after: avoid; }
+    .letter-card::after { display: none; }
+    a { color: var(--ink); text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="eyebrow" id="updated-eyebrow">A Policy Compendium</div>
+    <h1>CSBS Comment Letters, <em>2017 – 2026</em></h1>
+    <p class="deck">Letters from the Conference of State Bank Supervisors to federal agencies and Congress, organized by topic with chronological evolution within each. Filter by topic, agency, through-line, era, or letter type; click any card for positions, quotations, and direct source URLs where retrievable.</p>
+    <div class="stats-strip">
+      <div class="stat">
+        <div class="stat-num" id="stat-letters">—</div>
+        <div class="stat-label">Letters</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="stat-topics">—</div>
+        <div class="stat-label">Topic areas</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="stat-span">—</div>
+        <div class="stat-label">Time span</div>
+      </div>
+      <button class="stat stat-link" data-jump="through" title="Filter by through-line">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Through-lines</div>
+      </button>
+      <button class="stat stat-link" data-jump="milhorn" title="Filter to post-Milhorn letters (tonal pivot)">
+        <div class="stat-num">2023</div>
+        <div class="stat-label">Tonal pivot</div>
+      </button>
+    </div>
+  </div>
+</header>
+
+<section class="timeline-section">
+  <div class="timeline-label">
+    <span>Letter volume by year — colored by CEO era</span>
+    <span id="timeline-hint">Click a bar to filter · click again to clear</span>
+  </div>
+  <svg class="timeline" id="timeline" viewBox="0 0 1320 90" preserveAspectRatio="none"></svg>
+  <div class="timeline-axis" id="timeline-axis"></div>
+  <div class="era-band" id="era-band"></div>
+</section>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="search-wrap sticky-mobile">
+      <input type="text" class="search-input" id="search" placeholder="Search letters, quotes, agencies…">
+      <div class="search-hint"><kbd>/</kbd> to focus</div>
+    </div>
+
+    <div class="filter-group">
+      <div class="filter-label">Topics</div>
+      <ul class="topic-list" id="topic-list"></ul>
+    </div>
+
+    <div class="filter-group">
+      <div class="filter-label">Through-line</div>
+      <div class="filter-pills" id="through-filters"></div>
+    </div>
+
+    <div class="filter-group">
+      <div class="filter-label">Agency</div>
+      <div class="filter-pills" id="agency-filters"></div>
+    </div>
+
+    <div class="filter-group">
+      <div class="filter-label">Letter type</div>
+      <div class="filter-pills" id="vehicle-filters"></div>
+    </div>
+
+    <div class="filter-group">
+      <div class="filter-label">CEO era</div>
+      <div class="filter-pills" id="era-filters"></div>
+    </div>
+
+    <div class="filter-group">
+      <div class="filter-label">Significance</div>
+      <div class="filter-pills" id="sig-filters">
+        <button class="pill" data-sig="all">All</button>
+        <button class="pill" data-sig="3"><span class="sig-mark"></span>High</button>
+        <button class="pill" data-sig="2">Medium</button>
+        <button class="pill" data-sig="1">Routine</button>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <button class="pill" id="clear-filters" style="width: 100%; padding: 8px;">Clear all filters</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="controls-bar">
+      <div class="results-count">
+        Showing <strong id="visible-count">—</strong> of <span id="total-count">—</span> letters
+        <span class="active-chips" id="active-chips"></span>
+      </div>
+      <div class="sort-control">
+        <span class="sort-label">Sort</span>
+        <button class="sort-btn active" data-sort="topic">By topic</button>
+        <button class="sort-btn" data-sort="newest">Newest</button>
+        <button class="sort-btn" data-sort="oldest">Oldest</button>
+      </div>
+      <div class="toolbar-extras">
+        <button class="icon-btn" id="export-csv" title="Download the current filtered view as CSV">↓ CSV</button>
+        <button class="icon-btn" id="print-btn" title="Print or save as PDF">Print</button>
+      </div>
+    </div>
+    <div id="results"></div>
+  </main>
+</div>
+
+<div class="modal-backdrop" id="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<footer class="footer">
+  <h3>Three through-lines</h3>
+  <p>
+    <span class="through-key"><span class="th-dot th-federalism"></span> Federalism &amp; chartering authority</span>
+    <span class="through-key"><span class="th-dot th-admin-process"></span> Administrative process</span>
+    <span class="through-key"><span class="th-dot th-tailored-substance"></span> Tailored, dual-banking substance</span>
+  </p>
+  <p><strong>Federalism &amp; chartering authority</strong> — jealous defense of state chartering and licensing against OCC preemption and CFPB sandbox gambits. <strong>Administrative process</strong> — federal agencies repeatedly issuing major rules without rigorous data, APA-compliant process, or interagency alignment. <strong>Tailored, dual-banking substance</strong> — support for tailoring, BSA/AML modernization, NMLS networked supervision, and a state-led path for nonbanks (fintech, money transmission, stablecoins).</p>
+
+  <h3>CEO eras (color band beneath the timeline)</h3>
+  <p>Letters are color-coded by the CSBS President &amp; CEO during whose tenure they were sent — <em>not</em> a claim about individual signatories. <strong>Ryan</strong> (through May 14, 2022); <strong>Cooper</strong> (May 15, 2022 – Dec. 3, 2023, following John W. Ryan's death in May 2022); <strong>Milhorn</strong> (Dec. 4, 2023 – present). The tone of letters from late 2023 forward is measurably more critical of federal banking-agency proposals than letters before that date, even where the underlying substantive position is unchanged.</p>
+
+  <h3>Methodology &amp; caveats</h3>
+  <p>This compendium covers letters dated Jan. 13, 2017 onward. CSBS's own comment-letter index lists 144 results within Dec. 31, 2016 – May 15, 2026; one of those is a link to the pre-2017 archive, and a second is reflected here by inference rather than retrieved PDF — leaving 142 substantive entries in this set. Letters with curated PDF/landing-page URLs link directly; others link to a pre-filled search of <code>csbs.org/comment-letters</code>. Quotations are drawn from the letter PDF where retrieved, otherwise from CSBS-hosted HTML landing pages or press releases. Vehicle classifications (Rulemaking / ANPR / RFI / Bill or Draft / Nomination / Joint letter / Other) are inferred from the recipient and addressee fields and may be coarse at the margins.</p>
+</footer>
+
+<script>
+// ============================================================
+// DATA — TOPICS, LETTERS, URL_MAP, BULLETS_MAP, META_MAP
+// (LETTERS and BULLETS_MAP preserved from source verbatim;
+//  TOPICS arcs revised for the weak topics; META_MAP derived.)
+// ============================================================
+
+const TOPICS = [
+  {id:"occ-fintech", n:"OCC Fintech / SPNB Charter", arc:"Foundational 2017 opposition to OCC's nondepository national-bank charter, asserting it exceeds the National Bank Act. Led to litigation; spiritually continued in the 2021–2026 national trust / stablecoin charter fights."},
+  {id:"madden", n:"Madden · Valid-When-Made · True Lender", arc:"CSBS accepted valid-when-made but demanded a true-lender proviso; ultimately supported successful 2021 CRA disapproval of OCC's true-lender rule."},
+  {id:"cfpb", n:"CFPB Rulemaking, Supervision & Federalism", arc:"Insistence on state consultation; opposition to CFPB sandbox preempting state law; mixed reception of Bureau registries and supervisory designations."},
+  {id:"ilc", n:"Industrial Loan Companies (ILCs)", arc:"Opposed efforts to close the BHCA § 2(c)(2)(H) exemption; distinguished ILCs (state-chartered, FDIC-insured) from unregulated OCC fintech charters; opposed 2024 FDIC parent-restrictions NPRM."},
+  {id:"master-account", n:"Fed Master Account & Payment Services", arc:"From conditional support for transparency, to strong objection to the FRB's tiered framework as discriminatory against state charters, to cautious support for a Reserve Bank Payment Account Prototype."},
+  {id:"stablecoins", n:"Stablecoins · Digital Assets · GENIUS", arc:"Highest-frequency 2025-2026 topic. Hardened from 'improve the GENIUS Act' to demanding Section 16(d) repeal as 'unprecedented overriding of state law.'"},
+  {id:"mergers", n:"Bank Merger Review", arc:"Opposed 2024 Gruenberg FDIC SOP; supported its 2025 rescission and used it to advance affirmative reforms: rural de minimis exception, broader competitive-effects universe, safe harbors."},
+  {id:"deposits", n:"Brokered Deposits & Custodial Recordkeeping", arc:"Supported earlier deposit-broker reform; demanded rescission of the 2024 brokered-deposits NPRM as procedurally and substantively deficient; supported the post-Synapse custodial recordkeeping NPRM."},
+  {id:"capital", n:"Capital · Resolution · Tailoring", arc:"Supported S. 2155 CBLR implementation; opposed Basel III Endgame as untailored; opposed FDIC corporate-governance NPRM as ultra vires; pushed sequencing of risk-based capital before eSLR."},
+  {id:"cra", n:"Community Reinvestment Act", arc:"Opposed OCC's 2020 unilateral move; welcomed the 2021 Fed-led interagency approach; constructively engaged the 2022 joint NPRM."},
+  {id:"bsa-aml", n:"BSA/AML & Beneficial Ownership", arc:"Supported AMLA 2020 and the CTA; demanded state-regulator BOI access under 31 U.S.C. § 5336(c)(2)(C)(i); insisted on state consultation throughout FinCEN's NAL process."},
+  {id:"third-party", n:"Third-Party Risk Management", arc:"Two-pronged: support for the Bank Service Company Examination Coordination Act (H.R. 1109) to formalize state regulator examination of TSPs, and engagement with the June 2023 Interagency Guidance on Third-Party Relationships."},
+  {id:"cyber", n:"Cybersecurity & Data Privacy", arc:"Steady federalism posture against federal preemption of state data-breach notification regimes — anchored in 2018's H.R. 6743 opposition and renewed in subsequent data-privacy proposals."},
+  {id:"sec-1071", n:"Section 1071 Small Business Data", arc:"Single comprehensive 2022 comment shaping a CFPB rule still finalizing: exempt smaller institutions, restrict to mandatory data points, align with Call Report/CRA/HMDA, and lift the reporting threshold above 25 loans on cost-feasibility grounds."},
+  {id:"mortgage", n:"Mortgage Servicing & Markets", arc:"Spans ATR/QM assessment, Seasoned QM, COVID-era liquidity backstop requests, nonbank servicer prudential standards, FHLBank role, and 2024 Reg X loss-mitigation streamlining."},
+  {id:"cannabis", n:"Cannabis / SAFE Banking", arc:"Constructive support for federal cannabis-banking legislation enabling state-licensed cannabis markets, evolving from the early SAFE drafting through SAFE Banking and its SAFER successor."},
+  {id:"consumer", n:"Consumer Compliance", arc:"Spans payday/title/installment, Reg F debt collection, PACE, small-dollar, ECOA Reg B, the 2024 overdraft NPRM, and 2026 EWA legislation."},
+  {id:"preemption", n:"Federal Preemption (Beyond NBA)", arc:"From Education Dept. student loan preemption (2018) and PROSPER Act, through to the Dodd-Frank § 1044 OCC five-year review and the 2026 escrow preemption fight."},
+  {id:"trust", n:"Trust Company & National Trust Charter", arc:"Opposed any OCC reading that would let it charter nondepository national trust banks; resurfaced in the 2025-2026 crypto national-trust-charter wars."},
+  {id:"sab121", n:"SEC Crypto Custody (SAB 121)", arc:"APA-process objection (per GAO B-334540) plus substantive concern that on-balance-sheet treatment defeats bankruptcy-remote custody protections."},
+  {id:"fdic-board", n:"FDIC Board · State Supervisor Seat", arc:"Repeated 2018–2024 advocacy for filling the FDIC Board seat traditionally occupied by a former state bank supervisor — institutional rather than substantive in its target, but tied to the dual-banking-system case."},
+  {id:"nominations", n:"Nominations", arc:"Procedural endorsements and qualified concerns — Bowman (supportive, 2018/2019), Raskin (concerns over Reserve Bank Kansas City master-account positions, 2022), Hill (supportive, 2025)."},
+  {id:"misc", n:"Appraisal & Miscellaneous Pre-2020", arc:"Pre-2020 appraisal thresholds, small-business market input, and the 1997 Nationwide State/Federal Supervisory Agreement-era posture toward FDIC communication and transparency."},
+  {id:"covid", n:"COVID-19 Response", arc:"Spring 2020 emergency response — package of CSBS legislative proposals and PPP implementation feedback as state regulators absorbed the operational pressure."},
+  {id:"thresholds", n:"Community Bank Thresholds & Tailoring", arc:"From S. 2155 in 2018 to the 2025 'Making Community Banking Great Again' agenda and indexing of statutory thresholds."},
+  {id:"cdfi", n:"CDFI, Payments Fraud & 2025-26 Misc", arc:"Joint CSBS/NASCUS letters on CDFI Fund, payments fraud, MRAs, and OMB deregulation RFI."}
+];
+
+const LETTERS = [
+  // ===== OCC FINTECH =====
+  {d:"2017-01-13", t:"On the OCC's White Paper: Exploring Special Purpose National Bank Charters for Fintech Companies", to:"OCC Dec. 2016 White Paper", tp:"occ-fintech", ag:"OCC", sig:3, pos:"Foundational opposition. Argued that 12 C.F.R. § 5.20(e)(1)(i) exceeds statute (citing IBAA v. Conover, 1985) and that CEBA (1987) closed the 'nonbank bank' loophole.", q:"Engaging in the 'business of banking' under the National Bank Act, as a matter of law and as a matter of common sense, requires engaging in deposit-taking."},
+  {d:"2017-04-14", t:"On the OCC's Draft Licensing Supplement: Evaluating Charter Applications From Financial Technology Companies", to:"OCC March 2017 Licensing Manual Supplement", tp:"occ-fintech", ag:"OCC", sig:3, pos:"Re-asserted unlawfulness; flagged that OCC would impose conditions through individualized 'operating agreements' bypassing APA notice-and-comment. Led to CSBS's April 26, 2017 suit and refiled October 2018 suit."},
+  {d:"2018-04-10", t:"On Treasury Non-Bank and Innovation Report", to:"Treasury July 2018 Report", tp:"occ-fintech", ag:"Treasury", sig:2, pos:"Welcomed Treasury's acknowledgment of state role and Vision 2020. Called the parallel OCC SPNB announcement 'a regulatory train wreck in the making.'"},
+
+  // ===== MADDEN / TRUE LENDER =====
+  {d:"2020-01-21", t:"Permissible Interest on Loans that are Sold, Assigned, or Otherwise Transferred", to:"OCC NPRM on valid-when-made", tp:"madden", ag:"OCC", sig:3, pos:"Did not oppose valid-when-made but demanded a true-lender proviso. Faulted OCC for failing to apply the Barnett Bank 'prevent or significantly interfere' standard required by 12 U.S.C. § 25b.", q:"CSBS seeks to ensure that the rule limits the application of the valid-when-made principle to circumstances in which the bank is, in fact, the true lender so that (1) state law true lender claims remain viable, (2) the relevant state law remains the law of the state in which consumer resides and (3) the traditional role of courts in making this determination is preserved."},
+  {d:"2020-02-04", t:"Federal Interest Rate Authority", to:"FDIC NPRM (RIN 3064-AF21)", tp:"madden", ag:"FDIC", sig:2, pos:"Same true-lender proviso request. Emphasized that valid-when-made is a state common-law doctrine, so FDIC cannot federalize it absent NBA preemption analysis."},
+  {d:"2020-09-03", t:"National Banks and Federal Savings Associations as Lenders", to:"OCC 'true lender' NPRM", tp:"madden", ag:"OCC", sig:3, pos:"Opposed bright-line 'named on the note OR funds the loan' test.", q:"facilitate predatory lending by promoting rent-a-charter relationships and allowing nonbanks to evade otherwise applicable state law."},
+  {d:"2021-04-27", t:"CSBS Letter re: CRA Resolution on True Lender (Senate)", to:"S.J. Res. 15 (CRA disapproval)", tp:"madden", ag:"Congress", sig:3, pos:"Supported Congressional Review Act disapproval. Senate passed 52-47 on May 11, 2021; House passed 218-208 on June 24, 2021; President Biden signed June 30, 2021."},
+  {d:"2021-06-18", t:"CSBS Letter re: CRA Resolution on True Lender (House)", to:"S.J. Res. 15 in House", tp:"madden", ag:"Congress", sig:2, pos:"Final push for House passage of the CRA disapproval resolution."},
+
+  // ===== CFPB =====
+  {d:"2018-04-26", t:"Request for Information Regarding Bureau Civil Investigative Demands and Associated Processes", to:"CFPB RFI on CIDs (Docket CFPB-2018-001)", tp:"cfpb", ag:"CFPB", sig:2, pos:"CFPB should notify state regulators prior to issuing a CID to entities within shared jurisdiction so the Bureau can learn of pending state investigations and tailor CID scope. Aligns with cooperative federalism through the State Coordinating Committee (est. 2013)."},
+  {d:"2018-05-14", t:"Request for Information Regarding Bureau Enforcement Processes", to:"CFPB RFI on enforcement (Docket CFPB-2018-0003)", tp:"cfpb", ag:"CFPB", sig:2, pos:"Promote efficient information sharing; consult relevant state regulators throughout corrective actions, enforcement, and remediation; coordinate actionable matters with states when feasible. Cites the 2011 CFPB-CSBS Memorandum of Understanding."},
+  {d:"2018-05-21", t:"Request for Information Regarding Bureau's Supervision Program", to:"CFPB RFI on supervision (Docket CFPB-2018-0004)", tp:"cfpb", ag:"CFPB", sig:2, pos:"Coordinate exam scheduling/reporting with states; maintain independent appeals after exam conclusion (no mid-exam appeals); permit state regulators to demonstrate jurisdiction on a sector basis for info sharing; auto-notify states of PARR letters."},
+  {d:"2018-06-04", t:"Request for Reevaluation of Public Comment Period on Remaining CFPB RFIs", to:"CFPB twelve-RFI schedule", tp:"cfpb", ag:"CFPB", sig:1, pos:"Requested single Oct. 16, 2018 due date for remaining RFIs (or at least two-week spacing). Two RFI deadlines were only four days apart. Acting Director Mulvaney himself noted limited comment volume on several RFIs."},
+  {d:"2018-06-04", t:"Bureau Public Reporting Practices of Consumer Complaint Information", to:"CFPB RFI on complaints reporting (Docket CFPB-2018-0006)", tp:"cfpb", ag:"CFPB", sig:2, pos:"CFPB public reporting must recognize state confidentiality laws; otherwise the Bureau's practices 'may unintentionally inhibit a more robust system of complaint information sharing.' Post consumer narratives only after institutions have had a reasonable opportunity to respond.", q:"may unintentionally inhibit a more robust system of complaint information sharing between state regulators and the Bureau."},
+  {d:"2018-06-07", t:"On Information Regarding CFPB Rulemaking Processes", to:"CFPB RFI on rulemaking (Docket CFPB-2018-0009)", tp:"cfpb", ag:"CFPB", sig:2, pos:"CFPB proposed and final rules have been 'unnecessarily lengthy and complex.' Adopt FDIC's community bank research definition to tailor rules; allow at least 90 days to comment on substantial rulemakings; continue state-regulator briefings.", q:"the Bureau's proposed and final rules have often been unnecessarily lengthy and complex."},
+  {d:"2018-07-16", t:"Consumer Complaint and Consumer Inquiry Handling Process", to:"CFPB RFI on complaints handling", tp:"cfpb", ag:"CFPB", sig:1, pos:"Coordination with state complaint systems."},
+  {d:"2018-10-01", t:"Request for Comment Regarding the Bureau's Consumer Complaint Intake System Company Portal Boarding Form", to:"CFPB Boarding Form (Docket BCFP-2018-00024)", tp:"cfpb", ag:"CFPB", sig:2, pos:"Add an NMLS ID company look-up data field to the Bureau's complaint database. NMLS ID is already required under HMDA and RESPA-TILA. Would reduce consumer confusion among similarly-named companies and ensure complaints are accurately attributed to subsidiaries rather than parent companies."},
+  {d:"2018-10-10", t:"Policy to Encourage Trial Disclosure Programs", to:"CFPB sandbox proposal", tp:"cfpb", ag:"CFPB", sig:2, pos:"Opposed CFPB sandbox proposal as preemptive of state law."},
+  {d:"2019-02-11", t:"CSBS Strongly Opposes CFPB Preemption of State Authority Using a Fintech Sandbox", to:"Revised Kraninger-era CFPB sandbox proposal", tp:"cfpb", ag:"CFPB", sig:3, pos:"Argued sandbox immunity under federal consumer law cannot extend to state-law obligations."},
+  {d:"2023-03-31", t:"Proposed Rulemaking – Registry of Nonbank Covered Persons Subject to Certain Agency and Court Orders", to:"CFPB nonbank registry NPRM", tp:"cfpb", ag:"CFPB", sig:2, pos:"Registry duplicates NMLS data and imposes burden on state-licensed firms without consultation."},
+  {d:"2024-05-23", t:"CFPB Final Rule – Procedures for Supervisory Designation Proceedings", to:"CFPB final rule on supervisory designation", tp:"cfpb", ag:"CFPB", sig:2, pos:"Asked for state consultation when nonbanks already supervised by states are designated."},
+  {d:"2025-05-12", t:"Rescission of CFPB Nonbank Registry Regulation", to:"CFPB rescission of 12 CFR Part 1092", tp:"cfpb", ag:"CFPB", sig:2, pos:"Supported rescission of the nonbank registry rule."},
+
+  // ===== ILC =====
+  {d:"2022-06-13", t:"Exemptions of ILCs under the Bank Holding Company Act", to:"Congressional proposals to repeal CEBA § 2(c)(2)(H)", tp:"ilc", ag:"Congress", sig:3, pos:"Opposed repeal of BHCA exemption. Distinguished ILCs from OCC fintech charters.", q:"an ILC, once organized, becomes subject to the comprehensive scheme of federal bank regulation applicable to FDIC-insured banks, [whereas] institutions organized under the fintech charter simply would not."},
+  {d:"2024-10-10", t:"Parent Companies of Industrial Banks and Industrial Loan Companies", to:"FDIC NPRM amending 12 CFR Part 354", tp:"ilc", ag:"FDIC", sig:3, pos:"Opposed proposed § 354.6, rebuttable presumption against 'shell' or 'captive' structures, and new limits on written commitments.", q:"The industrial bank charter represents a lawful option under state and federal law for commercial firms to own a bank.... This provision would establish additional limitations and restrictions on industrial banks and their parents without justification."},
+
+  // ===== MASTER ACCOUNT =====
+  {d:"2018-05-14", t:"Collection of Checks and Other Items by Federal Reserve Banks and Funds Transfers Through Fedwire", to:"FRB Reg J proposal", tp:"master-account", ag:"FRB", sig:2, pos:"Opposed expanding 'sender' to nondepository trust companies — would extend federal safety net to nondepositories."},
+  {d:"2018-12-14", t:"Potential Federal Reserve Actions to Support Interbank Settlement of Faster Payments", to:"FRB faster payments proposal", tp:"master-account", ag:"FRB", sig:2, pos:"Supported what became the FedNow service."},
+  {d:"2019-05-14", t:"Regulation D: Reserve Requirements for Depository Institutions", to:"FRB Reg D proposal", tp:"master-account", ag:"FRB", sig:1, pos:"Supported reserve-requirement reform."},
+  {d:"2019-11-07", t:"Federal Reserve Actions to Support Interbank Settlement of Faster Payments", to:"FRB FedNow follow-on proposal", tp:"master-account", ag:"FRB", sig:2, pos:"Continued support for FedNow rollout."},
+  {d:"2021-07-09", t:"Proposed Guidelines for Evaluating Account and Services Requests", to:"FRB Docket OP-1747 (May 2021)", tp:"master-account", ag:"FRB", sig:2, pos:"Supported transparency; requested publication of decisions and a list of access holders."},
+  {d:"2022-04-22", t:"Supplemental Notice – Proposed Guidelines for Evaluating Account and Services Requests", to:"FRB March 2022 supplemental (Tier 1/2/3)", tp:"master-account", ag:"FRB", sig:3, pos:"Strongly objected to tiered framework.", q:"The evaluation of account access and service requests cannot be equitable and impartial when the application and robustness of prudential requirements is arbitrarily based on the identity of the chartering authority, rather than the substance of the actual, applicable supervisory regimen — whether state or federal."},
+  {d:"2023-01-17", t:"Guidelines for Evaluating Account and Services Requests", to:"FRB amendments implementing FY2023 NDAA § 5708", tp:"master-account", ag:"FRB", sig:2, pos:"Reiterated tiered-framework concerns.", q:"The Guidelines continue to favor federal charters, thus introducing bias against similarly situated non-federally-insured institutions chartered under state law."},
+  {d:"2024-12-09", t:"Request for Information and Comment on Operational Aspects of Federal Reserve Bank Extensions of Discount Window and Intraday Credit", to:"FRB Docket OP-1838", tp:"master-account", ag:"FRB", sig:2, pos:"Supported modernization of discount window operations."},
+  {d:"2026-02-06", t:"Reserve Bank Payment Account Prototype", to:"FRB Docket OP-1877 (Dec. 23, 2025 RFI on 'skinny' master account)", tp:"master-account", ag:"FRB", sig:3, pos:"Cautiously supportive of a special-purpose payment account.", q:"would most likely appeal to institutions that are currently subject to Tier 3 review … would represent a marked improvement over the Federal Reserve's current opaque, lengthy, and open-ended review process for Tier 3 institutions."},
+
+  // ===== STABLECOINS =====
+  {d:"2021-09-27", t:"On Cryptocurrencies", to:"House Task Force on Financial Technology", tp:"stablecoins", ag:"Congress", sig:2, pos:"Activities-based approach; identified state money transmission as primary regulatory frame for non-securities stablecoins (citing CSBS MTMA's stored-value definition)."},
+  {d:"2023-07-25", t:"CSBS Comments on Clarity for Payment Stablecoins Act", to:"HFSC discussion draft", tp:"stablecoins", ag:"Congress", sig:2, pos:"Supported a state pathway and limiting issuer activities."},
+  {d:"2025-03-13", t:"Letter to Senate Committee on GENIUS Act", to:"S. 394 (GENIUS Act)", tp:"stablecoins", ag:"Congress", sig:3, pos:"Demanded changes; off-balance-sheet trust holding of reserves; objected to expanded uninsured-bank activities.", q:"will be unable to support the legislation without changes."},
+  {d:"2025-04-01", t:"Letter to House Committee on STABLE Act", to:"H.R. 2392 (STABLE Act)", tp:"stablecoins", ag:"Congress", sig:3, pos:"Demanded parity for state PSIs under Section 7(g).", q:"would constitute a staggering and unprecedented expansion of federal power."},
+  {d:"2025-08-05", t:"CSBS Response to Senate Banking Committee RFI on Digital Asset Market Structure", to:"Senate Banking Committee RFI", tp:"stablecoins", ag:"Congress", sig:2, pos:"Reiterated state-pathway preservation."},
+  {d:"2025-09-24", t:"GENIUS Act Implementation", to:"Treasury ANPRM, Docket TREAS-DO-2025-0037", tp:"stablecoins", ag:"Treasury", sig:3, pos:"Urged broad definitions of 'interest,' 'yield,' and 'pay' to prevent affiliate/rewards-based evasion.", q:"state regimes should not have to strictly follow the implementing regulations adopted by the federal banking agencies to qualify as 'substantially similar.'"},
+  {d:"2025-11-04", t:"GENIUS Act Implementation (follow-up)", to:"Treasury ANPRM (continued)", tp:"stablecoins", ag:"Treasury", sig:2, pos:"Expanded yield-evasion concerns; renewed Section 16(d) repeal demand."},
+  {d:"2025-11-04", t:"Guidance on Tokenized Deposits", to:"Joint letter to FDIC, FRB, OCC", tp:"stablecoins", ag:"Interagency", sig:3, pos:"Asked for interagency guidance for tokenized deposits at IDIs to proceed 'in tandem' with stablecoin rules."},
+  {d:"2026-01-14", t:"Digital Asset Market Structure Legislation", to:"Senate Banking Committee draft", tp:"stablecoins", ag:"Congress", sig:3, pos:"Welcomed narrowed preemption but pressed for Section 16(d) repeal.", q:"We again urge the Committee to strike Section 16(d) of the GENIUS Act and reverse its erosion of longstanding state authority to license and supervise traditional financial activities within their borders."},
+  {d:"2026-05-01", t:"CSBS Comment Letter: Implementing the GENIUS Act", to:"OCC proposed implementing rule", tp:"stablecoins", ag:"OCC", sig:3, pos:"Opposed expanded national-trust-charter authority for issuers.", q:"The OCC should limit issuer activities consistent with the GENIUS Act and establish capital standards that address the heightened risks posed by digital asset service provider activities."},
+  {d:"2026-05-13", t:"Digital Asset Market Structure Legislation (follow-on)", to:"Senate Banking Committee revised draft", tp:"stablecoins", ag:"Congress", sig:2, pos:"Renewed Section 16(d) repeal request on the revised legislative draft."},
+
+  // ===== MERGERS =====
+  {d:"2020-10-16", t:"Antitrust Division Banking Guidelines Review: Public Comments Topics & Issues Guide", to:"DOJ review of 1995 Bank Merger Guidelines", tp:"mergers", ag:"DOJ", sig:2, pos:"Constructive input on bank merger competitive-effects framework."},
+  {d:"2022-06-03", t:"Bank Merger Transactions", to:"FDIC RFI on Bank Merger Act", tp:"mergers", ag:"FDIC", sig:2, pos:"Requested objective standards and a de minimis exception for small rural mergers."},
+  {d:"2024-06-17", t:"Request for Comment on Proposed Statement of Policy on Bank Merger Transactions", to:"FDIC NPRM, 89 Fed. Reg. 29222", tp:"mergers", ag:"FDIC", sig:3, pos:"Strongly critical; urged interagency alignment.", q:"The FDIC's proposed SOP would lead to a longer, costlier, and more burdensome bank merger review process."},
+  {d:"2025-04-09", t:"Proposed Rescission and Reinstatement of Statement of Policy", to:"FDIC rescission of 2024 SOP (90 Fed. Reg. 11679)", tp:"mergers", ag:"FDIC", sig:3, pos:"Supported rescission; pressed for de minimis rural exception, inclusion of credit unions/savings institutions/Farm Credit Associations in competitive-effects analysis, and safe harbors.", q:"The Final SOP established vague and subjective criteria that would have likely resulted in a less predictable, more costly, and lengthier mergers and acquisitions process."},
+  {d:"2025-05-14", t:"Bank Mergers and De Novo Formation Letter to House Committee", to:"House Financial Services Committee", tp:"mergers", ag:"Congress", sig:2, pos:"Reform agenda: de novo formation incentives, threshold modernization."},
+  {d:"2025-09-15", t:"Support Letter Bank Competition Modernization Act", to:"Congressional bill", tp:"mergers", ag:"Congress", sig:2, pos:"Endorsed modernization of bank competition analysis."},
+
+  // ===== DEPOSITS =====
+  {d:"2019-04-22", t:"Revisions to the Deposit Insurance Assessment Program to Apply the Community Bank Leverage Ratio Framework", to:"FDIC assessment NPRM", tp:"deposits", ag:"FDIC", sig:1, pos:"Aligned CBLR with assessment framework."},
+  {d:"2019-05-06", t:"CSBS Recommends Changes to Brokered Deposit Rule to Help Small Banks", to:"FDIC ANPR on brokered deposits", tp:"deposits", ag:"FDIC", sig:2, pos:"Reform-oriented recommendations for the deposit-broker framework."},
+  {d:"2019-11-04", t:"Interest Rate Restrictions on Institutions That Are Less Than Well Capitalized", to:"FDIC NPRM on national rate methodology", tp:"deposits", ag:"FDIC", sig:2, pos:"Supported reform of the national-rate methodology; flagged the PCA 'cliff effect.'"},
+  {d:"2020-04-24", t:"Unsafe and Unsound Banking Practices: Brokered Deposits Restrictions", to:"FDIC 2019/2020 NPRM (84 Fed. Reg. 2366)", tp:"deposits", ag:"FDIC", sig:2, pos:"Supported reform of the 'deposit broker' definition."},
+  {d:"2024-10-04", t:"Request for Information on Deposits", to:"FDIC RFI (RIN 3064-ZA42)", tp:"deposits", ag:"FDIC", sig:3, pos:"Urged FDIC to conclude RFI before any rulemaking; called for a new comprehensive deposits study akin to the FDIC's July 2011 'Study on Core Deposits and Brokered Deposits.'"},
+  {d:"2024-11-21", t:"Unsafe and Unsound Banking Practices: Brokered Deposits Restrictions", to:"FDIC NPRM, 89 Fed. Reg. 58244", tp:"deposits", ag:"FDIC", sig:3, pos:"Demanded rescission; faulted simultaneous issuance with deposit RFI.", q:"the proposal fails to meet the rigorous, fact-based, and data-driven rulemaking standard stakeholders deserve … takes us a decade or more into the past."},
+  {d:"2025-01-17", t:"Recordkeeping for Custodial Accounts", to:"FDIC post-Synapse NPRM (89 Fed. Reg. 80135, 12 CFR Part 375)", tp:"deposits", ag:"FDIC", sig:3, pos:"Supportive of the rule.", q:"The proposal addresses current deficiencies that justify additional recordkeeping and internal control requirements for banks managing custodial accounts with transaction features on behalf of third parties."},
+
+  // ===== CAPITAL =====
+  {d:"2017-12-22", t:"Simplifying Capital Rules", to:"Interagency simplification NPRM", tp:"capital", ag:"Interagency", sig:2, pos:"Supported simplification for community banks."},
+  {d:"2018-02-21", t:"On Proposed Guidance on Supervisory Expectations for Bank Boards of Directors", to:"FRB principles-based proposal", tp:"capital", ag:"FRB", sig:2, pos:"Supported principles-based, less prescriptive board expectations."},
+  {d:"2018-04-30", t:"Comment Letter Requesting Extension of Comment Period for Capital Rule", to:"Capital simplification NPRM", tp:"capital", ag:"Interagency", sig:1, pos:"Requested extension."},
+  {d:"2018-06-25", t:"CSBS Comment Letter on Fed & OCC Regulatory Capital Rules", to:"eSLR / TLAC proposal", tp:"capital", ag:"Interagency", sig:2, pos:"Tailoring concerns for non-G-SIB large banks."},
+  {d:"2019-03-04", t:"Regulatory Capital Rule: Capital Simplification for Qualifying Community Banking Organizations", to:"S. 2155 CBLR implementing NPRM", tp:"capital", ag:"Interagency", sig:2, pos:"Supported CBLR; pushed for low threshold."},
+  {d:"2019-04-09", t:"Regulatory Capital Rule: Capital Simplification for Qualifying Community Banking Organizations (supplemental)", to:"CBLR follow-on", tp:"capital", ag:"Interagency", sig:1, pos:"Additional CBLR refinements."},
+  {d:"2024-01-16", t:"CSBS Comments on the Large Bank Regulatory Capital Rule", to:"Basel III Endgame NPRM (88 Fed. Reg. 64028)", tp:"capital", ag:"Interagency", sig:3, pos:"Opposed application to Category III/IV firms; opposed eliminating the AOCI opt-out.", q:"abandons appropriate regulatory tailoring … could ultimately undermine U.S. banking industry diversity and financial stability."},
+  {d:"2024-01-16", t:"CSBS Comments on the Long Term Debt Requirements Proposal", to:"Joint OCC/FRB/FDIC NPRM (88 Fed. Reg. 64524)", tp:"capital", ag:"Interagency", sig:2, pos:"Supported LTD in principle; called for tailoring to firm-specific resolution strategy (SPOE vs. MPOE)."},
+  {d:"2024-01-17", t:"Long-Term Debt Requirements for Large Bank Holding Companies, Certain IHCs of Foreign Banking Organizations, and Large Insured Depository Institutions", to:"Joint OCC/FRB/FDIC NPRM (continued)", tp:"capital", ag:"Interagency", sig:2, pos:"Flagged interaction with Basel III Endgame and IDI resolution plan proposals."},
+  {d:"2024-02-07", t:"Guidelines Establishing Standards for Corporate Governance and Risk Management for Covered Institutions with Total Consolidated Assets of $10 Billion or More", to:"FDIC NPRM, RIN 3064-AF94", tp:"capital", ag:"FDIC", sig:3, pos:"Demanded withdrawal; FDIC lacks statutory authority for new stakeholder standards; would conflict with state corporate governance laws.", q:"With little justification and no analysis, the FDIC proposal tramples on the historic role of the states in corporate governance."},
+  {d:"2024-10-18", t:"Regulations Implementing the Change in Bank Control Act", to:"FDIC CIBCA NPRM", tp:"capital", ag:"FDIC", sig:2, pos:"Opposed elimination of pass-through review for transactions also reviewed by FRB/OCC."},
+  {d:"2025-08-26", t:"CSBS eSLR Comment Letter", to:"FRB/FDIC/OCC eSLR NPRM, 90 Fed. Reg. 30780", tp:"capital", ag:"Interagency", sig:3, pos:"Supported strong G-SIB leverage capital; urged sequencing risk-based capital reforms first. Flagged that >41% of all U.S. deposits are held within the eight U.S. G-SIBs' IDI subsidiaries.", q:"leverage capital requirements are a trusted and transparent backstop to risk-based capital insofar as they treat all assets, including 'safe' assets, in a risk-neutral manner."},
+  {d:"2026-01-28", t:"Regulatory Capital Rule: Revisions to the Community Bank Leverage Ratio Framework", to:"Interagency NPRM (Docket R-1876 / OCC-2025-0141 / RIN 3064-AG17)", tp:"capital", ag:"Interagency", sig:2, pos:"CSBS supports the proposal. Supports CBLR threshold reduction from 9% to 8% — adoption has remained at ~40% since 2019 with participating banks well above 9%. Supports extending grace period from two to four quarters. Lowers threshold 'without materially increasing risk.'"},
+  {d:"2025-12-29", t:"Unsafe or Unsound Practices, MRAs", to:"Joint OCC/FDIC NPRM (Docket OCC-2025-0174 / RIN 3064-AG16; 90 Fed. Reg. 48835)", tp:"capital", ag:"Interagency", sig:3, pos:"Supports the move to focus MRAs on core financial risks. Refrain from quantitative materiality thresholds — bank business models are dynamic. Permit CAMELS composite downgrades to less-than-satisfactory WITHOUT requiring an MRA (e.g., idiosyncratic loss). Violations causing ANY material harm (financial or consumer) should support less-than-satisfactory ratings. Delay finalization until FRB aligns to avoid disparate state member vs. state nonmember treatment.", q:"Striking an appropriate balance will help ensure that the federal regulatory environment for banks is not only right-sized, but also durable over time."},
+
+
+  // ===== CRA =====
+  {d:"2020-04-08", t:"Community Reinvestment Act Regulations", to:"OCC-FDIC NPRM (RIN 1557-AE34/3064-AF22)", tp:"cra", ag:"OCC", sig:3, pos:"Opposed unilateral OCC-FDIC move without Fed.", q:"the federal CRA framework should remain the same regardless of the type of charter or regulator chosen."},
+  {d:"2021-02-16", t:"CSBS Comment Letter: Advance Notice of Proposed Rulemaking – Community Reinvestment Act", to:"Federal Reserve ANPR, Docket R-1723", tp:"cra", ag:"FRB", sig:2, pos:"Welcomed Fed's interagency approach; supported principal goal of accounting for non-branch delivery channels but flagged tension with state non-branch laws."},
+  {d:"2022-08-05", t:"Community Reinvestment Act Changes", to:"Joint FRB/OCC/FDIC NPRM, 87 Fed. Reg. 33884", tp:"cra", ag:"Interagency", sig:2, pos:"Supported tailoring; asked for an illustrative non-exhaustive list of qualifying activities."},
+
+  // ===== BSA/AML =====
+  {d:"2019-05-07", t:"BSA Amendment Would Improve State and Federal Regulator Coordination", to:"Congressional BSA modernization (became AMLA 2020)", tp:"bsa-aml", ag:"Congress", sig:2, pos:"Emphasized state's first-line role and SAR flow (state-chartered banks plus state-licensed MSBs filed more than half of all SARs in 2018)."},
+  {d:"2020-07-01", t:"Anti-Money Laundering Act of 2020", to:"Congressional conference language", tp:"bsa-aml", ag:"Congress", sig:2, pos:"Supported AMLA 2020 conference text."},
+  {d:"2021-05-05", t:"CSBS Letter re: Proposed FinCEN Rulemaking on Beneficial Ownership Information Reporting Requirements", to:"FinCEN April 2021 ANPR (FINCEN-2021-0005)", tp:"bsa-aml", ag:"FinCEN", sig:3, pos:"Argued state bank regulators are an 'appropriate regulatory agency' entitled to BOI access under 31 U.S.C. § 5336(c)(2)(C)(i)."},
+  {d:"2022-08-05", t:"FinCEN No-Action Letter Process", to:"FinCEN ANPR implementing AMLA § 6305", tp:"bsa-aml", ag:"FinCEN", sig:2, pos:"Demanded state-regulator consultation throughout the NAL process."},
+  {d:"2023-02-14", t:"Beneficial Ownership Information Access and Safeguards, and Use of FinCEN Identifiers for Entities", to:"FinCEN Access NPRM (87 Fed. Reg. 77404)", tp:"bsa-aml", ag:"FinCEN", sig:2, pos:"Reiterated state-regulator access need; pressed broad reading of 'other appropriate regulatory agencies.'"},
+  {d:"2024-05-28", t:"CSBS Comments on FinCEN Taxpayer ID Number Collection Requirement", to:"FinCEN proposal on TIN collection", tp:"bsa-aml", ag:"FinCEN", sig:2, pos:"Technical comments on TIN collection rules."},
+
+  // ===== THIRD-PARTY =====
+  {d:"2018-07-20", t:"CSBS Supports The Bank Service Company Examination Coordination Act", to:"Congressional bill", tp:"third-party", ag:"Congress", sig:2, pos:"Supported amending Bank Service Company Act § 7 to authorize state regulator examination of TSPs alongside federal counterparts."},
+  {d:"2023-02-27", t:"CSBS Supports H.R. 1109 – The Bank Service Company Examination Coordination Act", to:"H.R. 1109", tp:"third-party", ag:"Congress", sig:2, pos:"Renewed support; aligned with later Interagency Guidance on Third-Party Relationships (June 6, 2023)."},
+
+  // ===== CYBER =====
+  {d:"2018-09-12", t:"CSBS Opposes H.R. 6743, the Consumer Information Notification Requirement Act", to:"H.R. 6743", tp:"cyber", ag:"Congress", sig:2, pos:"Opposed federal preemption of state data-breach notification."},
+  {d:"2019-03-14", t:"CSBS Comments on Legislative Efforts on Data Privacy and Security", to:"Congressional data privacy proposals", tp:"cyber", ag:"Congress", sig:2, pos:"Same federal-preemption concern on data privacy."},
+  {d:"2019-07-31", t:"Proposed Rulemaking: Amendments to Safeguards Rule (16 CFR Part 314)", to:"FTC Safeguards Rule NPRM", tp:"cyber", ag:"FTC", sig:1, pos:"Technical comments to FTC."},
+
+  // ===== 1071 =====
+  {d:"2022-01-06", t:"Small Business Lending Data Collection Under the Equal Credit Opportunity Act (Regulation B)", to:"CFPB NPRM (86 Fed. Reg. 56356)", tp:"sec-1071", ag:"CFPB", sig:3, pos:"Recommended exemption for smaller institutions; only mandatory data points; alignment with Call Report, CRA, and HMDA; reporting threshold above 25 loans.", q:"The costs of compliance, estimated to range from $58,400 to $95,200 per year, could lead lenders to reduce their small business lending footprint, exit the small business lending market altogether, or consider pursuing a merger partner."},
+
+  // ===== MORTGAGE =====
+  {d:"2017-07-31", t:"On the CFPB's RFI Regarding Ability-to-Repay/Qualified Mortgage Rule Assessment", to:"CFPB ATR/QM assessment RFI", tp:"mortgage", ag:"CFPB", sig:2, pos:"State perspective on ATR/QM assessment."},
+  {d:"2020-03-25", t:"Requesting Emergency Facility for Mortgage Servicers", to:"Congressional/Treasury/Fed COVID response", tp:"mortgage", ag:"Treasury", sig:2, pos:"COVID-era liquidity backstop request for mortgage servicers."},
+  {d:"2020-04-15", t:"Congress Should Establish a Liquidity Facility to Keep Mortgage Markets Functioning", to:"Congressional COVID response", tp:"mortgage", ag:"Congress", sig:2, pos:"Continued liquidity facility advocacy."},
+  {d:"2020-10-01", t:"Qualified Mortgage Definition Under the Truth in Lending Act: Seasoned QM Loan Definition", to:"CFPB Seasoned QM proposal", tp:"mortgage", ag:"CFPB", sig:2, pos:"State perspective on Seasoned QM."},
+  {d:"2020-10-09", t:"Enhancing Prudential Standards for Nonbank Mortgage Servicers", to:"FSOC / federal regulators", tp:"mortgage", ag:"Interagency", sig:2, pos:"Advocated CSBS's prudential standards framework for nonbank mortgage servicers."},
+  {d:"2021-08-26", t:"CSBS Letter to Chairwoman Waters on Mortgage Servicing", to:"HFSC Chairwoman Waters", tp:"mortgage", ag:"Congress", sig:1, pos:"State perspective on mortgage servicing oversight."},
+  {d:"2023-03-17", t:"FHLBank System at 100: Focusing on the Future", to:"FHFA RFI", tp:"mortgage", ag:"FHFA", sig:2, pos:"Defensive of FHLBank liquidity role.", q:"Recent events and stresses in the banking system show the essential source of liquidity that the FHLBank System provides for institutions across the country."},
+  {d:"2024-07-15", t:"Federal Home Loan Bank Core Mission Activities and Mission Achievement", to:"FHFA RFI", tp:"mortgage", ag:"FHFA", sig:2, pos:"FHLBank mission framing."},
+  {d:"2024-09-10", t:"Proposed Rule – Streamlining Mortgage Servicing for Borrowers Experiencing Payment Difficulties; Regulation X", to:"CFPB Reg X loss-mitigation NPRM (89 Fed. Reg. 60204)", tp:"mortgage", ag:"CFPB", sig:2, pos:"State perspective on Reg X loss-mitigation streamlining."},
+
+  // ===== CANNABIS =====
+  {d:"2020-02-14", t:"Potential Changes to Address Public Health & Safety Issues in Cannabis Banking Legislation", to:"Congressional SAFE Act discussions", tp:"cannabis", ag:"Congress", sig:1, pos:"Constructive engagement with SAFE Act drafting."},
+  {d:"2022-05-25", t:"SAFE Banking Act Letter – House", to:"SAFE Banking Act (House)", tp:"cannabis", ag:"Congress", sig:2, pos:"Supported SAFE Banking Act."},
+  {d:"2022-05-25", t:"SAFE Banking Act Letter – Senate", to:"SAFE Banking Act (Senate)", tp:"cannabis", ag:"Congress", sig:2, pos:"Supported SAFE Banking Act."},
+  {d:"2023-09-26", t:"CSBS Supports SAFER Banking Act", to:"SAFER Banking Act", tp:"cannabis", ag:"Congress", sig:2, pos:"Supported successor SAFER Banking Act."},
+
+  // ===== CONSUMER =====
+  {d:"2019-01-23", t:"Request for Information on Small Dollar Lending", to:"FDIC RFI (RIN 3064-ZA04)", tp:"consumer", ag:"FDIC", sig:1, pos:"State perspective on small-dollar lending."},
+  {d:"2019-05-07", t:"Re: ANPR on Residential Property Assessed Clean Energy Financing", to:"CFPB PACE ANPR", tp:"consumer", ag:"CFPB", sig:2, pos:"Supported PACE oversight, citing state experience."},
+  {d:"2019-05-15", t:"Proposed Rulemaking: Payday, Vehicle Title, and Certain High-Cost Installment Loans", to:"CFPB rescission of mandatory underwriting", tp:"consumer", ag:"CFPB", sig:2, pos:"Opposed CFPB rescission of mandatory underwriting provisions."},
+  {d:"2019-06-11", t:"Proposed Rulemaking: Payday, Vehicle Title, and Certain High-Cost Installment Loans (supplemental)", to:"CFPB payday rescission (continued)", tp:"consumer", ag:"CFPB", sig:1, pos:"Continued opposition to rescission."},
+  {d:"2019-09-19", t:"Proposed Rulemaking: Debt Collection Practices, Regulation F", to:"CFPB Reg F NPRM", tp:"consumer", ag:"CFPB", sig:2, pos:"State perspective on Reg F debt collection."},
+  {d:"2020-12-01", t:"Request for Information on the Equal Credit Opportunity Act and Regulation B", to:"CFPB ECOA Reg B RFI", tp:"consumer", ag:"CFPB", sig:2, pos:"State perspective on ECOA."},
+  {d:"2024-04-01", t:"Proposed Rule – Overdraft Lending: Very Large Financial Institutions", to:"CFPB Overdraft NPRM (89 Fed. Reg. 13852)", tp:"consumer", ag:"CFPB", sig:3, pos:"Strong opposition based on TILA's statutory definition of 'credit' and federalism.", q:"the CFPB's proposal would amount to a federal agency unilaterally undermining the will of sovereign state legislatures in deciding how their regulated entities provide and consumers receive overdraft services."},
+  {d:"2026-02-26", t:"Earned Wage Access Consumer Protection Act", to:"H.R.__ Earned Wage Access Consumer Protection Act discussion draft (Chairman Steil)", tp:"consumer", ag:"Congress", sig:3, pos:"Section 2(d) would broadly preempt state licensing, registration, and disclosure laws for an emerging market. Federal standards should act as a floor, not a ceiling. Thirteen states already have EWA frameworks. Bill would grant CFPB 'unprecedented licensing authority' it does not exercise for any other consumer financial product.", q:"Federalizing licensing would slow oversight, reduce responsiveness to consumer demand for credit access, and undermine prompt local mitigation of fraud and other consumer harm."},
+
+  // ===== PREEMPTION =====
+  {d:"2018-03-02", t:"CSBS Opposes Department of Education Plan to Preempt State Authority on Student Loans", to:"Education Dept. proposed preemption", tp:"preemption", ag:"Other", sig:2, pos:"Opposed ED preemption of state servicer licensing."},
+  {d:"2018-05-03", t:"CSBS Opposes the PROSPER Act", to:"Higher Education Act reauthorization (PROSPER)", tp:"preemption", ag:"Congress", sig:2, pos:"Opposed bill preempting state oversight of student lending."},
+  {d:"2018-07-21", t:"CSBS Opposes 'True Lender' Bill (H.R. 4439)", to:"H.R. 4439", tp:"preemption", ag:"Congress", sig:2, pos:"Opposed federal codification of broad valid-when-made."},
+  {d:"2021-09-13", t:"Joint Federal-State Oversight of Ed Dept. Federal Student Loan Programs and Servicers", to:"Education Dept.", tp:"preemption", ag:"Other", sig:2, pos:"Pushed for joint federal-state oversight model."},
+  {d:"2024-07-26", t:"OCC 5-Year Review of Preemption", to:"OCC Acting Comptroller Hsu's reset of Dodd-Frank § 1044 review (12 U.S.C. § 25b)", tp:"preemption", ag:"OCC", sig:3, pos:"Supported the reset; linked to Cantero v. Bank of America, N.A., 602 U.S. 205 (2024).", q:"Thirteen years ago, nearly to the day, the OCC reissued its 2004 preemption regulations. In the intervening years, the OCC has failed to conduct the 5-year reviews required by the Dodd-Frank Act."},
+  {d:"2025-05-08", t:"Rescission of OCC Preemption Regulations", to:"OMB under Executive Order 14219", tp:"preemption", ag:"Other", sig:3, pos:"Urged rescission of OCC's 2004/2011 preemption regulations."},
+  {d:"2026-01-15", t:"Extension request for OCC's Escrow Law Preemption Determination", to:"OCC preemption determination", tp:"preemption", ag:"OCC", sig:2, pos:"Requested extension of comment period on escrow preemption."},
+  {d:"2026-01-29", t:"OCC Preemption Determination: State Interest-on-Escrow Laws and Real Estate Lending Escrow Accounts", to:"OCC preemption determination (post-Cantero)", tp:"preemption", ag:"OCC", sig:3, pos:"Opposed OCC's renewed preemption determination on state interest-on-escrow laws after Cantero."},
+  {d:"2026-02-23", t:"OCC National Bank Chartering", to:"OCC NPRM on National Bank Chartering (Docket OCC-2025-XXXX)", tp:"preemption", ag:"OCC", sig:3, pos:"Replacing 'fiduciary activities' with 'operations of trust companies and activities related thereto' could dilute or remove a critical NBA constraint. OCC may not use the NTC charter to authorize a new class of national bank that is neither predominantly engaged in fiduciary operations nor in receiving deposits. Cites Loper Bright Enterprises v. Raimondo, 603 U.S. 369 (2024).", q:"The OCC may not use the NTC charter to authorize a new class of national bank that is neither predominately engaged in the fiduciary operations of a trust company nor in receiving deposits as an insured national bank."},
+  {d:"2026-01-13", t:"Extension Request – National Bank Chartering", to:"OCC chartering rule comment period", tp:"preemption", ag:"OCC", sig:1, pos:"Requested extension."},
+  {d:"2025-09-16", t:"Establishment and Relocation of Branches and Offices", to:"OCC branch rules NPRM", tp:"preemption", ag:"OCC", sig:2, pos:"Comment on OCC branch establishment rules."},
+
+  // ===== TRUST =====
+  {d:"2019-06-29", t:"Fiduciary Capacity; Non-Fiduciary Capacity Custody Activities", to:"OCC ANPR on fiduciary-capacity definitions", tp:"trust", ag:"OCC", sig:3, pos:"Opposed any reading that would let OCC charter nondepository national trust banks based solely on state-law fiduciary characterizations."},
+
+  // ===== SAB 121 =====
+  {d:"2024-02-28", t:"CSBS Relays Concerns with SEC's Staff Accounting Bulletin 121", to:"SEC SAB 121", tp:"sab121", ag:"SEC", sig:3, pos:"Two principal objections: (a) APA violation per GAO Decision B-334540 (Oct. 31, 2023); (b) on-balance-sheet treatment defeats bankruptcy-remote custody protections.", q:"Requiring custodied crypto-assets to be accounted for on-balance sheet risks losing the bankruptcy remote protections of custody services."},
+
+  // ===== FDIC BOARD =====
+  {d:"2018-08-10", t:"The FDIC Board Needs State Supervisory Experience", to:"White House nomination process", tp:"fdic-board", ag:"Other", sig:1, pos:"Advocated for state-supervisor seat on FDIC Board."},
+  {d:"2019-01-28", t:"CSBS Letter Supporting State Supervisor on FDIC Board", to:"White House", tp:"fdic-board", ag:"Other", sig:1, pos:"Continued advocacy."},
+  {d:"2024-05-21", t:"White House Letter on FDIC Board Seat Nominations", to:"White House FDIC Board seat", tp:"fdic-board", ag:"Other", sig:2, pos:"Renewed argument for state supervisor seat."},
+
+  // ===== NOMINATIONS =====
+  {d:"2018-11-09", t:"Support Letter for Miki Bowman as Fed Board Member", to:"Bowman nomination", tp:"nominations", ag:"Congress", sig:1, pos:"Supportive of Bowman nomination."},
+  {d:"2019-09-10", t:"Supporting Governor Bowman's Nomination", to:"Bowman renomination", tp:"nominations", ag:"Congress", sig:1, pos:"Renewed support for Bowman."},
+  {d:"2022-02-02", t:"On the Nomination of Sarah Bloom Raskin", to:"Raskin Fed Vice Chair nomination", tp:"nominations", ag:"Congress", sig:2, pos:"Concerns over master-account positions taken during her Reserve Bank Kansas City board tenure; did not endorse."},
+  {d:"2025-11-13", t:"On the Nomination of Travis Hill", to:"Hill FDIC Chair nomination", tp:"nominations", ag:"Congress", sig:2, pos:"Supportive of Hill nomination."},
+
+  // ===== MISC =====
+  {d:"2017-09-14", t:"On the Small Business Market", to:"Treasury small-business RFI", tp:"misc", ag:"Treasury", sig:1, pos:"State perspective on small business market."},
+  {d:"2017-09-29", t:"On Interagency Proposed Appraisal Threshold for Transactions Secured by Commercial Real Estate", to:"Interagency appraisal threshold NPRM", tp:"misc", ag:"Interagency", sig:1, pos:"Comments on appraisal threshold."},
+  {d:"2018-04-10", t:"State Regulators Support Limited Appraiser Waivers", to:"Appraiser waiver framework", tp:"misc", ag:"Other", sig:1, pos:"Supported limited appraiser waivers."},
+  {d:"2018-12-04", t:"Request for Information on FDIC Communication and Transparency", to:"FDIC RFI on communication (Docket RIN 3064-ZA02)", tp:"misc", ag:"FDIC", sig:2, pos:"Federal regulators have excluded states from policy development, producing inconsistent or conflicting approaches. FDIC should incorporate states from initial policy stages through implementation. Organize FILs by subject/size; clarify the Interagency Statement on Supervisory Guidance; share fair lending exam methodologies and define 'pattern or practice.' Cites the 1997 Nationwide State/Federal Supervisory Agreement.", q:"Too often, state regulators have been excluded from the policy development process which can result in inconsistent or conflicting regulatory approaches prevailing among state and federal agencies with shared jurisdiction."},
+  {d:"2022-03-14", t:"Notice of Proposed Rulemaking – Temporary Waiver Requests", to:"Federal waiver proposal", tp:"misc", ag:"Interagency", sig:1, pos:"Technical comments on waiver mechanisms."},
+
+  // ===== COVID =====
+  {d:"2020-03-20", t:"CSBS COVID-19 Legislative Proposals", to:"Congressional COVID response", tp:"covid", ag:"Congress", sig:2, pos:"Package of CSBS COVID-era legislative proposals."},
+  {d:"2020-04-09", t:"Paycheck Protection Program", to:"SBA / Treasury PPP", tp:"covid", ag:"Treasury", sig:2, pos:"State perspective on PPP implementation."},
+
+  // ===== THRESHOLDS =====
+  {d:"2018-03-12", t:"CSBS Supports Legislation Providing Relief for Community Banks", to:"S. 2155 (EGRRCPA)", tp:"thresholds", ag:"Congress", sig:2, pos:"Supported S. 2155."},
+  {d:"2025-03-28", t:"CSBS Comments on House 'Making Community Banking Great Again' Agenda", to:"HFSC agenda", tp:"thresholds", ag:"Congress", sig:2, pos:"Engaged on community banking modernization agenda."},
+  {d:"2025-05-12", t:"Modification of Outdated, Burdensome Community Bank Regulatory Thresholds", to:"FRB/FDIC/OCC", tp:"thresholds", ag:"Interagency", sig:2, pos:"Recommended threshold modernization."},
+  {d:"2025-09-24", t:"Adjusting and Indexing Certain Regulatory Thresholds", to:"Interagency proposal indexing thresholds for inflation", tp:"thresholds", ag:"Interagency", sig:2, pos:"Broadly supportive of indexing."},
+
+  // ===== CDFI / 2025-26 =====
+  {d:"2025-03-20", t:"CSBS NASCUS CDFI Support Letter", to:"Congress / Treasury on CDFI Fund", tp:"cdfi", ag:"Other", sig:1, pos:"Joint CSBS/NASCUS letter supporting CDFI Fund."},
+  {d:"2025-05-15", t:"Request for Information: Deregulation", to:"OMB RFI under Executive Order 14219 (Docket OMB-2025-0003)", tp:"cdfi", ag:"Other", sig:3, pos:"Compendium letter to OMB transmitting three deregulatory recommendations: (A) rescind OCC preemption regulations that ignore NBA § 5136C and Cantero; (B) rescind CFPB Nonbank Registry as 'unnecessary, unlawful, and unduly burdensome' (duplicates NMLS); (C) modify FDICIA, SAR/CTR, HMDA, and CRA thresholds. Smallest banks attribute 11–15.5% of personnel expenses to compliance vs. 5.6–9.6% at largest banks.", q:"is the OCC ever going to get around to doing that which Dodd-Frank directs it to do? (quoting Justice Gorsuch in Cantero)"},
+  {d:"2025-08-26", t:"CSBS NASCUS CDFI Letter", to:"CDFI Fund Certification of Material Events Form (90 Fed. Reg. 26902)", tp:"cdfi", ag:"Treasury", sig:3, pos:"Joint CSBS/NASCUS letter opposing proposed Material Events Form changes. Form would inappropriately require IDIs to share confidential supervisory information (CSI) with the CDFI Fund. 12 U.S.C. § 4715(c) directly prohibits the Fund from requiring exam report disclosure. ~60% of financial institution CDFIs are state-chartered.", q:"State and federal laws prohibit the disclosure of CSI, including composite CAMELS ratings and exam findings, to non-prudential regulators. The CDFI Fund is not a prudential regulator."},
+  {d:"2025-09-18", t:"Request for Information on Potential Actions to Address Payments Fraud", to:"Joint OCC/FRB/FDIC RFI on payments fraud (Docket OP-1866 / OCC-2025-0009 / RIN 3064-ZA49)", tp:"cdfi", ag:"Interagency", sig:2, pos:"Joint CSBS/NASCUS letter. Leverage FFIEC's December 2024 elder financial exploitation interagency statement. Establish a public-private working group with banks, credit unions, regulators, law enforcement, and FinCEN. Provide clear guidance on Reg CC § 229.13(h)(4) extended hold times. Streamline USA PATRIOT Act § 314(b) info sharing. 43% of banks invoking state hold laws find them effective."},
+  {d:"2025-10-16", t:"Request to Rescind CDFI Fund Reduction-in-Force", to:"Treasury Secretary Bessent and OMB Director Vought re: CDFI Fund RIF", tp:"cdfi", ag:"Treasury", sig:2, pos:"Joint CSBS/NASCUS letter urging rescission of RIF letters to all CDFI Fund employees. CDFI Fund has both statutory authority and appropriated FY 2025 resources through Sept. 30, 2026. 20% of CDFIs operate in 'persistent poverty counties.' Every dollar to a CDFI generates eight dollars in private-sector investment.", q:"the RIF of CDFI Fund employees [is] both damaging and unnecessary."},
+];
+
+const FALLBACK_URL = "https://www.csbs.org/comment-letters";
+
+const URL_MAP = {
+  "2017-01-13::On the OCC's White Paper: Exploring Special Purpose National Bank Charters for Fintech Companies": "https://www.csbs.org/sites/default/files/2017-11/CSBS%20Comment%20Letter--OCC%20White%20Paper-Exploring%20Special%20Purpose%20National%20Bank%20Charters%20for%20Fintech%20Companies_0.pdf",
+  "2020-01-21::Permissible Interest on Loans that are Sold, Assigned, or Otherwise Transferred": "https://www.csbs.org/policy/csbs-comment-letter-permissible-interest-loans-are-sold-assigned-or-otherwise-transferred",
+  "2022-06-13::Exemptions of ILCs under the Bank Holding Company Act": "https://www.csbs.org/ILC-letter",
+  "2022-04-22::Supplemental Notice – Proposed Guidelines for Evaluating Account and Services Requests": "https://www.csbs.org/feds-proposed-tiered-review-framework-evaluating-account-access-requests-unequitable",
+  "2023-01-17::Guidelines for Evaluating Account and Services Requests": "https://www.csbs.org/account-and-service-requests",
+  "2026-02-06::Reserve Bank Payment Account Prototype": "https://www.csbs.org/node/558861",
+  "2021-09-27::On Cryptocurrencies": "https://www.csbs.org/policy/statements-comments/csbs-letter-cryptocurrencies",
+  "2025-04-01::Letter to House Committee on STABLE Act": "https://www.csbs.org/stable-act-committee-letter",
+  "2025-09-24::GENIUS Act Implementation": "https://www.csbs.org/csbs-genius-act-implementation-comment-letter",
+  "2025-11-04::GENIUS Act Implementation (follow-up)": "https://www.csbs.org/genius-act-implementation-0",
+  "2025-11-04::Guidance on Tokenized Deposits": "https://www.csbs.org/csbs-tokenized-deposits-comment-letter",
+  "2026-01-14::Digital Asset Market Structure Legislation": "https://www.csbs.org/node/557266",
+  "2024-06-17::Request for Comment on Proposed Statement of Policy on Bank Merger Transactions": "https://www.csbs.org/node/490936",
+  "2025-04-09::Proposed Rescission and Reinstatement of Statement of Policy": "https://www.csbs.org/proposed-rescission-fdic-bank-merger",
+  "2024-10-04::Request for Information on Deposits": "https://www.csbs.org/RFI-Deposits",
+  "2024-11-21::Unsafe and Unsound Banking Practices: Brokered Deposits Restrictions": "https://www.csbs.org/fdic-should-rescind-brokered-deposits-proposal",
+  "2025-01-17::Recordkeeping for Custodial Accounts": "https://www.csbs.org/recordkeeping-custodial-accounts",
+  "2024-01-16::CSBS Comments on the Large Bank Regulatory Capital Rule": "https://www.csbs.org/node/429241",
+  "2024-01-16::CSBS Comments on the Long Term Debt Requirements Proposal": "https://www.csbs.org/long-term-debt-proposal-needs-changes",
+  "2024-01-17::Long-Term Debt Requirements for Large Bank Holding Companies, Certain IHCs of Foreign Banking Organizations, and Large Insured Depository Institutions": "https://www.csbs.org/comment-letter/LTDRequirements",
+  "2024-02-07::Guidelines Establishing Standards for Corporate Governance and Risk Management for Covered Institutions with Total Consolidated Assets of $10 Billion or More": "https://www.csbs.org/why-fdic-should-withdraw-its-corporate-governance-risk-management-proposal",
+  "2025-08-26::CSBS eSLR Comment Letter": "https://www.csbs.org/csbs-eslr-comment-letter",
+  "2020-04-08::Community Reinvestment Act Regulations": "https://www.csbs.org/policy/statements-comments/csbs-letter-community-reinvestment-act-regulations",
+  "2021-02-16::CSBS Comment Letter: Advance Notice of Proposed Rulemaking – Community Reinvestment Act": "https://www.csbs.org/policy/statements-comments/csbs-comment-letter-advance-notice-proposed-rulemaking-community",
+  "2022-08-05::Community Reinvestment Act Changes": "https://www.csbs.org/comment-letters/community-reinvestment-act-comment-letter-csbs-state-regulators",
+  "2019-05-07::BSA Amendment Would Improve State and Federal Regulator Coordination": "https://www.csbs.org/policy/csbs-comment-letter-bsa-amendment-would-improve-state-and-federal-regulator-coordination",
+  "2021-05-05::CSBS Letter re: Proposed FinCEN Rulemaking on Beneficial Ownership Information Reporting Requirements": "https://www.csbs.org/policy/csbs-letter-re-proposed-fincen-rulemaking-beneficial-ownership-information-reporting",
+  "2022-08-05::FinCEN No-Action Letter Process": "https://www.csbs.org/comment-letters/fincen-no-action-letter",
+  "2023-02-14::Beneficial Ownership Information Access and Safeguards, and Use of FinCEN Identifiers for Entities": "https://www.csbs.org/fincenbeneficialownership",
+  "2022-01-06::Small Business Lending Data Collection Under the Equal Credit Opportunity Act (Regulation B)": "https://www.csbs.org/policy/statements-comments/small-business-lending-data-collection-under-equal-credit-opportunity",
+  "2023-03-17::FHLBank System at 100: Focusing on the Future": "https://www.csbs.org/FHLB-at-100",
+  "2024-04-01::Proposed Rule – Overdraft Lending: Very Large Financial Institutions": "https://www.csbs.org/overdraftlendingcfpb",
+  "2024-07-26::OCC 5-Year Review of Preemption": "https://www.csbs.org/OCC5Year",
+  "2024-02-28::CSBS Relays Concerns with SEC's Staff Accounting Bulletin 121": "https://www.csbs.org/SAB121",
+  "2025-05-15::Request for Information: Deregulation": "https://www.csbs.org/omb-letters",
+  "2018-04-26::Request for Information Regarding Bureau Civil Investigative Demands and Associated Processes": "https://www.csbs.org/comment-letters/request-information-regarding-bureau-civil-investigative-demands-and-associated",
+  "2018-05-14::Request for Information Regarding Bureau Enforcement Processes": "https://www.csbs.org/comment-letters/request-information-regarding-bureau-enforcement-processes",
+  "2018-05-21::Request for Information Regarding Bureau's Supervision Program": "https://www.csbs.org/comment-letters/request-information-regarding-bureaus-supervision-program",
+  "2018-06-04::Request for Reevaluation of Public Comment Period on Remaining CFPB RFIs": "https://www.csbs.org/comment-letters/request-reevaluation-public-comment-period-remaining-cfpb-rfis",
+  "2018-06-04::Bureau Public Reporting Practices of Consumer Complaint Information": "https://www.csbs.org/comment-letters/comment-letter-request-information-regarding-bureau-public-reporting-practices",
+  "2018-06-07::On Information Regarding CFPB Rulemaking Processes": "https://www.csbs.org/comment-letters/information-regarding-cfpb-rulemaking-processes",
+  "2018-10-01::Request for Comment Regarding the Bureau's Consumer Complaint Intake System Company Portal Boarding Form": "https://www.csbs.org/comment-letters/request-comment-regarding-bureaus-consumer-complaint-intake-system-company-portal",
+  "2018-12-04::Request for Information on FDIC Communication and Transparency": "https://www.csbs.org/comment-letters/request-information-fdic-communication-and-transparency",
+  "2025-08-26::CSBS NASCUS CDFI Letter": "https://www.csbs.org/csbs-nascus-cdfi-letter-82525",
+  "2025-09-18::Request for Information on Potential Actions to Address Payments Fraud": "https://www.csbs.org/comment-letters/request-information-potential-actions-address-payments-fraud",
+  "2025-10-16::Request to Rescind CDFI Fund Reduction-in-Force": "https://www.csbs.org/comment-letters/request-rescind-cdfi-fund-reduction-force",
+  "2025-12-29::Unsafe or Unsound Practices, MRAs": "https://www.csbs.org/comment-letters/unsafe-or-unsound-practices-mras",
+  "2026-01-28::Regulatory Capital Rule: Revisions to the Community Bank Leverage Ratio Framework": "https://www.csbs.org/comment-letters/regulatory-capital-rule-revisions-community-bank-leverage-ratio-framework",
+  "2026-02-23::OCC National Bank Chartering": "https://www.csbs.org/comment-letters/occ-national-bank-chartering",
+  "2026-02-26::Earned Wage Access Consumer Protection Act": "https://www.csbs.org/comment-letters/csbs-comment-letter-earned-wage-access-consumer-protection-act"
+};
+
+const BULLETS_MAP = {
+  "2017-01-13::On the OCC's White Paper: Exploring Special Purpose National Bank Charters for Fintech Companies": [
+    "The 'business of banking' under the National Bank Act requires deposit-taking.",
+    "12 C.F.R. § 5.20(e)(1)(i) exceeds OCC's statutory authority (citing IBAA v. Conover, 1985).",
+    "The Competitive Equality Banking Act of 1987 closed the 'nonbank bank' loophole; SPNB would reopen it.",
+    "Individualized 'operating agreements' would impose substantive conditions bypassing APA notice-and-comment.",
+    "Any SPNB grant would be 'unlawful and invalid.'"
+  ],
+  "2017-04-14::On the OCC's Draft Licensing Supplement: Evaluating Charter Applications From Financial Technology Companies": [
+    "Re-asserts unlawfulness of OCC's nondepository national bank charter.",
+    "OCC's individualized operating agreements approach bypasses APA notice-and-comment requirements.",
+    "State licensing remains the appropriate path for nonbank financial activity.",
+    "Foreshadows CSBS's April 26, 2017 lawsuit (dismissed as unripe) and October 2018 refiled suit."
+  ],
+  "2020-01-21::Permissible Interest on Loans that are Sold, Assigned, or Otherwise Transferred": [
+    "Does not oppose the valid-when-made principle in concept.",
+    "Demands a true-lender proviso preserving state-law true-lender claims.",
+    "Applicable law must remain the law of the state in which the consumer resides.",
+    "Traditional role of courts in determining true lender must be preserved.",
+    "OCC failed to apply the Barnett Bank 'prevent or significantly interfere' standard required by 12 U.S.C. § 25b."
+  ],
+  "2020-09-03::National Banks and Federal Savings Associations as Lenders": [
+    "Opposes bright-line 'named on the note OR funds the loan' test.",
+    "Test would facilitate predatory lending through rent-a-charter relationships.",
+    "Would allow nonbanks to evade otherwise applicable state law.",
+    "Strips state regulators of their traditional usury enforcement role."
+  ],
+  "2021-04-27::CSBS Letter re: CRA Resolution on True Lender (Senate)": [
+    "Supports Congressional Review Act disapproval of OCC's true-lender rule (S.J. Res. 15).",
+    "Senate vote: 52–47 in favor (May 11, 2021).",
+    "House vote: 218–208 in favor (June 24, 2021).",
+    "Signed by President Biden on June 30, 2021."
+  ],
+  "2019-02-11::CSBS Strongly Opposes CFPB Preemption of State Authority Using a Fintech Sandbox": [
+    "Federal sandbox immunity under federal consumer law cannot extend to state-law obligations.",
+    "CFPB lacks authority to preempt state consumer protection law via sandbox mechanism.",
+    "State regulators retain authority over state-licensed nonbanks regardless of CFPB sandbox status.",
+    "'Strongly opposes' the proposal's federalism implications."
+  ],
+  "2022-06-13::Exemptions of ILCs under the Bank Holding Company Act": [
+    "Opposes repeal of CEBA § 2(c)(2)(H) BHCA exemption.",
+    "ILCs differ fundamentally from OCC fintech charters: ILCs are FDIC-insured and subject to comprehensive federal bank regulation.",
+    "Fintech-chartered institutions 'simply would not' be subject to that comprehensive scheme.",
+    "State chartering authority for ILCs is a lawful, longstanding pathway."
+  ],
+  "2024-10-10::Parent Companies of Industrial Banks and Industrial Loan Companies": [
+    "Opposes proposed § 354.6 parent-evaluation factors.",
+    "Opposes rebuttable presumption against 'shell' or 'captive' parent structures.",
+    "Opposes new limits on written commitments.",
+    "Industrial bank charter is a lawful option under state and federal law for commercial firms to own a bank.",
+    "Proposal creates 'regulatory animosity' against state-chartered ILCs without justification."
+  ],
+  "2022-04-22::Supplemental Notice – Proposed Guidelines for Evaluating Account and Services Requests": [
+    "Strongly objects to FRB's Tier 1/2/3 framework as inequitable.",
+    "Tiered review cannot be impartial when based on chartering identity rather than supervisory substance.",
+    "Disadvantages state-chartered institutions relative to federal charters.",
+    "Master account access should turn on actual applicable supervisory regimen — state or federal.",
+    "Reiterates request for publication of access decisions and public database."
+  ],
+  "2026-02-06::Reserve Bank Payment Account Prototype": [
+    "Cautiously supports a special-purpose 'skinny' master account prototype.",
+    "Would primarily appeal to institutions currently subject to Tier 3 review.",
+    "'Marked improvement' over current opaque, lengthy, open-ended Tier 3 review process.",
+    "Should not become the only path for state-chartered institutions seeking access.",
+    "Transparency and timeliness remain CSBS's core demands."
+  ],
+  "2025-03-13::Letter to Senate Committee on GENIUS Act": [
+    "CSBS 'will be unable to support' S. 394 without changes.",
+    "Requests off-balance-sheet trust holding of reserves.",
+    "Objects to expanded permissible activities for uninsured federal stablecoin banks.",
+    "Preserve state regulatory authority over state-licensed payment stablecoin issuers (PSIs).",
+    "Parity required between federal and state pathways."
+  ],
+  "2025-04-01::Letter to House Committee on STABLE Act": [
+    "H.R. 2392 'would constitute a staggering and unprecedented expansion of federal power.'",
+    "Demands parity for state PSIs under Section 7(g).",
+    "OCC preemption in the bill would undermine longstanding state authority.",
+    "State licensing must remain a viable pathway for stablecoin issuance."
+  ],
+  "2025-09-24::GENIUS Act Implementation": [
+    "State regimes 'should not have to strictly follow' federal implementing regulations to qualify as 'substantially similar.'",
+    "Urges broad definitions of 'interest,' 'yield,' and 'pay' to prevent evasion.",
+    "Affiliates, rewards, and bonuses should not become vehicles for yield evasion.",
+    "State pathway must be preserved in operational reality, not just nominally."
+  ],
+  "2025-11-04::Guidance on Tokenized Deposits": [
+    "Interagency guidance for tokenized deposits at IDIs is needed.",
+    "Must proceed 'in tandem' with stablecoin rules to prevent regulatory arbitrage.",
+    "Asymmetric treatment of stablecoins and tokenized deposits would distort the market.",
+    "State regulators have a role in tokenized deposit oversight at state-chartered IDIs."
+  ],
+  "2026-01-14::Digital Asset Market Structure Legislation": [
+    "Welcomes narrowed preemption in revised Senate draft.",
+    "Continues to urge striking Section 16(d) of the GENIUS Act.",
+    "Section 16(d) 'erodes longstanding state authority to license and supervise traditional financial activities within their borders.'",
+    "State authority over traditional financial activities must be preserved."
+  ],
+  "2026-05-01::CSBS Comment Letter: Implementing the GENIUS Act": [
+    "OCC should limit issuer activities consistent with the GENIUS Act.",
+    "Capital standards must address heightened risks of digital asset service provider activities.",
+    "Opposes expanded national-trust-charter authority for stablecoin issuers.",
+    "State regulatory pathway remains the appropriate primary frame for non-bank issuers."
+  ],
+  "2024-06-17::Request for Comment on Proposed Statement of Policy on Bank Merger Transactions": [
+    "Proposed SOP 'would lead to a longer, costlier, and more burdensome bank merger review process.'",
+    "Vague and subjective criteria undermine predictability.",
+    "Urges interagency alignment with OCC and FRB.",
+    "Threatens healthy bank consolidation in rural and underserved areas.",
+    "Lacks adequate empirical and data-driven justification."
+  ],
+  "2025-04-09::Proposed Rescission and Reinstatement of Statement of Policy": [
+    "Supports rescission of the 2024 SOP (90 Fed. Reg. 11679).",
+    "2024 SOP 'established vague and subjective criteria.'",
+    "Would have resulted in a 'less predictable, more costly, and lengthier' M&A process.",
+    "Calls for de minimis rural-merger exception.",
+    "Calls for inclusion of credit unions, savings institutions, and Farm Credit Associations in competitive-effects analysis.",
+    "Calls for safe harbor for transactions unlikely to raise antitrust concerns."
+  ],
+  "2024-10-04::Request for Information on Deposits": [
+    "Urges FDIC to conclude the RFI before initiating any rulemaking.",
+    "Calls for a new comprehensive deposits study akin to FDIC's July 2011 'Study on Core Deposits and Brokered Deposits.'",
+    "Empirical foundation required for any future deposit rulemaking.",
+    "Cannot meaningfully evaluate brokered deposits without a baseline data study."
+  ],
+  "2024-11-21::Unsafe and Unsound Banking Practices: Brokered Deposits Restrictions": [
+    "Demands rescission of the proposal.",
+    "'Fails to meet the rigorous, fact-based, and data-driven rulemaking standard stakeholders deserve.'",
+    "'Takes us a decade or more into the past.'",
+    "Faults FDIC for issuing the proposal simultaneously with the deposit RFI.",
+    "Lacks supporting empirical record."
+  ],
+  "2025-01-17::Recordkeeping for Custodial Accounts": [
+    "Supportive of the post-Synapse NPRM (12 CFR Part 375).",
+    "Addresses current deficiencies in custodial account oversight.",
+    "Justifies additional recordkeeping and internal control requirements.",
+    "Targets banks managing third-party custodial accounts with transaction features.",
+    "Necessary consumer protection response to Synapse failure."
+  ],
+  "2024-01-16::CSBS Comments on the Large Bank Regulatory Capital Rule": [
+    "Basel III Endgame 'abandons appropriate regulatory tailoring.'",
+    "'Could ultimately undermine U.S. banking industry diversity and financial stability.'",
+    "Opposes application to Category III/IV firms.",
+    "Opposes eliminating the AOCI opt-out.",
+    "'We need a capital regime that enables competition, not one that dictates business models.'"
+  ],
+  "2024-02-07::Guidelines Establishing Standards for Corporate Governance and Risk Management for Covered Institutions with Total Consolidated Assets of $10 Billion or More": [
+    "Demands withdrawal of the proposal.",
+    "Proposal 'tramples on the historic role of the states in corporate governance.'",
+    "FDIC 'lacks statutory authority to establish the new stakeholder standards.'",
+    "Would conflict with state corporate governance laws.",
+    "Issued 'with little justification and no analysis.'"
+  ],
+  "2025-08-26::CSBS eSLR Comment Letter": [
+    "Supports strong G-SIB leverage capital in principle.",
+    "Urges sequencing risk-based capital reforms first.",
+    "Leverage capital is a 'trusted and transparent backstop' that treats all assets risk-neutrally.",
+    "Flags concentration: more than 41% of all U.S. deposits sit within the eight U.S. G-SIBs' IDI subsidiaries."
+  ],
+  "2020-04-08::Community Reinvestment Act Regulations": [
+    "Opposes OCC-FDIC unilateral move without the Federal Reserve.",
+    "Federal CRA framework 'should remain the same regardless of the type of charter or regulator chosen.'",
+    "Interagency consistency is essential to CRA's purpose.",
+    "Breaks longstanding three-agency consensus on CRA implementation."
+  ],
+  "2021-05-05::CSBS Letter re: Proposed FinCEN Rulemaking on Beneficial Ownership Information Reporting Requirements": [
+    "State bank regulators are an 'appropriate regulatory agency' entitled to BOI access.",
+    "Cites 31 U.S.C. § 5336(c)(2)(C)(i) of the Corporate Transparency Act.",
+    "State regulators conduct BSA/AML examinations and require parallel access.",
+    "Excluding state regulators would degrade BSA/AML compliance and supervision."
+  ],
+  "2022-01-06::Small Business Lending Data Collection Under the Equal Credit Opportunity Act (Regulation B)": [
+    "Recommends exemption for smaller financial institutions.",
+    "Limit to mandatory statutory data points only.",
+    "Align with Call Report, CRA, and HMDA reporting frameworks.",
+    "Reporting threshold should be set above the proposed 25 loans.",
+    "Compliance costs estimated at $58,400–$95,200/year could force lenders out of small business lending."
+  ],
+  "2024-04-01::Proposed Rule – Overdraft Lending: Very Large Financial Institutions": [
+    "Overdraft programs do not meet TILA's statutory definition of 'credit.'",
+    "Consumers have no legal right to have a bank pay an overdraft.",
+    "Proposal would amount to 'a federal agency unilaterally undermining the will of sovereign state legislatures.'",
+    "State legislatures determine how overdraft services are provided in their jurisdictions.",
+    "Federalism objection is independent of any policy merits assessment."
+  ],
+  "2024-07-26::OCC 5-Year Review of Preemption": [
+    "Supports Acting Comptroller Hsu's reset of the long-dormant Dodd-Frank § 1044 five-year review.",
+    "'Thirteen years ago, nearly to the day, the OCC reissued its 2004 preemption regulations.'",
+    "OCC has 'failed to conduct the 5-year reviews required by the Dodd-Frank Act.'",
+    "OCC must 'specifically revisit prior regulations, determinations, and orders' that failed review.",
+    "Linked to Cantero v. Bank of America, N.A., 602 U.S. 205 (2024)."
+  ],
+  "2025-05-08::Rescission of OCC Preemption Regulations": [
+    "Letter to OMB under Executive Order 14219.",
+    "Urges rescission of OCC's 2004/2011 preemption regulations.",
+    "Post-Cantero, prior preemption determinations require fresh review.",
+    "State authority has been improperly preempted for over two decades."
+  ],
+  "2026-01-29::OCC Preemption Determination: State Interest-on-Escrow Laws and Real Estate Lending Escrow Accounts": [
+    "Opposes OCC's renewed preemption determination on state interest-on-escrow laws.",
+    "Post-Cantero, OCC must apply the nuanced comparative Barnett Bank analysis.",
+    "State interest-on-escrow laws do not 'prevent or significantly interfere' with national bank powers.",
+    "OCC has not applied the Barnett Bank standard as required by Dodd-Frank § 1044."
+  ],
+  "2026-02-23::OCC National Bank Chartering": [
+    "Comment on OCC's chartering rule, particularly application to crypto-linked national trust banks.",
+    "OCC should not expand chartering to nondepository entities.",
+    "Maintains long-running opposition to OCC charter expansion beyond traditional banking.",
+    "State regulators 'reserve their traditional chartering and licensing authority' to protect consumers."
+  ],
+  "2019-06-29::Fiduciary Capacity; Non-Fiduciary Capacity Custody Activities": [
+    "Opposes any reading allowing OCC to charter nondepository national trust banks.",
+    "State-law fiduciary characterizations should not trigger federal chartering authority.",
+    "Maintains state primacy in trust company regulation.",
+    "Foreshadows the 2021–2026 crypto national-trust-charter battles."
+  ],
+  "2024-02-28::CSBS Relays Concerns with SEC's Staff Accounting Bulletin 121": [
+    "APA process objection: GAO Decision B-334540 (Oct. 31, 2023) held SAB 121 is a 'rule' subject to Congressional Review Act submission.",
+    "SEC failed to submit the bulletin to Congress as required.",
+    "Substantive concern: on-balance-sheet treatment defeats bankruptcy-remote custody protections.",
+    "'Requiring custodied crypto-assets to be accounted for on-balance sheet risks losing the bankruptcy remote protections of custody services.'"
+  ],
+  "2018-04-26::Request for Information Regarding Bureau Civil Investigative Demands and Associated Processes": [
+    "CFPB should notify state regulators prior to issuing a CID to an entity within shared jurisdiction.",
+    "Prior notification allows CFPB to learn of pending state investigations and tailor CID scope.",
+    "Aligns with cooperative federalism framework through the State Coordinating Committee (SCC, est. 2013).",
+    "State regulators serve as primary regulators of non-depository financial services providers.",
+    "Coordination through SCC eliminates regulatory redundancies and enhances supervisory capacity."
+  ],
+  "2018-05-14::Request for Information Regarding Bureau Enforcement Processes": [
+    "Promote efficient information sharing between CFPB and state regulators pursuant to existing agreements.",
+    "CFPB should consult with relevant state regulators throughout corrective actions, enforcement, and remediation.",
+    "Coordinate actionable matters with state regulators when feasible.",
+    "References the 2011 CFPB-CSBS Memorandum of Understanding on information sharing.",
+    "State regulators serve as primary regulators of non-depository financial services providers."
+  ],
+  "2018-05-21::Request for Information Regarding Bureau's Supervision Program": [
+    "Continue to maintain and update the Bureau's Supervision and Examination Manual.",
+    "Coordinate examination scheduling so CFPB and state exam reporting occurs at or near the same time.",
+    "Maintain an independent appeals process for material supervisory findings after exam conclusion (no mid-exam appeals).",
+    "Permit state regulators to demonstrate jurisdiction on an industry/sector basis rather than entity-by-entity for information sharing.",
+    "Retain CFPB authority to assess scope, competency, and independence of third-party compliance providers.",
+    "Automatically notify state regulators of potential action and request for response (PARR) letters affecting their jurisdiction."
+  ],
+  "2018-06-04::Request for Reevaluation of Public Comment Period on Remaining CFPB RFIs": [
+    "Requests a single Oct. 16, 2018 due date for remaining RFIs (90 days after the 12th RFI's current deadline).",
+    "Alternatively, requests at least two-week spacing between remaining comment deadlines.",
+    "Two RFI deadlines (Public Reporting Practices and Rulemaking Processes) currently separated by only four days.",
+    "Acting Director Mulvaney himself noted surprise at limited comment volume on several RFIs.",
+    "Staggered deadlines would enable stakeholders to provide substantive input on each topic."
+  ],
+  "2018-06-04::Bureau Public Reporting Practices of Consumer Complaint Information": [
+    "CFPB public reporting must recognize state confidentiality laws barring release of consumer complaint information.",
+    "Otherwise CFPB practices may 'unintentionally inhibit a more robust system of complaint information sharing' between states and the Bureau.",
+    "Post consumer narratives only after the financial institution has had a reasonable opportunity to respond.",
+    "Meritless or unverified complaints should not be given a platform that gives rise to public misperception or reputational harm.",
+    "States often act as the first regulatory point of contact for new consumer issues and deceptive practices.",
+    "Reiterates comments made to the Bureau in 2014 on public complaint database design."
+  ],
+  "2018-06-07::On Information Regarding CFPB Rulemaking Processes": [
+    "Supports CFPB's RFI practice (e.g., on small business lending pre-Section 1071) as enabling feedback throughout the rulemaking process.",
+    "CFPB proposed and final rules have been 'unnecessarily lengthy and complex.'",
+    "Ensure compliance expectations are clear — small institutions struggle with rule length and complexity.",
+    "Adopt the FDIC's research definition of a community bank to appropriately tailor rules for smaller entities.",
+    "Allow at least 90 days for comment on substantial rulemakings.",
+    "Continue hosting briefings for state regulators on substantial rulemakings."
+  ],
+  "2018-10-01::Request for Comment Regarding the Bureau's Consumer Complaint Intake System Company Portal Boarding Form": [
+    "Add an NMLS ID company look-up data field to the Bureau's complaint database.",
+    "NMLS ID is a unique identifier already required under HMDA and RESPA-TILA reporting.",
+    "NMLS ID search would reduce consumer confusion among companies with similar names.",
+    "Accurate NMLS-based attribution prevents complaints from being routed to a parent company instead of the actual subsidiary.",
+    "Reiterates positions from CSBS's earlier 2018 comments on the Bureau's complaint intake processes."
+  ],
+  "2018-12-04::Request for Information on FDIC Communication and Transparency": [
+    "Federal regulators have excluded state regulators from policy development, producing inconsistent or conflicting approaches.",
+    "FDIC should incorporate state regulators in policy development from initial stages through implementation.",
+    "Organize FILs by subject-matter or institution size; flag applicability to specific sub-sets of banks.",
+    "Clarify the impact of the Interagency Statement on the Role of Supervisory Guidance on examination processes.",
+    "Adopt clearer expectations on duration of compliance examinations — multi-year fair lending exams create uncertainty.",
+    "Share fair lending examination methodologies, models, data inputs, and proxy use publicly.",
+    "Define what constitutes a 'pattern or practice' for fair lending — federal regulators have used single occurrences to assert systemic violations.",
+    "Cites the 1997 Nationwide State/Federal Supervisory Agreement as foundational for coordinated supervision."
+  ],
+  "2025-05-15::Request for Information: Deregulation": [
+    "Compendium letter to OMB transmitting three specific deregulatory recommendations under EO 14219 and EO 14267.",
+    "Attachment A: Rescind OCC preemption regulations — they ignore the text and intent of NBA § 5136C and the Cantero (2024) standard.",
+    "OCC's 2011 preemption rule 'simply repromulgated' the 2004 regulations Congress had explicitly directed to be revised.",
+    "Justice Gorsuch in Cantero asked: 'is the OCC ever going to get around to doing that which Dodd-Frank directs it to do?'",
+    "Attachment B: Rescind CFPB Nonbank Registry — it is 'unnecessary, unlawful, and unduly burdensome'; CFPB already uses NMLS at no cost.",
+    "CFPB failed Regulatory Flexibility Act analysis; cost estimate of $350 per firm 'drastically' understates real compliance costs.",
+    "Attachment C: Modify FDICIA audit committee and internal control thresholds (set at $500M in 1993, now capture 40% of banks).",
+    "Raise SAR ($5,000) and CTR ($10,000) reporting thresholds — only 5.4% of CTRs are accessed by law enforcement (GAO Dec. 2024).",
+    "Raise HMDA closed-end mortgage reporting threshold above 25 loans; raise CRA Small/Intermediate Small/Large bank asset thresholds.",
+    "Smallest banks attribute 11–15.5% of personnel expenses to compliance vs. 5.6–9.6% for largest banks."
+  ],
+  "2025-08-26::CSBS NASCUS CDFI Letter": [
+    "Joint CSBS/NASCUS letter opposing proposed CDFI Fund Material Events Form changes.",
+    "Proposed Form would inappropriately require IDIs to share confidential supervisory information (CSI) with the CDFI Fund.",
+    "CDFI Fund is not a prudential regulator; nothing in its authorizing statute requires CSI disclosure.",
+    "12 U.S.C. § 4715(c) directly prohibits the Fund from requiring CDFIs to disclose examination reports.",
+    "Statutory term 'consult' (12 U.S.C. § 4707(f)) is unambiguous — CDFI Fund can discuss but cannot access CSI.",
+    "CAMELS rating drops below '2' or any 'negative or adverse finding' triggering material event = unjustifiable.",
+    "Approximately 60% of financial institution CDFIs are state-chartered; disclosure would involve unauthorized release of state exam information.",
+    "Joint state exam reports require consent of both state and federal regulators to disclose.",
+    "Provisions exceed CDFI Fund's authority and violate state and federal CSI law."
+  ],
+  "2025-09-18::Request for Information on Potential Actions to Address Payments Fraud": [
+    "Joint CSBS/NASCUS letter to OCC, FRB, and FDIC on payments and check fraud.",
+    "Leverage existing FFIEC Taskforce on Supervision work; build on the December 2024 elder financial exploitation interagency statement.",
+    "Establish a public-private working group with banks, credit unions, state and federal regulators, law enforcement, and FinCEN.",
+    "Provide clear guidance on meeting the burden of necessity for Regulation CC extended hold times (12 C.F.R. § 229.13(h)(4)).",
+    "43% of banks invoking state hold laws find them effective in curbing elder financial exploitation (ABA 2025).",
+    "FinCEN should streamline the cumbersome USA PATRIOT Act § 314(b) information-sharing process.",
+    "Update best practices for high-risk check classes, account opening/monitoring, and special funds availability privileges."
+  ],
+  "2025-10-16::Request to Rescind CDFI Fund Reduction-in-Force": [
+    "Joint CSBS/NASCUS letter urging rescission of RIF letters issued to all CDFI Fund employees.",
+    "RIF would prevent the Fund from executing its statutory mandate.",
+    "Vast majority of CDFIs are credit unions or community banks; 20% operate in 'persistent poverty counties.'",
+    "Every dollar to a CDFI generates eight dollars in private-sector investment (per Treasury Secretary Yellen 2021).",
+    "CDFI Fund has both statutory authority (Treasury OMB analysis March 21, 2025) and appropriated FY 2025 resources available through Sept. 30, 2026.",
+    "Cites Secretary Bessent's Oct. 9, 2025 Fed Community Bank Conference remarks endorsing community banks as essential to Main Street prosperity.",
+    "RIF is 'both damaging and unnecessary.'"
+  ],
+  "2025-12-29::Unsafe or Unsound Practices, MRAs": [
+    "Comment on joint OCC/FDIC NPRM defining 'unsafe or unsound practice' under FDI Act § 8 and revising the MRA supervisory framework.",
+    "Supports the agencies' move to focus MRAs on core financial risks rather than peripheral matters.",
+    "Refrain from adopting precise quantitative thresholds for 'material harm' — bank business models are dynamic and varied.",
+    "Do not emphasize capital or liquidity over earnings or market risk sensitivity in the materiality standard.",
+    "Recommends adding 'range of' to the MRA standard: 'reasonably expected to, under [a range of] current or reasonably foreseeable conditions.'",
+    "Permit CAMELS composite downgrades to less-than-satisfactory WITHOUT requiring an accompanying MRA (e.g., for idiosyncratic financial loss).",
+    "Allow MRAs for institutions uniquely exposed to reasonably foreseeable economic shocks (concentrated customers, niche models).",
+    "Violations of law/regulation that cause ANY material harm (financial or otherwise, including consumer harm) should support less-than-satisfactory ratings.",
+    "FDIC should engage in robust coordination with states on outstanding MRBAs and state-issued supervisory directives across ~2,800 jointly supervised state nonmember banks.",
+    "Delay finalization until OCC, FDIC, and Federal Reserve align — disparate standards across charter types would create supervisory inconsistency."
+  ],
+  "2026-01-28::Regulatory Capital Rule: Revisions to the Community Bank Leverage Ratio Framework": [
+    "CSBS supports the proposal and agrees the changes will provide appropriate regulatory relief to community banks.",
+    "Supports reducing CBLR threshold from 9% to 8%.",
+    "Since 2019 finalization, CBLR adoption has remained steady at approximately 40% of eligible institutions.",
+    "Participating community banks have generally maintained capital well above the current 9% leverage requirement.",
+    "Supports extending the grace period from two to four quarters for institutions temporarily falling below the threshold.",
+    "Longer grace period better aligns with community bank balance sheet dynamics.",
+    "Lowering threshold expands framework usefulness 'without materially increasing risk.'",
+    "Encourages agencies to finalize and continue monitoring participation and capital outcomes."
+  ],
+  "2026-02-23::OCC National Bank Chartering": [
+    "Replacing 'fiduciary activities' with 'operations of trust companies and activities related thereto' could dilute or remove a critical NBA constraint.",
+    "Removing the word 'fiduciary' does not change the NBA requirement that NTCs be engaged predominantly in fiduciary activities.",
+    "OCC may not use the NTC charter to authorize a new class of national bank that is neither predominantly engaged in fiduciary operations nor in receiving deposits as an insured national bank.",
+    "Cites Loper Bright Enterprises v. Raimondo, 603 U.S. 369 (2024): federal agencies may not unilaterally reinterpret statutory limits to advance policy objectives.",
+    "Proposes amendments to OCC chartering regulations to align with the specific, limited chartering authorities Congress explicitly provided in the NBA.",
+    "Continues CSBS's long-running opposition to OCC chartering of nondepository national entities (originating in the 2017 SPNB letters and 2019 fiduciary-capacity ANPR comment)."
+  ],
+  "2026-02-26::Earned Wage Access Consumer Protection Act": [
+    "Urges Chairman Steil to 'significantly revise' the bill before introduction in the 119th Congress.",
+    "Section 2(d) would 'broadly preempt state licensing, registration, and disclosure laws' for an emerging product market.",
+    "States are best positioned to police EWA for fraud and abuse, respond to emerging risks, and tailor to local communities.",
+    "Federal standards should act as a floor, not a ceiling.",
+    "Bill would grant CFPB 'unprecedented licensing authority — authority it does not exercise for any other consumer financial product or service.'",
+    "Thirteen states already have EWA-specific frameworks; seven require licensing/registration; four regulate EWA as small loans.",
+    "States have taken multiple enforcement actions addressing usury concerns and unfair/deceptive practices.",
+    "Federalizing licensing would slow oversight, reduce responsiveness to consumer credit demand, and undermine prompt local fraud mitigation.",
+    "Diversity of state approaches is appropriate for an emerging product, allowing experimentation and innovation.",
+    "'Strongly oppose' the preemption provisions in the discussion draft."
+  ]
+};
+
+const META_MAP = {"2017-01-13::On the OCC's White Paper: Exploring Special Purpose National Bank Charters for Fintech Companies":{"era":"ryan","th":["federalism"],"veh":"Other"},"2017-04-14::On the OCC's Draft Licensing Supplement: Evaluating Charter Applications From Financial Technology Companies":{"era":"ryan","th":["federalism"],"veh":"Other"},"2018-04-10::On Treasury Non-Bank and Innovation Report":{"era":"ryan","th":["federalism"],"veh":"Other"},"2020-01-21::Permissible Interest on Loans that are Sold, Assigned, or Otherwise Transferred":{"era":"ryan","th":["federalism"],"veh":"Rulemaking"},"2020-02-04::Federal Interest Rate Authority":{"era":"ryan","th":["federalism"],"veh":"Rulemaking"},"2020-09-03::National Banks and Federal Savings Associations as Lenders":{"era":"ryan","th":["federalism"],"veh":"Rulemaking"},"2021-04-27::CSBS Letter re: CRA Resolution on True Lender (Senate)":{"era":"ryan","th":["federalism"],"veh":"Bill / Draft"},"2021-06-18::CSBS Letter re: CRA Resolution on True Lender (House)":{"era":"ryan","th":["federalism"],"veh":"Bill / Draft"},"2018-04-26::Request for Information Regarding Bureau Civil Investigative Demands and Associated Processes":{"era":"ryan","th":["federalism","admin-process"],"veh":"RFI"},"2018-05-14::Request for Information Regarding Bureau Enforcement Processes":{"era":"ryan","th":["federalism","admin-process"],"veh":"RFI"},"2018-05-21::Request for Information Regarding Bureau's Supervision Program":{"era":"ryan","th":["federalism","admin-process"],"veh":"RFI"},"2018-06-04::Request for Reevaluation of Public Comment Period on Remaining CFPB RFIs":{"era":"ryan","th":["federalism","admin-process"],"veh":"RFI"},"2018-06-04::Bureau Public Reporting Practices of Consumer Complaint Information":{"era":"ryan","th":["federalism","admin-process"],"veh":"RFI"},"2018-06-07::On Information Regarding CFPB Rulemaking Processes":{"era":"ryan","th":["federalism","admin-process"],"veh":"RFI"},"2018-07-16::Consumer Complaint and Consumer Inquiry Handling Process":{"era":"ryan","th":["federalism","admin-process"],"veh":"RFI"},"2018-10-01::Request for Comment Regarding the Bureau's Consumer Complaint Intake System Company Portal Boarding Form":{"era":"ryan","th":["federalism","admin-process"],"veh":"Other"},"2018-10-10::Policy to Encourage Trial Disclosure Programs":{"era":"ryan","th":["federalism","admin-process"],"veh":"Other"},"2019-02-11::CSBS Strongly Opposes CFPB Preemption of State Authority Using a Fintech Sandbox":{"era":"ryan","th":["federalism"],"veh":"Other"},"2023-03-31::Proposed Rulemaking \u2013 Registry of Nonbank Covered Persons Subject to Certain Agency and Court Orders":{"era":"cooper","th":["federalism","admin-process"],"veh":"Rulemaking"},"2024-05-23::CFPB Final Rule \u2013 Procedures for Supervisory Designation Proceedings":{"era":"milhorn","th":["federalism","admin-process"],"veh":"Rulemaking"},"2025-05-12::Rescission of CFPB Nonbank Registry Regulation":{"era":"milhorn","th":["federalism","admin-process"],"veh":"Other"},"2022-06-13::Exemptions of ILCs under the Bank Holding Company Act":{"era":"cooper","th":["tailored-substance","federalism"],"veh":"Letter to Congress"},"2024-10-10::Parent Companies of Industrial Banks and Industrial Loan Companies":{"era":"milhorn","th":["tailored-substance","federalism"],"veh":"Rulemaking"},"2018-05-14::Collection of Checks and Other Items by Federal Reserve Banks and Funds Transfers Through Fedwire":{"era":"ryan","th":["federalism"],"veh":"Other"},"2018-12-14::Potential Federal Reserve Actions to Support Interbank Settlement of Faster Payments":{"era":"ryan","th":["federalism"],"veh":"Other"},"2019-05-14::Regulation D: Reserve Requirements for Depository Institutions":{"era":"ryan","th":["federalism"],"veh":"Other"},"2019-11-07::Federal Reserve Actions to Support Interbank Settlement of Faster Payments":{"era":"ryan","th":["federalism"],"veh":"Other"},"2021-07-09::Proposed Guidelines for Evaluating Account and Services Requests":{"era":"ryan","th":["federalism"],"veh":"Other"},"2022-04-22::Supplemental Notice \u2013 Proposed Guidelines for Evaluating Account and Services Requests":{"era":"ryan","th":["federalism"],"veh":"Other"},"2023-01-17::Guidelines for Evaluating Account and Services Requests":{"era":"cooper","th":["federalism"],"veh":"Other"},"2024-12-09::Request for Information and Comment on Operational Aspects of Federal Reserve Bank Extensions of Discount Window and Intraday Credit":{"era":"milhorn","th":["federalism"],"veh":"Other"},"2026-02-06::Reserve Bank Payment Account Prototype":{"era":"milhorn","th":["federalism"],"veh":"RFI"},"2021-09-27::On Cryptocurrencies":{"era":"ryan","th":["federalism"],"veh":"Letter to Congress"},"2023-07-25::CSBS Comments on Clarity for Payment Stablecoins Act":{"era":"cooper","th":["federalism"],"veh":"Bill / Draft"},"2025-03-13::Letter to Senate Committee on GENIUS Act":{"era":"milhorn","th":["federalism"],"veh":"Bill / Draft"},"2025-04-01::Letter to House Committee on STABLE Act":{"era":"milhorn","th":["federalism"],"veh":"Bill / Draft"},"2025-08-05::CSBS Response to Senate Banking Committee RFI on Digital Asset Market Structure":{"era":"milhorn","th":["federalism"],"veh":"RFI"},"2025-09-24::GENIUS Act Implementation":{"era":"milhorn","th":["federalism"],"veh":"ANPR"},"2025-11-04::GENIUS Act Implementation (follow-up)":{"era":"milhorn","th":["federalism"],"veh":"ANPR"},"2025-11-04::Guidance on Tokenized Deposits":{"era":"milhorn","th":["tailored-substance"],"veh":"Guidance"},"2026-01-14::Digital Asset Market Structure Legislation":{"era":"milhorn","th":["federalism"],"veh":"Letter to Congress"},"2026-05-01::CSBS Comment Letter: Implementing the GENIUS Act":{"era":"milhorn","th":["federalism"],"veh":"Bill / Draft"},"2026-05-13::Digital Asset Market Structure Legislation (follow-on)":{"era":"milhorn","th":["federalism"],"veh":"Letter to Congress"},"2020-10-16::Antitrust Division Banking Guidelines Review: Public Comments Topics & Issues Guide":{"era":"ryan","th":["admin-process","tailored-substance"],"veh":"Other"},"2022-06-03::Bank Merger Transactions":{"era":"cooper","th":["admin-process","tailored-substance"],"veh":"RFI"},"2024-06-17::Request for Comment on Proposed Statement of Policy on Bank Merger Transactions":{"era":"milhorn","th":["admin-process"],"veh":"Rulemaking"},"2025-04-09::Proposed Rescission and Reinstatement of Statement of Policy":{"era":"milhorn","th":["admin-process","tailored-substance"],"veh":"Other"},"2025-05-14::Bank Mergers and De Novo Formation Letter to House Committee":{"era":"milhorn","th":["admin-process","tailored-substance"],"veh":"Letter to Congress"},"2025-09-15::Support Letter Bank Competition Modernization Act":{"era":"milhorn","th":["admin-process","tailored-substance"],"veh":"Bill / Draft"},"2019-04-22::Revisions to the Deposit Insurance Assessment Program to Apply the Community Bank Leverage Ratio Framework":{"era":"ryan","th":["admin-process","tailored-substance"],"veh":"Rulemaking"},"2019-05-06::CSBS Recommends Changes to Brokered Deposit Rule to Help Small Banks":{"era":"ryan","th":["admin-process","tailored-substance"],"veh":"ANPR"},"2019-11-04::Interest Rate Restrictions on Institutions That Are Less Than Well Capitalized":{"era":"ryan","th":["admin-process","tailored-substance"],"veh":"Rulemaking"},"2020-04-24::Unsafe and Unsound Banking Practices: Brokered Deposits Restrictions":{"era":"ryan","th":["admin-process","tailored-substance"],"veh":"Rulemaking"},"2024-10-04::Request for Information on Deposits":{"era":"milhorn","th":["admin-process","tailored-substance"],"veh":"RFI"},"2024-11-21::Unsafe and Unsound Banking Practices: Brokered Deposits Restrictions":{"era":"milhorn","th":["admin-process"],"veh":"Rulemaking"},"2025-01-17::Recordkeeping for Custodial Accounts":{"era":"milhorn","th":["tailored-substance"],"veh":"Rulemaking"},"2017-12-22::Simplifying Capital Rules":{"era":"ryan","th":["tailored-substance"],"veh":"Rulemaking"},"2018-02-21::On Proposed Guidance on Supervisory Expectations for Bank Boards of Directors":{"era":"ryan","th":["tailored-substance"],"veh":"Guidance"},"2018-04-30::Comment Letter Requesting Extension of Comment Period for Capital Rule":{"era":"ryan","th":["tailored-substance"],"veh":"Rulemaking"},"2018-06-25::CSBS Comment Letter on Fed & OCC Regulatory Capital Rules":{"era":"ryan","th":["tailored-substance"],"veh":"Other"},"2019-03-04::Regulatory Capital Rule: Capital Simplification for Qualifying Community Banking Organizations":{"era":"ryan","th":["tailored-substance"],"veh":"Rulemaking"},"2019-04-09::Regulatory Capital Rule: Capital Simplification for Qualifying Community Banking Organizations (supplemental)":{"era":"ryan","th":["tailored-substance"],"veh":"Other"},"2024-01-16::CSBS Comments on the Large Bank Regulatory Capital Rule":{"era":"milhorn","th":["tailored-substance","admin-process"],"veh":"Rulemaking"},"2024-01-16::CSBS Comments on the Long Term Debt Requirements Proposal":{"era":"milhorn","th":["tailored-substance"],"veh":"Rulemaking"},"2024-01-17::Long-Term Debt Requirements for Large Bank Holding Companies, Certain IHCs of Foreign Banking Organizations, and Large Insured Depository Institutions":{"era":"milhorn","th":["tailored-substance"],"veh":"Rulemaking"},"2024-02-07::Guidelines Establishing Standards for Corporate Governance and Risk Management for Covered Institutions with Total Consolidated Assets of $10 Billion or More":{"era":"milhorn","th":["admin-process","federalism"],"veh":"Rulemaking"},"2024-10-18::Regulations Implementing the Change in Bank Control Act":{"era":"milhorn","th":["tailored-substance"],"veh":"Rulemaking"},"2025-08-26::CSBS eSLR Comment Letter":{"era":"milhorn","th":["tailored-substance"],"veh":"Rulemaking"},"2026-01-28::Regulatory Capital Rule: Revisions to the Community Bank Leverage Ratio Framework":{"era":"milhorn","th":["tailored-substance"],"veh":"Rulemaking"},"2025-12-29::Unsafe or Unsound Practices, MRAs":{"era":"milhorn","th":["admin-process","tailored-substance"],"veh":"Rulemaking"},"2020-04-08::Community Reinvestment Act Regulations":{"era":"ryan","th":["admin-process","federalism"],"veh":"Rulemaking"},"2021-02-16::CSBS Comment Letter: Advance Notice of Proposed Rulemaking \u2013 Community Reinvestment Act":{"era":"ryan","th":["admin-process","federalism"],"veh":"Rulemaking"},"2022-08-05::Community Reinvestment Act Changes":{"era":"cooper","th":["admin-process","federalism"],"veh":"Rulemaking"},"2019-05-07::BSA Amendment Would Improve State and Federal Regulator Coordination":{"era":"ryan","th":["tailored-substance"],"veh":"Letter to Congress"},"2020-07-01::Anti-Money Laundering Act of 2020":{"era":"ryan","th":["tailored-substance"],"veh":"Letter to Congress"},"2021-05-05::CSBS Letter re: Proposed FinCEN Rulemaking on Beneficial Ownership Information Reporting Requirements":{"era":"ryan","th":["tailored-substance"],"veh":"ANPR"},"2022-08-05::FinCEN No-Action Letter Process":{"era":"cooper","th":["tailored-substance"],"veh":"ANPR"},"2023-02-14::Beneficial Ownership Information Access and Safeguards, and Use of FinCEN Identifiers for Entities":{"era":"cooper","th":["tailored-substance"],"veh":"Rulemaking"},"2024-05-28::CSBS Comments on FinCEN Taxpayer ID Number Collection Requirement":{"era":"milhorn","th":["tailored-substance"],"veh":"Other"},"2018-07-20::CSBS Supports The Bank Service Company Examination Coordination Act":{"era":"ryan","th":["tailored-substance"],"veh":"Letter to Congress"},"2023-02-27::CSBS Supports H.R. 1109 \u2013 The Bank Service Company Examination Coordination Act":{"era":"cooper","th":["tailored-substance"],"veh":"Bill / Draft"},"2018-09-12::CSBS Opposes H.R. 6743, the Consumer Information Notification Requirement Act":{"era":"ryan","th":["federalism"],"veh":"Bill / Draft"},"2019-03-14::CSBS Comments on Legislative Efforts on Data Privacy and Security":{"era":"ryan","th":["federalism"],"veh":"Letter to Congress"},"2019-07-31::Proposed Rulemaking: Amendments to Safeguards Rule (16 CFR Part 314)":{"era":"ryan","th":["federalism"],"veh":"Rulemaking"},"2022-01-06::Small Business Lending Data Collection Under the Equal Credit Opportunity Act (Regulation B)":{"era":"ryan","th":["tailored-substance"],"veh":"Rulemaking"},"2017-07-31::On the CFPB's RFI Regarding Ability-to-Repay/Qualified Mortgage Rule Assessment":{"era":"ryan","th":["tailored-substance"],"veh":"RFI"},"2020-03-25::Requesting Emergency Facility for Mortgage Servicers":{"era":"ryan","th":["tailored-substance"],"veh":"Letter to Congress"},"2020-04-15::Congress Should Establish a Liquidity Facility to Keep Mortgage Markets Functioning":{"era":"ryan","th":["tailored-substance"],"veh":"Letter to Congress"},"2020-10-01::Qualified Mortgage Definition Under the Truth in Lending Act: Seasoned QM Loan Definition":{"era":"ryan","th":["tailored-substance"],"veh":"Other"},"2020-10-09::Enhancing Prudential Standards for Nonbank Mortgage Servicers":{"era":"ryan","th":["tailored-substance"],"veh":"Other"},"2021-08-26::CSBS Letter to Chairwoman Waters on Mortgage Servicing":{"era":"ryan","th":["tailored-substance"],"veh":"Letter to Congress"},"2023-03-17::FHLBank System at 100: Focusing on the Future":{"era":"cooper","th":["tailored-substance"],"veh":"RFI"},"2024-07-15::Federal Home Loan Bank Core Mission Activities and Mission Achievement":{"era":"milhorn","th":["tailored-substance"],"veh":"RFI"},"2024-09-10::Proposed Rule \u2013 Streamlining Mortgage Servicing for Borrowers Experiencing Payment Difficulties; Regulation X":{"era":"milhorn","th":["tailored-substance"],"veh":"Rulemaking"},"2020-02-14::Potential Changes to Address Public Health & Safety Issues in Cannabis Banking Legislation":{"era":"ryan","th":["tailored-substance"],"veh":"Letter to Congress"},"2022-05-25::SAFE Banking Act Letter \u2013 House":{"era":"cooper","th":["tailored-substance"],"veh":"Bill / Draft"},"2022-05-25::SAFE Banking Act Letter \u2013 Senate":{"era":"cooper","th":["tailored-substance"],"veh":"Bill / Draft"},"2023-09-26::CSBS Supports SAFER Banking Act":{"era":"cooper","th":["tailored-substance"],"veh":"Bill / Draft"},"2019-01-23::Request for Information on Small Dollar Lending":{"era":"ryan","th":["federalism"],"veh":"RFI"},"2019-05-07::Re: ANPR on Residential Property Assessed Clean Energy Financing":{"era":"ryan","th":["federalism"],"veh":"ANPR"},"2019-05-15::Proposed Rulemaking: Payday, Vehicle Title, and Certain High-Cost Installment Loans":{"era":"ryan","th":["federalism"],"veh":"Other"},"2019-06-11::Proposed Rulemaking: Payday, Vehicle Title, and Certain High-Cost Installment Loans (supplemental)":{"era":"ryan","th":["federalism"],"veh":"Other"},"2019-09-19::Proposed Rulemaking: Debt Collection Practices, Regulation F":{"era":"ryan","th":["federalism"],"veh":"Rulemaking"},"2020-12-01::Request for Information on the Equal Credit Opportunity Act and Regulation B":{"era":"ryan","th":["federalism"],"veh":"RFI"},"2024-04-01::Proposed Rule \u2013 Overdraft Lending: Very Large Financial Institutions":{"era":"milhorn","th":["federalism"],"veh":"Rulemaking"},"2026-02-26::Earned Wage Access Consumer Protection Act":{"era":"milhorn","th":["federalism","tailored-substance"],"veh":"Bill / Draft"},"2018-03-02::CSBS Opposes Department of Education Plan to Preempt State Authority on Student Loans":{"era":"ryan","th":["federalism"],"veh":"Other"},"2018-05-03::CSBS Opposes the PROSPER Act":{"era":"ryan","th":["federalism"],"veh":"Bill / Draft"},"2018-07-21::CSBS Opposes 'True Lender' Bill (H.R. 4439)":{"era":"ryan","th":["federalism"],"veh":"Bill / Draft"},"2021-09-13::Joint Federal-State Oversight of Ed Dept. Federal Student Loan Programs and Servicers":{"era":"ryan","th":["federalism"],"veh":"Joint Letter"},"2024-07-26::OCC 5-Year Review of Preemption":{"era":"milhorn","th":["admin-process","federalism"],"veh":"Other"},"2025-05-08::Rescission of OCC Preemption Regulations":{"era":"milhorn","th":["federalism"],"veh":"Other"},"2026-01-15::Extension request for OCC's Escrow Law Preemption Determination":{"era":"milhorn","th":["federalism"],"veh":"Other"},"2026-01-29::OCC Preemption Determination: State Interest-on-Escrow Laws and Real Estate Lending Escrow Accounts":{"era":"milhorn","th":["federalism"],"veh":"Other"},"2026-02-23::OCC National Bank Chartering":{"era":"milhorn","th":["federalism"],"veh":"Rulemaking"},"2026-01-13::Extension Request \u2013 National Bank Chartering":{"era":"milhorn","th":["federalism"],"veh":"Other"},"2025-09-16::Establishment and Relocation of Branches and Offices":{"era":"milhorn","th":["federalism"],"veh":"Rulemaking"},"2019-06-29::Fiduciary Capacity; Non-Fiduciary Capacity Custody Activities":{"era":"ryan","th":["federalism"],"veh":"ANPR"},"2024-02-28::CSBS Relays Concerns with SEC's Staff Accounting Bulletin 121":{"era":"milhorn","th":["admin-process"],"veh":"Other"},"2018-08-10::The FDIC Board Needs State Supervisory Experience":{"era":"ryan","th":["tailored-substance"],"veh":"Nomination"},"2019-01-28::CSBS Letter Supporting State Supervisor on FDIC Board":{"era":"ryan","th":["tailored-substance"],"veh":"Letter to Congress"},"2024-05-21::White House Letter on FDIC Board Seat Nominations":{"era":"milhorn","th":["tailored-substance"],"veh":"Letter to Congress"},"2018-11-09::Support Letter for Miki Bowman as Fed Board Member":{"era":"ryan","th":[],"veh":"Nomination"},"2019-09-10::Supporting Governor Bowman's Nomination":{"era":"ryan","th":[],"veh":"Nomination"},"2022-02-02::On the Nomination of Sarah Bloom Raskin":{"era":"ryan","th":[],"veh":"Nomination"},"2025-11-13::On the Nomination of Travis Hill":{"era":"milhorn","th":[],"veh":"Nomination"},"2017-09-14::On the Small Business Market":{"era":"ryan","th":["tailored-substance"],"veh":"RFI"},"2017-09-29::On Interagency Proposed Appraisal Threshold for Transactions Secured by Commercial Real Estate":{"era":"ryan","th":["tailored-substance"],"veh":"Rulemaking"},"2018-04-10::State Regulators Support Limited Appraiser Waivers":{"era":"ryan","th":["tailored-substance"],"veh":"Other"},"2018-12-04::Request for Information on FDIC Communication and Transparency":{"era":"ryan","th":["admin-process","tailored-substance"],"veh":"RFI"},"2022-03-14::Notice of Proposed Rulemaking \u2013 Temporary Waiver Requests":{"era":"ryan","th":["tailored-substance"],"veh":"Rulemaking"},"2020-03-20::CSBS COVID-19 Legislative Proposals":{"era":"ryan","th":["tailored-substance"],"veh":"Letter to Congress"},"2020-04-09::Paycheck Protection Program":{"era":"ryan","th":["tailored-substance"],"veh":"Other"},"2018-03-12::CSBS Supports Legislation Providing Relief for Community Banks":{"era":"ryan","th":["tailored-substance"],"veh":"Bill / Draft"},"2025-03-28::CSBS Comments on House 'Making Community Banking Great Again' Agenda":{"era":"milhorn","th":["tailored-substance"],"veh":"Letter to Congress"},"2025-05-12::Modification of Outdated, Burdensome Community Bank Regulatory Thresholds":{"era":"milhorn","th":["tailored-substance"],"veh":"Other"},"2025-09-24::Adjusting and Indexing Certain Regulatory Thresholds":{"era":"milhorn","th":["tailored-substance"],"veh":"Other"},"2025-03-20::CSBS NASCUS CDFI Support Letter":{"era":"milhorn","th":["admin-process"],"veh":"Letter to Congress"},"2025-05-15::Request for Information: Deregulation":{"era":"milhorn","th":["federalism","admin-process"],"veh":"RFI"},"2025-08-26::CSBS NASCUS CDFI Letter":{"era":"milhorn","th":["tailored-substance"],"veh":"Other"},"2025-09-18::Request for Information on Potential Actions to Address Payments Fraud":{"era":"milhorn","th":["tailored-substance"],"veh":"RFI"},"2025-10-16::Request to Rescind CDFI Fund Reduction-in-Force":{"era":"milhorn","th":["admin-process"],"veh":"Other"}};
+
+// ============================================================
+// APP LOGIC
+// ============================================================
+
+const AGENCIES = ["OCC", "FDIC", "FRB", "CFPB", "FinCEN", "SEC", "Treasury", "Congress", "Interagency", "FTC", "FHFA", "DOJ", "Other"];
+const VEHICLES = ["Rulemaking", "ANPR", "RFI", "Bill / Draft", "Letter to Congress", "Nomination", "Guidance", "Joint Letter", "Other"];
+const THROUGHLINES = [
+  {id: "federalism",         n: "Federalism"},
+  {id: "admin-process",      n: "Admin process"},
+  {id: "tailored-substance", n: "Tailored substance"}
+];
+const ERAS = [
+  {id: "ryan",    n: "Ryan",    range: "→ 2022-05-14"},
+  {id: "cooper",  n: "Cooper",  range: "2022-05-15 → 2023-12-03"},
+  {id: "milhorn", n: "Milhorn", range: "2023-12-04 →"}
+];
+
+function letterKey(l) { return l.d + "::" + l.t; }
+function getMeta(l)   { return META_MAP[letterKey(l)] || {era: "", th: [], veh: "Other"}; }
+function getLetterUrl(l) {
+  const direct = URL_MAP[letterKey(l)];
+  if (direct) return {url: direct, fallback: false};
+  // Pre-filled CSBS search rather than the bare hub
+  const search = "https://www.csbs.org/comment-letters?search_api_fulltext=" + encodeURIComponent(l.t);
+  return {url: search, fallback: true};
+}
+function getLetterBullets(l) { return BULLETS_MAP[letterKey(l)] || null; }
+function getTopicById(id) { return TOPICS.find(t => t.id === id); }
+
+function formatDate(iso) {
+  const [y, m, d] = iso.split("-");
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  return { month: months[parseInt(m) - 1], day: parseInt(d), year: y };
+}
+
+function escapeHtml(s) {
+  if (s === undefined || s === null) return "";
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+function highlightSearch(text, query) {
+  if (!query) return escapeHtml(text);
+  const escaped = escapeHtml(text);
+  const safeQ = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return escaped.replace(new RegExp(`(${safeQ})`, "gi"), '<mark style="background:#e8d99c;padding:0 2px;">$1</mark>');
+}
+
+// ============================================================
+// STATE + URL HASH SYNC
+// ============================================================
+const state = {
+  search: "",
+  topic: "all",
+  agency: "all",
+  vehicle: "all",
+  through: "all",
+  era: "all",
+  sig: "all",
+  sort: "topic",
+  year: null,
+  letter: null  // open modal key, if any
+};
+
+function stateToHash() {
+  const p = new URLSearchParams();
+  if (state.search) p.set("q", state.search);
+  if (state.topic !== "all") p.set("topic", state.topic);
+  if (state.agency !== "all") p.set("agency", state.agency);
+  if (state.vehicle !== "all") p.set("vehicle", state.vehicle);
+  if (state.through !== "all") p.set("through", state.through);
+  if (state.era !== "all") p.set("era", state.era);
+  if (state.sig !== "all") p.set("sig", state.sig);
+  if (state.sort !== "topic") p.set("sort", state.sort);
+  if (state.year) p.set("year", state.year);
+  if (state.letter) p.set("letter", state.letter);
+  const s = p.toString();
+  const newHash = s ? "#" + s : "";
+  if (location.hash !== newHash) {
+    history.replaceState(null, "", location.pathname + location.search + newHash);
+  }
+}
+function hashToState() {
+  const h = location.hash.replace(/^#/, "");
+  if (!h) return;
+  const p = new URLSearchParams(h);
+  if (p.has("q"))       state.search = p.get("q");
+  if (p.has("topic"))   state.topic = p.get("topic");
+  if (p.has("agency"))  state.agency = p.get("agency");
+  if (p.has("vehicle")) state.vehicle = p.get("vehicle");
+  if (p.has("through")) state.through = p.get("through");
+  if (p.has("era"))     state.era = p.get("era");
+  if (p.has("sig"))     state.sig = p.get("sig");
+  if (p.has("sort"))    state.sort = p.get("sort");
+  if (p.has("year"))    state.year = p.get("year");
+  if (p.has("letter"))  state.letter = p.get("letter");
+}
+
+// ============================================================
+// FILTERING
+// ============================================================
+function filterLetters() {
+  let out = LETTERS.slice();
+  if (state.topic !== "all")   out = out.filter(l => l.tp === state.topic);
+  if (state.agency !== "all")  out = out.filter(l => l.ag === state.agency);
+  if (state.vehicle !== "all") out = out.filter(l => getMeta(l).veh === state.vehicle);
+  if (state.through !== "all") out = out.filter(l => getMeta(l).th.includes(state.through));
+  if (state.era !== "all")     out = out.filter(l => getMeta(l).era === state.era);
+  if (state.sig !== "all")     out = out.filter(l => String(l.sig) === state.sig);
+  if (state.year)              out = out.filter(l => l.d.startsWith(state.year));
+  if (state.search) {
+    const q = state.search.toLowerCase();
+    out = out.filter(l =>
+      l.t.toLowerCase().includes(q) ||
+      (l.pos && l.pos.toLowerCase().includes(q)) ||
+      (l.q && l.q.toLowerCase().includes(q)) ||
+      (l.to && l.to.toLowerCase().includes(q)) ||
+      (l.ag && l.ag.toLowerCase().includes(q))
+    );
+  }
+  return out;
+}
+
+// ============================================================
+// RENDERING
+// ============================================================
+function renderLetterCard(l) {
+  const d = formatDate(l.d);
+  const meta = getMeta(l);
+  const sigDot = l.sig === 3 ? '<span class="sig-mark" title="High significance"></span>' : '';
+  const thMarks = meta.th.length
+    ? '<span class="th-marks" title="Through-lines: ' + meta.th.join(", ") + '">' +
+      meta.th.map(t => `<span class="th-dot th-${t}"></span>`).join("") + '</span>'
+    : '';
+  const q = state.search;
+  const key = letterKey(l);
+  const vehTag = meta.veh && meta.veh !== "Other"
+    ? `<span class="vehicle-tag">${escapeHtml(meta.veh)}</span>`
+    : '';
+  return `
+    <article class="letter-card" data-key="${escapeHtml(key)}" tabindex="0" role="button" aria-label="View details for ${escapeHtml(l.t)}">
+      <div class="letter-date">
+        <span class="year">${d.year}</span>
+        ${d.month} ${d.day}
+        <span class="era-mark era-${meta.era}" title="${ERAS.find(e => e.id === meta.era)?.n || ''} era"></span>
+      </div>
+      <div class="letter-body">
+        <div class="letter-title">${sigDot}${highlightSearch(l.t, q)}${thMarks}</div>
+        <div class="letter-meta">
+          <span class="letter-meta-item"><span class="letter-meta-label">re:</span> ${highlightSearch(l.to, q)}</span>
+          <span class="agency-tag">${escapeHtml(l.ag)}</span>
+          ${vehTag}
+        </div>
+        <div class="letter-position">${highlightSearch(l.pos, q)}</div>
+        ${l.q ? `<div class="letter-quote"><span class="letter-quote-text">${highlightSearch(l.q, q)}</span></div>` : ''}
+      </div>
+    </article>
+  `;
+}
+
+function renderResults() {
+  const filtered = filterLetters();
+  document.getElementById("visible-count").textContent = filtered.length;
+
+  const container = document.getElementById("results");
+  if (filtered.length === 0) {
+    container.innerHTML = `<div class="empty-state">No letters match these filters.</div>`;
+    return;
+  }
+
+  // When a single topic is selected, surface the topic arc even in chrono sort
+  const singleTopic = state.topic !== "all" ? getTopicById(state.topic) : null;
+  let lead = "";
+  if (singleTopic && state.sort !== "topic") {
+    lead = `
+      <section class="topic-group" style="margin-bottom: 18px;">
+        <header class="topic-header">
+          <span class="topic-number">§ ${String(TOPICS.findIndex(t => t.id === singleTopic.id) + 1).padStart(2, "0")}</span>
+          <h2 class="topic-title">${escapeHtml(singleTopic.n)}</h2>
+          <span class="topic-meta">${filtered.length} letter${filtered.length === 1 ? '' : 's'}</span>
+        </header>
+        <p class="topic-arc">${escapeHtml(singleTopic.arc)}</p>
+      </section>`;
+  }
+
+  if (state.sort === "topic") {
+    const groups = {};
+    filtered.forEach(l => { (groups[l.tp] = groups[l.tp] || []).push(l); });
+    const orderedTopicIds = TOPICS.map(t => t.id).filter(id => groups[id]);
+    let html = "";
+    orderedTopicIds.forEach(tpId => {
+      const topic = getTopicById(tpId);
+      const letters = groups[tpId].sort((a, b) => a.d.localeCompare(b.d));
+      const earliest = letters[0].d.slice(0, 4);
+      const latest = letters[letters.length - 1].d.slice(0, 4);
+      const range = earliest === latest ? earliest : `${earliest}–${latest}`;
+      html += `
+        <section class="topic-group">
+          <header class="topic-header">
+            <span class="topic-number">§ ${String(TOPICS.findIndex(t => t.id === tpId) + 1).padStart(2, "0")}</span>
+            <h2 class="topic-title">${escapeHtml(topic.n)}</h2>
+            <span class="topic-meta">${letters.length} letter${letters.length === 1 ? '' : 's'} · ${range}</span>
+          </header>
+          <p class="topic-arc">${escapeHtml(topic.arc)}</p>
+          ${letters.map(renderLetterCard).join("")}
+        </section>`;
+    });
+    container.innerHTML = html;
+  } else {
+    const sorted = filtered.slice().sort((a, b) => {
+      return state.sort === "newest" ? b.d.localeCompare(a.d) : a.d.localeCompare(b.d);
+    });
+    container.innerHTML = lead + `<section class="topic-group">${sorted.map(renderLetterCard).join("")}</section>`;
+  }
+}
+
+function countByTopic() {
+  const counts = {};
+  LETTERS.forEach(l => { counts[l.tp] = (counts[l.tp] || 0) + 1; });
+  return counts;
+}
+
+function renderTopicList() {
+  const counts = countByTopic();
+  const ul = document.getElementById("topic-list");
+  let html = `<li class="topic-item ${state.topic === 'all' ? 'active' : ''}" data-topic="all">All topics <span class="count">${LETTERS.length}</span></li>`;
+  TOPICS.forEach(t => {
+    const c = counts[t.id] || 0;
+    if (c === 0) return;
+    html += `<li class="topic-item ${state.topic === t.id ? 'active' : ''}" data-topic="${t.id}">${escapeHtml(t.n)}<span class="count">${c}</span></li>`;
+  });
+  ul.innerHTML = html;
+  ul.querySelectorAll(".topic-item").forEach(el => {
+    el.addEventListener("click", () => { state.topic = el.dataset.topic; renderAll(); });
+  });
+}
+
+function renderAgencyFilters() {
+  const counts = {};
+  LETTERS.forEach(l => { counts[l.ag] = (counts[l.ag] || 0) + 1; });
+  const container = document.getElementById("agency-filters");
+  let html = `<button class="pill ${state.agency === 'all' ? 'active' : ''}" data-agency="all">All</button>`;
+  AGENCIES.filter(a => counts[a]).forEach(a => {
+    html += `<button class="pill ${state.agency === a ? 'active' : ''}" data-agency="${a}">${a} <span style="opacity:0.5;">${counts[a]}</span></button>`;
+  });
+  container.innerHTML = html;
+  container.querySelectorAll(".pill").forEach(el => {
+    el.addEventListener("click", () => { state.agency = el.dataset.agency; renderAll(); });
+  });
+}
+
+function renderVehicleFilters() {
+  const counts = {};
+  LETTERS.forEach(l => { const v = getMeta(l).veh; counts[v] = (counts[v] || 0) + 1; });
+  const container = document.getElementById("vehicle-filters");
+  let html = `<button class="pill ${state.vehicle === 'all' ? 'active' : ''}" data-vehicle="all">All</button>`;
+  VEHICLES.filter(v => counts[v]).forEach(v => {
+    html += `<button class="pill ${state.vehicle === v ? 'active' : ''}" data-vehicle="${v}">${escapeHtml(v)} <span style="opacity:0.5;">${counts[v]}</span></button>`;
+  });
+  container.innerHTML = html;
+  container.querySelectorAll(".pill").forEach(el => {
+    el.addEventListener("click", () => { state.vehicle = el.dataset.vehicle; renderAll(); });
+  });
+}
+
+function renderThroughFilters() {
+  const counts = {};
+  LETTERS.forEach(l => { getMeta(l).th.forEach(t => counts[t] = (counts[t] || 0) + 1); });
+  const container = document.getElementById("through-filters");
+  let html = `<button class="pill ${state.through === 'all' ? 'active' : ''}" data-through="all">All</button>`;
+  THROUGHLINES.forEach(t => {
+    const c = counts[t.id] || 0;
+    if (!c) return;
+    html += `<button class="pill through-pill ${state.through === t.id ? 'active' : ''}" data-through="${t.id}"><span class="th-dot th-${t.id}"></span>${escapeHtml(t.n)} <span style="opacity:0.5;">${c}</span></button>`;
+  });
+  container.innerHTML = html;
+  container.querySelectorAll(".pill").forEach(el => {
+    el.addEventListener("click", () => { state.through = el.dataset.through; renderAll(); });
+  });
+}
+
+function renderEraFilters() {
+  const counts = {ryan: 0, cooper: 0, milhorn: 0};
+  LETTERS.forEach(l => { const e = getMeta(l).era; if (counts[e] !== undefined) counts[e]++; });
+  const container = document.getElementById("era-filters");
+  let html = `<button class="pill ${state.era === 'all' ? 'active' : ''}" data-era="all">All</button>`;
+  ERAS.forEach(e => {
+    html += `<button class="pill era-pill ${state.era === e.id ? 'active' : ''}" data-era="${e.id}" title="${e.range}"><span class="era-mark era-${e.id}"></span>${escapeHtml(e.n)} <span style="opacity:0.5;">${counts[e.id]}</span></button>`;
+  });
+  container.innerHTML = html;
+  container.querySelectorAll(".pill").forEach(el => {
+    el.addEventListener("click", () => { state.era = el.dataset.era; renderAll(); });
+  });
+}
+
+function renderSigPills() {
+  document.querySelectorAll('[data-sig]').forEach(b => {
+    b.classList.toggle('active', b.dataset.sig === state.sig);
+  });
+}
+
+function renderActiveChips() {
+  const container = document.getElementById("active-chips");
+  const chips = [];
+  if (state.year)              chips.push({l: `Year: ${state.year}`, k: "year"});
+  if (state.topic !== "all")   chips.push({l: `Topic: ${getTopicById(state.topic)?.n || state.topic}`, k: "topic"});
+  if (state.through !== "all") chips.push({l: `Through-line: ${THROUGHLINES.find(t => t.id === state.through)?.n}`, k: "through"});
+  if (state.agency !== "all")  chips.push({l: `Agency: ${state.agency}`, k: "agency"});
+  if (state.vehicle !== "all") chips.push({l: `Type: ${state.vehicle}`, k: "vehicle"});
+  if (state.era !== "all")     chips.push({l: `Era: ${ERAS.find(e => e.id === state.era)?.n}`, k: "era"});
+  if (state.sig !== "all")     chips.push({l: `Significance: ${({"3":"High","2":"Medium","1":"Routine"})[state.sig]}`, k: "sig"});
+  if (state.search)            chips.push({l: `Search: "${state.search}"`, k: "search"});
+  container.innerHTML = chips.map(c =>
+    `<span class="chip" data-clear="${c.k}">${escapeHtml(c.l)} <span class="x">✕</span></span>`
+  ).join("");
+  container.querySelectorAll(".chip").forEach(el => {
+    el.addEventListener("click", () => {
+      const k = el.dataset.clear;
+      if (k === "year") state.year = null;
+      else if (k === "search") { state.search = ""; document.getElementById("search").value = ""; }
+      else state[k] = "all";
+      renderAll();
+    });
+  });
+}
+
+function renderTimeline() {
+  const counts = {};
+  for (let y = 2017; y <= 2026; y++) counts[y] = 0;
+  LETTERS.forEach(l => {
+    const y = parseInt(l.d.slice(0, 4));
+    if (counts[y] !== undefined) counts[y]++;
+  });
+  const years = Object.keys(counts).map(Number).sort();
+  const maxCount = Math.max(...Object.values(counts));
+  const w = 1320, h = 90;
+  const barW = w / years.length;
+  const padX = 4;
+  let svg = "";
+  years.forEach((y, i) => {
+    const c = counts[y];
+    const barH = c === 0 ? 2 : (c / maxCount) * (h - 18);
+    const x = i * barW + padX;
+    const barWidth = barW - padX * 2;
+    const yTop = h - barH;
+    const active = state.year === String(y);
+    const fill = active ? "#7a1c1c" : "#a83838";
+    const labelY = Math.max(yTop - 4, 12);
+    svg += `<g class="tl-bar" data-year="${y}" style="cursor:pointer;">
+      <rect x="${x}" y="${yTop}" width="${barWidth}" height="${barH}" fill="${fill}" opacity="${active ? 1 : 0.85}"></rect>
+      <rect x="${x}" y="0" width="${barWidth}" height="${h}" fill="transparent"></rect>
+      <text x="${x + barWidth/2}" y="${labelY}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#4a463e">${c}</text>
+    </g>`;
+  });
+  document.getElementById("timeline").innerHTML = svg;
+  document.getElementById("timeline-axis").innerHTML = years.map(y =>
+    `<span style="flex:1;text-align:center;${state.year === String(y) ? 'color:#7a1c1c;font-weight:500;' : ''}">${y}</span>`
+  ).join("");
+
+  // Era band beneath the year axis — share of letters by era within each year
+  // Ryan ends 2022-05-14; Cooper through 2023-12-03; Milhorn from 2023-12-04.
+  function eraFor(y) {
+    if (y <= 2021) return "ryan";
+    if (y === 2022) return "mixed-rc";   // Ryan→Cooper transition
+    if (y === 2023) return "mixed-cm";   // Cooper→Milhorn transition
+    return "milhorn";
+  }
+  const eraLabels = {
+    "ryan":      '<span class="era-ryan">Ryan</span>',
+    "mixed-rc":  '<span class="era-ryan">Ryan ↘ Cooper</span>',
+    "mixed-cm":  '<span class="era-cooper">Cooper ↘ Milhorn</span>',
+    "milhorn":   '<span class="era-milhorn">Milhorn</span>',
+  };
+  document.getElementById("era-band").innerHTML = years.map(y =>
+    `<span style="flex:1;">${eraLabels[eraFor(y)]}</span>`
+  ).join("");
+
+  document.querySelectorAll(".tl-bar").forEach(el => {
+    el.addEventListener("click", () => {
+      const y = el.dataset.year;
+      state.year = state.year === y ? null : y;
+      renderAll();
+    });
+  });
+}
+
+function renderAll() {
+  renderTopicList();
+  renderThroughFilters();
+  renderAgencyFilters();
+  renderVehicleFilters();
+  renderEraFilters();
+  renderSigPills();
+  renderTimeline();
+  renderActiveChips();
+  renderResults();
+  stateToHash();
+}
+
+// ============================================================
+// MODAL
+// ============================================================
+function openModal(letter) {
+  const d = formatDate(letter.d);
+  const {url, fallback: isFallback} = getLetterUrl(letter);
+  const bullets = getLetterBullets(letter);
+  const topic = getTopicById(letter.tp);
+  const meta = getMeta(letter);
+  const sigDot = letter.sig === 3 ? '<span class="sig-mark" title="High significance"></span>' : '';
+
+  // Bullets HTML — only use sentence-split fallback when pos is substantive (>= 60 chars
+  // AND splits to multiple sentences). Otherwise show pos as prose.
+  let bulletsHtml = "";
+  if (bullets && bullets.length) {
+    bulletsHtml = '<ul class="modal-bullets">' + bullets.map(b => '<li>' + escapeHtml(b) + '</li>').join("") + '</ul>';
+  } else {
+    const sentences = letter.pos.split(/(?<=[.!?])\s+(?=[A-Z(])/).filter(s => s.trim().length > 0);
+    if (sentences.length >= 2 && letter.pos.length >= 60) {
+      bulletsHtml = '<ul class="modal-bullets">' + sentences.map(s => '<li>' + escapeHtml(s.trim()) + '</li>').join("") + '</ul>';
+    } else {
+      bulletsHtml = '<p class="modal-prose">' + escapeHtml(letter.pos) + '</p>';
+    }
+  }
+
+  const quoteHtml = letter.q
+    ? '<div class="modal-quote"><span class="modal-quote-text">' + escapeHtml(letter.q) + '</span></div>'
+    : '';
+
+  const linkLabel = isFallback ? 'Search csbs.org for this letter &rarr;' : 'Read the full letter &rarr;';
+  const linkClass = isFallback ? 'modal-link fallback' : 'modal-link';
+  const linkNote = isFallback
+    ? '<span class="modal-link-note">Direct PDF URL not retrieved during research; the link runs a CSBS-archive search for this letter\'s title.</span>'
+    : '';
+
+  // Tags row: through-lines, era, vehicle
+  const throughTags = meta.th.map(t => {
+    const name = THROUGHLINES.find(x => x.id === t)?.n || t;
+    return `<span class="through-tag"><span class="th-dot th-${t}"></span>${escapeHtml(name)}</span>`;
+  }).join("");
+  const eraTag = meta.era
+    ? `<span class="through-tag"><span class="era-mark era-${meta.era}"></span>${escapeHtml(ERAS.find(e => e.id === meta.era)?.n)} era</span>`
+    : "";
+  const vehTag = (meta.veh && meta.veh !== "Other")
+    ? `<span class="through-tag">${escapeHtml(meta.veh)}</span>`
+    : "";
+  const tagsHtml = (throughTags || eraTag || vehTag)
+    ? `<div class="modal-tags">${throughTags}${eraTag}${vehTag}</div>`
+    : "";
+
+  const body = `
+    <div class="modal-eyebrow">
+      <span>${d.month} ${d.day}, ${d.year}</span>
+      <span class="agency-tag">${escapeHtml(letter.ag)}</span>
+      <span>§ ${escapeHtml(topic.n)}</span>
+    </div>
+    <h2 class="modal-title" id="modal-title">${sigDot}${escapeHtml(letter.t)}</h2>
+    <div class="modal-meta">
+      <span class="label">Responded to</span>${escapeHtml(letter.to)}
+    </div>
+    ${tagsHtml}
+    <div class="modal-section-label">Key positions</div>
+    ${bulletsHtml}
+    ${quoteHtml}
+    <div class="modal-actions">
+      <a href="${url}" target="_blank" rel="noopener noreferrer" class="${linkClass}">${linkLabel}</a>
+      <button class="modal-share" id="modal-share" title="Copy a deep link to this letter">⎘ Copy link</button>
+      ${linkNote}
+    </div>
+  `;
+  document.getElementById("modal-body").innerHTML = body;
+  document.getElementById("modal-backdrop").classList.add("open");
+  document.body.classList.add("modal-open");
+  document.getElementById("modal").scrollTop = 0;
+  state.letter = letterKey(letter);
+  stateToHash();
+
+  document.getElementById("modal-share").addEventListener("click", (e) => {
+    const btn = e.currentTarget;
+    navigator.clipboard.writeText(location.href).then(() => {
+      btn.textContent = "✓ Copied";
+      btn.classList.add("copied");
+      setTimeout(() => { btn.textContent = "⎘ Copy link"; btn.classList.remove("copied"); }, 1800);
+    });
+  });
+}
+
+function closeModal() {
+  document.getElementById("modal-backdrop").classList.remove("open");
+  document.body.classList.remove("modal-open");
+  state.letter = null;
+  stateToHash();
+}
+
+// ============================================================
+// CSV EXPORT
+// ============================================================
+function downloadCSV() {
+  const rows = filterLetters();
+  const header = ["Date","Title","Responded to","Topic","Agency","Vehicle","Era","Through-lines","Significance","Position","Quote","URL"];
+  function csvCell(v) {
+    if (v === undefined || v === null) return "";
+    const s = String(v).replace(/"/g, '""');
+    return /[",\n]/.test(s) ? `"${s}"` : s;
+  }
+  const lines = [header.map(csvCell).join(",")];
+  rows.forEach(l => {
+    const m = getMeta(l);
+    const {url} = getLetterUrl(l);
+    lines.push([
+      l.d,
+      l.t,
+      l.to,
+      getTopicById(l.tp)?.n || l.tp,
+      l.ag,
+      m.veh,
+      m.era,
+      m.th.join("|"),
+      ({1:"Routine",2:"Medium",3:"High"})[l.sig] || "",
+      l.pos || "",
+      l.q || "",
+      url
+    ].map(csvCell).join(","));
+  });
+  const blob = new Blob([lines.join("\n")], {type: "text/csv;charset=utf-8"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  const today = new Date().toISOString().slice(0,10);
+  a.download = `csbs-comment-letters-${today}.csv`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+// ============================================================
+// EVENT WIRING
+// ============================================================
+const searchEl = document.getElementById("search");
+searchEl.addEventListener("input", e => {
+  state.search = e.target.value.trim();
+  renderResults();
+  renderActiveChips();
+  stateToHash();
+});
+
+document.querySelectorAll(".sort-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".sort-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    state.sort = btn.dataset.sort;
+    renderResults();
+    stateToHash();
+  });
+});
+
+document.querySelectorAll("[data-sig]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    state.sig = btn.dataset.sig;
+    renderAll();
+  });
+});
+
+document.getElementById("clear-filters").addEventListener("click", () => {
+  state.search = ""; state.topic = "all"; state.agency = "all"; state.vehicle = "all";
+  state.through = "all"; state.era = "all"; state.sig = "all"; state.year = null;
+  state.sort = "topic"; state.letter = null;
+  searchEl.value = "";
+  document.querySelectorAll(".sort-btn").forEach(b => b.classList.remove("active"));
+  document.querySelector(".sort-btn[data-sort='topic']").classList.add("active");
+  renderAll();
+});
+
+document.getElementById("export-csv").addEventListener("click", downloadCSV);
+document.getElementById("print-btn").addEventListener("click", () => window.print());
+
+// Masthead stat-strip jump shortcuts
+document.querySelectorAll("[data-jump]").forEach(b => {
+  b.addEventListener("click", () => {
+    if (b.dataset.jump === "milhorn") { state.era = "milhorn"; renderAll(); }
+    else if (b.dataset.jump === "through") {
+      // toggle through to federalism (largest) as a sane default landing
+      state.through = state.through === "all" ? "federalism" : "all";
+      renderAll();
+    }
+    document.querySelector(".main")?.scrollIntoView({behavior: "smooth", block: "start"});
+  });
+});
+
+// Modal: open via event delegation
+document.getElementById("results").addEventListener("click", (e) => {
+  const card = e.target.closest(".letter-card");
+  if (!card) return;
+  const letter = LETTERS.find(l => letterKey(l) === card.dataset.key);
+  if (letter) openModal(letter);
+});
+document.getElementById("results").addEventListener("keydown", (e) => {
+  if (e.key !== "Enter" && e.key !== " ") return;
+  const card = e.target.closest(".letter-card");
+  if (!card) return;
+  e.preventDefault();
+  const letter = LETTERS.find(l => letterKey(l) === card.dataset.key);
+  if (letter) openModal(letter);
+});
+document.getElementById("modal-close").addEventListener("click", closeModal);
+document.getElementById("modal-backdrop").addEventListener("click", (e) => {
+  if (e.target.id === "modal-backdrop") closeModal();
+});
+
+// Keyboard shortcuts
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && document.getElementById("modal-backdrop").classList.contains("open")) {
+    closeModal();
+    return;
+  }
+  // "/" focuses search — unless user is already typing
+  if (e.key === "/" && document.activeElement !== searchEl && !e.metaKey && !e.ctrlKey) {
+    e.preventDefault();
+    searchEl.focus();
+    searchEl.select();
+  }
+});
+
+// ============================================================
+// BOOT
+// ============================================================
+// Stats — derived from the actual data, not hard-coded
+document.getElementById("stat-letters").textContent = LETTERS.length;
+document.getElementById("stat-topics").textContent = new Set(LETTERS.map(l => l.tp)).size;
+const sortedDates = LETTERS.map(l => l.d).sort();
+const firstYear = sortedDates[0].slice(0,4);
+const lastYear  = sortedDates[sortedDates.length-1].slice(0,4);
+document.getElementById("stat-span").textContent = (parseInt(lastYear) - parseInt(firstYear) + 1) + "y";
+document.getElementById("total-count").textContent = LETTERS.length;
+
+// Updated eyebrow — derived from the most recent letter
+const latestDate = sortedDates[sortedDates.length-1];
+const ld = formatDate(latestDate);
+document.getElementById("updated-eyebrow").textContent =
+  `A Policy Compendium · Latest letter: ${ld.month} ${ld.day}, ${ld.year}`;
+
+// Restore state from URL hash on load
+hashToState();
+renderAll();
+// If a letter was specified in the URL, open it
+if (state.letter) {
+  const letter = LETTERS.find(l => letterKey(l) === state.letter);
+  if (letter) openModal(letter);
+}
+// Initialize search input from state
+searchEl.value = state.search;
+</script>
+</body>
+</html>

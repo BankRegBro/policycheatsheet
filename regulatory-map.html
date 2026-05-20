@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>U.S. Financial Regulatory Framework · CRS R44918</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'IBM Plex Sans', sans-serif;
+  background: #F4F2EE;
+  color: #2A2A28;
+  min-height: 100vh;
+}
+button { font-family: inherit; }
+input  { font-family: inherit; }
+
+/* ── Tooltip ── */
+#tooltip {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  max-width: 300px;
+  background: #0D1B34;
+  color: #E8E6E2;
+  border-radius: 7px;
+  padding: 10px 13px;
+  font-size: 12px;
+  line-height: 1.65;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.28);
+  opacity: 0;
+  transition: opacity 0.12s;
+}
+#tooltip.visible { opacity: 1; }
+#tooltip .tt-header {
+  font-weight: 600;
+  font-size: 12px;
+  margin-bottom: 4px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+#tooltip .tt-role {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 1px 7px;
+  border-radius: 10px;
+}
+#tooltip .tt-note {
+  color: #B0C4DC;
+  font-size: 11.5px;
+}
+
+/* ── Header ── */
+#app-header {
+  background: linear-gradient(160deg, #0A1628 0%, #152843 100%);
+  padding: 28px 28px 24px;
+}
+.header-inner { max-width: 1100px; margin: 0 auto; }
+.header-eyebrow {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: #6A9AC0; margin-bottom: 8px;
+}
+.header-title {
+  font-family: 'IBM Plex Serif', serif;
+  font-size: 22px; font-weight: 400; color: #F0EDE8;
+  line-height: 1.2; margin-bottom: 6px;
+}
+.header-sub { font-size: 13px; color: #7A9CB8; line-height: 1.5; margin-bottom: 22px; }
+.stats-bar { display: flex; gap: 28px; flex-wrap: wrap; }
+.stat-num {
+  font-family: 'IBM Plex Serif', serif;
+  font-size: 22px; font-weight: 300; color: #EAE8E4;
+}
+.stat-lbl { font-size: 11px; color: #6A9AC0; margin-left: 6px; }
+
+/* ── Tab bar ── */
+#tab-bar {
+  background: #fff;
+  border-bottom: 1px solid #E4E0D8;
+  padding: 0 28px;
+}
+.tab-inner { max-width: 1100px; margin: 0 auto; display: flex; }
+.tab-btn {
+  background: none; border: none; cursor: pointer;
+  padding: 14px 18px; margin-bottom: -1px;
+  font-size: 13px; font-weight: 400; color: #6A6A68;
+  border-bottom: 2px solid transparent;
+  display: flex; align-items: center; gap: 6px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.tab-btn.active { font-weight: 600; color: #0A1628; border-bottom-color: #0A1628; }
+.tab-count {
+  font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 10px;
+  background: #ECEAE4; color: #7A7A78;
+}
+.tab-btn.active .tab-count { background: #0A1628; color: #fff; }
+
+/* ── Content area ── */
+#content { max-width: 1100px; margin: 0 auto; padding: 20px 28px 48px; }
+
+/* ── Controls ── */
+.controls { margin-bottom: 12px; }
+.search-wrap { position: relative; max-width: 300px; margin-bottom: 10px; }
+.search-icon {
+  position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+  color: #B0ACA6; font-size: 14px; pointer-events: none;
+}
+.search-input {
+  width: 100%; padding: 8px 10px 8px 30px;
+  border: 1px solid #E4E0D8; border-radius: 6px;
+  font-size: 13px; background: #fff; outline: none; color: #2A2A28;
+}
+.search-input:focus { border-color: #9ABBD4; box-shadow: 0 0 0 3px #1357A012; }
+.filter-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.filter-chip {
+  padding: 5px 12px; border-radius: 20px; cursor: pointer;
+  font-size: 11px; font-weight: 400; border: 1px solid #E4E0D8;
+  background: #fff; color: #5A5A58;
+  display: flex; align-items: center; gap: 5px;
+  transition: all 0.12s;
+}
+.chip-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+.chip-count {
+  font-size: 10px; font-weight: 600;
+  background: #ECEAE4; color: #6A6A68;
+  padding: 0 5px; border-radius: 8px;
+}
+
+/* ── Role legend bar ── */
+.role-legend {
+  display: flex; gap: 16px; flex-wrap: wrap;
+  padding: 8px 14px; background: #fff;
+  border: 1px solid #E6E2DA; border-radius: 7px;
+  margin-bottom: 16px; align-items: center;
+}
+.role-legend-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: #9A9898; white-space: nowrap;
+}
+.role-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #525250; white-space: nowrap; }
+.role-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+
+/* ── Cards grid ── */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+  gap: 10px;
+}
+.card {
+  background: #fff;
+  border: 1px solid #E6E2DA;
+  border-left-width: 4px;
+  border-radius: 7px;
+  padding: 13px 14px 13px 12px;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  transition: box-shadow 0.15s, border-color 0.15s;
+}
+.card:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.09); }
+.card.selected { box-shadow: 0 3px 12px rgba(0,0,0,0.10); }
+.card-name { font-weight: 500; font-size: 13px; color: #181816; line-height: 1.35; margin: 7px 0 10px; }
+.reg-abbr-serif {
+  font-family: 'IBM Plex Serif', serif;
+  font-size: 18px; font-weight: 500; color: #181816;
+}
+.card-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.reg-chip {
+  font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 20px;
+  display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;
+}
+.reg-chip-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── Badge ── */
+.badge {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; padding: 2px 7px; border-radius: 3px;
+  display: inline-block; border: 1px solid; white-space: nowrap;
+}
+
+/* ── Drawer overlay ── */
+#drawer-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(10,20,40,0.30);
+  backdrop-filter: blur(2px);
+  z-index: 50;
+}
+#drawer-overlay.open { display: block; }
+
+/* ── Drawer panel ── */
+#drawer {
+  position: fixed; top: 0; right: 0; bottom: 0;
+  width: min(500px, 96vw);
+  background: #F9F8F5;
+  border-left: 1px solid #DDD8D0;
+  box-shadow: -6px 0 32px rgba(0,0,0,0.12);
+  overflow-y: auto;
+  z-index: 51;
+  padding: 32px 28px 48px;
+  transform: translateX(100%);
+  transition: transform 0.22s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+#drawer.open { transform: translateX(0); }
+#drawer-close {
+  position: absolute; top: 16px; right: 16px;
+  background: #ECEAE4; border: none; cursor: pointer;
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; color: #5A5A58; line-height: 1;
+}
+#drawer-close:hover { background: #DEDAD2; }
+.drawer-title {
+  font-family: 'IBM Plex Serif', serif;
+  font-size: 21px; font-weight: 500; color: #161614;
+  line-height: 1.25; margin: 10px 0 0;
+}
+.drawer-accent { height: 3px; border-radius: 2px; margin: 12px 0 16px; width: 36px; }
+.drawer-body { font-size: 13px; color: #3A3A38; line-height: 1.75; margin-bottom: 10px; }
+.drawer-examples {
+  font-size: 11px; color: #8A8888; font-style: italic;
+  margin-bottom: 28px; line-height: 1.6;
+}
+.drawer-section-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: #9A9898; margin-bottom: 12px;
+}
+.drawer-rows { display: flex; flex-direction: column; gap: 8px; }
+.drawer-row {
+  background: #fff;
+  border: 1px solid #E8E4DC;
+  border-left-width: 3px;
+  border-radius: 6px;
+  padding: 12px 14px;
+}
+.drawer-row-head {
+  display: flex; align-items: center; gap: 7px;
+  margin-bottom: 5px; flex-wrap: wrap;
+}
+.drawer-row-abbr { font-weight: 600; font-size: 13px; color: #181816; }
+.drawer-row-name { font-size: 11px; color: #6A6A68; }
+.drawer-row-note { font-size: 12px; color: #4A4A48; line-height: 1.65; }
+.role-pill {
+  font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px;
+  white-space: nowrap;
+}
+
+/* ── Matrix ── */
+#matrix-wrap { overflow: hidden; }
+.matrix-legend {
+  display: flex; gap: 16px; flex-wrap: wrap;
+  padding: 9px 14px; background: #fff;
+  border: 1px solid #E6E2DA; border-radius: 7px;
+  margin-bottom: 14px; align-items: center;
+}
+.matrix-scroll {
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid #E6E2DA;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+table.matrix {
+  border-collapse: collapse;
+  font-size: 12px;
+  table-layout: auto;
+  width: 100%;
+}
+table.matrix thead th.corner {
+  position: sticky; left: 0; z-index: 11;
+  background: #0D1B34;
+  padding: 13px 18px;
+  text-align: left;
+  font-weight: 500; font-size: 11px; color: #7A9EC0;
+  min-width: 215px;
+  border-bottom: 2px solid rgba(255,255,255,0.08);
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+table.matrix thead th.reg-col {
+  background: #0D1B34;
+  color: #B8CCE0;
+  padding: 13px 6px;
+  font-weight: 600; font-size: 11px; text-align: center;
+  min-width: 64px;
+  border-bottom: 3px solid transparent;
+  border-left: 1px solid rgba(255,255,255,0.05);
+  cursor: default;
+  transition: background 0.12s, color 0.12s;
+  white-space: nowrap;
+}
+table.matrix thead th.reg-col.col-hover {
+  background: #192E50; color: #fff;
+}
+table.matrix tbody td.inst-name {
+  position: sticky; left: 0; z-index: 5;
+  padding: 10px 18px;
+  font-weight: 400; font-size: 12px; color: #252523;
+  border-right-width: 3px; border-right-style: solid;
+  border-bottom: 1px solid #F0EDE6;
+  white-space: nowrap;
+  font-family: 'IBM Plex Sans', sans-serif;
+  background: #fff;
+  transition: background 0.1s;
+}
+table.matrix tbody tr.row-even td.inst-name { background: #fff; }
+table.matrix tbody tr.row-odd  td.inst-name { background: #FAFAF8; }
+table.matrix tbody tr.row-hover td.inst-name,
+table.matrix tbody tr.row-hover td.cell { background: var(--row-hover-bg) !important; }
+table.matrix tbody td.cell {
+  text-align: center;
+  padding: 10px 4px;
+  border-bottom: 1px solid #F0EDE6;
+  border-left: 1px solid #F5F2EA;
+  transition: background 0.1s;
+  cursor: default;
+  position: relative;
+}
+table.matrix tbody tr.row-even td.cell { background: #fff; }
+table.matrix tbody tr.row-odd  td.cell { background: #FAFAF8; }
+.matrix-dot {
+  width: 12px; height: 12px; border-radius: 50%;
+  margin: 0 auto;
+  transition: box-shadow 0.12s;
+}
+
+/* ── Empty state ── */
+.empty { text-align: center; color: #9A9898; padding: 2.5rem; font-size: 14px; }
+
+/* ── Footer ── */
+#footer {
+  margin-top: 36px; padding-top: 16px;
+  border-top: 1px solid #E4E0D8;
+  font-size: 11px; color: #9A9898;
+  display: flex; justify-content: space-between;
+  flex-wrap: wrap; gap: 4px;
+}
+
+/* Stat number display helper */
+.stat-block { display: flex; align-items: baseline; }
+</style>
+</head>
+<body>
+
+<!-- ── Tooltip ── -->
+<div id="tooltip">
+  <div class="tt-header">
+    <span id="tt-abbr"></span>
+    <span id="tt-role" class="tt-role"></span>
+  </div>
+  <div id="tt-inst" style="font-size:11px;color:#8AAEC8;margin-bottom:4px;"></div>
+  <div id="tt-note" class="tt-note"></div>
+</div>
+
+<!-- ── Header ── -->
+<div id="app-header">
+  <div class="header-inner">
+    <div class="header-eyebrow">CRS Report R44918 · Updated Oct. 2023</div>
+    <h1 class="header-title">U.S. Financial Regulatory Framework</h1>
+    <p class="header-sub">Who regulates whom? An interactive reference to federal and state financial oversight.</p>
+    <div class="stats-bar">
+      <div class="stat-block"><span class="stat-num">23</span><span class="stat-lbl">Institution types</span></div>
+      <div class="stat-block"><span class="stat-num">12</span><span class="stat-lbl">Regulatory bodies</span></div>
+      <div class="stat-block"><span class="stat-num">6</span><span class="stat-lbl">Federal agencies</span></div>
+      <div class="stat-block"><span class="stat-num">7</span><span class="stat-lbl">Categories</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Tab bar ── -->
+<div id="tab-bar">
+  <div class="tab-inner">
+    <button class="tab-btn active" data-tab="institutions" onclick="switchTab('institutions')">
+      By Institution <span class="tab-count">23</span>
+    </button>
+    <button class="tab-btn" data-tab="regulators" onclick="switchTab('regulators')">
+      By Regulator <span class="tab-count">12</span>
+    </button>
+    <button class="tab-btn" data-tab="matrix" onclick="switchTab('matrix')">
+      Matrix View
+    </button>
+  </div>
+</div>
+
+<!-- ── Content ── -->
+<div id="content">
+  <div id="panel-institutions"></div>
+  <div id="panel-regulators" style="display:none"></div>
+  <div id="panel-matrix" style="display:none"></div>
+
+  <div id="footer">
+    <span>Source: CRS Report R44918, <em>Who Regulates Whom? An Overview of the U.S. Financial Regulatory Framework</em> (Updated Oct. 2023)</span>
+    <span>Interactive reference · Not legal or regulatory advice</span>
+  </div>
+</div>
+
+<!-- ── Drawer ── -->
+<div id="drawer-overlay" onclick="closeDrawer()"></div>
+<div id="drawer" role="dialog" aria-modal="true">
+  <button id="drawer-close" onclick="closeDrawer()">×</button>
+  <div id="drawer-content"></div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════ DATA ══ */
+
+const CAT = {
+  depository:  { label: "Depository Banking",          bg: "#E8F2FC", border: "#B5D0F0", text: "#0B3C78", dot: "#1357A0" },
+  securities:  { label: "Securities & Derivatives",    bg: "#E2F5EE", border: "#9ADFC8", text: "#065040", dot: "#0C6E54" },
+  gse:         { label: "Gov't-Sponsored Enterprises", bg: "#FBF0DA", border: "#F7C660", text: "#623706", dot: "#8D590A" },
+  consumer:    { label: "Consumer / Nonbank",          bg: "#FBECE7", border: "#F4C0AC", text: "#4A1A0C", dot: "#9B3819" },
+  state:       { label: "State-Primary",               bg: "#F2F0E8", border: "#D0CEC4", text: "#2C2C28", dot: "#5A5A54" },
+  interagency: { label: "Interagency / Systemic",      bg: "#EDEEFF", border: "#C6C9F4", text: "#23205C", dot: "#4840B0" },
+  sro:         { label: "Self-Regulatory Org.",        bg: "#E2F5EE", border: "#58C8A0", text: "#03322A", dot: "#199C72" },
+};
+
+const ROLE = {
+  primary:     { label: "Primary",        color: "#1357A0" },
+  secondary:   { label: "Secondary",      color: "#3A8CD4" },
+  activity:    { label: "Activity-based", color: "#0C6E54" },
+  conditional: { label: "Conditional",    color: "#B86E10" },
+  subsidiary:  { label: "Subsidiary",     color: "#4840B0" },
+  oversight:   { label: "Systemic",       color: "#8C2850" },
+};
+
+const REGS = [
+  { id: "fed",   abbr: "Fed",   name: "Federal Reserve System",                    category: "depository",  founded: 1913,
+    authority: "Bank Holding Company Act; Federal Reserve Act; Dodd-Frank §§165–166",
+    description: "Central bank of the U.S. Primary regulator of bank holding companies (BHCs), financial holding companies (FHCs), state member banks, savings and loan holding companies, and systemically important nonbanks. Conducts monetary policy; operates payment systems and the discount window." },
+  { id: "occ",   abbr: "OCC",   name: "Office of the Comptroller of the Currency", category: "depository",  founded: 1863,
+    authority: "National Bank Act (1863); Home Owners' Loan Act (post-Dodd-Frank)",
+    description: "Bureau of the Treasury. Charters and supervises national banks, federal savings associations, and U.S. federal branches of foreign banks. Issues preemption determinations affecting state consumer laws." },
+  { id: "fdic",  abbr: "FDIC",  name: "Federal Deposit Insurance Corporation",      category: "depository",  founded: 1933,
+    authority: "Federal Deposit Insurance Act; Dodd-Frank Title II (OLA)",
+    description: "Independent agency administering federal deposit insurance ($250K/depositor). Primary federal regulator of state non-member banks and state-chartered thrifts. Resolves failed insured depositories." },
+  { id: "ncua",  abbr: "NCUA",  name: "National Credit Union Administration",       category: "depository",  founded: 1970,
+    authority: "Federal Credit Union Act (1970)",
+    description: "Independent agency chartering and supervising federally chartered credit unions; insures shares at all federally insured credit unions via the NCUSIF. Resolves failing federally insured credit unions." },
+  { id: "sec",   abbr: "SEC",   name: "Securities and Exchange Commission",          category: "securities",  founded: 1934,
+    authority: "Securities Act 1933; Exchange Act 1934; Advisers Act 1940; Dodd-Frank (SBS)",
+    description: "Regulates U.S. securities markets: exchanges, broker-dealers, investment advisers, investment companies, public company disclosures, and security-based swaps. Oversees FINRA as the SRO for broker-dealers." },
+  { id: "cftc",  abbr: "CFTC",  name: "Commodity Futures Trading Commission",       category: "securities",  founded: 1974,
+    authority: "Commodity Exchange Act; Dodd-Frank Title VII",
+    description: "Independent agency overseeing derivatives markets: futures, options on futures, and most OTC swaps (post-Dodd-Frank). Regulates futures exchanges, FCMs, swap dealers, clearinghouses, and swap data repositories." },
+  { id: "fhfa",  abbr: "FHFA",  name: "Federal Housing Finance Agency",             category: "gse",         founded: 2008,
+    authority: "Housing and Economic Recovery Act (HERA) 2008",
+    description: "Independent agency created by HERA (2008). Regulator and conservator of Fannie Mae and Freddie Mac since September 2008. Also regulates the 11 Federal Home Loan Banks." },
+  { id: "fca",   abbr: "FCA",   name: "Farm Credit Administration",                 category: "gse",         founded: 1916,
+    authority: "Farm Credit Act of 1971",
+    description: "Independent federal agency regulating and examining the Farm Credit System—a network of borrower-owned lending cooperatives serving agriculture and rural America." },
+  { id: "cfpb",  abbr: "CFPB",  name: "Consumer Financial Protection Bureau",       category: "consumer",    founded: 2011,
+    authority: "Dodd-Frank Act Title X",
+    description: "Created by Dodd-Frank (2010). Issues consumer financial protection rules for all covered persons. Direct supervisory authority over banks and CUs with >$10B in assets, plus nonbank mortgage servicers, payday lenders, and larger-participant nonbanks." },
+  { id: "fsoc",  abbr: "FSOC",  name: "Financial Stability Oversight Council",      category: "interagency", founded: 2010,
+    authority: "Dodd-Frank Act Title I",
+    description: "Interagency council chaired by the Treasury Secretary. Identifies systemic risks to U.S. financial stability, coordinates among regulators, and can designate nonbank financial companies as SIFIs." },
+  { id: "finra", abbr: "FINRA", name: "Financial Industry Regulatory Authority",    category: "sro",         founded: 2007,
+    authority: "Securities Exchange Act §15A; oversight by SEC",
+    description: "Self-regulatory organization for the U.S. broker-dealer industry, operating under SEC oversight. Examines broker-dealers for compliance, enforces conduct rules, and operates BrokerCheck." },
+  { id: "state", abbr: "State", name: "State Regulators",                           category: "state",       founded: null,
+    authority: "Varies by state; CSBS coordinates; McCarran-Ferguson Act for insurance",
+    description: "State banking departments charter and co-supervise state-chartered banks and thrifts. State insurance commissioners are the primary regulators of insurance. State securities regulators oversee smaller investment advisers." },
+];
+
+const INSTS = [
+  { id: "national_bank", category: "depository", name: "National Banks",
+    examples: "JPMorgan Chase Bank, N.A. · Bank of America, N.A. · Wells Fargo Bank, N.A.",
+    description: "Federally chartered commercial banks with broad powers to conduct the business of banking. Exempt from most state banking laws (federal preemption). Core charter for the largest U.S. banks.",
+    regulators: [
+      { id: "occ",  role: "primary",     note: "Chartering authority & primary safety-and-soundness examiner" },
+      { id: "fdic", role: "secondary",   note: "Deposit insurance oversight; backup examination authority" },
+      { id: "cfpb", role: "activity",    note: "Consumer protection rules; direct supervision for banks >$10B" },
+      { id: "fed",  role: "conditional", note: "If subsidiary of BHC/FHC, Fed supervises at holding company level" },
+      { id: "fsoc", role: "conditional", note: "G-SIB designation triggers Dodd-Frank §165 enhanced prudential standards" },
+    ]},
+  { id: "state_member_bank", category: "depository", name: "State Member Banks",
+    examples: "Many mid-size regional banks that elected Fed membership",
+    description: "State-chartered commercial banks that have joined the Federal Reserve System. Dual state-federal supervision; access to full Fed services and subject to Federal Reserve regulations.",
+    regulators: [
+      { id: "fed",   role: "primary",   note: "Primary federal examiner; Reg H, Reg K, Reg Y apply" },
+      { id: "fdic",  role: "secondary", note: "Deposit insurance oversight" },
+      { id: "state", role: "primary",   note: "State chartering authority & co-examiner (dual banking system)" },
+      { id: "cfpb",  role: "activity",  note: "Consumer protection rules; direct supervision for banks >$10B" },
+    ]},
+  { id: "state_nonmember_bank", category: "depository", name: "State Non-Member Banks",
+    examples: "Majority of U.S. community banks; many mid-tier commercial banks",
+    description: "State-chartered commercial banks not in the Federal Reserve System. The most common charter for community banks. FDIC is the primary federal regulator.",
+    regulators: [
+      { id: "fdic",  role: "primary",   note: "Primary federal examiner; backup enforcement authority" },
+      { id: "state", role: "primary",   note: "State chartering authority & co-examiner" },
+      { id: "cfpb",  role: "activity",  note: "Consumer protection rules; direct supervision for banks >$10B" },
+    ]},
+  { id: "federal_thrift", category: "depository", name: "Federal Thrifts / Savings Assns.",
+    examples: "Washington Federal · Charter One · Columbia Bank",
+    description: "Federally chartered savings associations (S&Ls / federal savings banks). Post-Dodd-Frank, OCC assumed supervision from the abolished OTS.",
+    regulators: [
+      { id: "occ",  role: "primary",   note: "Chartering authority (assumed from OTS via Dodd-Frank §312)" },
+      { id: "fdic", role: "secondary", note: "Deposit insurance oversight" },
+      { id: "cfpb", role: "activity",  note: "Consumer protection; direct supervision for institutions >$10B" },
+    ]},
+  { id: "state_thrift", category: "depository", name: "State-Chartered Thrifts",
+    examples: "Various state savings banks and savings associations",
+    description: "State-chartered savings institutions. Post-Dodd-Frank, primary federal oversight shifted from the OTS to the FDIC.",
+    regulators: [
+      { id: "fdic",  role: "primary",   note: "Primary federal examiner (post-Dodd-Frank §312)" },
+      { id: "state", role: "primary",   note: "State chartering authority & co-examiner" },
+      { id: "cfpb",  role: "activity",  note: "Consumer protection rules" },
+    ]},
+  { id: "federal_credit_union", category: "depository", name: "Federal Credit Unions",
+    examples: "Navy Federal CU · Pentagon Federal CU · BECU",
+    description: "Federally chartered cooperative depositories owned by their members. NCUA is the sole federal regulator under a framework separate from the bank regulatory system.",
+    regulators: [
+      { id: "ncua", role: "primary",  note: "Chartering authority, primary supervisor & share insurer (NCUSIF)" },
+      { id: "cfpb", role: "activity", note: "Consumer financial protection rules; direct supervision for CUs >$10B" },
+    ]},
+  { id: "state_credit_union", category: "depository", name: "State-Chartered Federally Insured CUs",
+    examples: "Various state-chartered credit unions with NCUA share insurance",
+    description: "State-chartered credit unions carrying NCUA share insurance. Dual supervision: state chartering authority and NCUA federal backstop.",
+    regulators: [
+      { id: "ncua",  role: "primary",  note: "Share insurance oversight; federal backup examination" },
+      { id: "state", role: "primary",  note: "State chartering authority & co-examiner" },
+      { id: "cfpb",  role: "activity", note: "Consumer financial protection rules" },
+    ]},
+  { id: "bhc", category: "depository", name: "Bank Holding Companies",
+    examples: "Holding company structures used by most large and mid-size banking organizations",
+    description: "Parent companies controlling one or more bank subsidiaries. Fed regulates at the holding company level; bank subsidiaries retain their own primary regulators.",
+    regulators: [
+      { id: "fed",  role: "primary",    note: "Sole federal supervisor at holding company level; source-of-strength doctrine" },
+      { id: "occ",  role: "subsidiary", note: "Regulates national bank subsidiaries" },
+      { id: "fdic", role: "subsidiary", note: "Regulates state non-member bank subsidiaries; deposit insurance" },
+      { id: "cfpb", role: "activity",   note: "Consumer products of bank subsidiaries >$10B" },
+    ]},
+  { id: "gsib", category: "depository", name: "GSIBs / Systemically Important Banks",
+    examples: "JPMorgan Chase · Bank of America · Citigroup · Wells Fargo · Goldman Sachs · Morgan Stanley · BNY Mellon · State Street",
+    description: "The eight U.S. G-SIBs subject to Dodd-Frank §165 enhanced prudential standards: G-SIB capital surcharges, TLAC, resolution planning, LCR/NSFR liquidity ratios, and annual stress testing.",
+    regulators: [
+      { id: "fed",  role: "primary",   note: "Enhanced prudential standards (§165); stress tests; resolution planning" },
+      { id: "occ",  role: "primary",   note: "National bank subsidiaries (most large banks hold national charters)" },
+      { id: "fdic", role: "secondary", note: "Deposit insurance; OLA resolution backstop; living will review" },
+      { id: "sec",  role: "activity",  note: "Broker-dealer subsidiaries and securities activities" },
+      { id: "cftc", role: "activity",  note: "Swap dealer and FCM affiliates" },
+      { id: "cfpb", role: "activity",  note: "Consumer financial products and services" },
+      { id: "fsoc", role: "oversight", note: "Systemic risk monitoring; G-SIB designation and SIFI review" },
+    ]},
+  { id: "fbo", category: "depository", name: "Foreign Banking Organizations",
+    examples: "HSBC · Deutsche Bank · Barclays · BNP Paribas · UBS (U.S. operations)",
+    description: "Foreign banks operating via U.S. branches, agencies, or subsidiaries. Large FBOs with ≥$100B U.S. assets must form an Intermediate Holding Company (IHC) subject to U.S. capital requirements under Reg YY.",
+    regulators: [
+      { id: "fed",   role: "primary",   note: "State-licensed branches and IHC supervision under Reg YY for large FBOs" },
+      { id: "occ",   role: "primary",   note: "Federally licensed branches and agencies of foreign banks" },
+      { id: "state", role: "primary",   note: "State-licensed branches and agencies" },
+      { id: "fdic",  role: "secondary", note: "If FDIC-insured deposits accepted at U.S. branch" },
+    ]},
+  { id: "trust_company", category: "depository", name: "Trust Companies",
+    examples: "National trust banks (OCC charter) · State trust companies (SD, WY, DE) · Special purpose trust charters",
+    description: "Institutions providing fiduciary, estate, and trust services. May hold a state charter or an OCC national trust bank charter. Not generally deposit-taking; MTL exposure and preemption status vary by charter type.",
+    regulators: [
+      { id: "occ",   role: "primary",     note: "National trust bank charter (limited-purpose; no deposit-taking)" },
+      { id: "state", role: "primary",     note: "State chartering authority for state-chartered trust companies" },
+      { id: "fed",   role: "conditional", note: "If part of BHC structure; holding company regulation applies" },
+    ]},
+  { id: "broker_dealer", category: "securities", name: "Broker-Dealers",
+    examples: "Merrill Lynch · Charles Schwab · Fidelity Brokerage · Raymond James · Interactive Brokers",
+    description: "Firms executing securities transactions for customer accounts (brokers) or their own accounts (dealers). Must register with SEC and join FINRA. Subject to net capital rules and Reg BI (best interest) standard.",
+    regulators: [
+      { id: "sec",   role: "primary",   note: "Registration, rulemaking, enforcement; approves FINRA rules" },
+      { id: "finra", role: "primary",   note: "Day-to-day examinations, SRO conduct rules, BrokerCheck" },
+      { id: "state", role: "secondary", note: "Blue-sky law registration and agent conduct oversight" },
+    ]},
+  { id: "investment_adviser", category: "securities", name: "Investment Advisers / RIAs",
+    examples: "Vanguard · Fidelity · BlackRock (advisory arms) · Registered Investment Advisers ≥$110M AUM",
+    description: "Firms or individuals providing investment advice for compensation. Advisers with ≥$110M AUM register with SEC; those with <$100M AUM register at state level. Subject to fiduciary duty under the Advisers Act.",
+    regulators: [
+      { id: "sec",   role: "primary", note: "Advisers Act registration; Form ADV; fiduciary standard for ≥$110M AUM" },
+      { id: "state", role: "primary", note: "Primary regulator for advisers with <$100M AUM" },
+    ]},
+  { id: "investment_company", category: "securities", name: "Mutual Funds / Investment Companies",
+    examples: "Vanguard funds · Fidelity funds · BlackRock iShares ETFs · Closed-end funds",
+    description: "Pooled investment vehicles registered under the Investment Company Act of 1940. Includes open-end mutual funds, ETFs, and closed-end funds.",
+    regulators: [
+      { id: "sec", role: "primary", note: "Investment Company Act registration; prospectus/SAI disclosure; Form N-CEN" },
+    ]},
+  { id: "hedge_fund", category: "securities", name: "Private Funds / Hedge Funds",
+    examples: "Bridgewater · Citadel · Two Sigma · Renaissance Technologies · Blackstone",
+    description: "Privately offered funds exempt from Investment Company Act registration. Post-Dodd-Frank, managers with >$150M AUM must register as investment advisers and file Form PF.",
+    regulators: [
+      { id: "sec",  role: "primary",     note: "Adviser registration (>$150M AUM); Form PF systemic risk reporting" },
+      { id: "fsoc", role: "conditional", note: "FSOC can designate large fund complexes as SIFIs for enhanced oversight" },
+    ]},
+  { id: "swap_dealer", category: "securities", name: "Swap Dealers / FCMs",
+    examples: "Goldman Sachs (swap dealer) · JPMorgan (swap dealer) · CME Group (clearing)",
+    description: "Entities entering into swaps as counterparties (swap dealers) or soliciting/accepting futures orders (FCMs). Post-Dodd-Frank, most standardized swaps must be centrally cleared.",
+    regulators: [
+      { id: "cftc", role: "primary",     note: "Registration, capital requirements, reporting for swap dealers and FCMs" },
+      { id: "sec",  role: "activity",    note: "SEC jurisdiction over security-based swaps (shared jurisdiction)" },
+      { id: "fed",  role: "conditional", note: "Prudential margin rules if affiliated with a BHC or bank" },
+    ]},
+  { id: "gse_housing", category: "gse", name: "Fannie Mae & Freddie Mac",
+    examples: "Federal National Mortgage Association (FNMA) · Federal Home Loan Mortgage Corp. (FHLMC)",
+    description: "GSEs in FHFA conservatorship since September 2008. Purchase conforming mortgages and issue MBS. Combined hold or guarantee >$7T in mortgage exposure.",
+    regulators: [
+      { id: "fhfa", role: "primary",   note: "Regulator and conservator since September 7, 2008 (HERA §1367)" },
+      { id: "fsoc", role: "oversight", note: "Systemic risk monitoring; central to housing finance reform debate" },
+    ]},
+  { id: "fhlb", category: "gse", name: "Federal Home Loan Banks",
+    examples: "11 regional FHLBs: Atlanta · Boston · Chicago · Cincinnati · Dallas · Des Moines · Indianapolis · New York · Pittsburgh · San Francisco · Topeka",
+    description: "Regional cooperative banks providing liquidity (advances) to member institutions — commercial banks, thrifts, insurance companies, and credit unions — for housing finance.",
+    regulators: [
+      { id: "fhfa", role: "primary", note: "HERA created FHFA as consolidated regulator of all 11 FHLBs" },
+    ]},
+  { id: "farm_credit", category: "gse", name: "Farm Credit System Institutions",
+    examples: "CoBank · AgFirst Farm Credit Bank · Farm Credit Bank of Texas · Agricultural Credit Associations",
+    description: "Network of borrower-owned financial cooperatives providing credit to farmers, ranchers, rural homeowners, and agribusinesses.",
+    regulators: [
+      { id: "fca", role: "primary", note: "Regulates and examines all FCS banks and associations (Farm Credit Act)" },
+    ]},
+  { id: "nonbank_mortgage", category: "consumer", name: "Nonbank Mortgage Companies",
+    examples: "Rocket Mortgage · United Wholesale Mortgage · PennyMac · loanDepot · Mr. Cooper",
+    description: "Non-depository mortgage originators and servicers. Not subject to prudential bank supervision; regulated primarily by CFPB and state licensors.",
+    regulators: [
+      { id: "cfpb", role: "primary", note: "Primary federal supervisor; RESPA, TILA, ECOA, HMDA enforcement" },
+      { id: "state",role: "primary", note: "State mortgage originator and servicer licenses required state-by-state" },
+    ]},
+  { id: "payday_lender", category: "consumer", name: "Payday / Small-Dollar Lenders",
+    examples: "Advance America · Check Into Cash · OppFi · various state-licensed lenders",
+    description: "Non-bank entities providing short-term, small-dollar credit. Primarily regulated by states; CFPB issued the Payday Lending Rule with ability-to-repay requirements.",
+    regulators: [
+      { id: "cfpb", role: "primary", note: "Payday Lending Rule; ability-to-repay requirements; enforcement authority" },
+      { id: "state",role: "primary", note: "State usury laws, lending licenses, rate caps (dominant regulatory layer)" },
+    ]},
+  { id: "insurance", category: "state", name: "Insurance Companies",
+    examples: "State Farm · GEICO · MetLife · Prudential · New York Life · AIG",
+    description: "Primarily regulated at state level under the McCarran-Ferguson Act. The Federal Insurance Office in Treasury monitors but has limited direct regulatory authority.",
+    regulators: [
+      { id: "state", role: "primary",     note: "State insurance commissioners are the exclusive primary regulators; NAIC coordinates" },
+      { id: "fsoc",  role: "conditional", note: "Can designate systemically important insurers for Fed enhanced oversight" },
+      { id: "fed",   role: "conditional", note: "Supervises insurer holding companies that are also FHCs (post-GLBA)" },
+    ]},
+  { id: "msb", category: "consumer", name: "Money Services Businesses / Fintechs",
+    examples: "Western Union · MoneyGram · PayPal/Venmo · Chime · Coinbase · Kraken",
+    description: "Non-depository entities offering money transmission, prepaid access, or currency exchange. Federal AML obligations under FinCEN; state money transmitter licenses required.",
+    regulators: [
+      { id: "state", role: "primary",  note: "State money transmitter licenses required in each state (NMLS)" },
+      { id: "cfpb",  role: "activity", note: "Prepaid Accounts Rule; Remittance Rule; larger-participant supervision possible" },
+    ]},
+];
+
+/* ═══════════════════════════════════════════════════════ HELPERS ══ */
+
+function getReg(id) { return REGS.find(r => r.id === id); }
+
+function badge(cat, full) {
+  const c = CAT[cat] || CAT.state;
+  const lbl = full ? c.label : c.label.split(/[\s\/]/)[0];
+  return `<span class="badge" style="background:${c.bg};border-color:${c.border};color:${c.text}">${lbl}</span>`;
+}
+
+function rolePill(role) {
+  const r = ROLE[role] || { label: role, color: "#888" };
+  return `<span class="role-pill" style="background:${r.color}22;color:${r.color}">${r.label}</span>`;
+}
+
+function regChips(regulators) {
+  return regulators.map(rel => {
+    const reg = getReg(rel.id); if (!reg) return '';
+    const color = ROLE[rel.role]?.color || '#666';
+    return `<span class="reg-chip" style="background:${color}18;color:${color};border:1px solid ${color}30"
+      title="${reg.name} — ${ROLE[rel.role]?.label || rel.role}">
+      <span class="reg-chip-dot" style="background:${color}"></span>${reg.abbr}
+    </span>`;
+  }).join('');
+}
+
+/* ════════════════════════════════════════════════════════ STATE ══ */
+
+let currentTab     = 'institutions';
+let currentSearch  = '';
+let currentCatFilter = 'all';
+let selectedInstId = null;
+let selectedRegId  = null;
+
+/* ═══════════════════════════════════════════════════════ TOOLTIP ══ */
+
+const tooltip = document.getElementById('tooltip');
+let tooltipTimeout = null;
+
+function showTooltip(e, data) {
+  clearTimeout(tooltipTimeout);
+  const { abbr, role, instName, note } = data;
+  const roleObj = ROLE[role] || { label: role, color: '#888' };
+  document.getElementById('tt-abbr').textContent = abbr;
+  const ttRole = document.getElementById('tt-role');
+  ttRole.textContent = roleObj.label;
+  ttRole.style.background = roleObj.color + '33';
+  ttRole.style.color = roleObj.color;
+  document.getElementById('tt-inst').textContent = instName || '';
+  document.getElementById('tt-note').textContent = note || '';
+  positionTooltip(e);
+  tooltip.classList.add('visible');
+}
+
+function positionTooltip(e) {
+  const pad = 14;
+  const tw = tooltip.offsetWidth  || 240;
+  const th = tooltip.offsetHeight || 80;
+  let x = e.clientX + pad;
+  let y = e.clientY + pad;
+  if (x + tw > window.innerWidth  - 8) x = e.clientX - tw - pad;
+  if (y + th > window.innerHeight - 8) y = e.clientY - th - pad;
+  tooltip.style.left = x + 'px';
+  tooltip.style.top  = y + 'px';
+}
+
+function hideTooltip() {
+  tooltip.classList.remove('visible');
+}
+
+document.addEventListener('mousemove', e => {
+  if (tooltip.classList.contains('visible')) positionTooltip(e);
+});
+
+/* ═══════════════════════════════════════════════════════ DRAWER ══ */
+
+function openDrawer(html) {
+  document.getElementById('drawer-content').innerHTML = html;
+  document.getElementById('drawer-overlay').classList.add('open');
+  document.getElementById('drawer').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDrawer() {
+  document.getElementById('drawer-overlay').classList.remove('open');
+  document.getElementById('drawer').classList.remove('open');
+  document.body.style.overflow = '';
+  // deselect
+  document.querySelectorAll('.card.selected').forEach(c => c.classList.remove('selected'));
+  selectedInstId = null;
+  selectedRegId  = null;
+}
+
+function instDrawerHTML(inst) {
+  const c = CAT[inst.category] || CAT.state;
+  const rows = inst.regulators.map(rel => {
+    const reg = getReg(rel.id); if (!reg) return '';
+    const rc  = ROLE[rel.role]?.color || '#888';
+    return `
+      <div class="drawer-row" style="border-left-color:${rc}">
+        <div class="drawer-row-head">
+          <span class="drawer-row-abbr">${reg.abbr}</span>
+          <span class="drawer-row-name">${reg.name}</span>
+          ${rolePill(rel.role)}
+        </div>
+        <p class="drawer-row-note">${rel.note}</p>
+      </div>`;
+  }).join('');
+  return `
+    ${badge(inst.category, true)}
+    <h2 class="drawer-title">${inst.name}</h2>
+    <div class="drawer-accent" style="background:${c.dot}"></div>
+    <p class="drawer-body">${inst.description}</p>
+    <p class="drawer-examples">Examples: ${inst.examples}</p>
+    <div class="drawer-section-label">Regulatory Structure</div>
+    <div class="drawer-rows">${rows}</div>`;
+}
+
+function regDrawerHTML(reg) {
+  const c = CAT[reg.category] || CAT.state;
+  const covered = INSTS.filter(i => i.regulators.find(r => r.id === reg.id));
+  const rows = covered.map(inst => {
+    const rel = inst.regulators.find(r => r.id === reg.id);
+    const rc  = ROLE[rel?.role]?.color || '#888';
+    return `
+      <div class="drawer-row" style="border-left-color:${rc}">
+        <div class="drawer-row-head">
+          <span class="drawer-row-abbr">${inst.name}</span>
+          ${badge(inst.category)}
+          ${rolePill(rel?.role)}
+        </div>
+        <p class="drawer-row-note">${rel?.note || ''}</p>
+      </div>`;
+  }).join('');
+  const authBox = reg.authority
+    ? `<p style="font-size:11px;color:#7A7A78;font-style:italic;background:#F2F0E8;border-radius:5px;padding:8px 12px;margin-bottom:10px;line-height:1.6">Statutory authority: ${reg.authority}</p>`
+    : '';
+  return `
+    ${badge(reg.category, true)}
+    <h2 class="drawer-title" style="font-size:26px">${reg.abbr}</h2>
+    <p style="font-size:13px;color:#4A4A48;margin-bottom:2px">${reg.name}</p>
+    ${reg.founded ? `<p style="font-size:11px;color:#9A9898;margin-bottom:0">Established ${reg.founded}</p>` : ''}
+    <div class="drawer-accent" style="background:${c.dot}"></div>
+    ${authBox}
+    <p class="drawer-body">${reg.description}</p>
+    <div class="drawer-section-label" style="margin-bottom:12px">Institutions Supervised (${covered.length})</div>
+    <div class="drawer-rows">${rows}</div>`;
+}
+
+/* ══════════════════════════════════════════════════ RENDER HELPERS ══ */
+
+function roleLegendHTML() {
+  const items = Object.entries(ROLE).map(([k, v]) =>
+    `<span class="role-item">
+      <span class="role-dot" style="background:${v.color};box-shadow:0 0 0 2px ${v.color}35"></span>
+      ${v.label}
+    </span>`
+  ).join('');
+  return `<div class="role-legend">
+    <span class="role-legend-label">Role key:</span>${items}
+  </div>`;
+}
+
+function filterChipsHTML(tab) {
+  const keys = ['all', ...Object.keys(CAT)];
+  return keys.map(k => {
+    const c = CAT[k];
+    const count = k === 'all'
+      ? (tab === 'institutions' ? INSTS.length : REGS.length)
+      : (tab === 'institutions'
+          ? INSTS.filter(i => i.category === k).length
+          : REGS.filter(r => r.category === k).length);
+    if (count === 0) return '';
+    const active = currentCatFilter === k;
+    const dotStyle = k !== 'all'
+      ? `<span class="chip-dot" style="background:${active ? c.dot : '#C0BCB4'}"></span>`
+      : '';
+    const label = k === 'all' ? 'All' : c.label.split(/[\s\/]/)[0];
+    const chipBg  = active && k !== 'all' ? c.bg  : active ? '#E8E6E0' : '#fff';
+    const chipBdr = active && k !== 'all' ? c.border : active ? '#C8C4BC' : '#E4E0D8';
+    const chipClr = active && k !== 'all' ? c.text : active ? '#2A2A28' : '#5A5A58';
+    const cntBg   = active && k !== 'all' ? 'rgba(0,0,0,0.10)' : '#ECEAE4';
+    const cntClr  = active && k !== 'all' ? c.text : '#6A6A68';
+    return `<button class="filter-chip" onclick="setFilter('${k}')"
+        style="background:${chipBg};border-color:${chipBdr};color:${chipClr}">
+      ${dotStyle}${label}
+      <span class="chip-count" style="background:${cntBg};color:${cntClr}">${count}</span>
+    </button>`;
+  }).join('');
+}
+
+/* ══════════════════════════════════════════════════ INSTITUTIONS ══ */
+
+function renderInstitutions() {
+  const search = currentSearch.toLowerCase();
+  const items = INSTS.filter(i =>
+    (currentCatFilter === 'all' || i.category === currentCatFilter) &&
+    (!search || i.name.toLowerCase().includes(search))
+  );
+
+  let html = `
+    <div class="controls">
+      <div class="search-wrap">
+        <span class="search-icon">⌕</span>
+        <input class="search-input" type="text" placeholder="Search institutions…"
+          value="${currentSearch}"
+          oninput="onSearch(this.value)" />
+      </div>
+      <div class="filter-chips">${filterChipsHTML('institutions')}</div>
+    </div>
+    ${roleLegendHTML()}`;
+
+  if (items.length === 0) {
+    html += `<p class="empty">No institutions match your filters.</p>`;
+  } else {
+    const cards = items.map(inst => {
+      const c = CAT[inst.category] || CAT.state;
+      const sel = selectedInstId === inst.id;
+      const selStyle = sel
+        ? `border-color:${c.dot};box-shadow:0 0 0 3px ${c.dot}25,0 2px 10px rgba(0,0,0,0.08);`
+        : '';
+      return `
+        <div class="card${sel ? ' selected' : ''}"
+          id="card-inst-${inst.id}"
+          style="border-left-color:${c.dot};${selStyle}"
+          onclick="selectInst('${inst.id}')">
+          ${badge(inst.category)}
+          <div class="card-name">${inst.name}</div>
+          <div class="card-chips">${regChips(inst.regulators)}</div>
+        </div>`;
+    }).join('');
+    html += `<div class="card-grid">${cards}</div>`;
+  }
+
+  document.getElementById('panel-institutions').innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════════════ REGULATORS ══ */
+
+function renderRegulators() {
+  const search = currentSearch.toLowerCase();
+  const items = REGS.filter(r =>
+    (currentCatFilter === 'all' || r.category === currentCatFilter) &&
+    (!search || r.name.toLowerCase().includes(search) || r.abbr.toLowerCase().includes(search))
+  );
+
+  let html = `
+    <div class="controls">
+      <div class="search-wrap">
+        <span class="search-icon">⌕</span>
+        <input class="search-input" type="text" placeholder="Search regulators…"
+          value="${currentSearch}"
+          oninput="onSearch(this.value)" />
+      </div>
+      <div class="filter-chips">${filterChipsHTML('regulators')}</div>
+    </div>
+    ${roleLegendHTML()}`;
+
+  if (items.length === 0) {
+    html += `<p class="empty">No regulators match your filters.</p>`;
+  } else {
+    const cards = items.map(reg => {
+      const c = CAT[reg.category] || CAT.state;
+      const count = INSTS.filter(i => i.regulators.find(r => r.id === reg.id)).length;
+      const sel = selectedRegId === reg.id;
+      const selStyle = sel
+        ? `border-color:${c.dot};box-shadow:0 0 0 3px ${c.dot}25,0 2px 10px rgba(0,0,0,0.08);`
+        : '';
+      return `
+        <div class="card${sel ? ' selected' : ''}"
+          id="card-reg-${reg.id}"
+          style="border-left-color:${c.dot};${selStyle}"
+          onclick="selectReg('${reg.id}')">
+          ${badge(reg.category)}
+          <div style="display:flex;align-items:baseline;gap:8px;margin:7px 0 2px">
+            <span class="reg-abbr-serif">${reg.abbr}</span>
+            ${reg.founded ? `<span style="font-size:10px;color:#9A9898">est. ${reg.founded}</span>` : ''}
+          </div>
+          <div style="font-size:11px;color:#525250;line-height:1.4;margin-bottom:10px">${reg.name}</div>
+          <div style="font-size:11px;color:${c.dot};font-weight:600">${count} institution type${count !== 1 ? 's' : ''}</div>
+        </div>`;
+    }).join('');
+    html += `<div class="card-grid">${cards}</div>`;
+  }
+
+  document.getElementById('panel-regulators').innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════════════════ MATRIX ══ */
+
+function renderMatrix() {
+  // Legend
+  const legendItems = Object.entries(ROLE).map(([k, v]) =>
+    `<span class="role-item">
+      <span class="role-dot" style="background:${v.color};box-shadow:0 0 0 2px ${v.color}35"></span>
+      ${v.label}
+    </span>`
+  ).join('');
+  const legend = `<div class="matrix-legend">
+    <span class="role-legend-label">Role key:</span>${legendItems}
+  </div>`;
+
+  // Header row
+  const headerCols = REGS.map((reg, ci) => {
+    const c = CAT[reg.category] || CAT.state;
+    return `<th class="reg-col" data-col="${ci}" style="border-bottom-color:${c.dot}">${reg.abbr}</th>`;
+  }).join('');
+
+  // Data rows
+  const bodyRows = INSTS.map((inst, ri) => {
+    const ic = CAT[inst.category] || CAT.state;
+    const parity = ri % 2 === 0 ? 'row-even' : 'row-odd';
+    const cells = REGS.map((reg, ci) => {
+      const rel = inst.regulators.find(r => r.id === reg.id);
+      const dot = rel
+        ? `<div class="matrix-dot" style="background:${ROLE[rel.role]?.color || '#888'}"></div>`
+        : '';
+      const ttData = rel
+        ? `data-tt-abbr="${reg.abbr}" data-tt-role="${rel.role}" data-tt-inst="${inst.name}" data-tt-note="${rel.note.replace(/"/g, '&quot;')}"`
+        : '';
+      return `<td class="cell" data-col="${ci}" ${ttData}>${dot}</td>`;
+    }).join('');
+
+    return `<tr class="${parity}" data-row="${ri}" style="--row-hover-bg:${ic.bg}">
+      <td class="inst-name" style="border-right-color:${ic.dot}">${inst.name}</td>
+      ${cells}
+    </tr>`;
+  }).join('');
+
+  const table = `
+    <div class="matrix-scroll">
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th class="corner">Institution Type</th>
+            ${headerCols}
+          </tr>
+        </thead>
+        <tbody>${bodyRows}</tbody>
+      </table>
+    </div>`;
+
+  document.getElementById('panel-matrix').innerHTML = legend + table;
+  attachMatrixListeners();
+}
+
+function attachMatrixListeners() {
+  const tbody = document.querySelector('table.matrix tbody');
+  if (!tbody) return;
+
+  // Row hover highlighting
+  tbody.addEventListener('mouseover', e => {
+    const row = e.target.closest('tr');
+    if (!row) return;
+    document.querySelectorAll('table.matrix tbody tr.row-hover').forEach(r => r.classList.remove('row-hover'));
+    row.classList.add('row-hover');
+
+    // Column hover on header
+    const col = e.target.dataset.col;
+    document.querySelectorAll('table.matrix thead th.reg-col').forEach(th => th.classList.remove('col-hover'));
+    if (col !== undefined) {
+      const th = document.querySelector(`table.matrix thead th.reg-col[data-col="${col}"]`);
+      if (th) th.classList.add('col-hover');
+    }
+
+    // Tooltip on filled cells
+    const cell = e.target.closest('td.cell');
+    if (cell && cell.dataset.ttAbbr) {
+      showTooltip(e, {
+        abbr:     cell.dataset.ttAbbr,
+        role:     cell.dataset.ttRole,
+        instName: cell.dataset.ttInst,
+        note:     cell.dataset.ttNote,
+      });
+    } else {
+      hideTooltip();
+    }
+  });
+
+  tbody.addEventListener('mouseleave', () => {
+    document.querySelectorAll('table.matrix tbody tr.row-hover').forEach(r => r.classList.remove('row-hover'));
+    document.querySelectorAll('table.matrix thead th.reg-col').forEach(th => th.classList.remove('col-hover'));
+    hideTooltip();
+  });
+
+  // Dot glow on hover row
+  tbody.addEventListener('mouseover', e => {
+    const row = e.target.closest('tr');
+    if (!row) return;
+    row.querySelectorAll('.matrix-dot').forEach(d => {
+      d.style.boxShadow = `0 0 0 3px ${d.style.background}50`;
+    });
+  });
+}
+
+/* ══════════════════════════════════════════════════════ ACTIONS ══ */
+
+function switchTab(tab) {
+  currentTab = tab;
+  currentSearch = '';
+  currentCatFilter = 'all';
+  selectedInstId = null;
+  selectedRegId  = null;
+  closeDrawer();
+
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.tab === tab);
+  });
+  ['institutions','regulators','matrix'].forEach(t => {
+    document.getElementById(`panel-${t}`).style.display = t === tab ? '' : 'none';
+  });
+
+  if (tab === 'institutions') renderInstitutions();
+  else if (tab === 'regulators') renderRegulators();
+  else renderMatrix();
+}
+
+function onSearch(val) {
+  currentSearch = val;
+  if (currentTab === 'institutions') renderInstitutions();
+  else renderRegulators();
+}
+
+function setFilter(cat) {
+  currentCatFilter = cat;
+  if (currentTab === 'institutions') renderInstitutions();
+  else renderRegulators();
+}
+
+function selectInst(id) {
+  if (selectedInstId === id) { closeDrawer(); return; }
+  selectedInstId = id;
+  selectedRegId  = null;
+  const inst = INSTS.find(i => i.id === id);
+  if (!inst) return;
+  openDrawer(instDrawerHTML(inst));
+  // highlight selected card
+  document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+  const card = document.getElementById(`card-inst-${id}`);
+  if (card) {
+    const c = CAT[inst.category] || CAT.state;
+    card.classList.add('selected');
+    card.style.borderColor = c.dot;
+    card.style.boxShadow = `0 0 0 3px ${c.dot}25,0 2px 10px rgba(0,0,0,0.08)`;
+  }
+}
+
+function selectReg(id) {
+  if (selectedRegId === id) { closeDrawer(); return; }
+  selectedRegId  = id;
+  selectedInstId = null;
+  const reg = REGS.find(r => r.id === id);
+  if (!reg) return;
+  openDrawer(regDrawerHTML(reg));
+  document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+  const card = document.getElementById(`card-reg-${id}`);
+  if (card) {
+    const c = CAT[reg.category] || CAT.state;
+    card.classList.add('selected');
+    card.style.borderColor = c.dot;
+    card.style.boxShadow = `0 0 0 3px ${c.dot}25,0 2px 10px rgba(0,0,0,0.08)`;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════ INIT ══ */
+renderInstitutions();
+</script>
+</body>
+</html>
