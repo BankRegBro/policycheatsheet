@@ -261,6 +261,7 @@ img,svg{display:block;max-width:100%}
 
 .plate{
   display:grid;
+  cursor:pointer;
   grid-template-columns:minmax(140px,38%) 1fr;
   gap:clamp(18px,2.5vw,32px);
   padding:clamp(24px,3vw,44px) clamp(24px,3vw,40px) clamp(28px,3.5vw,48px);
@@ -279,6 +280,13 @@ img,svg{display:block;max-width:100%}
 .plate:nth-child(4){animation-delay:.26s}
 .plate:nth-child(5){animation-delay:.33s}
 @keyframes reveal{to{opacity:1;transform:translateY(0)}}
+
+.plate:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:-2px;
+}
+.plate:focus-visible .plate-title{color:var(--accent-deep)}
+
 
 @media(max-width:520px){
   .plate{grid-template-columns:1fr;gap:14px}
@@ -474,7 +482,7 @@ img,svg{display:block;max-width:100%}
   <div class="masthead-sub">
     <p>A working catalogue of U.S. financial services regulation — <em>guidance, rule text, and legislation read from the primary source, with conclusions front-loaded.</em></p>
     <div class="masthead-meta">
-      <div><b>13</b> plates &middot; <b>3</b> sections</div>
+      <div><b>14</b> plates &middot; <b>3</b> sections</div>
       <div>Federal banking · State coordination</div>
       <div>Maintained anonymously</div>
     </div>
@@ -512,7 +520,7 @@ img,svg{display:block;max-width:100%}
   <div class="plates">
 
     <!-- 01 Model Risk Management 2026 -->
-    <article class="plate">
+    <a class="plate" href="model-risk-management-2026.html" aria-label="Plate 01: Model Risk Management 2026">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- nested validation layers -->
@@ -530,12 +538,12 @@ img,svg{display:block;max-width:100%}
         <h3 class="plate-title">Model Risk Management <em>2026</em></h3>
         <p class="plate-desc">A side-by-side reading of <strong>FIL-15-2026</strong> against <strong>SR 11-7</strong>, mapping where the federal agencies' new model risk guidance retains, sharpens, or quietly narrows the 2011 baseline.</p>
         <div class="plate-tags"><span>FIL-15-2026</span><span>SR 11-7</span><span>12 CFR Pt. 30</span></div>
-        <a class="plate-link" href="model-risk-management-2026.html"><span>View plate</span><span class="arrow">→</span></a>
+        <span class="plate-link"><span>View plate</span><span class="arrow">→</span></span>
       </div>
-    </article>
+    </a>
 
     <!-- 02 GENIUS Act Dashboard -->
-    <article class="plate">
+    <a class="plate" href="genius-act-dashboard.html" aria-label="Plate 02: GENIUS Act Dashboard">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- hexagonal stablecoin token -->
@@ -552,14 +560,14 @@ img,svg{display:block;max-width:100%}
       <div class="plate-body">
         <div class="plate-meta"><span class="plate-num">Plate 02</span><span class="plate-section">Rules &amp; Guidance</span></div>
         <h3 class="plate-title">GENIUS Act <em>Dashboard</em></h3>
-        <p class="plate-desc">A working framework for how the GENIUS Act applies to OCC-supervised stablecoin issuers — including the <strong>FDIC CALMA framework</strong>, reserve composition, and statutory tripwires.</p>
-        <div class="plate-tags"><span>GENIUS Act</span><span>FDIC CALMA</span><span>12 USC § 1818</span></div>
-        <a class="plate-link" href="genius-act-dashboard.html"><span>View plate</span><span class="arrow">→</span></a>
+        <p class="plate-desc">A working framework for how the GENIUS Act applies to OCC-supervised stablecoin issuers — permitted issuer pathways, reserve composition, and statutory tripwires.</p>
+        <div class="plate-tags"><span>GENIUS Act</span><span>Payment Stablecoins</span><span>12 USC § 1818</span></div>
+        <span class="plate-link"><span>View plate</span><span class="arrow">→</span></span>
       </div>
-    </article>
+    </a>
 
     <!-- 03 AML/CFT Program Rule Navigator -->
-    <article class="plate">
+    <a class="plate" href="aml-cft-program-rule-navigator.html" aria-label="Plate 03: AML/CFT Program Rule Navigator">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- funnel -->
@@ -578,12 +586,12 @@ img,svg{display:block;max-width:100%}
         <h3 class="plate-title">AML/CFT Program Rule <em>Navigator</em></h3>
         <p class="plate-desc">A clause-anchored walkthrough of the <strong>2026 FinCEN and FDIC AML/CFT Program Rule proposals</strong>, grounded in the rule text itself rather than secondary commentary.</p>
         <div class="plate-tags"><span>31 CFR § 1020.210</span><span>FinCEN NPRM</span><span>FDIC FIL</span></div>
-        <a class="plate-link" href="aml-cft-program-rule-navigator.html"><span>View plate</span><span class="arrow">→</span></a>
+        <span class="plate-link"><span>View plate</span><span class="arrow">→</span></span>
       </div>
-    </article>
+    </a>
 
     <!-- 04 UFIRS / CAMELS 2026 -->
-    <article class="plate">
+    <a class="plate" href="ufirs-camels-2026-change-briefing.html" aria-label="Plate 04: UFIRS CAMELS 2026 Change Briefing">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- hexagonal radar — 6 CAMELS components -->
@@ -607,9 +615,9 @@ img,svg{display:block;max-width:100%}
         <h3 class="plate-title">UFIRS CAMELS 2026 <em>Change Briefing</em></h3>
         <p class="plate-desc">What changed in the Uniform Financial Institutions Rating System in 2026, and how examiner expectations shift in practice across the six CAMELS components.</p>
         <div class="plate-tags"><span>UFIRS</span><span>FFIEC</span><span>FIL-2026</span></div>
-        <a class="plate-link" href="ufirs-camels-2026-change-briefing.html"><span>View plate</span><span class="arrow">→</span></a>
+        <span class="plate-link"><span>View plate</span><span class="arrow">→</span></span>
       </div>
-    </article>
+    </a>
 
   </div>
 </section>
@@ -629,8 +637,40 @@ img,svg{display:block;max-width:100%}
 
   <div class="plates">
 
-    <!-- 05 Bank Merger Reform Scorecard -->
-    <article class="plate">
+    <!-- 05 Executive Order Brief -->
+    <a class="plate" href="eo-brief.html" aria-label="Plate 05: Executive Order Brief">
+      <div class="symbol-frame">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <!-- back document -->
+          <rect x="34" y="14" width="42" height="60" fill="var(--paper)" stroke="currentColor" stroke-width="1.2"/>
+          <!-- front document -->
+          <rect x="22" y="22" width="42" height="60" fill="var(--paper)" stroke="currentColor" stroke-width="1.5"/>
+          <!-- presidential-style seal -->
+          <circle cx="54" cy="34" r="7" fill="none" class="accent-stroke" stroke-width="1.4"/>
+          <circle cx="54" cy="34" r="4" fill="none" class="accent-stroke" stroke-width="0.8"/>
+          <circle cx="54" cy="34" r="1.8" class="accent-fill"/>
+          <!-- header rule under seal -->
+          <line x1="26" y1="48" x2="60" y2="48" stroke="currentColor" stroke-width="1.2"/>
+          <!-- content lines -->
+          <line x1="26" y1="56" x2="58" y2="56" stroke="currentColor" stroke-width="0.6"/>
+          <line x1="26" y1="62" x2="54" y2="62" stroke="currentColor" stroke-width="0.6"/>
+          <line x1="26" y1="68" x2="60" y2="68" stroke="currentColor" stroke-width="0.6"/>
+          <!-- signature flourish -->
+          <path d="M 26 76 Q 32 72, 38 76 T 52 74" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+        <span class="plate-stamp">№ 05</span>
+      </div>
+      <div class="plate-body">
+        <div class="plate-meta"><span class="plate-num">Plate 05</span><span class="plate-section">Reform Trackers</span></div>
+        <h3 class="plate-title">Executive Order <em>Brief</em></h3>
+        <p class="plate-desc">A clause-anchored reading of <strong>two recent White House executive orders</strong> shaping financial services policy — what each order directs, the agencies tasked with implementation, and the regulatory cascade downstream.</p>
+        <div class="plate-tags"><span>Executive Action</span><span>Federal Register</span><span>Agency Implementation</span></div>
+        <span class="plate-link"><span>View plate</span><span class="arrow">→</span></span>
+      </div>
+    </a>
+
+    <!-- 06 Bank Merger Reform Scorecard -->
+    <a class="plate" href="bank-merger-reform-scorecard.html" aria-label="Plate 06: Bank Merger Reform Scorecard">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- two merging circles -->
@@ -641,19 +681,19 @@ img,svg{display:block;max-width:100%}
           <!-- scorecard tick -->
           <path d="M 42 50 L 48 56 L 58 44" fill="none" stroke="var(--paper)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        <span class="plate-stamp">№ 05</span>
+        <span class="plate-stamp">№ 06</span>
       </div>
       <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Plate 05</span><span class="plate-section">Reform Trackers</span></div>
+        <div class="plate-meta"><span class="plate-num">Plate 06</span><span class="plate-section">Reform Trackers</span></div>
         <h3 class="plate-title">Bank Merger Reform <em>Scorecard</em></h3>
         <p class="plate-desc">A live scorecard of pending bank M&amp;A reform across the FDIC, OCC, and Federal Reserve — tracking <strong>OCC threshold alignment</strong>, HHI modernization, and rural de minimis treatment.</p>
         <div class="plate-tags"><span>12 CFR § 5.33</span><span>HHI</span><span>FDIC Statement</span></div>
-        <a class="plate-link" href="bank-merger-reform-scorecard.html"><span>View plate</span><span class="arrow">→</span></a>
+        <span class="plate-link"><span>View plate</span><span class="arrow">→</span></span>
       </div>
-    </article>
+    </a>
 
-    <!-- 06 Gould OCC Policy Tracker -->
-    <article class="plate">
+    <!-- 07 Gould OCC Policy Tracker -->
+    <a class="plate" href="gould-occ-policy-tracker.html" aria-label="Plate 07: Gould OCC Policy Tracker">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- trajectory arrow with milestones -->
@@ -666,19 +706,19 @@ img,svg{display:block;max-width:100%}
           <path d="M 76 28 L 86 22 L 80 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
           <circle cx="86" cy="22" r="4" class="accent-fill"/>
         </svg>
-        <span class="plate-stamp">№ 06</span>
+        <span class="plate-stamp">№ 07</span>
       </div>
       <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Plate 06</span><span class="plate-section">Reform Trackers</span></div>
+        <div class="plate-meta"><span class="plate-num">Plate 07</span><span class="plate-section">Reform Trackers</span></div>
         <h3 class="plate-title">Gould OCC Policy <em>Tracker</em></h3>
         <p class="plate-desc">A running record of OCC policy moves under <strong>Comptroller Gould</strong> — chartering decisions, preemption posture, supervisory letters, and licensing precedent.</p>
         <div class="plate-tags"><span>OCC Bulletins</span><span>12 CFR Pt. 5</span><span>Licensing</span></div>
-        <a class="plate-link" href="gould-occ-policy-tracker.html"><span>View plate</span><span class="arrow">→</span></a>
+        <span class="plate-link"><span>View plate</span><span class="arrow">→</span></span>
       </div>
-    </article>
+    </a>
 
-    <!-- 07 HR 941 Small Lender Act -->
-    <article class="plate">
+    <!-- 08 HR 941 Small Lender Act -->
+    <a class="plate" href="hr941-small-lender-act.html" aria-label="Plate 08: H.R. 941 Small Lender Act">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- bill / legislation -->
@@ -692,19 +732,19 @@ img,svg{display:block;max-width:100%}
           <path d="M 32 72 Q 38 68, 44 72 T 56 72" fill="none" class="accent-stroke" stroke-width="1.4"/>
           <circle cx="64" cy="74" r="3.5" class="accent-fill"/>
         </svg>
-        <span class="plate-stamp">№ 07</span>
+        <span class="plate-stamp">№ 08</span>
       </div>
       <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Plate 07</span><span class="plate-section">Reform Trackers</span></div>
+        <div class="plate-meta"><span class="plate-num">Plate 08</span><span class="plate-section">Reform Trackers</span></div>
         <h3 class="plate-title">H.R. 941 Small Lender <em>Act</em></h3>
         <p class="plate-desc">A plain-text reading of <strong>H.R. 941</strong> — what it would change, who it covers, and where it sits on the legislative calendar in the House Financial Services Committee.</p>
         <div class="plate-tags"><span>H.R. 941</span><span>HFSC</span><span>Community Banks</span></div>
-        <a class="plate-link" href="hr941-small-lender-act.html"><span>View plate</span><span class="arrow">→</span></a>
+        <span class="plate-link"><span>View plate</span><span class="arrow">→</span></span>
       </div>
-    </article>
+    </a>
 
-    <!-- 08 CSBS Comment Letters -->
-    <article class="plate">
+    <!-- 09 CSBS Comment Letters -->
+    <a class="plate" href="csbs-comment-letters.html" aria-label="Plate 09: CSBS Comment Letters">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- envelope -->
@@ -716,16 +756,16 @@ img,svg{display:block;max-width:100%}
           <circle cx="76" cy="22" r="6" class="accent-fill"/>
           <circle cx="76" cy="22" r="3" fill="none" stroke="var(--paper)" stroke-width="0.8"/>
         </svg>
-        <span class="plate-stamp">№ 08</span>
+        <span class="plate-stamp">№ 09</span>
       </div>
       <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Plate 08</span><span class="plate-section">Reform Trackers</span></div>
+        <div class="plate-meta"><span class="plate-num">Plate 09</span><span class="plate-section">Reform Trackers</span></div>
         <h3 class="plate-title">CSBS Comment <em>Letters</em></h3>
         <p class="plate-desc">A working archive of comment letters and policy positions filed with federal banking agencies, organized by <strong>docket</strong>, recipient, and substantive position.</p>
         <div class="plate-tags"><span>CSBS</span><span>Multi-docket</span><span>State-Federal</span></div>
-        <a class="plate-link" href="csbs-comment-letters.html"><span>View plate</span><span class="arrow">→</span></a>
+        <span class="plate-link"><span>View plate</span><span class="arrow">→</span></span>
       </div>
-    </article>
+    </a>
 
   </div>
 </section>
@@ -745,8 +785,8 @@ img,svg{display:block;max-width:100%}
 
   <div class="plates">
 
-    <!-- 09 History of Banking -->
-    <article class="plate">
+    <!-- 10 History of Banking -->
+    <a class="plate" href="history-of-banking.html" aria-label="Plate 10: History of Banking">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- timeline -->
@@ -762,19 +802,19 @@ img,svg{display:block;max-width:100%}
           <text x="46" y="74" font-family="JetBrains Mono" font-size="6" fill="currentColor" text-anchor="middle" opacity=".5">1864</text>
           <text x="72" y="74" font-family="JetBrains Mono" font-size="6" fill="currentColor" text-anchor="middle" opacity=".85">1933</text>
         </svg>
-        <span class="plate-stamp">№ 09</span>
+        <span class="plate-stamp">№ 10</span>
       </div>
       <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Plate 09</span><span class="plate-section">Structural Frameworks</span></div>
+        <div class="plate-meta"><span class="plate-num">Plate 10</span><span class="plate-section">Structural Frameworks</span></div>
         <h3 class="plate-title">History of <em>Banking</em></h3>
         <p class="plate-desc">A long-arc timeline of U.S. banking structure — from the First Bank of the United States to the dual-charter system as it stands today, with the inflection points called out.</p>
         <div class="plate-tags"><span>Nat'l Bank Act 1864</span><span>Glass-Steagall</span><span>Dodd-Frank</span></div>
-        <a class="plate-link" href="history-of-banking.html"><span>View plate</span><span class="arrow">→</span></a>
+        <span class="plate-link"><span>View plate</span><span class="arrow">→</span></span>
       </div>
-    </article>
+    </a>
 
-    <!-- 10 Fed Supervisory Comp -->
-    <article class="plate">
+    <!-- 11 Fed Supervisory Comp -->
+    <a class="plate" href="fed-supervisory-comp.html" aria-label="Plate 11: Fed Supervisory Comp">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- comparison bars -->
@@ -788,19 +828,19 @@ img,svg{display:block;max-width:100%}
           <text x="49" y="18" font-family="JetBrains Mono" font-size="6" fill="currentColor" opacity=".6" text-anchor="middle">FDIC</text>
           <text x="69" y="18" font-family="JetBrains Mono" font-size="6" fill="currentColor" opacity=".6" text-anchor="middle">OCC</text>
         </svg>
-        <span class="plate-stamp">№ 10</span>
+        <span class="plate-stamp">№ 11</span>
       </div>
       <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Plate 10</span><span class="plate-section">Structural Frameworks</span></div>
+        <div class="plate-meta"><span class="plate-num">Plate 11</span><span class="plate-section">Structural Frameworks</span></div>
         <h3 class="plate-title">Fed Supervisory <em>Comp</em></h3>
         <p class="plate-desc">A direct comparison of <strong>Federal Reserve supervisory practice</strong> against the FDIC and OCC — examination cadence, capital review, and merger jurisdiction.</p>
         <div class="plate-tags"><span>FRA § 11</span><span>12 USC § 1818</span><span>BHCA</span></div>
-        <a class="plate-link" href="fed-supervisory-comp.html"><span>View plate</span><span class="arrow">→</span></a>
+        <span class="plate-link"><span>View plate</span><span class="arrow">→</span></span>
       </div>
-    </article>
+    </a>
 
-    <!-- 11 US Trust Company Regulatory Framework -->
-    <article class="plate">
+    <!-- 12 US Trust Company Regulatory Framework -->
+    <a class="plate" href="us-trust-company-regulatory-framework.html" aria-label="Plate 12: U.S. Trust Company Regulatory Framework">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- vault / keyhole -->
@@ -815,19 +855,19 @@ img,svg{display:block;max-width:100%}
           <circle cx="26" cy="74" r="1.5" fill="currentColor"/>
           <circle cx="74" cy="74" r="1.5" fill="currentColor"/>
         </svg>
-        <span class="plate-stamp">№ 11</span>
+        <span class="plate-stamp">№ 12</span>
       </div>
       <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Plate 11</span><span class="plate-section">Structural Frameworks</span></div>
+        <div class="plate-meta"><span class="plate-num">Plate 12</span><span class="plate-section">Structural Frameworks</span></div>
         <h3 class="plate-title">U.S. Trust Company <em>Regulatory Framework</em></h3>
         <p class="plate-desc">How state-chartered and OCC-chartered trust companies are supervised, including the <strong>CSBS Nationwide Cooperative Agreement</strong>, MTL exposure, and federal preemption posture.</p>
         <div class="plate-tags"><span>12 CFR Pt. 9</span><span>CSBS NCA</span><span>State Law</span></div>
-        <a class="plate-link" href="us-trust-company-regulatory-framework.html"><span>View plate</span><span class="arrow">→</span></a>
+        <span class="plate-link"><span>View plate</span><span class="arrow">→</span></span>
       </div>
-    </article>
+    </a>
 
-    <!-- 12 OCC Preemption Timeline -->
-    <article class="plate">
+    <!-- 13 OCC Preemption Timeline -->
+    <a class="plate" href="occ-preemption-timeline.html" aria-label="Plate 13: OCC Preemption Timeline">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- stacked layers, accent extending -->
@@ -841,19 +881,19 @@ img,svg{display:block;max-width:100%}
           <!-- pin on the accent line -->
           <circle cx="88" cy="56" r="3" class="accent-fill"/>
         </svg>
-        <span class="plate-stamp">№ 12</span>
+        <span class="plate-stamp">№ 13</span>
       </div>
       <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Plate 12</span><span class="plate-section">Structural Frameworks</span></div>
+        <div class="plate-meta"><span class="plate-num">Plate 13</span><span class="plate-section">Structural Frameworks</span></div>
         <h3 class="plate-title">OCC Preemption <em>Timeline</em></h3>
         <p class="plate-desc">A timeline of OCC preemption authority — statute, regulation, and litigation — through the Dodd-Frank standard at <strong>12 USC § 25b</strong> and the recent reassertions.</p>
         <div class="plate-tags"><span>12 USC § 25b</span><span>Cuomo v. Clearing House</span><span>Cantero</span></div>
-        <a class="plate-link" href="occ-preemption-timeline.html"><span>View plate</span><span class="arrow">→</span></a>
+        <span class="plate-link"><span>View plate</span><span class="arrow">→</span></span>
       </div>
-    </article>
+    </a>
 
-    <!-- 13 Regulatory Map -->
-    <article class="plate">
+    <!-- 14 Regulatory Map -->
+    <a class="plate" href="regulatory-map.html" aria-label="Plate 14: Regulatory Map">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- compass rose -->
@@ -872,16 +912,16 @@ img,svg{display:block;max-width:100%}
           <!-- N label -->
           <text x="50" y="14" font-family="JetBrains Mono" font-size="7" fill="currentColor" text-anchor="middle">N</text>
         </svg>
-        <span class="plate-stamp">№ 13</span>
+        <span class="plate-stamp">№ 14</span>
       </div>
       <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Plate 13</span><span class="plate-section">Structural Frameworks</span></div>
+        <div class="plate-meta"><span class="plate-num">Plate 14</span><span class="plate-section">Structural Frameworks</span></div>
         <h3 class="plate-title">Regulatory <em>Map</em></h3>
         <p class="plate-desc">A working map of the federal–state supervisory architecture: <strong>who charters, who examines, who enforces</strong>, and where authority overlaps across the dual banking system.</p>
         <div class="plate-tags"><span>FDIC</span><span>OCC</span><span>FRB</span><span>CSBS</span></div>
-        <a class="plate-link" href="regulatory-map.html"><span>View plate</span><span class="arrow">→</span></a>
+        <span class="plate-link"><span>View plate</span><span class="arrow">→</span></span>
       </div>
-    </article>
+    </a>
 
   </div>
 </section>
@@ -899,7 +939,7 @@ img,svg{display:block;max-width:100%}
 </footer>
 
 <div class="print-strip">
-  <span>End of Catalogue &middot; <span class="acc">Plates 01 — 13</span></span>
+  <span>End of Catalogue &middot; <span class="acc">Plates 01 — 14</span></span>
   <span>U.S. Financial Services Regulation</span>
   <span>Set in Fraunces, Archivo &amp; JetBrains Mono</span>
 </div>
