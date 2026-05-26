@@ -183,6 +183,212 @@ img,svg{display:block;max-width:100%}
 .colophon-nav a:hover{color:var(--accent)}
 .colophon-nav a::before{content:"§ ";color:var(--accent)}
 
+
+/* ============================================================
+   FEATURED / PROOF OF CONCEPT
+   ============================================================ */
+.featured{
+  background:var(--ink);
+  color:var(--paper);
+  padding:clamp(40px,6vw,80px) clamp(22px,5vw,80px);
+  border-bottom:2px solid var(--ink);
+  position:relative;
+  overflow:hidden;
+}
+.featured::before{
+  /* subtle scanline noise to suggest "data-in-motion" */
+  content:"";
+  position:absolute;inset:0;
+  background-image:repeating-linear-gradient(
+    0deg,
+    rgba(241,237,226,.015) 0px,
+    rgba(241,237,226,.015) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  pointer-events:none;
+}
+.featured-eyebrow{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:14px;
+  margin-bottom:clamp(28px,4vw,48px);
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  color:rgba(241,237,226,.6);
+  position:relative;z-index:2;
+}
+.featured-eyebrow .stamp{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1.5px dashed var(--accent);
+  color:var(--accent);
+  padding:6px 12px;
+  letter-spacing:.28em;
+  font-weight:600;
+  transform:rotate(-1.2deg);
+  background:rgba(122,31,43,.06);
+}
+.featured-eyebrow .stamp::before{
+  content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 0 3px rgba(122,31,43,.25);
+  animation:pulse 2.4s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%,100%{box-shadow:0 0 0 3px rgba(122,31,43,.25)}
+  50%{box-shadow:0 0 0 6px rgba(122,31,43,0)}
+}
+.featured-card{
+  display:grid;
+  grid-template-columns:minmax(180px,32%) 1fr;
+  gap:clamp(28px,5vw,72px);
+  align-items:stretch;
+  border:1.5px dashed rgba(241,237,226,.3);
+  padding:clamp(28px,4vw,48px);
+  background:rgba(241,237,226,.02);
+  position:relative;z-index:2;
+  cursor:pointer;
+  transition:background .3s ease, border-color .3s ease;
+  color:inherit;
+}
+.featured-card:hover{
+  background:rgba(122,31,43,.08);
+  border-color:var(--accent);
+}
+.featured-card:hover .featured-frame{border-color:var(--accent)}
+.featured-card:hover .featured-frame .acc-stroke{stroke:var(--accent)}
+.featured-card:hover .featured-frame .acc-fill{fill:var(--accent)}
+.featured-card:hover .featured-title{color:var(--accent)}
+.featured-card:hover .featured-cta .arrow{transform:translateX(8px)}
+.featured-card:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:4px;
+}
+@media(max-width:760px){
+  .featured-card{grid-template-columns:1fr;gap:24px}
+}
+.featured-frame{
+  aspect-ratio:1.2/1;
+  border:1px dashed rgba(241,237,226,.4);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+  background:rgba(241,237,226,.015);
+  transition:border-color .3s ease;
+}
+.featured-frame svg{
+  width:90%;height:80%;
+  color:var(--paper);
+}
+.featured-frame .acc-stroke{stroke:var(--paper);transition:stroke .3s ease}
+.featured-frame .acc-fill{fill:var(--paper);transition:fill .3s ease}
+.featured-frame .corner-tag{
+  position:absolute;top:-1px;right:-1px;
+  background:var(--accent);
+  color:var(--paper);
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  letter-spacing:.2em;
+  padding:4px 9px;
+  text-transform:uppercase;
+}
+.featured-body{
+  display:flex;flex-direction:column;
+}
+.featured-kicker{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:rgba(241,237,226,.55);
+  margin-bottom:14px;
+  display:flex;align-items:center;gap:14px;
+}
+.featured-kicker::after{
+  content:"";flex:1;height:1px;
+  background:linear-gradient(to right, rgba(241,237,226,.4), transparent);
+  max-width:140px;
+}
+.featured-title{
+  font-family:'Fraunces',serif;
+  font-weight:300;
+  font-size:clamp(34px,5.4vw,68px);
+  line-height:.95;
+  letter-spacing:-.02em;
+  margin-bottom:18px;
+  transition:color .3s ease;
+}
+.featured-title em{font-style:italic;font-weight:400;color:var(--accent)}
+.featured-desc{
+  font-family:'Fraunces',serif;
+  font-size:clamp(15px,1.5vw,18px);
+  line-height:1.6;
+  color:rgba(241,237,226,.78);
+  max-width:60ch;
+  margin-bottom:22px;
+  font-style:italic;
+}
+.featured-desc strong{font-style:normal;color:var(--paper);font-weight:500}
+.featured-sources{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:0;
+  margin-bottom:24px;
+  border-top:1px solid rgba(241,237,226,.18);
+}
+.featured-sources .src{
+  padding:14px 0;
+  border-bottom:1px solid rgba(241,237,226,.12);
+  padding-right:18px;
+}
+.featured-sources .src + .src{padding-left:18px;border-left:1px solid rgba(241,237,226,.12)}
+@media(max-width:560px){
+  .featured-sources .src + .src{padding-left:0;border-left:none}
+}
+.featured-sources .src-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:6px;
+  display:flex;align-items:center;gap:8px;
+}
+.featured-sources .src-label::before{
+  content:"";width:4px;height:4px;background:var(--accent);
+  display:inline-block;
+}
+.featured-sources .src-name{
+  font-family:'Archivo',sans-serif;
+  font-size:13px;
+  color:var(--paper);
+  font-weight:500;
+}
+.featured-cta{
+  display:inline-flex;align-items:center;gap:12px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--paper);
+  padding:14px 18px;
+  border:1px solid var(--paper);
+  align-self:flex-start;
+  margin-top:auto;
+  transition:background .25s ease, color .25s ease;
+}
+.featured-card:hover .featured-cta{
+  background:var(--accent);
+  border-color:var(--accent);
+}
+.featured-cta .arrow{
+  display:inline-block;
+  transition:transform .25s ease;
+  font-size:14px;
+}
+
 /* ============================================================
    SECTIONS
    ============================================================ */
@@ -482,7 +688,7 @@ img,svg{display:block;max-width:100%}
   <div class="masthead-sub">
     <p>A working catalogue of U.S. financial services regulation — <em>guidance, rule text, and legislation read from the primary source, with conclusions front-loaded.</em></p>
     <div class="masthead-meta">
-      <div><b>14</b> plates &middot; <b>3</b> sections</div>
+      <div><b>14</b> plates &middot; <b>1</b> lookahead &middot; <b>3</b> sections</div>
       <div>Federal banking · State coordination</div>
       <div>Maintained anonymously</div>
     </div>
@@ -502,6 +708,89 @@ img,svg{display:block;max-width:100%}
     <a href="#section-ii">Reform Trackers</a>
     <a href="#section-iii">Structural Frameworks</a>
   </nav>
+</section>
+
+
+<!-- ============================================================
+     FEATURED / PROOF OF CONCEPT
+     ============================================================ -->
+<section class="featured" id="featured">
+  <div class="featured-eyebrow">
+    <span>Lookahead &middot; Experimental</span>
+    <span class="stamp">Proof of Concept</span>
+    <span>One item, outside the catalogue numbering</span>
+  </div>
+
+  <a class="featured-card" href="rulemaking-calendar.html" aria-label="A Policy Lookahead: experimental rulemaking calendar">
+    <div class="featured-frame">
+      <svg viewBox="0 0 200 140" aria-hidden="true">
+        <!-- 4 input streams on the left, converging to a midpoint -->
+        <line x1="14" y1="34" x2="92" y2="68" stroke="currentColor" stroke-width="1.4" opacity=".55"/>
+        <line x1="14" y1="56" x2="92" y2="68" stroke="currentColor" stroke-width="1.4" opacity=".75"/>
+        <line x1="14" y1="80" x2="92" y2="68" stroke="currentColor" stroke-width="1.4" opacity=".75"/>
+        <line x1="14" y1="102" x2="92" y2="68" stroke="currentColor" stroke-width="1.4" opacity=".55"/>
+
+        <!-- input labels (small dots) -->
+        <circle cx="14" cy="34" r="2.2" class="acc-fill"/>
+        <circle cx="14" cy="56" r="2.2" class="acc-fill"/>
+        <circle cx="14" cy="80" r="2.2" class="acc-fill"/>
+        <circle cx="14" cy="102" r="2.2" class="acc-fill"/>
+
+        <!-- convergence node -->
+        <circle cx="92" cy="68" r="6" fill="none" class="acc-stroke" stroke-width="1.6"/>
+        <circle cx="92" cy="68" r="2.4" class="acc-fill"/>
+
+        <!-- forward trajectory: solid segment then dashed forecast -->
+        <line x1="98" y1="68" x2="128" y2="68" class="acc-stroke" stroke-width="2"/>
+        <line x1="132" y1="68" x2="178" y2="68" class="acc-stroke" stroke-width="2" stroke-dasharray="3 4" opacity=".75"/>
+
+        <!-- arrowhead -->
+        <path d="M 178 68 L 170 63 L 172 68 L 170 73 Z" class="acc-fill"/>
+
+        <!-- time-tick projections along forecast -->
+        <line x1="140" y1="60" x2="140" y2="76" stroke="currentColor" stroke-width="0.7" opacity=".4"/>
+        <line x1="156" y1="60" x2="156" y2="76" stroke="currentColor" stroke-width="0.7" opacity=".4"/>
+        <line x1="172" y1="60" x2="172" y2="76" stroke="currentColor" stroke-width="0.7" opacity=".4"/>
+
+        <!-- horizon baseline -->
+        <line x1="14" y1="124" x2="186" y2="124" stroke="currentColor" stroke-width="0.6" stroke-dasharray="1 3" opacity=".3"/>
+        <text x="14" y="136" font-family="JetBrains Mono" font-size="6" fill="currentColor" opacity=".5" letter-spacing="2">NOW</text>
+        <text x="178" y="136" font-family="JetBrains Mono" font-size="6" fill="currentColor" opacity=".5" letter-spacing="2" text-anchor="end">FORECAST</text>
+      </svg>
+    </div>
+
+    <div class="featured-body">
+      <div class="featured-kicker">Featured &middot; Not yet a plate</div>
+      <h3 class="featured-title">A Policy <em>Lookahead</em></h3>
+      <p class="featured-desc">
+        An experimental rulemaking calendar that triangulates <strong>what is coming</strong> from agency principals' on-the-record comments, the <strong>Federal Register</strong>, <strong>OIRA's pending review queue</strong>, and each agency's <strong>Unified Spring Agenda</strong> — and produces a working guesstimate of timing and posture for the next two quarters.
+      </p>
+
+      <div class="featured-sources">
+        <div class="src">
+          <div class="src-label">Source 01</div>
+          <div class="src-name">Principal Remarks</div>
+        </div>
+        <div class="src">
+          <div class="src-label">Source 02</div>
+          <div class="src-name">Federal Register</div>
+        </div>
+        <div class="src">
+          <div class="src-label">Source 03</div>
+          <div class="src-name">OIRA Review Queue</div>
+        </div>
+        <div class="src">
+          <div class="src-label">Source 04</div>
+          <div class="src-name">Unified Spring Agenda</div>
+        </div>
+      </div>
+
+      <span class="featured-cta">
+        <span>Open the lookahead</span>
+        <span class="arrow">→</span>
+      </span>
+    </div>
+  </a>
 </section>
 
 <!-- ============================================================
@@ -939,7 +1228,7 @@ img,svg{display:block;max-width:100%}
 </footer>
 
 <div class="print-strip">
-  <span>End of Catalogue &middot; <span class="acc">Plates 01 — 14</span></span>
+  <span>End of Catalogue &middot; <span class="acc">Plates 01 — 14 &middot; Lookahead</span></span>
   <span>U.S. Financial Services Regulation</span>
   <span>Set in Fraunces, Archivo &amp; JetBrains Mono</span>
 </div>
