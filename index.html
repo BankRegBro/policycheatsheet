@@ -185,6 +185,155 @@ img,svg{display:block;max-width:100%}
 
 
 /* ============================================================
+   SEARCH BAR
+   ============================================================ */
+.search-bar{
+  background:var(--paper-2);
+  border-bottom:1px solid var(--line-mid);
+  padding:clamp(24px,3.5vw,44px) clamp(22px,5vw,80px);
+}
+.search-inner{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  gap:clamp(24px,4vw,56px);
+  align-items:end;
+}
+@media(max-width:760px){
+  .search-inner{grid-template-columns:1fr;gap:14px}
+}
+.search-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  color:var(--accent);
+  padding-bottom:14px;
+  white-space:nowrap;
+  cursor:pointer;
+  line-height:1.5;
+}
+.search-input-wrap{position:relative;width:100%}
+.search-input{
+  width:100%;
+  background:transparent;
+  border:none;
+  border-bottom:1px solid var(--line-mid);
+  font-family:'Fraunces',serif;
+  font-size:clamp(18px,2.2vw,24px);
+  font-style:italic;
+  font-weight:300;
+  color:var(--ink);
+  padding:8px 76px 12px 0;
+  outline:none;
+  letter-spacing:-.01em;
+  transition:border-color .25s ease;
+  border-radius:0;
+  -webkit-appearance:none;
+  appearance:none;
+}
+.search-input::placeholder{
+  color:var(--muted);
+  font-style:italic;
+  opacity:.65;
+}
+.search-input:focus{
+  border-bottom-color:var(--accent);
+}
+.search-input::-webkit-search-cancel-button,
+.search-input::-webkit-search-decoration{display:none;-webkit-appearance:none}
+.search-kbd{
+  position:absolute;
+  right:30px;
+  bottom:14px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  color:var(--muted);
+  border:1px solid var(--line-mid);
+  background:var(--paper);
+  padding:2px 7px;
+  border-radius:3px;
+  pointer-events:none;
+  transition:opacity .2s ease;
+  letter-spacing:.05em;
+}
+.search-input:focus ~ .search-kbd,
+body.has-search .search-kbd{opacity:0}
+.search-clear{
+  position:absolute;
+  right:0;
+  bottom:10px;
+  background:none;
+  border:none;
+  cursor:pointer;
+  font-family:'Fraunces',serif;
+  font-size:22px;
+  color:var(--ink-soft);
+  padding:0 6px;
+  line-height:1;
+  opacity:0;
+  transition:opacity .2s ease, color .15s ease;
+  pointer-events:none;
+}
+.search-clear:hover{color:var(--accent)}
+body.has-search .search-clear{opacity:1;pointer-events:auto}
+.search-count{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+  padding-bottom:14px;
+  white-space:nowrap;
+}
+.search-count b{
+  color:var(--accent);
+  font-weight:500;
+  font-family:'JetBrains Mono',monospace;
+}
+@media(max-width:760px){
+  .search-label{padding-bottom:0}
+  .search-count{padding-bottom:0;padding-top:4px}
+}
+
+/* Filtered state */
+.plate--hidden{display:none !important}
+.section--empty{display:none !important}
+
+/* No-results message */
+.search-empty{
+  display:none;
+  padding:clamp(56px,8vw,112px) clamp(22px,5vw,80px);
+  text-align:center;
+  background:var(--paper);
+  border-bottom:1px solid var(--line-mid);
+}
+body.no-results .search-empty{display:block}
+body.no-results .section{display:none}
+.search-empty .msg{
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  font-weight:300;
+  font-size:clamp(22px,3vw,34px);
+  color:var(--ink-soft);
+  margin-bottom:24px;
+  letter-spacing:-.01em;
+}
+.search-empty .msg em{color:var(--accent);font-style:normal;font-weight:400}
+.search-empty .clear-cta{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  background:var(--ink);
+  color:var(--paper);
+  border:none;
+  padding:14px 22px;
+  cursor:pointer;
+  transition:background .2s ease;
+}
+.search-empty .clear-cta:hover{background:var(--accent)}
+
+/* ============================================================
    FEATURED / PROOF OF CONCEPT
    ============================================================ */
 .featured{
@@ -793,6 +942,29 @@ img,svg{display:block;max-width:100%}
   </a>
 </section>
 
+
+<!-- ============================================================
+     SEARCH
+     ============================================================ -->
+<section class="search-bar" id="search">
+  <div class="search-inner">
+    <label class="search-label" for="catalogue-search">Search the<br>Catalogue</label>
+    <div class="search-input-wrap">
+      <input id="catalogue-search" type="search" class="search-input"
+             placeholder="Try GENIUS, OCC, FIL-15, preemption&hellip;"
+             autocomplete="off" spellcheck="false" aria-label="Search the catalogue">
+      <kbd class="search-kbd">/</kbd>
+      <button type="button" class="search-clear" aria-label="Clear search">&times;</button>
+    </div>
+    <div class="search-count"><b id="search-visible">15</b> &nbsp;/&nbsp; 15 plates</div>
+  </div>
+</section>
+
+<section class="search-empty" aria-live="polite">
+  <p class="msg">No plates match. Try a <em>broader</em> term.</p>
+  <button type="button" class="clear-cta">Clear search</button>
+</section>
+
 <!-- ============================================================
      SECTION I — RULES & GUIDANCE
      ============================================================ -->
@@ -1267,6 +1439,74 @@ img,svg{display:block;max-width:100%}
 </div>
 
 <script>
+
+// ============================================================
+// SEARCH / FILTER
+// ============================================================
+(function(){
+  const input = document.getElementById('catalogue-search');
+  const countEl = document.getElementById('search-visible');
+  const clearBtn = document.querySelector('.search-clear');
+  const emptyClearBtn = document.querySelector('.search-empty .clear-cta');
+  const plates = Array.from(document.querySelectorAll('.section .plate'));
+  const sections = Array.from(document.querySelectorAll('section.section'));
+
+  if (!input || plates.length === 0) return;
+
+  // Pre-index searchable text per plate
+  const norm = s => s.toLowerCase().replace(/\s+/g, ' ').trim();
+  const index = plates.map(p => norm(p.textContent));
+
+  function run(){
+    const q = norm(input.value);
+    const terms = q ? q.split(' ').filter(Boolean) : [];
+    let visible = 0;
+
+    plates.forEach((plate, i) => {
+      const match = terms.length === 0 || terms.every(t => index[i].includes(t));
+      plate.classList.toggle('plate--hidden', !match);
+      if (match) visible++;
+    });
+
+    sections.forEach(s => {
+      const all = s.querySelectorAll('.plate');
+      const hidden = s.querySelectorAll('.plate.plate--hidden');
+      s.classList.toggle('section--empty', all.length > 0 && all.length === hidden.length);
+    });
+
+    countEl.textContent = visible;
+    document.body.classList.toggle('has-search', terms.length > 0);
+    document.body.classList.toggle('no-results', visible === 0 && terms.length > 0);
+  }
+
+  function clear(refocus){
+    input.value = '';
+    run();
+    if (refocus) input.focus();
+  }
+
+  input.addEventListener('input', run);
+  clearBtn.addEventListener('click', () => clear(true));
+  emptyClearBtn.addEventListener('click', () => clear(true));
+
+  // Global keyboard shortcuts
+  document.addEventListener('keydown', (e) => {
+    const tag = e.target.tagName;
+    const editable = e.target.isContentEditable;
+    if (e.key === '/' && tag !== 'INPUT' && tag !== 'TEXTAREA' && !editable) {
+      e.preventDefault();
+      input.focus();
+      input.select();
+    } else if (e.key === 'Escape' && document.activeElement === input) {
+      if (input.value) {
+        clear(true);
+      } else {
+        input.blur();
+      }
+    }
+  });
+})();
+
 // Re-trigger reveal animations per section when entering viewport
 const io = new IntersectionObserver((entries)=>{
   entries.forEach(e=>{
