@@ -929,13 +929,32 @@
     justify-content: center;
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.6rem;
-    font-weight: 500;
+    font-weight: 600;
     color: var(--ink);
     cursor: pointer;
     transition: all 0.15s;
     aspect-ratio: 1;
     position: relative;
     user-select: none;
+  }
+
+  /* States split across two Fed districts: diagonal-split tiles get a light label with shadow for legibility */
+  .state.split {
+    color: #f5ecd6;
+    text-shadow: 0 1px 2px rgba(10,20,40,0.7), 0 0 3px rgba(10,20,40,0.5);
+  }
+
+  .state.split::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 5px 5px 0;
+    border-color: transparent rgba(245,236,214,0.6) transparent transparent;
+    pointer-events: none;
   }
 
   .state:hover {
@@ -1304,18 +1323,19 @@
       <div class="section-num">§ IV</div>
       <h2 class="section-title">Geography</h2>
       <div class="section-rule"><span>◆</span></div>
-      <p class="section-tagline">Two regional architectures: twelve Federal Reserve districts and eleven Federal Home Loan Bank districts. Hover any state to see its placements.</p>
+      <p class="section-tagline">Three regional architectures: twelve Federal Reserve districts, eleven Federal Home Loan Bank districts, and six FDIC supervisory regions. Hover any state to see all three placements.</p>
     </div>
 
     <div class="map-controls">
       <button class="map-toggle active" data-map="fed">Federal Reserve Districts</button>
       <button class="map-toggle" data-map="fhlb">Federal Home Loan Bank Districts</button>
+      <button class="map-toggle" data-map="fdic">FDIC Supervisory Regions</button>
     </div>
 
     <div class="map-wrapper">
       <div class="cartogram">
         <div class="cartogram-grid" id="cartogram"></div>
-        <p style="text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; letter-spacing: 0.15em; color: var(--text-faint); margin-top: 1rem; text-transform: uppercase;">Tile cartogram — each state shown at equal weight, colored by its primary district</p>
+        <p style="text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; letter-spacing: 0.15em; color: var(--text-faint); margin-top: 1rem; text-transform: uppercase;" id="cartogram-caption">Tile cartogram — diagonally split tiles mark states divided between two Federal Reserve districts</p>
       </div>
       <div class="map-legend">
         <div class="legend-title" id="legend-title">12 Federal Reserve Districts</div>
@@ -1527,60 +1547,74 @@ const fhlbDistricts = {
   '11': { num: '11', city: 'San Francisco', color: '#5a2d57', states: 'AZ, CA, NV' }
 };
 
-// State cartogram positions [col, row] in a 13x9 grid, with Fed and FHLB district assignments
+// FDIC supervisory regions — CURRENT 6-region structure (as of 2026).
+// Note: consolidated from the 8-region 1998 layout — Boston folded into New York;
+// Memphis split between Dallas (AR, LA, MS, TN) and Chicago (KY).
+const fdicRegions = {
+  'ny':  { key: 'ny',  city: 'New York', color: '#2c5b8a', states: 'CT, DE, DC, ME, MD, MA, NH, NJ, NY, PA, PR, RI, VT, VI' },
+  'atl': { key: 'atl', city: 'Atlanta', color: '#a85050', states: 'AL, FL, GA, NC, SC, VA, WV' },
+  'chi': { key: 'chi', city: 'Chicago', color: '#2d5a3d', states: 'IL, IN, KY, MI, OH, WI' },
+  'kc':  { key: 'kc',  city: 'Kansas City', color: '#4a7a52', states: 'IA, KS, MN, MO, NE, ND, SD' },
+  'dal': { key: 'dal', city: 'Dallas', color: '#a06a1a', states: 'AR, CO, LA, MS, NM, OK, TN, TX' },
+  'sf':  { key: 'sf',  city: 'San Francisco', color: '#5a2d57', states: 'AK, AZ, CA, GU, HI, ID, MT, NV, OR, UT, WA, WY' }
+};
+
+// State cartogram positions [col, row] in a 13x9 grid.
+// fed = array of Federal Reserve districts (2 entries = state split between districts, primary first).
+// fhlb = single FHLB district. fdic = single FDIC supervisory region.
 const states = {
-  'AK': { col: 0, row: 7, fed: '12', fhlb: '8', name: 'Alaska' },
-  'HI': { col: 1, row: 8, fed: '12', fhlb: '8', name: 'Hawaii' },
-  'WA': { col: 1, row: 2, fed: '12', fhlb: '8', name: 'Washington' },
-  'OR': { col: 1, row: 3, fed: '12', fhlb: '8', name: 'Oregon' },
-  'CA': { col: 1, row: 4, fed: '12', fhlb: '11', name: 'California' },
-  'ID': { col: 2, row: 2, fed: '12', fhlb: '8', name: 'Idaho' },
-  'NV': { col: 2, row: 3, fed: '12', fhlb: '11', name: 'Nevada' },
-  'UT': { col: 2, row: 4, fed: '12', fhlb: '8', name: 'Utah' },
-  'AZ': { col: 2, row: 5, fed: '12', fhlb: '11', name: 'Arizona' },
-  'MT': { col: 3, row: 2, fed: '9', fhlb: '8', name: 'Montana' },
-  'WY': { col: 3, row: 3, fed: '10', fhlb: '8', name: 'Wyoming' },
-  'CO': { col: 3, row: 4, fed: '10', fhlb: '10', name: 'Colorado' },
-  'NM': { col: 3, row: 5, fed: '11', fhlb: '9', name: 'New Mexico' },
-  'ND': { col: 4, row: 2, fed: '9', fhlb: '8', name: 'North Dakota' },
-  'SD': { col: 4, row: 3, fed: '9', fhlb: '8', name: 'South Dakota' },
-  'NE': { col: 4, row: 4, fed: '10', fhlb: '10', name: 'Nebraska' },
-  'OK': { col: 4, row: 5, fed: '10', fhlb: '10', name: 'Oklahoma' },
-  'TX': { col: 4, row: 6, fed: '11', fhlb: '9', name: 'Texas' },
-  'MN': { col: 5, row: 2, fed: '9', fhlb: '8', name: 'Minnesota' },
-  'IA': { col: 5, row: 3, fed: '7', fhlb: '8', name: 'Iowa' },
-  'KS': { col: 5, row: 4, fed: '10', fhlb: '10', name: 'Kansas' },
-  'AR': { col: 5, row: 5, fed: '8', fhlb: '9', name: 'Arkansas' },
-  'LA': { col: 5, row: 6, fed: '11', fhlb: '9', name: 'Louisiana' },
-  'WI': { col: 6, row: 2, fed: '7', fhlb: '7', name: 'Wisconsin' },
-  'IL': { col: 6, row: 3, fed: '7', fhlb: '7', name: 'Illinois' },
-  'MO': { col: 6, row: 4, fed: '8', fhlb: '8', name: 'Missouri' },
-  'MS': { col: 6, row: 5, fed: '8', fhlb: '9', name: 'Mississippi' },
-  'MI': { col: 7, row: 2, fed: '7', fhlb: '6', name: 'Michigan' },
-  'IN': { col: 7, row: 3, fed: '7', fhlb: '6', name: 'Indiana' },
-  'KY': { col: 7, row: 4, fed: '8', fhlb: '5', name: 'Kentucky' },
-  'TN': { col: 7, row: 5, fed: '8', fhlb: '5', name: 'Tennessee' },
-  'AL': { col: 7, row: 6, fed: '6', fhlb: '4', name: 'Alabama' },
-  'OH': { col: 8, row: 3, fed: '4', fhlb: '5', name: 'Ohio' },
-  'WV': { col: 8, row: 4, fed: '5', fhlb: '3', name: 'West Virginia' },
-  'NC': { col: 8, row: 5, fed: '5', fhlb: '4', name: 'North Carolina' },
-  'GA': { col: 8, row: 6, fed: '6', fhlb: '4', name: 'Georgia' },
-  'FL': { col: 8, row: 7, fed: '6', fhlb: '4', name: 'Florida' },
-  'PA': { col: 9, row: 3, fed: '3', fhlb: '3', name: 'Pennsylvania' },
-  'VA': { col: 9, row: 4, fed: '5', fhlb: '4', name: 'Virginia' },
-  'SC': { col: 9, row: 5, fed: '5', fhlb: '4', name: 'South Carolina' },
-  'NY': { col: 9, row: 2, fed: '2', fhlb: '2', name: 'New York' },
-  'NJ': { col: 10, row: 3, fed: '2', fhlb: '2', name: 'New Jersey' },
-  'MD': { col: 10, row: 4, fed: '5', fhlb: '4', name: 'Maryland' },
-  'DC': { col: 10, row: 5, fed: '5', fhlb: '4', name: 'District of Columbia' },
-  'VT': { col: 10, row: 1, fed: '1', fhlb: '1', name: 'Vermont' },
-  'NH': { col: 11, row: 1, fed: '1', fhlb: '1', name: 'New Hampshire' },
-  'MA': { col: 11, row: 2, fed: '1', fhlb: '1', name: 'Massachusetts' },
-  'CT': { col: 11, row: 3, fed: '1', fhlb: '1', name: 'Connecticut' },
-  'DE': { col: 11, row: 4, fed: '3', fhlb: '3', name: 'Delaware' },
-  'ME': { col: 12, row: 0, fed: '1', fhlb: '1', name: 'Maine' },
-  'RI': { col: 12, row: 2, fed: '1', fhlb: '1', name: 'Rhode Island' },
-  'PR': { col: 12, row: 7, fed: '2', fhlb: '2', name: 'Puerto Rico' }
+  'AK': { col: 0, row: 7, fed: ['12'], fhlb: '8', fdic: 'sf', name: 'Alaska' },
+  'HI': { col: 1, row: 8, fed: ['12'], fhlb: '8', fdic: 'sf', name: 'Hawaii' },
+  'WA': { col: 1, row: 2, fed: ['12'], fhlb: '8', fdic: 'sf', name: 'Washington' },
+  'OR': { col: 1, row: 3, fed: ['12'], fhlb: '8', fdic: 'sf', name: 'Oregon' },
+  'CA': { col: 1, row: 4, fed: ['12'], fhlb: '11', fdic: 'sf', name: 'California' },
+  'ID': { col: 2, row: 2, fed: ['12'], fhlb: '8', fdic: 'sf', name: 'Idaho' },
+  'NV': { col: 2, row: 3, fed: ['12'], fhlb: '11', fdic: 'sf', name: 'Nevada' },
+  'UT': { col: 2, row: 4, fed: ['12'], fhlb: '8', fdic: 'sf', name: 'Utah' },
+  'AZ': { col: 2, row: 5, fed: ['12'], fhlb: '11', fdic: 'sf', name: 'Arizona' },
+  'MT': { col: 3, row: 2, fed: ['9'], fhlb: '8', fdic: 'sf', name: 'Montana' },
+  'WY': { col: 3, row: 3, fed: ['10'], fhlb: '8', fdic: 'sf', name: 'Wyoming' },
+  'CO': { col: 3, row: 4, fed: ['10'], fhlb: '10', fdic: 'dal', name: 'Colorado' },
+  'NM': { col: 3, row: 5, fed: ['11','10'], fhlb: '9', fdic: 'dal', name: 'New Mexico' },
+  'ND': { col: 4, row: 2, fed: ['9'], fhlb: '8', fdic: 'kc', name: 'North Dakota' },
+  'SD': { col: 4, row: 3, fed: ['9'], fhlb: '8', fdic: 'kc', name: 'South Dakota' },
+  'NE': { col: 4, row: 4, fed: ['10'], fhlb: '10', fdic: 'kc', name: 'Nebraska' },
+  'OK': { col: 4, row: 5, fed: ['10'], fhlb: '10', fdic: 'dal', name: 'Oklahoma' },
+  'TX': { col: 4, row: 6, fed: ['11'], fhlb: '9', fdic: 'dal', name: 'Texas' },
+  'MN': { col: 5, row: 2, fed: ['9'], fhlb: '8', fdic: 'kc', name: 'Minnesota' },
+  'IA': { col: 5, row: 3, fed: ['7'], fhlb: '8', fdic: 'kc', name: 'Iowa' },
+  'KS': { col: 5, row: 4, fed: ['10'], fhlb: '10', fdic: 'kc', name: 'Kansas' },
+  'AR': { col: 5, row: 5, fed: ['8'], fhlb: '9', fdic: 'dal', name: 'Arkansas' },
+  'LA': { col: 5, row: 6, fed: ['6','11'], fhlb: '9', fdic: 'dal', name: 'Louisiana' },
+  'WI': { col: 6, row: 2, fed: ['7','9'], fhlb: '7', fdic: 'chi', name: 'Wisconsin' },
+  'IL': { col: 6, row: 3, fed: ['7','8'], fhlb: '7', fdic: 'chi', name: 'Illinois' },
+  'MO': { col: 6, row: 4, fed: ['8','10'], fhlb: '8', fdic: 'kc', name: 'Missouri' },
+  'MS': { col: 6, row: 5, fed: ['6','8'], fhlb: '9', fdic: 'dal', name: 'Mississippi' },
+  'MI': { col: 7, row: 2, fed: ['7','9'], fhlb: '6', fdic: 'chi', name: 'Michigan' },
+  'IN': { col: 7, row: 3, fed: ['7','8'], fhlb: '6', fdic: 'chi', name: 'Indiana' },
+  'KY': { col: 7, row: 4, fed: ['8','4'], fhlb: '5', fdic: 'chi', name: 'Kentucky' },
+  'TN': { col: 7, row: 5, fed: ['6','8'], fhlb: '5', fdic: 'dal', name: 'Tennessee' },
+  'AL': { col: 7, row: 6, fed: ['6'], fhlb: '4', fdic: 'atl', name: 'Alabama' },
+  'OH': { col: 8, row: 3, fed: ['4'], fhlb: '5', fdic: 'chi', name: 'Ohio' },
+  'WV': { col: 8, row: 4, fed: ['5','4'], fhlb: '3', fdic: 'atl', name: 'West Virginia' },
+  'NC': { col: 8, row: 5, fed: ['5'], fhlb: '4', fdic: 'atl', name: 'North Carolina' },
+  'GA': { col: 8, row: 6, fed: ['6'], fhlb: '4', fdic: 'atl', name: 'Georgia' },
+  'FL': { col: 8, row: 7, fed: ['6'], fhlb: '4', fdic: 'atl', name: 'Florida' },
+  'PA': { col: 9, row: 3, fed: ['3','4'], fhlb: '3', fdic: 'ny', name: 'Pennsylvania' },
+  'VA': { col: 9, row: 4, fed: ['5'], fhlb: '4', fdic: 'atl', name: 'Virginia' },
+  'SC': { col: 9, row: 5, fed: ['5'], fhlb: '4', fdic: 'atl', name: 'South Carolina' },
+  'NY': { col: 9, row: 2, fed: ['2'], fhlb: '2', fdic: 'ny', name: 'New York' },
+  'NJ': { col: 10, row: 3, fed: ['2','3'], fhlb: '2', fdic: 'ny', name: 'New Jersey' },
+  'MD': { col: 10, row: 4, fed: ['5'], fhlb: '4', fdic: 'ny', name: 'Maryland' },
+  'DC': { col: 10, row: 5, fed: ['5'], fhlb: '4', fdic: 'ny', name: 'District of Columbia' },
+  'VT': { col: 10, row: 1, fed: ['1'], fhlb: '1', fdic: 'ny', name: 'Vermont' },
+  'NH': { col: 11, row: 1, fed: ['1'], fhlb: '1', fdic: 'ny', name: 'New Hampshire' },
+  'MA': { col: 11, row: 2, fed: ['1'], fhlb: '1', fdic: 'ny', name: 'Massachusetts' },
+  'CT': { col: 11, row: 3, fed: ['1','2'], fhlb: '1', fdic: 'ny', name: 'Connecticut' },
+  'DE': { col: 11, row: 4, fed: ['3'], fhlb: '3', fdic: 'ny', name: 'Delaware' },
+  'ME': { col: 12, row: 0, fed: ['1'], fhlb: '1', fdic: 'ny', name: 'Maine' },
+  'RI': { col: 12, row: 2, fed: ['1'], fhlb: '1', fdic: 'ny', name: 'Rhode Island' },
+  'PR': { col: 12, row: 7, fed: ['2'], fhlb: '2', fdic: 'ny', name: 'Puerto Rico' }
 };
 
 // ============================================================
@@ -1813,7 +1847,6 @@ document.getElementById('reg-search').addEventListener('input', (e) => {
 let currentMap = 'fed';
 
 function renderMap() {
-  const districts = currentMap === 'fed' ? fedDistricts : fhlbDistricts;
   const cols = 13, rows = 9;
   const grid = Array(rows).fill(null).map(() => Array(cols).fill(null));
 
@@ -1826,16 +1859,47 @@ function renderMap() {
     for (let c = 0; c < cols; c++) {
       const state = grid[r][c];
       if (state) {
-        const dKey = currentMap === 'fed' ? state.fed : state.fhlb;
-        const dist = districts[dKey];
-        const color = dist ? dist.color : 'var(--paper-deep)';
-        html += `<div class="state" data-abbr="${state.abbr}" data-fed="${state.fed}" data-fhlb="${state.fhlb}" style="background:${color};color:${getContrastColor(color)};border-color:${darken(color,10)};">${state.abbr}</div>`;
+        const dataAttrs = `data-abbr="${state.abbr}" data-fed="${state.fed.join(',')}" data-fhlb="${state.fhlb}" data-fdic="${state.fdic}"`;
+        let bg, isSplit = false, textColor;
+
+        if (currentMap === 'fed') {
+          if (state.fed.length === 2) {
+            isSplit = true;
+            const cA = fedDistricts[state.fed[0]].color;
+            const cB = fedDistricts[state.fed[1]].color;
+            bg = `linear-gradient(135deg, ${cA} 0%, ${cA} 49.5%, ${darken(cA,25)} 49.5%, ${darken(cA,25)} 50.5%, ${cB} 50.5%, ${cB} 100%)`;
+          } else {
+            bg = fedDistricts[state.fed[0]].color;
+            textColor = getContrastColor(bg);
+          }
+        } else if (currentMap === 'fhlb') {
+          bg = fhlbDistricts[state.fhlb].color;
+          textColor = getContrastColor(bg);
+        } else { // fdic
+          bg = fdicRegions[state.fdic].color;
+          textColor = getContrastColor(bg);
+        }
+
+        const cls = 'state' + (isSplit ? ' split' : '');
+        const styleColor = isSplit ? '' : `color:${textColor};`;
+        const borderC = isSplit ? darken(fedDistricts[state.fed[0]].color, 15) : darken(bg, 10);
+        html += `<div class="${cls}" ${dataAttrs} style="background:${bg};${styleColor}border-color:${borderC};">${state.abbr}</div>`;
       } else {
         html += `<div></div>`;
       }
     }
   }
   document.getElementById('cartogram').innerHTML = html;
+
+  // Caption changes per map
+  const caption = document.getElementById('cartogram-caption');
+  if (currentMap === 'fed') {
+    caption.textContent = 'Tile cartogram — diagonally split tiles mark the 14 states divided between two Federal Reserve districts';
+  } else if (currentMap === 'fhlb') {
+    caption.textContent = 'Tile cartogram — each state falls wholly within one Federal Home Loan Bank district';
+  } else {
+    caption.textContent = 'Tile cartogram — current 6-region FDIC structure (consolidated from the 1998 8-region layout)';
+  }
 
   document.querySelectorAll('.state').forEach(el => {
     el.addEventListener('mouseenter', (e) => showTooltip(e, el));
@@ -1849,31 +1913,44 @@ function renderMap() {
 function showTooltip(e, el) {
   const abbr = el.dataset.abbr;
   const s = states[abbr];
-  const fed = fedDistricts[s.fed];
+  const fedList = s.fed.map(k => {
+    const d = fedDistricts[k];
+    return `${d.num}${d.letter || ''} ${d.city}`;
+  }).join('  +  ');
   const fhlb = fhlbDistricts[s.fhlb];
+  const fdic = fdicRegions[s.fdic];
+  const splitNote = s.fed.length === 2 ? ' <span style="color:#c9a961;">(split)</span>' : '';
   const tt = document.getElementById('state-tooltip');
   tt.innerHTML = `
     <div class="tt-state">${s.name}</div>
-    <div class="tt-meta">FED · District ${fed.num}${fed.letter ? fed.letter : ''} · ${fed.city}</div>
+    <div class="tt-meta">FED · ${fedList}${splitNote}</div>
     <div class="tt-meta">FHLB · District ${fhlb.num} · ${fhlb.city}</div>
+    <div class="tt-meta">FDIC · ${fdic.city} Region</div>
   `;
   tt.classList.add('show');
   positionTooltip(e);
+  highlightDistrictOfState(s);
+}
 
-  const dKey = currentMap === 'fed' ? s.fed : s.fhlb;
+function stateKeysFor(st) {
+  // returns the set of district keys this state DOM element belongs to for the current map
+  if (currentMap === 'fed') return st.dataset.fed.split(',');
+  if (currentMap === 'fhlb') return [st.dataset.fhlb];
+  return [st.dataset.fdic];
+}
+
+function highlightDistrictOfState(s) {
+  const keys = currentMap === 'fed' ? s.fed : (currentMap === 'fhlb' ? [s.fhlb] : [s.fdic]);
   document.querySelectorAll('.state').forEach(st => {
-    if ((currentMap === 'fed' ? st.dataset.fed : st.dataset.fhlb) === dKey) {
-      st.classList.add('highlighted');
-    }
+    const stKeys = stateKeysFor(st);
+    if (stKeys.some(k => keys.includes(k))) st.classList.add('highlighted');
   });
 }
 
 function positionTooltip(e) {
   const tt = document.getElementById('state-tooltip');
-  const x = e.clientX + 14;
-  const y = e.clientY + 14;
-  tt.style.left = x + 'px';
-  tt.style.top = y + 'px';
+  tt.style.left = (e.clientX + 14) + 'px';
+  tt.style.top = (e.clientY + 14) + 'px';
 }
 
 function hideTooltip() {
@@ -1882,25 +1959,41 @@ function hideTooltip() {
 }
 
 function renderLegend() {
-  const districts = currentMap === 'fed' ? fedDistricts : fhlbDistricts;
-  document.getElementById('legend-title').textContent = currentMap === 'fed' ? '12 Federal Reserve Districts' : '11 Federal Home Loan Banks';
-  const html = Object.entries(districts).map(([key, d]) => `
+  let districts, title;
+  if (currentMap === 'fed') { districts = fedDistricts; title = '12 Federal Reserve Districts'; }
+  else if (currentMap === 'fhlb') { districts = fhlbDistricts; title = '11 Federal Home Loan Banks'; }
+  else { districts = fdicRegions; title = '6 FDIC Supervisory Regions'; }
+
+  document.getElementById('legend-title').textContent = title;
+
+  let html = Object.entries(districts).map(([key, d]) => {
+    const label = currentMap === 'fed'
+      ? `${d.num} / ${d.letter} · ${d.city}`
+      : (currentMap === 'fhlb' ? `${d.num} · ${d.city}` : `${d.city} Region`);
+    return `
     <div class="legend-item" data-district="${key}">
       <div class="legend-swatch" style="background:${d.color}"></div>
       <div class="legend-content">
-        <div class="legend-city">${d.num}${d.letter ? ' / ' + d.letter : ''} · ${d.city}</div>
+        <div class="legend-city">${label}</div>
         <div class="legend-meta">${d.states}</div>
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
+
+  // Add an explanatory footnote for FDIC consolidation
+  if (currentMap === 'fdic') {
+    html += `<div style="margin-top:1rem;padding-top:0.75rem;border-top:1px dashed var(--rule);font-size:0.7rem;line-height:1.5;color:var(--text-muted);font-style:italic;font-family:'Fraunces',serif;">The FDIC consolidated its 1998 eight-region structure (which had separate Boston and Memphis offices) into today's six regions: Boston was folded into New York, and Memphis was divided between the Dallas and Chicago regions.</div>`;
+  } else if (currentMap === 'fed') {
+    html += `<div style="margin-top:1rem;padding-top:0.75rem;border-top:1px dashed var(--rule);font-size:0.7rem;line-height:1.5;color:var(--text-muted);font-style:italic;font-family:'Fraunces',serif;">Fourteen states are divided between two Federal Reserve districts (shown as diagonally split tiles). Missouri is the only state served by two Reserve Bank head offices — St. Louis and Kansas City. Boundaries last revised February 1996.</div>`;
+  }
+
   document.getElementById('legend-list').innerHTML = html;
 
   document.querySelectorAll('.legend-item').forEach(item => {
     item.addEventListener('mouseenter', () => {
       const dKey = item.dataset.district;
       document.querySelectorAll('.state').forEach(st => {
-        const matches = (currentMap === 'fed' ? st.dataset.fed : st.dataset.fhlb) === dKey;
-        if (matches) st.classList.add('highlighted');
+        if (stateKeysFor(st).includes(dKey)) st.classList.add('highlighted');
       });
     });
     item.addEventListener('mouseleave', () => {
