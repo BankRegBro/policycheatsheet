@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Policy Cheat Sheet — a working catalogue of U.S. financial services regulation, read from the primary source.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Policy Cheat Sheet">
+<meta property="og:description" content="A working catalogue of U.S. financial services regulation — guidance, rule text, and legislation read from the primary source, with conclusions front-loaded.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Policy Cheat Sheet">
+<meta name="twitter:description" content="A working catalogue of U.S. financial services regulation, read from the primary source.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f1ede2'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='22' fill='%237a1f2b' text-anchor='middle'%3EP%3C/text%3E%3C/svg%3E">
 <title>Policy Cheat Sheet · A working catalogue of U.S. financial services regulation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,7 +26,7 @@
   --paper-deep:#ddd8c5;
   --ink:#1c1b16;
   --ink-soft:#3a382e;
-  --muted:#8a8678;
+  --muted:#6a675d;
   --line:#d4cfbe;
   --line-mid:#b8b39e;
   --accent:#7a1f2b;
@@ -373,7 +380,7 @@ body.no-results .section{display:none}
 }
 .featured-eyebrow .stamp{
   display:inline-flex;align-items:center;gap:8px;
-  border:1.5px dashed var(--accent);
+  border:1.5px solid var(--accent);
   color:var(--accent);
   padding:6px 12px;
   letter-spacing:.28em;
@@ -381,21 +388,12 @@ body.no-results .section{display:none}
   transform:rotate(-1.2deg);
   background:rgba(122,31,43,.06);
 }
-.featured-eyebrow .stamp::before{
-  content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);
-  box-shadow:0 0 0 3px rgba(122,31,43,.25);
-  animation:pulse 2.4s ease-in-out infinite;
-}
-@keyframes pulse{
-  0%,100%{box-shadow:0 0 0 3px rgba(122,31,43,.25)}
-  50%{box-shadow:0 0 0 6px rgba(122,31,43,0)}
-}
 .featured-card{
   display:grid;
   grid-template-columns:minmax(180px,32%) 1fr;
   gap:clamp(28px,5vw,72px);
   align-items:stretch;
-  border:1.5px dashed rgba(241,237,226,.3);
+  border:1.5px solid rgba(241,237,226,.3);
   padding:clamp(28px,4vw,48px);
   background:rgba(241,237,226,.02);
   position:relative;z-index:2;
@@ -421,7 +419,7 @@ body.no-results .section{display:none}
 }
 .featured-frame{
   aspect-ratio:1.2/1;
-  border:1px dashed rgba(241,237,226,.4);
+  border:1px solid rgba(241,237,226,.4);
   display:flex;align-items:center;justify-content:center;
   position:relative;
   background:rgba(241,237,226,.015);
@@ -818,9 +816,301 @@ body.no-results .section{display:none}
   color:var(--paper);
 }
 .print-strip .acc{color:var(--accent)}
+/* ============================================================
+   STICKY SEARCH
+   ============================================================ */
+.search-bar{
+  position:sticky;
+  top:0;
+  z-index:50;
+  box-shadow:0 1px 0 var(--line-mid);
+}
+
+/* Clickable tags */
+.plate-tags span{cursor:pointer}
+.plate-tags span:hover{
+  border-color:var(--accent);
+  color:var(--accent);
+  background:var(--accent-tint);
+}
+
+/* Scroll offset so anchored plates clear the sticky search bar */
+.plate, .featured{scroll-margin-top:96px}
+
+/* ============================================================
+   DRAFT / LIVE STATE
+   ============================================================ */
+.plate[data-status="draft"]{
+  opacity:.5;
+  pointer-events:none;
+  cursor:default;
+}
+.plate[data-status="draft"] .plate-link{display:none}
+.plate[data-status="draft"] .plate-body::after{
+  content:"In preparation";
+  display:block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--muted);
+  padding:8px 0;
+  border-top:1px solid var(--line-mid);
+  width:100%;
+  margin-top:auto;
+}
+.plate[data-status="draft"] .symbol-frame{opacity:.7}
+
+/* ============================================================
+   INDEX DRAWER
+   ============================================================ */
+.index-tab{
+  position:fixed;
+  left:0;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:60;
+  background:var(--ink);
+  color:var(--paper);
+  border:none;
+  cursor:pointer;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  padding:16px 9px;
+  writing-mode:vertical-rl;
+  transform-origin:center;
+  transform:translateY(-50%) rotate(180deg);
+  transition:background .2s ease, padding .2s ease;
+  border-radius:0 4px 4px 0;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.index-tab:hover{background:var(--accent);padding-left:13px}
+.index-tab .tab-mark{
+  font-size:13px;
+  transform:rotate(90deg);
+  display:inline-block;
+}
+@media print{.index-tab{display:none}}
+
+.index-scrim{
+  position:fixed;
+  inset:0;
+  background:rgba(20,19,16,.42);
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
+  z-index:90;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .35s ease;
+}
+body.index-open .index-scrim{opacity:1;pointer-events:auto}
+
+.index-panel{
+  position:fixed;
+  top:0;
+  left:0;
+  height:100%;
+  width:min(360px,86vw);
+  background:var(--paper);
+  border-right:2px solid var(--ink);
+  z-index:100;
+  transform:translateX(-104%);
+  transition:transform .4s cubic-bezier(.16,.84,.44,1);
+  display:flex;
+  flex-direction:column;
+  box-shadow:24px 0 60px rgba(20,19,16,.18);
+}
+body.index-open .index-panel{transform:translateX(0)}
+
+.index-head{
+  padding:clamp(24px,3vw,34px) clamp(22px,3vw,32px) 18px;
+  border-bottom:2px solid var(--ink);
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  flex-shrink:0;
+}
+.index-head .ttl{
+  font-family:'Fraunces',serif;
+  font-weight:300;
+  font-size:clamp(28px,4vw,38px);
+  line-height:.95;
+  letter-spacing:-.02em;
+}
+.index-head .ttl em{font-style:italic;color:var(--accent)}
+.index-head .sub{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-top:8px;
+}
+.index-close{
+  background:none;border:none;cursor:pointer;
+  font-family:'Fraunces',serif;
+  font-size:30px;line-height:.6;
+  color:var(--ink-soft);
+  padding:0 2px;
+  transition:color .15s ease;
+}
+.index-close:hover{color:var(--accent)}
+
+.index-list{
+  overflow-y:auto;
+  padding:8px 0 24px;
+  flex:1;
+}
+.index-group{margin-top:14px}
+.index-group:first-child{margin-top:6px}
+.index-group-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9.5px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--accent);
+  padding:10px clamp(22px,3vw,32px) 8px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.index-group-label::after{content:"";flex:1;height:1px;background:var(--line-mid)}
+.index-item{
+  display:flex;
+  align-items:baseline;
+  gap:12px;
+  padding:9px clamp(22px,3vw,32px);
+  cursor:pointer;
+  border:none;background:none;width:100%;text-align:left;
+  font-family:inherit;
+  transition:background .15s ease;
+  border-left:2px solid transparent;
+}
+.index-item:hover{background:var(--paper-2)}
+.index-item .ix-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  color:var(--muted);
+  letter-spacing:.08em;
+  flex-shrink:0;
+  width:22px;
+}
+.index-item .ix-title{
+  font-family:'Fraunces',serif;
+  font-size:15px;
+  line-height:1.25;
+  color:var(--ink);
+}
+.index-item .ix-title em{font-style:italic}
+.index-item.is-active{
+  background:var(--accent-tint);
+  border-left-color:var(--accent);
+}
+.index-item.is-active .ix-num{color:var(--accent)}
+.index-item.is-active .ix-title{color:var(--accent-deep)}
+.index-item.is-draft .ix-title{color:var(--muted)}
+.index-item.is-draft .ix-num::after{content:" ·";color:var(--muted)}
+
+.index-foot{
+  flex-shrink:0;
+  border-top:1px solid var(--line-mid);
+  padding:14px clamp(22px,3vw,32px);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.index-foot button{
+  background:none;border:none;cursor:pointer;
+  font-family:inherit;font-size:inherit;letter-spacing:inherit;
+  text-transform:inherit;color:var(--ink-soft);
+}
+.index-foot button:hover{color:var(--accent)}
+.index-foot .count b{color:var(--accent)}
+
+/* ============================================================
+   PRINT
+   ============================================================ */
+@media print{
+  body{background:#fff;color:#000}
+  .search-bar, .index-tab, .index-panel, .index-scrim,
+  .search-kbd, .search-clear{display:none !important}
+  .featured{background:#fff !important;color:#000 !important;border-bottom:2px solid #000 !important}
+  .featured *{color:#000 !important}
+  .featured-card, .featured-frame{border-color:#999 !important;background:#fff !important}
+  .featured-frame .acc-stroke{stroke:#000 !important}
+  .featured-frame .acc-fill{fill:#000 !important}
+  .featured-eyebrow .stamp{border-color:#000 !important;background:#fff !important}
+  .plate, .featured-card{break-inside:avoid}
+  .section{break-inside:auto}
+  .plate--hidden{display:grid !important}
+  .section--empty{display:block !important}
+  .plate-link .arrow, .featured-cta{display:none}
+  .plate a[href]::after, a.plate[href]::after{content:""}
+}
+
 </style>
 </head>
 <body>
+
+<!-- ============================================================
+     INDEX DRAWER
+     ============================================================ -->
+<button class="index-tab" id="index-tab" aria-label="Open the catalogue index" aria-expanded="false">
+  <span class="tab-mark">&#9776;</span> Index
+</button>
+<div class="index-scrim" id="index-scrim"></div>
+<nav class="index-panel" id="index-panel" aria-label="Catalogue index" aria-hidden="true">
+  <div class="index-head">
+    <div>
+      <div class="ttl">The <em>Index</em></div>
+      <div class="sub">15 plates &middot; 1 cornerstone</div>
+    </div>
+    <button class="index-close" id="index-close" aria-label="Close index">&times;</button>
+  </div>
+  <div class="index-list" id="index-list">
+    <div class="index-group">
+      <div class="index-group-label">Cornerstone</div>
+      <button class="index-item" data-target="plate-00"><span class="ix-num">&#9670;</span><span class="ix-title">History of <em>Banking</em></span></button>
+    </div>
+    <div class="index-group">
+      <div class="index-group-label">I &middot; Rules &amp; Guidance</div>
+      <button class="index-item" data-target="plate-01"><span class="ix-num">01</span><span class="ix-title">Model Risk Management 2026</span></button>
+      <button class="index-item" data-target="plate-02"><span class="ix-num">02</span><span class="ix-title">GENIUS Act Dashboard</span></button>
+      <button class="index-item" data-target="plate-03"><span class="ix-num">03</span><span class="ix-title">AML/CFT Program Rule Navigator</span></button>
+      <button class="index-item" data-target="plate-04"><span class="ix-num">04</span><span class="ix-title">UFIRS CAMELS 2026 Change Briefing</span></button>
+    </div>
+    <div class="index-group">
+      <div class="index-group-label">II &middot; Reform Trackers</div>
+      <button class="index-item" data-target="plate-05"><span class="ix-num">05</span><span class="ix-title">Executive Order Brief</span></button>
+      <button class="index-item" data-target="plate-06"><span class="ix-num">06</span><span class="ix-title">Bank Merger Reform Scorecard</span></button>
+      <button class="index-item" data-target="plate-07"><span class="ix-num">07</span><span class="ix-title">Fed Payment Account Analysis</span></button>
+      <button class="index-item" data-target="plate-08"><span class="ix-num">08</span><span class="ix-title">Gould OCC Policy Tracker</span></button>
+      <button class="index-item" data-target="plate-09"><span class="ix-num">09</span><span class="ix-title">H.R. 941 Small Lender Act</span></button>
+      <button class="index-item" data-target="plate-10"><span class="ix-num">10</span><span class="ix-title">CSBS Comment Letters</span></button>
+      <button class="index-item" data-target="plate-11"><span class="ix-num">11</span><span class="ix-title">A Policy Lookahead</span></button>
+    </div>
+    <div class="index-group">
+      <div class="index-group-label">III &middot; Structural Frameworks</div>
+      <button class="index-item" data-target="plate-12"><span class="ix-num">12</span><span class="ix-title">New Federal Reserve Supervisory <em>Operating Principles</em></span></button>
+      <button class="index-item" data-target="plate-13"><span class="ix-num">13</span><span class="ix-title">U.S. Trust Company Regulatory Framework</span></button>
+      <button class="index-item" data-target="plate-14"><span class="ix-num">14</span><span class="ix-title">OCC Preemption Timeline</span></button>
+      <button class="index-item" data-target="plate-15"><span class="ix-num">15</span><span class="ix-title">Regulatory Map</span></button>
+    </div>
+  </div>
+  <div class="index-foot">
+    <span class="count"><b id="index-count">16</b> entries</span>
+    <button id="index-top">&uarr; Top</button>
+  </div>
+</nav>
+
 
 <!-- ============================================================
      MASTHEAD
@@ -837,7 +1127,7 @@ body.no-results .section{display:none}
   <div class="masthead-sub">
     <p>A working catalogue of U.S. financial services regulation — <em>guidance, rule text, and legislation read from the primary source, with conclusions front-loaded.</em></p>
     <div class="masthead-meta">
-      <div><b>15</b> plates &middot; <b>1</b> lookahead &middot; <b>3</b> sections</div>
+      <div><b>15</b> plates &middot; <b>1</b> cornerstone &middot; <b>3</b> sections</div>
       <div>Federal banking · State coordination</div>
       <div>Maintained anonymously</div>
     </div>
@@ -865,78 +1155,90 @@ body.no-results .section{display:none}
      ============================================================ -->
 <section class="featured" id="featured">
   <div class="featured-eyebrow">
-    <span>Lookahead &middot; Experimental</span>
-    <span class="stamp">Proof of Concept</span>
-    <span>One item, outside the catalogue numbering</span>
+    <span>Foundational &middot; Reference</span>
+    <span class="stamp">Cornerstone</span>
+    <span>The reference layer for the catalogue</span>
   </div>
 
-  <a class="featured-card" href="rulemaking-calendar.html" aria-label="A Policy Lookahead: experimental rulemaking calendar">
+  <a class="featured-card" id="plate-00" href="history-of-banking.html" aria-label="History of Banking: cornerstone reading">
     <div class="featured-frame">
       <svg viewBox="0 0 200 140" aria-hidden="true">
-        <!-- 4 input streams on the left, converging to a midpoint -->
-        <line x1="14" y1="34" x2="92" y2="68" stroke="currentColor" stroke-width="1.4" opacity=".55"/>
-        <line x1="14" y1="56" x2="92" y2="68" stroke="currentColor" stroke-width="1.4" opacity=".75"/>
-        <line x1="14" y1="80" x2="92" y2="68" stroke="currentColor" stroke-width="1.4" opacity=".75"/>
-        <line x1="14" y1="102" x2="92" y2="68" stroke="currentColor" stroke-width="1.4" opacity=".55"/>
+        <!-- Rail labels on the left -->
+        <text x="6" y="40" font-family="JetBrains Mono" font-size="6" fill="currentColor" opacity=".5" letter-spacing="1.5">STATE</text>
+        <text x="6" y="62" font-family="JetBrains Mono" font-size="6" fill="currentColor" opacity=".5" letter-spacing="1.5">NAT&#39;L</text>
+        <text x="6" y="84" font-family="JetBrains Mono" font-size="6" fill="currentColor" opacity=".85" letter-spacing="1.5">FED</text>
+        <text x="6" y="106" font-family="JetBrains Mono" font-size="6" fill="currentColor" opacity=".5" letter-spacing="1.5">FDIC</text>
 
-        <!-- input labels (small dots) -->
-        <circle cx="14" cy="34" r="2.2" class="acc-fill"/>
-        <circle cx="14" cy="56" r="2.2" class="acc-fill"/>
-        <circle cx="14" cy="80" r="2.2" class="acc-fill"/>
-        <circle cx="14" cy="102" r="2.2" class="acc-fill"/>
+        <!-- Faint vertical era guides -->
+        <line x1="34" y1="22" x2="34" y2="120" stroke="currentColor" stroke-width="0.5" opacity=".2"/>
+        <line x1="70" y1="22" x2="70" y2="120" stroke="currentColor" stroke-width="0.5" opacity=".2"/>
+        <line x1="100" y1="22" x2="100" y2="120" stroke="currentColor" stroke-width="0.5" opacity=".2"/>
+        <line x1="126" y1="22" x2="126" y2="120" stroke="currentColor" stroke-width="0.5" opacity=".2"/>
+        <line x1="162" y1="22" x2="162" y2="120" stroke="currentColor" stroke-width="0.5" opacity=".2"/>
+        <line x1="184" y1="22" x2="184" y2="120" stroke="currentColor" stroke-width="0.5" opacity=".2"/>
 
-        <!-- convergence node -->
-        <circle cx="92" cy="68" r="6" fill="none" class="acc-stroke" stroke-width="1.6"/>
-        <circle cx="92" cy="68" r="2.4" class="acc-fill"/>
+        <!-- State rail: 1791 → present -->
+        <line x1="34" y1="40" x2="190" y2="40" stroke="currentColor" stroke-width="2" opacity=".75"/>
+        <circle cx="34" cy="40" r="2.6" fill="currentColor"/>
 
-        <!-- forward trajectory: solid segment then dashed forecast -->
-        <line x1="98" y1="68" x2="128" y2="68" class="acc-stroke" stroke-width="2"/>
-        <line x1="132" y1="68" x2="178" y2="68" class="acc-stroke" stroke-width="2" stroke-dasharray="3 4" opacity=".75"/>
+        <!-- National Banks rail: 1864 → present -->
+        <line x1="70" y1="62" x2="190" y2="62" stroke="currentColor" stroke-width="2" opacity=".75"/>
+        <circle cx="70" cy="62" r="2.6" fill="currentColor"/>
 
-        <!-- arrowhead -->
-        <path d="M 178 68 L 170 63 L 172 68 L 170 73 Z" class="acc-fill"/>
+        <!-- Federal Reserve rail: 1913 → present (accent) -->
+        <line x1="100" y1="84" x2="190" y2="84" class="acc-stroke" stroke-width="2.6"/>
+        <circle cx="100" cy="84" r="3.2" class="acc-fill"/>
 
-        <!-- time-tick projections along forecast -->
-        <line x1="140" y1="60" x2="140" y2="76" stroke="currentColor" stroke-width="0.7" opacity=".4"/>
-        <line x1="156" y1="60" x2="156" y2="76" stroke="currentColor" stroke-width="0.7" opacity=".4"/>
-        <line x1="172" y1="60" x2="172" y2="76" stroke="currentColor" stroke-width="0.7" opacity=".4"/>
+        <!-- FDIC rail: 1933 → present -->
+        <line x1="126" y1="106" x2="190" y2="106" stroke="currentColor" stroke-width="2" opacity=".75"/>
+        <circle cx="126" cy="106" r="2.6" fill="currentColor"/>
 
-        <!-- horizon baseline -->
-        <line x1="14" y1="124" x2="186" y2="124" stroke="currentColor" stroke-width="0.6" stroke-dasharray="1 3" opacity=".3"/>
-        <text x="14" y="136" font-family="JetBrains Mono" font-size="6" fill="currentColor" opacity=".5" letter-spacing="2">NOW</text>
-        <text x="178" y="136" font-family="JetBrains Mono" font-size="6" fill="currentColor" opacity=".5" letter-spacing="2" text-anchor="end">FORECAST</text>
+        <!-- Modern inflection markers -->
+        <line x1="162" y1="36" x2="162" y2="110" stroke="currentColor" stroke-width="0.7" opacity=".4"/>
+        <line x1="184" y1="36" x2="184" y2="110" stroke="currentColor" stroke-width="0.7" opacity=".4"/>
+
+        <!-- Baseline -->
+        <line x1="6" y1="120" x2="194" y2="120" stroke="currentColor" stroke-width="0.6" opacity=".3"/>
+
+        <!-- Year labels -->
+        <text x="34" y="132" font-family="JetBrains Mono" font-size="6" fill="currentColor" text-anchor="middle" opacity=".55" letter-spacing="0.5">1791</text>
+        <text x="70" y="132" font-family="JetBrains Mono" font-size="6" fill="currentColor" text-anchor="middle" opacity=".55" letter-spacing="0.5">1864</text>
+        <text x="100" y="132" font-family="JetBrains Mono" font-size="6" fill="currentColor" text-anchor="middle" opacity=".85" letter-spacing="0.5">1913</text>
+        <text x="126" y="132" font-family="JetBrains Mono" font-size="6" fill="currentColor" text-anchor="middle" opacity=".55" letter-spacing="0.5">1933</text>
+        <text x="162" y="132" font-family="JetBrains Mono" font-size="6" fill="currentColor" text-anchor="middle" opacity=".55" letter-spacing="0.5">1999</text>
+        <text x="184" y="132" font-family="JetBrains Mono" font-size="6" fill="currentColor" text-anchor="middle" opacity=".55" letter-spacing="0.5">2010</text>
       </svg>
     </div>
 
     <div class="featured-body">
-      <div class="featured-kicker">Featured &middot; Not yet a plate</div>
-      <h3 class="featured-title">A Policy <em>Lookahead</em></h3>
+      <div class="featured-kicker">Featured &middot; Start here</div>
+      <h3 class="featured-title">History of <em>Banking</em></h3>
       <p class="featured-desc">
-        An experimental rulemaking calendar that triangulates <strong>what is coming</strong> from agency principals' on-the-record comments, the <strong>Federal Register</strong>, <strong>OIRA's pending review queue</strong>, and each agency's <strong>Unified Spring Agenda</strong> — and produces a working guesstimate of timing and posture for the next two quarters.
+        A long-arc reading of U.S. banking structure &mdash; from the <strong>First Bank of the United States</strong>, through the <strong>National Bank Act</strong> and the founding of the <strong>Federal Reserve</strong>, to Glass&ndash;Steagall, FDIC, and the dual-charter system as it stands today. The reference layer beneath every other plate in this catalogue.
       </p>
 
       <div class="featured-sources">
         <div class="src">
-          <div class="src-label">Source 01</div>
-          <div class="src-name">Principal Remarks</div>
+          <div class="src-label">1791</div>
+          <div class="src-name">First Bank of the U.S.</div>
         </div>
         <div class="src">
-          <div class="src-label">Source 02</div>
-          <div class="src-name">Federal Register</div>
+          <div class="src-label">1864</div>
+          <div class="src-name">National Bank Act</div>
         </div>
         <div class="src">
-          <div class="src-label">Source 03</div>
-          <div class="src-name">OIRA Review Queue</div>
+          <div class="src-label">1913</div>
+          <div class="src-name">Federal Reserve Act</div>
         </div>
         <div class="src">
-          <div class="src-label">Source 04</div>
-          <div class="src-name">Unified Spring Agenda</div>
+          <div class="src-label">1933</div>
+          <div class="src-name">Glass&ndash;Steagall &middot; FDIC</div>
         </div>
       </div>
 
       <span class="featured-cta">
-        <span>Open the lookahead</span>
-        <span class="arrow">→</span>
+        <span>Open the history</span>
+        <span class="arrow">&rarr;</span>
       </span>
     </div>
   </a>
@@ -981,7 +1283,7 @@ body.no-results .section{display:none}
   <div class="plates">
 
     <!-- 01 Model Risk Management 2026 -->
-    <a class="plate" href="model-risk-management-2026.html" aria-label="Plate 01: Model Risk Management 2026">
+    <a class="plate" id="plate-01" data-status="live" href="model-risk-management-2026.html" aria-label="Plate 01: Model Risk Management 2026">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- nested validation layers -->
@@ -1004,7 +1306,7 @@ body.no-results .section{display:none}
     </a>
 
     <!-- 02 GENIUS Act Dashboard -->
-    <a class="plate" href="genius-act-dashboard.html" aria-label="Plate 02: GENIUS Act Dashboard">
+    <a class="plate" id="plate-02" data-status="live" href="genius-act-dashboard.html" aria-label="Plate 02: GENIUS Act Dashboard">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- hexagonal stablecoin token -->
@@ -1028,7 +1330,7 @@ body.no-results .section{display:none}
     </a>
 
     <!-- 03 AML/CFT Program Rule Navigator -->
-    <a class="plate" href="aml-cft-program-rule-navigator.html" aria-label="Plate 03: AML/CFT Program Rule Navigator">
+    <a class="plate" id="plate-03" data-status="live" href="aml-cft-program-rule-navigator.html" aria-label="Plate 03: AML/CFT Program Rule Navigator">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- funnel -->
@@ -1052,7 +1354,7 @@ body.no-results .section{display:none}
     </a>
 
     <!-- 04 UFIRS / CAMELS 2026 -->
-    <a class="plate" href="ufirs-camels-2026-change-briefing.html" aria-label="Plate 04: UFIRS CAMELS 2026 Change Briefing">
+    <a class="plate" id="plate-04" data-status="live" href="ufirs-camels-2026-change-briefing.html" aria-label="Plate 04: UFIRS CAMELS 2026 Change Briefing">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- hexagonal radar — 6 CAMELS components -->
@@ -1099,7 +1401,7 @@ body.no-results .section{display:none}
   <div class="plates">
 
     <!-- 05 Executive Order Brief -->
-    <a class="plate" href="eo-brief.html" aria-label="Plate 05: Executive Order Brief">
+    <a class="plate" id="plate-05" data-status="live" href="eo-brief.html" aria-label="Plate 05: Executive Order Brief">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- back document -->
@@ -1131,7 +1433,7 @@ body.no-results .section{display:none}
     </a>
 
     <!-- 06 Bank Merger Reform Scorecard -->
-    <a class="plate" href="bank-merger-reform-scorecard.html" aria-label="Plate 06: Bank Merger Reform Scorecard">
+    <a class="plate" id="plate-06" data-status="live" href="bank-merger-reform-scorecard.html" aria-label="Plate 06: Bank Merger Reform Scorecard">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- two merging circles -->
@@ -1154,7 +1456,7 @@ body.no-results .section{display:none}
     </a>
 
     <!-- 07 Fed Payment Account Analysis -->
-    <a class="plate" href="fed-payment-account-analysis.html" aria-label="Plate 07: Fed Payment Account Analysis">
+    <a class="plate" id="plate-07" data-status="live" href="fed-payment-account-analysis.html" aria-label="Plate 07: Fed Payment Account Analysis">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- Full master account: thick channel with four service ports -->
@@ -1187,7 +1489,7 @@ body.no-results .section{display:none}
     </a>
 
     <!-- 08 Gould OCC Policy Tracker -->
-    <a class="plate" href="gould-occ-policy-tracker.html" aria-label="Plate 08: Gould OCC Policy Tracker">
+    <a class="plate" id="plate-08" data-status="live" href="gould-occ-policy-tracker.html" aria-label="Plate 08: Gould OCC Policy Tracker">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- trajectory arrow with milestones -->
@@ -1212,7 +1514,7 @@ body.no-results .section{display:none}
     </a>
 
     <!-- 09 HR 941 Small Lender Act -->
-    <a class="plate" href="hr941-small-lender-act.html" aria-label="Plate 09: H.R. 941 Small Lender Act">
+    <a class="plate" id="plate-09" data-status="live" href="hr941-small-lender-act.html" aria-label="Plate 09: H.R. 941 Small Lender Act">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- bill / legislation -->
@@ -1238,7 +1540,7 @@ body.no-results .section{display:none}
     </a>
 
     <!-- 10 CSBS Comment Letters -->
-    <a class="plate" href="csbs-comment-letters.html" aria-label="Plate 10: CSBS Comment Letters">
+    <a class="plate" id="plate-10" data-status="live" href="csbs-comment-letters.html" aria-label="Plate 10: CSBS Comment Letters">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- envelope -->
@@ -1261,6 +1563,43 @@ body.no-results .section{display:none}
       </div>
     </a>
 
+    <!-- 11 Policy Lookahead -->
+    <a class="plate" id="plate-11" data-status="live" href="rulemaking-calendar.html" aria-label="Plate 11: A Policy Lookahead">
+      <div class="symbol-frame">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <!-- 4 input streams converging from left -->
+          <line x1="12" y1="28" x2="48" y2="50" stroke="currentColor" stroke-width="1.2" opacity=".55"/>
+          <line x1="12" y1="42" x2="48" y2="50" stroke="currentColor" stroke-width="1.2" opacity=".75"/>
+          <line x1="12" y1="58" x2="48" y2="50" stroke="currentColor" stroke-width="1.2" opacity=".75"/>
+          <line x1="12" y1="72" x2="48" y2="50" stroke="currentColor" stroke-width="1.2" opacity=".55"/>
+          <!-- Source dots -->
+          <circle cx="12" cy="28" r="2" class="accent-fill"/>
+          <circle cx="12" cy="42" r="2" class="accent-fill"/>
+          <circle cx="12" cy="58" r="2" class="accent-fill"/>
+          <circle cx="12" cy="72" r="2" class="accent-fill"/>
+          <!-- Convergence node -->
+          <circle cx="48" cy="50" r="4.5" fill="none" class="accent-stroke" stroke-width="1.4"/>
+          <circle cx="48" cy="50" r="2" class="accent-fill"/>
+          <!-- Forward projection: solid then dashed -->
+          <line x1="53" y1="50" x2="64" y2="50" class="accent-stroke" stroke-width="1.8"/>
+          <line x1="66" y1="50" x2="82" y2="50" class="accent-stroke" stroke-width="1.8" stroke-dasharray="2 3" opacity=".7"/>
+          <!-- Arrowhead -->
+          <path d="M 78 46 L 86 50 L 78 54" fill="none" class="accent-stroke" stroke-width="1.8" stroke-linejoin="round"/>
+          <!-- Time tick projections on forecast -->
+          <line x1="72" y1="44" x2="72" y2="56" stroke="currentColor" stroke-width="0.5" opacity=".35"/>
+          <line x1="78" y1="44" x2="78" y2="56" stroke="currentColor" stroke-width="0.5" opacity=".35"/>
+        </svg>
+        <span class="plate-stamp">&#8470; 11</span>
+      </div>
+      <div class="plate-body">
+        <div class="plate-meta"><span class="plate-num">Plate 11</span><span class="plate-section">Reform Trackers</span></div>
+        <h3 class="plate-title">A Policy <em>Lookahead</em></h3>
+        <p class="plate-desc">An experimental rulemaking calendar that triangulates <strong>what is coming</strong> from agency principals&#39; on-the-record comments, the Federal Register, OIRA&#39;s pending review queue, and each agency&#39;s Unified Spring Agenda.</p>
+        <div class="plate-tags"><span>Proof of Concept</span><span>Multi-source</span><span>Forecast</span></div>
+        <span class="plate-link"><span>View plate</span><span class="arrow">&rarr;</span></span>
+      </div>
+    </a>
+
   </div>
 </section>
 
@@ -1279,62 +1618,41 @@ body.no-results .section{display:none}
 
   <div class="plates">
 
-    <!-- 11 History of Banking -->
-    <a class="plate" href="history-of-banking.html" aria-label="Plate 11: History of Banking">
+    <!-- 12 Fed Supervisory Operating Principles -->
+    <a class="plate" id="plate-12" data-status="live" href="fed-supervisory-comp.html" aria-label="Plate 12: New Federal Reserve Supervisory Operating Principles">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
-          <!-- timeline -->
-          <line x1="10" y1="50" x2="90" y2="50" stroke="currentColor" stroke-width="1.4"/>
-          <line x1="18" y1="42" x2="18" y2="58" stroke="currentColor" stroke-width="1.2"/>
-          <line x1="32" y1="44" x2="32" y2="56" stroke="currentColor" stroke-width="1"/>
-          <line x1="46" y1="40" x2="46" y2="60" stroke="currentColor" stroke-width="1.4"/>
-          <line x1="58" y1="44" x2="58" y2="56" stroke="currentColor" stroke-width="1"/>
-          <line x1="72" y1="38" x2="72" y2="62" class="accent-stroke" stroke-width="1.8"/>
-          <line x1="86" y1="44" x2="86" y2="56" stroke="currentColor" stroke-width="1"/>
-          <!-- year ticks -->
-          <text x="18" y="74" font-family="JetBrains Mono" font-size="6" fill="currentColor" text-anchor="middle" opacity=".5">1791</text>
-          <text x="46" y="74" font-family="JetBrains Mono" font-size="6" fill="currentColor" text-anchor="middle" opacity=".5">1864</text>
-          <text x="72" y="74" font-family="JetBrains Mono" font-size="6" fill="currentColor" text-anchor="middle" opacity=".85">1933</text>
-        </svg>
-        <span class="plate-stamp">№ 11</span>
-      </div>
-      <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Plate 11</span><span class="plate-section">Structural Frameworks</span></div>
-        <h3 class="plate-title">History of <em>Banking</em></h3>
-        <p class="plate-desc">A long-arc timeline of U.S. banking structure — from the First Bank of the United States to the dual-charter system as it stands today, with the inflection points called out.</p>
-        <div class="plate-tags"><span>Nat'l Bank Act 1864</span><span>Glass-Steagall</span><span>Dodd-Frank</span></div>
-        <span class="plate-link"><span>View plate</span><span class="arrow">→</span></span>
-      </div>
-    </a>
-
-    <!-- 12 Fed Supervisory Comp -->
-    <a class="plate" href="fed-supervisory-comp.html" aria-label="Plate 12: Fed Supervisory Comp">
-      <div class="symbol-frame">
-        <svg viewBox="0 0 100 100" aria-hidden="true">
-          <!-- comparison bars -->
-          <line x1="14" y1="82" x2="86" y2="82" stroke="currentColor" stroke-width="1"/>
-          <rect x="22" y="44" width="14" height="38" fill="currentColor"/>
-          <rect x="42" y="30" width="14" height="52" fill="none" stroke="currentColor" stroke-width="1.4"/>
-          <rect x="62" y="56" width="14" height="26" class="accent-fill"/>
-          <!-- comparison rule -->
-          <line x1="22" y1="22" x2="76" y2="22" stroke="currentColor" stroke-width="0.7" stroke-dasharray="2 2"/>
-          <text x="29" y="18" font-family="JetBrains Mono" font-size="6" fill="currentColor" opacity=".6" text-anchor="middle">FED</text>
-          <text x="49" y="18" font-family="JetBrains Mono" font-size="6" fill="currentColor" opacity=".6" text-anchor="middle">FDIC</text>
-          <text x="69" y="18" font-family="JetBrains Mono" font-size="6" fill="currentColor" opacity=".6" text-anchor="middle">OCC</text>
+          <!-- pivot: incoming path, then a change of course -->
+          <!-- incoming heading from lower-left -->
+          <line x1="16" y1="84" x2="50" y2="50" stroke="currentColor" stroke-width="1.8"/>
+          <!-- old heading (the path not taken) — faded, dashed, continuing straight -->
+          <line x1="50" y1="50" x2="84" y2="16" stroke="currentColor" stroke-width="1.2" stroke-dasharray="3 3" opacity=".35"/>
+          <!-- new heading — redirected, solid, accent -->
+          <line x1="50" y1="50" x2="86" y2="50" class="accent-stroke" stroke-width="2.4"/>
+          <!-- arrowhead on the new heading -->
+          <path d="M 86 50 L 78 45 L 80 50 L 78 55 Z" class="accent-fill"/>
+          <!-- pivot node -->
+          <circle cx="50" cy="50" r="6" fill="none" class="accent-stroke" stroke-width="1.6"/>
+          <circle cx="50" cy="50" r="2.4" class="accent-fill"/>
+          <!-- arc indicating the turn -->
+          <path d="M 67 33 A 24 24 0 0 1 70 50" fill="none" stroke="currentColor" stroke-width="0.7" opacity=".4"/>
+          <!-- labels -->
+          <text x="78" y="12" font-family="JetBrains Mono" font-size="5.5" fill="currentColor" opacity=".4" text-anchor="middle" letter-spacing="0.5">PROCESS</text>
+          <text x="74" y="64" font-family="JetBrains Mono" font-size="5.5" fill="currentColor" opacity=".8" text-anchor="middle" letter-spacing="0.5">MATERIAL RISK</text>
         </svg>
         <span class="plate-stamp">№ 12</span>
       </div>
       <div class="plate-body">
         <div class="plate-meta"><span class="plate-num">Plate 12</span><span class="plate-section">Structural Frameworks</span></div>
-        <h3 class="plate-title">Fed Supervisory <em>Comp</em></h3>
-        <p class="plate-desc">A direct comparison of <strong>Federal Reserve supervisory practice</strong> against the FDIC and OCC — examination cadence, capital review, and merger jurisdiction.</p>
-        <div class="plate-tags"><span>FRA § 11</span><span>12 USC § 1818</span><span>BHCA</span></div>
+        <h3 class="plate-title">New Federal Reserve Supervisory <em>Operating Principles</em></h3>
+        <p class="plate-desc">A look at an important pivot &mdash; Vice Chair Bowman's <strong>Statement of Supervisory Operating Principles</strong>, which redirects Federal Reserve examiners toward material financial risk and away from process, and the October 2025 &rarr; April 2026 revision arc.</p>
+        <div class="plate-tags"><span>Material Risk</span><span>MRA / MRIA</span><span>VCfS Bowman</span></div>
         <span class="plate-link"><span>View plate</span><span class="arrow">→</span></span>
       </div>
     </a>
 
     <!-- 13 US Trust Company Regulatory Framework -->
-    <a class="plate" href="us-trust-company-regulatory-framework.html" aria-label="Plate 13: U.S. Trust Company Regulatory Framework">
+    <a class="plate" id="plate-13" data-status="live" href="us-trust-company-regulatory-framework.html" aria-label="Plate 13: U.S. Trust Company Regulatory Framework">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- vault / keyhole -->
@@ -1361,7 +1679,7 @@ body.no-results .section{display:none}
     </a>
 
     <!-- 14 OCC Preemption Timeline -->
-    <a class="plate" href="occ-preemption-timeline.html" aria-label="Plate 14: OCC Preemption Timeline">
+    <a class="plate" id="plate-14" data-status="live" href="occ-preemption-timeline.html" aria-label="Plate 14: OCC Preemption Timeline">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- stacked layers, accent extending -->
@@ -1387,7 +1705,7 @@ body.no-results .section{display:none}
     </a>
 
     <!-- 15 Regulatory Map -->
-    <a class="plate" href="regulatory-map.html" aria-label="Plate 15: Regulatory Map">
+    <a class="plate" id="plate-15" data-status="live" href="regulatory-map.html" aria-label="Plate 15: Regulatory Map">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- compass rose -->
@@ -1433,7 +1751,7 @@ body.no-results .section{display:none}
 </footer>
 
 <div class="print-strip">
-  <span>End of Catalogue &middot; <span class="acc">Plates 01 — 15 &middot; Lookahead</span></span>
+  <span>End of Catalogue &middot; <span class="acc">Plates 01 — 15</span></span>
   <span>U.S. Financial Services Regulation</span>
   <span>Set in Fraunces, Archivo &amp; JetBrains Mono</span>
 </div>
@@ -1505,6 +1823,134 @@ body.no-results .section{display:none}
       }
     }
   });
+})();
+
+
+// ============================================================
+// URL SEARCH STATE + CLICKABLE TAGS
+// ============================================================
+(function(){
+  const input = document.getElementById('catalogue-search');
+  if(!input) return;
+
+  // Apply ?q= on load
+  const params = new URLSearchParams(location.search);
+  const q0 = params.get('q');
+  if(q0){
+    input.value = q0;
+    input.dispatchEvent(new Event('input', {bubbles:true}));
+  }
+
+  // Mirror query into the URL (replaceState, no history spam)
+  function syncUrl(){
+    const u = new URL(location.href);
+    if(input.value) u.searchParams.set('q', input.value);
+    else u.searchParams.delete('q');
+    history.replaceState(null, '', u);
+  }
+  input.addEventListener('input', syncUrl);
+
+  // Clickable tags -> set query (intercept the card link)
+  document.querySelectorAll('.plate-tags span').forEach(tag => {
+    tag.setAttribute('role','button');
+    tag.setAttribute('tabindex','0');
+    const fire = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      input.value = tag.textContent.trim();
+      input.dispatchEvent(new Event('input', {bubbles:true}));
+      syncUrl();
+      document.getElementById('search').scrollIntoView({behavior:'smooth', block:'start'});
+    };
+    tag.addEventListener('click', fire);
+    tag.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter' || e.key === ' ') fire(e);
+    });
+  });
+})();
+
+// ============================================================
+// INDEX DRAWER
+// ============================================================
+(function(){
+  const tab = document.getElementById('index-tab');
+  const panel = document.getElementById('index-panel');
+  const scrim = document.getElementById('index-scrim');
+  const closeBtn = document.getElementById('index-close');
+  const topBtn = document.getElementById('index-top');
+  const items = Array.from(document.querySelectorAll('.index-item'));
+  if(!tab || !panel) return;
+
+  function open(){
+    document.body.classList.add('index-open');
+    tab.setAttribute('aria-expanded','true');
+    panel.setAttribute('aria-hidden','false');
+  }
+  function close(){
+    document.body.classList.remove('index-open');
+    tab.setAttribute('aria-expanded','false');
+    panel.setAttribute('aria-hidden','true');
+  }
+  function toggle(){
+    document.body.classList.contains('index-open') ? close() : open();
+  }
+
+  tab.addEventListener('click', toggle);
+  scrim.addEventListener('click', close);
+  closeBtn.addEventListener('click', close);
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape' && document.body.classList.contains('index-open')) close();
+  });
+
+  // Reflect draft status into the index entries
+  items.forEach(item => {
+    const el = document.getElementById(item.dataset.target);
+    if(el && el.getAttribute('data-status') === 'draft') item.classList.add('is-draft');
+    item.addEventListener('click', () => {
+      const target = document.getElementById(item.dataset.target);
+      if(target){
+        close();
+        // allow the panel to begin closing, then scroll
+        setTimeout(() => target.scrollIntoView({behavior:'smooth', block:'start'}), 120);
+      }
+    });
+  });
+
+  if(topBtn){
+    topBtn.addEventListener('click', () => {
+      close();
+      setTimeout(() => window.scrollTo({top:0, behavior:'smooth'}), 120);
+    });
+  }
+
+  // Scrollspy — highlight the entry for the plate currently in view
+  const targets = items.map(i => document.getElementById(i.dataset.target)).filter(Boolean);
+
+  const inView = new Set();
+  let activeId = null;
+  function refreshActive(){
+    let topId = null, topY = Infinity;
+    inView.forEach(id => {
+      const el = document.getElementById(id);
+      if(el){
+        const y = el.getBoundingClientRect().top;
+        if(y < topY){ topY = y; topId = id; }
+      }
+    });
+    if(topId === activeId) return;
+    activeId = topId;
+    items.forEach(i => i.classList.toggle('is-active', i.dataset.target === topId));
+  }
+
+  const spy = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting) inView.add(e.target.id);
+      else inView.delete(e.target.id);
+    });
+    refreshActive();
+  }, {rootMargin:'-20% 0px -55% 0px', threshold:0});
+
+  targets.forEach(t => spy.observe(t));
 })();
 
 // Re-trigger reveal animations per section when entering viewport
