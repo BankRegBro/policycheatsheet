@@ -70,7 +70,7 @@
     padding: 1.25rem 0;
   }
   @media (min-width: 768px) {
-    .stats-grid { grid-template-columns: repeat(5, 1fr); }
+    .stats-grid { grid-template-columns: repeat(4, 1fr); }
   }
   .stat-label {
     font-family: 'IBM Plex Mono', monospace;
@@ -206,34 +206,6 @@
   }
   .clear-link:hover { text-decoration: none; }
 
-  /* ===== LANE LEGEND ===== */
-  .lane-legend {
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-size: 0.75rem;
-    color: #525252;
-    font-family: 'IBM Plex Sans', sans-serif;
-    flex-wrap: wrap;
-  }
-  .lane-swatch {
-    display: inline-block;
-    width: 36px;
-    height: 14px;
-    background: #FBF5E3;
-    border-left: 4px solid #9A6700;
-  }
-  .lane-label {
-    font-family: 'IBM Plex Mono', monospace;
-    letter-spacing: 0.05em;
-  }
-  .lane-desc {
-    color: #737373;
-    font-style: italic;
-    font-family: 'IBM Plex Serif', serif;
-  }
-
   /* ===== TIMELINE ===== */
   .month-section { margin-bottom: 2.5rem; }
   .month-header {
@@ -267,19 +239,7 @@
     background: transparent;
   }
   .event:hover { background: #FFFFFF; }
-  .event.is-csbs { background: #FBF5E3; }
-  .event.is-csbs:hover { background: #FFFFFF; }
-  .event.is-expanded,
-  .event.is-csbs.is-expanded { background: #FFFFFF; }
-
-  .csbs-stripe {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background: #9A6700;
-  }
+  .event.is-expanded { background: #FFFFFF; }
 
   .event-row {
     display: grid;
@@ -287,7 +247,6 @@
     gap: 0.75rem;
     padding: 1rem 0;
   }
-  .event.is-csbs .event-row { padding-left: 12px; }
 
   .event-date {
     grid-column: span 3;
@@ -413,10 +372,7 @@ const AGENCIES = {
   FED: { name: 'FED', full: 'Federal Reserve Board', color: '#2D5016', tint: '#F0FDF4' },
   CFPB: { name: 'CFPB', full: 'Consumer Financial Protection Bureau', color: '#553C9A', tint: '#F5F3FF' },
   INTER: { name: 'INTER', full: 'Interagency', color: '#3F3F46', tint: '#F4F4F5' },
-  CSBS: { name: 'CSBS', full: 'CSBS / Internal — state-system events, leave, onboarding', color: '#9A6700', tint: '#FFFBEB' },
 };
-
-const CSBS_ACCENT = '#9A6700';
 
 const CONFIDENCE = {
   'High':     { color: '#15803D', bg: '#DCFCE7', label: 'High' },
@@ -427,7 +383,6 @@ const CONFIDENCE = {
 
 const EVENTS = [
   // JUNE
-  { id: 39, month: 'June', date: 'All month', sortKey: '2026-06-01', agency: 'CSBS', title: 'NR Leave', detail: 'Out of office June 1\u201330. Coverage handoffs in place; high-priority items routed to backup. Note that June 9 and June 18 comment deadlines (AML/CFT, capital framework) fall inside this window \u2014 anything still in draft as of late May should clear before EOD May 29.', confidence: 'High' },
   { id: 1, month: 'June', date: 'Jun 9', sortKey: '2026-06-09', agency: 'INTER', title: 'Comment deadlines close: AML/CFT Program Rule', detail: 'FinCEN NPRM + FDIC/OCC/NCUA banking-agency companion. Also closing the same day: FinCEN/OFAC stablecoin AML NPR and FDIC GENIUS Act prudential standards NPR.', confidence: 'High' },
   { id: 2, month: 'June', date: 'Jun 18', sortKey: '2026-06-18', agency: 'INTER', title: 'Comment deadline closes: 3-part Capital Framework NPR', detail: 'Expanded Risk-Based Approach for Category I/II banks + U.S. Standardized Approach for non-Cat I/II + Fed-only GSIB systemic risk surcharge. OCC estimates 6.9% aggregate binding capital reduction under standardized approach.', confidence: 'High' },
   { id: 3, month: 'June', date: 'Mid\u2013late Jun', sortKey: '2026-06-20', agency: 'FED', title: 'Federal Reserve GENIUS Act NPR \u2014 expected issuance', detail: 'Bowman has signaled coordination with OCC/FDIC. The Fed is the last primary stablecoin regulator without an NPR. Must clear OIRA and Federal Register before the July 18 statutory deadline can be met. This is the single largest blocker in the GENIUS schedule.', confidence: 'Med-High' },
@@ -435,37 +390,30 @@ const EVENTS = [
   { id: 5, month: 'June', date: 'All month', sortKey: '2026-06-30', agency: 'INTER', title: 'Interagency drafting of GENIUS Act final rules', detail: 'OCC/FDIC reviewing 200+ question comments; OIRA reviews expected to begin late June.', confidence: 'Med-High' },
 
   // JULY
-  { id: 40, month: 'July', date: 'All month', sortKey: '2026-07-01', agency: 'CSBS', title: 'NR Leave (continuation)', detail: 'Out of office July 1\u201331, continuation of June leave. Senior Analyst start (Jul 28) and Fed Payment Account comment deadline (Jul 27) both land in the final week \u2014 coverage plan should anticipate a hot return window.', confidence: 'High' },
   { id: 6, month: 'July', date: 'Jul 1', sortKey: '2026-07-01', agency: 'INTER', title: 'CBLR final rule effective', detail: '9% \u2192 8% threshold; extended grace period for non-qualifying institutions.', confidence: 'High' },
   { id: 7, month: 'July', date: 'Early Jul', sortKey: '2026-07-05', agency: 'FED', title: 'Federal Reserve reputational risk final rule \u2014 likely OIRA submission', detail: 'Comments closed April 27; aligned with the OCC/FDIC final rule already effective June 6.', confidence: 'Med-High' },
   { id: 8, month: 'July', date: 'Mid-Jul', sortKey: '2026-07-15', agency: 'INTER', title: 'GENIUS Act final rules \u2014 first wave (OCC + FDIC)', detail: 'OCC application/licensing framework, reserve/redemption/capital standards; FDIC IDI subsidiary application framework expected to finalize first.', confidence: 'High' },
   { id: 9, month: 'July', date: 'Jul 18', sortKey: '2026-07-18', agency: 'INTER', title: 'GENIUS Act statutory finalization deadline', detail: '12 U.S.C. \u00a7 5903(a)(4)(A); rules required within 1 year of enactment (July 18, 2025). Effective date triggers ~120 days later, around mid-November.', confidence: 'High' },
-  { id: 10, month: 'July', date: 'Late Jul', sortKey: '2026-07-25', agency: 'INTER', title: 'Treasury "substantially similar" final rule + FinCEN/OFAC stablecoin AML final rule', detail: 'Statutory deadline drives finalization. Treasury rule is the gateway for state stablecoin regimes for issuers under $10B \u2014 CSBS comment posture matters here.', confidence: 'Med-High' },
-  { id: 41, month: 'July', date: 'Jul 27', sortKey: '2026-07-27', agency: 'FED', title: 'Comment deadline closes: Fed "Payment Account" (skinny master account) NPR', detail: 'Notice & request for comment, Docket No. OP-1878 (91 FR 30627), published May 26, 2026. Proposes a new Part IV to the PSR Policy creating special-purpose "Payment Accounts" for legally eligible institutions outside the full Master Account framework. Standard terms: 90-calendar-day review window for Payment Account requests (45 days for Tier 1 Master Account requests); Closing Balance Limit set per-institution by the Reserve Bank, not to exceed $1B; no intraday credit; no interest on balances; no discount-window access; no role as OC 1 Correspondent or OC 1 Respondent. Service access limited to Fedwire Funds, FedNow, NSS, and Fedwire Securities (free-of-payment only) \u2014 notably excludes FedACH. A companion Regulation D NPR proposes zero interest on Payment Account balances. The Board is also encouraging Reserve Banks to pause decisions on Tier 3 access requests until the policy development process concludes \u2014 directly material to stablecoin issuers, state-chartered trust companies, and other Tier 2/3 charter holders. This is the most concrete federal answer to date on the master account access question and a priority comment vehicle for the state system.', confidence: 'High' },
+  { id: 10, month: 'July', date: 'Late Jul', sortKey: '2026-07-25', agency: 'INTER', title: 'Treasury "substantially similar" final rule + FinCEN/OFAC stablecoin AML final rule', detail: 'Statutory deadline drives finalization. Treasury rule is the gateway for state stablecoin regimes for issuers under $10B.', confidence: 'Med-High' },
+  { id: 41, month: 'July', date: 'Jul 27', sortKey: '2026-07-27', agency: 'FED', title: 'Comment deadline closes: Fed "Payment Account" (skinny master account) NPR', detail: 'Notice & request for comment, Docket No. OP-1878 (91 FR 30627), published May 26, 2026. Proposes a new Part IV to the PSR Policy creating special-purpose "Payment Accounts" for legally eligible institutions outside the full Master Account framework. Standard terms: 90-calendar-day review window for Payment Account requests (45 days for Tier 1 Master Account requests); Closing Balance Limit set per-institution by the Reserve Bank, not to exceed $1B; no intraday credit; no interest on balances; no discount-window access; no role as OC 1 Correspondent or OC 1 Respondent. Service access limited to Fedwire Funds, FedNow, NSS, and Fedwire Securities (free-of-payment only) \u2014 notably excludes FedACH. A companion Regulation D NPR proposes zero interest on Payment Account balances. The Board is also encouraging Reserve Banks to pause decisions on Tier 3 access requests until the policy development process concludes \u2014 directly material to stablecoin issuers, state-chartered trust companies, and other Tier 2/3 charter holders. This is the most concrete federal answer to date on the master account access question.', confidence: 'High' },
   { id: 11, month: 'July', date: 'Late Jul', sortKey: '2026-07-28', agency: 'INTER', title: 'FDIC/OCC "Unsafe or Unsound Practices" final rule \u2014 OIRA review window', detail: 'Comments closed Dec 29, 2025. Hill signaled finalization is a 2026 priority.', confidence: 'Med-High' },
-  { id: 42, month: 'July', date: 'Jul 28', sortKey: '2026-07-28', agency: 'CSBS', title: 'Senior Analyst \u2014 start date', detail: 'New senior analyst joins the team. Day 1 logistics: orientation, IT/access provisioning, badging, intro round with desk leads and policy principals. Material onboarding kicks off the following week as NR returns from leave; the timing is intentional to bring NR back into a defined ramp plan rather than ad hoc handoff.', confidence: 'High' },
   { id: 12, month: 'July', date: 'All month', sortKey: '2026-07-30', agency: 'CFPB', title: 'CFPB continues development of Section 1033 interim final rule', detail: 'Court-monitored process in E.D. Ky. Bureau cited funding uncertainty as APA "good cause" basis for skipping notice-and-comment.', confidence: 'Medium' },
 
   // AUGUST
-  { id: 43, month: 'August', date: 'All month', sortKey: '2026-08-01', agency: 'CSBS', title: 'Senior Analyst \u2014 onboarding (month 1)', detail: 'First full month. Reading-in on the core portfolio: dual banking system foundations, CSBS positions on bank merger reform and AML/CFT, the GENIUS Act implementation landscape, the master account / Payment Account file (Fed Docket OP-1878), and the trust company workstream. Stakeholder introductions with federal agency counterparts at FDIC, OCC, and the Fed. AARMR pre-conference day (Aug 10\u201311) is a natural early introduction to the nonbank/mortgage regulator network; CSBS Board Meetings & Strategic Planning (Aug 24\u201327) is the first full exposure to the state-system policy agenda.', confidence: 'High' },
   { id: 13, month: 'August', date: 'Early Aug', sortKey: '2026-08-05', agency: 'INTER', title: 'GENIUS Act final rules \u2014 wave 2 (FinCEN/OFAC, NCUA, Treasury)', detail: 'Follow-on issuances expected to publish in early August if not already in July.', confidence: 'Med-High' },
-  { id: 14, month: 'August', date: 'Aug 10\u201311', sortKey: '2026-08-10', agency: 'CSBS', title: 'CSBS Pre-Conference Day at AARMR', detail: 'Annual nonbank/mortgage regulator coordination event.', confidence: 'High' },
   { id: 15, month: 'August', date: 'Aug 17', sortKey: '2026-08-17', agency: 'INTER', title: 'FDIC/OCC "Unsafe or Unsound Practices" final rule \u2014 target publication', detail: 'Could be issued earlier; companion guidance on MRAs/supervisory observations likely to accompany.', confidence: 'Medium' },
-  { id: 16, month: 'August', date: 'Aug 24\u201327', sortKey: '2026-08-24', agency: 'CSBS', title: 'CSBS Board Meetings & Strategic Planning Meeting', detail: 'Annual strategic planning convening. Sets the state-system policy agenda for the next FY.', confidence: 'High' },
   { id: 17, month: 'August', date: 'Late Aug', sortKey: '2026-08-28', agency: 'INTER', title: 'CRA rescission final rule \u2014 target window', detail: 'Reinstates 1995 CRA regulations. Comments closed Aug 18, 2025; over a year of staff review by this point.', confidence: 'Med-High' },
   { id: 18, month: 'August', date: 'Late Aug', sortKey: '2026-08-30', agency: 'FED', title: 'Fed reputational risk final rule \u2014 target publication', detail: 'Will trail OCC/FDIC by ~4 months; effective date likely early Q4.', confidence: 'Med-High' },
 
   // SEPTEMBER
-  { id: 44, month: 'September', date: 'All month', sortKey: '2026-09-01', agency: 'CSBS', title: 'Senior Analyst \u2014 onboarding (month 2, ramp)', detail: 'Targeted full ramp by end of Q3. Lead role on a defined workstream begins this month. The 2026 CSBS Regulatory Summit (Sep 21\u201323) is the natural network-building and visibility moment \u2014 pair the analyst into principal speaker sessions and federal counterpart coffees. By month-end the analyst should be carrying first-chair on at least one comment file (most likely the Fed Payment Account NPR follow-on track or the Fall Unified Agenda response coordination).', confidence: 'High' },
   { id: 19, month: 'September', date: 'Mid-Sep', sortKey: '2026-09-15', agency: 'INTER', title: 'Fall 2025 Unified Agenda \u2014 anticipated publication', detail: 'Spring 2025 Agenda published Sept 22, 2025; Fall 2025 Agenda overdue. Will be the next public snapshot of multi-year pipelines.', confidence: 'Med-High' },
-  { id: 20, month: 'September', date: 'Sep 21\u201323', sortKey: '2026-09-21', agency: 'CSBS', title: '2026 CSBS Regulatory Summit', detail: 'Major state-federal coordination event; principal speeches typical.', confidence: 'High' },
   { id: 21, month: 'September', date: 'Late Sep', sortKey: '2026-09-25', agency: 'FDIC', title: 'FDIC Bank Merger SOP modernization NPR \u2014 possible issuance', detail: 'Hill: "conducting a broader reevaluation of its bank merger review process \u2026 considering additional updates to modernize our SOP." No firm timing.', confidence: 'Medium' },
   { id: 22, month: 'September', date: 'Late Sep', sortKey: '2026-09-27', agency: 'INTER', title: 'Wave-2 GENIUS Act final rules \u2014 stragglers/Fed', detail: 'If Fed NPR slips into July, finalization slides to Q3 end; could also produce an interagency joint final rule for tokenized deposits.', confidence: 'Medium' },
   { id: 23, month: 'September', date: 'All month', sortKey: '2026-09-30', agency: 'FDIC', title: 'FDIC tokenized deposits guidance \u2014 expected', detail: 'Hill: "currently developing guidance." Likely FIL or interpretive guidance rather than rulemaking.', confidence: 'Med-High' },
 
   // OCTOBER
   { id: 24, month: 'October', date: 'Early Oct', sortKey: '2026-10-05', agency: 'INTER', title: 'Capital Framework \u2014 staff review of comment volume', detail: 'Major rule; will not be finalized in 2026. Interagency drafting of final rule package likely begins this quarter. Realistic baseline: 2027 final rules.', confidence: 'High' },
-  { id: 25, month: 'October', date: 'Oct 6\u20137', sortKey: '2026-10-06', agency: 'CSBS', title: '2026 Community Banking Research Conference', detail: 'FDIC/Fed/CSBS-cosponsored research conference.', confidence: 'High' },
+  { id: 25, month: 'October', date: 'Oct 6\u20137', sortKey: '2026-10-06', agency: 'INTER', title: '2026 Community Banking Research Conference', detail: 'FDIC/Fed-cosponsored research conference.', confidence: 'High' },
   { id: 26, month: 'October', date: 'Mid-Oct', sortKey: '2026-10-15', agency: 'FDIC', title: 'Phase 2 thresholds NPR \u2014 possible issuance', detail: 'Hill: "multi-phase effort to reevaluate thresholds." Phase 1 (Part 363) finalized Dec 2025.', confidence: 'Medium' },
   { id: 27, month: 'October', date: 'Late Oct', sortKey: '2026-10-25', agency: 'INTER', title: 'AML/CFT Program Rule final rule \u2014 OIRA review window', detail: 'If comments close June 9 and staff move quickly, final rule could be at OIRA by October. More likely Q1 2027.', confidence: 'Low-Med' },
   { id: 28, month: 'October', date: 'Late Oct', sortKey: '2026-10-28', agency: 'CFPB', title: 'Section 1033 interim final rule \u2014 target publication', detail: 'American Banker reporting (Dec 2025): Bureau plans IFR before Dec 31. Could appear earlier given litigation timeline in E.D. Ky.', confidence: 'Med-High' },
@@ -473,48 +421,13 @@ const EVENTS = [
   // NOVEMBER
   { id: 29, month: 'November', date: 'Early Nov', sortKey: '2026-11-05', agency: 'FDIC', title: 'FDIC failed-bank marketing process \u2014 next-step announcement', detail: 'Hill: "expect to take further steps." Pre-qualification process for nonbank bidders publicly piloted; broader rollout likely in Q4.', confidence: 'Medium' },
   { id: 30, month: 'November', date: 'Mid-Nov', sortKey: '2026-11-12', agency: 'INTER', title: 'FFIEC CAMELS update \u2014 possible request for comment or revised guidance', detail: 'Active interagency work since 2025. Hill specifically signaled reevaluating component definitions to focus on financial risk vs. process.', confidence: 'Medium' },
-  { id: 31, month: 'November', date: 'Nov 16\u201318', sortKey: '2026-11-16', agency: 'CSBS', title: '2026 CSBS Trust Forum', detail: 'Major trust supervisor event. Timely given OCC trust-bank chartering rule finalized Feb 2026 and ongoing state-charter trust company dynamics (MTL exposure, FRB master account access, federal preemption).', confidence: 'High' },
-  { id: 32, month: 'November', date: 'Nov 17\u201319', sortKey: '2026-11-17', agency: 'CSBS', title: '2026 Cyber & IT Supervisory Forum', detail: 'Overlaps Trust Forum; co-located.', confidence: 'High' },
   { id: 33, month: 'November', date: 'Late Nov', sortKey: '2026-11-25', agency: 'CFPB', title: 'Continued CFPB rulemaking from Spring 2025 docket', detail: 'Watch list: UDAAP definition; mortgage servicing rewrite; rescissions of nonbank registry, loan originator comp, payday lending rules.', confidence: 'Medium' },
 
   // DECEMBER
-  { id: 34, month: 'December', date: 'Early Dec', sortKey: '2026-12-07', agency: 'CSBS', title: 'CSBS Board Meetings & Supervisors Symposium', detail: 'Annual capstone event; historically first or second week of December. Sets the state-system tone for 2027. The 2025 Symposium was Dec 8\u201311 in Clearwater, FL.', confidence: 'High' },
   { id: 35, month: 'December', date: 'Mid-Dec', sortKey: '2026-12-12', agency: 'INTER', title: 'Year-end final rule cluster \u2014 mop-up', detail: 'Banking agencies historically issue a wave of final rules in late November/early December. Likely candidates: bank merger SOP NPR finalization (if proposed in Q3); additional GENIUS Act technical amendments; CAMELS guidance.', confidence: 'Med-High' },
   { id: 36, month: 'December', date: 'Mid-Dec', sortKey: '2026-12-15', agency: 'FDIC', title: 'De novo deposit insurance application framework changes \u2014 possible issuance', detail: 'Hill: "considering modifications to certain of our requirements that may overly restrict de novo formation." Likely FIL or interpretive guidance rather than rulemaking.', confidence: 'Medium' },
   { id: 37, month: 'December', date: 'Mid-Dec', sortKey: '2026-12-18', agency: 'CFPB', title: 'CFPB Section 1033 interim final rule \u2014 backstop date', detail: 'Bureau publicly tied issuance to its funding posture ("expects to run out of money by Dec. 31"); this is a no-later-than date if no earlier publication.', confidence: 'High' },
   { id: 38, month: 'December', date: 'Late Dec', sortKey: '2026-12-22', agency: 'INTER', title: 'Annual interagency CRA asset-size threshold adjustment, etc.', detail: 'Routine year-end actions \u2014 typical for the December FDIC board meeting agenda.', confidence: 'High' },
-
-  // ============ RECURRING CSBS / INTERNAL ITEMS ============
-
-  // CSBS Regulatory Committee \u2014 mid-month standing
-  { id: 45, month: 'June', date: 'Jun 16', sortKey: '2026-06-16', agency: 'CSBS', title: 'CSBS Regulatory Committee', detail: 'Mid-month standing meeting. Falls inside NR leave \u2014 coverage to attend.', confidence: 'High' },
-  { id: 46, month: 'July', date: 'Jul 14', sortKey: '2026-07-14', agency: 'CSBS', title: 'CSBS Regulatory Committee', detail: 'Mid-month standing meeting. Falls inside NR leave \u2014 coverage to attend.', confidence: 'High' },
-  { id: 47, month: 'August', date: 'Aug 13', sortKey: '2026-08-13', agency: 'CSBS', title: 'CSBS Regulatory Committee', detail: 'Mid-month standing meeting. First full meeting back from leave; Senior Analyst to shadow.', confidence: 'High' },
-  { id: 48, month: 'September', date: 'Sep 15', sortKey: '2026-09-15', agency: 'CSBS', title: 'CSBS Regulatory Committee', detail: 'Mid-month standing meeting. Senior Analyst to begin contributing on agenda items.', confidence: 'High' },
-  { id: 49, month: 'October', date: 'Oct 14', sortKey: '2026-10-14', agency: 'CSBS', title: 'CSBS Regulatory Committee', detail: 'Mid-month standing meeting.', confidence: 'High' },
-  { id: 50, month: 'November', date: 'Nov 13', sortKey: '2026-11-13', agency: 'CSBS', title: 'CSBS Regulatory Committee', detail: 'Mid-month standing meeting.', confidence: 'High' },
-  { id: 51, month: 'December', date: 'Dec 15', sortKey: '2026-12-15', agency: 'CSBS', title: 'CSBS Regulatory Committee', detail: 'Mid-month standing meeting. Final meeting of 2026.', confidence: 'High' },
-
-  // CSBS Monthly Policy Briefing \u2014 late-month standing
-  { id: 52, month: 'June', date: 'Jun 26', sortKey: '2026-06-26', agency: 'CSBS', title: 'CSBS Monthly Policy Briefing', detail: 'Late-month standing briefing. Falls inside NR leave \u2014 coverage to deliver/attend.', confidence: 'High' },
-  { id: 53, month: 'July', date: 'Jul 31', sortKey: '2026-07-31', agency: 'CSBS', title: 'CSBS Monthly Policy Briefing', detail: 'Late-month standing briefing. Final day of NR leave window; debrief on the Fed Payment Account comment file (closed Jul 27) is the obvious centerpiece.', confidence: 'High' },
-  { id: 54, month: 'August', date: 'Aug 28', sortKey: '2026-08-28', agency: 'CSBS', title: 'CSBS Monthly Policy Briefing', detail: 'Late-month standing briefing. Follows Strategic Planning week \u2014 natural moment to flag policy outputs from those sessions.', confidence: 'High' },
-  { id: 55, month: 'September', date: 'Sep 30', sortKey: '2026-09-30', agency: 'CSBS', title: 'CSBS Monthly Policy Briefing', detail: 'Late-month standing briefing. Q3 wrap; Regulatory Summit (Sep 21\u201323) takeaways the likely centerpiece.', confidence: 'High' },
-  { id: 56, month: 'October', date: 'Oct 29', sortKey: '2026-10-29', agency: 'CSBS', title: 'CSBS Monthly Policy Briefing', detail: 'Late-month standing briefing.', confidence: 'High' },
-  { id: 57, month: 'November', date: 'Nov 20', sortKey: '2026-11-20', agency: 'CSBS', title: 'CSBS Monthly Policy Briefing', detail: 'Late-month standing briefing. Pre-Thanksgiving slot; Trust Forum (Nov 16\u201318) takeaways likely.', confidence: 'High' },
-  { id: 58, month: 'December', date: 'Dec 18', sortKey: '2026-12-18', agency: 'CSBS', title: 'CSBS Monthly Policy Briefing', detail: 'Late-month standing briefing. Year-end wrap; sets 2027 agenda framing alongside the Symposium.', confidence: 'High' },
-
-  // CSBS Trust Advisory Group \u2014 late month, every two months (May / Jul / Sep / Nov)
-  { id: 59, month: 'July', date: 'Jul 29', sortKey: '2026-07-29', agency: 'CSBS', title: 'CSBS Trust Advisory Group', detail: 'Bimonthly meeting (May / Jul / Sep / Nov, late month). Falls inside NR leave window. Live context: OCC trust-bank chartering rule (finalized Feb 2026), state-charter trust company MTL exposure, FRB master account access pathways for trust companies.', confidence: 'High' },
-  { id: 60, month: 'September', date: 'Sep 24', sortKey: '2026-09-24', agency: 'CSBS', title: 'CSBS Trust Advisory Group', detail: 'Bimonthly meeting (May / Jul / Sep / Nov, late month). Comes the week after the Regulatory Summit \u2014 useful for surfacing trust-supervisor reactions to summit speeches.', confidence: 'High' },
-  { id: 61, month: 'November', date: 'Nov 24', sortKey: '2026-11-24', agency: 'CSBS', title: 'CSBS Trust Advisory Group', detail: 'Bimonthly meeting (May / Jul / Sep / Nov, late month). The week after Trust Forum (Nov 16\u201318) \u2014 natural debrief venue.', confidence: 'High' },
-
-  // CSBS Bankers Advisory Board \u2014 at Strategic Planning (Aug) and Symposium (Dec)
-  { id: 62, month: 'August', date: 'Aug 24\u201327', sortKey: '2026-08-25', agency: 'CSBS', title: 'CSBS Bankers Advisory Board (at Strategic Planning)', detail: 'BAB convenes during the CSBS Board Meetings & Strategic Planning week. Banker input on the FY policy agenda; high-value listening for emerging community-bank concerns.', confidence: 'High' },
-  { id: 63, month: 'December', date: 'Early Dec', sortKey: '2026-12-08', agency: 'CSBS', title: 'CSBS Bankers Advisory Board (at Symposium)', detail: 'BAB convenes during the CSBS Supervisors Symposium. Year-end banker readout; sets banker engagement priorities heading into 2027.', confidence: 'High' },
-
-  // CSBS District V meeting \u2014 TBD in Sep\u2013Oct window
-  { id: 64, month: 'September', date: 'Sep\u2013Oct (TBD)', sortKey: '2026-09-29', agency: 'CSBS', title: 'CSBS District V meeting', detail: 'Regional district meeting; exact timing pending. Window: late September through October. Tentatively placed in late September on this calendar; will firm up once date confirms.', confidence: 'Med-High' },
 ];
 
 const MONTHS = ['June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -657,28 +570,15 @@ function filtersBlock() {
   `;
 }
 
-function laneLegend() {
-  return `
-    <div class="lane-legend">
-      <span class="lane-swatch" aria-hidden="true"></span>
-      <span class="lane-label">CSBS / INTERNAL LANE</span>
-      <span class="lane-desc">\u2014 state-system events, recurring committee meetings, NR leave, and Senior Analyst onboarding</span>
-    </div>
-  `;
-}
-
 function eventArticle(ev) {
   const agency = AGENCIES[ev.agency];
   const conf = CONFIDENCE[ev.confidence];
   const isExpanded = state.expandedId === ev.id;
-  const isCSBS = ev.agency === 'CSBS';
   const classes = ['event'];
-  if (isCSBS) classes.push('is-csbs');
   if (isExpanded) classes.push('is-expanded');
 
   return `
     <article class="${classes.join(' ')}" data-event-id="${ev.id}">
-      ${isCSBS ? '<div class="csbs-stripe" aria-hidden="true"></div>' : ''}
       <div class="event-row">
         <div class="event-date">${esc(ev.date)}</div>
         <div class="event-agency-cell">
@@ -736,10 +636,6 @@ function footerBlock() {
         <span style="font-weight: 600;">Medium</span> = signaled without timetable.
         <span style="font-weight: 600;">Low-Med</span> = industry expectation only.
       </p>
-      <p>
-        <span class="footer-bold">CSBS / internal lane.</span>
-        Items shaded with a left accent stripe in CSBS gold (<span style="color: ${CSBS_ACCENT}; font-weight: 600;">\u25a0</span>) group state-system events, recurring committee meetings (Regulatory Committee, Monthly Policy Briefing, Trust Advisory Group, Bankers Advisory Board), NR leave, and Senior Analyst onboarding into a single visual lane so workload load-bearing items read together. Toggle the CSBS chip in the filter row to isolate the lane.
-      </p>
       <p class="footer-small">
         Forecasts are most reliable inside the next 90 days. Beyond September, treat dates as quarters.
       </p>
@@ -769,7 +665,7 @@ function render() {
             <span class="masthead-meta">Forecast: Jun\u2013Dec 2026</span>
           </div>
           <h1 class="title">Federal Banking &amp; Consumer<br>Finance Rulemaking</h1>
-          <p class="subtitle">FDIC \u00b7 OCC \u00b7 Federal Reserve \u00b7 CFPB \u2014 with CSBS state-system events and internal scheduling</p>
+          <p class="subtitle">FDIC \u00b7 OCC \u00b7 Federal Reserve \u00b7 CFPB \u2014 with interagency action</p>
         </div>
       </div>
     </header>
@@ -780,7 +676,6 @@ function render() {
           ${statBox('Tracked items', stats.total, '#FAF8F3', hf ? 'of ' + EVENTS.length : 'total')}
           ${statBox('High confidence', stats.highConf, '#86EFAC', '')}
           ${statBox('Statutory deadlines', '3', '#FBBF24', 'GENIUS \u00b7 CBLR \u00b7 1033')}
-          ${statBox('CSBS / internal', stats.byAgency.CSBS, '#FCD34D', 'events + meetings + leave + onboarding')}
           ${statBox('Months covered', '7', '#FAF8F3', 'Jun\u2013Dec')}
         </div>
       </div>
@@ -789,7 +684,6 @@ function render() {
     <div class="container">
       <div class="main-content">
         ${filtersBlock()}
-        ${laneLegend()}
         ${filtered.length === 0
           ? emptyState()
           : MONTHS.map(m => monthSection(m, byMonth[m])).join('')}
