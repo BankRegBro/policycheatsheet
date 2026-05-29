@@ -343,6 +343,44 @@ table.matrix tbody tr.row-odd  td.cell { background: #FAFAF8; }
 
 /* Stat number display helper */
 .stat-block { display: flex; align-items: baseline; }
+
+/* ── Focus visibility (keyboard a11y) ── */
+.card:focus-visible,
+table.matrix tbody td.cell:focus-visible,
+.filter-chip:focus-visible,
+.tab-btn:focus-visible,
+#drawer-close:focus-visible,
+.search-input:focus-visible {
+  outline: 2px solid #1357A0;
+  outline-offset: 2px;
+}
+table.matrix tbody td.cell[tabindex] { cursor: pointer; }
+
+/* ── Print ── */
+@media print {
+  body { background: #fff; }
+  #tab-bar, .controls, .search-wrap, #tooltip,
+  #drawer, #drawer-overlay { display: none !important; }
+  #app-header {
+    background: #fff !important;
+    border-bottom: 2px solid #0A1628;
+    padding: 0 0 12px;
+  }
+  .header-eyebrow { color: #555 !important; }
+  .header-title, .stat-num { color: #111 !important; }
+  .header-sub, .stat-lbl { color: #444 !important; }
+  #content { padding: 12px 0; }
+  .matrix-scroll { overflow: visible !important; border: none; box-shadow: none; }
+  table.matrix thead th.corner,
+  table.matrix thead th.reg-col {
+    background: #fff !important; color: #111 !important;
+    border-bottom: 2px solid #0A1628 !important;
+  }
+  table.matrix tbody td.inst-name { background: #fff !important; color: #111 !important; }
+  .card-grid { display: block; }
+  .card { break-inside: avoid; page-break-inside: avoid; margin-bottom: 8px; box-shadow: none; }
+  .matrix-dot { box-shadow: 0 0 0 1px #0008 !important; }
+}
 </style>
 </head>
 <body>
@@ -364,10 +402,10 @@ table.matrix tbody tr.row-odd  td.cell { background: #FAFAF8; }
     <h1 class="header-title">U.S. Financial Regulatory Framework</h1>
     <p class="header-sub">Who regulates whom? An interactive reference to federal and state financial oversight.</p>
     <div class="stats-bar">
-      <div class="stat-block"><span class="stat-num">23</span><span class="stat-lbl">Institution types</span></div>
-      <div class="stat-block"><span class="stat-num">12</span><span class="stat-lbl">Regulatory bodies</span></div>
-      <div class="stat-block"><span class="stat-num">6</span><span class="stat-lbl">Federal agencies</span></div>
-      <div class="stat-block"><span class="stat-num">7</span><span class="stat-lbl">Categories</span></div>
+      <div class="stat-block"><span class="stat-num" id="stat-insts">23</span><span class="stat-lbl">Institution types</span></div>
+      <div class="stat-block"><span class="stat-num" id="stat-regs">12</span><span class="stat-lbl">Regulatory bodies</span></div>
+      <div class="stat-block"><span class="stat-num" id="stat-federal">10</span><span class="stat-lbl">Federal bodies</span></div>
+      <div class="stat-block"><span class="stat-num" id="stat-cats">7</span><span class="stat-lbl">Categories</span></div>
     </div>
   </div>
 </div>
@@ -376,10 +414,10 @@ table.matrix tbody tr.row-odd  td.cell { background: #FAFAF8; }
 <div id="tab-bar">
   <div class="tab-inner">
     <button class="tab-btn active" data-tab="institutions" onclick="switchTab('institutions')">
-      By Institution <span class="tab-count">23</span>
+      By Institution <span class="tab-count" id="tabcount-insts">23</span>
     </button>
     <button class="tab-btn" data-tab="regulators" onclick="switchTab('regulators')">
-      By Regulator <span class="tab-count">12</span>
+      By Regulator <span class="tab-count" id="tabcount-regs">12</span>
     </button>
     <button class="tab-btn" data-tab="matrix" onclick="switchTab('matrix')">
       Matrix View
@@ -417,15 +455,16 @@ const CAT = {
   state:       { label: "State-Primary",               bg: "#F2F0E8", border: "#D0CEC4", text: "#2C2C28", dot: "#5A5A54" },
   interagency: { label: "Interagency / Systemic",      bg: "#EDEEFF", border: "#C6C9F4", text: "#23205C", dot: "#4840B0" },
   sro:         { label: "Self-Regulatory Org.",        bg: "#E2F5EE", border: "#58C8A0", text: "#03322A", dot: "#199C72" },
+  digital:     { label: "Digital Assets / Stablecoins", bg: "#E3F2F3", border: "#9FD3D8", text: "#07434A", dot: "#117C8B" },
 };
 
 const ROLE = {
-  primary:     { label: "Primary",        color: "#1357A0" },
-  secondary:   { label: "Secondary",      color: "#3A8CD4" },
-  activity:    { label: "Activity-based", color: "#0C6E54" },
-  conditional: { label: "Conditional",    color: "#B86E10" },
-  subsidiary:  { label: "Subsidiary",     color: "#4840B0" },
-  oversight:   { label: "Systemic",       color: "#8C2850" },
+  primary:     { label: "Primary",        color: "#7C3AED" },
+  secondary:   { label: "Secondary",      color: "#A78BFA" },
+  activity:    { label: "Activity-based", color: "#0EA5C4" },
+  conditional: { label: "Conditional",    color: "#D97706" },
+  subsidiary:  { label: "Subsidiary",     color: "#DB2777" },
+  oversight:   { label: "Systemic",       color: "#9D174D" },
 };
 
 const REGS = [
@@ -450,9 +489,9 @@ const REGS = [
   { id: "fhfa",  abbr: "FHFA",  name: "Federal Housing Finance Agency",             category: "gse",         founded: 2008,
     authority: "Housing and Economic Recovery Act (HERA) 2008",
     description: "Independent agency created by HERA (2008). Regulator and conservator of Fannie Mae and Freddie Mac since September 2008. Also regulates the 11 Federal Home Loan Banks." },
-  { id: "fca",   abbr: "FCA",   name: "Farm Credit Administration",                 category: "gse",         founded: 1916,
+  { id: "fca",   abbr: "FCA",   name: "Farm Credit Administration",                 category: "gse",         founded: 1933,
     authority: "Farm Credit Act of 1971",
-    description: "Independent federal agency regulating and examining the Farm Credit System—a network of borrower-owned lending cooperatives serving agriculture and rural America." },
+    description: "Independent federal agency regulating and examining the Farm Credit System—a network of borrower-owned lending cooperatives serving agriculture and rural America. The FCA was established in 1933; the Farm Credit System itself dates to the 1916 Federal Farm Loan Act." },
   { id: "cfpb",  abbr: "CFPB",  name: "Consumer Financial Protection Bureau",       category: "consumer",    founded: 2011,
     authority: "Dodd-Frank Act Title X",
     description: "Created by Dodd-Frank (2010). Issues consumer financial protection rules for all covered persons. Direct supervisory authority over banks and CUs with >$10B in assets, plus nonbank mortgage servicers, payday lenders, and larger-participant nonbanks." },
@@ -526,6 +565,14 @@ const INSTS = [
       { id: "state", role: "primary",  note: "State chartering authority & co-examiner" },
       { id: "cfpb",  role: "activity", note: "Consumer financial protection rules" },
     ]},
+  { id: "ilc", category: "depository", name: "Industrial Loan Companies (ILCs)",
+    examples: "State-chartered industrial banks (UT, NV, CA) · parents include some commercial and fintech firms",
+    description: "FDIC-insured, state-chartered depositories. The defining feature: a company controlling an ILC is generally exempt from the Bank Holding Company Act, so the parent escapes consolidated Federal Reserve supervision — the long-debated 'ILC loophole.'",
+    regulators: [
+      { id: "fdic",  role: "primary",  note: "Primary federal regulator and deposit insurer; reviews deposit insurance applications and supervises the ILC" },
+      { id: "state", role: "primary",  note: "State chartering authority and co-examiner (Utah is the dominant charter state)" },
+      { id: "cfpb",  role: "activity", note: "Consumer financial protection rules; direct supervision if >$10B in assets" },
+    ]},
   { id: "bhc", category: "depository", name: "Bank Holding Companies",
     examples: "Holding company structures used by most large and mid-size banking organizations",
     description: "Parent companies controlling one or more bank subsidiaries. Fed regulates at the holding company level; bank subsidiaries retain their own primary regulators.",
@@ -549,9 +596,9 @@ const INSTS = [
     ]},
   { id: "fbo", category: "depository", name: "Foreign Banking Organizations",
     examples: "HSBC · Deutsche Bank · Barclays · BNP Paribas · UBS (U.S. operations)",
-    description: "Foreign banks operating via U.S. branches, agencies, or subsidiaries. Large FBOs with ≥$100B U.S. assets must form an Intermediate Holding Company (IHC) subject to U.S. capital requirements under Reg YY.",
+    description: "Foreign banks operating via U.S. branches, agencies, or subsidiaries. Under Reg YY, a large FBO must form a U.S. Intermediate Holding Company (IHC) once it holds ≥$50B in U.S. non-branch assets; enhanced prudential standards layer on at ≥$100B in combined U.S. assets.",
     regulators: [
-      { id: "fed",   role: "primary",   note: "State-licensed branches and IHC supervision under Reg YY for large FBOs" },
+      { id: "fed",   role: "primary",   note: "IHC supervision under Reg YY (IHC required at ≥$50B U.S. non-branch assets); supervises state-licensed branches" },
       { id: "occ",   role: "primary",   note: "Federally licensed branches and agencies of foreign banks" },
       { id: "state", role: "primary",   note: "State-licensed branches and agencies" },
       { id: "fdic",  role: "secondary", note: "If FDIC-insured deposits accepted at U.S. branch" },
@@ -574,10 +621,10 @@ const INSTS = [
     ]},
   { id: "investment_adviser", category: "securities", name: "Investment Advisers / RIAs",
     examples: "Vanguard · Fidelity · BlackRock (advisory arms) · Registered Investment Advisers ≥$110M AUM",
-    description: "Firms or individuals providing investment advice for compensation. Advisers with ≥$110M AUM register with SEC; those with <$100M AUM register at state level. Subject to fiduciary duty under the Advisers Act.",
+    description: "Firms or individuals providing investment advice for compensation. Advisers with ≥$110M AUM register with the SEC; mid-sized advisers ($25M–$100M) generally register with the state that examines them; advisers under $25M are typically barred from SEC registration. (Buffer: required to register at $110M, may withdraw below $90M.) Subject to fiduciary duty under the Advisers Act.",
     regulators: [
-      { id: "sec",   role: "primary", note: "Advisers Act registration; Form ADV; fiduciary standard for ≥$110M AUM" },
-      { id: "state", role: "primary", note: "Primary regulator for advisers with <$100M AUM" },
+      { id: "sec",   role: "primary", note: "Advisers Act registration; Form ADV; fiduciary standard for advisers ≥$110M AUM" },
+      { id: "state", role: "primary", note: "Primary regulator for mid-sized advisers ($25M–$100M) and smaller (<$25M)" },
     ]},
   { id: "investment_company", category: "securities", name: "Mutual Funds / Investment Companies",
     examples: "Vanguard funds · Fidelity funds · BlackRock iShares ETFs · Closed-end funds",
@@ -648,11 +695,46 @@ const INSTS = [
       { id: "state", role: "primary",  note: "State money transmitter licenses required in each state (NMLS)" },
       { id: "cfpb",  role: "activity", note: "Prepaid Accounts Rule; Remittance Rule; larger-participant supervision possible" },
     ]},
+  { id: "stablecoin_issuer", category: "digital", name: "Payment Stablecoin Issuers",
+    examples: "Federal qualified nonbank issuers (OCC) · insured-depository-subsidiary issuers · state-qualified issuers (≤$10B opt-in)",
+    description: "New institution class created by the GENIUS Act (enacted July 18, 2025). Permitted payment stablecoin issuers (PPSIs) issue dollar-pegged payment stablecoins, which are not 'securities' or 'commodities.' Framework is still in rulemaking — statutory effective date is the earlier of 18 months after enactment or 120 days after final rules — so treat this row as transitional.",
+    regulators: [
+      { id: "occ",   role: "primary",     note: "Charters and oversees federal qualified nonbank PPSIs and foreign issuers; rulemaking in progress (NPRM 2026)" },
+      { id: "state", role: "primary",     note: "State-qualified issuers with ≤$10B outstanding may opt into a state regime certified 'substantially similar' to the federal framework" },
+      { id: "fdic",  role: "conditional", note: "Primary federal regulator for insured-state-nonmember-bank-subsidiary issuers" },
+      { id: "fed",   role: "conditional", note: "Primary federal regulator for state-member-bank-subsidiary issuers; Fed-account access for issuers left unresolved by the Act" },
+    ]},
 ];
 
 /* ═══════════════════════════════════════════════════════ HELPERS ══ */
 
 function getReg(id) { return REGS.find(r => r.id === id); }
+
+function escAttr(s) {
+  return String(s)
+    .replace(/&/g, '&amp;').replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function cardKey(e, type, id) {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    if (type === 'inst') selectInst(id); else selectReg(id);
+  }
+}
+
+function catCountForTab(cat, tab) {
+  if (tab === 'regulators') return REGS.filter(r => r.category === cat).length;
+  return INSTS.filter(i => i.category === cat).length; // institutions + matrix use institution rows
+}
+
+function instMatches(i, search) {
+  return (currentCatFilter === 'all' || i.category === currentCatFilter) &&
+    (!search ||
+      i.name.toLowerCase().includes(search) ||
+      (i.examples || '').toLowerCase().includes(search) ||
+      (i.description || '').toLowerCase().includes(search));
+}
 
 function badge(cat, full) {
   const c = CAT[cat] || CAT.state;
@@ -687,10 +769,9 @@ let selectedRegId  = null;
 /* ═══════════════════════════════════════════════════════ TOOLTIP ══ */
 
 const tooltip = document.getElementById('tooltip');
-let tooltipTimeout = null;
+let tooltipPinned = false; // true when shown via focus/click (don't track mouse)
 
-function showTooltip(e, data) {
-  clearTimeout(tooltipTimeout);
+function fillTooltip(data) {
   const { abbr, role, instName, note } = data;
   const roleObj = ROLE[role] || { label: role, color: '#888' };
   document.getElementById('tt-abbr').textContent = abbr;
@@ -700,40 +781,73 @@ function showTooltip(e, data) {
   ttRole.style.color = roleObj.color;
   document.getElementById('tt-inst').textContent = instName || '';
   document.getElementById('tt-note').textContent = note || '';
-  positionTooltip(e);
+}
+
+function showTooltip(e, data) {
+  tooltipPinned = false;
+  fillTooltip(data);
+  positionTooltipXY(e.clientX, e.clientY);
   tooltip.classList.add('visible');
 }
 
-function positionTooltip(e) {
+function cellTooltipData(cell) {
+  return {
+    abbr:     cell.dataset.ttAbbr,
+    role:     cell.dataset.ttRole,
+    instName: cell.dataset.ttInst,
+    note:     cell.dataset.ttNote,
+  };
+}
+
+function showTooltipForCell(cell) {
+  if (!cell || !cell.dataset.ttAbbr) return;
+  tooltipPinned = true;
+  fillTooltip(cellTooltipData(cell));
+  const r = cell.getBoundingClientRect();
+  positionTooltipXY(r.left + r.width / 2, r.bottom);
+  tooltip.classList.add('visible');
+}
+
+function positionTooltipXY(cx, cy) {
   const pad = 14;
   const tw = tooltip.offsetWidth  || 240;
   const th = tooltip.offsetHeight || 80;
-  let x = e.clientX + pad;
-  let y = e.clientY + pad;
-  if (x + tw > window.innerWidth  - 8) x = e.clientX - tw - pad;
-  if (y + th > window.innerHeight - 8) y = e.clientY - th - pad;
-  tooltip.style.left = x + 'px';
-  tooltip.style.top  = y + 'px';
+  let x = cx + pad;
+  let y = cy + pad;
+  if (x + tw > window.innerWidth  - 8) x = cx - tw - pad;
+  if (y + th > window.innerHeight - 8) y = cy - th - pad;
+  tooltip.style.left = Math.max(8, x) + 'px';
+  tooltip.style.top  = Math.max(8, y) + 'px';
 }
 
 function hideTooltip() {
   tooltip.classList.remove('visible');
+  tooltipPinned = false;
 }
 
 document.addEventListener('mousemove', e => {
-  if (tooltip.classList.contains('visible')) positionTooltip(e);
+  if (!tooltipPinned && tooltip.classList.contains('visible')) positionTooltipXY(e.clientX, e.clientY);
 });
 
 /* ═══════════════════════════════════════════════════════ DRAWER ══ */
 
-function openDrawer(html) {
+let lastFocusedEl = null;
+
+function openDrawer(html, label) {
+  lastFocusedEl = document.activeElement;
   document.getElementById('drawer-content').innerHTML = html;
+  const drawer = document.getElementById('drawer');
+  if (label) drawer.setAttribute('aria-label', label);
   document.getElementById('drawer-overlay').classList.add('open');
-  document.getElementById('drawer').classList.add('open');
+  drawer.classList.add('open');
   document.body.style.overflow = 'hidden';
+  // move focus into the drawer
+  const closeBtn = document.getElementById('drawer-close');
+  if (closeBtn) closeBtn.focus();
 }
 
 function closeDrawer() {
+  const wasOpen = document.getElementById('drawer').classList.contains('open');
   document.getElementById('drawer-overlay').classList.remove('open');
   document.getElementById('drawer').classList.remove('open');
   document.body.style.overflow = '';
@@ -741,7 +855,25 @@ function closeDrawer() {
   document.querySelectorAll('.card.selected').forEach(c => c.classList.remove('selected'));
   selectedInstId = null;
   selectedRegId  = null;
+  if (wasOpen) {
+    updateHash();
+    if (lastFocusedEl && document.contains(lastFocusedEl)) lastFocusedEl.focus();
+  }
 }
+
+// Escape closes the drawer; Tab is trapped inside it while open.
+document.addEventListener('keydown', e => {
+  const drawer = document.getElementById('drawer');
+  if (!drawer.classList.contains('open')) return;
+  if (e.key === 'Escape') { closeDrawer(); return; }
+  if (e.key === 'Tab') {
+    const f = drawer.querySelectorAll('button, [href], input, [tabindex]:not([tabindex="-1"])');
+    if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+});
 
 function instDrawerHTML(inst) {
   const c = CAT[inst.category] || CAT.state;
@@ -843,105 +975,107 @@ function filterChipsHTML(tab) {
 
 /* ══════════════════════════════════════════════════ INSTITUTIONS ══ */
 
-function renderInstitutions() {
+function institutionCardsHTML() {
   const search = currentSearch.toLowerCase();
-  const items = INSTS.filter(i =>
-    (currentCatFilter === 'all' || i.category === currentCatFilter) &&
-    (!search || i.name.toLowerCase().includes(search))
-  );
+  const items = INSTS.filter(i => instMatches(i, search));
+  if (items.length === 0) return `<p class="empty">No institutions match your filters.</p>`;
+  const cards = items.map(inst => {
+    const c = CAT[inst.category] || CAT.state;
+    const sel = selectedInstId === inst.id;
+    const selStyle = sel
+      ? `border-color:${c.dot};box-shadow:0 0 0 3px ${c.dot}25,0 2px 10px rgba(0,0,0,0.08);`
+      : '';
+    return `
+      <div class="card${sel ? ' selected' : ''}"
+        id="card-inst-${inst.id}"
+        role="button" tabindex="0"
+        aria-label="${escAttr(inst.name)} — view regulatory structure"
+        style="border-left-color:${c.dot};${selStyle}"
+        onclick="selectInst('${inst.id}')"
+        onkeydown="cardKey(event,'inst','${inst.id}')">
+        ${badge(inst.category)}
+        <div class="card-name">${inst.name}</div>
+        <div class="card-chips">${regChips(inst.regulators)}</div>
+      </div>`;
+  }).join('');
+  return `<div class="card-grid">${cards}</div>`;
+}
 
-  let html = `
+function renderInstitutions() {
+  document.getElementById('panel-institutions').innerHTML = `
     <div class="controls">
       <div class="search-wrap">
         <span class="search-icon">⌕</span>
         <input class="search-input" type="text" placeholder="Search institutions…"
-          value="${currentSearch}"
+          aria-label="Search institutions"
+          value="${escAttr(currentSearch)}"
           oninput="onSearch(this.value)" />
       </div>
       <div class="filter-chips">${filterChipsHTML('institutions')}</div>
     </div>
-    ${roleLegendHTML()}`;
-
-  if (items.length === 0) {
-    html += `<p class="empty">No institutions match your filters.</p>`;
-  } else {
-    const cards = items.map(inst => {
-      const c = CAT[inst.category] || CAT.state;
-      const sel = selectedInstId === inst.id;
-      const selStyle = sel
-        ? `border-color:${c.dot};box-shadow:0 0 0 3px ${c.dot}25,0 2px 10px rgba(0,0,0,0.08);`
-        : '';
-      return `
-        <div class="card${sel ? ' selected' : ''}"
-          id="card-inst-${inst.id}"
-          style="border-left-color:${c.dot};${selStyle}"
-          onclick="selectInst('${inst.id}')">
-          ${badge(inst.category)}
-          <div class="card-name">${inst.name}</div>
-          <div class="card-chips">${regChips(inst.regulators)}</div>
-        </div>`;
-    }).join('');
-    html += `<div class="card-grid">${cards}</div>`;
-  }
-
-  document.getElementById('panel-institutions').innerHTML = html;
+    ${roleLegendHTML()}
+    <div id="inst-results">${institutionCardsHTML()}</div>`;
 }
 
 /* ═══════════════════════════════════════════════════ REGULATORS ══ */
 
-function renderRegulators() {
+function regulatorCardsHTML() {
   const search = currentSearch.toLowerCase();
   const items = REGS.filter(r =>
     (currentCatFilter === 'all' || r.category === currentCatFilter) &&
-    (!search || r.name.toLowerCase().includes(search) || r.abbr.toLowerCase().includes(search))
+    (!search ||
+      r.name.toLowerCase().includes(search) ||
+      r.abbr.toLowerCase().includes(search) ||
+      (r.description || '').toLowerCase().includes(search))
   );
+  if (items.length === 0) return `<p class="empty">No regulators match your filters.</p>`;
+  const cards = items.map(reg => {
+    const c = CAT[reg.category] || CAT.state;
+    const count = INSTS.filter(i => i.regulators.find(r => r.id === reg.id)).length;
+    const sel = selectedRegId === reg.id;
+    const selStyle = sel
+      ? `border-color:${c.dot};box-shadow:0 0 0 3px ${c.dot}25,0 2px 10px rgba(0,0,0,0.08);`
+      : '';
+    return `
+      <div class="card${sel ? ' selected' : ''}"
+        id="card-reg-${reg.id}"
+        role="button" tabindex="0"
+        aria-label="${escAttr(reg.abbr)} — ${escAttr(reg.name)}; view supervised institutions"
+        style="border-left-color:${c.dot};${selStyle}"
+        onclick="selectReg('${reg.id}')"
+        onkeydown="cardKey(event,'reg','${reg.id}')">
+        ${badge(reg.category)}
+        <div style="display:flex;align-items:baseline;gap:8px;margin:7px 0 2px">
+          <span class="reg-abbr-serif">${reg.abbr}</span>
+          ${reg.founded ? `<span style="font-size:10px;color:#9A9898">est. ${reg.founded}</span>` : ''}
+        </div>
+        <div style="font-size:11px;color:#525250;line-height:1.4;margin-bottom:10px">${reg.name}</div>
+        <div style="font-size:11px;color:${c.dot};font-weight:600">${count} institution type${count !== 1 ? 's' : ''}</div>
+      </div>`;
+  }).join('');
+  return `<div class="card-grid">${cards}</div>`;
+}
 
-  let html = `
+function renderRegulators() {
+  document.getElementById('panel-regulators').innerHTML = `
     <div class="controls">
       <div class="search-wrap">
         <span class="search-icon">⌕</span>
         <input class="search-input" type="text" placeholder="Search regulators…"
-          value="${currentSearch}"
+          aria-label="Search regulators"
+          value="${escAttr(currentSearch)}"
           oninput="onSearch(this.value)" />
       </div>
       <div class="filter-chips">${filterChipsHTML('regulators')}</div>
     </div>
-    ${roleLegendHTML()}`;
-
-  if (items.length === 0) {
-    html += `<p class="empty">No regulators match your filters.</p>`;
-  } else {
-    const cards = items.map(reg => {
-      const c = CAT[reg.category] || CAT.state;
-      const count = INSTS.filter(i => i.regulators.find(r => r.id === reg.id)).length;
-      const sel = selectedRegId === reg.id;
-      const selStyle = sel
-        ? `border-color:${c.dot};box-shadow:0 0 0 3px ${c.dot}25,0 2px 10px rgba(0,0,0,0.08);`
-        : '';
-      return `
-        <div class="card${sel ? ' selected' : ''}"
-          id="card-reg-${reg.id}"
-          style="border-left-color:${c.dot};${selStyle}"
-          onclick="selectReg('${reg.id}')">
-          ${badge(reg.category)}
-          <div style="display:flex;align-items:baseline;gap:8px;margin:7px 0 2px">
-            <span class="reg-abbr-serif">${reg.abbr}</span>
-            ${reg.founded ? `<span style="font-size:10px;color:#9A9898">est. ${reg.founded}</span>` : ''}
-          </div>
-          <div style="font-size:11px;color:#525250;line-height:1.4;margin-bottom:10px">${reg.name}</div>
-          <div style="font-size:11px;color:${c.dot};font-weight:600">${count} institution type${count !== 1 ? 's' : ''}</div>
-        </div>`;
-    }).join('');
-    html += `<div class="card-grid">${cards}</div>`;
-  }
-
-  document.getElementById('panel-regulators').innerHTML = html;
+    ${roleLegendHTML()}
+    <div id="reg-results">${regulatorCardsHTML()}</div>`;
 }
 
 /* ═══════════════════════════════════════════════════════ MATRIX ══ */
 
-function renderMatrix() {
-  // Legend
+function matrixResultsHTML() {
+  // Role legend
   const legendItems = Object.entries(ROLE).map(([k, v]) =>
     `<span class="role-item">
       <span class="role-dot" style="background:${v.color};box-shadow:0 0 0 2px ${v.color}35"></span>
@@ -952,14 +1086,19 @@ function renderMatrix() {
     <span class="role-legend-label">Role key:</span>${legendItems}
   </div>`;
 
-  // Header row
+  // Filtered institution rows (columns always show all regulators)
+  const search = currentSearch.toLowerCase();
+  const rows = INSTS.filter(i => instMatches(i, search));
+  if (rows.length === 0) {
+    return legend + `<p class="empty">No institution rows match your filters.</p>`;
+  }
+
   const headerCols = REGS.map((reg, ci) => {
     const c = CAT[reg.category] || CAT.state;
     return `<th class="reg-col" data-col="${ci}" style="border-bottom-color:${c.dot}">${reg.abbr}</th>`;
   }).join('');
 
-  // Data rows
-  const bodyRows = INSTS.map((inst, ri) => {
+  const bodyRows = rows.map((inst, ri) => {
     const ic = CAT[inst.category] || CAT.state;
     const parity = ri % 2 === 0 ? 'row-even' : 'row-odd';
     const cells = REGS.map((reg, ci) => {
@@ -968,9 +1107,12 @@ function renderMatrix() {
         ? `<div class="matrix-dot" style="background:${ROLE[rel.role]?.color || '#888'}"></div>`
         : '';
       const ttData = rel
-        ? `data-tt-abbr="${reg.abbr}" data-tt-role="${rel.role}" data-tt-inst="${inst.name}" data-tt-note="${rel.note.replace(/"/g, '&quot;')}"`
+        ? `data-tt-abbr="${escAttr(reg.abbr)}" data-tt-role="${rel.role}" data-tt-inst="${escAttr(inst.name)}" data-tt-note="${escAttr(rel.note)}"`
         : '';
-      return `<td class="cell" data-col="${ci}" ${ttData}>${dot}</td>`;
+      const a11y = rel
+        ? `tabindex="0" role="button" aria-label="${escAttr(reg.abbr + ' — ' + (ROLE[rel.role]?.label || rel.role) + ' regulator of ' + inst.name + '. ' + rel.note)}"`
+        : '';
+      return `<td class="cell" data-col="${ci}" ${a11y} ${ttData}>${dot}</td>`;
     }).join('');
 
     return `<tr class="${parity}" data-row="${ri}" style="--row-hover-bg:${ic.bg}">
@@ -992,7 +1134,22 @@ function renderMatrix() {
       </table>
     </div>`;
 
-  document.getElementById('panel-matrix').innerHTML = legend + table;
+  return legend + table;
+}
+
+function renderMatrix() {
+  document.getElementById('panel-matrix').innerHTML = `
+    <div class="controls">
+      <div class="search-wrap">
+        <span class="search-icon">⌕</span>
+        <input class="search-input" type="text" placeholder="Filter institution rows…"
+          aria-label="Filter institution rows"
+          value="${escAttr(currentSearch)}"
+          oninput="onSearch(this.value)" />
+      </div>
+      <div class="filter-chips">${filterChipsHTML('institutions')}</div>
+    </div>
+    <div id="matrix-results">${matrixResultsHTML()}</div>`;
   attachMatrixListeners();
 }
 
@@ -1000,14 +1157,13 @@ function attachMatrixListeners() {
   const tbody = document.querySelector('table.matrix tbody');
   if (!tbody) return;
 
-  // Row hover highlighting
+  // Row hover highlighting + column hover + tooltip (mouse)
   tbody.addEventListener('mouseover', e => {
     const row = e.target.closest('tr');
     if (!row) return;
     document.querySelectorAll('table.matrix tbody tr.row-hover').forEach(r => r.classList.remove('row-hover'));
     row.classList.add('row-hover');
 
-    // Column hover on header
     const col = e.target.dataset.col;
     document.querySelectorAll('table.matrix thead th.reg-col').forEach(th => th.classList.remove('col-hover'));
     if (col !== undefined) {
@@ -1015,68 +1171,93 @@ function attachMatrixListeners() {
       if (th) th.classList.add('col-hover');
     }
 
-    // Tooltip on filled cells
     const cell = e.target.closest('td.cell');
     if (cell && cell.dataset.ttAbbr) {
-      showTooltip(e, {
-        abbr:     cell.dataset.ttAbbr,
-        role:     cell.dataset.ttRole,
-        instName: cell.dataset.ttInst,
-        note:     cell.dataset.ttNote,
-      });
-    } else {
+      showTooltip(e, cellTooltipData(cell));
+    } else if (!tooltipPinned) {
       hideTooltip();
     }
+
+    // Dot glow on hovered row
+    row.querySelectorAll('.matrix-dot').forEach(d => {
+      d.style.boxShadow = `0 0 0 3px ${d.style.background}50`;
+    });
   });
 
   tbody.addEventListener('mouseleave', () => {
     document.querySelectorAll('table.matrix tbody tr.row-hover').forEach(r => r.classList.remove('row-hover'));
     document.querySelectorAll('table.matrix thead th.reg-col').forEach(th => th.classList.remove('col-hover'));
-    hideTooltip();
+    if (!tooltipPinned) hideTooltip();
   });
 
-  // Dot glow on hover row
-  tbody.addEventListener('mouseover', e => {
-    const row = e.target.closest('tr');
-    if (!row) return;
-    row.querySelectorAll('.matrix-dot').forEach(d => {
-      d.style.boxShadow = `0 0 0 3px ${d.style.background}50`;
-    });
+  // Keyboard focus → tooltip
+  tbody.addEventListener('focusin', e => {
+    const cell = e.target.closest('td.cell');
+    if (cell && cell.dataset.ttAbbr) showTooltipForCell(cell);
+  });
+  tbody.addEventListener('focusout', () => hideTooltip());
+
+  // Touch / click → toggle tooltip
+  tbody.addEventListener('click', e => {
+    const cell = e.target.closest('td.cell');
+    if (!cell || !cell.dataset.ttAbbr) return;
+    if (tooltipPinned && tooltip.classList.contains('visible')) hideTooltip();
+    else showTooltipForCell(cell);
   });
 }
 
 /* ══════════════════════════════════════════════════════ ACTIONS ══ */
 
-function switchTab(tab) {
-  currentTab = tab;
-  currentSearch = '';
-  currentCatFilter = 'all';
-  selectedInstId = null;
-  selectedRegId  = null;
-  closeDrawer();
-
-  document.querySelectorAll('.tab-btn').forEach(b => {
-    b.classList.toggle('active', b.dataset.tab === tab);
-  });
-  ['institutions','regulators','matrix'].forEach(t => {
-    document.getElementById(`panel-${t}`).style.display = t === tab ? '' : 'none';
-  });
-
-  if (tab === 'institutions') renderInstitutions();
-  else if (tab === 'regulators') renderRegulators();
+function renderCurrentTab() {
+  if (currentTab === 'institutions') renderInstitutions();
+  else if (currentTab === 'regulators') renderRegulators();
   else renderMatrix();
 }
 
+function showTabPanels() {
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.tab === currentTab);
+  });
+  ['institutions','regulators','matrix'].forEach(t => {
+    document.getElementById(`panel-${t}`).style.display = t === currentTab ? '' : 'none';
+  });
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  // Selection belongs to a tab, so clear it; search & category filter persist.
+  selectedInstId = null;
+  selectedRegId  = null;
+  closeDrawer();
+  // If the active category filter has no members in the new tab, reset it.
+  if (currentCatFilter !== 'all' && catCountForTab(currentCatFilter, tab) === 0) {
+    currentCatFilter = 'all';
+  }
+  showTabPanels();
+  renderCurrentTab();
+  updateHash();
+}
+
+// Typing only re-renders the results sub-container, so the <input> keeps focus.
 function onSearch(val) {
   currentSearch = val;
-  if (currentTab === 'institutions') renderInstitutions();
-  else renderRegulators();
+  if (currentTab === 'institutions') {
+    const el = document.getElementById('inst-results');
+    if (el) el.innerHTML = institutionCardsHTML();
+  } else if (currentTab === 'regulators') {
+    const el = document.getElementById('reg-results');
+    if (el) el.innerHTML = regulatorCardsHTML();
+  } else {
+    const el = document.getElementById('matrix-results');
+    if (el) { el.innerHTML = matrixResultsHTML(); attachMatrixListeners(); }
+  }
+  updateHash();
 }
 
 function setFilter(cat) {
   currentCatFilter = cat;
-  if (currentTab === 'institutions') renderInstitutions();
-  else renderRegulators();
+  renderCurrentTab(); // full re-render is fine here (triggered by a click, not typing)
+  updateHash();
 }
 
 function selectInst(id) {
@@ -1085,8 +1266,7 @@ function selectInst(id) {
   selectedRegId  = null;
   const inst = INSTS.find(i => i.id === id);
   if (!inst) return;
-  openDrawer(instDrawerHTML(inst));
-  // highlight selected card
+  openDrawer(instDrawerHTML(inst), inst.name);
   document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
   const card = document.getElementById(`card-inst-${id}`);
   if (card) {
@@ -1094,7 +1274,9 @@ function selectInst(id) {
     card.classList.add('selected');
     card.style.borderColor = c.dot;
     card.style.boxShadow = `0 0 0 3px ${c.dot}25,0 2px 10px rgba(0,0,0,0.08)`;
+    lastFocusedEl = card; // return focus here when the drawer closes
   }
+  updateHash();
 }
 
 function selectReg(id) {
@@ -1103,7 +1285,7 @@ function selectReg(id) {
   selectedInstId = null;
   const reg = REGS.find(r => r.id === id);
   if (!reg) return;
-  openDrawer(regDrawerHTML(reg));
+  openDrawer(regDrawerHTML(reg), reg.name);
   document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
   const card = document.getElementById(`card-reg-${id}`);
   if (card) {
@@ -1111,11 +1293,56 @@ function selectReg(id) {
     card.classList.add('selected');
     card.style.borderColor = c.dot;
     card.style.boxShadow = `0 0 0 3px ${c.dot}25,0 2px 10px rgba(0,0,0,0.08)`;
+    lastFocusedEl = card;
   }
+  updateHash();
+}
+
+/* ═══════════════════════════════════════════════ SHAREABLE STATE ══ */
+
+function updateHash() {
+  const p = new URLSearchParams();
+  if (currentTab !== 'institutions') p.set('tab', currentTab);
+  if (currentCatFilter !== 'all')    p.set('cat', currentCatFilter);
+  if (currentSearch)                 p.set('q', currentSearch);
+  if (selectedInstId)                p.set('sel', 'inst:' + selectedInstId);
+  else if (selectedRegId)            p.set('sel', 'reg:' + selectedRegId);
+  const s = p.toString();
+  history.replaceState(null, '', s ? '#' + s : location.pathname + location.search);
 }
 
 /* ═══════════════════════════════════════════════════════ INIT ══ */
-renderInstitutions();
+
+function init() {
+  // Derive header + tab counts from the data so they never drift.
+  document.getElementById('stat-insts').textContent   = INSTS.length;
+  document.getElementById('stat-regs').textContent    = REGS.length;
+  document.getElementById('stat-federal').textContent = REGS.filter(r => r.id !== 'state' && r.category !== 'sro').length;
+  document.getElementById('stat-cats').textContent    = Object.keys(CAT).length;
+  document.getElementById('tabcount-insts').textContent = INSTS.length;
+  document.getElementById('tabcount-regs').textContent  = REGS.length;
+
+  // Restore state from the URL hash, if any.
+  const p = new URLSearchParams(location.hash.replace(/^#/, ''));
+  const tab = p.get('tab') || 'institutions';
+  currentTab       = ['institutions','regulators','matrix'].includes(tab) ? tab : 'institutions';
+  currentCatFilter = p.get('cat') || 'all';
+  currentSearch    = p.get('q') || '';
+  if (currentCatFilter !== 'all' && !CAT[currentCatFilter]) currentCatFilter = 'all';
+  if (currentCatFilter !== 'all' && catCountForTab(currentCatFilter, currentTab) === 0) currentCatFilter = 'all';
+
+  showTabPanels();
+  renderCurrentTab();
+
+  const sel = p.get('sel');
+  if (sel) {
+    const [type, id] = sel.split(':');
+    if (type === 'inst' && INSTS.find(i => i.id === id)) selectInst(id);
+    else if (type === 'reg' && REGS.find(r => r.id === id)) selectReg(id);
+  }
+}
+
+init();
 </script>
 </body>
 </html>
