@@ -71,7 +71,7 @@ h1{font-family:'Georgia',serif;font-size:21px;font-weight:normal;color:var(--tex
 .metric-lbl{font-family:'Helvetica Neue',Arial,sans-serif;font-size:10.5px;color:var(--text-ter);margin-top:3px;text-transform:uppercase;letter-spacing:.05em}
 
 /* tabs */
-.tabs-wrap{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.tabs-wrap{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg)}
 .tab-nav{display:flex;border-bottom:0.5px solid var(--border);overflow-x:auto;background:var(--bg-sec)}
 .tab-btn{font-family:'Helvetica Neue',Arial,sans-serif;font-size:13px;padding:10px 18px;border:none;background:none;cursor:pointer;color:var(--text-sec);border-bottom:2px solid transparent;white-space:nowrap;transition:color .15s,border-color .15s}
 .tab-btn:hover{color:var(--text);background:var(--bg-ter)}
@@ -161,6 +161,28 @@ h1{font-family:'Georgia',serif;font-size:21px;font-weight:normal;color:var(--tex
 
 /* footer */
 .footer{margin-top:1.5rem;font-family:'Helvetica Neue',Arial,sans-serif;font-size:11.5px;color:var(--text-ter);text-align:center;line-height:1.6}
+
+/* freshness stamp */
+.mh-fresh{margin-left:auto;font-family:'Helvetica Neue',Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-sec);background:var(--bg-sec);border:0.5px solid var(--border-mid);padding:4px 10px;border-radius:20px;flex-shrink:0;align-self:flex-start;white-space:nowrap}
+
+/* sticky tab nav (overflow on tabs-wrap relaxed so sticky works) */
+.tab-nav{position:sticky;top:0;z-index:5;border-radius:var(--radius-lg) var(--radius-lg) 0 0}
+
+/* keyboard focus visibility */
+.tab-btn:focus-visible,.impl-head:focus-visible,.prud-card:focus-visible{outline:2px solid var(--blue-text);outline-offset:-2px;border-radius:var(--radius-md)}
+[role="button"]{cursor:pointer}
+
+/* print: expand everything, drop dark chrome */
+@media print{
+  body{background:#fff;color:#000;padding:0}
+  .tab-nav,.caret,.mh-fresh{display:none!important}
+  .tabs-wrap{border:none}
+  .tab-panel{display:block!important;padding:0 0 1rem;break-inside:avoid}
+  .tab-panel::before{content:attr(data-print-label);display:block;font-family:'Georgia',serif;font-size:16px;font-weight:bold;margin:1.25rem 0 .75rem;border-bottom:1px solid #000;padding-bottom:.25rem}
+  .impl-detail,.prud-detail{display:block!important}
+  .impl-item,.prud-card,.q-item,.deadline-card,.metric{break-inside:avoid}
+  .masthead,.deadlines-strip,.metrics,.tabs-wrap{border-color:#ccc}
+}
 </style>
 </head>
 <body>
@@ -174,8 +196,9 @@ h1{font-family:'Georgia',serif;font-size:21px;font-weight:normal;color:var(--tex
       <h1>GENIUS Act — Regulatory Implementation Dashboard</h1>
       <p class="mh-sub">Guiding and Establishing National Innovation for U.S. Stablecoins Act &nbsp;·&nbsp; Signed July 18, 2025 &nbsp;·&nbsp; Current as of May 2026</p>
     </div>
+    <span class="mh-fresh" title="Reflects rulemaking activity through late May 2026; verify against the Federal Register before relying on any item.">Verified May 2026</span>
   </div>
-  <p class="mh-lede">The GENIUS Act is the first major federal digital asset legislation enacted in U.S. history, establishing a comprehensive licensing and supervisory framework for payment stablecoins. Implementing rules must be finalized by July 18, 2026 — and the Act takes effect 120 days after all primary regulators issue final rules, or by January 18, 2027, whichever comes first. The OCC, FDIC, and NCUA have each issued NPRMs. The Federal Reserve has not.</p>
+  <p class="mh-lede">The GENIUS Act is the first major federal digital asset legislation enacted in U.S. history, establishing a comprehensive licensing and supervisory framework for payment stablecoins. Implementing rules must be finalized by July 18, 2026 — and the Act takes effect 120 days after all primary regulators issue final rules, or by January 18, 2027, whichever comes first. Proposed rules have now issued from the OCC, FDIC, NCUA, Treasury, and jointly from FinCEN and OFAC. The Federal Reserve — a primary regulator for state member bank and holding-company issuers — has not, the single largest gap in the current picture.</p>
   <div class="mh-votes">
     <span class="vote-pill">Senate: <strong>68–30</strong> (June 17, 2025)</span>
     <span class="vote-pill">House: <strong>308–122</strong> (July 17, 2025)</span>
@@ -223,7 +246,7 @@ h1{font-family:'Georgia',serif;font-size:21px;font-weight:normal;color:var(--tex
   </div>
 
   <!-- Pathways -->
-  <div id="panel-pathways" class="tab-panel active">
+  <div id="panel-pathways" class="tab-panel active" role="tabpanel" data-print-label="Issuer Pathways">
     <p class="pillar-intro">The GENIUS Act creates three pathways for entities to become a "permitted payment stablecoin issuer" (PPSI) — plus a registration pathway for qualifying foreign issuers. Each pathway determines the primary regulator and applicable prudential standards.</p>
     <div class="slabel">The three issuer pathways</div>
     <div class="pathway-grid">
@@ -274,7 +297,7 @@ h1{font-family:'Georgia',serif;font-size:21px;font-weight:normal;color:var(--tex
   </div>
 
   <!-- Implementation tracker -->
-  <div id="panel-implementation" class="tab-panel">
+  <div id="panel-implementation" class="tab-panel" role="tabpanel" data-print-label="Implementation Tracker">
     <p class="pillar-intro">The GENIUS Act requires each primary federal payment stablecoin regulator to issue final implementing rules by July 18, 2026 (one year after enactment). The OCC, FDIC, and NCUA have each issued NPRMs. The Federal Reserve has not — and its absence could delay the effective date or create a fragmented supervisory landscape.</p>
 
     <div class="slabel">Agency rulemaking status</div>
@@ -296,13 +319,13 @@ h1{font-family:'Georgia',serif;font-size:21px;font-weight:normal;color:var(--tex
       <div class="impl-item" onclick="tog(this)">
         <div class="impl-head">
           <span class="impl-agency">FDIC</span>
-          <span class="impl-title">Application procedures NPRM for FDIC-supervised stablecoin issuers</span>
-          <span class="stag tag-green">NPRM issued</span>
-          <span class="impl-date">Dec 2025</span>
+          <span class="impl-title">Application procedures NPRM + prudential framework NPRM for FDIC-supervised stablecoin issuers</span>
+          <span class="stag tag-green">2 NPRMs issued</span>
+          <span class="impl-date">Dec 2025 / Apr 2026</span>
           <span class="caret">▼</span>
         </div>
         <div class="impl-detail">
-          The FDIC published an NPRM in December 2025 covering application procedures under the GENIUS Act for FDIC-supervised payment stablecoin issuers — primarily subsidiaries of FDIC-supervised state nonmember banks and savings associations. The comment period extended into May 2026. The FDIC also expects to issue a proposed rule implementing the GENIUS Act's prudential requirements for FDIC-supervised payment stablecoin issuers. The FDIC noted in February 2026 that it is "considering the recommendations of the President's Working Group on Digital Asset Markets" (July 2025 report) and developing guidance on tokenized deposits.
+          The FDIC has issued two GENIUS Act NPRMs. First, on December 19, 2025, an NPRM covering application procedures for FDIC-supervised payment stablecoin issuers — primarily subsidiaries of FDIC-supervised state nonmember banks and savings associations (comment period extended into May 2026). Second, on April 7, 2026, the Board approved an NPRM establishing the prudential framework for FDIC-supervised PPSIs — reserve assets, redemption, capital, and risk-management standards — which also addresses custodial/safekeeping requirements, the applicability of pass-through deposit insurance to reserves backing stablecoins, and the treatment of tokenized deposits that meet the statutory definition of "deposit." The FDIC has noted it is considering the recommendations of the President's Working Group on Digital Asset Markets (July 2025 report). Final rules must be issued by July 18, 2026.
         </div>
       </div>
 
@@ -341,7 +364,7 @@ h1{font-family:'Georgia',serif;font-size:21px;font-weight:normal;color:var(--tex
           <span class="caret">▼</span>
         </div>
         <div class="impl-detail">
-          On April 7, 2026, Treasury issued an NPRM proposing the principles for determining when a state stablecoin regulatory regime is "substantially similar" to the federal regime — the gateway for Pathway C (state-qualified issuers at ≤$10B). Treasury's proposed standard uses the OCC's February 2026 NPRM as the reference point for prudential requirements. On reserves, states may allow reserve assets beyond those listed in the GENIUS Act only if the OCC has approved those assets as "similarly liquid Federal Government-issued assets." States may be more conservative than the OCC but not more permissive. Treasury's NPRM does not attempt to federalize state chartering — it requires only that state regimes provide a "fair, transparent, and viable application framework." Comments are due 60 days after Federal Register publication. Separately, Treasury's September 2025 ANPRM on the licensing prohibition and BSA/AML requirements for nonbank PPSIs has not yet produced a final proposed rule.
+          On April 7, 2026, Treasury issued an NPRM proposing the principles for determining when a state stablecoin regulatory regime is "substantially similar" to the federal regime — the gateway for Pathway C (state-qualified issuers at ≤$10B). Treasury's proposed standard uses the OCC's February 2026 NPRM as the reference point for prudential requirements. On reserves, states may allow reserve assets beyond those listed in the GENIUS Act only if the OCC has approved those assets as "similarly liquid Federal Government-issued assets." States may be more conservative than the OCC but not more permissive. Treasury's NPRM does not attempt to federalize state chartering — it requires only that state regimes provide a "fair, transparent, and viable application framework." Comments are due June 2, 2026. Separately, Treasury's September 2025 ANPRM on the licensing prohibition and BSA/AML requirements for nonbank PPSIs has not yet produced a final proposed rule.
         </div>
       </div>
 
@@ -354,7 +377,20 @@ h1{font-family:'Georgia',serif;font-size:21px;font-weight:normal;color:var(--tex
           <span class="caret">▼</span>
         </div>
         <div class="impl-detail">
-          In September 2025, Treasury issued an Advanced Notice of Proposed Rulemaking (ANPRM) seeking input on two topics that fall within Treasury's exclusive rulemaking mandate under the GENIUS Act: (1) implementation of Section 3 of the Act, which establishes the prohibition on issuing payment stablecoins without a license and certain safe harbors; and (2) BSA/AML regulations for nonbank PPSIs. Neither topic has advanced to an NPRM as of May 2026. The BSA/AML rules for nonbank PPSIs are particularly important because they determine how the GENIUS Act's stablecoin issuers interact with FinCEN's AML/CFT framework — distinct from the banking agency AML/CFT program rule NPRM issued April 7, 2026.
+          In September 2025, Treasury issued an Advanced Notice of Proposed Rulemaking (ANPRM) seeking input on two topics within Treasury's exclusive rulemaking mandate under the GENIUS Act: (1) implementation of Section 3 of the Act, which establishes the prohibition on issuing payment stablecoins without a license and certain safe harbors; and (2) BSA/AML regulations for nonbank PPSIs. The second topic has since advanced — the FinCEN/OFAC joint PPSI AML/CFT NPRM was issued April 8, 2026 (see the row below). The §3 licensing-prohibition and safe-harbor piece has not yet advanced to an NPRM as of May 2026. Note two distinct April actions to keep separate: the April 7, 2026 FinCEN AML/CFT <em>reform</em> NPRM for financial institutions generally (which supersedes the withdrawn July 2024 NPRM), and the April 8, 2026 FinCEN/OFAC NPRM specific to PPSIs.
+        </div>
+      </div>
+
+      <div class="impl-item" onclick="tog(this)">
+        <div class="impl-head">
+          <span class="impl-agency">FinCEN<br>OFAC</span>
+          <span class="impl-title">Joint NPRM: AML/CFT and sanctions-compliance requirements for payment stablecoin issuers</span>
+          <span class="stag tag-green">NPRM issued</span>
+          <span class="impl-date">Apr 8, 2026</span>
+          <span class="caret">▼</span>
+        </div>
+        <div class="impl-detail">
+          On April 8, 2026 (published in the Federal Register April 10), FinCEN and OFAC issued a joint NPRM implementing the GENIUS Act's directive to treat permitted payment stablecoin issuers as "financial institutions" under the Bank Secrecy Act. FinCEN proposes a stand-alone BSA framework for PPSIs in a new Part 1033 of 31 C.F.R. chapter X and expressly carves PPSIs out of the money-services-business (MSB) definition, while OFAC proposes a new part of chapter V requiring effective sanctions-compliance programs. The rule reaches nonbank issuers, OCC-licensed uninsured national banks and federal branches, and state-qualified issuers (SQPSIs); program requirements are risk-based and broadly align with FinCEN's parallel AML/CFT reform proposal. The proposal would require a PPSI's primary regulator to notify and consult with FinCEN before taking significant AML/CFT supervisory action. Comments are due June 9, 2026; the final rule would take effect 12 months after issuance. This directly fills what had previously been the most significant nonbank-PPSI AML gap in the implementation picture.
         </div>
       </div>
 
@@ -362,7 +398,7 @@ h1{font-family:'Georgia',serif;font-size:21px;font-weight:normal;color:var(--tex
   </div>
 
   <!-- Timeline -->
-  <div id="panel-timeline" class="tab-panel">
+  <div id="panel-timeline" class="tab-panel" role="tabpanel" data-print-label="Timeline">
     <p class="pillar-intro">The GENIUS Act moves on two clocks — a rulemaking deadline of July 18, 2026, and an effective date that is the earlier of 120 days after all agencies finalize rules or January 18, 2027. The Fed's absence creates a real risk of the backstop date controlling.</p>
 
     <div id="tl-container">
@@ -371,7 +407,7 @@ h1{font-family:'Georgia',serif;font-size:21px;font-weight:normal;color:var(--tex
   </div>
 
   <!-- Prudential Standards -->
-  <div id="panel-prudential" class="tab-panel">
+  <div id="panel-prudential" class="tab-panel" role="tabpanel" data-print-label="Prudential Standards">
     <p class="pillar-intro">The GENIUS Act imposes a comprehensive prudential framework on all permitted payment stablecoin issuers — regardless of pathway. These requirements represent the federal floor; state-qualified issuers must meet substantially similar standards under their state regime.</p>
     <div class="slabel">Click any requirement to expand</div>
     <div class="prud-grid">
@@ -405,7 +441,7 @@ h1{font-family:'Georgia',serif;font-size:21px;font-weight:normal;color:var(--tex
           <span class="prud-icon">✕</span>
           <span class="prud-title">No interest or yield payments to stablecoin holders</span>
         </div>
-        <div class="prud-detail">The GENIUS Act prohibits permitted issuers from paying interest or yield on payment stablecoins to holders. The OCC's implementing NPRM implements this prohibition through a rebuttable presumption targeting arrangements with affiliates and related third parties, including white-label issuance arrangements. This prohibition is intended to preserve the distinction between payment stablecoins and deposit-like instruments that might trigger bank-like regulatory requirements — but it creates a significant competitive tension with DeFi yield products and may incentivize holders to seek yield through secondary arrangements outside the PPSI structure.</div>
+        <div class="prud-detail">The GENIUS Act prohibits permitted issuers from paying interest or yield on payment stablecoins to holders. The OCC's implementing NPRM implements this prohibition through a rebuttable presumption targeting arrangements with affiliates and related third parties, including white-label issuance arrangements. The prohibition is intended to preserve the distinction between payment stablecoins and deposit-like instruments — but it creates significant competitive tension with DeFi yield products and may incentivize holders to seek yield through secondary arrangements outside the PPSI structure. The ban remains contested at the policy level: a White House Council of Economic Advisers report dated April 8, 2026 estimated that eliminating the yield prohibition would increase bank lending by only about $2.1 billion (roughly 0.02%), a finding read as putting the administration mildly on the side of permitting yield — so the issue may resurface in the rulemaking and legislative process.</div>
       </div>
 
       <div class="prud-card" onclick="ptog(this)">
@@ -413,7 +449,7 @@ h1{font-family:'Georgia',serif;font-size:21px;font-weight:normal;color:var(--tex
           <span class="prud-icon">⚖</span>
           <span class="prud-title">Bankruptcy protections — reserve assets excluded from estate; priority claim for holders</span>
         </div>
-        <div class="prud-detail">The GENIUS Act amends Section 541 of the Bankruptcy Code to exclude stablecoin reserves from the property of the bankruptcy estate — treating reserves as property of the customer rather than the issuer. Stablecoin holders receive a priority claim to reserves that is senior to any other claims against the issuer with respect to the reserved assets. This directly addresses one of the most significant consumer protection gaps in prior stablecoin structures, where holders in an issuer insolvency would have ranked as unsecured creditors. The redemption right cannot be suspended by the issuer unilaterally in a crisis without regulatory agreement that exceptional circumstances warrant such action.</div>
+        <div class="prud-detail">Section 11 of the GENIUS Act (codified at 12 U.S.C. § 5910), titled "Treatment of Payment Stablecoin Issuers in Insolvency Proceedings," gives stablecoin holders a priority claim to required reserves in any insolvency of a permitted issuer under federal or state law. The mechanics run through several Bankruptcy Code amendments: §507 (via §11(d)) elevates holders' claims to the reserves above other claims — the statute reaches even ahead of administrative-expense claims; §541 excludes the stablecoins themselves from the property of the estate; and §362 applies the automatic stay to redemption while providing a path to relief. This directly addresses a core gap in prior structures, where holders ranked as unsecured creditors. Two caveats for precision: whether the <em>reserves</em> are categorically excluded from the estate or instead treated as estate property subject to elevated priority is unsettled and will be tested through case law; and commentators have flagged practical concerns (e.g., funding estate administration when reserves cannot be borrowed against) that may complicate the headline "first priority" in practice. The redemption right cannot be suspended by the issuer unilaterally in a crisis absent regulatory agreement that exceptional circumstances warrant it.</div>
       </div>
 
       <div class="prud-card" onclick="ptog(this)">
@@ -421,7 +457,7 @@ h1{font-family:'Georgia',serif;font-size:21px;font-weight:normal;color:var(--tex
           <span class="prud-icon">🏦</span>
           <span class="prud-title">AML/CFT, sanctions, and lawful order compliance required</span>
         </div>
-        <div class="prud-detail">All PPSIs — including foreign issuers operating in the U.S. — must comply with applicable AML/CFT requirements, economic sanctions regimes administered by OFAC, and U.S. lawful orders including regulatory asset freezes, seizures, and blocks. Issuers from OFAC-sanctioned jurisdictions or those designated as primary money laundering concerns are categorically prohibited from U.S. market access. The BSA/AML implementing rules for nonbank PPSIs remain to be proposed by Treasury — a significant gap in the current implementation picture given that most new GENIUS Act entrants are nonbank entities under OCC supervision rather than traditional bank subsidiaries.</div>
+        <div class="prud-detail">All PPSIs — including foreign issuers operating in the U.S. — must comply with applicable AML/CFT requirements, economic sanctions regimes administered by OFAC, and U.S. lawful orders including regulatory asset freezes, seizures, and blocks. Issuers from OFAC-sanctioned jurisdictions or those designated as primary money laundering concerns are categorically prohibited from U.S. market access. On April 8, 2026, FinCEN and OFAC issued a joint NPRM implementing these obligations: it treats PPSIs as "financial institutions" under the Bank Secrecy Act via a stand-alone framework in new 31 C.F.R. Part 1033, expressly carves PPSIs out of the money-services-business definition, and applies to nonbank issuers, OCC-licensed uninsured national banks and federal branches, and state-qualified issuers alike. Comments are due June 9, 2026. What remains genuinely outstanding is the separate §3 licensing-prohibition/safe-harbor rulemaking that Treasury's September 2025 ANPRM also covered.</div>
       </div>
 
       <div class="prud-card" onclick="ptog(this)">
@@ -444,8 +480,8 @@ h1{font-family:'Georgia',serif;font-size:21px;font-weight:normal;color:var(--tex
   </div>
 
   <!-- State-Federal Framework -->
-  <div id="panel-state" class="tab-panel">
-    <p class="pillar-intro">The GENIUS Act's state-federal framework is one of the most consequential aspects of the law for state bank supervisors and CSBS. It creates a tiered system in which states can supervise stablecoin issuers — but only up to a $10 billion issuance threshold, and only under a federally certified "substantially similar" standard. Above that threshold, federal supervision is mandatory.</p>
+  <div id="panel-state" class="tab-panel" role="tabpanel" data-print-label="State-Federal Framework">
+    <p class="pillar-intro">The GENIUS Act's state-federal framework is one of the most consequential aspects of the law for state bank supervisors. It creates a tiered system in which states can supervise stablecoin issuers — but only up to a $10 billion issuance threshold, and only under a federally certified "substantially similar" standard. Above that threshold, federal supervision is mandatory.</p>
 
     <div class="slabel">The state qualification framework</div>
     <div class="q-list">
@@ -459,13 +495,13 @@ h1{font-family:'Georgia',serif;font-size:21px;font-weight:normal;color:var(--tex
       <div class="q-item watch">
         <div class="ql watch">Key mechanism</div>
         <div class="qt">The Stablecoin Certification Review Committee (SCRC) — a new interagency body — certifies state frameworks</div>
-        <div class="qs">The SCRC is established by the GENIUS Act to approve certification of state regulatory frameworks as "substantially similar" to the federal regime. State frameworks must be certified before SQPSIs can operate under state oversight. Treasury's April 2026 NPRM proposes the standards the SCRC will apply. The NPRM uses the OCC's February 2026 NPRM as the reference point for what states must achieve on reserves, capital, liquidity, and prudential requirements. States may be more conservative than the OCC but not more permissive. The SCRC structure introduces a new federal review mechanism over state regulatory frameworks — raising questions about how that review interacts with state sovereignty and CSBS's role in state-federal coordination.</div>
+        <div class="qs">The SCRC is established by the GENIUS Act to approve certification of state regulatory frameworks as "substantially similar" to the federal regime. State frameworks must be certified before SQPSIs can operate under state oversight. Treasury's April 2026 NPRM proposes the standards the SCRC will apply. The NPRM uses the OCC's February 2026 NPRM as the reference point for what states must achieve on reserves, capital, liquidity, and prudential requirements. States may be more conservative than the OCC but not more permissive. The SCRC structure introduces a new federal review mechanism over state regulatory frameworks — raising questions about how that review interacts with state sovereignty and the broader architecture of state-federal coordination.</div>
       </div>
 
       <div class="q-item tension">
         <div class="ql tension">Critical threshold</div>
         <div class="qt">Issuers exceeding $10B must transition to OCC supervision — or stop net new issuance</div>
-        <div class="qs">If a state-qualified issuer's outstanding stablecoin issuance exceeds $10 billion, it must transition to OCC supervision within 360 days or cease net new issuance. This is a mandatory federal takeover of supervision — not elective. The $10B threshold is denominated in outstanding issuance (tokens in circulation), not assets or revenue. In a fast-growing stablecoin market, an issuer could cross this threshold rapidly. The OCC's implementing NPRM provides for an orderly transition process under proposed §15.15. For state regulators, this threshold defines the ceiling of their supervisory jurisdiction over stablecoin issuers — a structurally significant limitation on state authority in this space.</div>
+        <div class="qs">If a state-qualified issuer's outstanding stablecoin issuance exceeds $10 billion, it must — within 360 days — either transition to OCC supervision or cease net new issuance, <em>unless</em> it obtains a waiver to remain solely under its state payment stablecoin regulator. The statute thus contemplates a waiver pathway (the precise standard for which turns on §4(c) and the forthcoming rules), so the threshold operates as a rebuttable ceiling rather than an automatic federal takeover. The $10B threshold is denominated in outstanding issuance (tokens in circulation), not assets or revenue. In a fast-growing stablecoin market, an issuer could cross this threshold rapidly. The OCC's implementing NPRM provides for an orderly transition process under proposed §15.15. For state regulators, this threshold — and the scope of any waiver — defines the practical ceiling of their supervisory jurisdiction over stablecoin issuers.</div>
       </div>
 
       <div class="q-item state">
@@ -483,14 +519,14 @@ h1{font-family:'Georgia',serif;font-size:21px;font-weight:normal;color:var(--tex
       <div class="q-item noted">
         <div class="ql noted">Preserved</div>
         <div class="qt">State consumer protection laws are not preempted by the GENIUS Act</div>
-        <div class="qs">The GENIUS Act explicitly does not preempt state consumer protection laws. State attorneys general and state financial regulators retain enforcement authority over stablecoin issuer conduct that violates state consumer protection statutes — even for federally chartered issuers. This is a meaningful preservation of state authority in the consumer protection dimension, consistent with the National Bank Act preemption framework where state consumer protection laws that do not significantly interfere with federal banking powers are preserved. For CSBS and state regulators, this creates an ongoing role in stablecoin oversight even where federal supervision controls the prudential framework.</div>
+        <div class="qs">The GENIUS Act explicitly does not preempt state consumer protection laws. State attorneys general and state financial regulators retain enforcement authority over stablecoin issuer conduct that violates state consumer protection statutes — even for federally chartered issuers. This is a meaningful preservation of state authority in the consumer protection dimension, consistent with the National Bank Act preemption framework where state consumer protection laws that do not significantly interfere with federal banking powers are preserved. For state regulators, this creates an ongoing role in stablecoin oversight even where federal supervision controls the prudential framework.</div>
       </div>
 
     </div>
   </div>
 
   <!-- Open Questions -->
-  <div id="panel-questions" class="tab-panel">
+  <div id="panel-questions" class="tab-panel" role="tabpanel" data-print-label="Open Questions">
     <p class="pillar-intro">The GENIUS Act's passage resolved the most fundamental question — whether the U.S. would create a federal stablecoin framework. But significant implementation and policy questions remain, many of which will be shaped by the ongoing rulemakings and the charter pipeline.</p>
     <div class="q-list">
 
@@ -500,16 +536,16 @@ h1{font-family:'Georgia',serif;font-size:21px;font-weight:normal;color:var(--tex
         <div class="qs">The Fed's absence from the implementing rulemaking is the largest near-term structural risk to the GENIUS Act's implementation timeline. If the Fed does not issue final implementing rules by July 18, 2026, it directly delays the effective date — the 120-day post-finalization clock cannot start until all primary regulators have issued final rules. The statutory backstop of January 18, 2027 would then control. The Fed's non-participation mirrors its absence from the AML/CFT program rule NPRM and may reflect a broader institutional posture of reticence toward FinCEN- or OCC-driven coordination frameworks that expand other agencies' roles in Fed-supervised institutions. A formal explanation from the Fed has not been provided.</div>
       </div>
 
-      <div class="q-item tension">
-        <div class="ql tension">Critical unresolved</div>
-        <div class="qt">What will the BSA/AML rules for nonbank PPSIs look like — and when will they be proposed?</div>
-        <div class="qs">Treasury's September 2025 ANPRM sought input on BSA/AML program requirements for nonbank PPSIs — entities that will be OCC-supervised stablecoin issuers without a traditional banking charter. As of May 2026, no NPRM has been issued. This is a significant gap: the GENIUS Act imposes AML/CFT compliance obligations on all PPSIs, but the specific program requirements for nonbank issuers have not been codified. The April 2026 FinCEN AML/CFT program rule NPRM applies to traditional financial institutions — its application to novel GENIUS Act entities is not yet fully resolved. Until Treasury issues the nonbank PPSI AML/BSA NPRM, applicants seeking OCC licensing face uncertainty about their specific compliance obligations in this area.</div>
+      <div class="q-item watch">
+        <div class="ql watch">Largely addressed — detail pending</div>
+        <div class="qt">The BSA/AML framework for nonbank PPSIs has been proposed — what remains is the §3 licensing rule and final-rule specifics</div>
+        <div class="qs">This had been a critical gap, but it is now substantially addressed: the FinCEN/OFAC joint NPRM of April 8, 2026 treats PPSIs (including nonbank, OCC-licensed, and state-qualified issuers) as "financial institutions" under the BSA, with a stand-alone framework in new 31 C.F.R. Part 1033 that carves PPSIs out of the MSB definition. What is still genuinely unresolved: (1) the separate §3 licensing-prohibition and safe-harbor rulemaking from the September 2025 Treasury ANPRM has not advanced to an NPRM; (2) the PPSI rule remains a proposal with comments due June 9, 2026, so the final program requirements and the precise enforcement split between FinCEN and the primary regulators are not yet locked in; and (3) the interaction between the PPSI-specific framework and FinCEN's parallel general AML/CFT reform proposal will need to be reconciled. Applicants seeking OCC licensing now have a far clearer compliance picture than even a few months ago, but should track the comment process closely.</div>
       </div>
 
       <div class="q-item watch">
         <div class="ql watch">High-profile test case</div>
         <div class="qt">World Liberty Financial (USD1) — stablecoin trust bank application under review at OCC</div>
-        <div class="qs">World Liberty Financial — co-founded by President Trump and his sons — submitted an OCC application in January 2026 for a national trust bank purpose-built for stablecoin issuance, specifically designed to issue USD1 under the GENIUS Act framework. The application is under review. Its resolution will be the first high-profile test of how the OCC applies the GENIUS Act chartering process — and will be closely watched for how the OCC handles the novel questions raised by a politically connected applicant, including the trust bank non-fiduciary activities rule finalized in February 2026. Sen. Warren has requested OCC delay review pending resolution of the President's conflicts of interest.</div>
+        <div class="qs">A World Liberty Financial subsidiary (WLTC Holdings / World Liberty Trust Company, N.A.) — affiliated with a venture co-founded by President Trump and his sons — submitted an OCC application on January 7, 2026 for a national trust bank to issue and custody USD1 under the GENIUS Act framework. It sits within a broader wave of digital-asset trust applications: the OCC conditionally approved national trust bank charters for Circle, Ripple, Paxos, BitGo, and Fidelity Digital Assets in December 2025, and Crypto.com in February 2026. WLF's resolution will be the highest-profile test of the chartering process — closely watched both for the conflict-of-interest dimension (Sen. Warren has pressed Comptroller Gould to share the unredacted application and to reject it) and for a genuinely novel legal question raised by commenters: whether the OCC's National Bank Act authority extends to chartering "trust" banks that perform no fiduciary activities and exist to issue and custody stablecoins. The OCC's February 2026 national trust bank non-fiduciary activities rule speaks directly to that question and will shape how the application is evaluated.</div>
       </div>
 
       <div class="q-item watch">
@@ -521,7 +557,7 @@ h1{font-family:'Georgia',serif;font-size:21px;font-weight:normal;color:var(--tex
       <div class="q-item state">
         <div class="ql state">State supervisors' interest</div>
         <div class="qt">The $10B threshold — how will it interact with the scale of the stablecoin market?</div>
-        <div class="qs">The stablecoin market grew 28% in the year before the GENIUS Act's passage and has exceeded Visa and Mastercard combined in annual transaction volume. Most current issuers other than Circle (USDC, ~$60B) and Tether (USDT, ~$140B) are below $10B — but a successful new entrant growing under state supervision could cross the threshold faster than anticipated. The 360-day transition window from breach to mandatory OCC supervision gives state regulators a defined wind-down period but no ability to retain supervision over a successful issuer. From a CSBS perspective, this creates a structural ceiling on state supervisory authority in the stablecoin space that deserves attention in the ongoing rulemaking comment process.</div>
+        <div class="qs">The stablecoin market has grown rapidly, exceeding $240 billion in total market capitalization by May 2026. (Note: the often-cited claim that stablecoins surpass Visa and Mastercard combined in transaction volume reflects <em>raw</em> on-chain volume, which is heavily inflated by automated and exchange-internal transfers; adjusted, economically meaningful volume is dramatically lower.) Tether (USDT) holds roughly two-thirds of the market (~$160B+) and Circle (USDC) roughly a quarter (~$65B); most other issuers fall below $10B — but a successful new entrant growing under state supervision could cross the threshold faster than anticipated. The 360-day transition window from breach to mandatory OCC supervision (subject to the waiver pathway noted under "State-federal framework") gives state regulators a defined wind-down period but no guaranteed ability to retain supervision over a successful issuer. From a state-supervisory perspective, this creates a potential structural ceiling on state authority in the stablecoin space that deserves attention in the ongoing rulemaking comment process.</div>
       </div>
 
       <div class="q-item noted">
@@ -536,7 +572,7 @@ h1{font-family:'Georgia',serif;font-size:21px;font-weight:normal;color:var(--tex
 </div><!-- /tabs-wrap -->
 
 <div class="footer">
-  Sources: GENIUS Act (S. 1582, 119th Cong., signed July 18, 2025), OCC NPRM (Feb. 25, 2026), FDIC NPRM (Dec. 2025), NCUA NPRM (Feb. 11, 2026), Treasury ANPRM (Sep. 2025), Treasury State Framework NPRM (Apr. 7, 2026), Davis Polk, Mayer Brown, Sullivan &amp; Cromwell, Covington, Latham, Greenberg Traurig, Skadden, Arnold &amp; Porter, Winston &amp; Strawn analyses &nbsp;·&nbsp; Compiled May 2026
+  Sources: GENIUS Act (S. 1582, 119th Cong., signed July 18, 2025), OCC NPRM (Feb. 25, 2026; FR Mar. 2, 2026), FDIC application-procedures NPRM (Dec. 19, 2025) and prudential NPRM (Apr. 7, 2026), NCUA NPRM (Feb. 11, 2026), Treasury State Framework NPRM (Apr. 2026, comments due June 2, 2026), FinCEN/OFAC PPSI AML/CFT NPRM (Apr. 8, 2026, comments due June 9, 2026), Treasury ANPRM (Sep. 2025), plus Davis Polk, Mayer Brown, Sullivan &amp; Cromwell, Covington, Latham, Arnold &amp; Porter, Cadwalader, Holland &amp; Knight, King &amp; Spalding and other firm analyses &nbsp;·&nbsp; Verified late May 2026. Verify each item against the Federal Register before relying on it.
 </div>
 
 </div><!-- /shell -->
@@ -550,13 +586,16 @@ const tlData=[
   {date:"Jul 17, 2025",title:"House passes GENIUS Act, 308–122",desc:"House passes without amendment to Senate version. Broad bipartisan support.",dot:"done"},
   {date:"Jul 18, 2025",title:"President Trump signs GENIUS Act into law",desc:"Signed into law. 18-month effective date clock begins (backstop: Jan 18, 2027). Agencies have 1 year to issue final rules (by Jul 18, 2026).",dot:"done"},
   {date:"Jul 2025",title:"President's Working Group digital assets report",desc:"PWG issues report recommending clarifying permissible bank digital asset activities, including tokenization of assets and liabilities.",dot:"done"},
-  {date:"Sep 2025",title:"Treasury ANPRM: licensing prohibition + BSA/AML for nonbank PPSIs",desc:"Treasury seeks advance comment on implementing §3 of GENIUS Act and AML/CFT rules for nonbank stablecoin issuers. No NPRM yet issued.",dot:"done"},
-  {date:"Oct 15, 2025",title:"OCC: Conditional charter approval for Erebor Bank, N.A.",desc:"First fintech national bank charter of the Trump era — designed to operate in stablecoin/digital asset space under the GENIUS Act framework.",dot:"done"},
-  {date:"Dec 2025",title:"FDIC NPRM: application procedures for FDIC-supervised stablecoin issuers",desc:"Comment period extended into May 2026. Covers Pathway A issuers supervised by FDIC.",dot:"done"},
+  {date:"Sep 2025",title:"Treasury ANPRM: licensing prohibition + BSA/AML for nonbank PPSIs",desc:"Treasury seeks advance comment on implementing §3 of GENIUS Act and AML/CFT rules for nonbank stablecoin issuers. The BSA/AML piece later advanced via the Apr 8, 2026 FinCEN/OFAC NPRM; the §3 licensing-prohibition rule remains pending.",dot:"done"},
+  {date:"Oct 15, 2025",title:"OCC: Conditional charter approval for Erebor Bank, N.A.",desc:"First de novo national bank charter of Comptroller Gould's tenure — a full-service bank (deposits, lending, FDIC-insured) serving tech and digital-asset clients, not a stablecoin-only entity. Moved to final approval in Feb 2026.",dot:"done"},
+  {date:"Dec 2025",title:"OCC conditionally approves digital-asset trust charters",desc:"Circle, Ripple, Paxos, BitGo, and Fidelity Digital Assets receive conditional national trust bank charter approvals — the leading edge of a broad charter pipeline (Crypto.com followed in Feb 2026).",dot:"done"},
+  {date:"Dec 19, 2025",title:"FDIC NPRM (1 of 2): application procedures for FDIC-supervised stablecoin issuers",desc:"Comment period extended into May 2026. Covers Pathway A issuers supervised by FDIC.",dot:"done"},
   {date:"Jan 7, 2026",title:"World Liberty Financial files OCC stablecoin trust bank application",desc:"Trump-family crypto venture applies for OCC national trust bank charter to issue USD1 stablecoin. Under review.",dot:"urgent"},
   {date:"Feb 11, 2026",title:"NCUA NPRM: credit union subsidiary stablecoin issuers",desc:"Comments due April 13, 2026. Covers federally insured credit union subsidiaries under Pathway A.",dot:"done"},
-  {date:"Feb 25–26, 2026",title:"OCC issues 376-page GENIUS Act implementing NPRM",desc:"Comprehensive proposed rule covering all phases of OCC-supervised stablecoin issuance: licensing, reserves, prudential standards, custody, capital, enforcement. OCC also finalizes NTB non-fiduciary activities rule.",dot:"done"},
-  {date:"Apr 7, 2026",title:"Treasury NPRM: state framework 'substantially similar' standard",desc:"Proposes the standard for SCRC certification of state stablecoin regimes. Uses OCC NPRM as reference point. Comments due 60 days after FR publication.",dot:"done"},
+  {date:"Feb 25–26, 2026",title:"OCC issues 376-page GENIUS Act implementing NPRM",desc:"Comprehensive proposed rule covering all phases of OCC-supervised stablecoin issuance: licensing, reserves, prudential standards, custody, capital, enforcement. OCC also finalizes NTB non-fiduciary activities rule. Published in the Federal Register Mar 2, 2026.",dot:"done"},
+  {date:"Apr 7, 2026",title:"FDIC NPRM (2 of 2): prudential framework for FDIC-supervised PPSIs",desc:"Board approves prudential-standards NPRM (reserves, redemption, capital, risk management); also addresses pass-through deposit insurance for reserves and tokenized-deposit treatment.",dot:"done"},
+  {date:"Apr 7, 2026",title:"Treasury NPRM: state framework 'substantially similar' standard",desc:"Proposes the standard for SCRC certification of state stablecoin regimes. Uses the OCC NPRM as reference point. Comments due June 2, 2026.",dot:"done"},
+  {date:"Apr 8, 2026",title:"FinCEN/OFAC joint NPRM: AML/CFT + sanctions for PPSIs",desc:"Treats PPSIs as 'financial institutions' under the BSA via new 31 C.F.R. Part 1033; carves PPSIs out of the MSB definition; applies to nonbank, OCC-licensed, and state-qualified issuers. Comments due June 9, 2026.",dot:"done"},
   {date:"Jul 18, 2026",title:"Deadline: all agencies must issue final implementing rules",desc:"One year after enactment. Federal Reserve has not yet issued an NPRM. If Fed misses this deadline, effective date reverts to the Jan 18, 2027 statutory backstop.",dot:"warning"},
   {date:"Jan 18, 2027",title:"Statutory backstop: GENIUS Act takes effect",desc:"18 months after enactment. Effective date is the EARLIER of this date or 120 days after all primary regulators issue final rules. No PPSI may issue payment stablecoins after this date without a license.",dot:"future"},
 ];
@@ -579,21 +618,57 @@ function buildTl(){
 buildTl();
 
 function sw(id,btn){
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-selected','false');});
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
   btn.classList.add('active');
+  btn.setAttribute('aria-selected','true');
   document.getElementById('panel-'+id).classList.add('active');
+  try{ if(history&&history.replaceState){history.replaceState(null,'','#'+id);} }catch(e){/* sandboxed/null-origin: deep-linking unavailable, ignore */}
 }
 function tog(el){
   const was=el.classList.contains('open');
-  document.querySelectorAll('.impl-item.open').forEach(c=>c.classList.remove('open'));
-  if(!was)el.classList.add('open');
+  document.querySelectorAll('.impl-item.open').forEach(c=>{c.classList.remove('open');const h=c.querySelector('.impl-head');if(h)h.setAttribute('aria-expanded','false');});
+  if(!was){el.classList.add('open');const h=el.querySelector('.impl-head');if(h)h.setAttribute('aria-expanded','true');}
 }
 function ptog(el){
   const was=el.classList.contains('open');
-  document.querySelectorAll('.prud-card.open').forEach(c=>c.classList.remove('open'));
-  if(!was)el.classList.add('open');
+  document.querySelectorAll('.prud-card.open').forEach(c=>{c.classList.remove('open');c.setAttribute('aria-expanded','false');});
+  if(!was){el.classList.add('open');el.setAttribute('aria-expanded','true');}
 }
+
+// Accessibility + deep-linking wiring
+(function(){
+  // Tablist semantics
+  const nav=document.querySelector('.tab-nav');
+  if(nav)nav.setAttribute('role','tablist');
+  document.querySelectorAll('.tab-btn').forEach(b=>{
+    b.setAttribute('role','tab');
+    b.setAttribute('aria-selected',b.classList.contains('active')?'true':'false');
+  });
+  // Make div-based toggles operable by keyboard and screen readers
+  function makeOperable(sel,labelSel){
+    document.querySelectorAll(sel).forEach(el=>{
+      const target=labelSel?el.querySelector(labelSel):el;
+      if(!target)return;
+      target.setAttribute('role','button');
+      target.setAttribute('tabindex','0');
+      target.setAttribute('aria-expanded','false');
+      target.addEventListener('keydown',e=>{
+        if(e.key==='Enter'||e.key===' '){e.preventDefault();el.click();}
+      });
+    });
+  }
+  makeOperable('.impl-item','.impl-head');
+  makeOperable('.prud-card',null);
+  // Activate tab from URL hash on load (deep-linking), if accessible
+  let h='';
+  try{ h=(location.hash||'').replace('#',''); }catch(e){ h=''; }
+  if(h){
+    const btn=Array.from(document.querySelectorAll('.tab-btn'))
+      .find(b=>(b.getAttribute('onclick')||'').indexOf("sw('"+h+"'")>-1);
+    if(btn)btn.click();
+  }
+})();
 </script>
 </body>
 </html>
