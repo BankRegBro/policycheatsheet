@@ -19,7 +19,7 @@
   --border-strong: rgba(0,0,0,0.28);
   --text:          #1a1916;
   --text2:         #5a574f;
-  --text3:         #8c8880;
+  --text3:         #6f6a61;
   --accent:        #1a3a6b;
   --accent-bg:     #e8edf7;
   --accent-text:   #1a3a6b;
@@ -50,7 +50,7 @@
     --border-strong: rgba(255,255,255,0.28);
     --text:          #edeae4;
     --text2:         #a09b94;
-    --text3:         #6b6660;
+    --text3:         #908b82;
     --accent:        #5b8de8;
     --accent-bg:     #1a2440;
     --accent-text:   #8ab0f0;
@@ -486,6 +486,179 @@ body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border-med); border-radius: 3px; }
 
+/* ===== FOCUS (keyboard accessibility) ===== */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* ===== VIEW TOGGLE (cards / matrix) ===== */
+.view-tog {
+  display: flex;
+  gap: 0;
+  background: var(--bg2);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+  margin-bottom: 16px;
+  max-width: 320px;
+}
+.view-btn {
+  flex: 1;
+  border: none;
+  background: none;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-family: var(--sans);
+  cursor: pointer;
+  border-radius: 5px;
+  color: var(--text2);
+  transition: all .14s;
+}
+.view-btn.on {
+  background: var(--bg);
+  color: var(--text);
+  font-weight: 500;
+  box-shadow: 0 0 0 0.5px var(--border-med);
+}
+
+/* ===== CHARTER MATRIX ===== */
+.matrix-wrap { display: none; margin-bottom: 16px; overflow-x: auto; }
+.matrix-wrap.on { display: block; }
+.charter-cards.off { display: none; }
+
+.matrix {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  min-width: 720px;
+  background: var(--bg);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.matrix th, .matrix td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 0.5px solid var(--border);
+  vertical-align: top;
+}
+.matrix thead th {
+  background: var(--bg2);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.4;
+}
+.matrix thead th .mx-eyebrow {
+  display: block;
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-bottom: 2px;
+}
+.matrix tbody th {
+  font-weight: 400;
+  color: var(--text2);
+  white-space: nowrap;
+  background: var(--bg);
+  position: sticky;
+  left: 0;
+}
+.matrix tbody tr:last-child th,
+.matrix tbody tr:last-child td { border-bottom: none; }
+.matrix td { color: var(--text); }
+
+/* ===== PILL LEGEND ===== */
+.pill-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 10px 14px;
+  background: var(--bg2);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  color: var(--text2);
+}
+.pill-legend .lg-item { display: inline-flex; align-items: center; gap: 6px; }
+.pill-legend .lg-dot {
+  width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0;
+  box-shadow: inset 0 0 0 0.5px var(--border-med);
+}
+.lg-g { background: var(--success-bg); }
+.lg-r { background: var(--danger-bg); }
+.lg-a { background: var(--warn-bg); }
+.lg-n { background: var(--neutral-bg); }
+
+/* ===== TOOLBAR (expand-all etc.) ===== */
+.sec-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.txt-btn {
+  background: none;
+  border: 0.5px solid var(--border-med);
+  border-radius: var(--radius-sm);
+  padding: 5px 12px;
+  font-size: 12px;
+  font-family: var(--sans);
+  color: var(--text2);
+  cursor: pointer;
+  transition: all .14s;
+}
+.txt-btn:hover { color: var(--text); border-color: var(--border-strong); }
+
+/* ===== "AS OF" + SOURCE LINKS ===== */
+.as-of {
+  font-size: 11px;
+  color: var(--text3);
+  font-style: italic;
+  margin-bottom: 14px;
+}
+.src {
+  font-size: 11px;
+  color: var(--accent-text);
+  text-decoration: none;
+  border-bottom: 0.5px solid var(--border-med);
+  white-space: nowrap;
+}
+.src:hover { border-bottom-color: var(--accent); }
+.src-row {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  font-size: 11px;
+  color: var(--text3);
+}
+
+/* ===== STAT GRID RESPONSIVE ===== */
+@media (max-width: 520px) {
+  .stat-grid { grid-template-columns: 1fr; }
+}
+
+/* ===== PRINT ===== */
+@media print {
+  body { background: #fff; color: #000; font-size: 11px; }
+  .tc-nav, .pw-tog, .tline, .view-tog, .sec-toolbar, .acc-icon { display: none !important; }
+  .tc-sec { display: block !important; page-break-before: always; }
+  .tc-sec:first-of-type { page-break-before: avoid; }
+  #pw-fid, #pw-nonfid { display: block !important; }
+  .acc-body { display: block !important; }
+  .occ-era { display: block !important; }
+  .charter-cards { display: grid !important; }
+  .matrix-wrap { display: none !important; }
+  .ocard, .ccard, .gcard, .callout { page-break-inside: avoid; }
+  .src { color: #000; }
+  a[href]::after { content: ""; }
+}
+
 </style>
 </head>
 <body>
@@ -506,19 +679,31 @@ body {
   </header>
 
   <!-- TAB NAV -->
-  <nav class="tc-nav" aria-label="Tool sections">
-    <button class="tc-btn on" onclick="tcTab('charter',this)">Charter types</button>
-    <button class="tc-btn" onclick="tcTab('powers',this)">Trust powers</button>
-    <button class="tc-btn" onclick="tcTab('pain',this)">Pain points</button>
-    <button class="tc-btn" onclick="tcTab('occ',this)">OCC activity</button>
-    <button class="tc-btn" onclick="tcTab('genius',this)">GENIUS Act</button>
+  <nav class="tc-nav" role="tablist" aria-label="Tool sections">
+    <button class="tc-btn on" id="tab-charter" role="tab" aria-selected="true" aria-controls="tc-charter" onclick="tcTab('charter',this)">Charter types</button>
+    <button class="tc-btn" id="tab-powers" role="tab" aria-selected="false" aria-controls="tc-powers" onclick="tcTab('powers',this)">Trust powers</button>
+    <button class="tc-btn" id="tab-pain" role="tab" aria-selected="false" aria-controls="tc-pain" onclick="tcTab('pain',this)">Pain points</button>
+    <button class="tc-btn" id="tab-occ" role="tab" aria-selected="false" aria-controls="tc-occ" onclick="tcTab('occ',this)">OCC activity</button>
+    <button class="tc-btn" id="tab-genius" role="tab" aria-selected="false" aria-controls="tc-genius" onclick="tcTab('genius',this)">GENIUS Act</button>
   </nav>
 
   <!-- ========== CHARTER TYPES ========== -->
-  <section id="tc-charter" class="tc-sec on" aria-label="Charter types">
+  <section id="tc-charter" class="tc-sec on" role="tabpanel" aria-labelledby="tab-charter" tabindex="0">
     <p class="intro-text">Four primary charter structures govern U.S. trust companies — each conferring distinct regulatory authority, supervisory relationships, and operational scope. The choice of charter is the single most consequential decision in structuring a trust institution.</p>
 
-    <div class="charter-grid">
+    <div class="pill-legend" aria-label="Pill color key">
+      <span class="lg-item"><span class="lg-dot lg-g"></span>Favorable / present</span>
+      <span class="lg-item"><span class="lg-dot lg-r"></span>Unfavorable / absent</span>
+      <span class="lg-item"><span class="lg-dot lg-a"></span>Conditional / varies</span>
+      <span class="lg-item"><span class="lg-dot lg-n"></span>Neutral fact</span>
+    </div>
+
+    <div class="view-tog" role="group" aria-label="Charter view">
+      <button class="view-btn on" onclick="charterView('cards',this)">Cards</button>
+      <button class="view-btn" onclick="charterView('matrix',this)">Comparison matrix</button>
+    </div>
+
+    <div class="charter-grid charter-cards" id="charter-cards">
 
       <div class="ccard">
         <div class="ccard-header">
@@ -580,7 +765,7 @@ body {
           <div class="arow"><span class="alab">Fiduciary law</span><span class="aval">Federal (preempts in part)</span></div>
           <div class="arow"><span class="alab">CIF authority</span><span class="aval"><span class="pill pill-g">Yes (12 CFR 9.18)</span></span></div>
         </div>
-        <p class="ccard-note">Increasingly attractive for digital asset custody and stablecoin issuance under the GENIUS Act. OCC preemption of state law narrowed by <em>Cantero v. Bank of America</em> (2024). No CRA; no deposit insurance assessment.</p>
+        <p class="ccard-note">Increasingly attractive for digital asset custody and stablecoin issuance under the GENIUS Act. NBA preemption of state law is no longer categorical after <em>Cantero v. Bank of America</em> (2024), which requires a case-by-case <em>Barnett Bank</em> analysis. No CRA; no deposit insurance assessment.</p>
       </div>
 
       <div class="ccard">
@@ -601,9 +786,81 @@ body {
           <div class="arow"><span class="alab">Fiduciary law</span><span class="aval">Federal (broadly preempts)</span></div>
           <div class="arow"><span class="alab">CIF authority</span><span class="aval"><span class="pill pill-g">Yes (12 CFR 9.18)</span></span></div>
         </div>
-        <p class="ccard-note">The dominant structure for large-institution trust operations (BNY Mellon, JPMorgan Private Bank, State Street). Fiduciary powers separately approved; governed by 12 CFR Part 9. Full federal preemption of most conflicting state banking laws.</p>
+        <p class="ccard-note">The dominant structure for large-institution trust operations (BNY Mellon, JPMorgan Private Bank, State Street). Fiduciary powers separately approved; governed by 12 CFR Part 9. Broad federal preemption of conflicting state banking laws, though no longer categorical after <em>Cantero</em> (2024).</p>
       </div>
 
+    </div><!-- /charter-cards -->
+
+    <div class="matrix-wrap" id="charter-matrix">
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th scope="col">Attribute</th>
+            <th scope="col"><span class="mx-eyebrow">State-chartered</span>Nondepository Trust Co.</th>
+            <th scope="col"><span class="mx-eyebrow">State-chartered bank</span>Trust Department</th>
+            <th scope="col"><span class="mx-eyebrow">OCC limited purpose</span>National Trust Co.</th>
+            <th scope="col"><span class="mx-eyebrow">OCC full bank</span>National Bank Trust Dept.</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Primary regulator</th>
+            <td>State banking dept.</td>
+            <td>State + FDIC or Fed</td>
+            <td>OCC</td>
+            <td>OCC + FDIC</td>
+          </tr>
+          <tr>
+            <th scope="row">Deposit authority</th>
+            <td><span class="pill pill-r">None</span></td>
+            <td><span class="pill pill-g">Yes</span></td>
+            <td><span class="pill pill-r">None</span></td>
+            <td><span class="pill pill-g">Yes</span></td>
+          </tr>
+          <tr>
+            <th scope="row">FDIC insured</th>
+            <td><span class="pill pill-r">No</span></td>
+            <td><span class="pill pill-g">Yes (deposits)</span></td>
+            <td><span class="pill pill-r">No</span></td>
+            <td><span class="pill pill-g">Yes (deposits)</span></td>
+          </tr>
+          <tr>
+            <th scope="row">CRA obligations</th>
+            <td><span class="pill pill-g">None</span></td>
+            <td><span class="pill pill-r">Yes</span></td>
+            <td><span class="pill pill-g">None (typically)</span></td>
+            <td><span class="pill pill-r">Yes</span></td>
+          </tr>
+          <tr>
+            <th scope="row">Multi-state ops</th>
+            <td>CSBS NCA or state license</td>
+            <td>Interstate branching + state approval</td>
+            <td>Federal preemption (partial)</td>
+            <td>Interstate branching (IBBEA)</td>
+          </tr>
+          <tr>
+            <th scope="row">Federal law anchor</th>
+            <td>BSA, 31 USC 5312</td>
+            <td>FDI Act; BSA</td>
+            <td>12 USC 92a; 12 CFR Pt. 9</td>
+            <td>NBA; 12 USC 92a; 12 CFR Pt. 9</td>
+          </tr>
+          <tr>
+            <th scope="row">Fiduciary law</th>
+            <td>State trust code</td>
+            <td>State trust code + banking law</td>
+            <td>Federal (preempts in part)</td>
+            <td>Federal (broadly preempts)</td>
+          </tr>
+          <tr>
+            <th scope="row">CIF authority</th>
+            <td><span class="pill pill-r">No (state law varies)</span></td>
+            <td><span class="pill pill-a">State law varies</span></td>
+            <td><span class="pill pill-g">Yes (12 CFR 9.18)</span></td>
+            <td><span class="pill pill-g">Yes (12 CFR 9.18)</span></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <div class="callout">
@@ -613,9 +870,13 @@ body {
   </section>
 
   <!-- ========== POWERS ========== -->
-  <section id="tc-powers" class="tc-sec" aria-label="Trust powers">
+  <section id="tc-powers" class="tc-sec" role="tabpanel" aria-labelledby="tab-powers" tabindex="0">
 
-    <div class="pw-tog">
+    <div class="sec-toolbar">
+      <button class="txt-btn" onclick="toggleAll(this)">Expand all</button>
+    </div>
+
+    <div class="pw-tog" role="group" aria-label="Power type">
       <button class="pw-btn on" onclick="pwSw('fid',this)">Fiduciary powers</button>
       <button class="pw-btn" onclick="pwSw('nonfid',this)">Non-fiduciary powers</button>
     </div>
@@ -652,7 +913,7 @@ body {
         <span class="acc-hd-left"><span class="pill pill-b">Institutional</span>Indenture Trustee</span>
         <span class="acc-icon">+</span>
       </button>
-      <div class="acc-body">Act as trustee under a bond indenture, representing the collective interests of bondholders. Governed by the Trust Indenture Act of 1939 (TIA) for public debt issuances above $5M. The indenture trustee's pre-default duties are largely ministerial (administering payments, maintaining records); post-default, the trustee assumes a more active fiduciary role. A trust company serving as indenture trustee must comply with TIA eligibility requirements, including minimum capital requirements and absence of conflicting interests with the issuer.</div>
+      <div class="acc-body">Act as trustee under a bond indenture, representing the collective interests of bondholders. Governed by the Trust Indenture Act of 1939 (TIA) for indenture-governed public debt; the small-issue exemption (TIA §304(a)(9) / Rule 4a-3) applies to issuances limited to $10M or less outstanding over a 36-month period. The indenture trustee's pre-default duties are largely ministerial (administering payments, maintaining records); post-default, the trustee assumes a more active fiduciary role. A trust company serving as indenture trustee must comply with TIA eligibility requirements, including minimum capital requirements and absence of conflicting interests with the issuer.</div>
 
       <button class="acc-hd" onclick="tog(this)">
         <span class="acc-hd-left"><span class="pill pill-b">Institutional</span>ERISA Trustee / Plan Fiduciary</span>
@@ -705,7 +966,7 @@ body {
         <span class="acc-hd-left"><span class="pill pill-a">Emerging</span>Stablecoin Issuance (GENIUS Act PPSI)</span>
         <span class="acc-icon">+</span>
       </button>
-      <div class="acc-body">Under the GENIUS Act (passed Senate, June 2025), a national trust company may apply to the OCC for authorization as a "Permitted Payment Stablecoin Issuer" (PPSI). Stablecoin issuance is a non-fiduciary activity — the trust company issues a token redeemable 1:1 for reserve assets, and stablecoin holders are creditors, not beneficiaries of a trust. Key GENIUS Act requirements for PPSIs: (1) 1:1 reserve backing with approved assets; (2) monthly reserve attestation; (3) prohibition on commingling reserve assets with operational funds; (4) no payment of yield or interest to stablecoin holders; (5) annual audit for issuers exceeding $50B outstanding; (6) bankruptcy-remote reserve asset structure. <strong>Unresolved tension:</strong> A trust company acting simultaneously as PPSI and as fiduciary trustee faces potential conflicts of interest the GENIUS Act does not explicitly resolve.</div>
+      <div class="acc-body">Under the GENIUS Act (signed into law July 18, 2025), a national trust company may apply to the OCC for authorization as a "Permitted Payment Stablecoin Issuer" (PPSI). Stablecoin issuance is a non-fiduciary activity — the trust company issues a token redeemable 1:1 for reserve assets, and stablecoin holders are creditors, not beneficiaries of a trust. Key GENIUS Act requirements for PPSIs: (1) 1:1 reserve backing with approved assets; (2) monthly reserve attestation; (3) prohibition on commingling reserve assets with operational funds; (4) no payment of yield or interest to stablecoin holders; (5) annual audit for issuers exceeding $50B outstanding; (6) bankruptcy-remote reserve asset structure. FinCEN's April 2026 proposed rule would set tailored AML/CFT and sanctions program requirements for PPSIs. <strong>Unresolved tension:</strong> A trust company acting simultaneously as PPSI and as fiduciary trustee faces potential conflicts of interest the GENIUS Act does not explicitly resolve.</div>
 
       <button class="acc-hd" onclick="tog(this)">
         <span class="acc-hd-left"><span class="pill pill-a">Emerging</span>Digital Asset Custody (Non-Discretionary)</span>
@@ -717,14 +978,18 @@ body {
   </section>
 
   <!-- ========== PAIN POINTS ========== -->
-  <section id="tc-pain" class="tc-sec" aria-label="Operating pain points">
+  <section id="tc-pain" class="tc-sec" role="tabpanel" aria-labelledby="tab-pain" tabindex="0">
     <p class="intro-text">Operating a trust company in the United States involves navigating a fragmented, multi-layered regulatory environment. The following are the primary structural pain points — many of which have become more acute as digital asset activities and the GENIUS Act introduce new regulatory overlays.</p>
+
+    <div class="sec-toolbar">
+      <button class="txt-btn" onclick="toggleAll(this)">Expand all</button>
+    </div>
 
     <button class="acc-hd" onclick="tog(this)">
       <span class="acc-hd-left"><span class="pill pill-r">High</span>Multi-State Licensing Complexity</span>
       <span class="acc-icon">+</span>
     </button>
-    <div class="acc-body">A state-chartered nondepository trust company operating nationally faces three unsatisfying paths: (1) Individual state licensing — expensive, time-consuming, and subject to distinct capital, examination, and reporting requirements in each state; (2) CSBS Nationwide Cooperative Agreement — streamlines supervision but is not universally adopted and does not eliminate all host-state obligations; (3) OCC national trust charter — provides federal preemption, but that preemption is partial and has been narrowed by <em>Cantero v. Bank of America</em> (2024), where the Supreme Court held that NBA preemption requires more than "significant interference" — restoring meaningful state regulatory authority over national bank incidental activities. Digital asset custody companies have found state-by-state MTL exposure analysis particularly burdensome, as trust activities and money transmission can overlap depending on structure and state law.</div>
+    <div class="acc-body">A state-chartered nondepository trust company operating nationally faces three unsatisfying paths: (1) Individual state licensing — expensive, time-consuming, and subject to distinct capital, examination, and reporting requirements in each state; (2) CSBS Nationwide Cooperative Agreement — streamlines supervision but is not universally adopted and does not eliminate all host-state obligations; (3) OCC national trust charter — provides federal preemption, but that preemption is partial and no longer categorical after <em>Cantero v. Bank of America</em> (2024). In <em>Cantero</em>, a unanimous Supreme Court vacated and remanded the Second Circuit's categorical preemption ruling, holding that NBA preemption must be assessed through the <em>Barnett Bank</em> "prevents or significantly interferes with" standard via a nuanced, case-by-case comparative analysis rather than a bright-line rule — a framework generally read as preserving more room for state regulation than the categorical approach. Digital asset custody companies have found state-by-state MTL exposure analysis particularly burdensome, as trust activities and money transmission can overlap depending on structure and state law.</div>
 
     <button class="acc-hd" onclick="tog(this)">
       <span class="acc-hd-left"><span class="pill pill-r">High</span>Regulatory Fragmentation</span>
@@ -742,13 +1007,13 @@ body {
       <span class="acc-hd-left"><span class="pill pill-r">High</span>Federal Reserve Master Account Access</span>
       <span class="acc-icon">+</span>
     </button>
-    <div class="acc-body">Trust companies without deposit-taking authority — particularly nondepository national trust companies and state-chartered nondepository trust companies — are categorically ineligible for Tier 1 (automatic) access to Federal Reserve master accounts under the Fed's August 2022 Final Guidelines. Tier 3 (extensive discretionary review, no defined timeline) applies to non-insured institutions. Without a master account, a trust company must use a correspondent bank to access Fed payment rails — adding cost, credit risk to the correspondent, and operational complexity. The 10th Circuit upheld the Fed's discretionary authority to deny master accounts in <em>Custodia Bank v. Federal Reserve Bank of Kansas City</em> (2024), leaving nondepository trust companies with no legal entitlement to direct settlement access. This directly affects the ability of national trust companies to compete in payment and settlement markets — an area where GENIUS Act stablecoin issuers need reliable settlement infrastructure.</div>
+    <div class="acc-body">Trust companies without deposit-taking authority — particularly nondepository national trust companies and state-chartered nondepository trust companies — are categorically ineligible for Tier 1 (automatic) access to Federal Reserve master accounts under the Fed's August 2022 Final Guidelines. Tier 3 (extensive discretionary review, no defined timeline) applies to non-insured institutions. Without a master account, a trust company must use a correspondent bank to access Fed payment rails — adding cost, credit risk to the correspondent, and operational complexity. The 10th Circuit upheld the Fed's discretionary authority to deny master accounts in <em>Custodia Bank v. Federal Reserve Bank of Kansas City</em> (2024), leaving nondepository trust companies with no legal entitlement to direct settlement access. <strong>The GENIUS Act did not resolve this:</strong> the Hagerty Amendment (Sec. 4(a)(13)) expressly provides that nothing in the Act shall be construed to expand or contract legal eligibility for a Federal Reserve master account. This directly affects the ability of national trust companies to compete in payment and settlement markets — an area where GENIUS Act stablecoin issuers need reliable settlement infrastructure.</div>
 
     <button class="acc-hd" onclick="tog(this)">
       <span class="acc-hd-left"><span class="pill pill-a">Moderate</span>BSA / AML Compliance Burden</span>
       <span class="acc-icon">+</span>
     </button>
-    <div class="acc-body">Trust companies are "financial institutions" under the BSA (31 USC 5312(a)(2)) and subject to FinCEN's full AML/CFT compliance framework. FinCEN's 2024 AML/CFT Program Rule (effective January 1, 2026) requires covered financial institutions to adopt risk-based AML/CFT programs — replacing the prior pillar-based approach with a more flexible but analytically demanding risk-assessment model. For trust companies, two areas create particular complexity: (1) Beneficial ownership identification — identifying the natural persons who ultimately control or benefit from trust accounts requires careful case-by-case analysis; FinCEN's trust beneficial ownership guidance remains incomplete relative to the granularity required by the 2024 rule. (2) Corporate Transparency Act (CTA, effective 2024) — while trust companies themselves are typically exempt reporting companies, their trust accounts may hold interests in entities that are reporting companies, creating information-gathering obligations that fall on the trust company as a practical matter.</div>
+    <div class="acc-body">Trust companies are "financial institutions" under the BSA (31 USC 5312(a)(2)) and subject to FinCEN's full AML/CFT compliance framework. <strong>AML/CFT Program Rule status:</strong> FinCEN's July 3, 2024 AML/CFT Program Rule NPRM was <em>withdrawn</em> and superseded by a re-proposed rule published April 10, 2026 (91 Fed. Reg. 18704), with comments due June 9, 2026 and a proposed 12-month implementation period after a final rule. As of mid-2026 there is no final Program Rule in effect. The 2026 re-proposal would require risk-based programs that incorporate FinCEN's AML/CFT Priorities, but — unlike the withdrawn 2024 version, which proposed a standalone "sixth pillar" — it folds the risk-assessment requirement into the internal-controls pillar. (Separately, the investment-adviser AML rule has been delayed to January 1, 2028.) For trust companies, two areas create particular complexity: (1) Beneficial ownership identification — identifying the natural persons who ultimately control or benefit from trust accounts requires careful case-by-case analysis. (2) Corporate Transparency Act (CTA) — FinCEN's March 26, 2025 interim final rule narrowed the BOI reporting requirement to <em>foreign</em> reporting companies; entities formed in the U.S. ("domestic reporting companies") and U.S. persons are now exempt, materially reducing the trust company's practical information-gathering burden for domestic trust-held entities while leaving foreign-entity exposure in place.</div>
 
     <button class="acc-hd" onclick="tog(this)">
       <span class="acc-hd-left"><span class="pill pill-a">Moderate</span>Fiduciary Duty Standard Variation</span>
@@ -777,10 +1042,10 @@ body {
   </section>
 
   <!-- ========== OCC ACTIVITY ========== -->
-  <section id="tc-occ" class="tc-sec" aria-label="OCC activity and approvals">
-    <p class="intro-text">OCC trust company chartering activity has followed the broader arc of federal crypto policy — expansive in 2021, cautious in 2022–2024, and sharply permissive under the post-January 2025 administration. The GENIUS Act and OCC Interpretive Letter 1183 (May 2025) mark the current frontier.</p>
+  <section id="tc-occ" class="tc-sec" role="tabpanel" aria-labelledby="tab-occ" tabindex="0">
+    <p class="intro-text">OCC trust company chartering activity has followed the broader arc of federal crypto policy — expansive in 2021, cautious in 2022–2024, and sharply permissive under the post-January 2025 administration. The GENIUS Act and OCC Interpretive Letters 1183 (March 2025) and 1184 (May 2025) mark the current frontier.</p>
 
-    <div class="tline">
+    <div class="tline" role="group" aria-label="OCC era">
       <button class="tl-btn on" onclick="occEra('2021',this)">2021 — Conditional Approvals</button>
       <button class="tl-btn" onclick="occEra('2022',this)">2022–2024 — Pullback</button>
       <button class="tl-btn" onclick="occEra('2025',this)">2025–Present — Gould Era</button>
@@ -878,12 +1143,25 @@ body {
         <div class="ocard-h">
           <div>
             <p class="ocard-title">OCC Interpretive Letter 1183</p>
-            <p class="ocard-sub">OCC · May 2025 — Crypto Activities for National Banks &amp; Trust Companies</p>
+            <p class="ocard-sub">OCC · March 7, 2025 (Acting Comptroller Rodney Hood) — Crypto Activities for National Banks &amp; Trust Companies</p>
           </div>
           <span class="pill pill-g">Landmark</span>
         </div>
-        <p class="ocard-body">IL 1183 confirmed that national banks and federal savings associations — including national trust companies — may engage in certain cryptocurrency activities as permissible banking activities <strong>without obtaining a prior supervisory non-objection:</strong> (1) cryptocurrency custody (holding private keys); (2) stablecoin issuance and holding of stablecoin reserves; (3) participation in blockchain node validation; (4) execution of crypto buy/sell transactions on behalf of customers. The letter eliminated the advance-approval requirement that had functioned as a de facto barrier and aligned OCC policy with a broad interpretation of permissible national bank powers under the National Bank Act.</p>
+        <p class="ocard-body">IL 1183 rescinded IL 1179 and reaffirmed that national banks and federal savings associations — including national trust companies — may engage in certain crypto-asset activities <strong>without obtaining a prior supervisory non-objection:</strong> (1) cryptocurrency custody (IL 1170); (2) holding deposits backing stablecoin reserves (IL 1172); (3) participation in independent node verification / DLT payment networks (IL 1174). The letter eliminated the advance-approval requirement that had functioned as a de facto barrier. The OCC simultaneously withdrew from the January 2023 and February 2023 interagency crypto-risk joint statements as applied to national banks.</p>
         <div class="pill-row"><span class="pill pill-g">No prior supervisory approval required</span><span class="pill pill-g">Custody permissible</span><span class="pill pill-g">Stablecoin reserves permissible</span><span class="pill pill-g">Node validation permissible</span></div>
+        <div class="src-row">Source: <a class="src" href="https://occ.gov/news-issuances/bulletins/2025/bulletin-2025-2.html" target="_blank" rel="noopener">OCC Bulletin 2025-2 / IL 1183</a></div>
+      </div>
+
+      <div class="ocard ocard-landmark">
+        <div class="ocard-h">
+          <div>
+            <p class="ocard-title">OCC Interpretive Letter 1184</p>
+            <p class="ocard-sub">OCC · May 7, 2025 — Scope of Crypto Custody &amp; Buy/Sell at Customer Direction</p>
+          </div>
+          <span class="pill pill-g">Landmark</span>
+        </div>
+        <p class="ocard-body">IL 1184 further delineated the scope of national bank and national trust company crypto-custody authority, confirming that OCC-regulated institutions may buy and sell crypto-assets held in custody on a customer's behalf <em>at the direction of the customer</em>, and may use sub-custodians. Together with IL 1183, it rounds out the post-2025 framework: 1183 removed the advance-approval gate; 1184 clarified what custodians may operationally do.</p>
+        <div class="pill-row"><span class="pill pill-g">Custody scope clarified</span><span class="pill pill-g">Customer-directed buy/sell</span><span class="pill pill-g">Sub-custody permissible</span></div>
       </div>
 
       <div class="ocard">
@@ -906,7 +1184,7 @@ body {
           </div>
           <span class="pill pill-a">In Process</span>
         </div>
-        <p class="ocard-body">The permissive OCC posture under Comptroller Jonathan Gould (confirmed January 2025) has prompted a new wave of national trust company and national bank charter applications from crypto-native institutions, stablecoin issuers, and fintech companies seeking federal preemption and OCC's PPSI approval pathway under the GENIUS Act. The OCC has confirmed restoration of an active prefiling meeting process for trust charter applicants — a process that had been effectively suspended during 2022–2024. The GENIUS Act creates an additional structural incentive: PPSI authorization requires OCC approval for federally chartered entities, directing a new category of applicants toward the national trust charter pathway rather than the state-chartered alternatives.</p>
+        <p class="ocard-body">The permissive OCC posture — established under Acting Comptroller Rodney Hood in early 2025 (IL 1183) and continued by Comptroller Jonathan Gould (nominated February 11, 2025; confirmed by the Senate July 10, 2025, 50–45) — has prompted a new wave of national trust company and national bank charter applications from crypto-native institutions, stablecoin issuers, and fintech companies seeking federal preemption and OCC's PPSI approval pathway under the GENIUS Act. The OCC has confirmed restoration of an active prefiling meeting process for trust charter applicants — a process that had been effectively suspended during 2022–2024. The GENIUS Act creates an additional structural incentive: PPSI authorization requires OCC approval for federally chartered entities, directing a new category of applicants toward the national trust charter pathway rather than the state-chartered alternatives.</p>
         <div class="pill-row"><span class="pill pill-a">Applications filed</span><span class="pill pill-a">Active prefiling discussions</span><span class="pill pill-b">PPSI pathway as primary driver</span></div>
       </div>
 
@@ -914,8 +1192,8 @@ body {
   </section>
 
   <!-- ========== GENIUS ACT ========== -->
-  <section id="tc-genius" class="tc-sec" aria-label="GENIUS Act">
-    <p class="intro-text">The Guiding and Establishing National Innovation for U.S. Stablecoins Act (GENIUS Act) passed the Senate 66–32 in June 2025, creating the first comprehensive federal framework for payment stablecoins. For trust companies, it represents the most significant legislative change to permissible trust company activities in decades — and the greatest source of new regulatory complexity.</p>
+  <section id="tc-genius" class="tc-sec" role="tabpanel" aria-labelledby="tab-genius" tabindex="0">
+    <p class="intro-text">The Guiding and Establishing National Innovation for U.S. Stablecoins Act (GENIUS Act, S. 1582) was <strong>signed into law on July 18, 2025</strong> — the Senate passed it 68–30 on June 17, 2025, and the House passed the same text 308–122 on July 17, 2025 — creating the first comprehensive federal framework for payment stablecoins. The Act takes effect on the earlier of 18 months after enactment or 120 days after the primary federal stablecoin regulators issue final implementing rules, so much of the operative detail remains in active rulemaking. For trust companies, it represents the most significant legislative change to permissible trust company activities in decades — and the greatest source of new regulatory complexity.</p>
 
     <div class="stat-grid">
       <div class="stat-box">
@@ -956,21 +1234,30 @@ body {
 
     <div class="gcard">
       <p class="gcardh">Preemption of State Stablecoin Laws</p>
-      <p class="gcardp">The GENIUS Act preempts state stablecoin laws "to the extent inconsistent" with its requirements — a formulation that leaves significant interpretive space. States with their own stablecoin frameworks (including Wyoming, which enacted stablecoin legislation through its SPDI framework) will need to evaluate whether their laws conflict. The preemption provision is likely to generate litigation from states asserting that their frameworks provide additional consumer protections that survive the preemption standard. CSBS has monitored the legislation closely; the final preemption scope and the definition of "inconsistent" will significantly affect state supervisory authority over state-chartered trust company stablecoin issuers above $10B.</p>
+      <p class="gcardp">The GENIUS Act preempts state stablecoin laws "to the extent inconsistent" with its requirements — a formulation that leaves significant interpretive space. States with their own digital-asset frameworks (including Wyoming, which authorized a state-issued stable token under the Wyoming Stable Token Act, separate from its SPDI and custody statutes) will need to evaluate whether their laws conflict. The preemption provision is likely to generate litigation from states asserting that their frameworks provide additional consumer protections that survive the preemption standard. CSBS has monitored the legislation closely; the final preemption scope and the definition of "inconsistent" will significantly affect state supervisory authority over state-chartered trust company stablecoin issuers above $10B.</p>
     </div>
 
     <div class="gcard">
       <p class="gcardh">Unresolved Tensions with Trust Law Doctrine</p>
       <p class="gcardp">The GENIUS Act was drafted with deposit-taking banks as the primary institutional reference — its provisions do not clearly account for the trust law framework governing trust company operations. Key unresolved questions: (1) Can a trust company's investment discretion over reserve assets create fiduciary conflicts with stablecoin holder interests? (2) Where reserve assets are managed by the same institution acting as trustee for unrelated trust accounts, what segregation and conflict management requirements apply? (3) Does the prohibition on yield to stablecoin holders conflict with a trustee's duty to make trust property productive where the stablecoin trust is structured as a trust for the benefit of holders? These questions will require OCC regulatory guidance, state regulatory interpretation, and — almost certainly — litigation to resolve.</p>
     </div>
+    <div class="gcard">
+      <p class="gcardh">Implementation Status (as of mid-2026)</p>
+      <p class="gcardp">Because the Act delegates substantial detail to rulemaking, the operative compliance picture is still forming. Notably, on April 10, 2026, FinCEN issued a proposed rule setting AML/CFT and sanctions program requirements specifically for permitted payment stablecoin issuers, designed to be consistent with its broader (also re-proposed) AML/CFT Program Rule. Treasury, the OCC, the federal banking agencies, and state regulators each have implementing work outstanding; PPSI applicants should treat current requirements as a moving target until final rules issue and the Act's effective date is triggered.</p>
+    </div>
 
   </section>
-
-  <!-- FOOTER -->
   <footer class="site-footer">
-    <p><strong style="font-weight:500;">Sources &amp; methodology:</strong> This reference tool draws on primary regulatory sources including the National Bank Act (12 USC), 12 CFR Part 9 (OCC fiduciary regulations), the Bank Secrecy Act (31 USC 5312), FinCEN guidance, OCC Interpretive Letters (including IL 1183, May 2025), the CSBS Nationwide Cooperative Agreement, published GENIUS Act text (Senate-passed, June 2025), and publicly available OCC chartering materials. Court citations: <em>Cantero v. Bank of America</em> (U.S. 2024); <em>Custodia Bank v. Federal Reserve Bank of Kansas City</em> (10th Cir. 2024).</p>
-    <p style="margin-top:10px;"><strong style="font-weight:500;">Disclaimer:</strong> This tool is a regulatory reference for informational purposes only and does not constitute legal advice. Verify all primary sources before relying on this content for compliance or legal determinations. GENIUS Act provisions reflect the Senate-passed text and may differ from final enacted law.</p>
-    <p style="margin-top:10px; color:var(--text3);">Compiled May 2026 · Conference of State Bank Supervisors research use</p>
+    <p><strong style="font-weight:500;">Sources &amp; methodology:</strong> This reference tool draws on primary regulatory sources including the National Bank Act (12 USC), 12 CFR Part 9 (OCC fiduciary regulations), the Bank Secrecy Act (31 USC 5312), FinCEN rulemakings, OCC Interpretive Letters 1183 (March 7, 2025) and 1184 (May 7, 2025), the CSBS Nationwide Cooperative Agreement, the GENIUS Act (S. 1582, enacted July 18, 2025), and publicly available OCC chartering materials. Court citations: <em>Cantero v. Bank of America</em>, 602 U.S. 205 (2024); <em>Custodia Bank v. Federal Reserve Bank of Kansas City</em> (10th Cir. 2024).</p>
+    <p class="src-row" style="margin-top:8px;">
+      <a class="src" href="https://occ.gov/news-issuances/bulletins/2025/bulletin-2025-2.html" target="_blank" rel="noopener">OCC IL 1183</a>
+      <a class="src" href="https://www.congress.gov/bill/119th-congress/senate-bill/1582" target="_blank" rel="noopener">GENIUS Act (S. 1582)</a>
+      <a class="src" href="https://www.federalregister.gov/documents/2026/04/10/2026-07033/anti-money-laundering-and-countering-the-financing-of-terrorism-programs" target="_blank" rel="noopener">FinCEN AML/CFT Program Rule NPRM (2026)</a>
+      <a class="src" href="https://supreme.justia.com/cases/federal/us/602/22-529/" target="_blank" rel="noopener">Cantero v. Bank of America</a>
+      <a class="src" href="https://www.fincen.gov/boi" target="_blank" rel="noopener">FinCEN CTA / BOI</a>
+    </p>
+    <p style="margin-top:10px;"><strong style="font-weight:500;">Disclaimer:</strong> This tool is a regulatory reference for informational purposes only and does not constitute legal advice. Verify all primary sources before relying on this content for compliance or legal determinations. The GENIUS Act is enacted law, but its effective date has not yet been triggered and much of its operative detail remains in active federal and state rulemaking; treat statutory specifics as subject to implementing regulation.</p>
+    <p style="margin-top:10px; color:var(--text3);">Compiled May 2026 · Key federal developments (GENIUS Act enactment, OCC IL 1183/1184, FinCEN AML/CFT Program Rule re-proposal, CTA interim final rule) verified against primary sources as of May 2026 · Conference of State Bank Supervisors research use</p>
   </footer>
 
 </div>
@@ -978,30 +1265,71 @@ body {
 <script>
 function tcTab(id, btn) {
   document.querySelectorAll('.tc-sec').forEach(s => s.classList.remove('on'));
-  document.querySelectorAll('.tc-btn').forEach(b => b.classList.remove('on'));
+  document.querySelectorAll('.tc-btn').forEach(b => { b.classList.remove('on'); b.setAttribute('aria-selected','false'); });
   document.getElementById('tc-' + id).classList.add('on');
-  btn.classList.add('on');
+  if (btn) { btn.classList.add('on'); btn.setAttribute('aria-selected','true'); }
+  if (history.replaceState) history.replaceState(null, '', '#' + id);
+  else location.hash = id;
 }
 
 function pwSw(id, btn) {
   document.getElementById('pw-fid').style.display = id === 'fid' ? 'block' : 'none';
   document.getElementById('pw-nonfid').style.display = id === 'nonfid' ? 'block' : 'none';
-  document.querySelectorAll('.pw-btn').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
+  document.querySelectorAll('.pw-btn').forEach(b => { b.classList.remove('on'); b.setAttribute('aria-pressed','false'); });
+  btn.classList.add('on'); btn.setAttribute('aria-pressed','true');
 }
 
 function tog(btn) {
   const body = btn.nextElementSibling;
   const open = body.classList.toggle('open');
-  btn.querySelector('.acc-icon').textContent = open ? '−' : '+';
+  btn.querySelector('.acc-icon').textContent = open ? '\u2212' : '+';
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
 }
 
 function occEra(id, btn) {
   document.querySelectorAll('.occ-era').forEach(e => e.classList.remove('on'));
-  document.querySelectorAll('.tl-btn').forEach(b => b.classList.remove('on'));
+  document.querySelectorAll('.tl-btn').forEach(b => { b.classList.remove('on'); b.setAttribute('aria-pressed','false'); });
   document.getElementById('occ-' + id).classList.add('on');
+  btn.classList.add('on'); btn.setAttribute('aria-pressed','true');
+}
+
+function charterView(view, btn) {
+  const cards = document.getElementById('charter-cards');
+  const matrix = document.getElementById('charter-matrix');
+  if (view === 'matrix') { cards.classList.add('off'); matrix.classList.add('on'); }
+  else { cards.classList.remove('off'); matrix.classList.remove('on'); }
+  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
 }
+
+function toggleAll(btn) {
+  const section = btn.closest('.tc-sec');
+  const expanding = btn.textContent.trim().toLowerCase().startsWith('expand');
+  section.querySelectorAll('.acc-hd').forEach(hd => {
+    const body = hd.nextElementSibling;
+    if (!body || !body.classList.contains('acc-body')) return;
+    body.classList.toggle('open', expanding);
+    const icon = hd.querySelector('.acc-icon');
+    if (icon) icon.textContent = expanding ? '\u2212' : '+';
+    hd.setAttribute('aria-expanded', expanding ? 'true' : 'false');
+  });
+  btn.textContent = expanding ? 'Collapse all' : 'Expand all';
+}
+
+// Initialize accordion ARIA state and honor a deep-link hash on load.
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.acc-hd').forEach(hd => {
+    hd.setAttribute('aria-expanded', 'false');
+  });
+  document.querySelectorAll('.pw-btn').forEach(b => b.setAttribute('aria-pressed', b.classList.contains('on') ? 'true' : 'false'));
+  document.querySelectorAll('.tl-btn').forEach(b => b.setAttribute('aria-pressed', b.classList.contains('on') ? 'true' : 'false'));
+  const valid = ['charter','powers','pain','occ','genius'];
+  const h = (location.hash || '').replace('#', '');
+  if (valid.indexOf(h) !== -1) {
+    const tabBtn = document.getElementById('tab-' + h);
+    tcTab(h, tabBtn);
+  }
+});
 </script>
 
 </body>
