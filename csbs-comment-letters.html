@@ -440,7 +440,7 @@
   }
 
   .letter-card {
-    padding: 18px 0;
+    padding: 18px 0 18px 16px;
     border-bottom: 1px solid var(--rule-light);
     display: grid;
     grid-template-columns: 88px 1fr;
@@ -449,9 +449,24 @@
     transition: background 0.1s, padding-left 0.15s;
     position: relative;
   }
-  .letter-card:hover { background: var(--card); padding-left: 6px; }
+  .letter-card:hover { background: var(--card); padding-left: 22px; }
   .letter-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; background: var(--card); }
   .letter-card:last-child { border-bottom: 0; }
+  /* Significance hierarchy — a left bar + title weight let the eye triage importance without reading */
+  .letter-card::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 16px; bottom: 16px;
+    width: 3px;
+    border-radius: 2px;
+    background: transparent;
+  }
+  .letter-card.sig-3::before { background: var(--accent); }
+  .letter-card.sig-2::before { background: var(--rule); }
+  .letter-card.sig-1::before { background: transparent; }
+  .letter-card.sig-3 .letter-title { font-weight: 600; }
+  .letter-card.sig-1 .letter-title { font-weight: 400; color: var(--ink-2); }
+  .letter-card.sig-1 { opacity: 0.92; }
   .letter-card::after {
     content: "›";
     position: absolute;
@@ -515,10 +530,26 @@
     font-size: 10px;
     background: var(--tag-bg);
     color: var(--tag-text);
-    padding: 2px 6px;
+    padding: 2px 6px 2px 7px;
     letter-spacing: 0.05em;
     border-radius: 2px;
+    border-left: 3px solid var(--agc, var(--rule));
   }
+  /* Muted per-agency encoding so FDIC / OCC / CFPB letters cluster visually */
+  .ag-OCC { --agc: #8c5a2b; }
+  .ag-FDIC { --agc: #2f5d3a; }
+  .ag-FRB { --agc: #3a4a6b; }
+  .ag-CFPB { --agc: #6b3a5d; }
+  .ag-FinCEN { --agc: #5a6b2f; }
+  .ag-Treasury { --agc: #2f6b6b; }
+  .ag-Congress { --agc: #6b6558; }
+  .ag-Interagency { --agc: #7a1c1c; }
+  .ag-SEC { --agc: #8c6a2b; }
+  .ag-FHFA { --agc: #4a6b8c; }
+  .ag-FTC { --agc: #8c2b5a; }
+  .ag-DOJ { --agc: #4a4a4a; }
+  .ag-Other { --agc: #8a847a; }
+  .ag-swatch { display:inline-block; width:7px; height:7px; border-radius:2px; background: var(--agc, var(--rule)); margin-right:1px; }
   .vehicle-tag {
     font-family: var(--mono);
     font-size: 10px;
@@ -877,7 +908,111 @@
       background: var(--paper);
       z-index: 10;
     }
+    .filter-toggle {
+      display: block; width: 100%; margin: 12px 0 4px; padding: 11px 14px;
+      font-family: var(--sans); font-size: 13px; font-weight: 500;
+      background: var(--card); border: 1px solid var(--rule); border-radius: 3px;
+      color: var(--ink); cursor: pointer; text-align: left;
+    }
+    .sidebar.filters-collapsed #filter-body { display: none; }
+    .compare-grid { grid-template-columns: 1fr; }
+    .compare-col:first-child { border-right: 0; border-bottom: 1px solid var(--rule); padding: 0 0 18px; margin-bottom: 18px; }
+    .compare-col:last-child { padding: 0; }
+    .compare-tray { flex-wrap: wrap; gap: 10px; padding: 12px 16px; }
+    .compare-tray .ct-chip { max-width: 100%; }
   }
+
+  /* ============ Accessibility ============ */
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+  }
+  .skip-link {
+    position: absolute; left: -9999px; top: 0; z-index: 1000;
+    background: var(--ink); color: var(--paper); padding: 10px 16px;
+    font-family: var(--sans); font-size: 13px; border-radius: 0 0 4px 0;
+  }
+  .skip-link:focus { left: 0; }
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+  .pill:focus-visible, .topic-item:focus-visible, .sort-btn:focus-visible,
+  .icon-btn:focus-visible, .modal-close:focus-visible, .modal-share:focus-visible,
+  .modal-link:focus-visible, .modal-nav-btn:focus-visible, .compare-btn:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 2px;
+  }
+
+  /* ============ Significance legend ============ */
+  .sig-legend-btn {
+    border: 1px solid var(--rule); background: transparent; color: var(--ink-3);
+    font-family: var(--mono); font-size: 10px; width: 16px; height: 16px;
+    border-radius: 50%; cursor: pointer; line-height: 1; margin-left: 6px; padding: 0;
+  }
+  .sig-legend-btn:hover { border-color: var(--ink-2); color: var(--ink-2); }
+  .sig-legend {
+    display: none; margin-top: 8px; padding: 10px 12px; background: var(--card);
+    border: 1px solid var(--rule-light); border-radius: 3px;
+    font-size: 11px; line-height: 1.5; color: var(--ink-2);
+  }
+  .sig-legend.open { display: block; }
+  .sig-legend b { color: var(--ink); font-weight: 600; }
+
+  /* ============ Mobile filter toggle ============ */
+  .filter-toggle { display: none; }
+
+  /* ============ Compare ============ */
+  .compare-btn {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.04em;
+    background: transparent; border: 1px solid var(--rule); color: var(--ink-3);
+    border-radius: 2px; padding: 3px 8px; cursor: pointer; transition: all 0.1s;
+  }
+  .compare-btn:hover { border-color: var(--ink-2); color: var(--ink); }
+  .compare-btn.pinned { background: var(--accent); color: var(--paper); border-color: var(--accent); }
+  .compare-tray {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 120;
+    background: var(--ink); color: var(--paper);
+    display: none; align-items: center; gap: 16px;
+    padding: 12px 24px; box-shadow: 0 -4px 24px rgba(0,0,0,0.18);
+  }
+  .compare-tray.open { display: flex; }
+  .compare-tray .ct-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.7; }
+  .compare-tray .ct-items { display: flex; gap: 10px; flex: 1; min-width: 0; flex-wrap: wrap; }
+  .compare-tray .ct-chip {
+    background: rgba(255,255,255,0.12); border-radius: 3px; padding: 4px 10px;
+    font-size: 12px; max-width: 320px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .compare-tray .ct-chip button { background: none; border: 0; color: var(--paper); cursor: pointer; opacity: 0.6; font-size: 13px; padding: 0; }
+  .compare-tray .ct-chip button:hover { opacity: 1; }
+  .compare-tray .ct-go {
+    background: var(--paper); color: var(--ink); border: 0; border-radius: 3px;
+    padding: 7px 16px; font-family: var(--sans); font-size: 13px; font-weight: 500; cursor: pointer;
+  }
+  .compare-tray .ct-go:disabled { opacity: 0.4; cursor: not-allowed; }
+  .compare-tray .ct-clear { background: none; border: 0; color: var(--paper); opacity: 0.6; cursor: pointer; font-size: 12px; }
+  .compare-tray .ct-clear:hover { opacity: 1; }
+
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .compare-col { padding: 0 22px; }
+  .compare-col:first-child { border-right: 1px solid var(--rule); padding-left: 0; }
+  .compare-col:last-child { padding-right: 0; }
+  .compare-col .cc-date { font-family: var(--mono); font-size: 11px; color: var(--ink-3); margin-bottom: 6px; }
+  .compare-col .cc-title { font-family: var(--serif); font-size: 18px; line-height: 1.25; color: var(--ink); margin-bottom: 8px; }
+  .compare-col .cc-pos { font-size: 13px; color: var(--ink-2); line-height: 1.5; margin-bottom: 10px; }
+  .compare-col .cc-quote { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--ink-2); border-left: 2px solid var(--accent); padding-left: 10px; margin-bottom: 10px; }
+  .compare-meta-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+
+  /* ============ Modal: thread nav + citation ============ */
+  .modal-nav { display: flex; justify-content: space-between; gap: 10px; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--rule-light); }
+  .modal-nav-btn {
+    background: transparent; border: 1px solid var(--rule); border-radius: 3px;
+    padding: 7px 10px; font-family: var(--sans); font-size: 11px; color: var(--ink-2);
+    cursor: pointer; max-width: 47%; text-align: left; transition: all 0.1s;
+  }
+  .modal-nav-btn:hover:not(:disabled) { border-color: var(--ink-2); background: var(--card); }
+  .modal-nav-btn:disabled { opacity: 0.35; cursor: default; }
+  .modal-nav-btn .nav-dir { display: block; font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 3px; }
+  .modal-nav-btn.next { text-align: right; }
 
   /* Print — keep timeline visible (it's the one-page overview) */
   @media print {
@@ -893,6 +1028,7 @@
 </style>
 </head>
 <body>
+<a class="skip-link" href="#results">Skip to results</a>
 
 <header class="masthead">
   <div class="masthead-inner">
@@ -926,7 +1062,13 @@
 
 <section class="timeline-section">
   <div class="timeline-label">
-    <span>Letter volume by year — colored by CEO era</span>
+    <span>Letters by year — height is volume, segments are significance
+      <span style="display:inline-flex;align-items:center;gap:10px;margin-left:14px;font-family:var(--mono);font-size:10px;color:var(--ink-3);">
+        <span><span style="display:inline-block;width:9px;height:9px;background:#7a1c1c;border-radius:1px;vertical-align:middle;margin-right:3px;"></span>High</span>
+        <span><span style="display:inline-block;width:9px;height:9px;background:#bc6a4a;border-radius:1px;vertical-align:middle;margin-right:3px;"></span>Medium</span>
+        <span><span style="display:inline-block;width:9px;height:9px;background:#e0c9a0;border-radius:1px;vertical-align:middle;margin-right:3px;"></span>Routine</span>
+      </span>
+    </span>
     <span id="timeline-hint">Click a bar to filter · click again to clear</span>
   </div>
   <svg class="timeline" id="timeline" viewBox="0 0 1320 90" preserveAspectRatio="none"></svg>
@@ -937,9 +1079,11 @@
 <div class="layout">
   <aside class="sidebar">
     <div class="search-wrap sticky-mobile">
-      <input type="text" class="search-input" id="search" placeholder="Search letters, quotes, agencies…">
-      <div class="search-hint"><kbd>/</kbd> to focus</div>
+      <input type="text" class="search-input" id="search" placeholder="Search — try agency:OCC stablecoin…" aria-label="Search letters; supports field filters like agency:, topic:, year:, sig:">
+      <div class="search-hint"><kbd>/</kbd> to focus · fields: <code>agency:</code> <code>topic:</code> <code>year:</code> <code>sig:</code></div>
     </div>
+    <button class="filter-toggle" id="filter-toggle" aria-expanded="true" aria-controls="filter-body">Filters ▾</button>
+    <div id="filter-body">
 
     <div class="filter-group">
       <div class="filter-label">Topics</div>
@@ -967,23 +1111,29 @@
     </div>
 
     <div class="filter-group">
-      <div class="filter-label">Significance</div>
+      <div class="filter-label">Significance
+        <button class="sig-legend-btn" id="sig-legend-btn" aria-label="What do significance levels mean?" aria-expanded="false">?</button>
+      </div>
       <div class="filter-pills" id="sig-filters">
         <button class="pill" data-sig="all">All</button>
         <button class="pill" data-sig="3"><span class="sig-mark"></span>High</button>
         <button class="pill" data-sig="2">Medium</button>
         <button class="pill" data-sig="1">Routine</button>
       </div>
+      <div class="sig-legend" id="sig-legend">
+        An editorial triage rating, not a CSBS designation. <b>High</b> — letters that staked out or shifted a foundational position, opened litigation, or demanded a statutory change (e.g. the SPNB opposition, the GENIUS §16(d) repeal demand). <b>Medium</b> — substantive engagement on a live proposal. <b>Routine</b> — procedural endorsements, comment-period extensions, or narrow technical support.
+      </div>
     </div>
 
     <div class="filter-group">
       <button class="pill" id="clear-filters" style="width: 100%; padding: 8px;">Clear all filters</button>
     </div>
+    </div>
   </aside>
 
   <main class="main">
     <div class="controls-bar">
-      <div class="results-count">
+      <div class="results-count" aria-live="polite">
         Showing <strong id="visible-count">—</strong> of <span id="total-count">—</span> letters
         <span class="active-chips" id="active-chips"></span>
       </div>
@@ -992,6 +1142,7 @@
         <button class="sort-btn active" data-sort="topic">By topic</button>
         <button class="sort-btn" data-sort="newest">Newest</button>
         <button class="sort-btn" data-sort="oldest">Oldest</button>
+        <button class="sort-btn" data-sort="sig">Significance</button>
       </div>
       <div class="toolbar-extras">
         <button class="icon-btn" id="export-csv" title="Download the current filtered view as CSV">↓ CSV</button>
@@ -1000,6 +1151,13 @@
     </div>
     <div id="results"></div>
   </main>
+</div>
+
+<div class="compare-tray" id="compare-tray" role="region" aria-label="Letters pinned for comparison">
+  <span class="ct-label">Compare</span>
+  <div class="ct-items" id="ct-items"></div>
+  <button class="ct-go" id="ct-go" disabled>View comparison →</button>
+  <button class="ct-clear" id="ct-clear">Clear</button>
 </div>
 
 <div class="modal-backdrop" id="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
@@ -1019,7 +1177,7 @@
   <p><strong>Federalism &amp; chartering authority</strong> — jealous defense of state chartering and licensing against OCC preemption and CFPB sandbox gambits. <strong>Administrative process</strong> — federal agencies repeatedly issuing major rules without rigorous data, APA-compliant process, or interagency alignment. <strong>Tailored, dual-banking substance</strong> — support for tailoring, BSA/AML modernization, NMLS networked supervision, and a state-led path for nonbanks (fintech, money transmission, stablecoins).</p>
 
   <h3>CEO eras (color band beneath the timeline)</h3>
-  <p>Letters are color-coded by the CSBS President &amp; CEO during whose tenure they were sent — <em>not</em> a claim about individual signatories. <strong>Ryan</strong> (through May 14, 2022); <strong>Cooper</strong> (May 15, 2022 – Dec. 3, 2023, following John W. Ryan's death in May 2022); <strong>Milhorn</strong> (Dec. 4, 2023 – present). The tone of letters from late 2023 forward is measurably more critical of federal banking-agency proposals than letters before that date, even where the underlying substantive position is unchanged.</p>
+  <p>Letters are color-coded by the CSBS President &amp; CEO during whose tenure they were sent — <em>not</em> a claim about individual signatories. <strong>Ryan</strong> (through May 14, 2022); <strong>Cooper</strong> (May 15, 2022 – Dec. 3, 2023, following John W. Ryan's death in May 2022); <strong>Milhorn</strong> (Dec. 4, 2023 – present). As an editorial reading — not a measured one — the tone of letters from late 2023 forward reads as more pointed toward federal banking-agency proposals than before, even where the underlying substantive position is unchanged.</p>
 
   <h3>Methodology &amp; caveats</h3>
   <p>This compendium covers letters dated Jan. 13, 2017 onward. CSBS's own comment-letter index lists 144 results within Dec. 31, 2016 – May 15, 2026; one of those is a link to the pre-2017 archive, and a second is reflected here by inference rather than retrieved PDF — leaving 142 substantive entries in this set. Letters with curated PDF/landing-page URLs link directly; others link to a pre-filled search of <code>csbs.org/comment-letters</code>. Quotations are drawn from the letter PDF where retrieved, otherwise from CSBS-hosted HTML landing pages or press releases. Vehicle classifications (Rulemaking / ANPR / RFI / Bill or Draft / Nomination / Joint letter / Other) are inferred from the recipient and addressee fields and may be coarse at the margins.</p>
@@ -1735,29 +1893,28 @@ function highlightSearch(text, query) {
 // ============================================================
 const state = {
   search: "",
-  topic: "all",
-  agency: "all",
-  vehicle: "all",
-  through: "all",
-  era: "all",
-  sig: "all",
+  topic: [],
+  agency: [],
+  vehicle: [],
+  through: [],
+  era: [],
+  sig: [],
   sort: "topic",
   year: null,
-  letter: null  // open modal key, if any
+  letter: null,   // open modal key, if any
+  compare: [],    // up to 2 letter keys pinned for comparison
+  view: null      // "compare" when the comparison modal is open
 };
+const MULTI_FACETS = ["topic", "agency", "vehicle", "through", "era", "sig"];
 
 function stateToHash() {
   const p = new URLSearchParams();
   if (state.search) p.set("q", state.search);
-  if (state.topic !== "all") p.set("topic", state.topic);
-  if (state.agency !== "all") p.set("agency", state.agency);
-  if (state.vehicle !== "all") p.set("vehicle", state.vehicle);
-  if (state.through !== "all") p.set("through", state.through);
-  if (state.era !== "all") p.set("era", state.era);
-  if (state.sig !== "all") p.set("sig", state.sig);
+  MULTI_FACETS.forEach(f => { if (state[f].length) p.set(f, state[f].join(",")); });
   if (state.sort !== "topic") p.set("sort", state.sort);
   if (state.year) p.set("year", state.year);
   if (state.letter) p.set("letter", state.letter);
+  if (state.view === "compare" && state.compare.length === 2) p.set("compare", state.compare.join("~~"));
   const s = p.toString();
   const newHash = s ? "#" + s : "";
   if (location.hash !== newHash) {
@@ -1768,40 +1925,72 @@ function hashToState() {
   const h = location.hash.replace(/^#/, "");
   if (!h) return;
   const p = new URLSearchParams(h);
-  if (p.has("q"))       state.search = p.get("q");
-  if (p.has("topic"))   state.topic = p.get("topic");
-  if (p.has("agency"))  state.agency = p.get("agency");
-  if (p.has("vehicle")) state.vehicle = p.get("vehicle");
-  if (p.has("through")) state.through = p.get("through");
-  if (p.has("era"))     state.era = p.get("era");
-  if (p.has("sig"))     state.sig = p.get("sig");
-  if (p.has("sort"))    state.sort = p.get("sort");
-  if (p.has("year"))    state.year = p.get("year");
-  if (p.has("letter"))  state.letter = p.get("letter");
+  if (p.has("q")) state.search = p.get("q");
+  MULTI_FACETS.forEach(f => { if (p.has(f)) state[f] = p.get(f).split(",").filter(Boolean); });
+  if (p.has("sort")) state.sort = p.get("sort");
+  if (p.has("year")) state.year = p.get("year");
+  if (p.has("letter")) state.letter = p.get("letter");
+  if (p.has("compare")) {
+    state.compare = p.get("compare").split("~~").filter(Boolean).slice(0, 2);
+    if (state.compare.length === 2) state.view = "compare";
+  }
+}
+
+// Toggle a value within a multi-select facet
+function toggleFacet(facet, value) {
+  const arr = state[facet];
+  const i = arr.indexOf(value);
+  if (i === -1) arr.push(value); else arr.splice(i, 1);
 }
 
 // ============================================================
-// FILTERING
+// FILTERING  (multi-select facets, AND across facets / OR within;
+// fielded search: agency: topic: year: sig: type: era: through:)
 // ============================================================
-function filterLetters() {
-  let out = LETTERS.slice();
-  if (state.topic !== "all")   out = out.filter(l => l.tp === state.topic);
-  if (state.agency !== "all")  out = out.filter(l => l.ag === state.agency);
-  if (state.vehicle !== "all") out = out.filter(l => getMeta(l).veh === state.vehicle);
-  if (state.through !== "all") out = out.filter(l => getMeta(l).th.includes(state.through));
-  if (state.era !== "all")     out = out.filter(l => getMeta(l).era === state.era);
-  if (state.sig !== "all")     out = out.filter(l => String(l.sig) === state.sig);
-  if (state.year)              out = out.filter(l => l.d.startsWith(state.year));
-  if (state.search) {
-    const q = state.search.toLowerCase();
-    out = out.filter(l =>
-      l.t.toLowerCase().includes(q) ||
-      (l.pos && l.pos.toLowerCase().includes(q)) ||
-      (l.q && l.q.toLowerCase().includes(q)) ||
-      (l.to && l.to.toLowerCase().includes(q)) ||
-      (l.ag && l.ag.toLowerCase().includes(q))
-    );
+function parseSearch(raw) {
+  const tokens = (raw || "").match(/\S+/g) || [];
+  const fields = [];
+  const free = [];
+  tokens.forEach(tk => {
+    const m = tk.match(/^(agency|topic|year|sig|type|era|through):(.+)$/i);
+    if (m) fields.push({ k: m[1].toLowerCase(), v: m[2].toLowerCase() });
+    else free.push(tk);
+  });
+  return { fields, free: free.join(" ").trim().toLowerCase() };
+}
+// The free-text portion only, for match highlighting
+function freeText(raw) { return parseSearch(raw).free; }
+
+function matchesSearch(l, parsed) {
+  const meta = getMeta(l);
+  for (const f of parsed.fields) {
+    let ok = true;
+    if (f.k === "agency") ok = l.ag.toLowerCase().includes(f.v);
+    else if (f.k === "topic") ok = (getTopicById(l.tp)?.n || "").toLowerCase().includes(f.v) || l.tp.toLowerCase().includes(f.v);
+    else if (f.k === "year") ok = l.d.startsWith(f.v);
+    else if (f.k === "sig") ok = String(l.sig) === f.v;
+    else if (f.k === "type") ok = meta.veh.toLowerCase().includes(f.v);
+    else if (f.k === "era") ok = meta.era.toLowerCase().includes(f.v);
+    else if (f.k === "through") ok = meta.th.some(t => t.toLowerCase().includes(f.v));
+    if (!ok) return false;
   }
+  if (!parsed.free) return true;
+  const hay = (l.t + " " + (l.pos || "") + " " + (l.q || "") + " " + (l.to || "") + " " + l.ag).toLowerCase();
+  return hay.includes(parsed.free);
+}
+
+// Apply every active filter except (optionally) one facet — used for live facet counts
+function filterLetters(except) {
+  const parsed = parseSearch(state.search);
+  let out = LETTERS.slice();
+  if (except !== "topic"   && state.topic.length)   out = out.filter(l => state.topic.includes(l.tp));
+  if (except !== "agency"  && state.agency.length)  out = out.filter(l => state.agency.includes(l.ag));
+  if (except !== "vehicle" && state.vehicle.length) out = out.filter(l => state.vehicle.includes(getMeta(l).veh));
+  if (except !== "through" && state.through.length) out = out.filter(l => getMeta(l).th.some(t => state.through.includes(t)));
+  if (except !== "era"     && state.era.length)     out = out.filter(l => state.era.includes(getMeta(l).era));
+  if (except !== "sig"     && state.sig.length)     out = out.filter(l => state.sig.includes(String(l.sig)));
+  if (except !== "year"    && state.year)           out = out.filter(l => l.d.startsWith(state.year));
+  if (state.search) out = out.filter(l => matchesSearch(l, parsed));
   return out;
 }
 
@@ -1816,13 +2005,15 @@ function renderLetterCard(l) {
     ? '<span class="th-marks" title="Through-lines: ' + meta.th.join(", ") + '">' +
       meta.th.map(t => `<span class="th-dot th-${t}"></span>`).join("") + '</span>'
     : '';
-  const q = state.search;
+  const q = freeText(state.search);
   const key = letterKey(l);
   const vehTag = meta.veh && meta.veh !== "Other"
     ? `<span class="vehicle-tag">${escapeHtml(meta.veh)}</span>`
     : '';
+  const pinned = state.compare.includes(key);
+  const sigName = {3:"High",2:"Medium",1:"Routine"}[l.sig];
   return `
-    <article class="letter-card" data-key="${escapeHtml(key)}" tabindex="0" role="button" aria-label="View details for ${escapeHtml(l.t)}">
+    <article class="letter-card sig-${l.sig}" data-key="${escapeHtml(key)}" tabindex="0" role="button" aria-label="${sigName} significance. View details for ${escapeHtml(l.t)}">
       <div class="letter-date">
         <span class="year">${d.year}</span>
         ${d.month} ${d.day}
@@ -1832,8 +2023,9 @@ function renderLetterCard(l) {
         <div class="letter-title">${sigDot}${highlightSearch(l.t, q)}${thMarks}</div>
         <div class="letter-meta">
           <span class="letter-meta-item"><span class="letter-meta-label">re:</span> ${highlightSearch(l.to, q)}</span>
-          <span class="agency-tag">${escapeHtml(l.ag)}</span>
+          <span class="agency-tag ag-${escapeHtml(l.ag)}">${escapeHtml(l.ag)}</span>
           ${vehTag}
+          <button class="compare-btn ${pinned ? 'pinned' : ''}" data-compare="${escapeHtml(key)}" aria-pressed="${pinned}" title="Pin this letter to compare side by side">${pinned ? '✓ pinned' : '+ compare'}</button>
         </div>
         <div class="letter-position">${highlightSearch(l.pos, q)}</div>
         ${l.q ? `<div class="letter-quote"><span class="letter-quote-text">${highlightSearch(l.q, q)}</span></div>` : ''}
@@ -1852,8 +2044,8 @@ function renderResults() {
     return;
   }
 
-  // When a single topic is selected, surface the topic arc even in chrono sort
-  const singleTopic = state.topic !== "all" ? getTopicById(state.topic) : null;
+  // When exactly one topic is selected, surface the topic arc even in chrono/sig sort
+  const singleTopic = state.topic.length === 1 ? getTopicById(state.topic[0]) : null;
   let lead = "";
   if (singleTopic && state.sort !== "topic") {
     lead = `
@@ -1892,6 +2084,10 @@ function renderResults() {
     container.innerHTML = html;
   } else {
     const sorted = filtered.slice().sort((a, b) => {
+      if (state.sort === "sig") {
+        if (b.sig !== a.sig) return b.sig - a.sig;   // High → Routine
+        return b.d.localeCompare(a.d);               // then newest first
+      }
       return state.sort === "newest" ? b.d.localeCompare(a.d) : a.d.localeCompare(b.d);
     });
     container.innerHTML = lead + `<section class="topic-group">${sorted.map(renderLetterCard).join("")}</section>`;
@@ -1905,135 +2101,156 @@ function countByTopic() {
 }
 
 function renderTopicList() {
-  const counts = countByTopic();
+  const counts = {};
+  filterLetters("topic").forEach(l => { counts[l.tp] = (counts[l.tp] || 0) + 1; });
+  const total = filterLetters("topic").length;
   const ul = document.getElementById("topic-list");
-  let html = `<li class="topic-item ${state.topic === 'all' ? 'active' : ''}" data-topic="all">All topics <span class="count">${LETTERS.length}</span></li>`;
+  const noneActive = state.topic.length === 0;
+  let html = `<li class="topic-item ${noneActive ? 'active' : ''}" data-topic="all" role="button" tabindex="0" aria-pressed="${noneActive}">All topics <span class="count">${total}</span></li>`;
   TOPICS.forEach(t => {
+    const base = LETTERS.filter(l => l.tp === t.id).length;
+    if (base === 0) return;
     const c = counts[t.id] || 0;
-    if (c === 0) return;
-    html += `<li class="topic-item ${state.topic === t.id ? 'active' : ''}" data-topic="${t.id}">${escapeHtml(t.n)}<span class="count">${c}</span></li>`;
+    const on = state.topic.includes(t.id);
+    const dim = c === 0 && !on ? 'style="opacity:0.4;"' : '';
+    html += `<li class="topic-item ${on ? 'active' : ''}" data-topic="${t.id}" role="button" tabindex="0" aria-pressed="${on}" ${dim}>${escapeHtml(t.n)}<span class="count">${c}</span></li>`;
   });
   ul.innerHTML = html;
   ul.querySelectorAll(".topic-item").forEach(el => {
-    el.addEventListener("click", () => { state.topic = el.dataset.topic; renderAll(); });
+    const act = () => {
+      if (el.dataset.topic === "all") state.topic = [];
+      else toggleFacet("topic", el.dataset.topic);
+      renderAll();
+    };
+    el.addEventListener("click", act);
+    el.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); act(); } });
+  });
+}
+
+// Generic multi-select pill group renderer with live counts
+function renderPillFacet(facet, containerId, items, getId, getLabel, valueOf, extra) {
+  const counts = {};
+  filterLetters(facet).forEach(l => {
+    const v = valueOf(l);
+    (Array.isArray(v) ? v : [v]).forEach(x => counts[x] = (counts[x] || 0) + 1);
+  });
+  const container = document.getElementById(containerId);
+  const noneActive = state[facet].length === 0;
+  let html = `<button class="pill ${noneActive ? 'active' : ''}" data-val="all" aria-pressed="${noneActive}">All</button>`;
+  items.forEach(it => {
+    const id = getId(it);
+    const baseExists = LETTERS.some(l => { const v = valueOf(l); return Array.isArray(v) ? v.includes(id) : v === id; });
+    if (!baseExists) return;
+    const c = counts[id] || 0;
+    const on = state[facet].includes(id);
+    const dim = c === 0 && !on ? 'style="opacity:0.4;"' : '';
+    html += `<button class="pill ${extra ? extra(it) : ''} ${on ? 'active' : ''}" data-val="${escapeHtml(id)}" aria-pressed="${on}" ${dim}>${getLabel(it)} <span style="opacity:0.5;">${c}</span></button>`;
+  });
+  container.innerHTML = html;
+  container.querySelectorAll(".pill").forEach(el => {
+    el.addEventListener("click", () => {
+      if (el.dataset.val === "all") state[facet] = [];
+      else toggleFacet(facet, el.dataset.val);
+      renderAll();
+    });
   });
 }
 
 function renderAgencyFilters() {
-  const counts = {};
-  LETTERS.forEach(l => { counts[l.ag] = (counts[l.ag] || 0) + 1; });
-  const container = document.getElementById("agency-filters");
-  let html = `<button class="pill ${state.agency === 'all' ? 'active' : ''}" data-agency="all">All</button>`;
-  AGENCIES.filter(a => counts[a]).forEach(a => {
-    html += `<button class="pill ${state.agency === a ? 'active' : ''}" data-agency="${a}">${a} <span style="opacity:0.5;">${counts[a]}</span></button>`;
-  });
-  container.innerHTML = html;
-  container.querySelectorAll(".pill").forEach(el => {
-    el.addEventListener("click", () => { state.agency = el.dataset.agency; renderAll(); });
-  });
+  renderPillFacet("agency", "agency-filters", AGENCIES,
+    a => a,
+    a => `<span class="ag-swatch ag-${a}"></span>${a}`,
+    l => l.ag);
 }
-
 function renderVehicleFilters() {
-  const counts = {};
-  LETTERS.forEach(l => { const v = getMeta(l).veh; counts[v] = (counts[v] || 0) + 1; });
-  const container = document.getElementById("vehicle-filters");
-  let html = `<button class="pill ${state.vehicle === 'all' ? 'active' : ''}" data-vehicle="all">All</button>`;
-  VEHICLES.filter(v => counts[v]).forEach(v => {
-    html += `<button class="pill ${state.vehicle === v ? 'active' : ''}" data-vehicle="${v}">${escapeHtml(v)} <span style="opacity:0.5;">${counts[v]}</span></button>`;
-  });
-  container.innerHTML = html;
-  container.querySelectorAll(".pill").forEach(el => {
-    el.addEventListener("click", () => { state.vehicle = el.dataset.vehicle; renderAll(); });
-  });
+  renderPillFacet("vehicle", "vehicle-filters", VEHICLES,
+    v => v, v => escapeHtml(v), l => getMeta(l).veh);
 }
-
 function renderThroughFilters() {
-  const counts = {};
-  LETTERS.forEach(l => { getMeta(l).th.forEach(t => counts[t] = (counts[t] || 0) + 1); });
-  const container = document.getElementById("through-filters");
-  let html = `<button class="pill ${state.through === 'all' ? 'active' : ''}" data-through="all">All</button>`;
-  THROUGHLINES.forEach(t => {
-    const c = counts[t.id] || 0;
-    if (!c) return;
-    html += `<button class="pill through-pill ${state.through === t.id ? 'active' : ''}" data-through="${t.id}"><span class="th-dot th-${t.id}"></span>${escapeHtml(t.n)} <span style="opacity:0.5;">${c}</span></button>`;
-  });
-  container.innerHTML = html;
-  container.querySelectorAll(".pill").forEach(el => {
-    el.addEventListener("click", () => { state.through = el.dataset.through; renderAll(); });
-  });
+  renderPillFacet("through", "through-filters", THROUGHLINES,
+    t => t.id, t => `<span class="th-dot th-${t.id}"></span>${escapeHtml(t.n)}`,
+    l => getMeta(l).th, () => "through-pill");
 }
-
 function renderEraFilters() {
-  const counts = {ryan: 0, cooper: 0, milhorn: 0};
-  LETTERS.forEach(l => { const e = getMeta(l).era; if (counts[e] !== undefined) counts[e]++; });
-  const container = document.getElementById("era-filters");
-  let html = `<button class="pill ${state.era === 'all' ? 'active' : ''}" data-era="all">All</button>`;
-  ERAS.forEach(e => {
-    html += `<button class="pill era-pill ${state.era === e.id ? 'active' : ''}" data-era="${e.id}" title="${e.range}"><span class="era-mark era-${e.id}"></span>${escapeHtml(e.n)} <span style="opacity:0.5;">${counts[e.id]}</span></button>`;
-  });
-  container.innerHTML = html;
-  container.querySelectorAll(".pill").forEach(el => {
-    el.addEventListener("click", () => { state.era = el.dataset.era; renderAll(); });
-  });
+  renderPillFacet("era", "era-filters", ERAS,
+    e => e.id, e => `<span class="era-mark era-${e.id}"></span>${escapeHtml(e.n)}`,
+    l => getMeta(l).era, () => "era-pill");
 }
 
 function renderSigPills() {
+  const counts = {};
+  filterLetters("sig").forEach(l => counts[String(l.sig)] = (counts[String(l.sig)] || 0) + 1);
   document.querySelectorAll('[data-sig]').forEach(b => {
-    b.classList.toggle('active', b.dataset.sig === state.sig);
+    const v = b.dataset.sig;
+    const on = v === "all" ? state.sig.length === 0 : state.sig.includes(v);
+    b.classList.toggle('active', on);
+    b.setAttribute('aria-pressed', on);
   });
 }
 
 function renderActiveChips() {
   const container = document.getElementById("active-chips");
   const chips = [];
-  if (state.year)              chips.push({l: `Year: ${state.year}`, k: "year"});
-  if (state.topic !== "all")   chips.push({l: `Topic: ${getTopicById(state.topic)?.n || state.topic}`, k: "topic"});
-  if (state.through !== "all") chips.push({l: `Through-line: ${THROUGHLINES.find(t => t.id === state.through)?.n}`, k: "through"});
-  if (state.agency !== "all")  chips.push({l: `Agency: ${state.agency}`, k: "agency"});
-  if (state.vehicle !== "all") chips.push({l: `Type: ${state.vehicle}`, k: "vehicle"});
-  if (state.era !== "all")     chips.push({l: `Era: ${ERAS.find(e => e.id === state.era)?.n}`, k: "era"});
-  if (state.sig !== "all")     chips.push({l: `Significance: ${({"3":"High","2":"Medium","1":"Routine"})[state.sig]}`, k: "sig"});
-  if (state.search)            chips.push({l: `Search: "${state.search}"`, k: "search"});
-  container.innerHTML = chips.map(c =>
-    `<span class="chip" data-clear="${c.k}">${escapeHtml(c.l)} <span class="x">✕</span></span>`
+  if (state.year) chips.push({l: `Year: ${state.year}`, k: "year"});
+  state.topic.forEach(v => chips.push({l: `Topic: ${getTopicById(v)?.n || v}`, k: "topic", v}));
+  state.through.forEach(v => chips.push({l: `Through-line: ${THROUGHLINES.find(t => t.id === v)?.n || v}`, k: "through", v}));
+  state.agency.forEach(v => chips.push({l: `Agency: ${v}`, k: "agency", v}));
+  state.vehicle.forEach(v => chips.push({l: `Type: ${v}`, k: "vehicle", v}));
+  state.era.forEach(v => chips.push({l: `Era: ${ERAS.find(e => e.id === v)?.n || v}`, k: "era", v}));
+  state.sig.forEach(v => chips.push({l: `Significance: ${({"3":"High","2":"Medium","1":"Routine"})[v]}`, k: "sig", v}));
+  if (state.search) chips.push({l: `Search: "${state.search}"`, k: "search"});
+  container.innerHTML = chips.map((c, i) =>
+    `<span class="chip" data-clear="${c.k}" data-val="${c.v != null ? escapeHtml(c.v) : ''}" data-i="${i}">${escapeHtml(c.l)} <span class="x">✕</span></span>`
   ).join("");
   container.querySelectorAll(".chip").forEach(el => {
     el.addEventListener("click", () => {
-      const k = el.dataset.clear;
+      const k = el.dataset.clear, v = el.dataset.val;
       if (k === "year") state.year = null;
       else if (k === "search") { state.search = ""; document.getElementById("search").value = ""; }
-      else state[k] = "all";
+      else if (Array.isArray(state[k])) { state[k] = state[k].filter(x => x !== v); }
       renderAll();
     });
   });
 }
 
 function renderTimeline() {
+  // Stacked by significance: bar height = volume, segments = High / Medium / Routine
   const counts = {};
-  for (let y = 2017; y <= 2026; y++) counts[y] = 0;
+  for (let y = 2017; y <= 2026; y++) counts[y] = {1:0, 2:0, 3:0, total:0};
   LETTERS.forEach(l => {
     const y = parseInt(l.d.slice(0, 4));
-    if (counts[y] !== undefined) counts[y]++;
+    if (counts[y] !== undefined) { counts[y][l.sig]++; counts[y].total++; }
   });
   const years = Object.keys(counts).map(Number).sort();
-  const maxCount = Math.max(...Object.values(counts));
+  const maxCount = Math.max(...years.map(y => counts[y].total));
   const w = 1320, h = 90;
   const barW = w / years.length;
   const padX = 4;
+  // segment colors: High = accent maroon, Medium = mid, Routine = pale
+  const segColor = {3: "#7a1c1c", 2: "#bc6a4a", 1: "#e0c9a0"};
   let svg = "";
   years.forEach((y, i) => {
     const c = counts[y];
-    const barH = c === 0 ? 2 : (c / maxCount) * (h - 18);
+    const totalH = c.total === 0 ? 2 : (c.total / maxCount) * (h - 18);
     const x = i * barW + padX;
     const barWidth = barW - padX * 2;
-    const yTop = h - barH;
     const active = state.year === String(y);
-    const fill = active ? "#7a1c1c" : "#a83838";
-    const labelY = Math.max(yTop - 4, 12);
-    svg += `<g class="tl-bar" data-year="${y}" style="cursor:pointer;">
-      <rect x="${x}" y="${yTop}" width="${barWidth}" height="${barH}" fill="${fill}" opacity="${active ? 1 : 0.85}"></rect>
+    let yCursor = h;
+    let segs = "";
+    [1, 2, 3].forEach(sig => {   // routine at bottom, high on top
+      const n = c[sig];
+      if (!n) return;
+      const segH = (n / c.total) * totalH;
+      yCursor -= segH;
+      segs += `<rect x="${x}" y="${yCursor}" width="${barWidth}" height="${segH}" fill="${segColor[sig]}" opacity="${active ? 1 : 0.82}"></rect>`;
+    });
+    const labelY = Math.max(h - totalH - 4, 12);
+    const sigName = {3:"High",2:"Medium",1:"Routine"};
+    const aria = `${y}: ${c.total} letters (${c[3]} ${sigName[3]}, ${c[2]} ${sigName[2]}, ${c[1]} ${sigName[1]})`;
+    svg += `<g class="tl-bar" data-year="${y}" style="cursor:pointer;" role="button" tabindex="0" aria-label="${aria}. Click to filter to ${y}.">
+      ${segs || `<rect x="${x}" y="${h-2}" width="${barWidth}" height="2" fill="#ccc"></rect>`}
       <rect x="${x}" y="0" width="${barWidth}" height="${h}" fill="transparent"></rect>
-      <text x="${x + barWidth/2}" y="${labelY}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#4a463e">${c}</text>
+      <text x="${x + barWidth/2}" y="${labelY}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#4a463e">${c.total}</text>
     </g>`;
   });
   document.getElementById("timeline").innerHTML = svg;
@@ -2041,12 +2258,11 @@ function renderTimeline() {
     `<span style="flex:1;text-align:center;${state.year === String(y) ? 'color:#7a1c1c;font-weight:500;' : ''}">${y}</span>`
   ).join("");
 
-  // Era band beneath the year axis — share of letters by era within each year
-  // Ryan ends 2022-05-14; Cooper through 2023-12-03; Milhorn from 2023-12-04.
+  // Era band beneath the year axis
   function eraFor(y) {
     if (y <= 2021) return "ryan";
-    if (y === 2022) return "mixed-rc";   // Ryan→Cooper transition
-    if (y === 2023) return "mixed-cm";   // Cooper→Milhorn transition
+    if (y === 2022) return "mixed-rc";
+    if (y === 2023) return "mixed-cm";
     return "milhorn";
   }
   const eraLabels = {
@@ -2059,12 +2275,14 @@ function renderTimeline() {
     `<span style="flex:1;">${eraLabels[eraFor(y)]}</span>`
   ).join("");
 
+  const trigger = (el) => {
+    const y = el.dataset.year;
+    state.year = state.year === y ? null : y;
+    renderAll();
+  };
   document.querySelectorAll(".tl-bar").forEach(el => {
-    el.addEventListener("click", () => {
-      const y = el.dataset.year;
-      state.year = state.year === y ? null : y;
-      renderAll();
-    });
+    el.addEventListener("click", () => trigger(el));
+    el.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); trigger(el); } });
   });
 }
 
@@ -2078,6 +2296,7 @@ function renderAll() {
   renderTimeline();
   renderActiveChips();
   renderResults();
+  renderCompareTray();
   stateToHash();
 }
 
@@ -2131,10 +2350,26 @@ function openModal(letter) {
     ? `<div class="modal-tags">${throughTags}${eraTag}${vehTag}</div>`
     : "";
 
+  // In-topic thread: previous/next letter in the same topic, chronologically
+  const sameTopic = LETTERS.filter(l => l.tp === letter.tp).sort((a, b) => a.d.localeCompare(b.d));
+  const idx = sameTopic.findIndex(l => letterKey(l) === letterKey(letter));
+  const prev = idx > 0 ? sameTopic[idx - 1] : null;
+  const next = idx < sameTopic.length - 1 ? sameTopic[idx + 1] : null;
+  const fmtNav = (l) => `${formatDate(l.d).month} ${formatDate(l.d).year} · ${escapeHtml(l.t.length > 64 ? l.t.slice(0, 61) + "…" : l.t)}`;
+  const navHtml = (sameTopic.length > 1) ? `
+    <div class="modal-nav">
+      <button class="modal-nav-btn prev" id="modal-prev" ${prev ? `data-key="${escapeHtml(letterKey(prev))}"` : 'disabled'}>
+        <span class="nav-dir">← Earlier in ${escapeHtml(topic.n)}</span>${prev ? fmtNav(prev) : 'Start of thread'}
+      </button>
+      <button class="modal-nav-btn next" id="modal-next" ${next ? `data-key="${escapeHtml(letterKey(next))}"` : 'disabled'}>
+        <span class="nav-dir">Later in ${escapeHtml(topic.n)} →</span>${next ? fmtNav(next) : 'Most recent'}
+      </button>
+    </div>` : "";
+
   const body = `
     <div class="modal-eyebrow">
       <span>${d.month} ${d.day}, ${d.year}</span>
-      <span class="agency-tag">${escapeHtml(letter.ag)}</span>
+      <span class="agency-tag ag-${escapeHtml(letter.ag)}">${escapeHtml(letter.ag)}</span>
       <span>§ ${escapeHtml(topic.n)}</span>
     </div>
     <h2 class="modal-title" id="modal-title">${sigDot}${escapeHtml(letter.t)}</h2>
@@ -2148,31 +2383,134 @@ function openModal(letter) {
     <div class="modal-actions">
       <a href="${url}" target="_blank" rel="noopener noreferrer" class="${linkClass}">${linkLabel}</a>
       <button class="modal-share" id="modal-share" title="Copy a deep link to this letter">⎘ Copy link</button>
+      <button class="modal-share" id="modal-cite" title="Copy a formatted citation">❝ Copy citation</button>
       ${linkNote}
     </div>
+    ${navHtml}
   `;
   document.getElementById("modal-body").innerHTML = body;
-  document.getElementById("modal-backdrop").classList.add("open");
+  const backdrop = document.getElementById("modal-backdrop");
+  backdrop.classList.add("open");
   document.body.classList.add("modal-open");
   document.getElementById("modal").scrollTop = 0;
+  // Remember what to return focus to, and move focus into the dialog
+  if (!backdrop.dataset.returnKey) backdrop.dataset.returnKey = letterKey(letter);
   state.letter = letterKey(letter);
+  state.view = null;
   stateToHash();
+  document.getElementById("modal-close").focus();
 
   document.getElementById("modal-share").addEventListener("click", (e) => {
     const btn = e.currentTarget;
     navigator.clipboard.writeText(location.href).then(() => {
-      btn.textContent = "✓ Copied";
-      btn.classList.add("copied");
+      btn.textContent = "✓ Copied"; btn.classList.add("copied");
       setTimeout(() => { btn.textContent = "⎘ Copy link"; btn.classList.remove("copied"); }, 1800);
+    });
+  });
+  document.getElementById("modal-cite").addEventListener("click", (e) => {
+    const btn = e.currentTarget;
+    const cite = `Conference of State Bank Supervisors, Comment Letter on ${letter.t}, to ${letter.to} (${d.month} ${d.day}, ${d.year})${isFallback ? '' : ', ' + url}.`;
+    navigator.clipboard.writeText(cite).then(() => {
+      btn.textContent = "✓ Copied"; btn.classList.add("copied");
+      setTimeout(() => { btn.textContent = "❝ Copy citation"; btn.classList.remove("copied"); }, 1800);
+    });
+  });
+  ["modal-prev", "modal-next"].forEach(id => {
+    const b = document.getElementById(id);
+    if (b && b.dataset.key) b.addEventListener("click", () => {
+      const l = LETTERS.find(x => letterKey(x) === b.dataset.key);
+      if (l) openModal(l);   // returnKey is preserved across thread hops
     });
   });
 }
 
 function closeModal() {
-  document.getElementById("modal-backdrop").classList.remove("open");
+  const backdrop = document.getElementById("modal-backdrop");
+  backdrop.classList.remove("open");
   document.body.classList.remove("modal-open");
+  const returnKey = backdrop.dataset.returnKey;
+  delete backdrop.dataset.returnKey;
   state.letter = null;
+  state.view = null;
   stateToHash();
+  // Return focus to the card that opened the modal
+  if (returnKey) {
+    const card = document.querySelector(`.letter-card[data-key="${cssEscape(returnKey)}"]`);
+    if (card) card.focus();
+  }
+}
+function cssEscape(s) { return (window.CSS && CSS.escape) ? CSS.escape(s) : s.replace(/["\\\]]/g, "\\$&"); }
+
+// ============================================================
+// COMPARE
+// ============================================================
+function toggleCompare(key) {
+  const i = state.compare.indexOf(key);
+  if (i !== -1) state.compare.splice(i, 1);
+  else {
+    if (state.compare.length >= 2) state.compare.shift();  // keep the two most recent
+    state.compare.push(key);
+  }
+  renderCompareTray();
+  document.querySelectorAll(".compare-btn").forEach(b => {
+    const on = state.compare.includes(b.dataset.compare);
+    b.classList.toggle("pinned", on);
+    b.setAttribute("aria-pressed", on);
+    b.textContent = on ? "✓ pinned" : "+ compare";
+  });
+  stateToHash();
+}
+
+function renderCompareTray() {
+  const tray = document.getElementById("compare-tray");
+  const items = document.getElementById("ct-items");
+  const go = document.getElementById("ct-go");
+  if (!state.compare.length) { tray.classList.remove("open"); return; }
+  tray.classList.add("open");
+  items.innerHTML = state.compare.map(k => {
+    const l = LETTERS.find(x => letterKey(x) === k);
+    const label = l ? `${formatDate(l.d).year} · ${l.t}` : k;
+    return `<span class="ct-chip" title="${escapeHtml(l ? l.t : '')}">${escapeHtml(label)} <button data-uncompare="${escapeHtml(k)}" aria-label="Remove from comparison">✕</button></span>`;
+  }).join("");
+  go.disabled = state.compare.length !== 2;
+  items.querySelectorAll("[data-uncompare]").forEach(b => {
+    b.addEventListener("click", () => toggleCompare(b.dataset.uncompare));
+  });
+}
+
+function openCompare() {
+  if (state.compare.length !== 2) return;
+  const pair = state.compare.map(k => LETTERS.find(x => letterKey(x) === k));
+  if (!pair[0] || !pair[1]) return;
+  const col = (l) => {
+    const d = formatDate(l.d); const meta = getMeta(l); const { url, fallback } = getLetterUrl(l);
+    const sigName = {3:"High",2:"Medium",1:"Routine"}[l.sig];
+    return `<div class="compare-col">
+      <div class="cc-date">${d.month} ${d.day}, ${d.year}</div>
+      <div class="cc-title">${escapeHtml(l.t)}</div>
+      <div class="compare-meta-row">
+        <span class="agency-tag ag-${escapeHtml(l.ag)}">${escapeHtml(l.ag)}</span>
+        ${meta.veh && meta.veh !== "Other" ? `<span class="vehicle-tag">${escapeHtml(meta.veh)}</span>` : ""}
+        <span class="through-tag">${sigName}</span>
+      </div>
+      <div class="modal-meta" style="margin:0 0 10px;"><span class="label">Re</span>${escapeHtml(l.to)}</div>
+      <div class="cc-pos">${escapeHtml(l.pos)}</div>
+      ${l.q ? `<div class="cc-quote">${escapeHtml(l.q)}</div>` : ""}
+      <a href="${url}" target="_blank" rel="noopener noreferrer" class="${fallback ? "modal-link fallback" : "modal-link"}">${fallback ? "Search csbs.org &rarr;" : "Read the full letter &rarr;"}</a>
+    </div>`;
+  };
+  const sameTopic = pair[0].tp === pair[1].tp;
+  const header = `<div class="modal-eyebrow"><span>Comparison</span>${sameTopic ? `<span>§ ${escapeHtml(getTopicById(pair[0].tp).n)}</span>` : ""}</div>
+    <h2 class="modal-title" id="modal-title">Comparing two letters${sameTopic ? " on " + escapeHtml(getTopicById(pair[0].tp).n) : ""}</h2>`;
+  document.getElementById("modal-body").innerHTML = header + `<div class="compare-grid">${col(pair[0])}${col(pair[1])}</div>`;
+  const backdrop = document.getElementById("modal-backdrop");
+  if (!("returnKey" in backdrop.dataset)) backdrop.dataset.returnKey = "";
+  backdrop.classList.add("open");
+  document.body.classList.add("modal-open");
+  document.getElementById("modal").scrollTop = 0;
+  state.view = "compare"; state.letter = null;
+  stateToHash();
+  document.getElementById("modal-close").focus();
 }
 
 // ============================================================
@@ -2237,15 +2575,31 @@ document.querySelectorAll(".sort-btn").forEach(btn => {
 
 document.querySelectorAll("[data-sig]").forEach(btn => {
   btn.addEventListener("click", () => {
-    state.sig = btn.dataset.sig;
+    if (btn.dataset.sig === "all") state.sig = [];
+    else toggleFacet("sig", btn.dataset.sig);
     renderAll();
   });
 });
 
+// Significance legend toggle
+document.getElementById("sig-legend-btn").addEventListener("click", (e) => {
+  const legend = document.getElementById("sig-legend");
+  const open = legend.classList.toggle("open");
+  e.currentTarget.setAttribute("aria-expanded", open);
+});
+
+// Mobile filter toggle
+document.getElementById("filter-toggle").addEventListener("click", (e) => {
+  const sidebar = document.querySelector(".sidebar");
+  const collapsed = sidebar.classList.toggle("filters-collapsed");
+  e.currentTarget.setAttribute("aria-expanded", !collapsed);
+  e.currentTarget.textContent = collapsed ? "Filters ▸" : "Filters ▾";
+});
+
 document.getElementById("clear-filters").addEventListener("click", () => {
-  state.search = ""; state.topic = "all"; state.agency = "all"; state.vehicle = "all";
-  state.through = "all"; state.era = "all"; state.sig = "all"; state.year = null;
-  state.sort = "topic"; state.letter = null;
+  state.search = "";
+  MULTI_FACETS.forEach(f => state[f] = []);
+  state.year = null; state.sort = "topic"; state.letter = null;
   searchEl.value = "";
   document.querySelectorAll(".sort-btn").forEach(b => b.classList.remove("active"));
   document.querySelector(".sort-btn[data-sort='topic']").classList.add("active");
@@ -2258,18 +2612,19 @@ document.getElementById("print-btn").addEventListener("click", () => window.prin
 // Masthead stat-strip jump shortcuts
 document.querySelectorAll("[data-jump]").forEach(b => {
   b.addEventListener("click", () => {
-    if (b.dataset.jump === "milhorn") { state.era = "milhorn"; renderAll(); }
+    if (b.dataset.jump === "milhorn") { state.era = state.era.includes("milhorn") ? [] : ["milhorn"]; renderAll(); }
     else if (b.dataset.jump === "through") {
-      // toggle through to federalism (largest) as a sane default landing
-      state.through = state.through === "all" ? "federalism" : "all";
+      state.through = state.through.includes("federalism") ? [] : ["federalism"];
       renderAll();
     }
     document.querySelector(".main")?.scrollIntoView({behavior: "smooth", block: "start"});
   });
 });
 
-// Modal: open via event delegation
+// Results: open modal, or toggle compare — via event delegation
 document.getElementById("results").addEventListener("click", (e) => {
+  const cmp = e.target.closest(".compare-btn");
+  if (cmp) { e.stopPropagation(); toggleCompare(cmp.dataset.compare); return; }
   const card = e.target.closest(".letter-card");
   if (!card) return;
   const letter = LETTERS.find(l => letterKey(l) === card.dataset.key);
@@ -2277,25 +2632,47 @@ document.getElementById("results").addEventListener("click", (e) => {
 });
 document.getElementById("results").addEventListener("keydown", (e) => {
   if (e.key !== "Enter" && e.key !== " ") return;
+  if (e.target.closest(".compare-btn")) return;  // let the button handle itself
   const card = e.target.closest(".letter-card");
   if (!card) return;
   e.preventDefault();
   const letter = LETTERS.find(l => letterKey(l) === card.dataset.key);
   if (letter) openModal(letter);
 });
+
+// Compare tray
+document.getElementById("ct-go").addEventListener("click", openCompare);
+document.getElementById("ct-clear").addEventListener("click", () => {
+  state.compare = [];
+  renderCompareTray();
+  document.querySelectorAll(".compare-btn").forEach(b => {
+    b.classList.remove("pinned"); b.setAttribute("aria-pressed", "false"); b.textContent = "+ compare";
+  });
+  stateToHash();
+});
+
 document.getElementById("modal-close").addEventListener("click", closeModal);
 document.getElementById("modal-backdrop").addEventListener("click", (e) => {
   if (e.target.id === "modal-backdrop") closeModal();
 });
 
-// Keyboard shortcuts
+// Keyboard shortcuts + modal focus trap
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && document.getElementById("modal-backdrop").classList.contains("open")) {
-    closeModal();
+  const backdrop = document.getElementById("modal-backdrop");
+  const modalOpen = backdrop.classList.contains("open");
+  if (e.key === "Escape" && modalOpen) { closeModal(); return; }
+  // Trap Tab focus inside the open modal
+  if (e.key === "Tab" && modalOpen) {
+    const focusable = backdrop.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])');
+    if (focusable.length) {
+      const first = focusable[0], last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
     return;
   }
-  // "/" focuses search — unless user is already typing
-  if (e.key === "/" && document.activeElement !== searchEl && !e.metaKey && !e.ctrlKey) {
+  // "/" focuses search — unless user is already typing or a modal is open
+  if (e.key === "/" && !modalOpen && document.activeElement !== searchEl && !e.metaKey && !e.ctrlKey) {
     e.preventDefault();
     searchEl.focus();
     searchEl.select();
@@ -2322,9 +2699,13 @@ document.getElementById("updated-eyebrow").textContent =
 
 // Restore state from URL hash on load
 hashToState();
+// Reflect restored sort in the toolbar
+document.querySelectorAll(".sort-btn").forEach(b => b.classList.toggle("active", b.dataset.sort === state.sort));
 renderAll();
-// If a letter was specified in the URL, open it
-if (state.letter) {
+// If the hash specified a comparison, open it; else if a letter, open it
+if (state.view === "compare" && state.compare.length === 2) {
+  openCompare();
+} else if (state.letter) {
   const letter = LETTERS.find(l => letterKey(l) === state.letter);
   if (letter) openModal(letter);
 }
