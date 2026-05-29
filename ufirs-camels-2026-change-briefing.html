@@ -184,10 +184,11 @@
   .card.open .chev{transform:rotate(180deg)}
 
   .card-body{
-    max-height:0;overflow:hidden;transition:max-height .45s cubic-bezier(.4,0,.2,1);
+    display:grid;grid-template-rows:0fr;overflow:hidden;
+    transition:grid-template-rows .45s cubic-bezier(.4,0,.2,1);
   }
-  .card.open .card-body{max-height:1600px}
-  .cb-inner{padding:4px 26px 28px;border-top:1px solid var(--line)}
+  .card.open .card-body{grid-template-rows:1fr}
+  .cb-inner{overflow:hidden;min-height:0;padding:4px 26px 28px;border-top:1px solid var(--line)}
 
   .compare{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:22px 0 4px;border:1px solid var(--line);border-radius:3px;overflow:hidden}
   .col{padding:20px 22px}
@@ -349,6 +350,27 @@
   footer{border-top:2px solid var(--ink);padding:28px 0 60px;margin-top:50px}
   footer p{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-faint);line-height:1.7}
 
+  /* ---------- Edits: docnote, clickable stats, jump tags, provenance ---------- */
+  .docnote{
+    margin-top:14px;font-family:'IBM Plex Mono',monospace;font-size:11px;
+    color:#8b95ab;line-height:1.6;max-width:80ch;
+  }
+  .docnote b{color:#c0c8d8;font-weight:600}
+  .stat{cursor:pointer;transition:background .15s}
+  .stat:hover{background:rgba(29,44,77,.05)}
+  .stat .v{display:flex;align-items:baseline;gap:7px}
+  .stat .v .go{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ox);opacity:0;transition:opacity .15s;font-weight:600}
+  .stat:hover .v .go{opacity:1}
+  .qmeta .theme-jump{cursor:pointer;transition:.15s;border-color:var(--hi-bd);color:var(--ox);background:var(--hi-bg)}
+  .qmeta .theme-jump:hover{background:var(--ox);color:#fff;border-color:var(--ox)}
+  .prov{
+    margin-top:18px;padding-top:12px;border-top:1px dashed var(--line-strong);
+    font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.02em;
+    color:var(--ink-faint);line-height:1.6;
+  }
+  .leadgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:14px}
+  @media (max-width:860px){.leadgrid{grid-template-columns:1fr}}
+
   @media (max-width:860px){
     .thesis .levers{grid-template-columns:1fr}
     .statrail{grid-template-columns:repeat(2,1fr)}
@@ -357,11 +379,12 @@
     .col.prop{border-left:none;border-top:1px solid var(--line)}
     .compgrid{grid-template-columns:1fr}
     .card-head{flex-wrap:wrap}
+    .rltext p,.rltext li{line-height:1.82}
   }
   @media print{
     nav.tabs{display:none}
     .panel{display:block!important}
-    .card-body{max-height:none!important}
+    .card-body{grid-template-rows:1fr!important}
     .chev,.filterbar,.rfcfilter{display:none}
     body{background:#fff;font-size:11pt}
     .card,.compcard,.crow,.qcard{break-inside:avoid;box-shadow:none}
@@ -380,11 +403,12 @@
     <h1 class="title">The CAMELS Rewrite, Mapped</h1>
     <p class="sub">An interactive read of the FFIEC's proposed revisions to the Uniform Financial Institutions Rating System — the first substantive overhaul since 1996.</p>
     <div class="docmeta">
-      <span><b>Published:</b> May 19, 2026 (scheduled)</span>
-      <span><b>Comment window:</b> 90 days from publication</span>
+      <span><b>Published:</b> May 19, 2026 · 91 FR 29128</span>
+      <span><b>Comment window:</b> 90 days — closes Aug 17, 2026</span>
       <span><b>Agencies:</b> Board · FDIC · NCUA · OCC · CFPB* · SLC/CSBS</span>
       <span><b>Status:</b> Significant regulatory action (EO 12866, OIRA-reviewed)</span>
     </div>
+    <div class="docnote"><b>*</b> The CFPB is named in the release as a participating FFIEC member (Supervision Division contact listed), but UFIRS is a prudential safety-and-soundness rating system; the CFPB does not itself assign CAMELS ratings.</div>
   </div>
 </header>
 
@@ -403,17 +427,17 @@
       </div>
       <div class="lever">
         <div class="n">LEVER 3</div>
-        <div class="t">Limit specialty-review findings (incl. BSA/AML, consumer compliance) to material risk or significant noncompliance.</div>
+        <div class="t">Limit specialty-review findings (incl. BSA/AML, consumer compliance) to those that affect overall financial condition, pose material financial risk, or amount to significant noncompliance.</div>
       </div>
     </div>
   </div>
 </section>
 
 <div class="statrail wrap" style="max-width:1180px;margin:0 auto;border-left:1px solid var(--line);border-right:1px solid var(--line)">
-  <div class="stat"><div class="v">1996</div><div class="l">Last substantive revision</div></div>
-  <div class="stat"><div class="v">8</div><div class="l">Discrete change areas (A–H)</div></div>
-  <div class="stat"><div class="v">11</div><div class="l">Specific comment questions</div></div>
-  <div class="stat"><div class="v">0</div><div class="l">New mandates / info collections</div></div>
+  <div class="stat" data-p="redline"><div class="v">1996<span class="go">view ▸</span></div><div class="l">Last substantive revision</div></div>
+  <div class="stat" data-p="themes"><div class="v">8<span class="go">view ▸</span></div><div class="l">Discrete change areas (A–H)</div></div>
+  <div class="stat" data-p="rfc"><div class="v">11<span class="go">view ▸</span></div><div class="l">Specific comment questions</div></div>
+  <div class="stat" data-p="context"><div class="v">0<span class="go">view ▸</span></div><div class="l">New mandates / info collections</div></div>
 </div>
 
 <nav class="tabs">
@@ -449,7 +473,7 @@
     <div id="cards">
 
       <!-- A -->
-      <article class="card" data-sig="high">
+      <article class="card" id="ch-A" data-sig="high">
         <div class="card-head">
           <div class="badge-letter">A</div>
           <div class="ttl">
@@ -476,7 +500,7 @@
       </article>
 
       <!-- B -->
-      <article class="card" data-sig="high">
+      <article class="card" id="ch-B" data-sig="high">
         <div class="card-head">
           <div class="badge-letter">B</div>
           <div class="ttl">
@@ -507,7 +531,7 @@
       </article>
 
       <!-- C -->
-      <article class="card" data-sig="high">
+      <article class="card" id="ch-C" data-sig="high">
         <div class="card-head">
           <div class="badge-letter">C</div>
           <div class="ttl">
@@ -534,7 +558,7 @@
       </article>
 
       <!-- D -->
-      <article class="card" data-sig="high">
+      <article class="card" id="ch-D" data-sig="high">
         <div class="card-head">
           <div class="badge-letter">D</div>
           <div class="ttl">
@@ -566,7 +590,7 @@
       </article>
 
       <!-- E -->
-      <article class="card" data-sig="high">
+      <article class="card" id="ch-E" data-sig="high">
         <div class="card-head">
           <div class="badge-letter">E</div>
           <div class="ttl">
@@ -599,7 +623,7 @@
       </article>
 
       <!-- F -->
-      <article class="card" data-sig="med">
+      <article class="card" id="ch-F" data-sig="med">
         <div class="card-head">
           <div class="badge-letter">F</div>
           <div class="ttl">
@@ -631,7 +655,7 @@
       </article>
 
       <!-- G -->
-      <article class="card" data-sig="med">
+      <article class="card" id="ch-G" data-sig="med">
         <div class="card-head">
           <div class="badge-letter">G</div>
           <div class="ttl">
@@ -663,7 +687,7 @@
       </article>
 
       <!-- H -->
-      <article class="card" data-sig="med">
+      <article class="card" id="ch-H" data-sig="med">
         <div class="card-head">
           <div class="badge-letter">H</div>
           <div class="ttl">
@@ -809,7 +833,7 @@
   <section class="panel" id="redline">
     <div class="secintro">
       <h2>Redline — operative text, 1996 → 2026 proposed</h2>
-      <p>A word-level comparison of the operative 1996 UFIRS against the proposed text in Appendix A. The 1996 baseline is the Federal Register statement at <span class="mono">61 FR 67021</span> (Dec. 19, 1996); the proposed text is Appendix A of FR Doc. 2026-09944. Both are U.S. Government works.</p>
+      <p>A word-level comparison of the operative 1996 UFIRS against the proposed text in Appendix A. The 1996 baseline is the Federal Register statement at <span class="mono">61 FR 67021</span> (Dec. 19, 1996); the proposed text is Appendix A of FR Doc. 2026-09944 (<span class="mono">91 FR 29128</span>). Both are U.S. Government works.</p>
     </div>
 
     <div class="rl-legend">
@@ -1054,67 +1078,67 @@
     </div>
     <div id="qlist">
 
-      <div class="qcard" data-q="composite">
+      <div class="qcard" id="q1" data-q="composite">
         <div class="qn">1</div><div class="qmain">
           <div class="qtxt">Do the revisions enhance UFIRS as a safety-and-soundness tool, and should the framework be modified to further strengthen the rating ↔ S&amp;S link?</div>
           <div class="qmeta"><span class="theme">Effectiveness</span><span class="theme">→ E</span></div>
         </div>
       </div>
-      <div class="qcard" data-q="composite">
+      <div class="qcard" id="q2" data-q="composite">
         <div class="qn">2</div><div class="qmain">
           <div class="qtxt">Do the revisions appropriately balance financial condition vs. risk profile? Should definitions / factors be adjusted further?</div>
           <div class="qmeta"><span class="theme">Balance</span><span class="theme">→ D</span></div>
         </div>
       </div>
-      <div class="qcard" data-q="composite">
+      <div class="qcard" id="q3" data-q="composite">
         <div class="qn">3</div><div class="qmain">
           <div class="qtxt">How far should "evolving business practices" extend in justifying additional evaluation factors? What counts as one?</div>
           <div class="qmeta"><span class="theme">Discretion</span><span class="theme">→ F</span></div>
         </div>
       </div>
-      <div class="qcard" data-q="compliance">
+      <div class="qcard" id="q4" data-q="compliance">
         <div class="qn">4</div><div class="qmain">
           <div class="qtxt">How should compliance with laws/regs be weighted in composite and Management ratings? Advantages/disadvantages of differentiating material-risk vs. non-material violations; should type, severity, frequency, management's role matter?</div>
           <div class="qmeta"><span class="theme">Compliance calibration</span><span class="theme">→ B,C</span></div>
         </div>
       </div>
-      <div class="qcard" data-q="compliance">
+      <div class="qcard" id="q5" data-q="compliance">
         <div class="qn">5</div><div class="qmain">
           <div class="qtxt">What threshold should make a specialty-review finding count in component/composite ratings? How much should specialty findings specifically influence Management?</div>
           <div class="qmeta"><span class="theme">Specialty threshold</span><span class="theme">→ C</span></div>
         </div>
       </div>
-      <div class="qcard" data-q="composite">
+      <div class="qcard" id="q6" data-q="composite">
         <div class="qn">6</div><div class="qmain">
           <div class="qtxt">Should the framework expect a close composite ↔ component relationship with no single component driving the composite? Pros/cons of requiring additional justification when one component drives it?</div>
           <div class="qmeta"><span class="theme">Composite mechanics</span><span class="theme">→ A,D</span></div>
         </div>
       </div>
-      <div class="qcard" data-q="mgmt">
+      <div class="qcard" id="q7" data-q="mgmt">
         <div class="qn">7</div><div class="qmain">
           <div class="qtxt">Should a less-than-satisfactory Management rating be <em>rare</em> — needing additional justification — when all other components are satisfactory? Advantages/disadvantages?</div>
           <div class="qmeta"><span class="theme">Management primacy</span><span class="theme">→ A,B</span></div>
         </div>
       </div>
-      <div class="qcard" data-q="mgmt">
+      <div class="qcard" id="q8" data-q="mgmt">
         <div class="qn">8</div><div class="qmain">
           <div class="qtxt">Should Management factors directly assess whether compensation is <em>excessive</em>? Pros/cons of limiting the factor to self-dealing / conflicts of interest? Other misaligned-incentive / principal-agent factors?</div>
           <div class="qmeta"><span class="theme">Compensation</span><span class="theme">→ B</span></div>
         </div>
       </div>
-      <div class="qcard" data-q="mgmt">
+      <div class="qcard" id="q9" data-q="mgmt">
         <div class="qn">9</div><div class="qmain">
           <div class="qtxt">Should Management factors consider whether directors/management are affected by or susceptible to dominant influence or concentration of authority?</div>
           <div class="qmeta"><span class="theme">Governance / control</span><span class="theme">→ B</span></div>
         </div>
       </div>
-      <div class="qcard" data-q="mgmt">
+      <div class="qcard" id="q10" data-q="mgmt">
         <div class="qn">10</div><div class="qmain">
           <div class="qtxt">Do the changes effectively limit double-counting a single finding across ratings? Could embedding compliance in Management cause redundant consideration of one noncompliance issue?</div>
           <div class="qmeta"><span class="theme">Redundancy</span><span class="theme">→ B,C</span></div>
         </div>
       </div>
-      <div class="qcard" data-q="sensitivity">
+      <div class="qcard" id="q11" data-q="sensitivity">
         <div class="qn">11</div><div class="qmain">
           <div class="qtxt">Does added specificity in the Sensitivity to Market Risk definitions/factors improve clarity? How to further refine for how rates, FX, commodity, or other prices affect earnings/capital?</div>
           <div class="qmeta"><span class="theme">Sensitivity / IRR</span><span class="theme">→ E,F</span></div>
@@ -1136,19 +1160,38 @@
         <h3 style="font-size:19px">Procedural posture</h3>
         <div class="chgline"><span class="mk add">·</span><div>Issued as an FFIEC <b>notice and request for comment</b> — a proposed <em>recommendation</em>, not a rule. RFA / PRA / UMRA analyses are voluntary; no new mandates or information collections.</div></div>
         <div class="chgline"><span class="mk add">·</span><div>OIRA designated it a <b>significant regulatory action</b> under EO 12866 (§3(f)); reviewed by OIRA. No incremental costs expected under EO 14192.</div></div>
-        <div class="chgline"><span class="mk add">·</span><div>Comment period: <b>90 days</b> after Federal Register publication (scheduled May 19, 2026). CSBS/SLC contacts are listed (Quist; Lambert).</div></div>
+        <div class="chgline"><span class="mk add">·</span><div>Comment period: <b>90 days</b> after Federal Register publication — published May 19, 2026 (<b>91 FR 29128</b>; on Public Inspection May 18), so comments close <b>Aug 17, 2026</b>. CSBS/SLC contacts are listed (Quist; Lambert).</div></div>
       </div>
       <div class="compcard">
         <h3 style="font-size:19px">Evidentiary base the agencies cite</h3>
         <div class="chgline"><span class="mk add">·</span><div>Agencies' own analysis of CAMELS ratings <b>2000–2025</b> — composite/component correlation varies; Management most influential, especially recently.</div></div>
-        <div class="chgline"><span class="mk add">·</span><div>Cites Kupiec et al. (2017) and Kiser et al. on downgrade ↔ loan-growth effects; Bergin &amp; Stiroh (2021); Berger et al. (1998); Correia, Luck &amp; Verner (2026) on ratings' failure-predictive content.</div></div>
+        <div class="chgline"><span class="mk add">·</span><div>Cites Kupiec et al. (2017) on downgrades ↔ lower loan growth and Kiser et al. (2016) on crisis-era small-bank C&amp;I / CRE lending; Bergin &amp; Stiroh (2021) on ratings' three functions; Berger et al. (1998) on supervisory vs. market assessments; and Correia, Luck &amp; Verner (2025) — <em>Supervising Failing Banks</em> — for ratings out-informing balance-sheet metrics on failure.</div></div>
         <div class="chgline"><span class="mk add">·</span><div>Notes EGRPRA outreach as partial impetus.</div></div>
+      </div>
+    </div>
+
+    <div class="secintro" style="margin-top:40px;margin-bottom:14px">
+      <h2 style="font-size:24px">Where leadership stands &amp; the state angle</h2>
+      <p>Principals' on-the-record reactions and the dual-banking-system read — useful for positioning a comment.</p>
+    </div>
+    <div class="leadgrid">
+      <div class="compcard">
+        <h3 style="font-size:19px">Principals' statements</h3>
+        <div class="chgline"><span class="mk rev">OCC</span><div>Comptroller <b>Jonathan Gould</b> supports the direction — shifting supervision away from process-heavy oversight toward material financial risk — but flagged that the revisions do not, in his view, sufficiently address <b>"double counting"</b> within the Management component. That maps directly onto <span class="qtag" style="cursor:pointer" data-go-q="rfc">Q10</span> and Change&nbsp;C; a Q10-based comment can cite a sitting principal's reservation.</div></div>
+        <div class="chgline"><span class="mk add">NCUA</span><div>Chairman <b>Kyle Hauptman</b> issued a statement on the proposal alongside the release — worth reading for the credit-union framing, given the proposal reaches all federally insured (including state-chartered) credit unions.</div></div>
+      </div>
+      <div class="compcard">
+        <h3 style="font-size:19px">State-federal / dual-banking read</h3>
+        <div class="chgline"><span class="mk add">·</span><div>UFIRS is the shared rating language across the dual banking system — used by <b>federal and state</b> supervisors alike. The <b>SLC/CSBS</b> appearing on the release (Quist; Lambert) signals state buy-in to the re-anchoring on financial condition.</div></div>
+        <div class="chgline"><span class="mk add">·</span><div>A more financial-condition-anchored, less process-driven rating should <b>reduce divergence risk</b> between state and federal exam outcomes on the same institution.</div></div>
+        <div class="chgline"><span class="mk rev">·</span><div>Note the asymmetry: the only federalism discussion in the release is <b>NCUA's EO 13132</b> analysis for state-chartered credit unions — there is <b>no parallel federalism analysis for state banks</b>, which a state-side commenter may find notable.</div></div>
       </div>
     </div>
 
     <div class="note">
       <h4>Method &amp; accuracy note</h4>
       <p>The "current framework" descriptions on the Changes and Component tabs are drawn from the FFIEC's own characterization in Section II of the proposing release. The <b>Redline tab</b> goes further: it diffs the verified operative 1996 UFIRS text — the Federal Register statement at <span class="mono">61 FR 67021</span> (Dec. 19, 1996), as reproduced verbatim in FDIC FIL-105-96 — against the proposed Appendix A text. Both are U.S. Government works.</p>
+      <p><b>On the two 1996 dates.</b> Appendix A states the UFIRS was "updated on December 20, 1996," while the baseline here is cited to <span class="mono">61 FR 67021</span> (Dec. 19, 1996). These are reconcilable, not inconsistent: the FFIEC Task Force on Supervision approved the update Dec. 9, 1996; the FR notice published Dec. 19; the FDIC and Federal Reserve Boards adopted it Dec. 20 (SR 96-38); and it took effect Jan. 1, 1997. "Dec. 20" is the Board-adoption date; "Dec. 19" is the publication date.</p>
       <p>One drafting tension worth a comment hook: proposed Composite&nbsp;4 says risk-management weaknesses "range from severe to critically deficient," while the standardized risk-management vocabulary in change&nbsp;G is "effective / adequate / inadequate / deficient" — i.e., "severe" and "critically deficient" sit outside the new scale. The Management ratings ladder also retains "critically deficient" at the 5 tier, consistent with G's Management carve-out, but the Composite-4 phrasing does not map cleanly to either scale.</p>
     </div>
   </section>
@@ -1158,22 +1201,44 @@
 
 <footer>
   <div class="wrap">
-    <p>Source: FFIEC, "Uniform Financial Institutions Rating System," Notice and Request for Comment · Docket ID OCC-2026-0562 · FR Doc. 2026-09944 · scheduled for publication May 19, 2026. Federal Register documents are U.S. Government works.</p>
+    <p>Source: FFIEC, "Uniform Financial Institutions Rating System," Notice and Request for Comment · Docket ID OCC-2026-0562 · FR Doc. 2026-09944 · published May 19, 2026 at <b>91 FR 29128</b> (pp. 29128–29139); comments close Aug 17, 2026. Federal Register documents are U.S. Government works.</p>
     <p>Interactive briefing for internal policy analysis · Redline diffs verified 1996 text (61 FR 67021, via FDIC FIL-105-96) against proposed Appendix A · verify against official PDFs before formal citation.</p>
   </div>
 </footer>
 
 <script>
-  // Tabs
   const tabs=document.querySelectorAll('.tab');
   const panels=document.querySelectorAll('.panel');
-  tabs.forEach(t=>t.addEventListener('click',()=>{
+
+  function resetFilters(){
+    document.querySelectorAll('.filterbar .chip').forEach(x=>x.classList.toggle('on',x.dataset.f==='all'));
+    document.querySelectorAll('#cards .card').forEach(card=>card.style.display='');
+    document.querySelectorAll('.rfcfilter .chip').forEach(x=>x.classList.toggle('on',x.dataset.q==='all'));
+    document.querySelectorAll('#qlist .qcard').forEach(card=>card.style.display='flex');
+  }
+
+  function activateTab(name,opts){
+    opts=opts||{};
+    const tab=document.querySelector('.tab[data-p="'+name+'"]');
+    const panel=document.getElementById(name);
+    if(!tab||!panel) return;
     tabs.forEach(x=>x.classList.remove('active'));
     panels.forEach(p=>p.classList.remove('active'));
-    t.classList.add('active');
-    document.getElementById(t.dataset.p).classList.add('active');
-    window.scrollTo({top:0,behavior:'instant'});
-  }));
+    tab.classList.add('active');
+    panel.classList.add('active');
+    resetFilters();
+    if(opts.updateHash!==false && location.hash!=='#'+name){
+      history.replaceState(null,'','#'+name);
+    }
+    if(opts.scroll!==false) window.scrollTo({top:0,behavior:'instant'});
+  }
+
+  tabs.forEach(t=>t.addEventListener('click',()=>activateTab(t.dataset.p)));
+
+  // Stat-rail navigation
+  document.querySelectorAll('.statrail .stat[data-p]').forEach(s=>{
+    s.addEventListener('click',()=>activateTab(s.dataset.p));
+  });
 
   // Accordion
   document.querySelectorAll('.card-head').forEach(h=>{
@@ -1204,9 +1269,62 @@
     });
   });
 
+  // Bidirectional: RFC "→ A,B" tags jump to the change card(s)
+  document.querySelectorAll('#qlist .qmeta .theme').forEach(span=>{
+    const txt=span.textContent.trim();
+    if(txt.charAt(0)==='\u2192'){
+      const letters=txt.slice(1).split(',').map(s=>s.trim()).filter(s=>/^[A-H]$/.test(s));
+      if(letters.length){
+        span.classList.add('theme-jump');
+        span.title='Go to Change '+letters.join(', ');
+        span.addEventListener('click',()=>{
+          activateTab('themes');
+          const card=document.getElementById('ch-'+letters[0]);
+          if(card){card.classList.add('open');
+            setTimeout(()=>card.scrollIntoView({behavior:'smooth',block:'center'}),60);}
+        });
+      }
+    }
+  });
+
+  // Leadership Q-tag jump → RFC tab + open the question
+  document.querySelectorAll('[data-go-q]').forEach(el=>{
+    el.addEventListener('click',()=>{
+      activateTab('rfc');
+      const id=el.textContent.trim().toLowerCase().replace(/[^q0-9]/g,'');
+      const q=document.getElementById(id);
+      if(q) setTimeout(()=>q.scrollIntoView({behavior:'smooth',block:'center'}),60);
+    });
+  });
+
+  // Per-card provenance stamp on redline cards
+  document.querySelectorAll('#rlcards .cb-inner').forEach(inner=>{
+    const stamp=document.createElement('div');
+    stamp.className='prov';
+    stamp.textContent='Source: 1996 baseline 61 FR 67021 (Dec. 19, 1996) \u2192 proposed Appendix A, FR Doc. 2026-09944 (91 FR 29128). Verify against the official PDF before formal citation.';
+    inner.appendChild(stamp);
+  });
+
   // Open first card by default
   document.querySelector('#cards .card').classList.add('open');
   document.querySelector('#rlcards .card').classList.add('open');
+
+  // Deep-link routing (#redline, #q5, #ch-C)
+  function routeFromHash(){
+    const h=(location.hash||'').replace('#','');
+    if(!h) return;
+    const panelNames=Array.from(panels).map(p=>p.id);
+    if(panelNames.includes(h)){activateTab(h,{updateHash:false});return;}
+    const target=document.getElementById(h);
+    if(target){
+      const panel=target.closest('.panel');
+      if(panel) activateTab(panel.id,{updateHash:false,scroll:false});
+      if(target.classList.contains('card')) target.classList.add('open');
+      setTimeout(()=>target.scrollIntoView({behavior:'smooth',block:'center'}),80);
+    }
+  }
+  routeFromHash();
+  window.addEventListener('hashchange',routeFromHash);
 </script>
 </body>
 </html>
