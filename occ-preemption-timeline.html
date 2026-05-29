@@ -226,11 +226,73 @@
 
   .hidden { display: none !important; }
 
+  /* ── Controls (search + filters + utilities) ── */
+  .controls { margin-bottom: 24px; }
+  .search-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+  .search-box {
+    flex: 1; min-width: 220px; padding: 9px 14px;
+    border: 2px solid #d4cfc9; border-radius: 8px;
+    background: white; color: #1c1917;
+    font-family: 'Courier New', monospace; font-size: 13px;
+  }
+  .search-box:focus { outline: none; border-color: #1c3a5e; box-shadow: 0 0 0 3px rgba(28,58,94,0.12); }
+  .result-count {
+    font-size: 11px; font-family: 'Courier New', monospace;
+    color: #78716c; white-space: nowrap;
+  }
+  .ctrl-spacer { flex: 1; }
+  .util-btn {
+    padding: 7px 14px; border-radius: 8px; border: 2px solid #d4cfc9;
+    background: white; color: #44403c; cursor: pointer;
+    font-size: 12px; font-family: 'Courier New', monospace; font-weight: 600;
+    transition: all 0.15s;
+  }
+  .util-btn:hover { border-color: #1c3a5e; }
+  .util-btn[aria-pressed="true"] { background: #1c3a5e; color: white; border-color: #1c3a5e; }
+  .filter-group { display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+  .filter-group-label {
+    font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+    font-family: 'Courier New', monospace; font-weight: 700;
+    color: #a8a29e; min-width: 64px;
+  }
+  .filters { margin-bottom: 0; }
+
+  /* ── Focus visibility (accessibility) ── */
+  .card:focus-visible,
+  .filter-btn:focus-visible,
+  .util-btn:focus-visible,
+  .tab-btn:focus-visible,
+  .std-card-btn:focus-visible,
+  .spectrum-marker.clickable:focus-visible {
+    outline: 3px solid #1c3a5e; outline-offset: 2px;
+  }
+  .spectrum-marker.clickable { cursor: pointer; }
+  .spectrum-marker.clickable:hover .spectrum-marker-label strong { text-decoration: underline; }
+  .no-results {
+    padding: 32px 16px; text-align: center; color: #78716c;
+    font-family: 'Courier New', monospace; font-size: 13px;
+  }
+  mark { background: #fde68a; color: inherit; padding: 0 1px; border-radius: 2px; }
+
   @media (max-width: 640px) {
     .timeline-grid { flex-direction: column; }
     .sidebar { width: 100%; position: static; }
     .header { padding: 24px 16px 0; }
     .page { padding: 16px 10px; }
+    .filter-group-label { min-width: 0; width: 100%; }
+  }
+
+  /* ── Print / PDF ── */
+  @media print {
+    body { background: white; }
+    .header { background: #1c1917 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .tab-bar, .controls, .sidebar { display: none !important; }
+    #pane-standard { display: none !important; }
+    #pane-timeline { display: block !important; }
+    .timeline-grid { display: block; }
+    .timeline-spine { display: none; }
+    .card { box-shadow: none !important; cursor: default; break-inside: avoid; page-break-inside: avoid; }
+    .card-detail { display: block !important; }
   }
 </style>
 </head>
@@ -251,7 +313,25 @@
 
 <!-- TIMELINE TAB -->
 <div id="pane-timeline" class="page">
-  <div class="filters" id="filter-bar"></div>
+  <div class="controls">
+    <div class="search-row">
+      <input id="search-box" class="search-box" type="search"
+             placeholder="Search events, holdings, citations\u2026"
+             aria-label="Search timeline events" oninput="onSearch(this.value)">
+      <span id="result-count" class="result-count" aria-live="polite"></span>
+      <span class="ctrl-spacer"></span>
+      <button id="expand-all-btn" class="util-btn" onclick="toggleExpandAll()" aria-pressed="false">Expand all</button>
+      <button class="util-btn" onclick="printTimeline()">Print / PDF</button>
+    </div>
+    <div class="filter-group">
+      <span class="filter-group-label">Category</span>
+      <div class="filters" id="filter-bar"></div>
+    </div>
+    <div class="filter-group">
+      <span class="filter-group-label">Outcome</span>
+      <div class="filters" id="outcome-bar"></div>
+    </div>
+  </div>
   <div class="timeline-grid">
     <div class="timeline-list" id="timeline-list">
       <div class="timeline-spine"></div>
@@ -283,19 +363,19 @@
   and the Supreme Court's 2024 "nuanced comparative analysis" requirement.</p>
 
   <div class="spectrum-box">
-    <div class="spectrum-label">Preemption Standard Stringency (More Pro-Bank &rarr; Less Pro-Bank)</div>
+    <div class="spectrum-label">Preemption Standard Stringency (More Pro-Bank &rarr; Less Pro-Bank) &middot; <span style="opacity:.7">positions are qualitative; click a marker to open its timeline entry</span></div>
     <div class="spectrum-bar">
-      <div class="spectrum-marker" style="left:15%">
+      <div class="spectrum-marker clickable" style="left:15%" role="button" tabindex="0" title="Open OCC 2004 rules in timeline" onclick="openEvent(8)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openEvent(8);}">
         <div class="spectrum-marker-label"><strong>OCC 2004</strong>'Obstruct, impair'</div>
       </div>
-      <div class="spectrum-marker" style="left:38%">
+      <div class="spectrum-marker clickable" style="left:38%" role="button" tabindex="0" title="Open Barnett Bank in timeline" onclick="openEvent(6)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openEvent(6);}">
         <div class="spectrum-marker-label"><strong>Barnett Bank</strong>'Significantly interfere'</div>
       </div>
-      <div class="spectrum-marker" style="left:60%">
+      <div class="spectrum-marker clickable" style="left:60%" role="button" tabindex="0" title="Open Dodd-Frank \u00a71044 in timeline" onclick="openEvent(11)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openEvent(11);}">
         <div class="spectrum-marker-label"><strong>Dodd-Frank</strong>Codified + Skidmore</div>
       </div>
-      <div class="spectrum-marker" style="left:80%">
-        <div class="spectrum-marker-label"><strong>Cantero 2024</strong>Nuanced comparative</div>
+      <div class="spectrum-marker clickable" style="left:80%" role="button" tabindex="0" title="Open Cantero (2024) in timeline" onclick="openEvent(15)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openEvent(15);}">
+        <div class="spectrum-marker-label"><strong>Cantero 2024</strong>No bright line; case-by-case</div>
       </div>
     </div>
     <div class="spectrum-footer">
@@ -315,7 +395,8 @@
 <footer>
   Sources: CRS Report R45726 (May 2019) &middot; Cantero v. Bank of America, 602 U.S. 205 (2024) &middot;
   2d Cir. on remand (May 5, 2026) &middot; OCC Bulletin 2025-50 &amp; 90 Fed. Reg. 61093 (Dec. 30, 2025) &middot;
-  OCC Bulletin 2026-17 (Apr. 2026). For informational purposes only.
+  OCC final escrow rules (May 15, 2026, eff. June 18, 2026) &middot;
+  OCC Bulletin 2026-17 (Apr. 24, 2026) &amp; 7th Cir. remand (May 8, 2026). For informational purposes only.
 </footer>
 
 <script>
@@ -359,7 +440,7 @@ const STD_COLORS = [
 
 const TENSIONS = [
   { q: "How 'significant' is 'significant interference'?",
-    a: "Barnett Bank's test sounds specific but courts have applied it very differently. Cantero (2024) required a 'nuanced comparative analysis' without supplying a bright line — and the results speak for themselves: on remand in May 2026, the Second Circuit found NY's 2% escrow interest mandate IS preempted, while the First Circuit (Conti, Sept. 2025) and Ninth Circuit (Kivett, 2025) found substantively identical laws are NOT preempted. Three circuits, same Cantero standard, three conflicting outcomes — a circuit split almost certain to force a second Supreme Court review." },
+    a: "Barnett Bank's test sounds specific but courts have applied it very differently. Cantero (2024) required a 'nuanced comparative analysis' without supplying a bright line — and the results speak for themselves: on remand in May 2026, the Second Circuit found NY's 2% escrow interest mandate IS preempted, while the First Circuit (Conti, Sept. 29, 2025) and Ninth Circuit (Kivett, Oct. 2, 2025) found substantively identical laws are NOT preempted. The split isn't even symmetrical: the 1st and 2nd Circuits each ran the Cantero comparative analysis and split on the merits, while the 9th Circuit majority leaned on pre-Cantero precedent — arguably making the conflict more cert-worthy, not less. A fresh Cantero cert petition was filed May 22, 2026; cert was denied in Conti on April 29 (rehearing now sought). A second Supreme Court look has moved from likely to live." },
   { q: "Can the OCC expand the Barnett Bank test by rule?",
     a: "The OCC tried in 2004 with 'obstruct, impair, or condition.' Treasury and Congress said no — Dodd-Frank §1044 re-anchored preemption to Barnett Bank's actual language and stripped the OCC of Chevron deference. The 2025–2026 escrow and interchange determinations will test whether today's OCC can engineer new 'bank powers' as a pretext for preemption." },
   { q: "Does preemption transfer to non-bank assignees?",
@@ -432,7 +513,7 @@ const EVENTS = [
   { id:11, year:2010, displayYear:"2010", title:"Dodd-Frank Act \u00a71044 \u2014 Congress Codifies Barnett Bank",
     category:"legislation", importance:"foundational", significance:"pro-state",
     summary:"Congress codifies Barnett Bank \u2018prevents or significantly interferes\u2019 standard; requires substantial evidence for OCC preemption determinations; mandates Skidmore (not Chevron) deference; abrogates Watters; requires case-by-case review.",
-    detail:"Section 1044 of the Dodd-Frank Wall Street Reform and Consumer Protection Act (2010) was Congress\u2019s major legislative intervention in banking preemption doctrine. It made five key changes:\n\n1. CODIFIED BARNETT BANK: Federal law preempts state consumer financial laws only if: (A) discriminatory effect on national banks vs. state banks; (B) prevents or significantly interferes with national bank powers \u201cin accordance with the legal standard in [Barnett Bank]\u201d; or (C) preempted by a federal law other than the NBA.\n\n2. SUBSTANTIAL EVIDENCE REQUIREMENT: OCC preemption determinations must be supported by substantial evidence made on the record.\n\n3. SKIDMORE DEFERENCE ONLY: Courts must assess OCC preemption determinations under Skidmore deference \u2014 not the more permissive Chevron deference. Studies show agency interpretations succeed ~77% under Chevron but only ~56% under Skidmore.\n\n4. ABROGATED WATTERS: State consumer financial laws apply to national bank subsidiaries and affiliates to the same extent as other persons \u2014 overturning Watters.\n\n5. PERIODIC REVIEW REQUIRED: OCC must review each preemption determination within 5 years and at least every 5 years thereafter, publishing a notice in the Federal Register on whether to continue, rescind, or amend.",
+    detail:"Section 1044 of the Dodd-Frank Wall Street Reform and Consumer Protection Act (2010) was Congress\u2019s major legislative intervention in banking preemption doctrine. It made five key changes:\n\n1. CODIFIED BARNETT BANK: Federal law preempts state consumer financial laws only if: (A) discriminatory effect on national banks vs. state banks; (B) prevents or significantly interferes with national bank powers \u201cin accordance with the legal standard in [Barnett Bank]\u201d; or (C) preempted by a federal law other than the NBA.\n\n2. SUBSTANTIAL EVIDENCE REQUIREMENT: OCC preemption determinations must be supported by substantial evidence made on the record.\n\n3. SKIDMORE DEFERENCE ONLY: Courts must assess OCC preemption determinations under Skidmore deference \u2014 not the more permissive Chevron deference. Studies show agency interpretations succeed ~77% under Chevron but only ~56% under Skidmore. (Note: this was a carve-down from the prevailing Chevron baseline in 2010. After Loper Bright Enterprises v. Raimondo (2024) overruled Chevron across the board, \u00a71044\u2019s Skidmore instruction is now broadly consistent with the general regime rather than an exception \u2014 and Loper Bright is itself in play in the 2026 interchange litigation.)\n\n4. ABROGATED WATTERS: State consumer financial laws apply to national bank subsidiaries and affiliates to the same extent as other persons \u2014 overturning Watters.\n\n5. PERIODIC REVIEW REQUIRED: OCC must review each preemption determination within 5 years and at least every 5 years thereafter, publishing a notice in the Federal Register on whether to continue, rescind, or amend.",
     citation:"Dodd-Frank Wall Street Reform and Consumer Protection Act, Pub. L. No. 111-203, \u00a71044 (2010); 12 U.S.C. \u00a7 25b" },
 
   { id:12, year:2011, displayYear:"2011", title:"OCC 2011 Revised Preemption Rules",
@@ -462,26 +543,35 @@ const EVENTS = [
   { id:16, year:2025, displayYear:"Dec 2025", title:"OCC Proposed Preemption Determination \u2014 State Interest-on-Escrow Laws",
     category:"occ_determination", importance:"major", significance:"pro-bank",
     summary:"OCC proposes to determine that the NBA preempts New York\u2019s interest-on-escrow law and 11 substantively equivalent state laws \u2014 eliminating national banks\u2019 obligation to pay mandatory interest on real estate escrow accounts in 12 states.",
-    detail:"In December 2025 (published in the Federal Register December 30, 2025), the OCC issued a proposed preemption determination concluding that federal law preempts state laws that eliminate national banks\u2019 and federal savings associations\u2019 \u201cflexibility to decide whether and to what extent to\u201d (1) pay interest on funds in real estate escrow accounts or (2) assess fees in connection with such accounts.\n\nScope: The proposed determination would preempt New York\u2019s Gen. Oblig. Law \u00a75-601 \u2014 the specific law at issue in Cantero \u2014 and 11 other state laws with \u201csubstantively equivalent terms.\u201d The OCC proposed to exclude Iowa\u2019s law (permissive, not mandatory) and New Hampshire\u2019s law (only applies to state-chartered banks).\n\nOCC\u2019s preemption rationale: The OCC argued the New York law\u2019s interference is \u201cmore akin\u201d to the interference found to be preempted in Barnett Bank, Franklin, and Fidelity Federal Savings \u2014 in particular citing Fidelity, where a federal regulation gave each savings association the option to exercise due-on-sale clauses and a California state law deprived the lender of that \u201cflexibility.\u201d\n\nCompanion rulemaking: The OCC simultaneously issued a proposed rule to codify national banks\u2019 longstanding escrow accounts power \u2014 apparently to create the federal \u201cbank power\u201d that the preemption determination would then protect.\n\nCSBS/AARMR opposition: CSBS and AARMR submitted a comment letter arguing the escrow rule \u201cmanufactures a \u2018new\u2019 national bank power solely as a pretext for the corresponding preemption determination,\u201d and urged both proposals be withdrawn.\n\nStatus: Comment period closed January 29, 2026. Final determination pending.",
-    citation:"OCC Bulletin 2025-50; 90 Fed. Reg. 61093 (Dec. 30, 2025) [Docket OCC-2025-0735]" },
+    detail:"In December 2025 (published in the Federal Register December 30, 2025), the OCC issued a proposed preemption determination concluding that federal law preempts state laws that eliminate national banks\u2019 and federal savings associations\u2019 \u201cflexibility to decide whether and to what extent to\u201d (1) pay interest on funds in real estate escrow accounts or (2) assess fees in connection with such accounts.\n\nScope: The proposed determination would preempt New York\u2019s Gen. Oblig. Law \u00a75-601 \u2014 the specific law at issue in Cantero \u2014 and 11 other state laws with \u201csubstantively equivalent terms.\u201d The OCC proposed to exclude Iowa\u2019s law (permissive, not mandatory) and New Hampshire\u2019s law (only applies to state-chartered banks).\n\nOCC\u2019s preemption rationale: The OCC argued the New York law\u2019s interference is \u201cmore akin\u201d to the interference found to be preempted in Barnett Bank, Franklin, and Fidelity Federal Savings \u2014 in particular citing Fidelity, where a federal regulation gave each savings association the option to exercise due-on-sale clauses and a California state law deprived the lender of that \u201cflexibility.\u201d\n\nCompanion rulemaking: The OCC simultaneously issued a proposed rule to codify national banks\u2019 longstanding escrow accounts power \u2014 apparently to create the federal \u201cbank power\u201d that the preemption determination would then protect.\n\nCSBS/AARMR opposition: CSBS and AARMR submitted a comment letter arguing the escrow rule \u201cmanufactures a \u2018new\u2019 national bank power solely as a pretext for the corresponding preemption determination,\u201d and urged both proposals be withdrawn.\n\nStatus: Comment period closed January 29, 2026. The OCC finalized both rules on May 15, 2026 \u2014 not materially changed from the proposals \u2014 effective June 18, 2026. See the May 2026 entry on the final rules for details.",
+    citation:"OCC Bulletin 2025-50; 90 Fed. Reg. 61093 (Dec. 30, 2025) [Docket OCC-2025-0735]; finalized May 15, 2026" },
 
   { id:17, year:2026, displayYear:"Apr 2026", title:"OCC Interim Final Order \u2014 Illinois Interchange Fee Prohibition Act",
     category:"occ_determination", importance:"major", significance:"pro-bank",
     summary:"OCC issues an interim final order preempting Illinois\u2019s Interchange Fee Prohibition Act (effective July 1, 2026), which would bar collecting interchange fees on tax and gratuity portions of card transactions. CSBS argues the OCC failed to conduct the Cantero-required nuanced analysis.",
-    detail:"In April 2026, the OCC issued an interim final rule and interim final order concluding that federal law preempts the Illinois Interchange Fee Prohibition Act (IFPA), signed into law by Governor Pritzker in 2024 and scheduled to take effect July 1, 2026.\n\nWhat the IFPA does: The IFPA (1) prohibits charging or receiving interchange fees on the tax and gratuity portions of payment card transactions in Illinois; and (2) contained a data use limitation (later partially struck down by a federal district court).\n\nBackground litigation: Four trade associations sued Illinois in August 2024. The U.S. District Court for the Northern District of Illinois (Judge Virginia Kendall) denied an injunction in February 2026, largely upholding the interchange fee restriction \u2014 finding no federal preemption for financial institutions because they \u201cdo not set the interchange fees.\u201d The court struck down the data use limitation. The plaintiffs appealed to the Seventh Circuit.\n\nOCC preemption rationale: National banks have express statutory authority to issue payment cards, collect fees, and engage in activities incidental to banking. The OCC argued the IFPA \u201cprevents or significantly interferes\u201d with these powers by eliminating banks\u2019 flexibility to receive the full interchange fee they would otherwise collect.\n\nEstimated savings: OCC estimated $37 million in annualized cost savings for OCC-supervised institutions at a 7% discount rate.\n\nCSBS criticism: CSBS argued the OCC\u2019s preemption determination lacked the \u201cnuanced analysis\u201d required by Cantero \u2014 that the OCC must examine \u201cthe practical implications stemming from the application of state law to national bank activities\u201d and that the mere \u201cexistence of direct interference with OCC regulations is not dispositive.\u201d\n\nStatus: Illinois AG defended the IFPA in the Seventh Circuit. OCC and ten former OCC officials filed amicus briefs on behalf of the bank trade groups. The interim final order is in effect pending final resolution.",
-    citation:"OCC Bulletin 2026-17; Federal Register (Apr. 2026); Illinois Interchange Fee Prohibition Act (2024)" },
+    detail:"On April 24, 2026, the OCC issued an interim final rule and interim final order concluding that federal law preempts the Illinois Interchange Fee Prohibition Act (IFPA), signed into law by Governor Pritzker in 2024 and scheduled to take effect July 1, 2026. The OCC actions take effect June 30, 2026 \u2014 one day before the IFPA \u2014 and ground preemption in both the NBA and HOLA; the companion interim final rule amends 12 C.F.R. \u00a77.4002.\n\nWhat the IFPA does: The IFPA (1) prohibits charging or receiving interchange fees on the tax and gratuity portions of payment card transactions in Illinois; and (2) contained a data use limitation (later partially struck down by a federal district court).\n\nBackground litigation: Four trade associations sued Illinois in August 2024. The U.S. District Court for the Northern District of Illinois (Judge Virginia Kendall) denied an injunction on February 10, 2026, largely upholding the interchange fee restriction \u2014 finding no federal preemption for financial institutions because they \u201cdo not set the interchange fees.\u201d The court struck down the data use limitation. The plaintiffs appealed to the Seventh Circuit.\n\nOCC preemption rationale: National banks have express statutory authority to issue payment cards, collect fees, and engage in activities incidental to banking. The OCC argued the IFPA \u201cprevents or significantly interferes\u201d with these powers by eliminating banks\u2019 flexibility to receive the full interchange fee they would otherwise collect.\n\nEstimated savings: OCC estimated $37 million in annualized cost savings for OCC-supervised institutions at a 7% discount rate.\n\nCSBS criticism: CSBS argued the OCC\u2019s preemption determination lacked the \u201cnuanced analysis\u201d required by Cantero \u2014 that the OCC must examine \u201cthe practical implications stemming from the application of state law to national bank activities\u201d and that the mere \u201cexistence of direct interference with OCC regulations is not dispositive.\u201d\n\nStatus: On May 8, 2026, the Seventh Circuit vacated the district court\u2019s judgment and remanded for further proceedings in light of the OCC\u2019s interim final rule and order \u2014 likely on an expedited basis given the July 1 IFPA effective date. The OCC actions remain in effect pending that resolution.",
+    citation:"OCC Bulletin 2026-17; 91 Fed. Reg. (Apr. 29, 2026); Illinois Interchange Fee Prohibition Act (2024); 7th Cir. remand (May 8, 2026)" },
 
   { id:18, year:2026, displayYear:"May 2026", title:"Cantero on Remand \u2014 Second Circuit Again Finds Preemption; Three-Way Circuit Split",
     category:"lower_court", importance:"major", significance:"pro-bank",
     summary:"On remand from SCOTUS, the Second Circuit (2-1) again holds that New York\u2019s 2% interest-on-escrow law is preempted \u2014 this time under the Cantero \u2018nuanced comparative analysis\u2019 framework. The ruling directly conflicts with the First and Ninth Circuits, creating a three-way circuit split likely to force a second Supreme Court review.",
-    detail:"On May 5, 2026, the Second Circuit issued its long-awaited decision on remand in Cantero v. Bank of America, again holding (2-1) that New York\u2019s interest-on-escrow statute (Gen. Oblig. Law \u00a75-601) is preempted by the National Bank Act.\n\nMAJORITY REASONING: The panel held that New York\u2019s escrow-interest requirement \u201caffects a broad federal grant of power to set the terms of mortgage-escrow accounts and it impedes national banks\u2019 ability to offer those accounts efficiently.\u201d Conducting the required comparative analysis, the majority analogized the New York statute to an OCC advertising preemption ruling previously found to constitute significant interference. The majority emphasized the role of RESPA and TILA in defining the scope of national banks\u2019 escrow account powers \u2014 and the material operational impact of mandating an interest rate on escrow balances.\n\nTHE DISSENT (Judge P\u00e9rez): Judge P\u00e9rez filed a lengthy dissent arguing the majority effectively resurrected the \u201ccontrol\u201d test the Supreme Court rejected in Cantero. By framing the federal power broadly as \u201cflexibility\u201d to set all escrow terms, the majority treated almost any state limitation on that flexibility as preempted. In her view, the correct Barnett Bank inquiry asks whether the law materially changes banks\u2019 and consumers\u2019 incentives to enter into mortgage and escrow transactions.\n\nTHE THREE-WAY CIRCUIT SPLIT:\n\u2022 2nd Circuit (NY, CT, VT): NY escrow interest law IS preempted [Cantero on remand, May 5, 2026]\n\u2022 1st Circuit (New England): RI escrow interest law is NOT preempted [Conti v. Citizens Bank, Sept. 22, 2025]\n\u2022 9th Circuit (West): CA escrow interest law is NOT preempted [Kivett v. Flagstar Bank, 2025]\n\nThe Second Circuit expressly disagreed with the First Circuit\u2019s reasoning in Conti on two grounds: (1) failure to give appropriate weight to RESPA and TILA when assessing the scope of federal banking power; and (2) underestimating the material operational impact of a state pricing mandate on bank operations.\n\nCONSEQUENCES: The split means that in the Second Circuit, national banks may treat interest-on-escrow statutes as preempted \u2014 while in the First and Ninth Circuits, they may not. This geographic inconsistency significantly increases the probability of a second Supreme Court review, and is directly relevant to the OCC\u2019s December 2025 proposed preemption determination targeting 12 state interest-on-escrow laws.",
-    citation:"Cantero v. Bank of America, N.A., 2d Cir. (May 5, 2026) (2-1); Conti v. Citizens Bank, N.A., 1st Cir. (Sept. 22, 2025); Kivett v. Flagstar Bank, FSB, 9th Cir. (2025)" },
+    detail:"On May 5, 2026, the Second Circuit issued its long-awaited decision on remand in Cantero v. Bank of America, again holding (2-1) that New York\u2019s interest-on-escrow statute (Gen. Oblig. Law \u00a75-601) is preempted by the National Bank Act.\n\nMAJORITY REASONING: The panel held that New York\u2019s escrow-interest requirement \u201caffects a broad federal grant of power to set the terms of mortgage-escrow accounts and it impedes national banks\u2019 ability to offer those accounts efficiently.\u201d Conducting the required comparative analysis, the majority analogized the New York statute to an OCC advertising preemption ruling previously found to constitute significant interference. The majority emphasized the role of RESPA and TILA in defining the scope of national banks\u2019 escrow account powers \u2014 and the material operational impact of mandating an interest rate on escrow balances.\n\nTHE DISSENT (Judge P\u00e9rez): Judge P\u00e9rez filed a lengthy dissent arguing the majority effectively resurrected the \u201ccontrol\u201d test the Supreme Court rejected in Cantero. By framing the federal power broadly as \u201cflexibility\u201d to set all escrow terms, the majority treated almost any state limitation on that flexibility as preempted. In her view, the correct Barnett Bank inquiry asks whether the law materially changes banks\u2019 and consumers\u2019 incentives to enter into mortgage and escrow transactions.\n\nTHE THREE-WAY CIRCUIT SPLIT:\n\u2022 2nd Circuit (NY, CT, VT): NY escrow interest law IS preempted [Cantero on remand, May 5, 2026 (2-1)]\n\u2022 1st Circuit (New England): RI escrow interest law is NOT preempted [Conti v. Citizens Bank, Sept. 29, 2025 (unanimous)]\n\u2022 9th Circuit (West): CA escrow interest law is NOT preempted [Kivett v. Flagstar Bank, Oct. 2, 2025 (2-1)]\n\nNote on methodology: The split is not symmetrical. The First and Second Circuits each conducted Cantero\u2019s \u201cnuanced comparative analysis\u201d and reached opposite conclusions \u2014 the sharpest form of conflict. The Ninth Circuit majority in Kivett, by contrast, rested largely on pre-Cantero binding circuit precedent (Lusnak); its dissent applied the Cantero comparative analysis. That methodological divergence arguably makes the split more cert-worthy, not less.\n\nThe Second Circuit expressly disagreed with the First Circuit\u2019s reasoning in Conti on two grounds: (1) failure to give appropriate weight to RESPA and TILA when assessing the scope of federal banking power; and (2) underestimating the material operational impact of a state pricing mandate on bank operations.\n\nCONSEQUENCES: The split means that in the Second Circuit, national banks may treat interest-on-escrow statutes as preempted \u2014 while in the First and Ninth Circuits, they may not. This geographic inconsistency significantly increases the probability of a second Supreme Court review. It is also directly reinforced by the OCC, which finalized its escrow preemption determination targeting 12 state interest-on-escrow laws on May 15, 2026 (effective June 18) \u2014 just 10 days after this decision, and which the Second Circuit had relied upon in its (then-proposed) form.\n\nCERT POSTURE (as of late May 2026): The probability of a second SCOTUS look has moved from likely to live. On April 29, 2026, the Supreme Court denied cert in Conti; Citizens Bank then filed a petition for rehearing arguing the new split justifies reconsideration. On May 22, 2026, a fresh cert petition was filed in Cantero itself, contending the Second Circuit effectively reinstated the expansive approach the Court rejected in 2024. No cert petition has yet been filed in Kivett.",
+    citation:"Cantero v. Bank of America, N.A., 2d Cir. (May 5, 2026) (2-1); Conti v. Citizens Bank, N.A., 1st Cir. (Sept. 29, 2025); Kivett v. Flagstar Bank, FSB, 9th Cir. (Oct. 2, 2025); cert. pet. filed May 22, 2026" },
+
+  { id:19, year:2026, displayYear:"May 2026", title:"OCC Finalizes Escrow Preemption Rules \u2014 Determination Made Final",
+    category:"occ_determination", importance:"major", significance:"pro-bank",
+    summary:"Ten days after the Second Circuit\u2019s Cantero remand, the OCC finalizes both the escrow-power rule and the interest-on-escrow preemption determination \u2014 not materially changed from the December 2025 proposals \u2014 converting the contested \u2018pending\u2019 action into final agency action national banks can rely on.",
+    detail:"On May 15, 2026, the OCC issued two final rules on national banks\u2019 and federal savings associations\u2019 real estate lending powers relating to mortgage escrow accounts. The first codifies, as a matter of longstanding OCC precedent, banks\u2019 power to make their own business decisions about escrow account terms \u2014 including whether to pay interest. The second finalizes the preemption determination that state interest-on-escrow mandates are preempted as applied to those lenders. Both are effective June 18, 2026.\n\nKEY POINTS:\n\u2022 The final rules were not materially changed from the December 2025 proposals \u2014 sharpening the CSBS/AARMR objection that the escrow \u201cpower\u201d rule and the preemption determination are two halves of the same engineered result.\n\u2022 Timing: the finalization came just 10 days after the Second Circuit\u2019s May 5 remand decision, which had itself relied on the then-proposed determination. The OCC expressly commended that decision \u2014 a notable feedback loop in which agency and court each lean on the other.\n\u2022 Litigation exposure: because Dodd-Frank \u00a71044 subjects OCC preemption determinations to Skidmore (not Chevron) deference and a substantial-evidence requirement, the final determination remains vulnerable to challenge \u2014 particularly on the \u201cmanufactured power\u201d theory and the adequacy of the comparative analysis Cantero requires.\n\nThis is the agency-side counterpart to the judicial circuit split: the OCC has now committed to a nationwide preemption position even as the courts remain divided three ways.",
+    citation:"OCC final rules (May 15, 2026), effective June 18, 2026; cf. 90 Fed. Reg. 61093 (Dec. 30, 2025) [proposals]" },
 ];
 
 /* ── STATE ── */
-let activeFilter = "all";
-let selectedId   = null;
-let openStdIdx   = null;
+let activeFilter  = "all";
+let activeOutcome = "all";
+let searchQuery   = "";
+let selectedId    = null;
+let openStdIdx    = null;
+let expandAll     = false;
 
 /* ── UTILITIES ── */
 function esc(s) {
@@ -490,12 +580,64 @@ function esc(s) {
     .replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 }
 
+// Highlight search matches in already-escaped text
+function hl(escaped, q) {
+  if (!q) return escaped;
+  const safe = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return escaped.replace(new RegExp("(" + safe + ")", "gi"), "<mark>$1</mark>");
+}
+
+// Does an event match the current search query?
+function matchesSearch(ev) {
+  if (!searchQuery) return true;
+  const q = searchQuery.toLowerCase();
+  return [ev.title, ev.summary, ev.detail, ev.citation, ev.displayYear]
+    .some(f => String(f).toLowerCase().includes(q));
+}
+
 /* ── TAB SWITCHING ── */
 function switchTab(tab) {
   document.getElementById("pane-timeline").classList.toggle("hidden", tab !== "timeline");
   document.getElementById("pane-standard").classList.toggle("hidden", tab === "timeline");
   document.getElementById("tab-timeline").classList.toggle("active", tab === "timeline");
   document.getElementById("tab-standard").classList.toggle("active", tab !== "timeline");
+}
+
+/* ── SEARCH + UTILITIES ── */
+function onSearch(val) {
+  searchQuery = val.trim();
+  buildTimeline();
+}
+
+function toggleExpandAll() {
+  expandAll = !expandAll;
+  const btn = document.getElementById("expand-all-btn");
+  btn.textContent = expandAll ? "Collapse all" : "Expand all";
+  btn.setAttribute("aria-pressed", expandAll ? "true" : "false");
+  buildTimeline();
+}
+
+function printTimeline() {
+  switchTab("timeline");
+  const prev = expandAll;
+  expandAll = true;
+  buildTimeline();
+  setTimeout(() => { window.print(); expandAll = prev; buildTimeline(); }, 150);
+}
+
+// Open a specific event from anywhere (e.g., spectrum markers): clear filters,
+// switch to the timeline, select it, scroll it into view, and update the URL.
+function openEvent(id) {
+  activeFilter = "all"; activeOutcome = "all"; searchQuery = "";
+  const sb = document.getElementById("search-box"); if (sb) sb.value = "";
+  selectedId = id;
+  switchTab("timeline");
+  buildFilters(); buildOutcomeFilters(); buildTimeline();
+  history.replaceState(null, "", "#event-" + id);
+  setTimeout(() => {
+    const el = document.getElementById("event-" + id);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, 60);
 }
 
 /* ── FILTER BAR ── */
@@ -524,6 +666,32 @@ function buildFilters() {
   });
 }
 
+/* ── OUTCOME FILTER BAR ── */
+function buildOutcomeFilters() {
+  const bar = document.getElementById("outcome-bar");
+  bar.innerHTML = "";
+  const allBtn = document.createElement("button");
+  allBtn.className = "filter-btn";
+  allBtn.textContent = "All Outcomes";
+  allBtn.style.borderColor = activeOutcome === "all" ? "#1c3a5e" : "#d4cfc9";
+  allBtn.style.background  = activeOutcome === "all" ? "#1c3a5e" : "white";
+  allBtn.style.color       = activeOutcome === "all" ? "white"   : "#44403c";
+  allBtn.onclick = () => { activeOutcome = "all"; buildOutcomeFilters(); buildTimeline(); };
+  bar.appendChild(allBtn);
+
+  Object.entries(SIG).forEach(([key, val]) => {
+    const btn = document.createElement("button");
+    btn.className = "filter-btn";
+    btn.textContent = val.label;
+    const isActive = activeOutcome === key;
+    btn.style.borderColor = isActive ? val.color : "#d4cfc9";
+    btn.style.background  = isActive ? val.color : "white";
+    btn.style.color       = isActive ? "white"   : "#44403c";
+    btn.onclick = () => { activeOutcome = key; buildOutcomeFilters(); buildTimeline(); };
+    bar.appendChild(btn);
+  });
+}
+
 /* ── LEGEND ── */
 function buildLegend() {
   document.getElementById("legend-categories").innerHTML =
@@ -547,13 +715,34 @@ function buildTimeline() {
   const list = document.getElementById("timeline-list");
   list.innerHTML = '<div class="timeline-spine"></div>';
 
-  const filtered = activeFilter === "all"
-    ? EVENTS : EVENTS.filter(e => e.category === activeFilter);
+  const filtered = EVENTS.filter(e =>
+    (activeFilter  === "all" || e.category === activeFilter) &&
+    (activeOutcome === "all" || e.significance === activeOutcome) &&
+    matchesSearch(e)
+  );
+
+  // Result count
+  const rc = document.getElementById("result-count");
+  if (rc) {
+    const total = EVENTS.length;
+    rc.textContent = (filtered.length === total)
+      ? `${total} events`
+      : `${filtered.length} of ${total} events`;
+  }
+
+  if (filtered.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "no-results";
+    empty.textContent = "No events match these filters.";
+    list.appendChild(empty);
+    return;
+  }
 
   filtered.forEach(ev => {
     const cat  = CATEGORIES[ev.category];
     const sig  = SIG[ev.significance] || SIG.neutral;
     const isSel = ev.id === selectedId;
+    const isOpen = isSel || expandAll;
     const sz   = DOT_SZ[ev.importance];
     const bw   = DOT_BW[ev.importance];
 
@@ -579,15 +768,19 @@ function buildTimeline() {
     // Card
     const card = document.createElement("div");
     card.className = "card" + (isSel ? " selected" : "");
+    card.id = "event-" + ev.id;
     card.style.borderColor = isSel ? cat.color : "#e4e0db";
+    card.setAttribute("role", "button");
+    card.setAttribute("tabindex", "0");
+    card.setAttribute("aria-expanded", isOpen ? "true" : "false");
 
     let detailHtml = "";
-    if (isSel) {
+    if (isOpen) {
       const paras = ev.detail.split("\n\n")
-        .map(p => `<p>${esc(p).replace(/\n/g,"<br>")}</p>`).join("");
+        .map(p => `<p>${hl(esc(p), searchQuery).replace(/\n/g,"<br>")}</p>`).join("");
       detailHtml = `<div class="card-detail" style="border-top:1px solid ${cat.color}30;">
         ${paras}
-        <div class="card-citation" style="border-left:3px solid ${cat.color};">&#128206; ${esc(ev.citation)}</div>
+        <div class="card-citation" style="border-left:3px solid ${cat.color};">&#128206; ${hl(esc(ev.citation), searchQuery)}</div>
       </div>`;
     }
 
@@ -596,13 +789,19 @@ function buildTimeline() {
         <span class="badge" style="color:${cat.color};background:${cat.bg};">${esc(cat.label)}</span>
         <span class="badge" style="color:${sig.color};background:${sig.bg};">${esc(sig.label)}</span>
       </div>
-      <h3>${esc(ev.title)}</h3>
-      <p class="card-summary">${esc(ev.summary)}</p>
+      <h3>${hl(esc(ev.title), searchQuery)}</h3>
+      <p class="card-summary">${hl(esc(ev.summary), searchQuery)}</p>
       ${detailHtml}`;
 
-    card.onclick = () => {
+    const toggle = () => {
       selectedId = selectedId === ev.id ? null : ev.id;
+      if (selectedId) history.replaceState(null, "", "#event-" + ev.id);
+      else history.replaceState(null, "", location.pathname + location.search);
       buildTimeline();
+    };
+    card.onclick = toggle;
+    card.onkeydown = (e) => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); }
     };
     row.appendChild(card);
     list.appendChild(row);
@@ -650,11 +849,35 @@ function buildTensions() {
 }
 
 /* ── INIT ── */
+// Open a deep-linked event if the URL has a #event-<id> hash
+(function applyInitialHash() {
+  const m = (location.hash || "").match(/^#event-(\d+)$/);
+  if (m) {
+    const id = parseInt(m[1], 10);
+    if (EVENTS.some(e => e.id === id)) selectedId = id;
+  }
+})();
+
 buildFilters();
+buildOutcomeFilters();
 buildLegend();
 buildTimeline();
 buildStandards();
 buildTensions();
+
+// Scroll a deep-linked event into view on load
+if (selectedId != null) {
+  setTimeout(() => {
+    const el = document.getElementById("event-" + selectedId);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, 80);
+}
+
+// Support back/forward navigation between deep-linked events
+window.addEventListener("hashchange", () => {
+  const m = (location.hash || "").match(/^#event-(\d+)$/);
+  if (m) { openEvent(parseInt(m[1], 10)); }
+});
 </script>
 </body>
 </html>
