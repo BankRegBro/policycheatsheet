@@ -361,12 +361,14 @@
   }
   .prov-card.open .prov-arrow { transform: rotate(90deg); }
   .prov-detail {
-    max-height: 0;
+    display: grid;
+    grid-template-rows: 0fr;
     overflow: hidden;
-    transition: max-height 0.4s ease, margin-top 0.3s ease;
+    transition: grid-template-rows 0.35s ease, margin-top 0.3s ease;
   }
+  .prov-detail > * { min-height: 0; }
   .prov-card.open .prov-detail {
-    max-height: 600px;
+    grid-template-rows: 1fr;
     margin-top: 1rem;
   }
   .prov-detail p {
@@ -673,6 +675,154 @@
     line-height: 1.5;
     max-width: 60ch;
   }
+
+  /* Accessibility: visible focus */
+  .tab-btn:focus-visible,
+  .filter-btn:focus-visible,
+  .prov-card:focus-visible,
+  .tool-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* Utility toolbar (print / copy link) */
+  .toolbar {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .tool-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.75rem;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: transparent;
+    border: 1px solid rgba(14, 27, 44, 0.4);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tool-btn:hover { background: var(--ink); color: var(--cream); }
+  .tool-btn svg { width: 13px; height: 13px; }
+
+  /* Expand / collapse all controls */
+  .prov-controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .prov-controls button {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--slate);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    border-bottom: 1px solid transparent;
+  }
+  .prov-controls button:hover { color: var(--ink); border-bottom-color: var(--accent); }
+
+  /* Timeline "today" marker */
+  .tl-today {
+    position: relative;
+    padding-left: 3rem;
+    margin: 0.25rem 0;
+  }
+  @media (min-width: 768px) { .tl-today { padding-left: 7.5rem; } }
+  .tl-today::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    transform: translateY(-50%);
+    box-shadow: 0 0 0 4px var(--cream);
+  }
+  @media (min-width: 768px) { .tl-today::before { left: 76px; } }
+  .tl-today-line {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .tl-today-line::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: repeating-linear-gradient(to right, var(--gold) 0 6px, transparent 6px 12px);
+    opacity: 0.6;
+  }
+  .tl-today-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    font-weight: 500;
+  }
+
+  /* Reaction legend */
+  .r-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 0.75rem 1rem;
+    border: 1px dashed rgba(14, 27, 44, 0.25);
+  }
+  .r-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--slate);
+  }
+  .r-legend-swatch { width: 16px; height: 3px; flex-shrink: 0; }
+  .r-legend-swatch.navy { background: var(--navy); }
+  .r-legend-swatch.gold { background: var(--gold); }
+  .r-legend-swatch.slate { background: var(--slate); }
+  .r-legend-swatch.accent { background: var(--accent); }
+  .r-legend-swatch.ink { background: var(--ink); }
+
+  /* Print: reveal everything, expand accordions, drop interactive chrome */
+  @media print {
+    body { background: #fff; color: #000; }
+    body::before { display: none; }
+    .tabs-wrapper, .toolbar, .prov-controls, .filter-row, .prov-arrow { display: none !important; }
+    .panel { display: block !important; animation: none; page-break-inside: auto; margin-bottom: 2rem; }
+    .panel::before {
+      content: attr(data-print-title);
+      display: block;
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #000;
+      border-bottom: 2px solid #000;
+      padding-bottom: 0.25rem;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .prov-detail { grid-template-rows: 1fr !important; margin-top: 1rem !important; }
+    .prov-card, .tl-content, .card, .r-card, .w-row, .synth-box, .read-box, .eo-card {
+      page-break-inside: avoid;
+    }
+    .tl-event { opacity: 1 !important; animation: none !important; }
+    a[href]::after { content: ''; }
+  }
 </style>
 </head>
 <body>
@@ -684,7 +834,17 @@
         <div class="accent-bar"></div>
         <span class="meta-text">Policy Brief · Vol. 26 · Issue 5.19</span>
       </div>
-      <span class="top-bar-right meta-text">May 20, 2026 · Confidential / Working Draft</span>
+      <div class="toolbar">
+        <span class="top-bar-right meta-text" style="margin-right:0.5rem;">May 20, 2026 · Working Draft</span>
+        <button class="tool-btn" id="btn-print" type="button" aria-label="Print or save as PDF">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Print / PDF
+        </button>
+        <button class="tool-btn" id="btn-copy" type="button" aria-label="Copy link to this brief">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <span id="copy-label">Copy link</span>
+        </button>
+      </div>
     </div>
 
     <h1 class="hero">
@@ -705,28 +865,28 @@
 
   <div class="container tabs-wrapper">
     <nav class="tabs" role="tablist">
-      <button class="tab-btn active" data-tab="overview" role="tab">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      <button class="tab-btn active" data-tab="overview" role="tab" id="tab-overview" aria-selected="true" aria-controls="panel-overview" tabindex="0">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
         Executive Summary
       </button>
-      <button class="tab-btn" data-tab="fintech" role="tab">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      <button class="tab-btn" data-tab="fintech" role="tab" id="tab-fintech" aria-selected="false" aria-controls="panel-fintech" tabindex="-1">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
         EO 1 · Fintech
       </button>
-      <button class="tab-btn" data-tab="integrity" role="tab">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <button class="tab-btn" data-tab="integrity" role="tab" id="tab-integrity" aria-selected="false" aria-controls="panel-integrity" tabindex="-1">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         EO 2 · Integrity
       </button>
-      <button class="tab-btn" data-tab="timeline" role="tab">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <button class="tab-btn" data-tab="timeline" role="tab" id="tab-timeline" aria-selected="false" aria-controls="panel-timeline" tabindex="-1">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         Agency Timeline
       </button>
-      <button class="tab-btn" data-tab="reaction" role="tab">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+      <button class="tab-btn" data-tab="reaction" role="tab" id="tab-reaction" aria-selected="false" aria-controls="panel-reaction" tabindex="-1">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
         Industry &amp; Press
       </button>
-      <button class="tab-btn" data-tab="watch" role="tab">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <button class="tab-btn" data-tab="watch" role="tab" id="tab-watch" aria-selected="false" aria-controls="panel-watch" tabindex="-1">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         What to Watch
       </button>
     </nav>
@@ -736,7 +896,7 @@
 <main class="container">
 
   <!-- OVERVIEW -->
-  <section class="panel active" id="panel-overview" role="tabpanel">
+  <section class="panel active" id="panel-overview" role="tabpanel" aria-labelledby="tab-overview" data-print-title="Executive Summary">
     <div class="grid-12">
       <div class="col-7">
         <p class="eyebrow">Bottom line up front</p>
@@ -745,7 +905,7 @@
         </h2>
         <div class="lede-stack">
           <p>
-            The fintech EO marks the most explicit White House push to date for non-bank access to Federal Reserve master accounts, with a 120-day clock for FRB to report on legal authority, expansion options, impediments, and — pointedly — whether the 12 Reserve Banks act independently or under central FRB policy. This directly invokes the <em>Custodia v. FRBKC</em> posture without naming it.
+            The fintech EO marks the most explicit White House push to date for non-bank access to Federal Reserve master accounts, with a 120-day clock for FRB to report on legal authority, expansion options, impediments, and — pointedly — whether the 12 Reserve Banks act independently or under central FRB policy. But the Fed was not a passive target: <strong>one day later, on May 20, the Board issued its own request for comment on a special-purpose "payment account,"</strong> codifying the Kraken-style "skinny" account. The EO reads less as pressure on a reluctant Fed than as ratification of an in-flight process (Dec 2025 RFI → Kraken's March approval → the May 20 NPRM). It invokes the <em>Custodia v. FRBKC</em> posture without naming it — though that case is now settled in the Fed's favor.
           </p>
           <p>
             The integrity EO is materially softer than the version <em>Semafor</em> previewed on Tuesday morning. There is <strong>no blanket citizenship-collection mandate</strong>. Instead, Treasury and the functional regulators (FRB, OCC, FDIC, NCUA) get a sequenced 60/90/180-day mandate to issue an Advisory, propose risk-based BSA/CDD changes, and consider CIP changes affecting foreign consular IDs.
@@ -780,7 +940,7 @@
         <div class="top-stripe"></div>
         <div class="eo-head">
           <div class="eo-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
           </div>
           <div>
             <p class="eyebrow navy" style="margin-bottom: 0.25rem;">EO 1</p>
@@ -794,7 +954,7 @@
         <div class="top-stripe"></div>
         <div class="eo-head">
           <div class="eo-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           </div>
           <div>
             <p class="eyebrow accent" style="margin-bottom: 0.25rem;">EO 2</p>
@@ -807,17 +967,21 @@
   </section>
 
   <!-- FINTECH EO -->
-  <section class="panel" id="panel-fintech" role="tabpanel">
+  <section class="panel" id="panel-fintech" role="tabpanel" aria-labelledby="tab-fintech" data-print-title="EO 1 · Fintech Integration">
     <div style="margin-bottom: 2rem;">
       <p class="eyebrow navy">Executive Order 1 · Signed May 19, 2026</p>
       <h2 class="section bigger">Integrating Financial Technology Innovation into Regulatory Frameworks</h2>
       <p class="eo-thesis" style="max-width: 64rem;">
-        Five sections. The operative provisions are §3 (regulator review) and §4 (Fed payment account access). The Fed is "requested," not directed — a deliberate independence-preserving choice that nonetheless puts the FRB on a 120-day clock.
+        Five sections. The operative provisions are §3 (regulator review) and §4 (Fed payment account access). The Fed is "requested," not directed — a deliberate independence-preserving choice that nonetheless puts the FRB on a 120-day clock. Read alongside the Board's own May 20 payment-account NPRM, the order is best understood as ratifying a framework the Fed was already building, not forcing a cold start.
       </p>
     </div>
 
+    <div class="prov-controls" data-target="fintech-provisions">
+      <button type="button" data-act="expand">+ Expand all</button>
+      <button type="button" data-act="collapse">– Collapse all</button>
+    </div>
     <div class="provisions" id="fintech-provisions">
-      <div class="prov-card fintech" data-idx="f0">
+      <div class="prov-card fintech" data-idx="f0" role="button" tabindex="0" aria-expanded="false">
         <div class="prov-head">
           <div class="prov-titlebox">
             <div class="prov-title-row">
@@ -826,12 +990,12 @@
             </div>
             <p class="prov-flag">Definitional</p>
           </div>
-          <svg class="prov-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <svg class="prov-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </div>
         <div class="prov-detail"><p>Any non-bank using or developing technology for financial products/services — payments, lending, deposit-taking, derivatives, custody, brokerage, digital assets, blockchain. Explicitly incorporates §4(k)(4)(A–G) of BHCA, so the definition tracks closely with the activities national banks may engage in through financial subsidiaries.</p></div>
       </div>
 
-      <div class="prov-card fintech" data-idx="f1">
+      <div class="prov-card fintech" data-idx="f1" role="button" tabindex="0" aria-expanded="false">
         <div class="prov-head">
           <div class="prov-titlebox">
             <div class="prov-title-row">
@@ -840,12 +1004,12 @@
             </div>
             <p class="prov-flag">6 agencies, ticking clock</p>
           </div>
-          <svg class="prov-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <svg class="prov-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </div>
         <div class="prov-detail"><p>CFPB, SEC, NCUA, CFTC, FDIC, OCC must identify regs, guidance, orders, no-action letters that (i) impede fintech-bank partnerships, or (ii) could streamline chartering, deposit insurance, and licensing for emerging fintechs. Explicit instruction to balance innovation against safety &amp; soundness, consumer protection, market integrity, and financial stability.</p></div>
       </div>
 
-      <div class="prov-card fintech" data-idx="f2">
+      <div class="prov-card fintech" data-idx="f2" role="button" tabindex="0" aria-expanded="false">
         <div class="prov-head">
           <div class="prov-titlebox">
             <div class="prov-title-row">
@@ -854,12 +1018,12 @@
             </div>
             <p class="prov-flag">Independence-preserving</p>
           </div>
-          <svg class="prov-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <svg class="prov-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </div>
-        <div class="prov-detail"><p>Reflecting Fed independence, the order requests rather than directs FRB participation. Notably the order also asks FRB to clarify whether each of the 12 Reserve Banks has independent statutory authority to grant or deny payment account access, and what FRB-level policies ensure consistency. This is a direct line at the lingering Custodia v. FRB litigation and the patchwork of Reserve Bank decisions.</p></div>
+        <div class="prov-detail"><p>Reflecting Fed independence, the order requests rather than directs FRB participation. Notably the order also asks FRB to clarify whether each of the 12 Reserve Banks has independent statutory authority to grant or deny payment account access, and what FRB-level policies ensure consistency. This is a direct line at the now-concluded <em>Custodia v. FRBKC</em> litigation — the 10th Circuit affirmed Reserve Bank discretion (Oct. 2025) and denied rehearing en banc 7-3 (March 2026), leaving only a long-shot cert petition — and at the patchwork of Reserve Bank decisions that ruling left intact.</p></div>
       </div>
 
-      <div class="prov-card fintech" data-idx="f3">
+      <div class="prov-card fintech" data-idx="f3" role="button" tabindex="0" aria-expanded="false">
         <div class="prov-head">
           <div class="prov-titlebox">
             <div class="prov-title-row">
@@ -868,12 +1032,12 @@
             </div>
             <p class="prov-flag">Master account watershed</p>
           </div>
-          <svg class="prov-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <svg class="prov-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </div>
         <div class="prov-detail"><p>Comprehensive evaluation of legal/regulatory/policy framework governing access to Reserve Bank payment accounts and payment services for "covered firms" — uninsured depositories, non-bank financial companies (including digital asset firms), and real-time payment network direct participants. Four prescribed assessment areas including legal authority, expansion options, impediments, and Reserve Bank independent authority.</p></div>
       </div>
 
-      <div class="prov-card fintech" data-idx="f4">
+      <div class="prov-card fintech" data-idx="f4" role="button" tabindex="0" aria-expanded="false">
         <div class="prov-head">
           <div class="prov-titlebox">
             <div class="prov-title-row">
@@ -882,7 +1046,7 @@
             </div>
             <p class="prov-flag">Conditional on Fed finding</p>
           </div>
-          <svg class="prov-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <svg class="prov-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </div>
         <div class="prov-detail"><p>If FRB determines current law permits direct payment account access for covered firms, it is requested to establish transparent application procedures and decide complete applications within 90 days. This would functionally end the years-long limbo experienced by applicants like Custodia.</p></div>
       </div>
@@ -890,12 +1054,12 @@
 
     <div class="read-box navy">
       <p class="eyebrow navy">Reading between the lines</p>
-      <p>The four prescribed assessment areas in §4(b) read as a litigation brief in reverse — they map almost directly onto the issues raised in <em>Custodia v. FRBKC</em>: whether each Reserve Bank can decide independently, what FRB-level policies ensure consistency, and what statutory authority underwrites any extension of access. A finding that current law permits access (§4(c)) would moot major elements of the Custodia appeal posture and unlock the Ripple application path.</p>
+      <p>The four prescribed assessment areas in §4(b) read as a litigation brief in reverse — they map almost directly onto the issues raised in <em>Custodia v. FRBKC</em>: whether each Reserve Bank can decide independently, what FRB-level policies ensure consistency, and what statutory authority underwrites any extension of access. But the order arrives <em>after</em> Custodia lost: the 10th Circuit held the Reserve Banks have discretion, and dismissed the claim against the Board for lack of final agency action — reasoning that the <em>Reserve Bank</em>, not the Board, makes the call. That cuts in an awkward direction. If §4(b) pushes the Board to assert central control over the 12 Reserve Banks' account decisions, it presses against the very theory the Fed just won on. A §4(c) finding that current law permits access would route around all of this — and unlock the Ripple application path — without disturbing the precedent.</p>
     </div>
   </section>
 
   <!-- INTEGRITY EO -->
-  <section class="panel" id="panel-integrity" role="tabpanel">
+  <section class="panel" id="panel-integrity" role="tabpanel" aria-labelledby="tab-integrity" data-print-title="EO 2 · Financial System Integrity">
     <div style="margin-bottom: 2rem;">
       <p class="eyebrow accent">Executive Order 2 · Signed May 19, 2026</p>
       <h2 class="section bigger">Restoring Integrity to America's Financial System</h2>
@@ -904,8 +1068,12 @@
       </p>
     </div>
 
+    <div class="prov-controls" data-target="integrity-provisions">
+      <button type="button" data-act="expand">+ Expand all</button>
+      <button type="button" data-act="collapse">– Collapse all</button>
+    </div>
     <div class="provisions" id="integrity-provisions">
-      <div class="prov-card integrity" data-idx="i0">
+      <div class="prov-card integrity" data-idx="i0" role="button" tabindex="0" aria-expanded="false">
         <div class="prov-head">
           <div class="prov-titlebox">
             <div class="prov-title-row">
@@ -914,12 +1082,12 @@
             </div>
             <p class="prov-flag">Risk-based, not blanket</p>
           </div>
-          <svg class="prov-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <svg class="prov-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </div>
         <div class="prov-detail"><p>Formal Advisory with six categories of red flags: (i) payroll tax evasion patterns; (ii) foreign-ID, nominee accounts, shell companies, "funnel" structures; (iii) unregistered MSBs/P2P platforms for off-the-books wages; (iv) micro-structuring around BSA thresholds; (v) labor-trafficking indicators; (vi) ITIN-based credit/depository accounts where applicant lacks verified lawful status.</p></div>
       </div>
 
-      <div class="prov-card integrity" data-idx="i1">
+      <div class="prov-card integrity" data-idx="i1" role="button" tabindex="0" aria-expanded="false">
         <div class="prov-head">
           <div class="prov-titlebox">
             <div class="prov-title-row">
@@ -928,12 +1096,12 @@
             </div>
             <p class="prov-flag">NOT blanket citizenship requirement</p>
           </div>
-          <svg class="prov-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <svg class="prov-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </div>
         <div class="prov-detail"><p>Treasury, in consultation with FRB/OCC/FDIC/NCUA, to propose BSA CDD changes ensuring (i) sufficient ID verification for nominal and beneficial owners, and (ii) institutional authority to obtain additional info — including immigration status &amp; work authorization — when relevant to fraud, sanctions evasion, or illicit finance risk. Key phrase: "as part of a risk-based customer due diligence program."</p></div>
       </div>
 
-      <div class="prov-card integrity" data-idx="i2">
+      <div class="prov-card integrity" data-idx="i2" role="button" tabindex="0" aria-expanded="false">
         <div class="prov-head">
           <div class="prov-titlebox">
             <div class="prov-title-row">
@@ -942,12 +1110,12 @@
             </div>
             <p class="prov-flag">Foreign consular ID</p>
           </div>
-          <svg class="prov-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <svg class="prov-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </div>
         <div class="prov-detail"><p>Treasury &amp; functional regulators to consider changes to BSA CIP requirements that "account for the risks foreign consular identification cards pose to the integrity of the United States financial system." This is the lever for limiting Matrícula Consular and similar IDs as primary identification documents.</p></div>
       </div>
 
-      <div class="prov-card integrity" data-idx="i3">
+      <div class="prov-card integrity" data-idx="i3" role="button" tabindex="0" aria-expanded="false">
         <div class="prov-head">
           <div class="prov-titlebox">
             <div class="prov-title-row">
@@ -956,12 +1124,12 @@
             </div>
             <p class="prov-flag">Reg Z amplification</p>
           </div>
-          <svg class="prov-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <svg class="prov-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </div>
-        <div class="prov-detail"><p>CFPB asked to consider clarifying that potential deportation and wage-loss are factors that could adversely affect a non-work-authorized borrower's ability to repay under 12 CFR Part 1026. Critically: extends to "non-work authorized" generally — not just undocumented — raising Fair Lending, ECOA, and disparate-impact tensions despite the April 2026 CFPB rule removing disparate impact from ECOA enforcement.</p></div>
+        <div class="prov-detail"><p>CFPB asked to consider clarifying that potential deportation and wage-loss are factors that could adversely affect a non-work-authorized borrower's ability to repay under 12 CFR Part 1026. Critically: extends to "non-work authorized" generally — not just undocumented — and because immigration status correlates heavily with national origin, using it as an ATR factor reads as a <em>proxy for national origin</em>, still actionable as disparate <em>treatment</em> under ECOA. The April 2026 rule removed disparate <em>impact</em> from ECOA but left untouched state fair lending laws (NY DFS issued a same-day reminder; IL similar) and Fair Housing Act disparate-impact liability for mortgages — a multi-jurisdiction exposure, not a clean federal safe harbor.</p></div>
       </div>
 
-      <div class="prov-card integrity" data-idx="i4">
+      <div class="prov-card integrity" data-idx="i4" role="button" tabindex="0" aria-expanded="false">
         <div class="prov-head">
           <div class="prov-titlebox">
             <div class="prov-title-row">
@@ -970,7 +1138,7 @@
             </div>
             <p class="prov-flag">Interagency coordination?</p>
           </div>
-          <svg class="prov-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <svg class="prov-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </div>
         <div class="prov-detail"><p>FRB, OCC, FDIC, and NCUA each to issue guidance on managing credit risks posed by the non-work-authorized population. Open question on whether agencies coordinate to issue joint guidance (FFIEC-style) or each goes solo.</p></div>
       </div>
@@ -983,10 +1151,10 @@
   </section>
 
   <!-- TIMELINE -->
-  <section class="panel" id="panel-timeline" role="tabpanel">
+  <section class="panel" id="panel-timeline" role="tabpanel" aria-labelledby="tab-timeline" data-print-title="Agency Timeline">
     <div style="margin-bottom: 2rem;">
       <h2 class="section bigger">Nine deadlines, six months.</h2>
-      <p class="eo-thesis" style="max-width: 48rem;">Filter by order, follow the cascade. The integrity EO front-loads action (three 60-day milestones in July); the fintech EO back-loads it (the consequential Fed master account report lands September 16).</p>
+      <p class="eo-thesis" style="max-width: 48rem;">Filter by order, follow the cascade. The integrity EO front-loads action (three 60-day milestones in July); the fintech EO back-loads it (the consequential Fed master account report lands September 16). The opening entry is the Fed's own May 20 payment-account NPRM — a companion action, not an EO deadline, but the place where the access framework actually gets built.</p>
     </div>
 
     <div class="filter-row">
@@ -1001,10 +1169,18 @@
   </section>
 
   <!-- REACTION -->
-  <section class="panel" id="panel-reaction" role="tabpanel">
+  <section class="panel" id="panel-reaction" role="tabpanel" aria-labelledby="tab-reaction" data-print-title="Industry & Press Reaction">
     <div style="margin-bottom: 2rem;">
       <h2 class="section bigger">Press and industry, day one.</h2>
       <p class="eo-thesis" style="max-width: 48rem;">The Semafor reporting is the key context — it is what tells us how far the final text retreated from earlier drafts. Industry reactions split cleanly: incumbents cautiously neutral, fintech and crypto bullish, community banks worried about disintermediation.</p>
+    </div>
+
+    <div class="r-legend" aria-label="Reaction card color key">
+      <span class="r-legend-item"><span class="r-legend-swatch navy"></span> Sympathetic to banks</span>
+      <span class="r-legend-item"><span class="r-legend-swatch gold"></span> Market implications</span>
+      <span class="r-legend-item"><span class="r-legend-swatch accent"></span> Fintech-positive</span>
+      <span class="r-legend-item"><span class="r-legend-swatch slate"></span> Incumbent-protective</span>
+      <span class="r-legend-item"><span class="r-legend-swatch ink"></span> Analytical</span>
     </div>
 
     <div class="reaction-grid">
@@ -1027,7 +1203,7 @@
           </div>
           <span class="badge badge-gold">market-implications</span>
         </div>
-        <p class="r-take">"We don't expect that the order will be ignored by incoming Fed Chair Kevin Warsh." Frames the fintech EO as a direct lever on master account access; 120-day clock starts pressure on FRB.</p>
+        <p class="r-take">"We don't expect that the order will be ignored by incoming Fed Chair Kevin Warsh." Frames the fintech EO as a direct lever on master account access; 120-day clock starts pressure on FRB. <strong>Update:</strong> Warsh was sworn in May 22, 2026 — the Sept. 16 report now lands on a confirmed, reform-minded Warsh Fed with Bowman as Vice Chair for Supervision, a leadership pair broadly receptive to the EO's thrust.</p>
       </div>
 
       <div class="r-card lean-slate">
@@ -1071,18 +1247,18 @@
           </div>
           <span class="badge badge-ink">analytical</span>
         </div>
-        <p class="r-take">Prior analysis estimated $479B 10-year federal tax revenue loss from declining ITIN filings if immigrant financial scrutiny escalates. Frames the integrity EO's second-order fiscal cost.</p>
+        <p class="r-take">Budget Lab estimate is a <strong>range — $147B to $479B</strong> over 2026–35, with a <strong>~$313B central</strong> figure — driven by the IRS–ICE data-sharing MOU and reduced tax-filing, not by banking scrutiny per se. $479B is the worst-case bound. Useful as a directional read on the integrity EO's second-order fiscal cost, not a point estimate.</p>
       </div>
     </div>
 
     <div class="synth-box">
       <p class="eyebrow" style="color: var(--cream); opacity: 0.7;">Synthesis</p>
-      <p style="margin-top: 0.5rem;">The reporting picture: a White House that <em>climbed down</em> on the most operationally aggressive integrity proposals after sustained bank lobbying, while <em>doubling down</em> on the fintech-access push that has been bubbling since the December 2025 "skinny" master account RFI and Kraken's March approval. The two orders are politically symmetrical — one for the immigration restrictionist base, one for the crypto/fintech base — even where their substantive effects on bank balance sheets pull in opposite directions.</p>
+      <p style="margin-top: 0.5rem;">The reporting picture: a White House that <em>climbed down</em> on the most operationally aggressive integrity proposals after sustained bank lobbying, while <em>doubling down</em> on the fintech-access push that has been bubbling since the December 2025 "skinny" master account RFI and Kraken's March approval — and which the Fed itself advanced with its own May 20 payment-account NPRM. The two orders are politically symmetrical — one for the immigration restrictionist base, one for the crypto/fintech base — even where their substantive effects on bank balance sheets pull in opposite directions.</p>
     </div>
   </section>
 
   <!-- WATCH -->
-  <section class="panel" id="panel-watch" role="tabpanel">
+  <section class="panel" id="panel-watch" role="tabpanel" aria-labelledby="tab-watch" data-print-title="What to Watch">
     <div style="margin-bottom: 2rem;">
       <h2 class="section bigger">What to watch.</h2>
       <p class="eo-thesis" style="max-width: 48rem;">Seven flashpoints over the next six months. Several have implications for state-federal coordination and the dual banking system that won't show up in the EO text itself.</p>
@@ -1106,6 +1282,7 @@
 <script>
   // Data
   const timelineEvents = [
+    { day: '+1', date: 'May 20, 2026', eo: 'fintech', agency: 'Federal Reserve Board', action: "Companion action (not in the EO): FRB issues its own request for comment on a special-purpose 'payment account,' codifying the Kraken-style 'skinny' account. Signals the Fed was already moving — the EO ratifies an in-flight process rather than starting one.", section: 'RFC' },
     { day: 60, date: 'July 18, 2026', eo: 'integrity', agency: 'Treasury', action: 'Issue formal Advisory on red flags & typologies (6 categories incl. ITIN-based credit, structuring, payroll tax evasion, foreign-ID nominee accounts)', section: '§3(a)' },
     { day: 60, date: 'July 18, 2026', eo: 'integrity', agency: 'CFPB', action: 'Consider clarifying that deportation risk & wage-loss are ATR factors under 12 CFR Part 1026', section: '§4(a)' },
     { day: 60, date: 'July 18, 2026', eo: 'integrity', agency: 'FRB · OCC · FDIC · NCUA', action: 'Issue guidance on managing credit risks of lending to non-work-authorized population', section: '§4(b)' },
@@ -1118,41 +1295,91 @@
   ];
 
   const watchItems = [
-    { item: "Does the Fed's 120-day report find existing authority for non-bank payment account access?", stakes: "Determines whether master accounts open without legislation — Custodia, Ripple, Anchorage all watching." },
+    { item: "Does the Fed's 120-day report find existing authority for non-bank payment account access?", stakes: "Determines whether master accounts open without legislation — Ripple, Anchorage, Wise all have pending applications. Note the report now lands on a Warsh-led Fed sworn in May 22." },
+    { item: "The Fed's own May 20 payment-account NPRM comment process", stakes: "The Board proposed a special-purpose 'payment account' the day after the EO — codifying the Kraken-style 'skinny' account. The comment file, not just the EO report, is where the access framework actually gets built. Watch who comments and how the final scope lands." },
     { item: "Joint vs. solo agency guidance on credit risk of non-work-authorized population", stakes: "Joint guidance signals interagency consensus; solo guidance may produce divergent supervisory expectations and arbitrage." },
-    { item: "Reserve Bank-level autonomy clarification", stakes: "If FRB asserts central authority over the 12 Reserve Banks' account decisions, expect litigation echoes from Custodia v. FRBKC." },
-    { item: "CFPB ATR change interaction with ECOA / Fair Lending", stakes: "Even after the April 2026 disparate-impact rule, treating 'non-work authorized' status as ATR factor sweeps in lawful immigrants and creates Fair Lending exposure." },
-    { item: "State-federal coordination on CIP", stakes: "State-chartered banks remain subject to state ID requirements; CSBS coordination role on any consular-ID limitation will matter for the dual banking system." },
+    { item: "Reserve Bank-level autonomy clarification", stakes: "Custodia is settled precedent (10th Cir.: Reserve Banks hold the discretion; Board claim failed for lack of final agency action). If the Board now asserts central control over the 12 Reserve Banks, it presses against the theory the Fed just won on — and could invite fresh litigation." },
+    { item: "CFPB ATR change interaction with ECOA / state Fair Lending / FHA", stakes: "The April 2026 rule removed disparate impact from ECOA, but treating 'non-work authorized' status as an ATR factor reads as a proxy for national origin (still actionable as disparate treatment), and the rule leaves state fair lending laws (NY DFS, IL) and FHA disparate impact untouched — a multi-jurisdiction exposure." },
+    { item: "State-federal coordination on CIP", stakes: "State-chartered banks remain subject to state ID requirements; CSBS coordination role on any consular-ID limitation will matter for the dual banking system. The fintech EO's prime beneficiaries are state-chartered SPDIs (Kraken, Custodia are Wyoming SPDIs) — a dual-banking story in its own right." },
     { item: "BSA rulemaking sequencing vs. FIL-15-2026 / FinCEN AML program rule", stakes: "Treasury's 90-day CDD proposal layers on top of the 2026 AML/CFT program rule already in flight — risk of misaligned timelines and double-rulemaking." },
     { item: "Treasury Advisory tone on ITINs", stakes: "ITINs serve legitimate tax-compliance functions for many legally-present persons. Advisory framing will shape how banks treat existing ITIN-only relationships." },
   ];
 
-  // Tab switching
-  const tabButtons = document.querySelectorAll('.tab-btn');
+  // Tab switching (accessible: roving tabindex + arrow keys)
+  const tabButtons = Array.from(document.querySelectorAll('.tab-btn'));
   const panels = document.querySelectorAll('.panel');
-  tabButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const target = btn.dataset.tab;
-      tabButtons.forEach(b => b.classList.remove('active'));
-      panels.forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('panel-' + target).classList.add('active');
+  function activateTab(btn) {
+    tabButtons.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); b.tabIndex = -1; });
+    panels.forEach(p => p.classList.remove('active'));
+    btn.classList.add('active'); btn.setAttribute('aria-selected', 'true'); btn.tabIndex = 0;
+    document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+  }
+  tabButtons.forEach((btn, idx) => {
+    btn.addEventListener('click', () => activateTab(btn));
+    btn.addEventListener('keydown', (ev) => {
+      let ni = null;
+      if (ev.key === 'ArrowRight' || ev.key === 'ArrowDown') ni = (idx + 1) % tabButtons.length;
+      else if (ev.key === 'ArrowLeft' || ev.key === 'ArrowUp') ni = (idx - 1 + tabButtons.length) % tabButtons.length;
+      else if (ev.key === 'Home') ni = 0;
+      else if (ev.key === 'End') ni = tabButtons.length - 1;
+      if (ni !== null) { ev.preventDefault(); activateTab(tabButtons[ni]); tabButtons[ni].focus(); }
     });
   });
 
-  // Provision accordion
+  // Provision accordion (click + keyboard)
+  function toggleCard(card) {
+    const open = card.classList.toggle('open');
+    card.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
   document.querySelectorAll('.prov-card').forEach(card => {
-    card.addEventListener('click', () => {
-      card.classList.toggle('open');
+    card.addEventListener('click', () => toggleCard(card));
+    card.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); toggleCard(card); }
     });
   });
 
-  // Timeline rendering
+  // Expand / collapse all
+  document.querySelectorAll('.prov-controls').forEach(ctrl => {
+    const target = document.getElementById(ctrl.dataset.target);
+    ctrl.querySelectorAll('button').forEach(b => {
+      b.addEventListener('click', () => {
+        const open = b.dataset.act === 'expand';
+        target.querySelectorAll('.prov-card').forEach(card => {
+          card.classList.toggle('open', open);
+          card.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+      });
+    });
+  });
+
+  // Print / PDF
+  document.getElementById('btn-print').addEventListener('click', () => window.print());
+
+  // Copy link
+  document.getElementById('btn-copy').addEventListener('click', async () => {
+    const label = document.getElementById('copy-label');
+    try { await navigator.clipboard.writeText(window.location.href); label.textContent = 'Copied!'; }
+    catch (e) { label.textContent = 'Copy failed'; }
+    setTimeout(() => { label.textContent = 'Copy link'; }, 1800);
+  });
+
+  // Timeline rendering (with "today" marker)
+  const TODAY = Date.parse('2026-05-29');
+  function eventTime(e) { const t = Date.parse(e.date); return isNaN(t) ? Infinity : t; }
+  function todayMarker() {
+    const m = document.createElement('div');
+    m.className = 'tl-today';
+    m.setAttribute('aria-hidden', 'true');
+    m.innerHTML = '<div class="tl-today-line"><span class="tl-today-label">Today · May 29, 2026</span></div>';
+    return m;
+  }
   function renderTimeline(filter) {
     const container = document.getElementById('timeline-list');
     container.innerHTML = '';
     const events = filter === 'both' ? timelineEvents : timelineEvents.filter(e => e.eo === filter);
+    let markerPlaced = false;
     events.forEach((e, i) => {
+      if (!markerPlaced && eventTime(e) > TODAY) { container.appendChild(todayMarker()); markerPlaced = true; }
       const div = document.createElement('div');
       div.className = 'tl-event ' + e.eo;
       div.style.animationDelay = (i * 0.05) + 's';
@@ -1174,6 +1401,7 @@
       `;
       container.appendChild(div);
     });
+    if (!markerPlaced) container.appendChild(todayMarker());
   }
   renderTimeline('both');
 
