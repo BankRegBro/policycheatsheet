@@ -19,6 +19,8 @@
     --green-dim: rgba(39,174,96,0.12);
     --amber: #d4860a;
     --amber-dim: rgba(212,134,10,0.12);
+    --slate: #6b8cae;
+    --slate-dim: rgba(107,140,174,0.12);
     --text: #e8e4d9;
     --text-muted: #8a9bb5;
     --border: rgba(201,168,76,0.2);
@@ -120,7 +122,7 @@
   }
   .dot-new { background: var(--green); }
   .dot-changed { background: var(--gold); }
-  .dot-removed { background: var(--red); }
+  .dot-removed { background: var(--slate); }
   .dot-insight { background: #7c6fcd; }
 
   /* ─── TABS ─── */
@@ -207,7 +209,7 @@
   }
   .badge-new { background: var(--green-dim); color: var(--green); border: 1px solid rgba(39,174,96,0.3); }
   .badge-changed { background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); }
-  .badge-removed { background: var(--red-dim); color: #e74c3c; border: 1px solid rgba(231,76,60,0.3); }
+  .badge-removed { background: var(--slate-dim); color: var(--slate); border: 1px solid rgba(107,140,174,0.3); }
 
   .card-title {
     font-family: 'Playfair Display', serif;
@@ -423,38 +425,6 @@
     color: var(--text-muted);
   }
 
-  /* ─── FILTER BAR ─── */
-  .filter-bar {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-  .filter-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    margin-right: 4px;
-  }
-  .filter-btn {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 5px 14px;
-    border-radius: 2px;
-    cursor: pointer;
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--text-muted);
-    transition: all 0.2s;
-  }
-  .filter-btn:hover { color: var(--text); border-color: rgba(201,168,76,0.4); }
-  .filter-btn.active { color: var(--gold); border-color: var(--gold); background: var(--gold-dim); }
-
   /* ─── HIDDEN ─── */
   .hidden { display: none !important; }
 
@@ -513,6 +483,103 @@
   .timeline-event-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-muted); }
   .timeline-event-date { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text-muted); }
   .timeline-event-label { font-size: 11px; color: var(--text-muted); }
+  .timeline-node.author .timeline-label { color: var(--gold-light); }
+
+  /* ─── CONTROLS BAR ─── */
+  .controls-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+  .ctrl-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 2px;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    transition: all 0.2s;
+  }
+  .ctrl-btn:hover { color: var(--gold); border-color: rgba(201,168,76,0.45); }
+  .ctrl-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .ctrl-spacer { flex: 1; }
+
+  /* significance key */
+  .sig-key {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    flex-wrap: wrap;
+  }
+  .sig-key b { font-weight: 500; }
+  .sig-key .sig-high { color: #e74c3c; }
+  .sig-key .sig-med { color: var(--amber); }
+  .sig-key .sig-low { color: var(--text-muted); }
+
+  /* ─── SOURCE BAR ─── */
+  .source-bar {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+    padding: 12px 18px;
+    background: rgba(201,168,76,0.05);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .source-bar a { color: var(--gold); text-decoration: none; border-bottom: 1px dotted rgba(201,168,76,0.5); }
+  .source-bar a:hover { color: var(--gold-light); }
+  .source-note { font-style: italic; font-family: 'Source Serif 4', serif; font-size: 11.5px; }
+
+  .page-ref {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    color: var(--gold);
+    opacity: 0.75;
+    margin-left: 6px;
+  }
+
+  /* sortable matrix headers */
+  th.sortable { cursor: pointer; user-select: none; }
+  th.sortable:hover { color: var(--gold-light) !important; }
+  th.sortable .arrow { opacity: 0.4; font-size: 8px; margin-left: 4px; }
+  th.sortable.sorted .arrow { opacity: 1; color: var(--gold); }
+  #matrix-body tr { cursor: pointer; transition: background 0.15s; }
+  #matrix-body tr:hover { background: rgba(201,168,76,0.07) !important; }
+
+  /* accessibility focus */
+  .card-header:focus-visible,
+  .tab:focus-visible,
+  .legend-item:focus-visible,
+  .insight-panel-header:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
+
+  /* ─── PRINT ─── */
+  @media print {
+    header { position: static; }
+    .tabs, .controls-bar, .source-bar a, .chevron { display: none !important; }
+    body { background: #fff; color: #111; }
+    .container.hidden { display: block !important; }
+    .card-body, .insight-body { display: block !important; }
+    .change-card, .stat-card, .insight-panel, .timeline { break-inside: avoid; }
+    * { color: #111 !important; background: transparent !important; }
+    .highlight-added { text-decoration: underline; }
+    .highlight-removed { text-decoration: line-through; }
+  }
 </style>
 </head>
 <body>
@@ -524,7 +591,11 @@
     <div class="header-meta">
       <span class="version-badge v-old">Original · Oct 29, 2025</span>
       <span style="color:var(--text-muted); font-size:13px; line-height:1.8;">→</span>
-      <span class="version-badge v-new">Updated · Apr 30, 2026</span>
+      <span class="version-badge v-new">Updated · Apr 21, 2026</span>
+    </div>
+    <div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.04em; color:var(--text-muted); margin-top:8px; line-height:1.6;">
+      Original: M. Aiken (Acting Dir.) &amp; J. Williams · Released Nov 18, 2025<br>
+      Updated: <span style="color:var(--gold-light)">R. Guynn (Dir.)</span> &amp; J. Williams (Acting Dep. Dir.) · Released Apr 30, 2026
     </div>
   </div>
   <div class="legend">
@@ -536,36 +607,44 @@
       <span class="dot dot-changed"></span>Revised Language
     </div>
     <div class="legend-item" onclick="filterCards('removed')" id="filter-removed" data-filter="removed">
-      <span class="dot dot-removed"></span>Removed
+      <span class="dot dot-removed"></span>Resolved
     </div>
   </div>
 </header>
 
-<div class="tabs">
-  <div class="tab active" onclick="switchTab('changes', this)">Line-by-Line Changes</div>
-  <div class="tab" onclick="switchTab('fdic-occ', this)">Agency Comparison</div>
-  <div class="tab" onclick="switchTab('significance', this)">Significance Matrix</div>
+<div class="tabs" role="tablist">
+  <div class="tab active" data-tabkey="changes" onclick="switchTab('changes', this)">Line-by-Line Changes</div>
+  <div class="tab" data-tabkey="fdic-occ" onclick="switchTab('fdic-occ', this)">Agency Comparison</div>
+  <div class="tab" data-tabkey="significance" onclick="switchTab('significance', this)">Significance Matrix</div>
 </div>
 
 <!-- ─────────── CHANGES TAB ─────────── -->
 <div id="tab-changes" class="container panel-body">
 
+  <div class="source-bar">
+    <span>Primary source:</span>
+    <a href="https://www.federalreserve.gov/supervisionreg/files/statement-of-supervisory-operating-principles-20260430.pdf" target="_blank" rel="noopener">Fed Updated Statement (Apr 21, 2026 · 4 pp.)</a>
+    <a href="https://www.federalreserve.gov/newsevents/pressreleases/files/bcreg20251118a1.pdf" target="_blank" rel="noopener">Original Statement (Oct 29, 2025)</a>
+    <a href="https://www.sullcrom.com/insights/memo/2026/May/Federal-Reserve-Revises-Statement-Supervisory-Operating-Principles" target="_blank" rel="noopener">S&amp;C redline &amp; memo</a>
+    <span class="source-note">Diffs below are editorially summarized for clarity — not the official redline. Page refs cite the Apr 21 memo.</span>
+  </div>
+
   <div class="stats-bar">
     <div class="stat-card">
-      <div class="stat-number" style="color:var(--green)">8</div>
+      <div class="stat-number" id="stat-new" style="color:var(--green)">8</div>
       <div class="stat-label">New Provisions</div>
     </div>
     <div class="stat-card">
-      <div class="stat-number" style="color:var(--gold)">7</div>
+      <div class="stat-number" id="stat-revised" style="color:var(--gold)">7</div>
       <div class="stat-label">Revised Provisions</div>
     </div>
     <div class="stat-card">
-      <div class="stat-number" style="color:#e74c3c">1</div>
-      <div class="stat-label">Removed Provisions</div>
+      <div class="stat-number" id="stat-resolved" style="color:var(--slate)">1</div>
+      <div class="stat-label">Resolved Placeholder</div>
     </div>
     <div class="stat-card">
-      <div class="stat-number" style="color:var(--text-muted)">3</div>
-      <div class="stat-label">Unchanged Core Items</div>
+      <div class="stat-number" id="stat-total" style="color:var(--text-muted)">16</div>
+      <div class="stat-label">Provisions Tracked</div>
     </div>
   </div>
 
@@ -579,28 +658,47 @@
     <div class="timeline-node">
       <div class="timeline-dot old"></div>
       <div class="timeline-date">Oct 29, 2025</div>
-      <div class="timeline-label">Original Statement</div>
+      <div class="timeline-label">Original (Aiken)</div>
     </div>
     <div class="timeline-line"></div>
     <div class="timeline-event">
       <div class="timeline-event-dot"></div>
-      <div class="timeline-event-date">Nov–Mar</div>
-      <div class="timeline-event-label">Staff Feedback Period</div>
+      <div class="timeline-event-date">Nov 18, 2025</div>
+      <div class="timeline-event-label">Public release · Barr dissent</div>
     </div>
     <div class="timeline-line"></div>
-    <div class="timeline-node">
+    <div class="timeline-event">
+      <div class="timeline-event-dot"></div>
+      <div class="timeline-event-date">Early Mar 2026</div>
+      <div class="timeline-event-label">Guynn named Director, S&amp;R</div>
+    </div>
+    <div class="timeline-line"></div>
+    <div class="timeline-node author">
       <div class="timeline-dot"></div>
-      <div class="timeline-date">Apr 30, 2026</div>
-      <div class="timeline-label">Updated Statement</div>
+      <div class="timeline-date">Apr 21, 2026</div>
+      <div class="timeline-label">Updated (Guynn)</div>
     </div>
   </div>
 
   <div class="section-label">Provision-by-Provision Analysis</div>
 
+  <div class="controls-bar">
+    <button class="ctrl-btn" onclick="setAllCards(true)">Expand All</button>
+    <button class="ctrl-btn" onclick="setAllCards(false)">Collapse All</button>
+    <button class="ctrl-btn" onclick="window.print()">Print / PDF</button>
+    <span class="ctrl-spacer"></span>
+    <span class="sig-key">
+      <b>Significance:</b>
+      <span class="sig-high">▲ High</span>
+      <span class="sig-med">◆ Medium</span>
+      <span class="sig-low">● Low</span>
+    </span>
+  </div>
+
   <div class="changes-grid" id="changes-grid">
 
     <!-- ① NEW: Primary Objectives Codified -->
-    <div class="change-card" data-type="new">
+    <div class="change-card" data-type="new"     data-id="obj"        data-short="Primary Objectives Codified"                         data-sig="High"   data-industry="Medium" data-state="Medium" data-page="1">
       <div class="card-header" onclick="toggleCard(this)">
         <span class="change-type-badge badge-new">New</span>
         <span class="card-title">Primary Objectives Formally Codified</span>
@@ -625,8 +723,34 @@
       </div>
     </div>
 
+    <!-- ①b NEW: SR 13-13 Supervisory Observations Restored -->
+    <div class="change-card" data-type="new" data-id="sr1313" data-short="Supervisory Observations Restored (SR 13-13)" data-sig="Medium" data-industry="Medium" data-state="Low" data-page="2">
+      <div class="card-header" onclick="toggleCard(this)">
+        <span class="change-type-badge badge-new">New</span>
+        <span class="card-title">Supervisory Observations Restored — SR 13-13 to Be Amended</span>
+        <span class="card-significance sig-med">◆ Medium Significance</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-columns">
+          <div>
+            <div class="diff-col-header old-header">Oct 2025 · Original</div>
+            <div class="diff-text">Did not commit to restoring the nonbinding "supervisory observation" as a finding category or to amending SR 13-13.</div>
+          </div>
+          <div>
+            <div class="diff-col-header new-header">Apr 2026 · Updated</div>
+            <div class="diff-text updated">Examiners may address shortcomings that do not rise to the level of MRAs or MRIAs by making <span class="highlight-added">nonbinding supervisory observations</span>. The Fed states it will be <span class="highlight-added">amending SR 13-13 to reverse its directive to eliminate supervisory observations</span>.</div>
+          </div>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-label">Policy Significance</div>
+          <div class="analysis-text">This is the foundational mechanic behind several other changes. By reversing SR 13-13's elimination of supervisory observations, the Fed re-establishes a graduated finding category between "no issue" and a binding MRA/MRIA. That category is precisely what the self-identification safe harbor relies on — self-disclosed deficiencies are "presumptively treated as giving rise to a supervisory observation rather than an MRA or MRIA." It also gives examiners a lower-stakes channel for process or documentation concerns that don't meet the new material-harm threshold, supporting the broader shift away from elevating every shortcoming to a formal finding. Watch for the actual SR 13-13 amendment as the operative implementing action.</div>
+        </div>
+      </div>
+    </div>
+
     <!-- ② CHANGED: GLB Deference Standard -->
-    <div class="change-card" data-type="changed">
+    <div class="change-card" data-type="changed" data-id="glb"        data-short="GLB Deference: &#39;Impossible&#39; &rarr; &#39;Not Reasonably Possible&#39;" data-sig="High" data-industry="High" data-state="High" data-page="2">
       <div class="card-header" onclick="toggleCard(this)">
         <span class="change-type-badge badge-changed">Revised</span>
         <span class="card-title">GLB Deference Standard: "Impossible" → "Not Reasonably Possible"</span>
@@ -641,18 +765,18 @@
           </div>
           <div>
             <div class="diff-col-header new-header">Apr 2026 · Updated</div>
-            <div class="diff-text updated">Fed staff should not conduct their own examination <span class="highlight-added">unless it is not reasonably possible</span> to rely on the primary supervisor's examination.<br><br>Trigger: primary supervisor does not provide <span class="highlight-added">timely access to all supervisory information</span> in their possession.<br><br>Also changed: "to the <span class="highlight-removed">maximum</span> extent possible" → "to the <span class="highlight-added">fullest</span> extent possible."</div>
+            <div class="diff-text updated">Fed staff should not conduct their own examination <span class="highlight-added">unless it is not reasonably possible</span> to rely on the primary supervisor's examination.<br><br>Trigger: primary supervisor does not provide <span class="highlight-added">timely access to all supervisory information</span> in their possession.<br><br>Key limit (new): the standard is <span class="highlight-added">"not met simply because we might do examinations differently."</span><br><br>Also changed: "to the <span class="highlight-removed">maximum</span> extent possible" → "to the <span class="highlight-added">fullest</span> extent possible."</div>
           </div>
         </div>
         <div class="analysis-box">
           <div class="analysis-label">Policy Significance</div>
-          <div class="analysis-text">This is arguably the most consequential change for state-federal regulatory coordination. "Impossible" set an extremely high bar—an absolute standard that could justify Fed override of state examiners in almost any circumstance where the Fed simply disagreed with methodology. "Not reasonably possible" is a lower threshold, but the new trigger requiring "timely access to <em>all</em> supervisory information" actually tightens information-sharing requirements on state supervisors. For CSBS members: this is a double-edged sword. The Fed is more clearly required to defer to state work, but states must ensure their information-sharing is comprehensive and timely or risk triggering independent Fed examination.</div>
+          <div class="analysis-text">This is the most consequential change for state-federal coordination, and the direction matters. On its face, "impossible" → "not reasonably possible" <em>lowers</em> the bar for the Fed to run its own exam — i.e., it grants the Fed <em>more</em> latitude, not less. The genuinely state-protective element is the new sentence that the standard is "not met simply because we might do examinations differently," which forecloses the Fed's prior ability to manufacture a reliance exception out of mere methodological disagreement. Net effect for CSBS members: the threshold itself is slightly less deferential, but the methodological-disagreement guardrail and the explicit "timely access to all supervisory information" trigger are the real operative levers. States that share comprehensively and promptly are well protected; states with statutory confidentiality limits on certain materials face real exposure to triggering independent Fed examination.</div>
         </div>
       </div>
     </div>
 
     <!-- ③ CHANGED: Internal Audit Reliance -->
-    <div class="change-card" data-type="changed">
+    <div class="change-card" data-type="changed" data-id="ia"         data-short="Internal Audit Reliance Criteria Expanded"           data-sig="Medium" data-industry="High"   data-state="Low"    data-page="2">
       <div class="card-header" onclick="toggleCard(this)">
         <span class="change-type-badge badge-changed">Revised</span>
         <span class="card-title">Internal Audit Reliance for MRA/MRIA Validation — Expanded Criteria</span>
@@ -678,7 +802,7 @@
     </div>
 
     <!-- ④ CHANGED: Remediation Sustainability -->
-    <div class="change-card" data-type="changed">
+    <div class="change-card" data-type="changed" data-id="remed"      data-short="Remediation Sustainability Response Specified"       data-sig="Medium" data-industry="High"   data-state="Low"    data-page="2">
       <div class="card-header" onclick="toggleCard(this)">
         <span class="change-type-badge badge-changed">Revised</span>
         <span class="card-title">Remediation Sustainability — Response Mechanism Specified</span>
@@ -704,7 +828,7 @@
     </div>
 
     <!-- ⑤ CHANGED: LISCC → GSIB -->
-    <div class="change-card" data-type="changed">
+    <div class="change-card" data-type="changed" data-id="liscc"      data-short="LISCC &rarr; GSIB Portfolio Relabel"                 data-sig="Medium" data-industry="Medium" data-state="Low"    data-page="3">
       <div class="card-header" onclick="toggleCard(this)">
         <span class="change-type-badge badge-changed">Revised</span>
         <span class="card-title">Portfolio Label: LISCC → GSIB (Structural Redesignation)</span>
@@ -724,17 +848,17 @@
         </div>
         <div class="analysis-box">
           <div class="analysis-label">Policy Significance</div>
-          <div class="analysis-text">The replacement of "LISCC" (Large Institution Supervision Coordinating Committee) with "GSIB" reflects the formal elimination of the LISCC supervisory program structure under the Bowman-era restructuring. The LISCC had been a specialized supervisory program with dedicated teams for the largest U.S. and foreign banking organizations. Transitioning to GSIB terminology aligns supervision language with the Basel designation and reduces the specialized coordinating-committee overlay. Substantively, the horizontal review restriction is unchanged—the significance is structural.</div>
+          <div class="analysis-text">The replacement of "LISCC" (Large Institution Supervision Coordinating Committee) with "GSIB" retires the dedicated LISCC portfolio label in favor of the Basel designation. The public record supports a move away from the LISCC coordinating overlay — the Fed published the LISCC Operating Manual in December 2025 and signaled further administrative-manual releases — but stops short of confirming a formal abolition of the program structure, so this is best read as a relabeling consistent with that direction rather than a documented dissolution. Substantively, the horizontal-review restriction (and its "Deputy Director determines benefits outweigh costs" trigger) was already present in the October 2025 text; the significance here is structural, not operational.</div>
         </div>
       </div>
     </div>
 
     <!-- ⑥ CHANGED: FHLB Caveat -->
-    <div class="change-card" data-type="changed">
+    <div class="change-card" data-type="changed" data-id="fhlb"       data-short="FHLB Liquidity + Discount-Window Prepositioning"     data-sig="Medium" data-industry="Medium" data-state="Low"    data-page="3">
       <div class="card-header" onclick="toggleCard(this)">
         <span class="change-type-badge badge-changed">Revised</span>
-        <span class="card-title">FHLB Liquidity — Statutory Carve-Out Added</span>
-        <span class="card-significance sig-low">● Low Significance</span>
+        <span class="card-title">FHLB Liquidity Carve-Out + Discount-Window Prepositioning Limit</span>
+        <span class="card-significance sig-med">◆ Medium Significance</span>
         <span class="chevron">▶</span>
       </div>
       <div class="card-body">
@@ -745,18 +869,18 @@
           </div>
           <div>
             <div class="diff-col-header new-header">Apr 2026 · Updated</div>
-            <div class="diff-text updated">Examiners should not discourage firms from including FHLB liquidity in their management or stress tests <span class="highlight-added">unless required by law or regulation</span>.</div>
+            <div class="diff-text updated">Examiners should not discourage firms from including FHLB liquidity in their management or stress tests <span class="highlight-added">unless required by law or regulation</span>.<br><br>New companion provision: examiners <span class="highlight-added">should not require firms to preposition assets at the discount window as a condition to future discount window secured borrowings</span>.</div>
           </div>
         </div>
         <div class="analysis-box">
           <div class="analysis-label">Policy Significance</div>
-          <div class="analysis-text">A modest but legally important clarification. The added carve-out preserves examiner authority where statutory or regulatory requirements mandate different treatment of contingent liquidity sources. This prevents the operating principle from conflicting with existing LCR, NSFR, or other liquidity requirements that may restrict how certain funding sources are counted.</div>
+          <div class="analysis-text">Two related liquidity provisions. The FHLB carve-out ("unless required by law or regulation") is a modest legal clarification preserving examiner authority where statutory or regulatory requirements (LCR, NSFR) mandate different treatment of contingent funding sources. The companion discount-window provision is the more consequential of the two: barring examiners from requiring asset prepositioning as a condition of future discount-window access pushes back directly on post-2023 supervisory expectations around discount-window readiness, a live debate since the SVB and regional-bank stress episodes. It signals the Fed will not use supervisory leverage to compel prepositioning, even as it continues to encourage operational readiness.</div>
         </div>
       </div>
     </div>
 
     <!-- ⑦ CHANGED: MRA Plain Language -->
-    <div class="change-card" data-type="changed">
+    <div class="change-card" data-type="changed" data-id="lang"       data-short="MRA Language: &#39;Typical Bank Employee&#39; Standard" data-sig="Medium" data-industry="High" data-state="Medium" data-page="3">
       <div class="card-header" onclick="toggleCard(this)">
         <span class="change-type-badge badge-changed">Revised</span>
         <span class="card-title">MRA/MRIA Language Standard: "Person of Ordinary Intelligence" → "Typical Bank Employee"</span>
@@ -782,7 +906,7 @@
     </div>
 
     <!-- ⑧ CHANGED: MRA/MRIA Standard Codified -->
-    <div class="change-card" data-type="changed">
+    <div class="change-card" data-type="changed" data-id="std"        data-short="MRA/MRIA Probability-Severity Standard Codified"     data-sig="High"   data-industry="High"   data-state="High"   data-page="4">
       <div class="card-header" onclick="toggleCard(this)">
         <span class="change-type-badge badge-changed">Revised</span>
         <span class="card-title">MRA/MRIA Issuance Standard — Formally Codified with Probability/Severity Tests</span>
@@ -797,18 +921,18 @@
           </div>
           <div>
             <div class="diff-col-header new-header">Apr 2026 · Updated</div>
-            <div class="diff-text updated">MRA/MRIA: May be issued based on safety and soundness threats only if there is a <span class="highlight-added">significant probability of significant harm</span> or significant actual harm to the firm's financial condition.<br><br>Enforcement action: Only if there is an <span class="highlight-added">abnormal probability of abnormal harm</span> (defined as substantially higher than normal or significant).<br><br><span class="highlight-added">Quantitative tests</span> under development. Two clear sufficiency tests: (1) estimated loss would cause the firm to be less than well-capitalized, or (2) significant cash outflow within a short period.<br><br>VCS or delegate may grant exceptions to the probability and severity standards.</div>
+            <div class="diff-text updated">MRA/MRIA: May be issued based on safety and soundness threats only if there is a <span class="highlight-added">significant probability of significant harm</span> or significant actual harm to the firm's financial condition.<br><br>Enforcement action: Only if there is an <span class="highlight-added">abnormal probability of abnormal harm</span> (defined as substantially higher than normal or significant).<br><br>Procedural burden (new): staff must estimate probability and severity <span class="highlight-added">"in good faith"</span> using currently available tools, and good faith is satisfied <span class="highlight-added">"only if the supervisory staff has sufficient evidence that a particular estimate... is plausible."</span><br><br><span class="highlight-added">Quantitative tests</span> under development. Two clear sufficiency tests: (1) estimated loss would cause the firm to be less than well-capitalized (historical-cost or fair-value basis), or (2) significant cash outflow within a short period.<br><br>VCS or delegate may grant exceptions to the probability and severity standards.</div>
           </div>
         </div>
         <div class="analysis-box">
           <div class="analysis-label">Policy Significance</div>
-          <div class="analysis-text">This is the most technically significant provision in the updated statement. The original document acknowledged the standard was changing but deferred specifics. The update delivers a two-tiered probability-severity framework: "significant harm" for MRAs/MRIAs vs. "abnormal harm" for enforcement actions, with "abnormal" defined as substantially higher than normal. The quantitative tests—less than well-capitalized, or significant cash outflow—provide bright-line anchors. This represents a fundamental shift from a qualitative, examiner-discretion model toward a quasi-quantitative threshold model, with serious implications for how supervisory findings are challenged and defended.</div>
+          <div class="analysis-text">This is the most technically significant provision in the updated statement. The update delivers a two-tiered probability-severity framework: "significant harm" for MRAs/MRIAs vs. "abnormal harm" for enforcement actions, with "abnormal" defined as substantially higher than normal. The quantitative tests—less than well-capitalized, or significant cash outflow—provide bright-line anchors. Equally important is the procedural overlay: the "good faith / sufficient evidence that the estimate is plausible" standard imposes a quasi-evidentiary burden on examiners that is distinct from the substantive thresholds. That plausibility requirement, not just the harm tiers, is the operative hook for how findings will be challenged and defended on appeal. Together they mark a fundamental shift from qualitative examiner discretion toward a quasi-quantitative, burden-of-proof model.</div>
         </div>
       </div>
     </div>
 
     <!-- ⑨ NEW: Exit Meeting Alignment -->
-    <div class="change-card" data-type="new">
+    <div class="change-card" data-type="new"     data-id="exit"       data-short="Exit Meeting Alignment Requirement"                 data-sig="Medium" data-industry="High"   data-state="Medium" data-page="3">
       <div class="card-header" onclick="toggleCard(this)">
         <span class="change-type-badge badge-new">New</span>
         <span class="card-title">Exit Meeting Alignment Requirement</span>
@@ -834,7 +958,7 @@
     </div>
 
     <!-- ⑩ NEW: Supervisory Ratings Weighting -->
-    <div class="change-card" data-type="new">
+    <div class="change-card" data-type="new"     data-id="camels"     data-short="CAMELS &#39;M&#39; Component Weight Capped"          data-sig="High"   data-industry="High"   data-state="Medium" data-page="3">
       <div class="card-header" onclick="toggleCard(this)">
         <span class="change-type-badge badge-new">New</span>
         <span class="card-title">CAMELS Ratings — Management Component Weight Capped</span>
@@ -860,7 +984,7 @@
     </div>
 
     <!-- ⑪ NEW: Self-ID Safe Harbor -->
-    <div class="change-card" data-type="new">
+    <div class="change-card" data-type="new"     data-id="selfid"     data-short="Self-Identification Safe Harbor"                     data-sig="High"   data-industry="High"   data-state="Low"    data-page="4">
       <div class="card-header" onclick="toggleCard(this)">
         <span class="change-type-badge badge-new">New</span>
         <span class="card-title">Self-Identification Safe Harbor — Presumptive Demotion to Supervisory Observation</span>
@@ -886,7 +1010,7 @@
     </div>
 
     <!-- ⑫ NEW: Bank Complaint Mechanism -->
-    <div class="change-card" data-type="new">
+    <div class="change-card" data-type="new"     data-id="complaint"  data-short="Bank Compliance Reporting Channel"                  data-sig="Medium" data-industry="Medium" data-state="Low"    data-page="4">
       <div class="card-header" onclick="toggleCard(this)">
         <span class="change-type-badge badge-new">New</span>
         <span class="card-title">Bank Compliance Reporting Mechanism Established</span>
@@ -912,7 +1036,7 @@
     </div>
 
     <!-- ⑬ NEW: Troubled Institution Resolution -->
-    <div class="change-card" data-type="new">
+    <div class="change-card" data-type="new"     data-id="idi"        data-short="Early Resolution of Troubled IDIs"                  data-sig="Medium" data-industry="Medium" data-state="Medium" data-page="4">
       <div class="card-header" onclick="toggleCard(this)">
         <span class="change-type-badge badge-new">New</span>
         <span class="card-title">Early Resolution of Troubled IDIs — DIF Cost Minimization</span>
@@ -932,13 +1056,13 @@
         </div>
         <div class="analysis-box">
           <div class="analysis-label">Policy Significance</div>
-          <div class="analysis-text">The explicit statutory citation to 12 U.S.C. 1823 note (the least-cost resolution requirement) is telling. It anchors the Fed's supervisory behavior to FDIC's resolution framework, reinforcing interagency coordination around troubled institutions. The provision also signals concern about prolonged regulatory forbearance—requiring supervisors to actively move toward resolution rather than extend hope for recovery. This could affect how the Fed treats institutions in extended MOU or consent order situations.</div>
+          <div class="analysis-text">The Fed's text cites "12 U.S.C. 1823 note." That citation is reproduced faithfully here — but note the precision point: the statutory <em>least-cost resolution</em> requirement is codified at 12 U.S.C. 1823(c)(4), whereas a "note" to §1823 refers to uncodified material printed after the section. So the provision anchors supervisory behavior to the FDIC's resolution framework and the cost-minimization principle generally, rather than squarely to the least-cost test in (c)(4); read the citation as the Fed wrote it and don't equate it with (c)(4). Substantively, the provision signals concern about prolonged forbearance — requiring supervisors to move toward resolution rather than extend hope for recovery — and could affect how the Fed treats institutions in extended MOU or consent-order situations.</div>
         </div>
       </div>
     </div>
 
     <!-- ⑭ NEW: Forward-Looking Tools -->
-    <div class="change-card" data-type="new">
+    <div class="change-card" data-type="new"     data-id="fwd"        data-short="Forward-Looking Tools Mandate"                      data-sig="Low"    data-industry="Low"    data-state="Low"    data-page="4">
       <div class="card-header" onclick="toggleCard(this)">
         <span class="change-type-badge badge-new">New</span>
         <span class="card-title">Forward-Looking Supervisory Tools — Continuous Improvement Mandate</span>
@@ -964,7 +1088,7 @@
     </div>
 
     <!-- ⑮ REMOVED: Vague Enforcement Standard Placeholder -->
-    <div class="change-card" data-type="removed">
+    <div class="change-card" data-type="removed" data-id="placeholder" data-short="Enforcement Standard Placeholder Resolved"     data-sig="Medium" data-industry="High"   data-state="Medium" data-page="&mdash;">
       <div class="card-header" onclick="toggleCard(this)">
         <span class="change-type-badge badge-removed">Resolved</span>
         <span class="card-title">Placeholder Language for Enforcement Standard Removed (Now Codified)</span>
@@ -1035,7 +1159,7 @@
           </div>
           <div class="insight-item">
             <div class="insight-item-label">Threshold Language</div>
-            <div class="insight-item-text">OCC uses "matters requiring attention" (MRAs) under a standard that focuses on practices "inconsistent with safe and sound banking" or violations of law. OCC Acting Comptroller Paulson aligned with deregulatory posture in 2025—reducing examination burden and refocusing on quantifiable risk metrics.</div>
+            <div class="insight-item-text">OCC uses "matters requiring attention" (MRAs) under a standard that focuses on practices "inconsistent with safe and sound banking" or violations of law. Comptroller Jonathan V. Gould—confirmed as the 32nd Comptroller on July 15, 2025—has pursued an aggressive deregulatory and "risk-tolerance reset" posture, reducing examination burden, eliminating reputation risk from supervision, and lowering capital requirements.</div>
           </div>
           <div class="insight-item">
             <div class="insight-item-label">MRA Standard</div>
@@ -1115,8 +1239,8 @@
         <div>
           <div class="insight-col-title" style="color:var(--gold); font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:14px; padding-bottom:8px; border-bottom:1px solid var(--border);">Favorable Developments for States</div>
           <div class="insight-item">
-            <div class="insight-item-label">Strengthened GLB Deference (With Caveats)</div>
-            <div class="insight-item-text">Moving from "maximum extent" to "fullest extent" and from "impossible" to "not reasonably possible" reinforces state examination primacy. For BHC supervision, the Fed should rely on state bank supervisor work unless information sharing breaks down—reducing redundant examination burden on state-chartered institutions.</div>
+            <div class="insight-item-label">Methodological-Disagreement Guardrail (the real win)</div>
+            <div class="insight-item-text">The genuinely state-favorable language is the new limit that the "not reasonably possible" standard is "not met simply because we might do examinations differently." This forecloses the Fed's prior ability to justify overriding state work on methodology grounds alone. Note the offset: the threshold shift from "impossible" to "not reasonably possible" is itself <em>less</em> deferential, and "fullest" vs. "maximum extent" is a lateral wording change—so the guardrail, not the threshold, is what protects state primacy.</div>
           </div>
           <div class="insight-item">
             <div class="insight-item-label">AEP Reliance Codified</div>
@@ -1159,9 +1283,9 @@
         <tr style="background:rgba(201,168,76,0.08); border-bottom:1px solid var(--border);">
           <th style="padding:12px 20px; text-align:left; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.1em; color:var(--gold); font-weight:500; text-transform:uppercase;">Provision</th>
           <th style="padding:12px 16px; text-align:center; font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-muted); font-weight:500; text-transform:uppercase;">Type</th>
-          <th style="padding:12px 16px; text-align:center; font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-muted); font-weight:500; text-transform:uppercase;">Significance</th>
-          <th style="padding:12px 16px; text-align:center; font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-muted); font-weight:500; text-transform:uppercase;">Industry Impact</th>
-          <th style="padding:12px 16px; text-align:center; font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-muted); font-weight:500; text-transform:uppercase;">State Impact</th>
+          <th class="sortable" data-sort="sig" style="padding:12px 16px; text-align:center; font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-muted); font-weight:500; text-transform:uppercase;">Significance<span class="arrow">▾</span></th>
+          <th class="sortable" data-sort="industry" style="padding:12px 16px; text-align:center; font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-muted); font-weight:500; text-transform:uppercase;">Industry Impact<span class="arrow">▾</span></th>
+          <th class="sortable" data-sort="state" style="padding:12px 16px; text-align:center; font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-muted); font-weight:500; text-transform:uppercase;">State Impact<span class="arrow">▾</span></th>
         </tr>
       </thead>
       <tbody id="matrix-body">
@@ -1171,24 +1295,27 @@
 </div>
 
 <script>
-const matrixData = [
-  { name: "Primary Objectives Codified", type: "new", sig: "High", industry: "Medium", state: "Medium" },
-  { name: "GLB Deference: 'Impossible' → 'Not Reasonably Possible'", type: "changed", sig: "High", industry: "High", state: "High" },
-  { name: "Internal Audit Reliance Criteria Expanded", type: "changed", sig: "Medium", industry: "High", state: "Low" },
-  { name: "Remediation Sustainability Response Specified", type: "changed", sig: "Medium", industry: "High", state: "Low" },
-  { name: "LISCC → GSIB Redesignation", type: "changed", sig: "Medium", industry: "Medium", state: "Low" },
-  { name: "FHLB Liquidity — Statutory Carve-Out Added", type: "changed", sig: "Low", industry: "Medium", state: "Low" },
-  { name: "MRA Language: 'Typical Bank Employee' Standard", type: "changed", sig: "Medium", industry: "High", state: "Medium" },
-  { name: "MRA/MRIA Probability-Severity Standard Codified", type: "changed", sig: "High", industry: "High", state: "High" },
-  { name: "Exit Meeting Alignment Requirement", type: "new", sig: "Medium", industry: "High", state: "Medium" },
-  { name: "CAMELS 'M' Component Weight Capped", type: "new", sig: "High", industry: "High", state: "Medium" },
-  { name: "Self-Identification Safe Harbor", type: "new", sig: "High", industry: "High", state: "Low" },
-  { name: "Bank Complaint Reporting Channel", type: "new", sig: "Medium", industry: "Medium", state: "Low" },
-  { name: "Early Resolution of Troubled IDIs", type: "new", sig: "Medium", industry: "Medium", state: "Medium" },
-  { name: "Forward-Looking Tools Mandate", type: "new", sig: "Low", industry: "Low", state: "Low" },
-  { name: "Enforcement Standard Placeholder Resolved", type: "removed", sig: "Medium", industry: "High", state: "Medium" },
-];
+// ─── Provisions derived from the cards themselves (single source of truth) ───
+const cardEls = Array.from(document.querySelectorAll('.change-card'));
+const RANK = { High: 3, Medium: 2, Low: 1 };
 
+// inject primary-source page references into each card's "updated" column header
+cardEls.forEach(card => {
+  const page = card.dataset.page;
+  const nh = card.querySelector('.new-header');
+  if (nh && page) nh.innerHTML += ` <span class="page-ref">§ p.${page}</span>`;
+});
+
+// ─── derive headline counts from the cards (cannot drift) ───
+function setText(id, v){ const el=document.getElementById(id); if(el) el.textContent=v; }
+const counts = { new:0, changed:0, removed:0 };
+cardEls.forEach(c => { counts[c.dataset.type] = (counts[c.dataset.type]||0)+1; });
+setText('stat-new', counts.new);
+setText('stat-revised', counts.changed);
+setText('stat-resolved', counts.removed);
+setText('stat-total', cardEls.length);
+
+// ─── matrix helpers ───
 function getTypeHTML(t) {
   if (t === 'new') return '<span class="change-type-badge badge-new">New</span>';
   if (t === 'changed') return '<span class="change-type-badge badge-changed">Revised</span>';
@@ -1205,62 +1332,142 @@ function getImpactBar(s) {
   return `<div style="display:flex;align-items:center;gap:8px;justify-content:center"><div style="width:60px;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden"><div style="width:${w}%;height:100%;background:${c};border-radius:2px"></div></div><span style="font-size:11px;color:${c};font-family:'JetBrains Mono',monospace">${s}</span></div>`;
 }
 
-const tbody = document.getElementById('matrix-body');
-matrixData.forEach((row, i) => {
-  const tr = document.createElement('tr');
-  tr.style.cssText = `border-bottom:1px solid rgba(255,255,255,0.05); ${i%2===0?'background:rgba(255,255,255,0.015)':''}`;
-  tr.innerHTML = `
-    <td style="padding:12px 20px; color:var(--text); line-height:1.4">${row.name}</td>
-    <td style="padding:12px 16px; text-align:center">${getTypeHTML(row.type)}</td>
-    <td style="padding:12px 16px; text-align:center">${getImpactBar(row.sig)}</td>
-    <td style="padding:12px 16px; text-align:center">${getImpactBar(row.industry)}</td>
-    <td style="padding:12px 16px; text-align:center">${getImpactBar(row.state)}</td>
-  `;
-  tbody.appendChild(tr);
-});
+const matrixRows = cardEls.map(c => ({
+  id: c.dataset.id,
+  name: c.dataset.short || c.querySelector('.card-title').textContent,
+  type: c.dataset.type,
+  sig: c.dataset.sig,
+  industry: c.dataset.industry,
+  state: c.dataset.state,
+}));
 
-// ─── Toggle Card ───
+let sortKey = null, sortDir = -1; // -1 = descending
+function renderMatrix() {
+  const tbody = document.getElementById('matrix-body');
+  tbody.innerHTML = '';
+  let rows = matrixRows.slice();
+  if (sortKey) rows.sort((a,b) => (RANK[a[sortKey]] - RANK[b[sortKey]]) * sortDir);
+  rows.forEach((row, i) => {
+    const tr = document.createElement('tr');
+    tr.style.cssText = `border-bottom:1px solid rgba(255,255,255,0.05); ${i%2===0?'background:rgba(255,255,255,0.015)':''}`;
+    tr.setAttribute('role','button');
+    tr.setAttribute('tabindex','0');
+    tr.title = 'Open this provision in the Changes tab';
+    tr.innerHTML = `
+      <td style="padding:12px 20px; color:var(--text); line-height:1.4">${row.name}</td>
+      <td style="padding:12px 16px; text-align:center">${getTypeHTML(row.type)}</td>
+      <td style="padding:12px 16px; text-align:center">${getImpactBar(row.sig)}</td>
+      <td style="padding:12px 16px; text-align:center">${getImpactBar(row.industry)}</td>
+      <td style="padding:12px 16px; text-align:center">${getImpactBar(row.state)}</td>`;
+    const go = () => openProvision(row.id);
+    tr.addEventListener('click', go);
+    tr.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); }});
+    tbody.appendChild(tr);
+  });
+}
+
+document.querySelectorAll('th.sortable').forEach(th => {
+  th.addEventListener('click', () => {
+    const k = th.dataset.sort;
+    if (sortKey === k) sortDir *= -1; else { sortKey = k; sortDir = -1; }
+    document.querySelectorAll('th.sortable').forEach(h => h.classList.remove('sorted'));
+    th.classList.add('sorted');
+    th.querySelector('.arrow').textContent = sortDir === -1 ? '▾' : '▴';
+    renderMatrix();
+  });
+});
+renderMatrix();
+
+// ─── jump from a matrix row to its card ───
+function openProvision(id) {
+  switchTab('changes', document.querySelector('.tab'));
+  filterCards('all');
+  const card = document.querySelector(`.change-card[data-id="${id}"]`);
+  if (!card) return;
+  const header = card.querySelector('.card-header');
+  const body = card.querySelector('.card-body');
+  body.classList.add('open');
+  header.classList.add('open');
+  header.setAttribute('aria-expanded','true');
+  card.scrollIntoView({ behavior:'smooth', block:'center' });
+  card.style.boxShadow = '0 0 0 2px var(--gold)';
+  setTimeout(() => { card.style.boxShadow = ''; }, 1400);
+}
+
+// ─── Toggle / expand-collapse ───
 function toggleCard(header) {
   const body = header.nextElementSibling;
   const isOpen = body.classList.contains('open');
   body.classList.toggle('open', !isOpen);
   header.classList.toggle('open', !isOpen);
+  header.setAttribute('aria-expanded', String(!isOpen));
+}
+function setAllCards(open) {
+  document.querySelectorAll('.change-card:not(.hidden)').forEach(card => {
+    card.querySelector('.card-body').classList.toggle('open', open);
+    const h = card.querySelector('.card-header');
+    h.classList.toggle('open', open);
+    h.setAttribute('aria-expanded', String(open));
+  });
 }
 
-// ─── Toggle Insight Panel ───
 function toggleInsight(header) {
   const body = header.nextElementSibling;
   const chevron = header.querySelector('.chevron');
   const isOpen = body.classList.contains('open');
   body.classList.toggle('open', !isOpen);
   chevron.style.transform = isOpen ? '' : 'rotate(90deg)';
+  header.setAttribute('aria-expanded', String(!isOpen));
 }
 
-// ─── Filter Cards ───
 function filterCards(type) {
   document.querySelectorAll('[id^="filter-"]').forEach(el => el.classList.remove('active'));
-  const cards = document.querySelectorAll('.change-card');
-  cards.forEach(card => {
-    if (type === 'all' || card.dataset.type === type) {
-      card.classList.remove('hidden');
-    } else {
-      card.classList.add('hidden');
-    }
+  document.querySelectorAll('.change-card').forEach(card => {
+    card.classList.toggle('hidden', !(type === 'all' || card.dataset.type === type));
   });
   const target = document.getElementById('filter-' + type);
   if (target) target.classList.add('active');
 }
 
-// ─── Switch Tab ───
 function switchTab(tab, el) {
   document.querySelectorAll('[id^="tab-"]').forEach(t => t.classList.add('hidden'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
   document.getElementById('tab-' + tab).classList.remove('hidden');
-  el.classList.add('active');
+  if (el) { el.classList.add('active'); el.setAttribute('aria-selected','true'); }
 }
 
-// Init: set "all" filter active
-document.getElementById('filter-all').classList.add('active');
+// ─── Accessibility: roles, tabindex, keyboard activation ───
+function makeInteractive(el, handler) {
+  el.setAttribute('tabindex','0');
+  el.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handler(); }
+  });
+}
+document.querySelectorAll('.card-header').forEach(h => {
+  h.setAttribute('role','button');
+  h.setAttribute('aria-expanded','false');
+  makeInteractive(h, () => toggleCard(h));
+});
+document.querySelectorAll('.insight-panel-header').forEach(h => {
+  h.setAttribute('role','button');
+  h.setAttribute('aria-expanded','true');
+  makeInteractive(h, () => toggleInsight(h));
+});
+document.querySelectorAll('.tab').forEach(t => makeInteractive(t, () => switchTab(t.dataset.tabkey, t)));
+document.querySelectorAll('.legend-item').forEach(l => {
+  l.setAttribute('role','button');
+  makeInteractive(l, () => filterCards(l.dataset.filter));
+});
+
+// ─── Init ───
+filterCards('all');
+// surface the four high-significance provisions on load
+document.querySelectorAll('.change-card[data-sig="High"]').forEach(card => {
+  card.querySelector('.card-body').classList.add('open');
+  const h = card.querySelector('.card-header');
+  h.classList.add('open');
+  h.setAttribute('aria-expanded','true');
+});
 </script>
 </body>
 </html>
