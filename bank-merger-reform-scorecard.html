@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -80,7 +81,9 @@ body{font-family:'Georgia','Times New Roman',serif;background:var(--bg-ter);colo
 .tag-gray{background:var(--gray-bg);color:var(--gray-text)}
 .tag-blue{background:var(--blue-bg);color:var(--blue-text)}
 /* comparison table */
-.comp-table{width:100%;border-collapse:collapse;font-family:'Helvetica Neue',Arial,sans-serif;font-size:12.5px;margin-bottom:1.5rem}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:1.5rem}
+.comp-table{width:100%;border-collapse:collapse;font-family:'Helvetica Neue',Arial,sans-serif;font-size:12.5px}
+@media(max-width:640px){.comp-table{min-width:640px}}
 .comp-table th{text-align:left;padding:.5rem .75rem;border-bottom:0.5px solid var(--border-mid);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-ter);font-weight:600;background:var(--bg-sec)}
 .comp-table td{padding:.55rem .75rem;border-bottom:0.5px solid var(--border);vertical-align:top;line-height:1.5;color:var(--text-sec)}
 .comp-table tr:last-child td{border-bottom:none}
@@ -117,6 +120,21 @@ body{font-family:'Georgia','Times New Roman',serif;background:var(--bg-ter);colo
 .pillar-intro{font-family:'Helvetica Neue',Arial,sans-serif;font-size:13.5px;color:var(--text-sec);line-height:1.65;margin-bottom:1.25rem;padding:.875rem 1.1rem;background:var(--bg-sec);border-left:3px solid var(--border-str);border-radius:0 var(--radius-md) var(--radius-md) 0}
 /* footer */
 .footer{margin-top:1.5rem;font-family:'Helvetica Neue',Arial,sans-serif;font-size:11.5px;color:var(--text-ter);text-align:center;line-height:1.6}
+.footer a{color:var(--text-sec);text-decoration:underline;text-underline-offset:2px}
+.footer a:hover{color:var(--text)}
+/* focus visibility for keyboard users */
+.tab-btn:focus-visible,.deal-card:focus-visible{outline:2px solid var(--occ);outline-offset:2px}
+/* print: expand everything so a PDF/printout captures all tabs and details */
+@media print{
+  body{background:#fff;color:#000;padding:0}
+  .tab-nav{display:none}
+  .tab-panel{display:block!important;padding:1rem 0;break-inside:avoid}
+  .tab-panel::before{content:attr(data-label);display:block;font-family:'Helvetica Neue',Arial,sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin:1.5rem 0 .75rem;padding-top:1rem;border-top:1px solid #999}
+  .deal-detail{display:block!important}
+  .caret{display:none}
+  .deal-card,.metric,.agency-card,.q-item,.masthead,.tabs-wrap{break-inside:avoid}
+  a{color:#000}
+}
 </style>
 </head>
 <body>
@@ -130,26 +148,26 @@ body{font-family:'Georgia','Times New Roman',serif;background:var(--bg-ter);colo
       <p class="mh-sub">OCC &nbsp;·&nbsp; FDIC &nbsp;·&nbsp; Federal Reserve &nbsp;·&nbsp; DOJ &nbsp;·&nbsp; Current as of May 2026</p>
     </div>
   </div>
-  <p class="mh-lede">The Trump administration moved quickly to reverse Biden-era merger policy, with the OCC and FDIC reinstating pre-2024 standards by May 2025 and the DOJ signaling a more permissive posture. But the picture is incomplete: the Federal Reserve has not updated its framework, and DOJ still operates under the more stringent 2023 Merger Guidelines rather than rejoining the 1995 Bank Merger Guidelines. This scorecard tracks the current posture at each agency and the key unresolved questions.</p>
+  <p class="mh-lede">The Trump administration moved quickly to reverse Biden-era merger policy, with the OCC and FDIC reinstating pre-2024 standards by May 2025. DOJ's enforcement posture has been permissive in practice — it declined to challenge the first big test — but its formal framework has not changed. The picture remains incomplete: the Federal Reserve has not updated its framework, and DOJ still operates under the more stringent 2023 Merger Guidelines rather than rejoining the 1995 Bank Merger Guidelines. This scorecard tracks the current posture at each agency and the key unresolved questions.</p>
 </div>
 
 <div class="metrics">
   <div class="metric"><div class="metric-val">2</div><div class="metric-lbl">Agencies reverted to pre-2024 standards</div></div>
   <div class="metric"><div class="metric-val">15 days</div><div class="metric-lbl">Expedited pathway restored (OCC/FDIC)</div></div>
-  <div class="metric"><div class="metric-val">295 days</div><div class="metric-lbl">Avg. Fed review time for $100B+ deals</div></div>
-  <div class="metric"><div class="metric-val">HHI 100</div><div class="metric-lbl">DOJ anticompetitive threshold (vs. 200 prior)</div></div>
+  <div class="metric"><div class="metric-val">177 days</div><div class="metric-lbl">Avg. Fed processing, Board-acted M&amp;A (H1 2025)</div></div>
+  <div class="metric"><div class="metric-val">&Delta;HHI 100</div><div class="metric-lbl">DOJ presumption threshold (vs. 200 prior)</div></div>
 </div>
 
 <div class="tabs-wrap">
-  <div class="tab-nav">
-    <button class="tab-btn active" onclick="sw('overview',this)">Agency overview</button>
-    <button class="tab-btn" onclick="sw('compare',this)">Policy comparison</button>
-    <button class="tab-btn" onclick="sw('deals',this)">Notable deals</button>
-    <button class="tab-btn" onclick="sw('questions',this)">Open questions</button>
+  <div class="tab-nav" role="tablist" aria-label="Scorecard sections">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-overview" id="tab-overview" onclick="sw('overview',this)">Agency overview</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-compare" id="tab-compare" onclick="sw('compare',this)">Policy comparison</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-deals" id="tab-deals" onclick="sw('deals',this)">Notable deals</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-questions" id="tab-questions" onclick="sw('questions',this)">Open questions</button>
   </div>
 
   <!-- Overview -->
-  <div id="panel-overview" class="tab-panel active">
+  <div id="panel-overview" class="tab-panel active" role="tabpanel" aria-labelledby="tab-overview" data-label="Agency overview">
     <p class="pillar-intro">The Biden-era merger policy regime — characterized by heightened scrutiny, no expedited review, and burdens on applicants to affirmatively demonstrate community benefit — has been substantially reversed at the OCC and FDIC. The Federal Reserve and DOJ remain partial holdouts.</p>
     <div class="section-label">Current posture by agency</div>
     <div class="agency-grid">
@@ -174,15 +192,15 @@ body{font-family:'Georgia','Times New Roman',serif;background:var(--bg-ter);colo
         <div class="agency-body">
           <div class="status-tag tag-amber">No formal change</div>
           <p>The Fed has not issued new merger regulations or policy statements under the Trump administration. It did not join the September 2024 Biden-era changes, nor has it issued updated guidance moving in the opposite direction.</p>
-          <p>Continues to apply the 1995 Bank Merger Guidelines for competitive analysis. Average review time for deals involving $100B+ firms: 295 days. 413 applications approved in H1 2025.</p>
+          <p>Continues to apply the 1995 Bank Merger Guidelines for competitive analysis. Board-acted M&amp;A applications averaged 177 days in H1 2025 (median 157), down from a 259-day average in 2024. 413 applications approved in H1 2025.</p>
         </div>
       </div>
       <div class="agency-card">
         <div class="agency-header ag-doj">DOJ</div>
         <div class="agency-body">
           <div class="status-tag tag-red">Key holdout</div>
-          <p>Has not rejoined the 1995 Bank Merger Guidelines withdrawn in September 2024. Continues to apply the 2023 Merger Guidelines with the stricter HHI threshold of 100 points (vs. 200 prior), broader qualitative factors, and no antitrust safe harbors.</p>
-          <p>Represents the principal remaining source of policy uncertainty — banking agencies and DOJ are now on different analytical frameworks with no formal coordination mechanism.</p>
+          <p>Has not rejoined the 1995 Bank Merger Guidelines withdrawn in September 2024. Continues to apply the 2023 Merger Guidelines with the stricter HHI-change threshold of 100 points (vs. 200 prior), broader qualitative factors, and no antitrust safe harbors.</p>
+          <p>The key nuance: DOJ's <em>formal</em> framework remains stricter, but its <em>enforcement practice</em> under AAG Gail Slater has been permissive — it declined to challenge Capital One / Discover. That formal/practical gap is the real uncertainty applicants must price, since the banking agencies and DOJ now run on different analytical frameworks with no formal coordination mechanism.</p>
         </div>
       </div>
     </div>
@@ -198,14 +216,14 @@ body{font-family:'Georgia','Times New Roman',serif;background:var(--bg-ter);colo
     <div class="q-item resolved">
       <div class="q-label resolved">Landmark approval</div>
       <div class="q-text">Fed and OCC approved Capital One's acquisition of Discover in April 2025</div>
-      <div class="q-sub">The approval of the largest bank merger in years — a deal that received over 6,000 public comments and took 295 days to process — signaled regulators are willing to approve complex large-bank transactions where competitive, managerial, CRA, and financial stability factors can be addressed. The Fed acknowledged the DOJ's 1995 Guidelines withdrawal but confirmed it continues to apply the 1995 framework.</div>
+      <div class="q-sub">The approval of the largest bank merger in years — a deal that received over 6,000 public comments at the Fed and ran roughly 13 months from filing to approval (filed March 21, 2024; approved April 18, 2025) — signaled regulators are willing to approve complex large-bank transactions where competitive, managerial, CRA, and financial stability factors can be addressed. The Fed acknowledged the DOJ's 1995 Guidelines withdrawal but confirmed it continues to apply the 1995 framework.</div>
     </div>
   </div>
 
   <!-- Comparison -->
-  <div id="panel-compare" class="tab-panel">
+  <div id="panel-compare" class="tab-panel" role="tabpanel" aria-labelledby="tab-compare" data-label="Policy comparison">
     <p class="pillar-intro">This table maps the key policy dimensions across all four agencies under their current frameworks. Green indicates a more permissive/applicant-friendly posture; amber indicates continuity or ambiguity; red indicates remaining friction.</p>
-    <table class="comp-table">
+    <div class="table-scroll"><table class="comp-table">
       <thead>
         <tr>
           <th style="width:22%">Policy dimension</th>
@@ -241,7 +259,7 @@ body{font-family:'Georgia','Times New Roman',serif;background:var(--bg-ter);colo
           <td class="dim">Financial stability scrutiny ($100B+ deals)</td>
           <td class="cell-occ">Elevated scrutiny for large transactions remains; safety &amp; soundness factors apply</td>
           <td class="cell-fdic">$100B threshold removed as a categorical trigger; but large deals still scrutinized</td>
-          <td class="cell-fed">Board review required; average 295-day processing time for $100B+ deals</td>
+          <td class="cell-fed">Board review required; Board-acted M&amp;A averaged 177 days in H1 2025. Cap One/Discover ran ~13 months end-to-end</td>
           <td class="cell-doj">Systemic risk, network effects, and market concentration among review factors under 2023 Guidelines</td>
         </tr>
         <tr>
@@ -253,9 +271,9 @@ body{font-family:'Georgia','Times New Roman',serif;background:var(--bg-ter);colo
         </tr>
         <tr>
           <td class="dim">CRA consideration</td>
-          <td class="cell-occ">CRA record required to be "satisfactory or outstanding" for approval</td>
+          <td class="cell-occ">CRA record expected to be satisfactory or better; a weaker record is a significant adverse factor, not an absolute bar</td>
           <td class="cell-fdic">CRA record evaluated; 1998 SOP standard applies</td>
-          <td class="cell-fed">CRA record is a statutory factor; debanking practices now also assessed</td>
+          <td class="cell-fed">CRA record is a statutory factor; no new merger-specific guidance on weighting</td>
           <td class="cell-doj">Not a DOJ factor</td>
         </tr>
         <tr>
@@ -273,15 +291,15 @@ body{font-family:'Georgia','Times New Roman',serif;background:var(--bg-ter);colo
           <td class="cell-doj"><span class="status-tag tag-amber">Ongoing risk</span><br>DOJ stated it may challenge transactions post-approval under relevant enforcement authorities</td>
         </tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
 
   <!-- Notable Deals -->
-  <div id="panel-deals" class="tab-panel">
+  <div id="panel-deals" class="tab-panel" role="tabpanel" aria-labelledby="tab-deals" data-label="Notable deals">
     <p class="pillar-intro">Deal activity has accelerated since early 2025. Below are notable transactions that illustrate the current state of merger review — including what approval required and what issues remain live.</p>
     <div class="deals-list">
 
-      <div class="deal-card" onclick="tog(this)">
+      <div class="deal-card" onclick="tog(this)" role="button" tabindex="0" aria-expanded="false">
         <div class="deal-head">
           <span class="deal-date">Apr 2025</span>
           <span class="deal-title">Capital One / Discover Financial Services</span>
@@ -291,13 +309,13 @@ body{font-family:'Georgia','Times New Roman',serif;background:var(--bg-ter);colo
         <div class="deal-detail">
           <strong>Approving agencies:</strong> Federal Reserve and OCC (April 2025). FDIC not a primary reviewer.<br><br>
           <strong>Deal size:</strong> Approximately $35B; creates the largest U.S. credit card issuer by balances.<br><br>
-          <strong>Key issues addressed:</strong> Competitive effects in credit card and payments markets; CRA commitments; managerial capability; financial stability. The deal received over 6,000 public comments and took 295 days to process — the Fed's longest recent review for a major transaction.<br><br>
+          <strong>Key issues addressed:</strong> Competitive effects in credit card and payments markets; CRA commitments; managerial capability; financial stability. The deal received over 6,000 public comments at the Fed and ran roughly 13 months from filing to approval (filed March 21, 2024; approved April 18, 2025).<br><br>
           <strong>Notable:</strong> The Fed acknowledged DOJ's withdrawal from the 1995 Guidelines but confirmed it continues to apply the 1995 framework. This was the first major BHC merger approved under the Trump administration and set a template for large-deal review. The deal's approval despite its scale and public comment volume signals the agencies' willingness to clear complex transactions where statutory factors are satisfied.<br><br>
           <strong>DOJ posture:</strong> No DOJ challenge was filed. Antitrust review coordinated with banking agency process.
         </div>
       </div>
 
-      <div class="deal-card" onclick="tog(this)">
+      <div class="deal-card" onclick="tog(this)" role="button" tabindex="0" aria-expanded="false">
         <div class="deal-head">
           <span class="deal-date">2025 pipeline</span>
           <span class="deal-title">Community bank M&amp;A wave: accelerating deal activity</span>
@@ -311,7 +329,7 @@ body{font-family:'Georgia','Times New Roman',serif;background:var(--bg-ter);colo
         </div>
       </div>
 
-      <div class="deal-card" onclick="tog(this)">
+      <div class="deal-card" onclick="tog(this)" role="button" tabindex="0" aria-expanded="false">
         <div class="deal-head">
           <span class="deal-date">H1 2025</span>
           <span class="deal-title">Federal Reserve: 413 applications approved in H1 2025</span>
@@ -320,7 +338,7 @@ body{font-family:'Georgia','Times New Roman',serif;background:var(--bg-ter);colo
         </div>
         <div class="deal-detail">
           <strong>Fed application data (H1 2025):</strong> The Federal Reserve approved 413 applications in H1 2025 across all application types. Of those, 74 (18%) involved M&amp;A transactions. Nine of twelve applications requiring full Board approval involved M&amp;A; one involved a firm with more than $100 billion in assets (Capital One / Discover).<br><br>
-          <strong>Processing time:</strong> The single $100B+ application took approximately 295 days — consistent with the Fed's average for large complex deals since 2022. Smaller BHC transactions are processed significantly faster at the Reserve Bank level without Board action.<br><br>
+          <strong>Processing time:</strong> Board-acted M&amp;A applications averaged 177 days in H1 2025 (median 157), down from a 259-day average in 2024. The Capital One / Discover application — the sole $100B+ filing — ran roughly 13 months end-to-end (filed March 21, 2024; approved April 18, 2025), reflecting its complexity and 6,000+ comments. Smaller BHC transactions are processed significantly faster at the Reserve Bank level without Board action.<br><br>
           <strong>Implication:</strong> The Fed's approval volume reflects continued openness to transactions, but its framework has not been formally updated and it retains the longest average processing times for large deals. For transactions requiring Fed approval (all BHC acquisitions), timeline uncertainty remains a planning factor even in the more permissive environment.
         </div>
       </div>
@@ -329,14 +347,14 @@ body{font-family:'Georgia','Times New Roman',serif;background:var(--bg-ter);colo
   </div>
 
   <!-- Open Questions -->
-  <div id="panel-questions" class="tab-panel">
+  <div id="panel-questions" class="tab-panel" role="tabpanel" aria-labelledby="tab-questions" data-label="Open questions">
     <p class="pillar-intro">The policy reset has cleared considerable uncertainty for smaller and mid-size bank transactions. But for larger or more complex deals, significant interagency tensions and unresolved policy questions remain.</p>
     <div class="q-list">
 
       <div class="q-item tension">
         <div class="q-label tension">Unresolved tension</div>
         <div class="q-text">Will DOJ rejoin the 1995 Bank Merger Guidelines?</div>
-        <div class="q-sub">The most consequential remaining misalignment is DOJ's continued use of the stricter 2023 Merger Guidelines (HHI threshold of 100, broader qualitative factors, no antitrust safe harbors) while the banking agencies have reverted to 1995-era standards. The Bank Policy Institute and others have called on DOJ to rejoin the 1995 Guidelines and rescind the 2024 Banking Addendum. Until resolved, applicants face the risk of a post-approval DOJ challenge even if banking agencies approve the transaction. No DOJ action has been announced.</div>
+        <div class="q-sub">The most consequential remaining misalignment is DOJ's continued use of the stricter 2023 Merger Guidelines (HHI-change threshold of 100, broader qualitative factors, no antitrust safe harbors) while the banking agencies have reverted to 1995-era standards. The Bank Policy Institute and others have called on DOJ to rejoin the 1995 Guidelines and rescind the 2024 Banking Addendum. Until resolved, applicants face the risk of a post-approval DOJ challenge even if banking agencies approve the transaction. No DOJ action has been announced.</div>
       </div>
 
       <div class="q-item tension">
@@ -348,7 +366,7 @@ body{font-family:'Georgia','Times New Roman',serif;background:var(--bg-ter);colo
       <div class="q-item tension">
         <div class="q-label tension">Unresolved tension</div>
         <div class="q-text">How will the new AML/CFT program rule affect merger review?</div>
-        <div class="q-sub">The April 2026 FinCEN/OCC/FDIC/NCUA AML/CFT program rule NPRM — which shifts from technical compliance to effectiveness-based standards — will interact directly with merger review. Strong AML/CFT compliance remains a gatekeeping factor at all agencies. If the new framework reduces the number and severity of AML MRAs, it may indirectly clear a path for transactions that previously faced supervisory obstacles. But the Fed's absence from the joint NPRM raises questions about whether Fed-supervised bank holding companies will benefit on the same timeline.</div>
+        <div class="q-sub">The April 7, 2026 FinCEN AML/CFT program rule NPRM — issued with a concurrent joint NPRM from the OCC, FDIC, and NCUA, with comments due June 9, 2026 — shifts from technical compliance to effectiveness-based standards and will interact directly with merger review. Strong AML/CFT compliance remains a gatekeeping factor at all agencies. If the new framework reduces the number and severity of AML MRAs, it may indirectly clear a path for transactions that previously faced supervisory obstacles. But the Fed's absence from the joint NPRM raises questions about whether Fed-supervised bank holding companies will benefit on the same timeline.</div>
       </div>
 
       <div class="q-item watch">
@@ -360,7 +378,7 @@ body{font-family:'Georgia','Times New Roman',serif;background:var(--bg-ter);colo
       <div class="q-item watch">
         <div class="q-label watch">Watch closely</div>
         <div class="q-text">Large-bank merger review: how high does $100B scrutiny now go?</div>
-        <div class="q-sub">The Biden-era FDIC and OCC policy statements applied categorical heightened scrutiny to transactions producing an institution larger than $100 billion. Those triggers were removed with the policy resets. But the Capital One / Discover approval — the first large-bank test — took 295 days at the Fed. For transactions creating institutions in the $250B–$500B range, the scope of financial stability analysis, FSOC consideration, and political environment remain undefined. This is the frontier question for large-bank consolidation strategy.</div>
+        <div class="q-sub">The Biden-era FDIC and OCC policy statements applied categorical heightened scrutiny to transactions producing an institution larger than $100 billion. Those triggers were removed with the policy resets. But the Capital One / Discover approval — the first large-bank test — ran roughly 13 months end-to-end at the Fed (filed March 2024; approved April 2025). For transactions creating institutions in the $250B–$500B range, the scope of financial stability analysis, FSOC consideration, and political environment remain undefined. This is the frontier question for large-bank consolidation strategy.</div>
       </div>
 
       <div class="q-item resolved">
@@ -379,22 +397,39 @@ body{font-family:'Georgia','Times New Roman',serif;background:var(--bg-ter);colo
   </div>
 </div>
 
-<div class="footer">Sources: OCC (NR-2025-44, interim final rule May 2025), FDIC (FR July 3, 2025; FIL May 2025), Federal Reserve (H.2A; Dec 2025 S&amp;R Report), Jones Day, BPI, Sullivan &amp; Cromwell, Gibson Dunn, Skadden analyses &nbsp;·&nbsp; Compiled May 2026
+<div class="footer">Sources: OCC (<a href="https://www.occ.gov/news-issuances/news-releases/2025/nr-occ-2025-44.html">NR-OCC-2025-44</a>, interim final rule May 8, 2025), FDIC (<a href="https://www.federalregister.gov/documents/2025/07/03/2025-12493/statement-of-policy-on-bank-merger-transactions">FR July 3, 2025</a>; FIL May 2025), Federal Reserve (<a href="https://www.federalreserve.gov/publications/2025-december-supervision-and-regulation-report-bank-applications-and-MA.htm">Dec 2025 S&amp;R Report</a>; H.2A), Jones Day, BPI, Sullivan &amp; Cromwell, Gibson Dunn, Skadden analyses &nbsp;·&nbsp; Compiled May 2026
 </div>
 </div>
 
 <script>
 function sw(id,btn){
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-selected','false');});
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
   btn.classList.add('active');
+  btn.setAttribute('aria-selected','true');
   document.getElementById('panel-'+id).classList.add('active');
+  if(history.replaceState)history.replaceState(null,'','#'+id);
 }
 function tog(el){
   const was=el.classList.contains('open');
-  document.querySelectorAll('.deal-card.open').forEach(c=>c.classList.remove('open'));
-  if(!was)el.classList.add('open');
+  document.querySelectorAll('.deal-card.open').forEach(c=>{c.classList.remove('open');c.setAttribute('aria-expanded','false');});
+  if(!was){el.classList.add('open');el.setAttribute('aria-expanded','true');}
 }
+// keyboard support for deal cards (Enter / Space)
+document.querySelectorAll('.deal-card').forEach(card=>{
+  card.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();tog(card);}
+  });
+});
+// deep-linking: open the tab named in the URL hash on load
+(function(){
+  const id=(location.hash||'').replace('#','');
+  const valid=['overview','compare','deals','questions'];
+  if(valid.includes(id)){
+    const btn=document.getElementById('tab-'+id);
+    if(btn)sw(id,btn);
+  }
+})();
 </script>
 </body>
 </html>
