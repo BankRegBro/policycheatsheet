@@ -89,7 +89,7 @@ h1{font-family:'Georgia',serif;font-size:20px;font-weight:normal;color:var(--tex
 .ah-occ{background:var(--occ-bg);color:var(--occ-text)}
 .ah-fdic{background:var(--fdic-bg);color:var(--fdic-text)}
 .ah-ncua{background:var(--ncua-bg);color:var(--ncua-text)}
-.ah-fed{background:var(--red-bg);color:var(--red-text)}
+.ah-fed{background:var(--amber-bg);color:var(--amber-text)}
 .agency-body{padding:.7rem .75rem;background:var(--bg)}
 .agency-body p{font-family:'Helvetica Neue',Arial,sans-serif;font-size:12px;color:var(--text-sec);line-height:1.5;margin-top:.4rem}
 /* provision cards */
@@ -133,6 +133,27 @@ h1{font-family:'Georgia',serif;font-size:20px;font-weight:normal;color:var(--tex
 .qs{font-family:'Helvetica Neue',Arial,sans-serif;font-size:12.5px;color:var(--text-sec);line-height:1.55}
 /* footer */
 .footer{margin-top:1.5rem;font-family:'Helvetica Neue',Arial,sans-serif;font-size:11.5px;color:var(--text-ter);text-align:center;line-height:1.6}
+.footer a{color:var(--fincen-text);text-decoration:none;border-bottom:1px solid var(--border-mid)}
+.footer a:hover{border-bottom-color:var(--fincen-text)}
+/* table scroll wrapper for mobile */
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+@media(max-width:660px){.inst-table{min-width:600px}}
+/* expand-all control */
+.prov-controls{display:flex;justify-content:flex-end;margin-bottom:.5rem}
+.prov-toggle-all{font-family:'Helvetica Neue',Arial,sans-serif;font-size:11.5px;color:var(--text-sec);background:none;border:0.5px solid var(--border-mid);border-radius:4px;padding:4px 10px;cursor:pointer}
+.prov-toggle-all:hover{color:var(--text);border-color:var(--border-str)}
+/* focus visibility for keyboard users */
+.tab-btn:focus-visible,.provision-card:focus-visible,.prov-toggle-all:focus-visible{outline:2px solid var(--fincen-text);outline-offset:2px}
+/* print: expand everything, drop interactive chrome */
+@media print{
+  body{background:#fff;color:#000;padding:0}
+  .tab-nav,.caret,.prov-controls{display:none!important}
+  .tab-panel{display:block!important;padding:1rem 0;break-inside:avoid}
+  .tab-panel::before{content:attr(data-title);display:block;font-family:'Georgia',serif;font-size:16px;font-weight:bold;margin:1.25rem 0 .5rem;border-bottom:1px solid #000;padding-bottom:.25rem}
+  .prov-detail{display:block!important}
+  .provision-card,.q-item,.agency-card,.metric,.tier-box{break-inside:avoid}
+  .masthead,.tabs-wrap{border:none}
+}
 </style>
 </head>
 <body>
@@ -143,15 +164,15 @@ h1{font-family:'Georgia',serif;font-size:20px;font-weight:normal;color:var(--tex
     <div class="mh-badge">Rule Navigator</div>
     <div>
       <h1>AML/CFT Program Rule Navigator — FinCEN NPRM</h1>
-      <p class="mh-sub">FinCEN / OCC / FDIC / NCUA joint NPRM &nbsp;·&nbsp; Proposed April 7, 2026 &nbsp;·&nbsp; Comment deadline June 9, 2026</p>
+      <p class="mh-sub">FinCEN / OCC / FDIC / NCUA joint NPRM &nbsp;·&nbsp; Issued April 7, 2026 · Published April 10, 2026 &nbsp;·&nbsp; 60-day comment period closing June 9, 2026</p>
     </div>
   </div>
-  <p class="mh-lede">On April 7, 2026, FinCEN issued a notice of proposed rulemaking to fundamentally reform AML/CFT program requirements under the Bank Secrecy Act — replacing the prevailing technical compliance model with an effectiveness-based, risk-driven framework. The OCC, FDIC, and NCUA issued a concurrent joint NPRM for banks. The Federal Reserve did not join. This navigator maps the proposed framework, the interagency picture, and the key open questions.</p>
+  <p class="mh-lede">On April 7, 2026, FinCEN issued a notice of proposed rulemaking to fundamentally reform AML/CFT program requirements under the Bank Secrecy Act — replacing the prevailing technical compliance model with an effectiveness-based, risk-driven framework. The OCC, FDIC, and NCUA issued a concurrent joint NPRM for banks. The Federal Reserve did not join. The FinCEN NPRM was published in the Federal Register on April 10, 2026 (91 FR 18704; Docket FINCEN-2026-0034; RIN 1506-AB72), opening a 60-day comment period. This navigator maps the proposed framework, the interagency picture, and the key open questions.</p>
 </div>
 
 <div class="deadline-banner">
   <div class="deadline-label">Comment deadline</div>
-  <div class="deadline-text">Public comments on both the FinCEN NPRM and the OCC/FDIC/NCUA joint NPRM are due <strong>June 9, 2026</strong>. FinCEN proposes a 12-month implementation period following issuance of a final rule. The 2024 FinCEN NPRM (July 3, 2024) has been withdrawn and superseded.</div>
+  <div class="deadline-text">Public comments on both the FinCEN NPRM (91 FR 18704) and the OCC/FDIC/NCUA joint NPRM (91 FR 18304) are due <strong>June 9, 2026</strong> — a 60-day period running from the April 10 Federal Register publication. FinCEN proposes a 12-month implementation period following issuance of a final rule. The July 3, 2024 FinCEN NPRM (and the August 9, 2024 banking-agency joint NPRM, which the Fed joined) have been withdrawn and superseded.</div>
 </div>
 
 <div class="metrics">
@@ -162,16 +183,16 @@ h1{font-family:'Georgia',serif;font-size:20px;font-weight:normal;color:var(--tex
 </div>
 
 <div class="tabs-wrap">
-  <div class="tab-nav">
-    <button class="tab-btn active" onclick="sw('interagency',this)">Interagency picture</button>
-    <button class="tab-btn" onclick="sw('framework',this)">Core framework</button>
-    <button class="tab-btn" onclick="sw('provisions',this)">Key provisions</button>
-    <button class="tab-btn" onclick="sw('implications',this)">Implications</button>
-    <button class="tab-btn" onclick="sw('questions',this)">Open questions</button>
+  <div class="tab-nav" role="tablist" aria-label="Rule navigator sections">
+    <button class="tab-btn active" role="tab" id="tab-interagency" aria-selected="true" aria-controls="panel-interagency" onclick="sw('interagency',this)">Interagency picture</button>
+    <button class="tab-btn" role="tab" id="tab-framework" aria-selected="false" aria-controls="panel-framework" tabindex="-1" onclick="sw('framework',this)">Core framework</button>
+    <button class="tab-btn" role="tab" id="tab-provisions" aria-selected="false" aria-controls="panel-provisions" tabindex="-1" onclick="sw('provisions',this)">Key provisions</button>
+    <button class="tab-btn" role="tab" id="tab-implications" aria-selected="false" aria-controls="panel-implications" tabindex="-1" onclick="sw('implications',this)">Implications</button>
+    <button class="tab-btn" role="tab" id="tab-questions" aria-selected="false" aria-controls="panel-questions" tabindex="-1" onclick="sw('questions',this)">Open questions</button>
   </div>
 
   <!-- Interagency -->
-  <div id="panel-interagency" class="tab-panel active">
+  <div id="panel-interagency" class="tab-panel active" role="tabpanel" aria-labelledby="tab-interagency" data-title="Interagency picture">
     <p class="pillar-intro">The AML/CFT program rule involves a complex interagency structure. FinCEN issued the primary NPRM covering all covered financial institutions. The OCC, FDIC, and NCUA issued a concurrent joint NPRM for banks. The Federal Reserve — which joined the 2024 Biden-era NPRM — did not join the 2026 proposal, creating a significant fault line.</p>
     <div class="section-label">Agency participation</div>
     <div class="agency-grid">
@@ -179,7 +200,7 @@ h1{font-family:'Georgia',serif;font-size:20px;font-weight:normal;color:var(--tex
         <div class="agency-header ah-fincen">FinCEN</div>
         <div class="agency-body">
           <div class="stag tag-blue">Primary NPRM</div>
-          <p>Issued the lead NPRM covering all 11 categories of covered financial institutions including banks, MSBs, broker-dealers, casinos, insurance companies, and others. Supersedes and withdraws July 3, 2024 prior NPRM. Expands FinCEN's supervisory consultation role.</p>
+          <p>Issued the lead NPRM covering all 11 categories of covered financial institutions (banks; casinos and card clubs; MSBs; broker-dealers; mutual funds; insurance companies; FCMs/IBCs; dealers in precious metals, stones, or jewels; credit-card-system operators; loan or finance companies; and housing GSEs — enumerated at 31 CFR §§ 1020.210–1030.210). Supersedes and withdraws the July 3, 2024 prior NPRM. Expands FinCEN's supervisory consultation role.</p>
         </div>
       </div>
       <div class="agency-card">
@@ -206,7 +227,7 @@ h1{font-family:'Georgia',serif;font-size:20px;font-weight:normal;color:var(--tex
       <div class="agency-card">
         <div class="agency-header ah-fed">Federal Reserve</div>
         <div class="agency-body">
-          <div class="stag tag-red">Did not join</div>
+          <div class="stag tag-amber">Did not join</div>
           <p>The Fed joined the 2024 Biden-era joint NPRM but did not join the 2026 proposal. FinCEN states the rule was prepared "in consultation with" the Fed, but the Fed has not issued its own NPRM. Potential signal of disagreement with FinCEN's expanded supervisory consultation role.</p>
         </div>
       </div>
@@ -220,13 +241,13 @@ h1{font-family:'Georgia',serif;font-size:20px;font-weight:normal;color:var(--tex
     </div>
     <div class="q-item watch">
       <div class="ql watch">Context</div>
-      <div class="qt">Treasury Secretary Bessent: measure success by stopping illicit finance, not "volume of paperwork"</div>
-      <div class="qs">The NPRM is explicitly framed around Bessent's April 2025 remarks calling for AML/CFT reform focused on "national security priorities and higher-risk activity." His October 2025 remarks at the Fed Community Bank Conference — describing a desire to measure success by effectiveness rather than "volume of paperwork" — are quoted in the NPRM preamble. This is a top-down Treasury-driven priority, not simply an agency-level reform.</div>
+      <div class="qt">Treasury Secretary Bessent: refocus AML/CFT on national security and higher-risk activity</div>
+      <div class="qs">The NPRM is explicitly framed around Treasury's BSA-modernization priority. The preamble quotes Secretary Bessent's April 2025 speech, in which he said Treasury "will advocate for changes to the AML/CFT framework to truly focus on national security priorities and higher-risk areas and explicitly permit financial institutions to de-prioritize lower risks." The preamble also cites his criticism that AML/CFT supervision has too often involved a "zero-tolerance focus on process and documentation and wide latitude for supervisory expectations and judgments that are not always consistent with the law or our national security priorities." This is a top-down Treasury-driven priority, situated within E.O. 14192 (<em>Unleashing Prosperity Through Deregulation</em>), not simply an agency-level reform. (The widely circulated "volume of paperwork" framing is Bessent's public messaging on the rule, not a phrase in the preamble.)</div>
     </div>
   </div>
 
   <!-- Framework -->
-  <div id="panel-framework" class="tab-panel">
+  <div id="panel-framework" class="tab-panel" role="tabpanel" aria-labelledby="tab-framework" data-title="Core framework">
     <p class="pillar-intro">The centerpiece of the NPRM is a two-tiered framework distinguishing program "establishment" from program "implementation." This structural shift is designed to protect institutions from enforcement actions for minor technical deficiencies in implementation once they have properly established their AML/CFT program.</p>
 
     <div class="section-label">The two-tiered framework</div>
@@ -253,7 +274,7 @@ h1{font-family:'Georgia',serif;font-size:20px;font-weight:normal;color:var(--tex
       <div class="q-item" style="border-left:3px solid var(--green-text)">
         <div class="ql" style="color:var(--green-text)">Proposed model</div>
         <div class="qt" style="font-size:13px">Effectiveness-based, risk-driven compliance</div>
-        <div class="qs">Institutions direct resources toward higher-risk customers and activities, consistent with their individual risk profile. Risk assessments must incorporate FinCEN's AML/CFT priorities. Examiners and auditors cannot substitute their subjective judgment for the institution's risk-based and reasonably designed program. Technology and AI use is explicitly encouraged and cannot alone trigger a significant supervisory action.</div>
+        <div class="qs">Institutions direct resources toward higher-risk customers and activities, consistent with their individual risk profile. Risk assessments must incorporate FinCEN's AML/CFT priorities. Examiners and auditors cannot substitute their subjective judgment for the institution's risk-based and reasonably designed program. Technology and AI use is explicitly encouraged and cannot alone trigger a significant supervisory action. Note: "effectiveness" is layered on top of — not a replacement for — the statutory standard; the rule still requires a risk-based set of internal policies, procedures, and controls "reasonably designed to ensure compliance" with the BSA.</div>
       </div>
     </div>
 
@@ -261,13 +282,14 @@ h1{font-family:'Georgia',serif;font-size:20px;font-weight:normal;color:var(--tex
     <div class="q-item watch">
       <div class="ql watch">Structural change</div>
       <div class="qt">30-day advance notice required before significant supervisory actions</div>
-      <div class="qs">Under the proposed rule, banking regulators (OCC, FDIC, NCUA, and potentially the Fed) must provide FinCEN at least 30 days' advance written notice before taking any "significant supervisory action" related to AML/CFT. A "significant supervisory action" is defined broadly to include any formal written communication that identifies deficiencies, weaknesses, violations, or unsafe/unsound practices related to AML/CFT requirements and contemplates significant or programmatic remedial measures. This gives FinCEN a consultation and input role it has not previously held in the supervisory process. Examiner observations, suggestions, and informal comments are excluded from this requirement.</div>
+      <div class="qs">Under the proposed rule (codified at proposed 31 CFR 1020.221), the banking agencies — when acting under supervisory authority delegated by FinCEN — must provide FinCEN at least 30 days' advance written notice, <em>absent urgent circumstances</em>, before taking any "significant supervisory action" related to AML/CFT, and must consider FinCEN's input. A "significant supervisory action" is defined broadly to include a formal written communication that identifies deficiencies, weaknesses, violations, or unsafe/unsound practices related to AML/CFT requirements and contemplates significant or programmatic remedial measures. Examiner observations, suggestions, and informal comments are excluded. The provision is structured as (a) definitions, (b) FinCEN enforcement and supervision policy, (c) FinCEN consultation, and (d) FinCEN considerations. This gives FinCEN a consultation and input role it has not previously held in the supervisory process.</div>
     </div>
   </div>
 
   <!-- Key Provisions -->
-  <div id="panel-provisions" class="tab-panel">
+  <div id="panel-provisions" class="tab-panel" role="tabpanel" aria-labelledby="tab-provisions" data-title="Key provisions">
     <p class="pillar-intro">Below are the key provisions of the April 2026 FinCEN NPRM and the concurrent OCC/FDIC/NCUA banking agency NPRM. Click any provision to expand the full description.</p>
+    <div class="prov-controls"><button class="prov-toggle-all" id="provToggleAll" onclick="toggleAll()" aria-pressed="false">Expand all</button></div>
     <div class="provision-list">
 
       <div class="provision-card" onclick="tog(this)">
@@ -311,7 +333,7 @@ h1{font-family:'Georgia',serif;font-size:20px;font-weight:normal;color:var(--tex
           <span class="caret">▼</span>
         </div>
         <div class="prov-detail">
-          Banking regulators must provide FinCEN at least 30 days' advance written notice before taking a "significant supervisory action" related to AML/CFT. A significant supervisory action is defined as a formal written communication that: (i) identifies deficiencies, weaknesses, violations, or unsafe/unsound practices related to AML/CFT; (ii) communicates supervisory expectations for correction; and (iii) contemplates significant or programmatic remedial measures. This excludes examiner observations, suggestions, and informal comments. The rule provides two options for the information-sharing process with FinCEN. This represents a meaningful centralization of AML/CFT oversight and is a likely reason the Federal Reserve did not join the joint NPRM — the Fed may be resistant to FinCEN acquiring a consultative veto or delay mechanism over Fed supervisory actions regarding its member banks.
+          Banking regulators must provide FinCEN at least 30 days' advance written notice, absent urgent circumstances, before taking a "significant supervisory action" related to AML/CFT. A significant supervisory action is defined as a formal written communication that: (i) identifies deficiencies, weaknesses, violations, or unsafe/unsound practices related to AML/CFT; (ii) communicates supervisory expectations for correction; and (iii) contemplates significant or programmatic remedial measures. This excludes examiner observations, suggestions, and informal comments. The notice obligation applies when the agencies act under authority delegated by FinCEN, and the agencies must consider FinCEN's input (proposed 31 CFR 1020.221(c)); a separate provision sets out the factors the FinCEN Director should weigh before pursuing an action (1020.221(d)). <strong>A key alternative is on the table for the final rule:</strong> FinCEN expressly requests comment on whether, instead of <em>requiring</em> agency-initiated consultation, the rule should make it optional — providing the option for banks to request that their Agency consult with FinCEN prior to initiating a significant AML/CFT supervisory action. This bank-initiated version would materially shift the mechanism (from an automatic regulator obligation to a bank-elected one) and is a live possibility for the final rule, so commenters focused on the consultation framework should weigh in on it directly. As drafted, the framework applies only to banks (not the other covered institution categories) and does not reach state agencies that supervise and take BSA enforcement actions against banks. This represents a meaningful centralization of AML/CFT oversight and is a likely reason the Federal Reserve did not join the joint NPRM — the Fed may be resistant to FinCEN acquiring a consultative review role over its supervisory actions regarding its member banks.
         </div>
       </div>
 
@@ -356,7 +378,7 @@ h1{font-family:'Georgia',serif;font-size:20px;font-weight:normal;color:var(--tex
           <span class="caret">▼</span>
         </div>
         <div class="prov-detail">
-          The proposed rule requires financial institutions to incorporate the AML/CFT priorities published by FinCEN pursuant to 31 U.S.C. 5318(h)(4) as part of their internal controls risk assessment processes. FinCEN published its initial national AML/CFT priorities in June 2021, identifying eight priority areas: corruption, cybercrime, foreign and domestic terrorist financing, fraud, transnational criminal organization activity, drug trafficking organization activity, human trafficking and smuggling, and proliferation financing. The proposed rule essentially codifies the expectation that institutions must show their risk assessments address these published priority areas — moving from a suggestion to a regulatory requirement.
+          The proposed rule requires financial institutions to incorporate the AML/CFT priorities published by FinCEN pursuant to 31 U.S.C. 5318(h)(4) as part of their internal controls risk assessment processes. FinCEN issued its first national AML/CFT priorities on June 30, 2021, identifying eight priority areas: corruption, cybercrime, foreign and domestic terrorist financing, fraud, transnational criminal organization activity, drug trafficking organization activity, human trafficking and smuggling, and proliferation financing. The proposed rule essentially codifies the expectation that institutions must show their risk assessment processes review and, as appropriate, incorporate these published priority areas — moving from a suggestion to a regulatory requirement.
         </div>
       </div>
 
@@ -379,8 +401,9 @@ h1{font-family:'Georgia',serif;font-size:20px;font-weight:normal;color:var(--tex
   </div>
 
   <!-- Implications -->
-  <div id="panel-implications" class="tab-panel">
+  <div id="panel-implications" class="tab-panel" role="tabpanel" aria-labelledby="tab-implications" data-title="Implications">
     <p class="pillar-intro">The proposed rule's implications vary significantly by institution type. The shift from technical compliance to effectiveness-based standards is broadly welcome in the industry, but its real-world impact will depend heavily on how examiners apply the new standards — and how the Fed's absence from the rulemaking resolves.</p>
+    <div class="table-scroll">
     <table class="inst-table">
       <thead>
         <tr>
@@ -423,10 +446,11 @@ h1{font-family:'Georgia',serif;font-size:20px;font-weight:normal;color:var(--tex
         </tr>
       </tbody>
     </table>
+    </div>
   </div>
 
   <!-- Open Questions -->
-  <div id="panel-questions" class="tab-panel">
+  <div id="panel-questions" class="tab-panel" role="tabpanel" aria-labelledby="tab-questions" data-title="Open questions">
     <p class="pillar-intro">The proposed rule's direction is widely welcomed. But several consequential structural and implementation questions remain unresolved — and the June 9 comment deadline makes this an active rulemaking moment.</p>
     <div class="q-list">
 
@@ -445,7 +469,7 @@ h1{font-family:'Georgia',serif;font-size:20px;font-weight:normal;color:var(--tex
       <div class="q-item watch">
         <div class="ql watch">Watch closely</div>
         <div class="qt">How will FinCEN exercise its new consultation role — will it function as a check on aggressive supervisory actions?</div>
-        <div class="qs">The proposed 30-day advance notice requirement is designed to give FinCEN an opportunity to provide input before banking regulators take significant AML/CFT supervisory action. In theory, this could moderate overly aggressive or technically-oriented examiner actions — particularly the kind of MRA-driven compliance expectations that have driven banks to over-comply with lower-risk BSA obligations. In practice, the mechanism's effectiveness will depend on how actively FinCEN uses its consultation window, whether it establishes clear consultation standards, and whether banking regulators treat FinCEN's input as advisory or presumptively binding. For CSBS and state supervisors, the question is whether FinCEN's expanded federal role creates a new layer of federal preemption over state-chartered bank AML/CFT supervision.</div>
+        <div class="qs">The proposed 30-day advance notice requirement is designed to give FinCEN an opportunity to provide input before banking regulators take significant AML/CFT supervisory action. In theory, this could moderate overly aggressive or technically-oriented examiner actions — particularly the kind of MRA-driven compliance expectations that have driven banks to over-comply with lower-risk BSA obligations. In practice, the mechanism's effectiveness will depend on how actively FinCEN uses its consultation window, whether it establishes clear consultation standards, and whether banking regulators treat FinCEN's input as advisory or presumptively binding. For CSBS and state supervisors, the question is whether FinCEN's expanded federal role creates a new layer of federal preemption over state-chartered bank AML/CFT supervision. A significant variable for the final rule: FinCEN solicits comment on whether the framework should be optional rather than mandatory — letting banks themselves request Agency-FinCEN consultation — which would convert the mechanism from a regulator obligation into a bank-elected tool and change its character as a check on aggressive actions.</div>
       </div>
 
       <div class="q-item watch">
@@ -457,7 +481,7 @@ h1{font-family:'Georgia',serif;font-size:20px;font-weight:normal;color:var(--tex
       <div class="q-item watch">
         <div class="ql watch">Watch closely</div>
         <div class="qt">Does the proposed rule effectively address the AML/CFT debanking nexus?</div>
-        <div class="qs">OCC Comptroller Gould has repeatedly identified BSA/AML supervision as a source of unlawful debanking pressure — banks feeling caught between examiner expectations and the legal and reputational risk of maintaining accounts for higher-risk or politically disfavored lawful businesses. The effectiveness-based, risk-driven framework could theoretically reduce the pressure to terminate accounts based on vague AML risk concerns. But the proposed rule does not directly address debanking — it governs program design and enforcement standards, not account termination decisions. Whether the new framework translates into reduced debanking in practice will depend on examiner implementation and how the interagency debanking policy actions (OCC Sep 2025, reputation risk final rule Apr 2026) are implemented alongside it.</div>
+        <div class="qs">OCC Comptroller Gould has repeatedly identified BSA/AML supervision as a source of unlawful debanking pressure — banks feeling caught between examiner expectations and the legal and reputational risk of maintaining accounts for higher-risk or politically disfavored lawful businesses. Unlike a common reading, the NPRM's preamble <em>does</em> address debanking directly: in analyzing the AML Act's statutory factors, FinCEN frames the risk-based approach as a debanking mitigant — intended to ensure account-closure decisions rest on legitimate ML/TF risk rather than broad de-risking — and ties the rule to E.O. 14331, <em>Guaranteeing Fair Banking for All Americans</em>, which targets "politicized or unlawful debanking." The caveat is that this lives in the preamble's rationale; the operative program-design text governs program establishment and enforcement standards, not account-termination decisions. Whether the framework reduces debanking in practice will depend on examiner implementation and how the parallel interagency debanking actions (OCC Sep 2025; reputation-risk final rule Apr 2026) are applied alongside it.</div>
       </div>
 
       <div class="q-item noted">
@@ -470,22 +494,83 @@ h1{font-family:'Georgia',serif;font-size:20px;font-weight:normal;color:var(--tex
   </div>
 </div>
 
-<div class="footer">Sources: FinCEN NPRM (91 Fed. Reg. 18704, Apr. 10, 2026), OCC/FDIC/NCUA joint NPRM (91 Fed. Reg. 18304, Apr. 10, 2026), Morrison Foerster, Sullivan &amp; Cromwell, Gibson Dunn, Jones Day, Davis Wright Tremaine, Mayer Brown analyses &nbsp;·&nbsp; Compiled May 2026 &nbsp;·&nbsp; Comment deadline: June 9, 2026
+<div class="footer">Primary sources: <a href="https://www.federalregister.gov/documents/2026/04/10/2026-07033/anti-money-laundering-and-countering-the-financing-of-terrorism-programs">FinCEN NPRM (91 FR 18704, Apr. 10, 2026)</a> &nbsp;·&nbsp; OCC/FDIC/NCUA joint NPRM (91 FR 18304, Apr. 10, 2026) &nbsp;·&nbsp; <a href="https://www.fincen.gov/system/files/2026-04/Program-NPRM-FactSheet.pdf">FinCEN Fact Sheet</a> &nbsp;·&nbsp; <a href="https://www.regulations.gov/docket/FINCEN-2026-0034">Docket FINCEN-2026-0034</a> &nbsp;·&nbsp; Secondary analyses: Morrison Foerster, Sullivan &amp; Cromwell, Gibson Dunn, Jones Day, Covington, Davis Wright Tremaine, Mayer Brown &nbsp;·&nbsp; Compiled May 2026 &nbsp;·&nbsp; Comment deadline: June 9, 2026
 </div>
 </div>
 
 <script>
+var TABS=['interagency','framework','provisions','implications','questions'];
+
 function sw(id,btn){
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-  btn.classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(function(b){
+    b.classList.remove('active');b.setAttribute('aria-selected','false');b.tabIndex=-1;
+  });
+  document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
+  btn.classList.add('active');btn.setAttribute('aria-selected','true');btn.tabIndex=0;
   document.getElementById('panel-'+id).classList.add('active');
+  if(history.replaceState)history.replaceState(null,'','#'+id);
 }
+
 function tog(el){
-  const was=el.classList.contains('open');
-  document.querySelectorAll('.provision-card.open').forEach(c=>c.classList.remove('open'));
-  if(!was)el.classList.add('open');
+  var was=el.classList.contains('open');
+  document.querySelectorAll('.provision-card.open').forEach(function(c){
+    c.classList.remove('open');c.setAttribute('aria-expanded','false');
+  });
+  if(!was){el.classList.add('open');el.setAttribute('aria-expanded','true');}
+  syncToggleAll();
 }
+
+function toggleAll(){
+  var btn=document.getElementById('provToggleAll');
+  var cards=document.querySelectorAll('.provision-card');
+  var anyClosed=Array.prototype.some.call(cards,function(c){return !c.classList.contains('open');});
+  cards.forEach(function(c){
+    if(anyClosed){c.classList.add('open');c.setAttribute('aria-expanded','true');}
+    else{c.classList.remove('open');c.setAttribute('aria-expanded','false');}
+  });
+  syncToggleAll();
+}
+
+function syncToggleAll(){
+  var btn=document.getElementById('provToggleAll');if(!btn)return;
+  var cards=document.querySelectorAll('.provision-card');
+  var allOpen=cards.length>0&&Array.prototype.every.call(cards,function(c){return c.classList.contains('open');});
+  btn.textContent=allOpen?'Collapse all':'Expand all';
+  btn.setAttribute('aria-pressed',allOpen?'true':'false');
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  // accessible accordion cards
+  document.querySelectorAll('.provision-card').forEach(function(card){
+    card.setAttribute('role','button');
+    card.setAttribute('tabindex','0');
+    card.setAttribute('aria-expanded','false');
+    card.addEventListener('keydown',function(e){
+      if(e.key==='Enter'||e.key===' '){e.preventDefault();tog(card);}
+    });
+  });
+  document.querySelectorAll('.caret').forEach(function(c){c.setAttribute('aria-hidden','true');});
+
+  // arrow-key navigation across tabs
+  var tabs=Array.prototype.slice.call(document.querySelectorAll('.tab-btn'));
+  tabs.forEach(function(tab,i){
+    tab.addEventListener('keydown',function(e){
+      var n=null;
+      if(e.key==='ArrowRight')n=(i+1)%tabs.length;
+      else if(e.key==='ArrowLeft')n=(i-1+tabs.length)%tabs.length;
+      else if(e.key==='Home')n=0;
+      else if(e.key==='End')n=tabs.length-1;
+      if(n!==null){e.preventDefault();tabs[n].focus();tabs[n].click();}
+    });
+  });
+
+  // deep-link: open the tab named in the URL hash
+  var h=(location.hash||'').replace('#','');
+  if(TABS.indexOf(h)!==-1){
+    var b=document.getElementById('tab-'+h);
+    if(b)sw(h,b);
+  }
+});
 </script>
 </body>
 </html>
