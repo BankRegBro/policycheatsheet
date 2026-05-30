@@ -82,6 +82,24 @@ img,svg{display:block;max-width:100%}
 }
 @keyframes wire-travel{to{left:100%}}
 
+/* Live wire riding existing divider lines on the main page.
+   The element's bottom border is the static wire; this pulse travels it. */
+.section-head::after,
+.colophon::after{
+  content:"";
+  position:absolute;left:-90px;bottom:-1px;
+  width:90px;height:1px;
+  background:linear-gradient(to right,transparent,var(--wire-bright),transparent);
+  box-shadow:0 0 8px var(--wire);
+  animation:wire-travel 7s linear infinite;
+  pointer-events:none;
+}
+/* Phase-shift each one so they never pulse in unison */
+.colophon::after{animation-delay:-1.2s;animation-duration:9s}
+#section-i  .section-head::after{animation-delay:-0.5s}
+#section-ii .section-head::after{animation-delay:-3.4s;animation-duration:8s}
+#section-iii .section-head::after{animation-delay:-5.6s;animation-duration:6.4s}
+
 .live-dot{
   display:inline-block;width:7px;height:7px;border-radius:50%;
   background:var(--wire);
@@ -97,6 +115,10 @@ img,svg{display:block;max-width:100%}
 
 @media(prefers-reduced-motion:reduce){
   .wire-rule::after{animation:none;left:0;width:100%;opacity:.5}
+  .section-head::after,.colophon::after{animation:none;left:0;width:100%;opacity:.4}
+  .plate:hover::before,.plate:focus-visible::before{animation:none;left:0;width:100%}
+  .plate:hover{transform:none}
+  .symbol-frame{transform:none !important}
   .live-dot{animation:none}
   *{scroll-behavior:auto !important}
 }
@@ -274,6 +296,7 @@ body.unlocked .gate{opacity:0;visibility:hidden;pointer-events:none}
   padding:clamp(28px,4vw,48px) clamp(22px,5vw,80px);
   background:var(--paper-2);
   display:grid;grid-template-columns:auto 1fr auto;gap:clamp(24px,4vw,56px);align-items:start;
+  position:relative;
 }
 @media(max-width:760px){.colophon{grid-template-columns:1fr;gap:18px}}
 .colophon-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--wire);white-space:nowrap;padding-top:4px}
@@ -313,6 +336,20 @@ body.has-search .search-clear{opacity:1;pointer-events:auto}
 .search-count{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);padding-bottom:14px;white-space:nowrap}
 .search-count b{color:var(--wire);font-weight:500;font-family:'JetBrains Mono',monospace}
 @media(max-width:760px){.search-label{padding-bottom:0}.search-count{padding-bottom:0;padding-top:4px}}
+/* Desk filter pills */
+.desk-filters{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.desk-pill{
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-soft);background:transparent;border:1px solid var(--line-mid);
+  padding:7px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;
+  transition:border-color .18s ease, color .18s ease, background .18s ease;border-radius:0;
+}
+.desk-pill:hover{border-color:var(--wire);color:var(--wire)}
+.desk-pill .pill-n{font-size:9px;color:var(--muted);transition:color .18s ease}
+.desk-pill:hover .pill-n{color:var(--wire)}
+.desk-pill.is-active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.desk-pill.is-active .pill-n{color:var(--wire-bright)}
+@media(prefers-reduced-motion:reduce){.desk-pill{transition:none}}
 
 .plate--hidden{display:none !important}
 .section--empty{display:none !important}
@@ -368,7 +405,7 @@ body.no-results .section{display:none}
    ============================================================ */
 .section{padding:clamp(48px,7vw,112px) clamp(22px,5vw,80px) clamp(56px,8vw,128px);border-bottom:2px solid var(--ink);position:relative}
 .section:last-of-type{border-bottom:1px solid var(--line-mid)}
-.section-head{display:grid;grid-template-columns:auto 1fr;gap:clamp(20px,3vw,48px);align-items:start;padding-bottom:clamp(36px,5vw,64px);margin-bottom:clamp(36px,5vw,72px);border-bottom:1px solid var(--line-mid)}
+.section-head{display:grid;grid-template-columns:auto 1fr;gap:clamp(20px,3vw,48px);align-items:start;padding-bottom:clamp(36px,5vw,64px);margin-bottom:clamp(36px,5vw,72px);border-bottom:1px solid var(--line-mid);position:relative}
 .section-roman{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(60px,9vw,140px);line-height:.85;color:var(--accent);font-style:italic;letter-spacing:-.03em}
 .section-meta{padding-top:clamp(8px,1.5vw,20px)}
 .section-kicker{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:14px;display:flex;align-items:center;gap:14px}
@@ -382,30 +419,45 @@ body.no-results .section{display:none}
    ============================================================ */
 .plates{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;border-top:1px solid var(--line-mid);border-left:1px solid var(--line-mid)}
 @media(max-width:860px){.plates{grid-template-columns:1fr}}
-.plate{display:grid;cursor:pointer;grid-template-columns:minmax(140px,38%) 1fr;gap:clamp(18px,2.5vw,32px);padding:clamp(24px,3vw,44px) clamp(24px,3vw,40px) clamp(28px,3.5vw,48px);border-right:1px solid var(--line-mid);border-bottom:1px solid var(--line-mid);position:relative;background:var(--paper);transition:background .35s ease;opacity:0;transform:translateY(20px);animation:reveal .8s ease forwards}
+.plate{display:grid;cursor:pointer;grid-template-columns:minmax(140px,38%) 1fr;gap:clamp(18px,2.5vw,32px);padding:clamp(24px,3vw,44px) clamp(24px,3vw,40px) clamp(28px,3.5vw,48px);border-right:1px solid var(--line-mid);border-bottom:1px solid var(--line-mid);position:relative;background:var(--paper);transition:background .35s ease, transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s ease;opacity:0;transform:translateY(20px);animation:reveal .8s ease forwards;z-index:1}
 .plate:nth-child(1){animation-delay:.05s}.plate:nth-child(2){animation-delay:.12s}.plate:nth-child(3){animation-delay:.19s}.plate:nth-child(4){animation-delay:.26s}.plate:nth-child(5){animation-delay:.33s}
 @keyframes reveal{to{opacity:1;transform:translateY(0)}}
+/* Wire-on-hover: a copper pulse rides the card's top edge */
+.plate::before{
+  content:"";position:absolute;top:-1px;left:-90px;width:90px;height:2px;
+  background:linear-gradient(to right,transparent,var(--wire-bright),transparent);
+  box-shadow:0 0 8px var(--wire);
+  opacity:0;pointer-events:none;z-index:3;
+}
+.plate:hover::before,.plate:focus-visible::before{opacity:1;animation:wire-travel 1.4s linear infinite}
 .plate:focus-visible{outline:2px solid var(--wire);outline-offset:-2px}
 .plate:focus-visible .plate-title{color:var(--accent-deep)}
 @media(max-width:520px){.plate{grid-template-columns:1fr;gap:14px}}
-.plate:hover{background:var(--paper-2)}
+/* Hover: lift + raise above neighbors. Copper = interactive/live; oxblood = identity. */
+.plate:hover{background:var(--paper-2);transform:translateY(-2px);box-shadow:0 14px 30px -18px rgba(22,21,15,.45);z-index:2}
 .plate:hover .symbol-frame{border-color:var(--accent);background:var(--accent-tint)}
 .plate:hover .symbol-frame .accent-fill{fill:var(--accent)}
 .plate:hover .symbol-frame .accent-stroke{stroke:var(--accent)}
-.plate:hover .symbol-frame svg{transform:scale(1.04) rotate(-1deg)}
 .plate:hover .plate-num{color:var(--wire)}
 .plate:hover .plate-title{color:var(--accent-deep)}
+.plate:hover .plate-link{border-top-color:var(--wire);color:var(--wire)}
 .plate:hover .plate-link .arrow{transform:translateX(6px)}
-.symbol-frame{aspect-ratio:1/1;border:1px solid var(--ink);background:var(--paper-deep);display:flex;align-items:center;justify-content:center;position:relative;transition:border-color .25s ease, background .25s ease;overflow:hidden}
+.plate:hover .plate-recency .live-dot{opacity:1}
+.symbol-frame{aspect-ratio:1/1;border:1px solid var(--ink);background:var(--paper-deep);display:flex;align-items:center;justify-content:center;position:relative;transition:border-color .25s ease, background .25s ease, transform .25s cubic-bezier(.2,.8,.2,1);overflow:hidden;transform:perspective(520px) rotateX(0deg) rotateY(0deg)}
 .symbol-frame::before,.symbol-frame::after{content:"";position:absolute;width:8px;height:8px;border:1px solid var(--ink);background:var(--paper)}
 .symbol-frame::before{top:-1px;left:-1px;border-right:none;border-bottom:none}
 .symbol-frame::after{bottom:-1px;right:-1px;border-left:none;border-top:none}
 .symbol-frame svg{width:62%;height:62%;color:var(--ink);transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.plate:hover .symbol-frame svg{transform:scale(1.04)}
 .symbol-frame .accent-fill{fill:var(--ink);transition:fill .25s ease}
 .symbol-frame .accent-stroke{stroke:var(--ink);transition:stroke .25s ease}
 .symbol-frame .plate-stamp{position:absolute;bottom:6px;left:6px;font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.18em;color:var(--ink-soft);text-transform:uppercase}
 .plate-body{display:flex;flex-direction:column;min-width:0}
 .plate-meta{display:flex;align-items:baseline;gap:14px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:14px;flex-wrap:wrap}
+.plate-recency{margin-left:auto;display:inline-flex;align-items:center;gap:7px;font-size:9.5px;letter-spacing:.14em;color:var(--muted)}
+.plate-recency .live-dot{width:6px;height:6px;opacity:.55;transition:opacity .25s ease}
+.plate-recency.is-fresh{color:var(--wire)}
+.plate-recency.is-fresh .live-dot{opacity:1}
 .plate-num{color:var(--ink);font-weight:500;transition:color .2s ease}
 .plate-section{color:var(--muted)}
 .plate-section::before{content:"— "}
@@ -634,6 +686,12 @@ body.index-open .index-panel{transform:translateX(0)}
     </div>
     <div class="search-count"><b id="search-visible">16</b> &nbsp;/&nbsp; 16 dispatches</div>
   </div>
+  <div class="desk-filters" role="group" aria-label="Filter by desk">
+    <button type="button" class="desk-pill is-active" data-desk="all">All <span class="pill-n">16</span></button>
+    <button type="button" class="desk-pill" data-desk="section-i">Rules &amp; Guidance <span class="pill-n">4</span></button>
+    <button type="button" class="desk-pill" data-desk="section-ii">Reform Trackers <span class="pill-n">8</span></button>
+    <button type="button" class="desk-pill" data-desk="section-iii">Structural Frameworks <span class="pill-n">4</span></button>
+  </div>
 </section>
 
 <section class="search-empty" aria-live="polite">
@@ -716,7 +774,7 @@ body.index-open .index-panel{transform:translateX(0)}
 
   <div class="plates">
 
-    <a class="plate" id="plate-01" data-status="live" href="model-risk-management-2026.html" aria-label="Plate 01: Model Risk Management 2026">
+    <a class="plate" id="plate-01" data-updated="2026-05-26" data-status="live" href="model-risk-management-2026.html" aria-label="Plate 01: Model Risk Management 2026">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <rect x="14" y="14" width="72" height="72" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="3 3"/>
@@ -736,7 +794,7 @@ body.index-open .index-panel{transform:translateX(0)}
       </div>
     </a>
 
-    <a class="plate" id="plate-02" data-status="live" href="genius-act-dashboard.html" aria-label="Plate 02: GENIUS Act Dashboard">
+    <a class="plate" id="plate-02" data-updated="2026-05-20" data-status="live" href="genius-act-dashboard.html" aria-label="Plate 02: GENIUS Act Dashboard">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <polygon points="50,12 84,32 84,68 50,88 16,68 16,32" fill="none" stroke="currentColor" stroke-width="1.5"/>
@@ -757,7 +815,7 @@ body.index-open .index-panel{transform:translateX(0)}
       </div>
     </a>
 
-    <a class="plate" id="plate-03" data-status="live" href="aml-cft-program-rule-navigator.html" aria-label="Plate 03: AML/CFT Program Rule Navigator">
+    <a class="plate" id="plate-03" data-updated="2026-05-12" data-status="live" href="aml-cft-program-rule-navigator.html" aria-label="Plate 03: AML/CFT Program Rule Navigator">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <path d="M 14 20 L 86 20 L 60 50 L 60 78 L 40 78 L 40 50 Z" fill="none" stroke="currentColor" stroke-width="1.5"/>
@@ -778,7 +836,7 @@ body.index-open .index-panel{transform:translateX(0)}
       </div>
     </a>
 
-    <a class="plate" id="plate-04" data-status="live" href="ufirs-camels-2026-change-briefing.html" aria-label="Plate 04: UFIRS CAMELS 2026 Change Briefing">
+    <a class="plate" id="plate-04" data-updated="2026-04-28" data-status="live" href="ufirs-camels-2026-change-briefing.html" aria-label="Plate 04: UFIRS CAMELS 2026 Change Briefing">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <polygon points="50,16 79,33 79,67 50,84 21,67 21,33" fill="none" stroke="currentColor" stroke-width="1.4"/>
@@ -821,7 +879,7 @@ body.index-open .index-panel{transform:translateX(0)}
 
   <div class="plates">
 
-    <a class="plate" id="plate-05" data-status="live" href="eo-brief.html" aria-label="Plate 05: The Recent White House Innovation Executive Orders">
+    <a class="plate" id="plate-05" data-updated="2026-05-27" data-status="live" href="eo-brief.html" aria-label="Plate 05: The Recent White House Innovation Executive Orders">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <rect x="34" y="14" width="42" height="60" fill="var(--paper)" stroke="currentColor" stroke-width="1.2"/>
@@ -846,7 +904,7 @@ body.index-open .index-panel{transform:translateX(0)}
       </div>
     </a>
 
-    <a class="plate" id="plate-06" data-status="live" href="bank-merger-reform-scorecard.html" aria-label="Plate 06: Bank Merger Reform Scorecard">
+    <a class="plate" id="plate-06" data-updated="2026-05-18" data-status="live" href="bank-merger-reform-scorecard.html" aria-label="Plate 06: Bank Merger Reform Scorecard">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <circle cx="36" cy="50" r="24" fill="none" stroke="currentColor" stroke-width="1.5"/>
@@ -865,7 +923,7 @@ body.index-open .index-panel{transform:translateX(0)}
       </div>
     </a>
 
-    <a class="plate" id="plate-07" data-status="live" href="fed-payment-account-analysis.html" aria-label="Plate 07: Fed Payment Account Analysis">
+    <a class="plate" id="plate-07" data-updated="2026-05-28" data-status="live" href="fed-payment-account-analysis.html" aria-label="Plate 07: Fed Payment Account Analysis">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <rect x="14" y="34" width="72" height="12" fill="none" stroke="currentColor" stroke-width="1.4"/>
@@ -893,7 +951,7 @@ body.index-open .index-panel{transform:translateX(0)}
       </div>
     </a>
 
-    <a class="plate" id="plate-08" data-status="live" href="gould-occ-policy-tracker.html" aria-label="Plate 08: Gould OCC Policy Tracker">
+    <a class="plate" id="plate-08" data-updated="2026-05-22" data-status="live" href="gould-occ-policy-tracker.html" aria-label="Plate 08: Gould OCC Policy Tracker">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <path d="M 14 78 Q 32 70, 44 58 T 76 28" fill="none" stroke="currentColor" stroke-width="1.5"/>
@@ -915,7 +973,7 @@ body.index-open .index-panel{transform:translateX(0)}
       </div>
     </a>
 
-    <a class="plate" id="plate-09" data-status="live" href="hr941-small-lender-act.html" aria-label="Plate 09: H.R. 941 Small Lender Act">
+    <a class="plate" id="plate-09" data-updated="2026-05-06" data-status="live" href="hr941-small-lender-act.html" aria-label="Plate 09: H.R. 941 Small Lender Act">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <rect x="24" y="14" width="52" height="72" fill="none" stroke="currentColor" stroke-width="1.5"/>
@@ -938,7 +996,7 @@ body.index-open .index-panel{transform:translateX(0)}
       </div>
     </a>
 
-    <a class="plate" id="plate-10" data-status="live" href="csbs-comment-letters.html" aria-label="Plate 10: CSBS Comment Letters">
+    <a class="plate" id="plate-10" data-updated="2026-04-30" data-status="live" href="csbs-comment-letters.html" aria-label="Plate 10: CSBS Comment Letters">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <rect x="14" y="28" width="72" height="48" fill="none" stroke="currentColor" stroke-width="1.5"/>
@@ -959,7 +1017,7 @@ body.index-open .index-panel{transform:translateX(0)}
       </div>
     </a>
 
-    <a class="plate" id="plate-11" data-status="live" href="rulemaking-calendar.html" aria-label="Plate 11: A Policy Lookahead">
+    <a class="plate" id="plate-11" data-updated="2026-05-25" data-status="live" href="rulemaking-calendar.html" aria-label="Plate 11: A Policy Lookahead">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <line x1="12" y1="28" x2="48" y2="50" stroke="currentColor" stroke-width="1.2" opacity=".55"/>
@@ -989,7 +1047,7 @@ body.index-open .index-panel{transform:translateX(0)}
       </div>
     </a>
 
-    <a class="plate" id="plate-12" data-status="live" href="aba-bpi-icba-comparison-sourced.html" aria-label="Plate 12: ABA / BPI / ICBA Position Comparison">
+    <a class="plate" id="plate-12" data-updated="2026-05-09" data-status="live" href="aba-bpi-icba-comparison-sourced.html" aria-label="Plate 12: ABA / BPI / ICBA Position Comparison">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <circle cx="40" cy="40" r="24" fill="none" stroke="currentColor" stroke-width="1.4"/>
@@ -1029,7 +1087,7 @@ body.index-open .index-panel{transform:translateX(0)}
 
   <div class="plates">
 
-    <a class="plate" id="plate-13" data-status="live" href="fed-supervisory-comp.html" aria-label="Plate 13: New Federal Reserve Supervisory Operating Principles">
+    <a class="plate" id="plate-13" data-updated="2026-04-22" data-status="live" href="fed-supervisory-comp.html" aria-label="Plate 13: New Federal Reserve Supervisory Operating Principles">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <line x1="16" y1="84" x2="50" y2="50" stroke="currentColor" stroke-width="1.8"/>
@@ -1053,7 +1111,7 @@ body.index-open .index-panel{transform:translateX(0)}
       </div>
     </a>
 
-    <a class="plate" id="plate-14" data-status="live" href="us-trust-company-regulatory-framework.html" aria-label="Plate 14: U.S. Trust Company Regulatory Framework">
+    <a class="plate" id="plate-14" data-updated="2026-03-30" data-status="live" href="us-trust-company-regulatory-framework.html" aria-label="Plate 14: U.S. Trust Company Regulatory Framework">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <rect x="20" y="20" width="60" height="60" fill="none" stroke="currentColor" stroke-width="1.5"/>
@@ -1076,7 +1134,7 @@ body.index-open .index-panel{transform:translateX(0)}
       </div>
     </a>
 
-    <a class="plate" id="plate-15" data-status="live" href="occ-preemption-timeline.html" aria-label="Plate 15: OCC Preemption Timeline">
+    <a class="plate" id="plate-15" data-updated="2026-04-15" data-status="live" href="occ-preemption-timeline.html" aria-label="Plate 15: OCC Preemption Timeline">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <line x1="14" y1="28" x2="58" y2="28" stroke="currentColor" stroke-width="2.4"/>
@@ -1098,7 +1156,7 @@ body.index-open .index-panel{transform:translateX(0)}
       </div>
     </a>
 
-    <a class="plate" id="plate-16" data-status="live" href="regulatory-map.html" aria-label="Plate 16: Regulatory Map">
+    <a class="plate" id="plate-16" data-updated="2026-03-18" data-status="live" href="regulatory-map.html" aria-label="Plate 16: Regulatory Map">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <circle cx="50" cy="50" r="34" fill="none" stroke="currentColor" stroke-width="1"/>
@@ -1192,7 +1250,7 @@ body.index-open .index-panel{transform:translateX(0)}
 })();
 
 // ============================================================
-// SEARCH / FILTER
+// SEARCH + DESK FILTER (coordinated)
 // ============================================================
 (function(){
   const input = document.getElementById('catalogue-search');
@@ -1201,17 +1259,23 @@ body.index-open .index-panel{transform:translateX(0)}
   const emptyClearBtn = document.querySelector('.search-empty .clear-cta');
   const plates = Array.from(document.querySelectorAll('.section .plate'));
   const sections = Array.from(document.querySelectorAll('section.section'));
+  const pills = Array.from(document.querySelectorAll('.desk-pill'));
   if (!input || plates.length === 0) return;
 
   const norm = s => s.toLowerCase().replace(/\s+/g, ' ').trim();
   const index = plates.map(p => norm(p.textContent));
+  // which desk (section id) each plate belongs to
+  const deskOf = plates.map(p => { const s = p.closest('section.section'); return s ? s.id : ''; });
+  let activeDesk = 'all';
 
   function run(){
     const q = norm(input.value);
     const terms = q ? q.split(' ').filter(Boolean) : [];
     let visible = 0;
     plates.forEach((plate, i) => {
-      const match = terms.length === 0 || terms.every(t => index[i].includes(t));
+      const textMatch = terms.length === 0 || terms.every(t => index[i].includes(t));
+      const deskMatch = activeDesk === 'all' || deskOf[i] === activeDesk;
+      const match = textMatch && deskMatch;
       plate.classList.toggle('plate--hidden', !match);
       if (match) visible++;
     });
@@ -1221,14 +1285,33 @@ body.index-open .index-panel{transform:translateX(0)}
       s.classList.toggle('section--empty', all.length > 0 && all.length === hidden.length);
     });
     countEl.textContent = visible;
-    document.body.classList.toggle('has-search', terms.length > 0);
-    document.body.classList.toggle('no-results', visible === 0 && terms.length > 0);
+    const filtering = terms.length > 0 || activeDesk !== 'all';
+    document.body.classList.toggle('has-search', filtering);
+    document.body.classList.toggle('no-results', visible === 0 && filtering);
   }
   function clear(refocus){ input.value = ''; run(); if (refocus) input.focus(); }
 
+  // Desk pills
+  pills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      activeDesk = pill.dataset.desk;
+      pills.forEach(p => p.classList.toggle('is-active', p === pill));
+      run();
+      // scroll the relevant desk into view (skip for "all")
+      if(activeDesk !== 'all'){
+        const target = document.getElementById(activeDesk);
+        if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+    });
+  });
+
   input.addEventListener('input', run);
   clearBtn.addEventListener('click', () => clear(true));
-  emptyClearBtn.addEventListener('click', () => clear(true));
+  emptyClearBtn.addEventListener('click', () => {
+    activeDesk = 'all';
+    pills.forEach(p => p.classList.toggle('is-active', p.dataset.desk === 'all'));
+    clear(true);
+  });
   document.addEventListener('keydown', (e) => {
     const tag = e.target.tagName;
     const editable = e.target.isContentEditable;
@@ -1237,6 +1320,64 @@ body.index-open .index-panel{transform:translateX(0)}
     } else if (e.key === 'Escape' && document.activeElement === input) {
       if (input.value) clear(true); else input.blur();
     }
+  });
+})();
+
+// ============================================================
+// PLATE RECENCY — render "updated N ago" from data-updated
+// ============================================================
+(function(){
+  const plates = Array.from(document.querySelectorAll('.plate[data-updated]'));
+  if(!plates.length) return;
+  const now = new Date();
+  const MS = 86400000;
+  const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  function label(d){
+    const days = Math.max(0, Math.round((now - d) / MS));
+    if(days <= 0) return {txt:'Filed today', fresh:true};
+    if(days === 1) return {txt:'Upd. 1d ago', fresh:true};
+    if(days < 14) return {txt:'Upd. ' + days + 'd ago', fresh:true};
+    if(days < 56) return {txt:'Upd. ' + Math.round(days/7) + 'w ago', fresh:false};
+    return {txt:'Rev. ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear(), fresh:false};
+  }
+
+  plates.forEach(p => {
+    const meta = p.querySelector('.plate-meta');
+    if(!meta) return;
+    const d = new Date(p.dataset.updated + 'T00:00:00');
+    if(isNaN(d)) return;
+    const info = label(d);
+    const el = document.createElement('span');
+    el.className = 'plate-recency' + (info.fresh ? ' is-fresh' : '');
+    el.innerHTML = (info.fresh ? '<span class="live-dot"></span>' : '') + '<span>' + info.txt + '</span>';
+    meta.appendChild(el);
+  });
+})();
+
+// ============================================================
+// POINTER-TILT on symbol frames (skipped under reduced motion / touch)
+// ============================================================
+(function(){
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fine = window.matchMedia && window.matchMedia('(pointer: fine)').matches;
+  if(reduce || !fine) return;
+  const MAX = 7; // degrees
+  document.querySelectorAll('.plate').forEach(plate => {
+    const frame = plate.querySelector('.symbol-frame');
+    if(!frame) return;
+    plate.addEventListener('pointermove', (e) => {
+      const r = frame.getBoundingClientRect();
+      const cx = r.left + r.width/2, cy = r.top + r.height/2;
+      const dx = (e.clientX - cx) / (r.width/2);
+      const dy = (e.clientY - cy) / (r.height/2);
+      const rx = Math.max(-1, Math.min(1, -dy)) * MAX;
+      const ry = Math.max(-1, Math.min(1, dx)) * MAX;
+      frame.style.transform = 'perspective(520px) rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg)';
+    });
+    plate.addEventListener('pointerleave', () => {
+      frame.style.transform = 'perspective(520px) rotateX(0deg) rotateY(0deg)';
+    });
   });
 })();
 
@@ -1260,6 +1401,9 @@ body.index-open .index-panel{transform:translateX(0)}
     tag.setAttribute('tabindex','0');
     const fire = (e) => {
       e.preventDefault(); e.stopPropagation();
+      // reset any active desk filter so a tag search spans all desks
+      const allPill = document.querySelector('.desk-pill[data-desk="all"]');
+      if(allPill && !allPill.classList.contains('is-active')) allPill.click();
       input.value = tag.textContent.trim();
       input.dispatchEvent(new Event('input', {bubbles:true}));
       syncUrl();
