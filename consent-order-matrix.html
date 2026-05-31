@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="BankRegWire Enforcement Desk — a cross-institution comparison of supervisory deficiencies across 15 FDIC, OCC, and Federal Reserve consent orders, read paragraph-by-paragraph from the primary source.">
+<title>Consent Order Matrix · BankRegWire</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2316150f'/%3E%3Cline x1='5' y1='16' x2='27' y2='16' stroke='%23d97e1d' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='3.5' fill='%23d97e1d'/%3E%3Ccircle cx='16' cy='16' r='1.4' fill='%2316150f'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#16150f; --ink-2:#1b1912; --panel:#211e16; --panel-2:#26221a; --panel-3:#2c2820;
+  --line:#332f23; --line-2:#423c2c; --line-3:#534a36;
+  --copper:#d97e1d; --copper-br:#ec9a3e; --copper-dim:#9c5d1a;
+  --oxblood:#c1574554; --oxblood-ink:#c75a47;
+  --paper:#ece5d5; --paper-2:#d2c9b5; --muted:#9a917c; --faint:#6d6555; --faintest:#49463a;
+  --faint-2:#564e3f;
+  --c-gov:#d97e1d; --c-bsa:#4f9d92; --c-cc:#9b7bb0; --c-ss:#6f93b8; --c-op:#9aa168; --c-holdco:#c07b6b; --c-profile:#b9b0a0;
+  --reg-fdic:#7ba0c4; --reg-occ:#cf9050; --reg-frb:#84b08c;
+  --serif:'Fraunces',Georgia,'Times New Roman',serif;
+  --mono:'IBM Plex Mono',ui-monospace,'SFMono-Regular',Menlo,monospace;
+  --ok:#7faa86;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--ink); color:var(--paper);
+  font-family:var(--mono); font-size:14px; line-height:1.5;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  background-image:
+    radial-gradient(115% 90% at 50% -10%, rgba(217,126,29,.06) 0%, transparent 60%),
+    radial-gradient(120% 120% at 50% 0%, rgba(217,126,29,.05), transparent 55%);
+  background-attachment:fixed;
+}
+body::before{ /* fine grain */
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.wrap{position:relative; z-index:1; max-width:1320px; margin:0 auto; padding:0 22px 80px}
+
+/* ---------- wire motif ---------- */
+.wire{display:flex; align-items:center; gap:0; height:2px}
+.wire .ln{flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--copper-dim),var(--copper))}
+.wire .ln.r{background:linear-gradient(90deg,var(--copper),var(--copper-dim),transparent)}
+.wire .node{width:7px; height:7px; border-radius:50%; background:var(--copper); position:relative; flex:0 0 auto}
+.wire .node::after{content:""; position:absolute; inset:2.4px; border-radius:50%; background:var(--ink)}
+
+/* ---------- masthead ---------- */
+header.mast{padding:20px 0 0}
+.mast-top{display:flex; align-items:flex-end; justify-content:space-between; gap:18px; flex-wrap:wrap}
+.wordmark{font-family:var(--serif); font-weight:300; font-size:clamp(26px,4.4vw,40px); line-height:.9; letter-spacing:-.02em; display:flex; align-items:baseline; gap:0}
+.wordmark .bank{color:var(--paper)} 
+.wordmark .w{font-style:italic; color:var(--oxblood-ink); font-weight:400}
+.wordmark .dot{color:var(--copper); margin-left:.02em}
+.mast-tag{display:flex; align-items:center; gap:9px; font-family:var(--mono); font-size:10.5px; letter-spacing:.22em; text-transform:uppercase; color:var(--muted)}
+.live{width:7px;height:7px;border-radius:50%;background:var(--copper);box-shadow:0 0 0 0 rgba(217,126,29,.5);animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(217,126,29,.45)}70%{box-shadow:0 0 0 7px rgba(217,126,29,0)}100%{box-shadow:0 0 0 0 rgba(217,126,29,0)}}
+.mast-wire{margin:16px 0 0; position:relative}
+.mast-wire::after{content:""; position:absolute; top:50%; left:-46px; width:46px; height:3px; border-radius:3px; transform:translateY(-50%); background:linear-gradient(90deg,transparent,rgba(217,126,29,.12) 45%,var(--copper-br)); box-shadow:0 0 10px 1px rgba(217,126,29,.5); opacity:0; pointer-events:none; animation:wireRun 5.5s ease-in-out infinite}
+.mast-wire .node{animation:nodeFlare 5.5s ease-in-out infinite}
+@keyframes wireRun{0%{left:-46px;opacity:0}6%{opacity:1}94%{opacity:1}100%{left:100%;opacity:0}}
+@keyframes nodeFlare{0%,42%{box-shadow:0 0 0 0 rgba(217,126,29,0)}50%{box-shadow:0 0 11px 3px rgba(217,126,29,.6)}58%,100%{box-shadow:0 0 0 0 rgba(217,126,29,0)}}
+@media (prefers-reduced-motion: reduce){.mast-wire::after{display:none}.mast-wire .node,.live{animation:none}}
+.dateline{font-family:var(--mono); font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--faint); margin:13px 0 0; display:flex; gap:14px; flex-wrap:wrap; align-items:center}
+.dateline .sep{color:var(--line-3)}
+.title-row{display:flex; align-items:flex-start; justify-content:space-between; gap:24px; flex-wrap:wrap; margin:6px 0 0}
+h1.title{font-family:var(--serif); font-weight:300; font-size:clamp(34px,6vw,62px); line-height:.98; letter-spacing:-.025em; margin:6px 0 0; color:var(--paper); max-width:15ch}
+h1.title em{font-style:italic; color:var(--copper-br)}
+.standfirst{font-family:var(--serif); font-weight:400; font-size:clamp(15px,1.9vw,18.5px); line-height:1.42; color:var(--paper-2); max-width:52ch; margin:14px 0 0}
+.legend-btn{font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--paper-2); background:transparent; border:1px solid var(--line-2); padding:9px 14px; border-radius:2px; cursor:pointer; white-space:nowrap; transition:.18s; display:inline-flex; align-items:center; gap:8px}
+.legend-btn:hover{border-color:var(--copper); color:var(--copper-br)}
+.legend-btn .k{width:6px;height:6px;border-radius:50%;background:var(--copper)}
+
+.meta-strip{display:flex; gap:0; flex-wrap:wrap; margin:22px 0 0; border:1px solid var(--line); border-radius:3px; overflow:hidden; background:var(--ink-2)}
+.meta-cell{flex:1 1 130px; padding:13px 16px; border-right:1px solid var(--line); min-width:120px}
+.meta-cell:last-child{border-right:none}
+.meta-cell .v{font-family:var(--serif); font-size:27px; font-weight:400; line-height:1; color:var(--copper-br)}
+.meta-cell .l{font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); margin-top:7px}
+
+/* ---------- tabs ---------- */
+.tabs{position:sticky; top:0; z-index:40; background:linear-gradient(180deg,var(--ink) 72%,rgba(22,21,15,.0)); margin:26px 0 0; padding-top:6px}
+.tabs-inner{display:flex; gap:2px; flex-wrap:wrap; border-bottom:1px solid var(--line-2)}
+.tab{font-family:var(--mono); font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); background:transparent; border:none; border-bottom:2px solid transparent; padding:14px 18px 12px; cursor:pointer; transition:.16s; position:relative; margin-bottom:-1px}
+.tab:hover{color:var(--paper)}
+.tab.active{color:var(--copper-br); border-bottom-color:var(--copper)}
+.tab .n{font-size:9px; color:var(--faint); margin-left:7px; letter-spacing:.05em}
+.tab.active .n{color:var(--copper-dim)}
+
+.panel{display:none; padding-top:26px; animation:fade .35s ease both}
+.panel.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.eyebrow{font-family:var(--mono); font-size:10px; letter-spacing:.22em; text-transform:uppercase; color:var(--copper); margin:0 0 8px}
+.lede{font-family:var(--serif); font-size:17px; line-height:1.5; color:var(--paper-2); max-width:64ch; margin:0 0 22px}
+
+/* ---------- controls ---------- */
+.controls{display:flex; gap:10px 16px; align-items:center; flex-wrap:wrap; margin:0 0 18px; padding:14px 16px; background:var(--ink-2); border:1px solid var(--line); border-radius:3px}
+.ctl-grp{display:flex; align-items:center; gap:8px}
+.ctl-lab{font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--faint)}
+.search{position:relative}
+.search input{font-family:var(--mono); font-size:12.5px; color:var(--paper); background:var(--panel); border:1px solid var(--line-2); border-radius:2px; padding:8px 11px 8px 30px; width:230px; max-width:60vw; transition:.16s}
+.search input::placeholder{color:var(--faint)}
+.search input:focus{outline:none; border-color:var(--copper); background:var(--panel-2)}
+.search svg{position:absolute; left:9px; top:50%; transform:translateY(-50%); width:13px; height:13px; stroke:var(--faint)}
+.chips{display:flex; gap:4px; flex-wrap:wrap}
+.chip{font-family:var(--mono); font-size:11px; letter-spacing:.07em; color:var(--muted); background:var(--panel); border:1px solid var(--line-2); border-radius:2px; padding:7px 12px; cursor:pointer; transition:.14s; text-transform:uppercase}
+.chip:hover{color:var(--paper); border-color:var(--line-3)}
+.chip.on{color:var(--ink); background:var(--copper); border-color:var(--copper); font-weight:500}
+select.sel{font-family:var(--mono); font-size:11.5px; color:var(--paper-2); background:var(--panel); border:1px solid var(--line-2); border-radius:2px; padding:7px 26px 7px 11px; cursor:pointer; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239a917c' fill='none' stroke-width='1.3'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 9px center}
+select.sel:focus{outline:none;border-color:var(--copper)}
+.toggle{display:inline-flex; align-items:center; gap:8px; cursor:pointer; font-family:var(--mono); font-size:11px; letter-spacing:.04em; color:var(--muted); text-transform:uppercase; user-select:none}
+.toggle .sw{width:30px;height:16px;border-radius:9px;background:var(--panel-3);border:1px solid var(--line-2);position:relative;transition:.18s}
+.toggle .sw::after{content:"";position:absolute;top:1.5px;left:1.5px;width:11px;height:11px;border-radius:50%;background:var(--faint);transition:.18s}
+.toggle.on .sw{background:var(--copper-dim);border-color:var(--copper)}
+.toggle.on .sw::after{left:14.5px;background:var(--copper-br)}
+.toggle.on{color:var(--paper)}
+.spacer{flex:1}
+.reset{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);background:none;border:none;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.reset:hover{color:var(--copper-br)}
+
+/* ---------- matrix ---------- */
+.mx-wrap{overflow:auto; max-height:76vh; border:1px solid var(--line); border-radius:3px; background:var(--ink-2); position:relative}
+.mx-wrap::-webkit-scrollbar{height:11px;width:11px}
+.mx-wrap::-webkit-scrollbar-track{background:var(--ink)}
+.mx-wrap::-webkit-scrollbar-thumb{background:var(--line-3);border-radius:6px;border:3px solid var(--ink-2)}
+table.mx{border-collapse:separate; border-spacing:0; font-family:var(--mono)}
+.mx th,.mx td{border-right:1px solid var(--line); border-bottom:1px solid var(--line)}
+.mx thead th{position:sticky; background:var(--panel); z-index:6}
+.mx tr.groups th{top:0; height:26px; font-size:9px; letter-spacing:.14em; text-transform:uppercase; padding:0 8px; text-align:left; white-space:nowrap; color:var(--ink); border-bottom:1px solid var(--ink)}
+.mx tr.heads th.theme{top:26px; height:188px; z-index:5; vertical-align:bottom; padding:9px 0 9px; cursor:pointer; background:var(--panel)}
+.mx tr.heads th.theme .lab{writing-mode:vertical-rl; transform:rotate(180deg); white-space:nowrap; font-size:10.5px; letter-spacing:.02em; color:var(--paper-2); margin:0 auto; max-height:170px; overflow:hidden; transition:.14s}
+.mx tr.heads th.theme:hover .lab{color:var(--copper-br)}
+.mx tr.heads th.theme.sorted .lab{color:var(--copper); font-weight:600}
+.mx tr.heads th.theme .fbar{height:3px;width:100%;margin-bottom:6px}
+.mx th.corner{left:0; top:0; z-index:12; background:var(--panel-2); text-align:left; vertical-align:bottom; padding:10px 14px; min-width:236px; width:236px; border-right:1px solid var(--line-2)}
+.mx th.corner .ct{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--paper);font-weight:400}
+.mx th.corner .cs{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-top:4px}
+.mx td.rowhead, .mx th.rowhead{position:sticky; left:0; z-index:4; background:var(--panel); min-width:236px; width:236px; text-align:left; padding:10px 14px; border-right:1px solid var(--line-2); vertical-align:middle; cursor:pointer; transition:background .14s}
+.mx tbody tr:hover td.rowhead{background:var(--panel-2)}
+.mx td.rowhead .nm{font-family:var(--serif); font-size:15px; line-height:1.12; color:var(--paper); font-weight:400}
+.mx td.rowhead:hover .nm{color:var(--copper-br)}
+.mx td.rowhead .sub{display:flex;align-items:center;gap:7px;margin-top:5px}
+.mx td.rowhead .dk{font-size:9.5px;color:var(--faint);letter-spacing:.02em}
+.regpill{font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;padding:1.5px 5px;border-radius:2px;font-weight:600;border:1px solid}
+.regpill.FDIC{color:var(--reg-fdic);border-color:#3c4e60}
+.regpill.OCC{color:var(--reg-occ);border-color:#5e482b}
+.regpill.FRB{color:var(--reg-frb);border-color:#3f5a45}
+.mx td.rowhead .pbar{margin-top:8px;height:4px;background:var(--panel-3);border-radius:2px;position:relative;overflow:hidden}
+.mx td.rowhead .pbar i{position:absolute;left:0;top:0;bottom:0;background:var(--copper);border-radius:2px}
+.mx td.rowhead .pc{font-size:9px;color:var(--muted);margin-top:4px;letter-spacing:.05em}
+.mx td.cell{width:30px; min-width:30px; max-width:30px; height:38px; text-align:center; vertical-align:middle; padding:0; cursor:default; position:relative}
+.mx td.cell.has{cursor:pointer}
+.mx td.cell:hover{background:rgba(217,126,29,.09)}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%}
+.dot.full{background:var(--copper)}
+.dot.ref{background:transparent;border:1.6px solid var(--copper);width:8px;height:8px}
+.dot.none{width:3px;height:3px;background:var(--faint-2);border-radius:50%}
+.cite-tok{font-size:9.5px;line-height:1.05;color:var(--copper-br);padding:2px 3px;display:block}
+.cite-tok.ref{color:var(--muted)}
+.mx.cites td.cell{width:auto;min-width:46px;max-width:none;padding:3px 4px;white-space:nowrap}
+.mx tbody tr:hover td.cell{background:rgba(217,126,29,.05)}
+.mx tr.total td{position:sticky; bottom:0; z-index:3; background:var(--panel-2); border-top:1px solid var(--line-2)}
+.mx tr.total td.rowhead{z-index:7; background:var(--panel-2)}
+.mx tr.total td.rowhead .nm{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-family:var(--mono);color:var(--copper);font-weight:600}
+.mx tr.total td.rowhead .sub{margin-top:3px}
+.mx tr.total td.tcell{text-align:center;vertical-align:bottom;padding:0 0 5px;height:46px}
+.mx tr.total .tbar{width:7px;margin:0 auto;background:var(--copper-dim);border-radius:1px}
+.mx tr.total .tn{font-size:9.5px;color:var(--paper-2);margin-top:3px}
+.mx tr.total .tn.zero{color:var(--faint-2)}
+.scroll-hint{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin:10px 0 0;display:flex;align-items:center;gap:8px}
+
+/* ---------- tooltip ---------- */
+#tip{position:fixed; z-index:200; max-width:300px; background:var(--panel-2); border:1px solid var(--line-3); border-left:3px solid var(--copper); border-radius:3px; padding:12px 14px; pointer-events:none; opacity:0; transition:opacity .12s; box-shadow:0 14px 40px rgba(0,0,0,.55); font-family:var(--mono)}
+#tip.show{opacity:1}
+#tip.pinned{pointer-events:auto}
+#tip .ti-inst{font-family:var(--serif);font-size:15px;color:var(--paper);font-weight:400;line-height:1.15}
+#tip .ti-fam{font-size:9px;letter-spacing:.14em;text-transform:uppercase;margin:7px 0 2px}
+#tip .ti-theme{font-size:12px;color:var(--paper-2);line-height:1.3}
+#tip .ti-cite{font-size:13px;color:var(--copper-br);margin-top:8px;letter-spacing:.02em}
+#tip .ti-note{font-size:10px;color:var(--muted);margin-top:7px;font-style:italic;line-height:1.35}
+#tip .ti-close{position:absolute;top:6px;right:8px;color:var(--faint);cursor:pointer;font-size:14px;display:none}
+#tip.pinned .ti-close{display:block}
+#tip.pinned .ti-close:hover{color:var(--copper-br)}
+
+/* ---------- league ---------- */
+.brief{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden;margin:0 0 26px}
+.brief .b{background:var(--ink-2);padding:16px 18px}
+.brief .b .bn{font-family:var(--serif);font-size:30px;color:var(--copper-br);line-height:1}
+.brief .b .bt{font-size:11.5px;line-height:1.45;color:var(--paper-2);margin-top:9px;font-family:var(--mono)}
+.brief .b .bt b{color:var(--paper);font-weight:600}
+.lg-head{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:0 0 14px}
+.lg-list{display:flex;flex-direction:column;gap:2px}
+.lg-fam-h{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;margin:16px 0 7px;display:flex;align-items:center;gap:9px}
+.lg-fam-h .sw{width:9px;height:9px;border-radius:2px}
+.lg-row{display:grid;grid-template-columns:minmax(180px,2.1fr) 5fr minmax(56px,auto);align-items:center;gap:14px;padding:8px 10px;border-radius:2px;cursor:pointer;transition:background .14s;border:1px solid transparent}
+.lg-row:hover{background:var(--ink-2);border-color:var(--line)}
+.lg-row.open{background:var(--ink-2);border-color:var(--line-2)}
+.lg-name{font-family:var(--mono);font-size:12.5px;color:var(--paper-2);line-height:1.2}
+.lg-row.open .lg-name{color:var(--paper)}
+.lg-track{height:14px;background:var(--panel);border-radius:2px;position:relative;overflow:hidden}
+.lg-fill{position:absolute;left:0;top:0;bottom:0;border-radius:2px;display:flex;align-items:center;justify-content:flex-end}
+.lg-ref{position:absolute;top:0;bottom:0;background-image:repeating-linear-gradient(45deg,rgba(22,21,15,.0),rgba(22,21,15,.0) 3px,rgba(22,21,15,.45) 3px,rgba(22,21,15,.45) 6px)}
+.lg-count{font-family:var(--mono);font-size:12px;color:var(--paper-2);text-align:right;letter-spacing:.02em}
+.lg-count b{color:var(--copper-br);font-weight:600}
+.lg-detail{grid-column:1/-1;display:none;padding:10px 4px 6px;flex-wrap:wrap;gap:6px}
+.lg-row.open .lg-detail{display:flex}
+.inst-chip{font-family:var(--mono);font-size:10.5px;color:var(--paper-2);background:var(--panel);border:1px solid var(--line-2);border-radius:2px;padding:4px 8px;display:inline-flex;align-items:center;gap:6px}
+.inst-chip .ic-cite{color:var(--copper-br);font-size:9.5px}
+.inst-chip.refc{border-style:dashed;color:var(--muted)}
+.inst-chip.refc .ic-cite{color:var(--muted)}
+
+/* ---------- dossiers ---------- */
+.dos-layout{display:grid;grid-template-columns:248px 1fr;gap:26px;align-items:start}
+.dos-list{display:flex;flex-direction:column;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden;position:sticky;top:64px}
+.dos-li{background:var(--ink-2);border:none;text-align:left;cursor:pointer;padding:11px 14px;transition:.14s;border-left:2px solid transparent}
+.dos-li:hover{background:var(--panel)}
+.dos-li.on{background:var(--panel-2);border-left-color:var(--copper)}
+.dos-li .dn{font-family:var(--serif);font-size:13.5px;color:var(--paper-2);line-height:1.15}
+.dos-li.on .dn{color:var(--paper)}
+.dos-li .dm{display:flex;align-items:center;gap:7px;margin-top:4px}
+.dos-li .dk{font-size:9px;color:var(--faint)}
+.dos-sel{display:none}
+.card{border:1px solid var(--line-2);border-radius:4px;background:var(--ink-2);overflow:hidden}
+.card-top{padding:24px 26px 22px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,var(--panel) 0%,var(--ink-2) 100%);position:relative}
+.card-top .ribbon{position:absolute;top:0;left:0;right:0;height:3px}
+.card-eyebrow{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--copper);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.card h2{font-family:var(--serif);font-weight:300;font-size:clamp(26px,4vw,40px);line-height:1.02;letter-spacing:-.02em;color:var(--paper);margin:11px 0 0;max-width:20ch}
+.card .sig{font-family:var(--serif);font-style:italic;font-size:16px;color:var(--paper-2);margin:14px 0 0;line-height:1.4;max-width:60ch}
+.card .sig b{font-style:normal;color:var(--copper-br);font-weight:500}
+.meta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border-bottom:1px solid var(--line)}
+.mg{background:var(--ink-2);padding:13px 16px}
+.mg .l{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--faint)}
+.mg .v{font-family:var(--mono);font-size:12.5px;color:var(--paper);margin-top:5px;line-height:1.3}
+.card-body{padding:22px 26px 26px}
+.prov-fam{margin:0 0 20px}
+.prov-fam:last-child{margin-bottom:0}
+.prov-fam-h{display:flex;align-items:baseline;gap:10px;padding-bottom:7px;border-bottom:1px solid var(--line);margin-bottom:11px}
+.prov-fam-h .nm{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase}
+.prov-fam-h .ct{font-family:var(--mono);font-size:9.5px;color:var(--faint);letter-spacing:.08em;margin-left:auto}
+.prov-fam-h .sw{width:8px;height:8px;border-radius:2px}
+.prov-rows{display:flex;flex-direction:column;gap:8px}
+.prov-row{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:baseline}
+.prov-row .pn{font-family:var(--serif);font-size:15px;color:var(--paper-2);line-height:1.25}
+.prov-row .pc{font-family:var(--mono);font-size:12px;color:var(--copper-br);text-align:right;letter-spacing:.02em;white-space:nowrap}
+.prov-row.refp .pn{color:var(--muted)}
+.prov-row.refp .pc{color:var(--muted)}
+.prov-row.refp .pc::after{content:" · ref";font-size:9px;color:var(--faint);font-style:italic}
+.dos-nav{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
+.dos-nav button{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--paper-2);background:var(--ink-2);border:1px solid var(--line-2);padding:10px 16px;border-radius:2px;cursor:pointer;transition:.14s}
+.dos-nav button:hover{border-color:var(--copper);color:var(--copper-br)}
+
+/* ---------- lens ---------- */
+.lens-ctl{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 20px}
+.heat-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--ink-2)}
+table.heat{border-collapse:separate;border-spacing:0;width:100%;font-family:var(--mono);min-width:560px}
+.heat th,.heat td{padding:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.heat thead th{background:var(--panel);padding:14px 14px;text-align:center;vertical-align:bottom}
+.heat thead th.gh{font-family:var(--serif);font-size:17px;color:var(--paper);font-weight:400}
+.heat thead th .gn{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-top:4px}
+.heat thead th.rh{text-align:left;width:210px;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);vertical-align:bottom}
+.heat td.fh{text-align:left;padding:13px 14px;background:var(--panel);width:210px}
+.heat td.fh .fn{font-family:var(--mono);font-size:11.5px;color:var(--paper-2);letter-spacing:.04em;display:flex;align-items:center;gap:9px}
+.heat td.fh .fn .sw{width:9px;height:9px;border-radius:2px;flex:0 0 auto}
+.heat td.fh .fmax{font-size:8.5px;color:var(--faint);margin-top:3px;letter-spacing:.06em}
+.heat td.hc{text-align:center;vertical-align:middle;height:62px;position:relative}
+.heat td.hc .val{font-family:var(--serif);font-size:22px;font-weight:400;position:relative;z-index:1}
+.heat td.hc .pct{font-family:var(--mono);font-size:8.5px;letter-spacing:.06em;margin-top:1px;position:relative;z-index:1;opacity:.8}
+.lens-read{margin-top:22px;border-left:3px solid var(--copper);background:var(--ink-2);padding:18px 22px;border-radius:0 3px 3px 0}
+.lens-read h3{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--copper);margin:0 0 12px}
+.lens-read p{font-family:var(--serif);font-size:15.5px;line-height:1.55;color:var(--paper-2);margin:0 0 11px;max-width:72ch}
+.lens-read p:last-child{margin-bottom:0}
+.lens-read b{color:var(--paper);font-weight:500}
+
+/* ---------- legend slide-over ---------- */
+.scrim{position:fixed;inset:0;background:rgba(10,9,6,.62);backdrop-filter:blur(2px);z-index:90;opacity:0;pointer-events:none;transition:.25s}
+.scrim.open{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(440px,92vw);background:var(--ink-2);border-left:1px solid var(--line-2);z-index:91;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);overflow-y:auto;box-shadow:-20px 0 60px rgba(0,0,0,.5)}
+.drawer.open{transform:none}
+.drawer-h{position:sticky;top:0;background:var(--panel);border-bottom:1px solid var(--line);padding:18px 22px;display:flex;align-items:center;justify-content:space-between;z-index:2}
+.drawer-h .t{font-family:var(--serif);font-size:20px;color:var(--paper);font-weight:400}
+.drawer-h .x{background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;line-height:1}
+.drawer-h .x:hover{color:var(--copper-br)}
+.drawer-body{padding:22px}
+.lg-sec{margin:0 0 24px}
+.lg-sec h4{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--copper);margin:0 0 12px}
+.conv{display:flex;align-items:flex-start;gap:12px;margin:0 0 13px}
+.conv .gl{flex:0 0 30px;display:flex;justify-content:center;padding-top:3px}
+.conv .tx{font-family:var(--serif);font-size:14px;line-height:1.4;color:var(--paper-2)}
+.conv .tx b{font-style:normal;color:var(--paper);font-weight:500;font-family:var(--mono);font-size:12px;letter-spacing:.02em}
+.fam-key{display:flex;flex-direction:column;gap:9px}
+.fam-key .fk{display:flex;align-items:center;gap:10px}
+.fam-key .fk .sw{width:11px;height:11px;border-radius:2px;flex:0 0 auto}
+.fam-key .fk .fkn{font-family:var(--serif);font-size:14px;color:var(--paper-2)}
+.fam-key .fk .fkc{font-family:var(--mono);font-size:9.5px;color:var(--faint);margin-left:auto;letter-spacing:.06em}
+.note-box{font-family:var(--serif);font-size:13.5px;line-height:1.5;color:var(--paper-2);background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:14px 16px}
+.note-box code{font-family:var(--mono);font-size:12px;color:var(--copper-br);background:var(--ink);padding:1px 5px;border-radius:2px}
+.src-list{font-family:var(--mono);font-size:11px;line-height:1.65;color:var(--muted)}
+.src-list .s{padding:6px 0;border-bottom:1px solid var(--line)}
+.src-list .s:last-child{border:none}
+.src-list .s b{color:var(--paper-2);font-weight:500}
+.src-list .s .d{color:var(--copper-dim)}
+
+/* ---------- footer ---------- */
+footer{margin-top:46px;padding-top:24px;border-top:1px solid var(--line)}
+.colophon{font-family:var(--serif);font-size:13.5px;line-height:1.6;color:var(--muted);max-width:84ch}
+.colophon b{color:var(--paper-2);font-weight:500}
+.foot-mark{display:flex;align-items:center;gap:12px;margin-top:18px}
+.foot-mark .wm{font-family:var(--serif);font-size:18px;font-weight:300;color:var(--paper-2)}
+.foot-mark .wm .w{font-style:italic;color:var(--oxblood-ink)}
+.foot-mark .wm .dot{color:var(--copper)}
+.foot-mark .fl{flex:1;height:1px;background:var(--line-2)}
+.foot-meta{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+
+@media (max-width:780px){
+  .dos-layout{grid-template-columns:1fr}
+  .dos-list{display:none}
+  .dos-sel{display:block;margin-bottom:18px}
+  .tabs{position:static}
+  .dos-list{position:static}
+}
+@media print{
+  body{background:#fff;color:#111}
+  .tabs,.controls,.legend-btn,.scrim,.drawer,#tip,.scroll-hint,.dos-list,.dos-nav,.lens-ctl{display:none!important}
+  .panel{display:block!important}
+  .wrap{max-width:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <div class="mast-top">
+      <div class="wordmark"><span class="bank">BankReg</span><span class="w">Wire</span><span class="dot">.</span></div>
+      <div class="mast-tag"><span class="live"></span> Enforcement Desk · Wire Room</div>
+    </div>
+    <div class="mast-wire wire"><span class="ln"></span><span class="node"></span><span class="ln r"></span></div>
+    <div class="dateline" id="dateline"></div>
+    <div class="title-row">
+      <div>
+        <h1 class="title">The Consent&nbsp;Order <em>Matrix</em></h1>
+        <p class="standfirst">These aren't fifteen unrelated banks. Every one is a Banking-as-a-Service sponsor or a fintech-forward institution &mdash; the cohort at the center of the 2023&ndash;2026 enforcement wave. The matrix maps where each supervisory deficiency is actually commanded, read paragraph-by-paragraph from the orders themselves, not the press release.</p>
+      </div>
+      <button class="legend-btn" id="legendBtn"><span class="k"></span> Legend &amp; Sources</button>
+    </div>
+    <div class="meta-strip" id="metaStrip"></div>
+  </header>
+
+  <nav class="tabs"><div class="tabs-inner" id="tabsInner"></div></nav>
+
+  <!-- MATRIX -->
+  <section class="panel" data-tab="matrix">
+    <div class="controls" id="mxControls">
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke-width="2"/><path d="M21 21l-4.3-4.3" stroke-width="2"/></svg>
+        <input id="mxSearch" type="text" placeholder="Filter institutions…" autocomplete="off" spellcheck="false">
+      </div>
+      <div class="ctl-grp"><span class="ctl-lab">Regulator</span><div class="chips" id="regChips"></div></div>
+      <div class="ctl-grp"><span class="ctl-lab">Charter</span><select class="sel" id="charterSel"></select></div>
+      <div class="spacer"></div>
+      <div class="toggle" id="tgCites"><span class="sw"></span> Show cites</div>
+      <div class="toggle" id="tgColor"><span class="sw"></span> Color by family</div>
+      <button class="reset" id="mxReset">Reset</button>
+    </div>
+    <div class="mx-wrap" id="mxWrap"><table class="mx" id="mxTable"></table></div>
+    <div class="scroll-hint"><span class="wire" style="width:34px"><span class="ln r"></span><span class="node" style="width:5px;height:5px"></span></span> Scroll horizontally for all 37 themes · click any marker for the exact paragraph cite · click an institution to open its dossier</div>
+  </section>
+
+  <!-- LEAGUE -->
+  <section class="panel" data-tab="league">
+    <p class="eyebrow">The Wire Brief</p>
+    <p class="lede">Because every institution here runs the same Banking-as-a-Service or fintech-forward playbook, the deficiencies regulators reduce to written, deliverable commands cluster tightly &mdash; the same governance and third-party-risk demands recur from order to order. Breadth of citation is a rough proxy for emphasis, not severity. Click any theme to see which institutions carry it.</p>
+    <div class="brief" id="leagueBrief"></div>
+    <div class="lg-head">
+      <p class="eyebrow" style="margin:0">Deficiency League Table &middot; <span id="lgScope"></span></p>
+      <div class="chips" id="lgSort">
+        <button class="chip on" data-mode="freq">By frequency</button>
+        <button class="chip" data-mode="family">By family</button>
+      </div>
+    </div>
+    <div class="lg-list" id="leagueList"></div>
+  </section>
+
+  <!-- DOSSIERS -->
+  <section class="panel" data-tab="dossiers">
+    <p class="eyebrow">The Filing Cards</p>
+    <p class="lede">One card per institution: the order's identifying metadata, the provisions it imposes grouped by supervisory family, and the paragraph where each lands.</p>
+    <select class="sel dos-sel" id="dosSel"></select>
+    <div class="dos-layout">
+      <div class="dos-list" id="dosList"></div>
+      <div id="dosCard"></div>
+    </div>
+  </section>
+
+  <!-- LENS -->
+  <section class="panel" data-tab="lens">
+    <p class="eyebrow">The Supervisory Lens</p>
+    <p class="lede">Group the orders and watch the emphasis shift. Each cell is the average number of that family's provisions imposed per order in the group, rounded to the nearest whole; deeper copper means heavier emphasis relative to that family's ceiling.</p>
+    <div class="lens-ctl">
+      <span class="ctl-lab">Group by</span>
+      <div class="chips" id="lensChips">
+        <button class="chip on" data-by="reg">Regulator</button>
+        <button class="chip" data-by="charter">Charter type</button>
+      </div>
+    </div>
+    <div class="heat-wrap"><table class="heat" id="heatTable"></table></div>
+    <div class="lens-read" id="lensRead"></div>
+  </section>
+
+  <footer>
+    <p class="colophon"><b>BankRegWire &middot; Enforcement Desk.</b> Compiled from published FDIC, OCC, and Federal Reserve consent orders against Banking-as-a-Service sponsors and fintech-forward banks, read paragraph-by-paragraph from the primary source. A citation records <i>where</i> an order imposes a requirement as a discrete deliverable; <code style="font-family:var(--mono);font-size:12px;color:var(--copper-br)">(ref.)</code> marks a theme that is referenced or assumed but not commanded. Breadth of cited paragraphs is a rough proxy for emphasis, not a measure of severity. Not legal advice.</p>
+    <div class="foot-mark">
+      <span class="wm">BankReg<span class="w">Wire</span><span class="dot">.</span></span>
+      <span class="fl"></span>
+      <span class="foot-meta" id="footMeta"></span>
+    </div>
+  </footer>
+</div>
+
+<div id="tip"><span class="ti-close" id="tipClose">&times;</span><div id="tipBody"></div></div>
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer">
+  <div class="drawer-h"><span class="t">Legend &amp; Sources</span><button class="x" id="drawerX">&times;</button></div>
+  <div class="drawer-body" id="drawerBody"></div>
+</aside>
+
+<script>
+const DATA = {"headers": ["Institution", "Docket No.", "Issuing Authority", "State", "Charter Type", "Effective Date", "ROE Date", "Order Type", "Business Model / Channel", "Lookback Start Date", "Board Supervision", "Independent Compliance / Oversight Committee", "Third-Party / FinTech Risk Mgmt", "New Activity / Product Prior-Approval Restriction", "Staffing / Resource Assessment", "Training", "Independent Testing / Audit", "Model / System Validation", "Lookback / Retrospective Review", "Correction of Violations", "Progress Reports", "Shareholder / Holdco Notification", "Revised AML/CFT Program", "ML/TF Risk Assessment", "Customer Identification Program (CIP)", "Customer Due Diligence / Beneficial Ownership", "Suspicious Activity Monitoring & SAR", "OFAC Compliance Program", "Fair Lending / Consumer-Compliance Program (CMS)", "Fair Lending Risk Assessment", "Fair Lending Monitoring & Remediation", "Information Systems / Data Governance", "Capital Plan / Ratios", "Dividend / Mgmt Fee Restriction", "Strategic Plan", "Profit / Budget Plan", "Enterprise Risk Management Framework", "Growth Restrictions", "Liquidity / Concentration / Brokered Deposits", "Management Qualifications & Evaluation", "ACH Third-Party Sender Due Diligence", "Project Management Program", "Accurate Books & Records", "Interest Rate Risk Management", "Custody / Asset-Mgmt Controls", "Transactions with Affiliates (Reg W / 23A-23B)", "Source of Strength"], "rows": [{"Institution": "Lineage Bank", "Docket No.": "FDIC-23-0041b", "Issuing Authority": "FDIC", "State": "TN", "Charter Type": "Insured state nonmember", "Effective Date": "1/30/2024", "ROE Date": "Not specified", "Order Type": "S&S + TPRM/BSA", "Business Model / Channel": "BaaS / FinTech sponsor; ACH third-party sender", "Lookback Start Date": "9/1/2022 (largest FinTech acct)", "Board Supervision": "P1", "Independent Compliance / Oversight Committee": "", "Third-Party / FinTech Risk Mgmt": "P12-21", "New Activity / Product Prior-Approval Restriction": "P7, 21", "Staffing / Resource Assessment": "P14, 25", "Training": "P26(g)", "Independent Testing / Audit": "P4-6; 16(d)", "Model / System Validation": "", "Lookback / Retrospective Review": "P27", "Correction of Violations": "P43", "Progress Reports": "P44", "Shareholder / Holdco Notification": "P45", "Revised AML/CFT Program": "P26", "ML/TF Risk Assessment": "P26(b)", "Customer Identification Program (CIP)": "P26(h)", "Customer Due Diligence / Beneficial Ownership": "P26(c),(i)", "Suspicious Activity Monitoring & SAR": "P26(e),(f)", "OFAC Compliance Program": "", "Fair Lending / Consumer-Compliance Program (CMS)": "", "Fair Lending Risk Assessment": "", "Fair Lending Monitoring & Remediation": "", "Information Systems / Data Governance": "", "Capital Plan / Ratios": "P34-37", "Dividend / Mgmt Fee Restriction": "P38", "Strategic Plan": "P8-11", "Profit / Budget Plan": "P39-42", "Enterprise Risk Management Framework": "", "Growth Restrictions": "P32-33", "Liquidity / Concentration / Brokered Deposits": "P28-31", "Management Qualifications & Evaluation": "P2-3", "ACH Third-Party Sender Due Diligence": "P22-24", "Project Management Program": "", "Accurate Books & Records": "", "Interest Rate Risk Management": "", "Custody / Asset-Mgmt Controls": "", "Transactions with Affiliates (Reg W / 23A-23B)": "", "Source of Strength": ""}, {"Institution": "Choice Financial Group", "Docket No.": "FDIC-23-0086b", "Issuing Authority": "FDIC + ND DFI (joint)", "State": "ND", "Charter Type": "Insured state nonmember", "Effective Date": "12/18/2023", "ROE Date": "6/5/2023", "Order Type": "BSA/AML", "Business Model / Channel": "Third-party financial-services relationships", "Lookback Start Date": "Inception of 3P relationships", "Board Supervision": "P1", "Independent Compliance / Oversight Committee": "P2", "Third-Party / FinTech Risk Mgmt": "P3-5 (woven)", "New Activity / Product Prior-Approval Restriction": "", "Staffing / Resource Assessment": "P7", "Training": "P9", "Independent Testing / Audit": "P8", "Model / System Validation": "P6", "Lookback / Retrospective Review": "P5", "Correction of Violations": "P10", "Progress Reports": "P11", "Shareholder / Holdco Notification": "P12", "Revised AML/CFT Program": "P3", "ML/TF Risk Assessment": "P3(b)", "Customer Identification Program (CIP)": "P4(a)", "Customer Due Diligence / Beneficial Ownership": "P4(b)", "Suspicious Activity Monitoring & SAR": "P4(c)", "OFAC Compliance Program": "", "Fair Lending / Consumer-Compliance Program (CMS)": "", "Fair Lending Risk Assessment": "", "Fair Lending Monitoring & Remediation": "", "Information Systems / Data Governance": "", "Capital Plan / Ratios": "", "Dividend / Mgmt Fee Restriction": "", "Strategic Plan": "", "Profit / Budget Plan": "", "Enterprise Risk Management Framework": "", "Growth Restrictions": "", "Liquidity / Concentration / Brokered Deposits": "", "Management Qualifications & Evaluation": "", "ACH Third-Party Sender Due Diligence": "", "Project Management Program": "", "Accurate Books & Records": "", "Interest Rate Risk Management": "", "Custody / Asset-Mgmt Controls": "", "Transactions with Affiliates (Reg W / 23A-23B)": "", "Source of Strength": ""}, {"Institution": "Sutton Bank", "Docket No.": "FDIC-23-0110b / BA2023-01", "Issuing Authority": "FDIC + OH Division (joint)", "State": "OH", "Charter Type": "Insured state nonmember", "Effective Date": "2/1/2024", "ROE Date": "1/17/2023", "Order Type": "BSA/AML", "Business Model / Channel": "Prepaid card third-party program managers", "Lookback Start Date": "7/1/2020 (CIP, prepaid)", "Board Supervision": "P2", "Independent Compliance / Oversight Committee": "P2(d)", "Third-Party / FinTech Risk Mgmt": "P4", "New Activity / Product Prior-Approval Restriction": "", "Staffing / Resource Assessment": "P3", "Training": "P6", "Independent Testing / Audit": "", "Model / System Validation": "", "Lookback / Retrospective Review": "P7(c)-(d)", "Correction of Violations": "P8-9", "Progress Reports": "P11", "Shareholder / Holdco Notification": "P10", "Revised AML/CFT Program": "P1", "ML/TF Risk Assessment": "P1(a),3 (ref.)", "Customer Identification Program (CIP)": "P7", "Customer Due Diligence / Beneficial Ownership": "", "Suspicious Activity Monitoring & SAR": "P5", "OFAC Compliance Program": "", "Fair Lending / Consumer-Compliance Program (CMS)": "", "Fair Lending Risk Assessment": "", "Fair Lending Monitoring & Remediation": "", "Information Systems / Data Governance": "", "Capital Plan / Ratios": "", "Dividend / Mgmt Fee Restriction": "", "Strategic Plan": "", "Profit / Budget Plan": "", "Enterprise Risk Management Framework": "", "Growth Restrictions": "", "Liquidity / Concentration / Brokered Deposits": "", "Management Qualifications & Evaluation": "", "ACH Third-Party Sender Due Diligence": "", "Project Management Program": "", "Accurate Books & Records": "", "Interest Rate Risk Management": "", "Custody / Asset-Mgmt Controls": "", "Transactions with Affiliates (Reg W / 23A-23B)": "", "Source of Strength": ""}, {"Institution": "Cross River Bank", "Docket No.": "FDIC-22-0040b", "Issuing Authority": "FDIC (NY Region)", "State": "NJ", "Charter Type": "Insured state nonmember", "Effective Date": "3/8/2023", "ROE Date": "5/3/2021 (Consumer Compliance)", "Order Type": "Consumer compliance / Fair lending", "Business Model / Channel": "Marketplace lending (credit) via third parties + merchants", "Lookback Start Date": "1/1/2021 (fair-lending review window)", "Board Supervision": "P1", "Independent Compliance / Oversight Committee": "P6 (DOC)", "Third-Party / FinTech Risk Mgmt": "P2, 5", "New Activity / Product Prior-Approval Restriction": "P2", "Staffing / Resource Assessment": "P4.B", "Training": "P4.C.2", "Independent Testing / Audit": "P1.A.d (IAD)", "Model / System Validation": "P3, 5.C", "Lookback / Retrospective Review": "P4.C.4 (fair lending)", "Correction of Violations": "P1.B", "Progress Reports": "P8", "Shareholder / Holdco Notification": "P9", "Revised AML/CFT Program": "", "ML/TF Risk Assessment": "", "Customer Identification Program (CIP)": "", "Customer Due Diligence / Beneficial Ownership": "", "Suspicious Activity Monitoring & SAR": "", "OFAC Compliance Program": "", "Fair Lending / Consumer-Compliance Program (CMS)": "P1, 4", "Fair Lending Risk Assessment": "P4.A", "Fair Lending Monitoring & Remediation": "P4.C", "Information Systems / Data Governance": "P3", "Capital Plan / Ratios": "", "Dividend / Mgmt Fee Restriction": "", "Strategic Plan": "", "Profit / Budget Plan": "", "Enterprise Risk Management Framework": "", "Growth Restrictions": "", "Liquidity / Concentration / Brokered Deposits": "", "Management Qualifications & Evaluation": "", "ACH Third-Party Sender Due Diligence": "", "Project Management Program": "", "Accurate Books & Records": "", "Interest Rate Risk Management": "", "Custody / Asset-Mgmt Controls": "", "Transactions with Affiliates (Reg W / 23A-23B)": "", "Source of Strength": ""}, {"Institution": "Thread Bank", "Docket No.": "FDIC-24-0022b", "Issuing Authority": "FDIC", "State": "TN", "Charter Type": "Insured state nonmember", "Effective Date": "5/21/2024", "ROE Date": "Not specified", "Order Type": "S&S + BSA/AML", "Business Model / Channel": "BaaS / LaaS; FinTech partners", "Lookback Start Date": "", "Board Supervision": "P1", "Independent Compliance / Oversight Committee": "", "Third-Party / FinTech Risk Mgmt": "P7, 14-15", "New Activity / Product Prior-Approval Restriction": "", "Staffing / Resource Assessment": "P9", "Training": "P14(g)", "Independent Testing / Audit": "", "Model / System Validation": "", "Lookback / Retrospective Review": "", "Correction of Violations": "P17", "Progress Reports": "P18", "Shareholder / Holdco Notification": "P19", "Revised AML/CFT Program": "P10", "ML/TF Risk Assessment": "P11", "Customer Identification Program (CIP)": "P12, 14(h)", "Customer Due Diligence / Beneficial Ownership": "P12, 14(i)", "Suspicious Activity Monitoring & SAR": "P13, 14(e)-(f)", "OFAC Compliance Program": "", "Fair Lending / Consumer-Compliance Program (CMS)": "", "Fair Lending Risk Assessment": "", "Fair Lending Monitoring & Remediation": "", "Information Systems / Data Governance": "", "Capital Plan / Ratios": "", "Dividend / Mgmt Fee Restriction": "", "Strategic Plan": "P2-3", "Profit / Budget Plan": "P4-6", "Enterprise Risk Management Framework": "P7", "Growth Restrictions": "", "Liquidity / Concentration / Brokered Deposits": "P16", "Management Qualifications & Evaluation": "", "ACH Third-Party Sender Due Diligence": "", "Project Management Program": "", "Accurate Books & Records": "", "Interest Rate Risk Management": "", "Custody / Asset-Mgmt Controls": "", "Transactions with Affiliates (Reg W / 23A-23B)": "", "Source of Strength": ""}, {"Institution": "Mode Eleven Bancorp", "Docket No.": "FRB 24-008-B-HC", "Issuing Authority": "Federal Reserve (FRB Kansas City)", "State": "WY", "Charter Type": "BHC / national bank sub", "Effective Date": "3/28/2024", "ROE Date": "9/18/2023 (Bancorp inspection)", "Order Type": "S&S / holdco (FinTech wind-down)", "Business Model / Channel": "FinTech sponsor via nonbank subs (winding down)", "Lookback Start Date": "", "Board Supervision": "P2", "Independent Compliance / Oversight Committee": "", "Third-Party / FinTech Risk Mgmt": "P3(a), 11", "New Activity / Product Prior-Approval Restriction": "P3(d), 11(a)", "Staffing / Resource Assessment": "P2(b),(d); 3(b)", "Training": "", "Independent Testing / Audit": "", "Model / System Validation": "", "Lookback / Retrospective Review": "", "Correction of Violations": "", "Progress Reports": "P14", "Shareholder / Holdco Notification": "P12", "Revised AML/CFT Program": "", "ML/TF Risk Assessment": "", "Customer Identification Program (CIP)": "", "Customer Due Diligence / Beneficial Ownership": "", "Suspicious Activity Monitoring & SAR": "", "OFAC Compliance Program": "", "Fair Lending / Consumer-Compliance Program (CMS)": "", "Fair Lending Risk Assessment": "", "Fair Lending Monitoring & Remediation": "", "Information Systems / Data Governance": "", "Capital Plan / Ratios": "P7-8", "Dividend / Mgmt Fee Restriction": "P9", "Strategic Plan": "", "Profit / Budget Plan": "P4", "Enterprise Risk Management Framework": "P3", "Growth Restrictions": "", "Liquidity / Concentration / Brokered Deposits": "P5-6", "Management Qualifications & Evaluation": "P2(c); 13(a)", "ACH Third-Party Sender Due Diligence": "", "Project Management Program": "", "Accurate Books & Records": "", "Interest Rate Risk Management": "", "Custody / Asset-Mgmt Controls": "", "Transactions with Affiliates (Reg W / 23A-23B)": "", "Source of Strength": "P1"}, {"Institution": "Evolve Bancorp, Inc. / Evolve Bank & Trust", "Docket No.": "FRB 24-012-B-HC / 24-012-B-SM", "Issuing Authority": "FRB (St. Louis) + AR State Bank Dept (joint)", "State": "AR", "Charter Type": "Insured state member", "Effective Date": "6/11/2024", "ROE Date": "8/11/2023 (S&S); 8/30/2023 (CC); 1/10/2024 (BSA/AML)", "Order Type": "S&S + BSA/AML + consumer compliance", "Business Model / Channel": "BaaS / Open Banking Div; FinTech partners", "Lookback Start Date": "4/1/2023 (wire txn review)", "Board Supervision": "P2", "Independent Compliance / Oversight Committee": "", "Third-Party / FinTech Risk Mgmt": "P3(a)", "New Activity / Product Prior-Approval Restriction": "P3(a)(iv), 19", "Staffing / Resource Assessment": "P2(b),(h); 3(a)(ii)", "Training": "P10(e), 18", "Independent Testing / Audit": "P7, 10(c)", "Model / System Validation": "P12", "Lookback / Retrospective Review": "P17", "Correction of Violations": "P22(a)", "Progress Reports": "P24", "Shareholder / Holdco Notification": "", "Revised AML/CFT Program": "P10", "ML/TF Risk Assessment": "P10(b)", "Customer Identification Program (CIP)": "P11(a)(i) (ref.)", "Customer Due Diligence / Beneficial Ownership": "P11", "Suspicious Activity Monitoring & SAR": "P15-16", "OFAC Compliance Program": "", "Fair Lending / Consumer-Compliance Program (CMS)": "P3(b)", "Fair Lending Risk Assessment": "P3(b)(ii)", "Fair Lending Monitoring & Remediation": "P3(b)(i)", "Information Systems / Data Governance": "P6", "Capital Plan / Ratios": "P3(c)", "Dividend / Mgmt Fee Restriction": "P21", "Strategic Plan": "", "Profit / Budget Plan": "P20", "Enterprise Risk Management Framework": "", "Growth Restrictions": "", "Liquidity / Concentration / Brokered Deposits": "P3(d)", "Management Qualifications & Evaluation": "P22(b)", "ACH Third-Party Sender Due Diligence": "", "Project Management Program": "", "Accurate Books & Records": "", "Interest Rate Risk Management": "", "Custody / Asset-Mgmt Controls": "", "Transactions with Affiliates (Reg W / 23A-23B)": "", "Source of Strength": "P1"}, {"Institution": "Green Dot Bank / Green Dot Corporation", "Docket No.": "FRB 24-005-B-SM / -HC (+ CMP)", "Issuing Authority": "Federal Reserve (FRB San Francisco + Dallas)", "State": "UT", "Charter Type": "Insured state member", "Effective Date": "7/19/2024", "ROE Date": "Not specified (multiple exams)", "Order Type": "Consumer compliance (UDAP) + BSA/AML; CMP", "Business Model / Channel": "GPR prepaid cards; tax-refund processing via 3P", "Lookback Start Date": "8/1/2021 (txn review)", "Board Supervision": "P12", "Independent Compliance / Oversight Committee": "", "Third-Party / FinTech Risk Mgmt": "P10, 14(d)", "New Activity / Product Prior-Approval Restriction": "", "Staffing / Resource Assessment": "P14(d)(ii)", "Training": "P2(g), 14(e)", "Independent Testing / Audit": "P2(f)", "Model / System Validation": "", "Lookback / Retrospective Review": "P4", "Correction of Violations": "P7-8", "Progress Reports": "P17", "Shareholder / Holdco Notification": "", "Revised AML/CFT Program": "P2", "ML/TF Risk Assessment": "P2(c)", "Customer Identification Program (CIP)": "P2(d)", "Customer Due Diligence / Beneficial Ownership": "", "Suspicious Activity Monitoring & SAR": "P3", "OFAC Compliance Program": "", "Fair Lending / Consumer-Compliance Program (CMS)": "P13-14", "Fair Lending Risk Assessment": "", "Fair Lending Monitoring & Remediation": "P11, 14(c)-(d)", "Information Systems / Data Governance": "P14(f)", "Capital Plan / Ratios": "", "Dividend / Mgmt Fee Restriction": "", "Strategic Plan": "", "Profit / Budget Plan": "", "Enterprise Risk Management Framework": "", "Growth Restrictions": "", "Liquidity / Concentration / Brokered Deposits": "", "Management Qualifications & Evaluation": "", "ACH Third-Party Sender Due Diligence": "", "Project Management Program": "", "Accurate Books & Records": "", "Interest Rate Risk Management": "", "Custody / Asset-Mgmt Controls": "", "Transactions with Affiliates (Reg W / 23A-23B)": "", "Source of Strength": "P1"}, {"Institution": "Hatch Bank", "Docket No.": "FDIC-24-0062b", "Issuing Authority": "FDIC (NY Region)", "State": "CA", "Charter Type": "Insured state nonmember", "Effective Date": "4/3/2025", "ROE Date": "3/4/2024 (joint FDIC/CA DFPI)", "Order Type": "BSA/AML", "Business Model / Channel": "BaaS / Third-Party Relationships (FinTech)", "Lookback Start Date": "", "Board Supervision": "PI.A", "Independent Compliance / Oversight Committee": "PIV", "Third-Party / FinTech Risk Mgmt": "PI.A; II.B.2", "New Activity / Product Prior-Approval Restriction": "", "Staffing / Resource Assessment": "PII.B.1", "Training": "PII.D", "Independent Testing / Audit": "PII.C", "Model / System Validation": "PII.B.2-3", "Lookback / Retrospective Review": "", "Correction of Violations": "PI.B", "Progress Reports": "PVI", "Shareholder / Holdco Notification": "PVII", "Revised AML/CFT Program": "PII", "ML/TF Risk Assessment": "PII.A", "Customer Identification Program (CIP)": "PII.B.5 (ref.)", "Customer Due Diligence / Beneficial Ownership": "PII.B.5", "Suspicious Activity Monitoring & SAR": "PII.B.4", "OFAC Compliance Program": "", "Fair Lending / Consumer-Compliance Program (CMS)": "", "Fair Lending Risk Assessment": "", "Fair Lending Monitoring & Remediation": "", "Information Systems / Data Governance": "", "Capital Plan / Ratios": "", "Dividend / Mgmt Fee Restriction": "", "Strategic Plan": "", "Profit / Budget Plan": "", "Enterprise Risk Management Framework": "", "Growth Restrictions": "", "Liquidity / Concentration / Brokered Deposits": "", "Management Qualifications & Evaluation": "PII.C.4-5", "ACH Third-Party Sender Due Diligence": "", "Project Management Program": "", "Accurate Books & Records": "", "Interest Rate Risk Management": "", "Custody / Asset-Mgmt Controls": "", "Transactions with Affiliates (Reg W / 23A-23B)": "", "Source of Strength": ""}, {"Institution": "Vast Bank, N.A.", "Docket No.": "AA-SO-2023-44 (#2023-032)", "Issuing Authority": "OCC", "State": "OK", "Charter Type": "National bank", "Effective Date": "10/23/2023", "ROE Date": "Not specified", "Order Type": "Safety & soundness (operational)", "Business Model / Channel": "Custody accounts; new-product risk", "Lookback Start Date": "", "Board Supervision": "PXIII", "Independent Compliance / Oversight Committee": "PIII", "Third-Party / FinTech Risk Mgmt": "PXI.1(d)", "New Activity / Product Prior-Approval Restriction": "PXI; PV.8-11", "Staffing / Resource Assessment": "(ref.)", "Training": "(ref.)", "Independent Testing / Audit": "PVI.1(d); PXII.1(h)", "Model / System Validation": "PIX.2(j)", "Lookback / Retrospective Review": "", "Correction of Violations": "", "Progress Reports": "PIII.2-3", "Shareholder / Holdco Notification": "", "Revised AML/CFT Program": "", "ML/TF Risk Assessment": "", "Customer Identification Program (CIP)": "", "Customer Due Diligence / Beneficial Ownership": "", "Suspicious Activity Monitoring & SAR": "", "OFAC Compliance Program": "", "Fair Lending / Consumer-Compliance Program (CMS)": "", "Fair Lending Risk Assessment": "", "Fair Lending Monitoring & Remediation": "", "Information Systems / Data Governance": "PX", "Capital Plan / Ratios": "PIV; PV.2(h)", "Dividend / Mgmt Fee Restriction": "PV.4", "Strategic Plan": "PV", "Profit / Budget Plan": "PV.2(f)-(g)", "Enterprise Risk Management Framework": "", "Growth Restrictions": "PV.8-11", "Liquidity / Concentration / Brokered Deposits": "PVIII", "Management Qualifications & Evaluation": "", "ACH Third-Party Sender Due Diligence": "", "Project Management Program": "PVI", "Accurate Books & Records": "PVII", "Interest Rate Risk Management": "PIX", "Custody / Asset-Mgmt Controls": "PXII", "Transactions with Affiliates (Reg W / 23A-23B)": "", "Source of Strength": ""}, {"Institution": "Blue Ridge Bank, N.A.", "Docket No.": "AA-ENF-2023-68", "Issuing Authority": "OCC", "State": "VA", "Charter Type": "National bank", "Effective Date": "1/24/2024", "ROE Date": "Not specified", "Order Type": "BSA/AML + S&S", "Business Model / Channel": "BaaS / FinTech partners & subpartners", "Lookback Start Date": "9/1/2022 (SAR look-back)", "Board Supervision": "PXV", "Independent Compliance / Oversight Committee": "PIII", "Third-Party / FinTech Risk Mgmt": "PV", "New Activity / Product Prior-Approval Restriction": "PV.3-5", "Staffing / Resource Assessment": "PVIII", "Training": "(ref.)", "Independent Testing / Audit": "PVII", "Model / System Validation": "PX.2(e)", "Lookback / Retrospective Review": "PXI", "Correction of Violations": "PIV", "Progress Reports": "PIII.2-3", "Shareholder / Holdco Notification": "", "Revised AML/CFT Program": "PIV", "ML/TF Risk Assessment": "PVI", "Customer Identification Program (CIP)": "", "Customer Due Diligence / Beneficial Ownership": "PIX", "Suspicious Activity Monitoring & SAR": "PX", "OFAC Compliance Program": "(ref.)", "Fair Lending / Consumer-Compliance Program (CMS)": "", "Fair Lending Risk Assessment": "", "Fair Lending Monitoring & Remediation": "", "Information Systems / Data Governance": "PXII", "Capital Plan / Ratios": "PXIV", "Dividend / Mgmt Fee Restriction": "PXIV.7", "Strategic Plan": "PXIII", "Profit / Budget Plan": "PXIII.1(k)-(m)", "Enterprise Risk Management Framework": "", "Growth Restrictions": "PXIII.4-6", "Liquidity / Concentration / Brokered Deposits": "PXIII.1(h)-(i)", "Management Qualifications & Evaluation": "PXIII.1(j)", "ACH Third-Party Sender Due Diligence": "", "Project Management Program": "", "Accurate Books & Records": "", "Interest Rate Risk Management": "", "Custody / Asset-Mgmt Controls": "", "Transactions with Affiliates (Reg W / 23A-23B)": "", "Source of Strength": ""}, {"Institution": "Summit National Bank", "Docket No.": "AA-ENF-2024-31", "Issuing Authority": "OCC", "State": "WY", "Charter Type": "National bank", "Effective Date": "6/4/2024", "ROE Date": "Not specified", "Order Type": "BSA/AML + S&S", "Business Model / Channel": "Community bank; affiliate txns", "Lookback Start Date": "Not specified", "Board Supervision": "PXVIII", "Independent Compliance / Oversight Committee": "PIII", "Third-Party / FinTech Risk Mgmt": "", "New Activity / Product Prior-Approval Restriction": "PIV.8-11", "Staffing / Resource Assessment": "PXI", "Training": "PXVI", "Independent Testing / Audit": "PXV", "Model / System Validation": "", "Lookback / Retrospective Review": "PXVII", "Correction of Violations": "(ref.)", "Progress Reports": "PIII.2-3", "Shareholder / Holdco Notification": "", "Revised AML/CFT Program": "PIX", "ML/TF Risk Assessment": "PXII", "Customer Identification Program (CIP)": "", "Customer Due Diligence / Beneficial Ownership": "PXIII", "Suspicious Activity Monitoring & SAR": "PXIV", "OFAC Compliance Program": "PX", "Fair Lending / Consumer-Compliance Program (CMS)": "", "Fair Lending Risk Assessment": "", "Fair Lending Monitoring & Remediation": "", "Information Systems / Data Governance": "", "Capital Plan / Ratios": "PIV; PV", "Dividend / Mgmt Fee Restriction": "PIV.4", "Strategic Plan": "PIV", "Profit / Budget Plan": "PIV.2(e)", "Enterprise Risk Management Framework": "", "Growth Restrictions": "PIV.8-11", "Liquidity / Concentration / Brokered Deposits": "PVIII", "Management Qualifications & Evaluation": "PIV.2(d)", "ACH Third-Party Sender Due Diligence": "", "Project Management Program": "", "Accurate Books & Records": "PVII", "Interest Rate Risk Management": "", "Custody / Asset-Mgmt Controls": "", "Transactions with Affiliates (Reg W / 23A-23B)": "PVI", "Source of Strength": ""}, {"Institution": "Community Federal Savings Bank", "Docket No.": "AA-ENF-2025-21", "Issuing Authority": "OCC", "State": "NY", "Charter Type": "Federal savings association", "Effective Date": "4/24/2026", "ROE Date": "Not specified", "Order Type": "BSA/AML", "Business Model / Channel": "Payment processing line; cross-border wire/ACH (FFIs)", "Lookback Start Date": "Not specified", "Board Supervision": "PXI", "Independent Compliance / Oversight Committee": "PIII", "Third-Party / FinTech Risk Mgmt": "(ref.)", "New Activity / Product Prior-Approval Restriction": "", "Staffing / Resource Assessment": "PX.1-2", "Training": "(ref.)", "Independent Testing / Audit": "PIX", "Model / System Validation": "", "Lookback / Retrospective Review": "PVIII", "Correction of Violations": "PIV", "Progress Reports": "PIII", "Shareholder / Holdco Notification": "", "Revised AML/CFT Program": "PV; PVI", "ML/TF Risk Assessment": "PVI.2", "Customer Identification Program (CIP)": "", "Customer Due Diligence / Beneficial Ownership": "PVI.3", "Suspicious Activity Monitoring & SAR": "PVII", "OFAC Compliance Program": "", "Fair Lending / Consumer-Compliance Program (CMS)": "", "Fair Lending Risk Assessment": "", "Fair Lending Monitoring & Remediation": "", "Information Systems / Data Governance": "", "Capital Plan / Ratios": "", "Dividend / Mgmt Fee Restriction": "", "Strategic Plan": "", "Profit / Budget Plan": "", "Enterprise Risk Management Framework": "", "Growth Restrictions": "", "Liquidity / Concentration / Brokered Deposits": "", "Management Qualifications & Evaluation": "PX.3-4", "ACH Third-Party Sender Due Diligence": "", "Project Management Program": "", "Accurate Books & Records": "", "Interest Rate Risk Management": "", "Custody / Asset-Mgmt Controls": "", "Transactions with Affiliates (Reg W / 23A-23B)": "", "Source of Strength": ""}, {"Institution": "Silvergate Capital Corporation / Silvergate Bank", "Docket No.": "23-003-B-HC / 23-003-B-SM", "Issuing Authority": "FRB (San Francisco) + CA DFPI (joint)", "State": "CA", "Charter Type": "Insured state member / BHC", "Effective Date": "5/23/2023", "ROE Date": "Not specified", "Order Type": "S&S / wind-down (voluntary self-liquidation)", "Business Model / Channel": "Crypto-asset banking; SEN payments network (winding down)", "Lookback Start Date": "", "Board Supervision": "", "Independent Compliance / Oversight Committee": "", "Third-Party / FinTech Risk Mgmt": "", "New Activity / Product Prior-Approval Restriction": "P7", "Staffing / Resource Assessment": "P2(a)", "Training": "", "Independent Testing / Audit": "", "Model / System Validation": "", "Lookback / Retrospective Review": "", "Correction of Violations": "", "Progress Reports": "P11", "Shareholder / Holdco Notification": "", "Revised AML/CFT Program": "", "ML/TF Risk Assessment": "", "Customer Identification Program (CIP)": "", "Customer Due Diligence / Beneficial Ownership": "", "Suspicious Activity Monitoring & SAR": "", "OFAC Compliance Program": "", "Fair Lending / Consumer-Compliance Program (CMS)": "", "Fair Lending Risk Assessment": "", "Fair Lending Monitoring & Remediation": "", "Information Systems / Data Governance": "", "Capital Plan / Ratios": "", "Dividend / Mgmt Fee Restriction": "P3-4", "Strategic Plan": "P2, 10", "Profit / Budget Plan": "", "Enterprise Risk Management Framework": "", "Growth Restrictions": "P7", "Liquidity / Concentration / Brokered Deposits": "P5-6", "Management Qualifications & Evaluation": "P8", "ACH Third-Party Sender Due Diligence": "", "Project Management Program": "", "Accurate Books & Records": "P2(d)", "Interest Rate Risk Management": "", "Custody / Asset-Mgmt Controls": "", "Transactions with Affiliates (Reg W / 23A-23B)": "", "Source of Strength": "P1"}, {"Institution": "Metropolitan Commercial Bank", "Docket No.": "23-018-B-SM / 23-018-CMP-SM", "Issuing Authority": "Federal Reserve (FRB New York)", "State": "NY", "Charter Type": "Insured state member", "Effective Date": "10/16/2023", "ROE Date": "Not specified", "Order Type": "BSA/AML (CIP) + TPRM; CMP", "Business Model / Channel": "Prepaid cards via GPG third-party program managers", "Lookback Start Date": "", "Board Supervision": "P1", "Independent Compliance / Oversight Committee": "", "Third-Party / FinTech Risk Mgmt": "P5", "New Activity / Product Prior-Approval Restriction": "P2", "Staffing / Resource Assessment": "P5(c)", "Training": "", "Independent Testing / Audit": "", "Model / System Validation": "", "Lookback / Retrospective Review": "", "Correction of Violations": "", "Progress Reports": "P7-8", "Shareholder / Holdco Notification": "", "Revised AML/CFT Program": "(ref.)", "ML/TF Risk Assessment": "", "Customer Identification Program (CIP)": "P3", "Customer Due Diligence / Beneficial Ownership": "P4", "Suspicious Activity Monitoring & SAR": "", "OFAC Compliance Program": "", "Fair Lending / Consumer-Compliance Program (CMS)": "", "Fair Lending Risk Assessment": "", "Fair Lending Monitoring & Remediation": "", "Information Systems / Data Governance": "P1(c); 5(a)", "Capital Plan / Ratios": "", "Dividend / Mgmt Fee Restriction": "", "Strategic Plan": "", "Profit / Budget Plan": "", "Enterprise Risk Management Framework": "", "Growth Restrictions": "", "Liquidity / Concentration / Brokered Deposits": "", "Management Qualifications & Evaluation": "", "ACH Third-Party Sender Due Diligence": "", "Project Management Program": "", "Accurate Books & Records": "", "Interest Rate Risk Management": "", "Custody / Asset-Mgmt Controls": "", "Transactions with Affiliates (Reg W / 23A-23B)": "", "Source of Strength": ""}]};
+
+/* ============ family configuration ============ */
+const FAMS = [
+  {key:'profile', name:'Institution Profile', short:'Profile', s:0, e:9,  color:'var(--c-profile)', theme:false},
+  {key:'gov', name:'Governance & Oversight', short:'Governance', s:10, e:21, color:'var(--c-gov)', theme:true},
+  {key:'bsa', name:'BSA / AML', short:'BSA / AML', s:22, e:27, color:'var(--c-bsa)', theme:true},
+  {key:'cc',  name:'Consumer Compliance / Fair Lending', short:'Consumer / Fair Lending', s:28, e:31, color:'var(--c-cc)', theme:true},
+  {key:'ss',  name:'Safety & Soundness Overlay', short:'Safety & Soundness', s:32, e:40, color:'var(--c-ss)', theme:true},
+  {key:'op',  name:'Operational S&S', short:'Operational S&S', s:41, e:45, color:'var(--c-op)', theme:true},
+  {key:'holdco', name:'Holdco Overlay', short:'Holdco', s:46, e:46, color:'var(--c-holdco)', theme:true},
+];
+const THEME_FAMS = FAMS.filter(f=>f.theme);
+const H = DATA.headers;
+function famForIdx(i){ for(const f of FAMS){ if(i>=f.s && i<=f.e) return f; } return FAMS[0]; }
+
+const PROFILE_KEYS = H.slice(0,10);
+const THEME_IDX = []; for(let i=10;i<H.length;i++) THEME_IDX.push(i);   // 37 themes, global header index
+const THEME_NAMES = THEME_IDX.map(i=>H[i]);
+
+function regFam(a){ if(/OCC/.test(a)) return 'OCC'; if(/FRB|Federal Reserve/.test(a)) return 'FRB'; if(/FDIC/.test(a)) return 'FDIC'; return 'Other'; }
+const present = v => !!(v && String(v).trim()!=='');
+const isRef   = v => !!(v && String(v).includes('(ref.)'));
+
+/* ============ build row model ============ */
+const ROWS = DATA.rows.map(r=>{
+  const cells = THEME_NAMES.map(n => (r[n]!==undefined ? String(r[n]).trim() : ''));
+  const prov = cells.filter(present).length;
+  return {
+    name: r[H[0]] || '',
+    docket: r['Docket No.'] || '',
+    authority: r['Issuing Authority'] || '',
+    state: r['State'] || '',
+    charter: r['Charter Type'] || '',
+    eff: r['Effective Date'] || '',
+    roe: r['ROE Date'] || '',
+    orderType: r['Order Type'] || '',
+    channel: r['Business Model / Channel'] || '',
+    lookback: r['Lookback Start Date'] || '',
+    reg: regFam(r['Issuing Authority'] || ''),
+    cells, prov
+  };
+});
+
+/* per-theme aggregates */
+const THEMES = THEME_NAMES.map((nm, ti)=>{
+  const fam = famForIdx(THEME_IDX[ti]);
+  let count=0, ref=0; const insts=[];
+  ROWS.forEach(r=>{ const v=r.cells[ti]; if(present(v)){ count++; const rf=isRef(v); if(rf) ref++; insts.push({name:r.name, cite:v, ref:rf}); } });
+  return {idx:ti, name:nm, fam, count, ref, insts};
+});
+
+const provVals = ROWS.map(r=>r.prov).sort((a,b)=>a-b);
+const medianProv = provVals.length%2 ? provVals[(provVals.length-1)/2] : Math.round((provVals[provVals.length/2-1]+provVals[provVals.length/2])/2);
+const REG_LIST = ['FDIC','OCC','FRB'].filter(rf=>ROWS.some(r=>r.reg===rf));
+const REG_COUNT = {}; REG_LIST.forEach(rf=> REG_COUNT[rf]=ROWS.filter(r=>r.reg===rf).length);
+const CHARTERS = [...new Set(ROWS.map(r=>r.charter))].sort();
+
+/* effective-date year span */
+function yr(s){ const m=String(s).match(/(\d{4})/); return m?+m[1]:null; }
+const years = ROWS.map(r=>yr(r.eff)).filter(Boolean);
+const yMin=Math.min(...years), yMax=Math.max(...years);
+
+/* ============ state ============ */
+const state = { tab:'matrix', q:'', reg:'all', charter:'all', cites:false, color:false, sort:{key:'prov', dir:-1},
+                lgMode:'freq', dos:0, lensBy:'reg', tipPinned:false };
+
+/* ============ helpers ============ */
+const $ = s => document.querySelector(s);
+const ce = (t,c,h)=>{ const e=document.createElement(t); if(c) e.className=c; if(h!==undefined) e.innerHTML=h; return e; };
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+/* ============ masthead meta ============ */
+function fillMeta(){
+  $('#dateline').innerHTML =
+    `<span>Vol. I &middot; BaaS &amp; Fintech Enforcement</span><span class="sep">/</span>`+
+    `<span>${ROWS.length} orders on file</span><span class="sep">/</span>`+
+    `<span>${yMin}&ndash;${yMax}</span><span class="sep">/</span>`+
+    `<span>Filed from the primary source</span>`;
+  const cells = [
+    [ROWS.length, 'Consent orders'],
+    [THEME_NAMES.length, 'Deficiency themes'],
+    [`${REG_COUNT.FDIC||0}/${REG_COUNT.OCC||0}/${REG_COUNT.FRB||0}`, 'FDIC / OCC / FRB'],
+    [medianProv, 'Median provisions'],
+    [`${yMin}–${yMax}`, 'Effective dates'],
+  ];
+  $('#metaStrip').innerHTML = cells.map(c=>`<div class="meta-cell"><div class="v">${c[0]}</div><div class="l">${c[1]}</div></div>`).join('');
+  $('#footMeta').textContent = `Compiled ${ROWS.length} orders · ${THEME_NAMES.length} themes · primary-source citations`;
+}
+
+/* ============ tabs ============ */
+const TABS = [
+  {k:'matrix', label:'Matrix', n:`${ROWS.length}×${THEME_NAMES.length}`},
+  {k:'league', label:'League Table', n:`${THEME_NAMES.length}`},
+  {k:'dossiers', label:'Dossiers', n:`${ROWS.length}`},
+  {k:'lens', label:'Lens', n:'crosstab'},
+];
+function buildTabs(){
+  $('#tabsInner').innerHTML = TABS.map(t=>`<button class="tab${t.k===state.tab?' active':''}" data-k="${t.k}">${t.label}<span class="n">${t.n}</span></button>`).join('');
+  $('#tabsInner').querySelectorAll('.tab').forEach(b=> b.onclick=()=>switchTab(b.dataset.k));
+}
+function switchTab(k){
+  state.tab=k;
+  $('#tabsInner').querySelectorAll('.tab').forEach(b=> b.classList.toggle('active', b.dataset.k===k));
+  document.querySelectorAll('.panel').forEach(p=> p.classList.toggle('active', p.dataset.tab===k));
+  unpinTip();
+  if(k==='matrix') renderMatrix();
+  if(k==='league') renderLeague();
+  if(k==='dossiers') renderDossier();
+  if(k==='lens') renderLens();
+  if(k!=='dossiers') window.scrollTo({top:0,behavior:'instant'});
+}
+
+/* ============ MATRIX ============ */
+function filteredRows(){
+  let rows = ROWS.filter(r=>{
+    if(state.reg!=='all' && r.reg!==state.reg) return false;
+    if(state.charter!=='all' && r.charter!==state.charter) return false;
+    if(state.q){ const q=state.q.toLowerCase(); const hay=(r.name+' '+r.docket+' '+r.channel+' '+r.orderType+' '+r.state+' '+r.authority).toLowerCase(); if(!hay.includes(q)) return false; }
+    return true;
+  });
+  const s=state.sort;
+  rows.sort((a,b)=>{
+    if(s.key==='name') return a.name.localeCompare(b.name)*s.dir;
+    if(s.key==='prov'){ if(a.prov!==b.prov) return (a.prov-b.prov)*s.dir; return a.name.localeCompare(b.name); }
+    if(typeof s.key==='number'){ const av=present(a.cells[s.key])?1:0, bv=present(b.cells[s.key])?1:0; if(av!==bv) return (bv-av); return a.name.localeCompare(b.name); }
+    return 0;
+  });
+  return rows;
+}
+function buildControls(){
+  $('#regChips').innerHTML =
+    `<button class="chip${state.reg==='all'?' on':''}" data-r="all">All <span style="opacity:.6">${ROWS.length}</span></button>`+
+    REG_LIST.map(rf=>`<button class="chip${state.reg===rf?' on':''}" data-r="${rf}">${rf} <span style="opacity:.6">${REG_COUNT[rf]}</span></button>`).join('');
+  $('#regChips').querySelectorAll('.chip').forEach(b=> b.onclick=()=>{ state.reg=b.dataset.r; buildControls(); renderMatrix(); });
+  $('#charterSel').innerHTML = `<option value="all">All charters</option>`+CHARTERS.map(c=>`<option value="${esc(c)}"${state.charter===c?' selected':''}>${esc(c)}</option>`).join('');
+  $('#charterSel').value = state.charter;
+  $('#tgCites').classList.toggle('on', state.cites);
+  $('#tgColor').classList.toggle('on', state.color);
+}
+function renderMatrix(){
+  const rows = filteredRows();
+  const t = $('#mxTable');
+  t.className = 'mx'+(state.cites?' cites':'')+(state.color?' colored':'');
+  const N = rows.length;
+
+  // group band
+  let groups='', heads='';
+  THEME_FAMS.forEach(f=>{
+    const span = f.e - f.s + 1;
+    groups += `<th colspan="${span}" style="color:${f.color};border-bottom-color:${f.color}">${esc(f.short)}</th>`;
+  });
+  // theme headers
+  THEME_IDX.forEach((gi,ti)=>{
+    const f = famForIdx(gi);
+    const sorted = (state.sort.key===ti);
+    heads += `<th class="theme${sorted?' sorted':''}" data-ti="${ti}" title="${esc(H[gi])} — click to sort"><div class="fbar" style="background:${f.color}"></div><div class="lab">${esc(H[gi])}</div></th>`;
+  });
+
+  // body
+  let body='';
+  rows.forEach((r,ri)=>{
+    let cells='';
+    THEME_IDX.forEach((gi,ti)=>{
+      const v = r.cells[ti];
+      const f = famForIdx(gi);
+      if(present(v)){
+        const ref = isRef(v);
+        if(state.cites){
+          cells += `<td class="cell has" data-r="${ROWS.indexOf(r)}" data-t="${ti}"><span class="cite-tok${ref?' ref':''}"${state.color?` style="color:${f.color}"`:''}>${esc(v)}</span></td>`;
+        } else {
+          const dotc = state.color? f.color : 'var(--copper)';
+          const dot = ref
+            ? `<span class="dot ref" style="border-color:${dotc}"></span>`
+            : `<span class="dot full" style="background:${dotc}"></span>`;
+          cells += `<td class="cell has" data-r="${ROWS.indexOf(r)}" data-t="${ti}">${dot}</td>`;
+        }
+      } else {
+        cells += `<td class="cell"><span class="dot none"></span></td>`;
+      }
+    });
+    const pw = Math.round(r.prov/THEME_NAMES.length*100);
+    body += `<tr data-row="${ROWS.indexOf(r)}">`+
+      `<td class="rowhead" data-open="${ROWS.indexOf(r)}">`+
+        `<div class="nm">${esc(r.name)}</div>`+
+        `<div class="sub"><span class="dk">${esc(r.docket)}</span><span class="regpill ${r.reg}">${r.reg}</span></div>`+
+        `<div class="pbar"><i style="width:${pw}%"></i></div>`+
+        `<div class="pc">${r.prov} of ${THEME_NAMES.length} provisions</div>`+
+      `</td>${cells}</tr>`;
+  });
+
+  // total row (over visible)
+  let tot='';
+  THEME_IDX.forEach((gi,ti)=>{
+    const c = rows.filter(r=>present(r.cells[ti])).length;
+    const h = N? Math.round(c/N*30)+ (c?2:0) : 0;
+    tot += `<td class="tcell"><div class="tbar" style="height:${c?Math.max(3,h):0}px"></div><div class="tn${c?'':' zero'}">${c}</div></td>`;
+  });
+
+  t.innerHTML =
+    `<thead>`+
+      `<tr class="groups"><th class="corner" rowspan="2"><div class="ct">${N} ${N===1?'order':'orders'}</div><div class="cs">${state.reg==='all'?'all regulators':state.reg}${state.charter!=='all'?' · filtered':''}</div></th>${groups}</tr>`+
+      `<tr class="heads">${heads}</tr>`+
+    `</thead>`+
+    `<tbody>${body}`+
+      `<tr class="total"><td class="rowhead"><div class="nm">Total cited</div><div class="sub"><span class="dk">of ${N}</span></div></td>${tot}</tr>`+
+    `</tbody>`;
+
+  // events
+  t.querySelectorAll('th.theme').forEach(th=> th.onclick=()=>{ const ti=+th.dataset.ti; if(state.sort.key===ti){ state.sort.dir*=-1; } else { state.sort={key:ti,dir:-1}; } renderMatrix(); });
+  t.querySelectorAll('td.rowhead[data-open]').forEach(td=> td.onclick=()=>{ state.dos=+td.dataset.open; switchTab('dossiers'); });
+  t.querySelectorAll('td.cell.has').forEach(td=>{
+    td.addEventListener('mouseenter', e=> showTip(e, +td.dataset.r, +td.dataset.t, false));
+    td.addEventListener('mousemove', moveTip);
+    td.addEventListener('mouseleave', hideTipHover);
+    td.addEventListener('click', e=>{ e.stopPropagation(); showTip(e, +td.dataset.r, +td.dataset.t, true); });
+  });
+}
+
+/* ============ tooltip ============ */
+function tipContent(ri, ti){
+  const r=ROWS[ri], th=THEMES[ti], v=r.cells[ti], ref=isRef(v), f=th.fam;
+  return `<div class="ti-inst">${esc(r.name)}</div>`+
+    `<div class="ti-fam" style="color:${f.color}">${esc(f.name)}</div>`+
+    `<div class="ti-theme">${esc(th.name)}</div>`+
+    `<div class="ti-cite">${esc(v)}</div>`+
+    (ref?`<div class="ti-note">"(ref.)" — referenced or assumed in the order, but not commanded as a discrete deliverable.</div>`
+        :`<div class="ti-note">Paragraph cite in ${esc(r.docket)} (${r.reg}).</div>`);
+}
+function showTip(e, ri, ti, pin){
+  const tip=$('#tip');
+  $('#tipBody').innerHTML = tipContent(ri,ti);
+  tip.classList.add('show');
+  if(pin){ tip.classList.add('pinned'); state.tipPinned=true; positionTipAt(e.clientX, e.clientY); }
+  else if(!state.tipPinned){ positionTipAt(e.clientX, e.clientY); }
+}
+function moveTip(e){ if(!state.tipPinned) positionTipAt(e.clientX, e.clientY); }
+function positionTipAt(x,y){
+  const tip=$('#tip'); const r=tip.getBoundingClientRect();
+  let nx=x+16, ny=y+16;
+  if(nx+r.width>window.innerWidth-12) nx=x-r.width-16;
+  if(ny+r.height>window.innerHeight-12) ny=y-r.height-16;
+  tip.style.left=Math.max(8,nx)+'px'; tip.style.top=Math.max(8,ny)+'px';
+}
+function hideTipHover(){ if(!state.tipPinned) $('#tip').classList.remove('show'); }
+function unpinTip(){ state.tipPinned=false; const t=$('#tip'); t.classList.remove('show','pinned'); }
+
+/* ============ LEAGUE ============ */
+function renderLeague(){
+  // brief stats (data-derived)
+  const sorted=[...THEMES].sort((a,b)=>b.count-a.count);
+  const top=sorted[0];
+  const universal=THEMES.filter(t=>t.count===ROWS.length);
+  const tprm=THEMES.find(t=>/Third-Party/.test(t.name));
+  const bsaFam=FAMS.find(f=>f.key==='bsa');
+  const opFam=FAMS.find(f=>f.key==='op');
+  // op concentration among OCC
+  const occRows=ROWS.filter(r=>r.reg==='OCC');
+  const opThemeIdx=THEMES.filter(t=>t.fam.key==='op').map(t=>t.idx);
+  let opCells=0, opOcc=0;
+  ROWS.forEach(r=>opThemeIdx.forEach(ti=>{ if(present(r.cells[ti])){ opCells++; if(r.reg==='OCC') opOcc++; } }));
+  const opShare = opCells? Math.round(opOcc/opCells*100):0;
+
+  const briefs=[
+    {n:`${universal.length}`, t:`themes appear in <b>every one</b> of the ${ROWS.length} orders — the irreducible core: ${universal.slice(0,3).map(t=>t.name.replace(/ \/.*/,'')).join(', ')}${universal.length>3?'…':''}.`},
+    {n:`${tprm?tprm.count:'—'}/${ROWS.length}`, t:`carry <b>third-party / FinTech risk management</b> — the throughline that ties BaaS sponsors, prepaid programs and marketplace lenders together.`},
+    {n:`${opShare}%`, t:`of all <b>operational S&amp;S</b> provisions (project management, books &amp; records, IRR, custody, affiliate transactions) sit in the ${occRows.length} <b>OCC</b> orders.`},
+    {n:`${top.count}/${ROWS.length}`, t:`is the single most-cited theme: <b>${top.name}</b>.`},
+  ];
+  $('#leagueBrief').innerHTML = briefs.map(b=>`<div class="b"><div class="bn">${b.n}</div><div class="bt">${b.t}</div></div>`).join('');
+  $('#lgScope').textContent = `${THEME_NAMES.length} themes across ${ROWS.length} orders`;
+  drawLeagueList();
+  $('#lgSort').querySelectorAll('.chip').forEach(b=> b.onclick=()=>{ state.lgMode=b.dataset.mode; $('#lgSort').querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x===b)); drawLeagueList(); });
+}
+function leagueRow(t){
+  const w = Math.round(t.count/ROWS.length*100);
+  const refW = Math.round(t.ref/ROWS.length*100);
+  const chips = t.insts.map(i=>`<span class="inst-chip${i.ref?' refc':''}">${esc(i.name)}<span class="ic-cite">${esc(i.cite)}</span></span>`).join('');
+  return `<div class="lg-row" data-ti="${t.idx}">`+
+    `<div class="lg-name">${esc(t.name)}</div>`+
+    `<div class="lg-track"><div class="lg-fill" style="width:${w}%;background:${t.fam.color}">`+
+      (refW?`<div class="lg-ref" style="width:${Math.min(refW,w)}%;right:0"></div>`:``)+
+    `</div></div>`+
+    `<div class="lg-count"><b>${t.count}</b> / ${ROWS.length}</div>`+
+    `<div class="lg-detail">${chips}</div>`+
+  `</div>`;
+}
+function drawLeagueList(){
+  const box=$('#leagueList');
+  if(state.lgMode==='freq'){
+    const sorted=[...THEMES].sort((a,b)=> b.count-a.count || a.name.localeCompare(b.name));
+    box.innerHTML = sorted.map(leagueRow).join('');
+  } else {
+    let html='';
+    THEME_FAMS.forEach(f=>{
+      const items=THEMES.filter(t=>t.fam.key===f.key).sort((a,b)=>b.count-a.count);
+      html += `<div class="lg-fam-h" style="color:${f.color}"><span class="sw" style="background:${f.color}"></span>${esc(f.name)}</div>`;
+      html += items.map(leagueRow).join('');
+    });
+    box.innerHTML=html;
+  }
+  box.querySelectorAll('.lg-row').forEach(row=> row.onclick=()=> row.classList.toggle('open'));
+}
+
+/* ============ DOSSIERS ============ */
+function buildDosList(){
+  $('#dosList').innerHTML = ROWS.map((r,i)=>`<button class="dos-li${i===state.dos?' on':''}" data-i="${i}"><div class="dn">${esc(r.name)}</div><div class="dm"><span class="dk">${esc(r.docket)}</span><span class="regpill ${r.reg}">${r.reg}</span></div></button>`).join('');
+  $('#dosList').querySelectorAll('.dos-li').forEach(b=> b.onclick=()=>{ state.dos=+b.dataset.i; renderDossier(); });
+  $('#dosSel').innerHTML = ROWS.map((r,i)=>`<option value="${i}"${i===state.dos?' selected':''}>${esc(r.name)} — ${esc(r.docket)}</option>`).join('');
+  $('#dosSel').value=state.dos;
+}
+function renderDossier(){
+  buildDosList();
+  const r=ROWS[state.dos];
+  const regColor = r.reg==='FDIC'?'var(--reg-fdic)':r.reg==='OCC'?'var(--reg-occ)':'var(--reg-frb)';
+  // provisions grouped by family
+  const famsPresent = THEME_FAMS.map(f=>{
+    const items=[];
+    for(let gi=f.s; gi<=f.e; gi++){ const ti=gi-10; const v=r.cells[ti]; if(present(v)) items.push({name:H[gi], cite:v, ref:isRef(v)}); }
+    return {f, items};
+  }).filter(x=>x.items.length);
+  const spanNames = famsPresent.map(x=>x.f.short).join(' · ');
+  const cmp = r.prov>medianProv? `<b>broader than</b> the median order (${medianProv})` : r.prov<medianProv? `<b>narrower than</b> the median order (${medianProv})` : `right at the median (${medianProv})`;
+
+  const meta=[
+    ['Docket', r.docket],['Issuing authority', r.authority],['State', r.state],['Charter', r.charter],
+    ['Effective', r.eff],['Report of exam', r.roe],['Order type', r.orderType],['Lookback start', r.lookback||'—'],
+  ];
+  const body = famsPresent.map(x=>{
+    const rows = x.items.map(it=>`<div class="prov-row${it.ref?' refp':''}"><div class="pn">${esc(it.name)}</div><div class="pc">${esc(it.cite)}</div></div>`).join('');
+    return `<div class="prov-fam"><div class="prov-fam-h"><span class="sw" style="background:${x.f.color}"></span><span class="nm" style="color:${x.f.color}">${esc(x.f.name)}</span><span class="ct">${x.items.length} ${x.items.length===1?'provision':'provisions'}</span></div><div class="prov-rows">${rows}</div></div>`;
+  }).join('');
+
+  $('#dosCard').innerHTML =
+    `<div class="card">`+
+      `<div class="card-top"><div class="ribbon" style="background:${regColor}"></div>`+
+        `<div class="card-eyebrow"><span class="regpill ${r.reg}" style="font-size:9px">${r.reg}</span> ${esc(r.authority)} · Effective ${esc(r.eff)}</div>`+
+        `<h2>${esc(r.name)}</h2>`+
+        `<div class="sig">${esc(r.channel)}. The order commands <b>${r.prov} provisions</b> across ${famsPresent.length} supervisory ${famsPresent.length===1?'family':'families'} (${esc(spanNames)}) — ${cmp}.</div>`+
+      `</div>`+
+      `<div class="meta-grid">${meta.map(m=>`<div class="mg"><div class="l">${m[0]}</div><div class="v">${esc(m[1])}</div></div>`).join('')}</div>`+
+      `<div class="card-body">${body}</div>`+
+    `</div>`+
+    `<div class="dos-nav"><button data-d="-1">&larr; ${esc(ROWS[(state.dos-1+ROWS.length)%ROWS.length].name)}</button><button data-d="1">${esc(ROWS[(state.dos+1)%ROWS.length].name)} &rarr;</button></div>`;
+  $('#dosCard').querySelectorAll('.dos-nav button').forEach(b=> b.onclick=()=>{ state.dos=(state.dos+ +b.dataset.d + ROWS.length)%ROWS.length; renderDossier(); window.scrollTo({top:document.querySelector('.panel.active').offsetTop-10,behavior:'smooth'}); });
+}
+
+/* ============ LENS ============ */
+function lensGroups(){
+  if(state.lensBy==='reg'){
+    return REG_LIST.map(rf=>({ key:rf, label:rf, sub:({FDIC:'Insured banks',OCC:'National banks',FRB:'Member / holdco'})[rf]||'', rows:ROWS.filter(r=>r.reg===rf) }));
+  } else {
+    return CHARTERS.map(c=>({ key:c, label:c.replace('Insured state ','State ').replace(' / national bank sub','/sub'), sub:'', rows:ROWS.filter(r=>r.charter===c) }));
+  }
+}
+function renderLens(){
+  const groups = lensGroups();
+  const fams = THEME_FAMS;
+  // matrix of mean provisions per family per group
+  const data = fams.map(f=>{
+    const max = f.e-f.s+1;
+    const cells = groups.map(g=>{
+      if(!g.rows.length) return {mean:0, pct:0, n:0};
+      let sum=0; g.rows.forEach(r=>{ for(let gi=f.s;gi<=f.e;gi++){ if(present(r.cells[gi-10])) sum++; } });
+      const mean=sum/g.rows.length;
+      return {mean, pct:mean/max, max};
+    });
+    return {f, max, cells};
+  });
+
+  let thead = `<tr><th class="rh">Supervisory family</th>`+
+    groups.map(g=>`<th class="gh">${esc(g.label)}<div class="gn">${g.rows.length} ${g.rows.length===1?'order':'orders'}${g.sub?' · '+esc(g.sub):''}</div></th>`).join('')+`</tr>`;
+  let tbody = data.map(d=>{
+    const tds = d.cells.map(c=>{
+      const a = c.pct;
+      const bg = `rgba(217,126,29,${(a*0.85).toFixed(3)})`;
+      const txt = a>0.5? 'var(--ink)' : 'var(--paper)';
+      const meanLabel = !c.mean ? '·' : (c.mean<0.5 ? '<1' : String(Math.round(c.mean)));
+      return `<td class="hc" style="background:${bg}"><div class="val" style="color:${a>0.5?'var(--ink)':'var(--copper-br)'}">${meanLabel}</div>`+
+             `<div class="pct" style="color:${txt}">${c.mean?'of '+c.max:''}</div></td>`;
+    }).join('');
+    return `<tr><td class="fh"><div class="fn"><span class="sw" style="background:${d.f.color}"></span>${esc(d.f.name)}</div><div class="fmax">max ${d.max} provision${d.max===1?'':'s'}</div></td>${tds}</tr>`;
+  }).join('');
+  $('#heatTable').innerHTML = `<thead>${thead}</thead><tbody>${tbody}</tbody>`;
+
+  // auto reading: for each family find leading group
+  const reads=[];
+  data.forEach(d=>{
+    let best=-1, bg=null;
+    d.cells.forEach((c,gi)=>{ if(c.mean>best){ best=c.mean; bg=groups[gi]; } });
+    if(bg && best>0) reads.push({fam:d.f, group:bg, mean:best, max:d.max});
+  });
+  reads.sort((a,b)=> (b.mean/b.max)-(a.mean/a.max));
+  const lead = reads.slice(0,3);
+  const groupNoun = state.lensBy==='reg'?'regulator':'charter class';
+  let html = `<h3>What the lens reveals</h3>`;
+  html += `<p>Grouped by <b>${groupNoun}</b>, the orders stop looking interchangeable. `+
+          lead.map(r=> `<b>${esc(r.group.label)}</b> orders lean hardest on <b>${esc(r.fam.name)}</b> (${r.mean<0.5?'<1':Math.round(r.mean)} of ${r.max} provisions on average)`).join('; ')+`.</p>`;
+  if(state.lensBy==='reg'){
+    const holdco=data.find(d=>d.f.key==='holdco');
+    const op=data.find(d=>d.f.key==='op');
+    const frbIdx=groups.findIndex(g=>g.key==='FRB');
+    const occIdx=groups.findIndex(g=>g.key==='OCC');
+    if(op && occIdx>=0) html += `<p>The <b>operational S&amp;S</b> band — project management, books &amp; records, interest-rate risk, custody and affiliate transactions — is almost exclusively an <b>OCC</b> signature, reflecting its Article-structured national-bank orders. <b>Holdco source-of-strength</b> appears only where a Federal Reserve holding-company order is in play.</p>`;
+  } else {
+    html += `<p>Read this against the regulator view: charter type and supervisor are tightly coupled here, so the same contrasts surface through a different cut of the same fifteen orders.</p>`;
+  }
+  $('#lensRead').innerHTML = html;
+
+  $('#lensChips').querySelectorAll('.chip').forEach(b=> b.onclick=()=>{ state.lensBy=b.dataset.by; $('#lensChips').querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x===b)); renderLens(); });
+}
+
+/* ============ LEGEND DRAWER ============ */
+function buildDrawer(){
+  const conv = [
+    {gl:`<span class="dot full"></span>`, t:`<b>Filled marker</b> — the order imposes this theme as a discrete, written requirement, citing the paragraph(s) where it lands.`},
+    {gl:`<span class="dot ref"></span>`, t:`<b>Hollow marker · "(ref.)"</b> — the theme is referenced or assumed in the order, but not commanded as a standalone deliverable.`},
+    {gl:`<span class="dot none"></span>`, t:`<b>Faint dot</b> — the order does not address this theme.`},
+  ];
+  const fams = FAMS.map(f=>{
+    const cols = f.e-f.s+1;
+    return `<div class="fk"><span class="sw" style="background:${f.color}"></span><span class="fkn">${esc(f.name)}</span><span class="fkc">${cols} ${f.theme?'themes':'fields'}</span></div>`;
+  }).join('');
+  const sources = ROWS.map(r=>`<div class="s"><b>${esc(r.name)}</b> — <span class="d">${esc(r.docket)}</span> · ${esc(r.authority)}</div>`).join('');
+  $('#drawerBody').innerHTML =
+    `<div class="lg-sec"><h4>Reading a cell</h4>`+
+      conv.map(c=>`<div class="conv"><div class="gl">${c.gl}</div><div class="tx">${c.t}</div></div>`).join('')+
+      `<div class="note-box" style="margin-top:6px">Toggle <i>Show cites</i> in the Matrix to replace the markers with the exact paragraph citations.</div>`+
+    `</div>`+
+    `<div class="lg-sec"><h4>Column families</h4><div class="fam-key">${fams}</div></div>`+
+    `<div class="lg-sec"><h4>OCC citation convention</h4><div class="note-box">OCC orders are structured by <b>Article</b> (Roman numeral) plus paragraph, cited here as <code>P[Article].[paragraph]</code> — e.g. <code>PV.8-11</code> = Article V, paragraphs 8&ndash;11; <code>PIX.2(j)</code> = Article IX, paragraph 2(j). FDIC and FRB orders use plain paragraph numbers, e.g. <code>P26(c)</code>.</div></div>`+
+    `<div class="lg-sec"><h4>Source documents · ${ROWS.length} orders</h4><div class="src-list">${sources}</div></div>`+
+    `<div class="lg-sec"><div class="note-box" style="color:var(--muted);font-size:12.5px">Breadth of cited paragraphs is a rough proxy for emphasis, not a measure of severity. Filed from the primary source by the BankRegWire Enforcement Desk. Not legal advice.</div></div>`;
+}
+function openDrawer(){ $('#scrim').classList.add('open'); $('#drawer').classList.add('open'); }
+function closeDrawer(){ $('#scrim').classList.remove('open'); $('#drawer').classList.remove('open'); }
+
+/* ============ wiring ============ */
+function wire(){
+  $('#mxSearch').addEventListener('input', e=>{ state.q=e.target.value; renderMatrix(); });
+  $('#charterSel').addEventListener('change', e=>{ state.charter=e.target.value; renderMatrix(); });
+  $('#tgCites').onclick=()=>{ state.cites=!state.cites; buildControls(); renderMatrix(); };
+  $('#tgColor').onclick=()=>{ state.color=!state.color; buildControls(); renderMatrix(); };
+  $('#mxReset').onclick=()=>{ state.q=''; state.reg='all'; state.charter='all'; state.cites=false; state.color=false; state.sort={key:'prov',dir:-1}; $('#mxSearch').value=''; buildControls(); renderMatrix(); };
+  $('#dosSel').addEventListener('change', e=>{ state.dos=+e.target.value; renderDossier(); });
+  $('#legendBtn').onclick=openDrawer; $('#drawerX').onclick=closeDrawer; $('#scrim').onclick=closeDrawer;
+  $('#tipClose').onclick=unpinTip;
+  document.addEventListener('click', e=>{ if(state.tipPinned){ const t=$('#tip'); if(!t.contains(e.target) && !e.target.closest('td.cell.has')) unpinTip(); } });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeDrawer(); unpinTip(); }
+    if(state.tab==='dossiers'){ if(e.key==='ArrowDown'||e.key==='ArrowRight'){ state.dos=(state.dos+1)%ROWS.length; renderDossier(); } if(e.key==='ArrowUp'||e.key==='ArrowLeft'){ state.dos=(state.dos-1+ROWS.length)%ROWS.length; renderDossier(); } }
+  });
+  window.addEventListener('scroll', ()=>{ if(state.tipPinned) unpinTip(); }, {passive:true});
+}
+
+/* ============ init ============ */
+fillMeta(); buildTabs(); buildControls(); buildDrawer(); wire(); renderMatrix();
+</script>
+</body>
+</html>
