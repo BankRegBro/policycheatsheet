@@ -180,6 +180,8 @@ table.mx{border-collapse:separate; border-spacing:0; font-family:var(--mono)}
 #tip .ti-theme{font-size:12px;color:var(--paper-2);line-height:1.3}
 #tip .ti-cite{font-size:13px;color:var(--copper-br);margin-top:8px;letter-spacing:.02em}
 #tip .ti-note{font-size:10px;color:var(--muted);margin-top:7px;font-style:italic;line-height:1.35}
+#tip.wide{max-width:362px}
+#tip .ti-gloss{font-family:var(--serif);font-size:13.5px;color:var(--paper-2);line-height:1.5;margin-top:8px}
 #tip .ti-close{position:absolute;top:6px;right:8px;color:var(--faint);cursor:pointer;font-size:14px;display:none}
 #tip.pinned .ti-close{display:block}
 #tip.pinned .ti-close:hover{color:var(--copper-br)}
@@ -204,8 +206,14 @@ table.mx{border-collapse:separate; border-spacing:0; font-family:var(--mono)}
 .lg-ref{position:absolute;top:0;bottom:0;background-image:repeating-linear-gradient(45deg,rgba(22,21,15,.0),rgba(22,21,15,.0) 3px,rgba(22,21,15,.45) 3px,rgba(22,21,15,.45) 6px)}
 .lg-count{font-family:var(--mono);font-size:12px;color:var(--paper-2);text-align:right;letter-spacing:.02em}
 .lg-count b{color:var(--copper-br);font-weight:600}
-.lg-detail{grid-column:1/-1;display:none;padding:10px 4px 6px;flex-wrap:wrap;gap:6px}
+.lg-detail{grid-column:1/-1;display:none;flex-direction:column;gap:14px;padding:12px 4px 8px}
 .lg-row.open .lg-detail{display:flex}
+.lg-gloss{display:flex;flex-direction:column;gap:6px;max-width:88ch}
+.lg-gloss-lab{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase}
+.lg-gloss p{font-family:var(--serif);font-size:15px;line-height:1.55;color:var(--paper);margin:0}
+.lg-chips{display:flex;flex-direction:column;gap:8px}
+.lg-chips-lab{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+.lg-chips-row{display:flex;flex-wrap:wrap;gap:6px}
 .inst-chip{font-family:var(--mono);font-size:10.5px;color:var(--paper-2);background:var(--panel);border:1px solid var(--line-2);border-radius:2px;padding:4px 8px;display:inline-flex;align-items:center;gap:6px}
 .inst-chip .ic-cite{color:var(--copper-br);font-size:9.5px}
 .inst-chip.refc{border-style:dashed;color:var(--muted)}
@@ -370,7 +378,7 @@ footer{margin-top:46px;padding-top:24px;border-top:1px solid var(--line)}
   <!-- LEAGUE -->
   <section class="panel" data-tab="league">
     <p class="eyebrow">The Wire Brief</p>
-    <p class="lede">Because every institution here runs the same Banking-as-a-Service or fintech-forward playbook, the deficiencies regulators reduce to written, deliverable commands cluster tightly &mdash; the same governance and third-party-risk demands recur from order to order. Breadth of citation is a rough proxy for emphasis, not severity. Click any theme to see which institutions carry it.</p>
+    <p class="lede">Because every institution here runs the same Banking-as-a-Service or fintech-forward playbook, the deficiencies regulators reduce to written, deliverable commands cluster tightly &mdash; the same governance and third-party-risk demands recur from order to order. Breadth of citation is a rough proxy for emphasis, not severity. Click any theme to read what the order actually commands &mdash; and which institutions carry it.</p>
     <div class="brief" id="leagueBrief"></div>
     <div class="lg-head">
       <p class="eyebrow" style="margin:0">Deficiency League Table &middot; <span id="lgScope"></span></p>
@@ -478,6 +486,47 @@ const THEMES = THEME_NAMES.map((nm, ti)=>{
   return {idx:ti, name:nm, fam, count, ref, insts};
 });
 
+/* plain-language reading of what each provision actually commands the bank to do */
+const DEFS = {
+  "Board Supervision": "Puts the board of directors personally on the hook: it must approve the remediation, oversee management's execution, and record that oversight in the minutes \u2014 accountability is pushed to the top rather than left to staff.",
+  "Independent Compliance / Oversight Committee": "Directs the board to stand up a dedicated committee \u2014 often weighted toward independent or outside directors \u2014 to supervise compliance with the order and report back to the full board on a fixed cadence.",
+  "Third-Party / FinTech Risk Mgmt": "Commands a written program to govern the bank's fintech partners and other vendors: due diligence before onboarding, contractual controls, and continuous monitoring of the firms operating through the bank's charter. This is the signature Banking-as-a-Service provision.",
+  "New Activity / Product Prior-Approval Restriction": "Bars the bank from launching \u2014 or materially changing \u2014 any product, service, or fintech partnership without the regulator's prior written non-objection. A brake on growth until the controls are fixed.",
+  "Staffing / Resource Assessment": "Requires the bank to assess whether it has enough qualified people and resources to run the function at issue (compliance, BSA, risk) and to fill the gaps that assessment surfaces.",
+  "Training": "Mandates a formal, recurring training program so directors, officers, and staff understand their obligations under the relevant law and under the order itself.",
+  "Independent Testing / Audit": "Requires periodic independent testing \u2014 by internal audit or a qualified outside party \u2014 to verify the program actually works in practice, with findings reported up to the board.",
+  "Model / System Validation": "Commands independent validation of the bank's automated systems and models (transaction-monitoring engines, fair-lending models) to confirm they are calibrated correctly and producing reliable output.",
+  "Lookback / Retrospective Review": "Requires the bank to reopen a defined historical window and re-examine past activity \u2014 classically, prior transactions for suspicious activity it failed to report \u2014 then remediate whatever it finds.",
+  "Correction of Violations": "Directs the bank to correct the specific violations the examination identified and to put controls in place so they do not recur.",
+  "Progress Reports": "Requires the bank to file written reports with the regulator at set intervals \u2014 usually quarterly \u2014 detailing the actions taken under each article of the order. It is the mechanism that keeps the bank accountable to the agency between examinations.",
+  "Shareholder / Holdco Notification": "Requires the bank to furnish the order, or a description of it, to its shareholders or holding company, so the owners cannot claim to have been in the dark about the enforcement action.",
+  "Revised AML/CFT Program": "Commands a top-to-bottom rewrite of the bank's written anti-money-laundering / counter-terrorist-financing program so it satisfies the statutory pillars and matches the bank's actual risk profile.",
+  "ML/TF Risk Assessment": "Requires a documented assessment of the bank's money-laundering and terrorist-financing exposure across its products, customers, and geographies \u2014 the foundation the rest of the BSA program must be built on.",
+  "Customer Identification Program (CIP)": "Requires written procedures to verify the identity of every customer at account opening \u2014 a particular pressure point where fintech partners onboard end-customers on the bank's behalf.",
+  "Customer Due Diligence / Beneficial Ownership": "Commands procedures to understand the purpose of each customer relationship and to identify the real people who own and control legal-entity customers.",
+  "Suspicious Activity Monitoring & SAR": "Requires the bank to monitor for, detect, and timely report suspicious transactions through Suspicious Activity Reports \u2014 frequently the core failure these orders are responding to.",
+  "OFAC Compliance Program": "Commands a sanctions-screening program so the bank does not process transactions for parties on Treasury's OFAC lists.",
+  "Fair Lending / Consumer-Compliance Program (CMS)": "Requires a comprehensive compliance management system spanning the consumer-protection and fair-lending laws the bank \u2014 and its lending partners \u2014 are subject to.",
+  "Fair Lending Risk Assessment": "Requires the bank to map where its own or its partners' lending could produce discriminatory outcomes.",
+  "Fair Lending Monitoring & Remediation": "Commands ongoing monitoring for fair-lending violations and remediation \u2014 including restitution to affected borrowers \u2014 where harm is found.",
+  "Information Systems / Data Governance": "Requires the bank to make its data and reporting systems accurate and reliable enough to actually support compliance and management oversight.",
+  "Capital Plan / Ratios": "Requires the bank to hold specified minimum capital ratios \u2014 often set above the standard well-capitalized thresholds \u2014 and to submit a plan to reach and maintain them.",
+  "Dividend / Mgmt Fee Restriction": "Bars the bank from paying dividends or management fees (typically up to the holding company) without prior regulatory approval, conserving capital inside the bank.",
+  "Strategic Plan": "Requires a written multi-year strategic plan, submitted for regulatory review, setting realistic goals consistent with the bank's risk profile.",
+  "Profit / Budget Plan": "Requires a written profit plan and budget projecting earnings and expenses on assumptions the regulator can test.",
+  "Enterprise Risk Management Framework": "Commands a formal, bank-wide framework to identify, measure, and control risk across all activities \u2014 not just the one line that triggered the order.",
+  "Growth Restrictions": "Caps the bank's growth \u2014 in total assets, deposits, or a specific business line \u2014 until it can demonstrate the controls to manage that growth safely.",
+  "Liquidity / Concentration / Brokered Deposits": "Requires the bank to manage its liquidity, pare down risky concentrations, and limit reliance on volatile funding such as brokered deposits.",
+  "Management Qualifications & Evaluation": "Requires the bank to assess whether its directors and senior officers are actually qualified for their roles \u2014 and to make changes where they are not.",
+  "ACH Third-Party Sender Due Diligence": "Requires due diligence and ongoing monitoring of the third-party senders that originate ACH payments through the bank \u2014 a payments-specific control central to several of these BaaS cases.",
+  "Project Management Program": "Requires a formal project-management discipline so the remediation itself \u2014 and other major initiatives \u2014 is planned, resourced, and tracked through to completion.",
+  "Accurate Books & Records": "Commands the bank to keep accurate books and records and to correct the accounting deficiencies the examination found.",
+  "Interest Rate Risk Management": "Requires the bank to measure and manage its exposure to movements in interest rates.",
+  "Custody / Asset-Mgmt Controls": "Requires controls over custodial and asset-management activities to safeguard client assets held by the bank.",
+  "Transactions with Affiliates (Reg W / 23A-23B)": "Requires the bank to bring dealings with its affiliates into line with Sections 23A and 23B of the Federal Reserve Act and Regulation W \u2014 limiting how far the bank can extend itself to prop up affiliated entities.",
+  "Source of Strength": "Requires the holding company to act as a source of financial and managerial strength to the bank, committing to backstop the bank's capital if it comes under pressure."
+};
+
 const provVals = ROWS.map(r=>r.prov).sort((a,b)=>a-b);
 const medianProv = provVals.length%2 ? provVals[(provVals.length-1)/2] : Math.round((provVals[provVals.length/2-1]+provVals[provVals.length/2])/2);
 const REG_LIST = ['FDIC','OCC','FRB'].filter(rf=>ROWS.some(r=>r.reg===rf));
@@ -582,7 +631,7 @@ function renderMatrix(){
   THEME_IDX.forEach((gi,ti)=>{
     const f = famForIdx(gi);
     const sorted = (state.sort.key===ti);
-    heads += `<th class="theme${sorted?' sorted':''}" data-ti="${ti}" title="${esc(H[gi])} — click to sort"><div class="fbar" style="background:${f.color}"></div><div class="lab">${esc(H[gi])}</div></th>`;
+    heads += `<th class="theme${sorted?' sorted':''}" data-ti="${ti}"><div class="fbar" style="background:${f.color}"></div><div class="lab">${esc(H[gi])}</div></th>`;
   });
 
   // body
@@ -635,7 +684,12 @@ function renderMatrix(){
     `</tbody>`;
 
   // events
-  t.querySelectorAll('th.theme').forEach(th=> th.onclick=()=>{ const ti=+th.dataset.ti; if(state.sort.key===ti){ state.sort.dir*=-1; } else { state.sort={key:ti,dir:-1}; } renderMatrix(); });
+  t.querySelectorAll('th.theme').forEach(th=>{ const ti=+th.dataset.ti;
+    th.onclick=()=>{ if(state.sort.key===ti){ state.sort.dir*=-1; } else { state.sort={key:ti,dir:-1}; } renderMatrix(); };
+    th.addEventListener('mouseenter', e=> showThemeTip(e, ti));
+    th.addEventListener('mousemove', moveTip);
+    th.addEventListener('mouseleave', hideTipHover);
+  });
   t.querySelectorAll('td.rowhead[data-open]').forEach(td=> td.onclick=()=>{ state.dos=+td.dataset.open; switchTab('dossiers'); });
   t.querySelectorAll('td.cell.has').forEach(td=>{
     td.addEventListener('mouseenter', e=> showTip(e, +td.dataset.r, +td.dataset.t, false));
@@ -655,8 +709,23 @@ function tipContent(ri, ti){
     (ref?`<div class="ti-note">"(ref.)" — referenced or assumed in the order, but not commanded as a discrete deliverable.</div>`
         :`<div class="ti-note">Paragraph cite in ${esc(r.docket)} (${r.reg}).</div>`);
 }
+function tipThemeContent(ti){
+  const th=THEMES[ti], f=th.fam, g=DEFS[th.name]||'';
+  return `<div class="ti-fam" style="color:${f.color}">${esc(f.name)}</div>`+
+    `<div class="ti-inst" style="font-size:14px">${esc(th.name)}</div>`+
+    (g?`<div class="ti-gloss">${esc(g)}</div>`:``)+
+    `<div class="ti-note">Cited in ${th.count} of ${ROWS.length}${th.ref?` · ${th.ref} as (ref.)`:``} · click header to sort</div>`;
+}
+function showThemeTip(e, ti){
+  if(state.tipPinned) return;
+  const tip=$('#tip');
+  $('#tipBody').innerHTML = tipThemeContent(ti);
+  tip.classList.add('show','wide');
+  positionTipAt(e.clientX, e.clientY);
+}
 function showTip(e, ri, ti, pin){
   const tip=$('#tip');
+  tip.classList.remove('wide');
   $('#tipBody').innerHTML = tipContent(ri,ti);
   tip.classList.add('show');
   if(pin){ tip.classList.add('pinned'); state.tipPinned=true; positionTipAt(e.clientX, e.clientY); }
@@ -704,13 +773,17 @@ function leagueRow(t){
   const w = Math.round(t.count/ROWS.length*100);
   const refW = Math.round(t.ref/ROWS.length*100);
   const chips = t.insts.map(i=>`<span class="inst-chip${i.ref?' refc':''}">${esc(i.name)}<span class="ic-cite">${esc(i.cite)}</span></span>`).join('');
+  const gloss = DEFS[t.name] || '';
   return `<div class="lg-row" data-ti="${t.idx}">`+
     `<div class="lg-name">${esc(t.name)}</div>`+
     `<div class="lg-track"><div class="lg-fill" style="width:${w}%;background:${t.fam.color}">`+
       (refW?`<div class="lg-ref" style="width:${Math.min(refW,w)}%;right:0"></div>`:``)+
     `</div></div>`+
     `<div class="lg-count"><b>${t.count}</b> / ${ROWS.length}</div>`+
-    `<div class="lg-detail">${chips}</div>`+
+    `<div class="lg-detail">`+
+      (gloss?`<div class="lg-gloss"><span class="lg-gloss-lab" style="color:${t.fam.color}">What the order commands</span><p>${gloss}</p></div>`:``)+
+      `<div class="lg-chips"><span class="lg-chips-lab">Cited in ${t.count} of ${ROWS.length}${t.ref?` · ${t.ref} as (ref.)`:``}</span><div class="lg-chips-row">${chips}</div></div>`+
+    `</div>`+
   `</div>`;
 }
 function drawLeagueList(){
@@ -881,7 +954,7 @@ function wire(){
 }
 
 /* ============ init ============ */
-fillMeta(); buildTabs(); buildControls(); buildDrawer(); wire(); renderMatrix();
+fillMeta(); buildTabs(); buildControls(); buildDrawer(); wire(); switchTab(state.tab);
 </script>
 </body>
 </html>
