@@ -190,6 +190,8 @@ body.unlocked .gate{opacity:0;visibility:hidden;pointer-events:none}
   font-family:'Fraunces',serif;font-size:16px;line-height:1.6;
   color:rgba(241,237,226,.72);margin-bottom:28px;max-width:42ch;
 }
+.gate-link{color:var(--wire);text-decoration:none;border-bottom:1px solid rgba(207,119,20,.4);transition:border-color .2s ease,color .2s ease}
+.gate-link:hover{color:var(--wire-bright);border-bottom-color:var(--wire-bright)}
 .gate-foot{
   margin-top:28px;font-family:'Fraunces',serif;font-style:italic;font-size:13px;line-height:1.55;
   color:rgba(241,237,226,.5);
@@ -302,6 +304,8 @@ body.unlocked .gate{opacity:0;visibility:hidden;pointer-events:none}
 .colophon-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--wire);white-space:nowrap;padding-top:4px}
 .colophon-body{font-family:'Fraunces',serif;font-size:clamp(15px,1.4vw,17px);line-height:1.65;color:var(--ink-soft);max-width:74ch}
 .colophon-body strong{color:var(--ink);font-weight:500}
+.colophon-body .colophon-link{color:var(--accent);border-bottom:1px solid var(--accent-tint);font-family:'JetBrains Mono',monospace;font-size:.85em;transition:border-color .2s ease,color .2s ease}
+.colophon-body .colophon-link:hover{color:var(--wire);border-bottom-color:var(--wire)}
 .colophon-nav{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);text-align:right;line-height:2;white-space:nowrap}
 @media(max-width:760px){.colophon-nav{text-align:left}}
 .colophon-nav a{display:block;transition:color .15s ease}
@@ -558,7 +562,7 @@ body.index-open .index-panel{transform:translateX(0)}
     <div class="gate-mark">BankReg<span class="w">Wire</span></div>
     <div class="gate-eyebrow"><span class="live-dot"></span> Preview edition · Wire room</div>
     <div class="gate-wire"></div>
-    <p class="gate-lede">A working catalogue of U.S. financial services regulation &mdash; read from the primary source, with conclusions front-loaded. This is an early preview; your feedback is welcome.</p>
+    <p class="gate-lede">A working catalogue of U.S. financial services regulation &mdash; read from the primary source, with conclusions front-loaded. This is an early preview; <a class="gate-link" href="mailto:feedback@bankregwire.com?subject=BankRegWire%20feedback">your feedback is welcome</a>.</p>
     <button class="gate-btn" id="gate-enter" type="button" autofocus>Enter the wire room <span class="arrow">&rarr;</span></button>
     <p class="gate-foot">No login required. Press <kbd>Enter</kbd> or click above to come in.</p>
   </div>
@@ -665,7 +669,7 @@ body.index-open .index-panel{transform:translateX(0)}
 <section class="colophon" id="about">
   <div class="colophon-label">About<br>the wire</div>
   <p class="colophon-body">
-    <strong>BankRegWire</strong> is a working catalogue of U.S. financial services regulation, maintained by a practitioner across state and federal supervision. Each dispatch distills a specific rule, piece of guidance, piece of legislation, or structural feature of the dual banking system into a single working document. <strong>Methodology favors statute and rule text over secondary commentary; conclusions are front-loaded.</strong> Dispatches are revised on the wire as agency actions and legislative posture evolve.
+    <strong>BankRegWire</strong> is a working catalogue of U.S. financial services regulation, maintained by a practitioner across state and federal supervision. Each dispatch distills a specific rule, piece of guidance, piece of legislation, or structural feature of the dual banking system into a single working document. <strong>Methodology favors statute and rule text over secondary commentary; conclusions are front-loaded.</strong> Dispatches are revised on the wire as agency actions and legislative posture evolve. Corrections and comments: <a class="colophon-link" href="mailto:feedback@bankregwire.com?subject=BankRegWire%20feedback">feedback@bankregwire.com</a>.
   </p>
   <nav class="colophon-nav">
     <a href="#section-i">Rules &amp; Guidance</a>
