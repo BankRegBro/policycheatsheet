@@ -67,7 +67,7 @@ a{color:var(--oxblood-tx)}
 
 /* animated copper wire */
 .wire{position:relative;height:2px;background:var(--rule-2);overflow:visible}
-.wire::after{content:"";position:absolute;top:50%;left:0;width:7px;height:7px;border-radius:50%;background:var(--copper);box-shadow:0 0 10px 2px var(--copper-soft);transform:translateY(-50%);animation:wire-run 7.5s linear infinite}
+.wire::after{content:"";position:absolute;top:50%;left:0;width:7px;height:7px;border-radius:50%;background:var(--copper);box-shadow:0 0 10px 2px var(--copper-soft);transform:translateY(-50%);animation:wire-run 7.5s linear 1 forwards}
 @keyframes wire-run{0%{left:-1%;opacity:0}5%{opacity:1}93%{opacity:1}100%{left:101%;opacity:0}}
 @media(prefers-reduced-motion:reduce){.wire::after{animation:none;left:0;opacity:1}}
 
