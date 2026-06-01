@@ -510,7 +510,10 @@ function sw(id,btn){
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
   btn.classList.add('active');btn.setAttribute('aria-selected','true');btn.tabIndex=0;
   document.getElementById('panel-'+id).classList.add('active');
-  if(history.replaceState)history.replaceState(null,'','#'+id);
+  // Update the URL hash for shareable deep links. Wrapped because a sandboxed
+  // about:srcdoc preview blocks replaceState with a URL; harmless on a real domain.
+  try{ if(history.replaceState) history.replaceState(null,'','#'+id); }
+  catch(e){ /* sandboxed preview — skip silently */ }
 }
 function tog(el){
   const was=el.classList.contains('open');
