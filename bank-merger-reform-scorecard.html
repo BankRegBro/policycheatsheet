@@ -1,181 +1,252 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bank Merger Reform Scorecard — 2025–2026</title>
+<title>Bank Merger Reform — Interagency Scorecard · BankRegWire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#ffffff;--bg-sec:#f7f6f3;--bg-ter:#f0efe9;
-  --text:#1a1a18;--text-sec:#5a5a56;--text-ter:#9a9994;
-  --border:rgba(0,0,0,0.09);--border-mid:rgba(0,0,0,0.16);--border-str:rgba(0,0,0,0.26);
-  --radius-md:8px;--radius-lg:12px;
-  --occ:#0c447c;--occ-bg:#e6f1fb;--occ-text:#0c447c;
-  --fdic:#27500a;--fdic-bg:#eaf3de;--fdic-text:#27500a;
-  --fed:#633806;--fed-bg:#faeeda;--fed-text:#633806;
-  --doj:#501313;--doj-bg:#fcebeb;--doj-text:#a32d2d;
-  --green-bg:#eaf3de;--green-text:#27500a;
-  --amber-bg:#faeeda;--amber-text:#633806;
-  --red-bg:#fcebeb;--red-text:#a32d2d;
-  --gray-bg:#f1efe8;--gray-text:#444441;
-  --blue-bg:#e6f1fb;--blue-text:#0c447c;
+  /* ── BankRegWire paper/ink system ── */
+  --paper:#f1ede2; --paper-card:#f7f3ea; --paper-sunk:#e9e3d4;
+  --ink:#16150f; --ink-2:#46433a; --ink-3:#6c6859;
+  --oxblood:#7a1f2b; --oxblood-tx:#6a1a25;
+  --copper:#cf7714; --copper-deep:#a85c08;
+  --rule:rgba(22,21,15,.14); --rule-2:rgba(22,21,15,.24); --rule-3:rgba(22,21,15,.40);
+  --copper-soft:rgba(207,119,20,.20); --oxblood-soft:rgba(122,31,43,.09);
+  --focus:#1f6aa8; --radius:4px;
+
+  /* agency accents (warmed to sit on paper) */
+  --occ:#27567f;  --occ-bg:#e0ebf4;
+  --fdic:#3c6a2c; --fdic-bg:#e6efd9;
+  --fed:#8a5a1e;  --fed-bg:#f4e9d3;
+  --doj:#a23030;  --doj-bg:#f4e1df;
+
+  /* semantic traffic-light (permissive / continuity / friction) */
+  --green-bg:#dfe9d0; --green-tx:#33500f;
+  --amber-bg:#f6e6c7; --amber-tx:#7a4a06;
+  --red-bg:#f4dad7;   --red-tx:#933030;
+  --gray-bg:#e6e1d4;  --gray-tx:#4c483c;
+  --blue-bg:#dde7f2;  --blue-tx:#1d4a78;
 }
 @media(prefers-color-scheme:dark){
   :root{
-    --bg:#1c1c1a;--bg-sec:#252522;--bg-ter:#2e2e2b;
-    --text:#f0efe8;--text-sec:#a8a79f;--text-ter:#6a6a62;
-    --border:rgba(255,255,255,0.09);--border-mid:rgba(255,255,255,0.16);--border-str:rgba(255,255,255,0.26);
-    --occ-bg:#042c53;--occ-text:#b5d4f4;
-    --fdic-bg:#173404;--fdic-text:#c0dd97;
-    --fed-bg:#412402;--fed-text:#fac775;
-    --doj-bg:#501313;--doj-text:#f7c1c1;
-    --green-bg:#173404;--green-text:#c0dd97;
-    --amber-bg:#412402;--amber-text:#fac775;
-    --red-bg:#501313;--red-text:#f7c1c1;
-    --gray-bg:#2c2c2a;--gray-text:#d3d1c7;
-    --blue-bg:#042c53;--blue-text:#b5d4f4;
+    --paper:#16150f; --paper-card:#201e16; --paper-sunk:#12110b;
+    --ink:#f1ede2; --ink-2:#c2bdac; --ink-3:#928d7d;
+    --oxblood:#d27d88; --oxblood-tx:#dc8c96;
+    --copper:#e6973c; --copper-deep:#f0a64f;
+    --rule:rgba(241,237,226,.15); --rule-2:rgba(241,237,226,.26); --rule-3:rgba(241,237,226,.42);
+    --copper-soft:rgba(230,151,60,.26); --oxblood-soft:rgba(210,125,136,.12);
+    --focus:#6fb2ec;
+
+    --occ:#84b3df;  --occ-bg:#0c2c4b;
+    --fdic:#9cca74; --fdic-bg:#1b3409;
+    --fed:#d9a85a;  --fed-bg:#3a2606;
+    --doj:#e69a9a;  --doj-bg:#3a1614;
+
+    --green-bg:#22340c; --green-tx:#bcdd95;
+    --amber-bg:#3c2706; --amber-tx:#f0c882;
+    --red-bg:#3a1614;   --red-tx:#eaa6a6;
+    --gray-bg:#2e2b22;  --gray-tx:#d2cdbd;
+    --blue-bg:#102c47;  --blue-tx:#a9cdef;
   }
 }
-body{font-family:'Georgia','Times New Roman',serif;background:var(--bg-ter);color:var(--text);min-height:100vh;padding:2rem 1rem;line-height:1.6}
-.shell{max-width:880px;margin:0 auto}
+body{font-family:'Archivo',system-ui,sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;padding:2.25rem 1rem 3rem;line-height:1.62;-webkit-font-smoothing:antialiased;background-image:radial-gradient(rgba(22,21,15,.022) 1px,transparent 1px);background-size:3px 3px}
+@media(prefers-color-scheme:dark){body{background-image:radial-gradient(rgba(241,237,226,.025) 1px,transparent 1px)}}
+.shell{max-width:900px;margin:0 auto}
+a{color:var(--oxblood-tx)}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:3px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);border:0}
+
+/* animated copper wire */
+.wire{position:relative;height:2px;background:var(--rule-2);overflow:visible}
+.wire::after{content:"";position:absolute;top:50%;left:0;width:7px;height:7px;border-radius:50%;background:var(--copper);box-shadow:0 0 10px 2px var(--copper-soft);transform:translateY(-50%);animation:wire-run 7.5s linear infinite}
+@keyframes wire-run{0%{left:-1%;opacity:0}5%{opacity:1}93%{opacity:1}100%{left:101%;opacity:0}}
+@media(prefers-reduced-motion:reduce){.wire::after{animation:none;left:0;opacity:1}}
+
 /* masthead */
-.masthead{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1.75rem 2rem 1.5rem;margin-bottom:1.25rem}
-.mh-top{display:flex;align-items:flex-start;gap:14px;margin-bottom:1rem}
-.mh-badge{font-family:'Helvetica Neue',Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--text);color:var(--bg);padding:5px 12px;border-radius:4px;flex-shrink:0;align-self:flex-start;margin-top:4px}
-.mh-title h1{font-family:'Georgia',serif;font-size:20px;font-weight:normal;color:var(--text);line-height:1.3}
-.mh-sub{font-family:'Helvetica Neue',Arial,sans-serif;font-size:12.5px;color:var(--text-sec);margin-top:3px}
-.mh-lede{font-family:'Helvetica Neue',Arial,sans-serif;font-size:13.5px;color:var(--text-sec);border-top:0.5px solid var(--border);padding-top:1rem;line-height:1.65}
+.masthead{background:var(--paper-card);border:1px solid var(--rule-2);border-radius:var(--radius);padding:1.6rem 1.9rem 0;margin-bottom:1.1rem}
+.brandbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-bottom:1rem;border-bottom:1px solid var(--rule);margin-bottom:1.15rem}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-mark{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--ink)}
+.brand-mark b{color:var(--oxblood)}
+.node{width:8px;height:8px;border-radius:50%;background:var(--copper);box-shadow:0 0 0 3px var(--copper-soft);flex-shrink:0}
+.desk-tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);border:1px solid var(--rule-2);border-radius:20px;padding:3px 10px}
+.kicker{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--copper-deep);margin-bottom:.5rem}
+.masthead h1{font-family:'Fraunces',Georgia,serif;font-optical-sizing:auto;font-size:clamp(28px,5vw,40px);font-weight:600;letter-spacing:-.015em;line-height:1.04;color:var(--ink)}
+.masthead h1 em{font-style:italic;color:var(--oxblood)}
+.mh-sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-3);margin-top:.65rem;letter-spacing:.01em;line-height:1.6}
+.mh-lede{font-size:15px;color:var(--ink-2);margin:1.05rem 0 .2rem;line-height:1.66;max-width:66ch}
+.mh-lede b{color:var(--ink);font-weight:600}
+.masthead .wire{margin:1.25rem -1.9rem 0}
+
 /* metrics */
-.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.25rem}
-@media(max-width:580px){.metrics{grid-template-columns:repeat(2,1fr)}}
-.metric{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-md);padding:.875rem 1rem}
-.metric-val{font-family:'Georgia',serif;font-size:22px;color:var(--text)}
-.metric-lbl{font-family:'Helvetica Neue',Arial,sans-serif;font-size:10.5px;color:var(--text-ter);margin-top:3px;text-transform:uppercase;letter-spacing:.05em}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:1.1rem}
+@media(max-width:620px){.metrics{grid-template-columns:repeat(2,1fr)}}
+.metric{background:var(--paper-card);border:1px solid var(--rule-2);border-radius:var(--radius);padding:.85rem .95rem;position:relative;overflow:hidden}
+.metric::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--copper);transform:scaleY(0);transform-origin:top;transition:transform .2s}
+.metric:hover::before{transform:scaleY(1)}
+.metric-val{font-family:'Fraunces',Georgia,serif;font-size:24px;font-weight:600;color:var(--ink);letter-spacing:-.01em;line-height:1.05}
+.metric-lbl{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--ink-3);margin-top:5px;text-transform:uppercase;letter-spacing:.045em;line-height:1.45}
+
 /* tabs */
-.tabs-wrap{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
-.tab-nav{display:flex;border-bottom:0.5px solid var(--border);overflow-x:auto;background:var(--bg-sec)}
-.tab-btn{font-family:'Helvetica Neue',Arial,sans-serif;font-size:13px;padding:10px 18px;border:none;background:none;cursor:pointer;color:var(--text-sec);border-bottom:2px solid transparent;white-space:nowrap;transition:color .15s,border-color .15s}
-.tab-btn:hover{color:var(--text);background:var(--bg-ter)}
-.tab-btn.active{color:var(--text);font-weight:600;border-bottom-color:var(--text)}
-.tab-panel{display:none;padding:1.5rem 2rem}
+.tabs-wrap{background:var(--paper-card);border:1px solid var(--rule-2);border-radius:var(--radius);overflow:hidden}
+.tab-nav{display:flex;border-bottom:1px solid var(--rule-2);overflow-x:auto;background:var(--paper-sunk)}
+.tab-btn{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:.04em;padding:13px 17px;border:none;background:none;cursor:pointer;color:var(--ink-3);border-bottom:2px solid transparent;white-space:nowrap;transition:color .15s,border-color .15s,background .15s;text-transform:uppercase}
+.tab-btn:hover{color:var(--ink);background:var(--paper-card)}
+.tab-btn.active{color:var(--ink);font-weight:600;border-bottom-color:var(--copper);background:var(--paper-card)}
+.tab-panel{display:none;padding:1.5rem 1.9rem 1.9rem}
 .tab-panel.active{display:block}
+
+/* pillar intro */
+.pillar-intro{font-size:14px;color:var(--ink-2);line-height:1.66;margin-bottom:1.2rem;padding:.9rem 1.1rem;background:var(--oxblood-soft);border-left:3px solid var(--oxblood);border-radius:0 var(--radius) var(--radius) 0}
+.pillar-intro em{font-style:italic;color:var(--ink)}
+
+/* section label */
+.section-label{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin-bottom:.8rem;display:flex;align-items:center;gap:8px}
+.section-label::after{content:"";flex:1;height:1px;background:var(--rule)}
+
 /* agency matrix */
-.section-label{font-family:'Helvetica Neue',Arial,sans-serif;font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-ter);margin-bottom:.75rem}
 .agency-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem}
-@media(max-width:640px){.agency-grid{grid-template-columns:repeat(2,1fr)}}
-.agency-card{border:0.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
-.agency-header{padding:.6rem .875rem;font-family:'Helvetica Neue',Arial,sans-serif;font-weight:700;font-size:12px;letter-spacing:.04em}
-.ag-occ{background:var(--occ-bg);color:var(--occ-text)}
-.ag-fdic{background:var(--fdic-bg);color:var(--fdic-text)}
-.ag-fed{background:var(--fed-bg);color:var(--fed-text)}
-.ag-doj{background:var(--doj-bg);color:var(--doj-text)}
-.agency-body{padding:.75rem .875rem;background:var(--bg)}
-.agency-body p{font-family:'Helvetica Neue',Arial,sans-serif;font-size:12.5px;color:var(--text-sec);line-height:1.55;margin-bottom:.5rem}
+@media(max-width:680px){.agency-grid{grid-template-columns:repeat(2,1fr)}}
+.agency-card{border:1px solid var(--rule-2);border-radius:var(--radius);overflow:hidden;background:var(--paper-card)}
+.agency-header{padding:.55rem .85rem;font-family:'JetBrains Mono',monospace;font-weight:600;font-size:11.5px;letter-spacing:.06em;border-bottom:2px solid currentColor}
+.ag-occ{background:var(--occ-bg);color:var(--occ)}
+.ag-fdic{background:var(--fdic-bg);color:var(--fdic)}
+.ag-fed{background:var(--fed-bg);color:var(--fed)}
+.ag-doj{background:var(--doj-bg);color:var(--doj)}
+.agency-body{padding:.8rem .85rem}
+.agency-body p{font-size:12.5px;color:var(--ink-2);line-height:1.56;margin-bottom:.55rem}
 .agency-body p:last-child{margin-bottom:0}
-.status-tag{display:inline-block;font-family:'Helvetica Neue',Arial,sans-serif;font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600;letter-spacing:.03em;margin-bottom:.4rem}
-.tag-green{background:var(--green-bg);color:var(--green-text)}
-.tag-amber{background:var(--amber-bg);color:var(--amber-text)}
-.tag-red{background:var(--red-bg);color:var(--red-text)}
-.tag-gray{background:var(--gray-bg);color:var(--gray-text)}
-.tag-blue{background:var(--blue-bg);color:var(--blue-text)}
+.agency-body em{font-style:italic;color:var(--ink)}
+
+.status-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9.5px;padding:3px 9px;border-radius:20px;font-weight:600;letter-spacing:.03em;margin-bottom:.45rem;text-transform:uppercase}
+.tag-green{background:var(--green-bg);color:var(--green-tx)}
+.tag-amber{background:var(--amber-bg);color:var(--amber-tx)}
+.tag-red{background:var(--red-bg);color:var(--red-tx)}
+.tag-gray{background:var(--gray-bg);color:var(--gray-tx)}
+.tag-blue{background:var(--blue-bg);color:var(--blue-tx)}
+
+/* legend */
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1rem;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-3)}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend i{width:9px;height:9px;border-radius:2px;display:inline-block}
+
 /* comparison table */
-.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:1.5rem}
-.comp-table{width:100%;border-collapse:collapse;font-family:'Helvetica Neue',Arial,sans-serif;font-size:12.5px}
-@media(max-width:640px){.comp-table{min-width:640px}}
-.comp-table th{text-align:left;padding:.5rem .75rem;border-bottom:0.5px solid var(--border-mid);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-ter);font-weight:600;background:var(--bg-sec)}
-.comp-table td{padding:.55rem .75rem;border-bottom:0.5px solid var(--border);vertical-align:top;line-height:1.5;color:var(--text-sec)}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:1rem;border:1px solid var(--rule-2);border-radius:var(--radius)}
+.comp-table{width:100%;border-collapse:collapse;font-size:12px}
+@media(max-width:680px){.comp-table{min-width:660px}}
+.comp-table th{text-align:left;padding:.55rem .75rem;border-bottom:1px solid var(--rule-2);font-family:'JetBrains Mono',monospace;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);font-weight:600;background:var(--paper-sunk)}
+.comp-table td{padding:.6rem .75rem;border-bottom:1px solid var(--rule);vertical-align:top;line-height:1.5;color:var(--ink-2);background:var(--paper-card)}
 .comp-table tr:last-child td{border-bottom:none}
-.comp-table .dim{font-weight:600;color:var(--text);font-size:12px}
-.comp-table .cell-occ{color:var(--occ-text)}
-.comp-table .cell-fdic{color:var(--fdic-text)}
-.comp-table .cell-fed{color:var(--fed-text)}
-.comp-table .cell-doj{color:var(--doj-text)}
+.comp-table .dim{font-family:'Fraunces',Georgia,serif;font-weight:600;color:var(--ink);font-size:12.5px}
+.comp-table .cell-occ{box-shadow:inset 3px 0 var(--occ)}
+.comp-table .cell-fdic{box-shadow:inset 3px 0 var(--fdic)}
+.comp-table .cell-fed{box-shadow:inset 3px 0 var(--fed)}
+.comp-table .cell-doj{box-shadow:inset 3px 0 var(--doj)}
+.th-occ{color:var(--occ)!important}.th-fdic{color:var(--fdic)!important}.th-fed{color:var(--fed)!important}.th-doj{color:var(--doj)!important}
+
 /* deal cards */
-.deals-list{display:flex;flex-direction:column;gap:10px}
-.deal-card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:.875rem 1.1rem;cursor:pointer;transition:border-color .15s}
-.deal-card:hover{border-color:var(--border-mid)}
-.deal-card.open{border-color:var(--border-str)}
-.deal-head{display:flex;align-items:center;gap:10px}
-.deal-date{font-family:'Helvetica Neue',Arial,sans-serif;font-size:10.5px;color:var(--text-ter);white-space:nowrap;min-width:80px;text-transform:uppercase;letter-spacing:.04em}
-.deal-title{font-family:'Georgia',serif;font-size:14px;color:var(--text);flex:1;line-height:1.3}
-.deal-detail{display:none;margin-top:.75rem;padding-top:.75rem;border-top:0.5px solid var(--border);font-family:'Helvetica Neue',Arial,sans-serif;font-size:13px;color:var(--text-sec);line-height:1.65;background:var(--bg-sec);margin:-0px -0px 0;padding:.75rem;border-radius:0 0 var(--radius-lg) var(--radius-lg)}
-.deal-card.open .deal-detail{display:block}
-.caret{font-size:10px;color:var(--text-ter);transition:transform .2s;margin-left:auto;flex-shrink:0}
+.deals-list{display:flex;flex-direction:column;gap:9px}
+.deal-card{background:var(--paper-card);border:1px solid var(--rule-2);border-radius:var(--radius);padding:.9rem 1.1rem;cursor:pointer;transition:border-color .15s;position:relative;overflow:hidden}
+.deal-card::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,var(--copper),transparent 60%);transform:scaleX(0);transform-origin:left;transition:transform .35s ease}
+.deal-card:hover::before,.deal-card.open::before{transform:scaleX(1)}
+.deal-card:hover{border-color:var(--rule-3)}
+.deal-card.open{border-color:var(--rule-3)}
+.deal-head{display:flex;align-items:center;gap:11px}
+.deal-date{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-3);white-space:nowrap;min-width:84px;text-transform:uppercase;letter-spacing:.03em}
+.deal-title{font-family:'Fraunces',Georgia,serif;font-size:15.5px;font-weight:500;color:var(--ink);flex:1;line-height:1.3;letter-spacing:-.005em}
+.caret{font-size:9px;color:var(--ink-3);transition:transform .2s;margin-left:auto;flex-shrink:0}
 .deal-card.open .caret{transform:rotate(180deg)}
+.deal-detail{display:none;margin:.85rem -1.1rem -0.9rem;padding:.9rem 1.1rem;border-top:1px solid var(--rule);font-size:13px;color:var(--ink-2);line-height:1.68;background:var(--paper-sunk)}
+.deal-card.open .deal-detail{display:block}
+.deal-detail strong{color:var(--ink);font-weight:600}
+.deal-detail em{font-style:italic}
+
 /* open questions */
 .q-list{display:flex;flex-direction:column;gap:8px}
-.q-item{border:0.5px solid var(--border);border-radius:var(--radius-md);padding:.875rem 1rem;border-left:3px solid var(--border-mid)}
-.q-item.tension{border-left-color:#d85a30}
-.q-item.watch{border-left-color:#ba7517}
-.q-item.resolved{border-left-color:#639922}
-.q-label{font-family:'Helvetica Neue',Arial,sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-bottom:.3rem}
-.q-label.tension{color:#d85a30}
-.q-label.watch{color:#ba7517}
-.q-label.resolved{color:#639922}
-.q-text{font-family:'Georgia',serif;font-size:13.5px;color:var(--text);line-height:1.4;margin-bottom:.35rem}
-.q-sub{font-family:'Helvetica Neue',Arial,sans-serif;font-size:12.5px;color:var(--text-sec);line-height:1.55}
-/* pillar intro */
-.pillar-intro{font-family:'Helvetica Neue',Arial,sans-serif;font-size:13.5px;color:var(--text-sec);line-height:1.65;margin-bottom:1.25rem;padding:.875rem 1.1rem;background:var(--bg-sec);border-left:3px solid var(--border-str);border-radius:0 var(--radius-md) var(--radius-md) 0}
-/* footer */
-.footer{margin-top:1.5rem;font-family:'Helvetica Neue',Arial,sans-serif;font-size:11.5px;color:var(--text-ter);text-align:center;line-height:1.6}
-.footer a{color:var(--text-sec);text-decoration:underline;text-underline-offset:2px}
-.footer a:hover{color:var(--text)}
-/* focus visibility for keyboard users */
-.tab-btn:focus-visible,.deal-card:focus-visible{outline:2px solid var(--occ);outline-offset:2px}
-/* print: expand everything so a PDF/printout captures all tabs and details */
+.q-item{border:1px solid var(--rule-2);border-radius:var(--radius);padding:.9rem 1rem;border-left:3px solid var(--rule-3);background:var(--paper-card)}
+.q-item.tension{border-left-color:var(--doj)}
+.q-item.watch{border-left-color:var(--fed)}
+.q-item.resolved{border-left-color:var(--fdic)}
+.q-label{font-family:'JetBrains Mono',monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:.35rem}
+.q-label.tension{color:var(--doj)}
+.q-label.watch{color:var(--fed)}
+.q-label.resolved{color:var(--fdic)}
+.q-text{font-family:'Fraunces',Georgia,serif;font-size:14.5px;font-weight:500;color:var(--ink);line-height:1.38;margin-bottom:.4rem}
+.q-sub{font-size:12.5px;color:var(--ink-2);line-height:1.58}
+.q-sub b{color:var(--ink);font-weight:600}
+
+/* colophon */
+.colophon{margin-top:1.3rem;background:var(--paper-card);border:1px solid var(--rule);border-radius:var(--radius);padding:1.1rem 1.4rem}
+.colophon .wire{margin:0 -1.4rem .9rem}
+.colophon p{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--ink-3);line-height:1.7}
+.colophon p+p{margin-top:.55rem}
+.colophon b{color:var(--ink-2)}
+.colophon a{color:var(--oxblood-tx)}
+
+/* print */
 @media print{
-  body{background:#fff;color:#000;padding:0}
-  .tab-nav{display:none}
+  body{background:#fff;color:#000;padding:0;background-image:none}
+  .wire,.tab-nav,.caret,.metrics,.brand-mark,.desk-tag{display:none!important}
+  .tabs-wrap,.masthead,.deal-card,.agency-card,.q-item,.colophon,.table-scroll{border-color:#999}
   .tab-panel{display:block!important;padding:1rem 0;break-inside:avoid}
-  .tab-panel::before{content:attr(data-label);display:block;font-family:'Helvetica Neue',Arial,sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin:1.5rem 0 .75rem;padding-top:1rem;border-top:1px solid #999}
+  .tab-panel::before{content:attr(data-label);display:block;font-family:'Fraunces',serif;font-size:17px;font-weight:600;margin:1.3rem 0 .6rem;border-bottom:1px solid #000}
   .deal-detail{display:block!important}
-  .caret{display:none}
   .deal-card,.metric,.agency-card,.q-item,.masthead,.tabs-wrap{break-inside:avoid}
-  a{color:#000}
+  a[href]::after{content:" (" attr(href) ")";font-size:8px;color:#444;word-break:break-all}
 }
 </style>
 </head>
 <body>
 <div class="shell">
 
-<div class="masthead">
-  <div class="mh-top">
-    <div class="mh-badge">Policy Scorecard</div>
-    <div class="mh-title">
-      <h1>Bank Merger Reform — Interagency Scorecard</h1>
-      <p class="mh-sub">OCC &nbsp;·&nbsp; FDIC &nbsp;·&nbsp; Federal Reserve &nbsp;·&nbsp; DOJ &nbsp;·&nbsp; Current as of May 2026</p>
-    </div>
+<header class="masthead">
+  <div class="brandbar">
+    <div class="brand"><span class="node" aria-hidden="true"></span><span class="brand-mark"><b>BANK</b>REG<b>WIRE</b></span></div>
+    <span class="desk-tag">Reform Tracker · M&amp;A Desk</span>
   </div>
-  <p class="mh-lede">The Trump administration moved quickly to reverse Biden-era merger policy, with the OCC and FDIC reinstating pre-2024 standards by May 2025. DOJ's enforcement posture has been permissive in practice — it declined to challenge the first big test — but its formal framework has not changed. The picture remains incomplete: the Federal Reserve has not updated its framework, and DOJ still operates under the more stringent 2023 Merger Guidelines rather than rejoining the 1995 Bank Merger Guidelines. This scorecard tracks the current posture at each agency and the key unresolved questions.</p>
-</div>
+  <p class="kicker">Interagency posture · 2024 → 2026</p>
+  <h1>Bank Merger Reform <em>Scorecard</em></h1>
+  <p class="mh-sub">OCC &nbsp;·&nbsp; FDIC &nbsp;·&nbsp; Federal Reserve &nbsp;·&nbsp; DOJ &nbsp;·&nbsp; Current as of June 1, 2026</p>
+  <p class="mh-lede">The Trump administration's interagency merger reset is now mostly complete — but not uniform. The <b>OCC and FDIC</b> reverted to pre-2024 standards by mid-2025 and restored expedited review. The <b>Federal Reserve</b>, long the silent partner, has since moved: Vice Chair for Supervision Bowman has committed to an HHI-based competitive-analysis proposal and a broader M&amp;A and de novo process review, and the Board has cleared a run of large deals on sharply compressed timelines. The remaining friction is <b>DOJ</b>, which still operates under the stricter 2023 Merger Guidelines and 2024 Banking Addendum even as its enforcement practice stays permissive. This scorecard tracks each agency's posture, the deals testing it, and the questions still open.</p>
+  <p class="mh-sub" id="asof-line">Verified against OCC, FDIC, Federal Reserve, and Federal Register primary sources; deal data from SEC filings and S&amp;P Global / Ankura.</p>
+  <div class="wire" aria-hidden="true"></div>
+</header>
 
 <div class="metrics">
-  <div class="metric"><div class="metric-val">2</div><div class="metric-lbl">Agencies reverted to pre-2024 standards</div></div>
-  <div class="metric"><div class="metric-val">15 days</div><div class="metric-lbl">Expedited pathway restored (OCC/FDIC)</div></div>
-  <div class="metric"><div class="metric-val">177 days</div><div class="metric-lbl">Avg. Fed processing, Board-acted M&amp;A (H1 2025)</div></div>
-  <div class="metric"><div class="metric-val">&Delta;HHI 100</div><div class="metric-lbl">DOJ presumption threshold (vs. 200 prior)</div></div>
+  <div class="metric"><div class="metric-val">2 of 4</div><div class="metric-lbl">Agencies fully reverted to pre-2024 rules (OCC · FDIC)</div></div>
+  <div class="metric"><div class="metric-val">~179</div><div class="metric-lbl">U.S. bank deals announced in 2025 (Ankura)</div></div>
+  <div class="metric"><div class="metric-val">$290B</div><div class="metric-lbl">Largest 2026 approval — Fifth Third–Comerica (9th-largest U.S. bank)</div></div>
+  <div class="metric"><div class="metric-val">&Delta;HHI 100</div><div class="metric-lbl">DOJ presumption threshold (vs. 200 under 1995 rules)</div></div>
 </div>
 
 <div class="tabs-wrap">
   <div class="tab-nav" role="tablist" aria-label="Scorecard sections">
     <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-overview" id="tab-overview" onclick="sw('overview',this)">Agency overview</button>
-    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-compare" id="tab-compare" onclick="sw('compare',this)">Policy comparison</button>
-    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-deals" id="tab-deals" onclick="sw('deals',this)">Notable deals</button>
-    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-questions" id="tab-questions" onclick="sw('questions',this)">Open questions</button>
+    <button class="tab-btn" role="tab" aria-selected="false" tabindex="-1" aria-controls="panel-compare" id="tab-compare" onclick="sw('compare',this)">Policy comparison</button>
+    <button class="tab-btn" role="tab" aria-selected="false" tabindex="-1" aria-controls="panel-deals" id="tab-deals" onclick="sw('deals',this)">Notable deals</button>
+    <button class="tab-btn" role="tab" aria-selected="false" tabindex="-1" aria-controls="panel-questions" id="tab-questions" onclick="sw('questions',this)">Open questions</button>
   </div>
 
   <!-- Overview -->
   <div id="panel-overview" class="tab-panel active" role="tabpanel" aria-labelledby="tab-overview" data-label="Agency overview">
-    <p class="pillar-intro">The Biden-era merger policy regime — characterized by heightened scrutiny, no expedited review, and burdens on applicants to affirmatively demonstrate community benefit — has been substantially reversed at the OCC and FDIC. The Federal Reserve and DOJ remain partial holdouts.</p>
+    <p class="pillar-intro">The Biden-era regime — heightened scrutiny, no expedited review, and a burden on applicants to affirmatively prove community benefit — has been substantially reversed at the OCC and FDIC. The Federal Reserve is now reforming rather than holding still, while DOJ remains the formal holdout.</p>
     <div class="section-label">Current posture by agency</div>
+    <div class="legend" aria-hidden="true">
+      <span><i style="background:var(--green-tx)"></i> Permissive reset</span>
+      <span><i style="background:var(--amber-tx)"></i> Continuity / in motion</span>
+      <span><i style="background:var(--red-tx)"></i> Remaining friction</span>
+    </div>
     <div class="agency-grid">
       <div class="agency-card">
         <div class="agency-header ag-occ">OCC</div>
         <div class="agency-body">
           <div class="status-tag tag-green">Most permissive reset</div>
-          <p>Rescinded 2024 policy statement (May 2025). Issued interim final rule reinstating pre-2024 regulations, including the 15-day expedited approval pathway for qualifying transactions. Congressional Review Act resolution signed by President Trump bars reissuance of a substantially similar rule.</p>
+          <p>Rescinded the 2024 policy statement (May 2025) and issued an interim final rule reinstating pre-2024 regulations, including the 15-day expedited approval pathway for qualifying transactions. A Congressional Review Act resolution signed by President Trump bars reissuance of a substantially similar rule.</p>
           <p>Current framework: 1990s-era OCC merger regulations. Supervisory history and CRA record remain relevant factors.</p>
         </div>
       </div>
@@ -183,112 +254,112 @@ body{font-family:'Georgia','Times New Roman',serif;background:var(--bg-ter);colo
         <div class="agency-header ag-fdic">FDIC</div>
         <div class="agency-body">
           <div class="status-tag tag-green">Pre-2024 reinstated</div>
-          <p>Rescinded 2024 Statement of Policy (July 3, 2025; effective August 4, 2025). Reinstated the 1998-era Statement of Policy on Bank Merger Transactions pending a comprehensive future review of merger policy.</p>
-          <p>Explicitly dropped the Biden-era requirement that applicants affirmatively demonstrate a merger would improve community service more than the status quo — a burden that had effectively frozen application activity.</p>
+          <p>Rescinded the 2024 Statement of Policy (July 3 2025; effective Aug 4 2025) and reinstated the 1998-era Statement of Policy on Bank Merger Transactions, pending a comprehensive future review of merger policy.</p>
+          <p>Explicitly dropped the Biden-era requirement that applicants affirmatively demonstrate a merger would improve community service over the status quo — a burden that had effectively frozen application activity.</p>
         </div>
       </div>
       <div class="agency-card">
         <div class="agency-header ag-fed">Federal Reserve</div>
         <div class="agency-body">
-          <div class="status-tag tag-amber">No formal change</div>
-          <p>The Fed has not issued new merger regulations or policy statements under the Trump administration. It did not join the September 2024 Biden-era changes, nor has it issued updated guidance moving in the opposite direction.</p>
-          <p>Continues to apply the 1995 Bank Merger Guidelines for competitive analysis. Board-acted M&amp;A applications averaged 177 days in H1 2025 (median 157), down from a 259-day average in 2024. 413 applications approved in H1 2025.</p>
+          <div class="status-tag tag-amber">Reform underway</div>
+          <p>The Fed declined to join the September 2024 Biden-era changes and for a time made no countervailing move. That has shifted: Vice Chair for Supervision Bowman has said the Board is preparing an <em>HHI proposal</em> to modernize competitive analysis and is reviewing the M&amp;A and de novo chartering processes, including streamlined applications for community banks.</p>
+          <p>On timing, the Board has cleared large deals quickly — Huntington–Cadence (Dec 2025) and Fifth Third–Comerica (approved Jan 13 2026, ~$290B combined) — a marked compression from the ~13-month Capital One–Discover review. SR 14-2 (less-than-satisfactory ratings can block applicants) remains in effect and has not been formally rescinded.</p>
         </div>
       </div>
       <div class="agency-card">
         <div class="agency-header ag-doj">DOJ</div>
         <div class="agency-body">
-          <div class="status-tag tag-red">Key holdout</div>
-          <p>Has not rejoined the 1995 Bank Merger Guidelines withdrawn in September 2024. Continues to apply the 2023 Merger Guidelines with the stricter HHI-change threshold of 100 points (vs. 200 prior), broader qualitative factors, and no antitrust safe harbors.</p>
-          <p>The key nuance: DOJ's <em>formal</em> framework remains stricter, but its <em>enforcement practice</em> under AAG Gail Slater has been permissive — it declined to challenge Capital One / Discover. That formal/practical gap is the real uncertainty applicants must price, since the banking agencies and DOJ now run on different analytical frameworks with no formal coordination mechanism.</p>
+          <div class="status-tag tag-red">Formal holdout</div>
+          <p>Roughly 20 months on, DOJ has not rejoined the 1995 Bank Merger Guidelines (withdrawn Sept 2024) or rescinded the 2024 Banking Addendum. It continues to apply the 2023 Merger Guidelines — &Delta;HHI threshold of 100 (vs. 200 prior), broader qualitative factors, no antitrust safe harbors.</p>
+          <p>The nuance: DOJ's <em>formal</em> framework remains stricter, but its <em>enforcement practice</em> under AAG Gail Slater has been permissive — it declined to challenge Capital One–Discover and did not challenge the 2025–26 wave of large approvals. That formal/practical gap is the real risk applicants must price.</p>
         </div>
       </div>
     </div>
 
-    <div class="section-label">Treasury Department posture</div>
+    <div class="section-label">Treasury direction</div>
     <div class="q-item watch" style="margin-bottom:1.25rem">
-      <div class="q-label watch">Political direction</div>
-      <div class="q-text">Secretary Bessent has been explicit that merger reform is a priority</div>
-      <div class="q-sub">In March 2025, Bessent criticized the prior administration's "mission drift," stating that "productive and synergistic mergers are often slowed due to immaterial supervisory issues." He called for refocusing financial regulation on safety and soundness, affordability, and economic growth — providing political cover for a more permissive merger review environment across the interagency.</div>
+      <div class="q-label watch">Political cover</div>
+      <div class="q-text">Secretary Bessent has made merger reform an explicit priority</div>
+      <div class="q-sub">In March 2025, Bessent criticized the prior administration's "mission drift," arguing that "productive and synergistic mergers are often slowed due to immaterial supervisory issues." He called for refocusing financial regulation on safety and soundness, affordability, and economic growth — providing top-down political cover for a more permissive interagency posture.</div>
     </div>
 
-    <div class="section-label">Key signal: Capital One / Discover approval</div>
+    <div class="section-label">Why it has accelerated</div>
     <div class="q-item resolved">
-      <div class="q-label resolved">Landmark approval</div>
-      <div class="q-text">Fed and OCC approved Capital One's acquisition of Discover in April 2025</div>
-      <div class="q-sub">The approval of the largest bank merger in years — a deal that received over 6,000 public comments at the Fed and ran roughly 13 months from filing to approval (filed March 21, 2024; approved April 18, 2025) — signaled regulators are willing to approve complex large-bank transactions where competitive, managerial, CRA, and financial stability factors can be addressed. The Fed acknowledged the DOJ's 1995 Guidelines withdrawal but confirmed it continues to apply the 1995 framework.</div>
+      <div class="q-label resolved">Throughput signal</div>
+      <div class="q-text">Large-deal review timelines have compressed sharply since the Capital One–Discover template</div>
+      <div class="q-sub">Capital One–Discover (Apr 2025) was the first large-bank test — ~13 months end-to-end and 6,000+ comments. Since then the agencies have cleared a string of $1B+ transactions on far shorter timelines (Sullivan &amp; Cromwell, Jan 2026), including Huntington–Cadence and Fifth Third–Comerica, the latter crossing the $100B threshold to form the ninth-largest U.S. bank. Deal volume followed: roughly 179 U.S. bank deals in 2025, with 25 more (~$15B) announced in the first weeks of 2026.</div>
     </div>
   </div>
 
   <!-- Comparison -->
   <div id="panel-compare" class="tab-panel" role="tabpanel" aria-labelledby="tab-compare" data-label="Policy comparison">
-    <p class="pillar-intro">This table maps the key policy dimensions across all four agencies under their current frameworks. Green indicates a more permissive/applicant-friendly posture; amber indicates continuity or ambiguity; red indicates remaining friction.</p>
+    <p class="pillar-intro">This table maps the key policy dimensions across all four agencies under their current frameworks. <em>Green</em> = more permissive / applicant-friendly; <em>amber</em> = continuity or reform-in-progress; <em>red</em> = remaining friction.</p>
     <div class="table-scroll"><table class="comp-table">
       <thead>
         <tr>
-          <th style="width:22%">Policy dimension</th>
-          <th style="width:19.5%"><span class="cell-occ">OCC</span></th>
-          <th style="width:19.5%"><span class="cell-fdic">FDIC</span></th>
-          <th style="width:19.5%"><span class="cell-fed">Federal Reserve</span></th>
-          <th style="width:19.5%"><span class="cell-doj">DOJ</span></th>
+          <th style="width:21%">Policy dimension</th>
+          <th style="width:19.75%"><span class="th-occ">OCC</span></th>
+          <th style="width:19.75%"><span class="th-fdic">FDIC</span></th>
+          <th style="width:19.75%"><span class="th-fed">Federal Reserve</span></th>
+          <th style="width:19.75%"><span class="th-doj">DOJ</span></th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td class="dim">Governing framework</td>
           <td class="cell-occ">Pre-2024 OCC regulations (interim final rule, May 2025)</td>
-          <td class="cell-fdic">1998 Statement of Policy (reinstated Aug 4, 2025)</td>
-          <td class="cell-fed">Unchanged; 1995 Bank Merger Guidelines for competition</td>
+          <td class="cell-fdic">1998 Statement of Policy (reinstated Aug 4 2025)</td>
+          <td class="cell-fed">Unchanged on paper; HHI competitive-analysis proposal &amp; M&amp;A process review underway (Bowman, 2026)</td>
           <td class="cell-doj">2023 Merger Guidelines + 2024 Banking Addendum (1995 guidelines withdrawn)</td>
         </tr>
         <tr>
           <td class="dim">Expedited / streamlined review</td>
-          <td class="cell-occ"><span class="status-tag tag-green">Restored</span><br>15-day automatic approval pathway reinstated for qualifying transactions</td>
+          <td class="cell-occ"><span class="status-tag tag-green">Restored</span><br>15-day automatic approval pathway reinstated for qualifying deals</td>
           <td class="cell-fdic"><span class="status-tag tag-green">Restored</span><br>1998 framework allows streamlined review for eligible deals</td>
-          <td class="cell-fed"><span class="status-tag tag-gray">Unchanged</span><br>No streamlined pathway; Board review required for BHC deals</td>
-          <td class="cell-doj"><span class="status-tag tag-red">N/A</span><br>DOJ has independent challenge authority post-approval</td>
+          <td class="cell-fed"><span class="status-tag tag-amber">In motion</span><br>No formal streamlined pathway yet; reviewing community-bank application streamlining</td>
+          <td class="cell-doj"><span class="status-tag tag-red">N/A</span><br>DOJ retains independent challenge authority post-approval</td>
         </tr>
         <tr>
           <td class="dim">Competitive analysis / HHI threshold</td>
-          <td class="cell-occ">1995 Guidelines: HHI change &gt;200 presumptively problematic; deposit-based market analysis</td>
-          <td class="cell-fdic">1998 SOP: consistent with 1995 Guidelines; coordinates with DOJ on competitive concerns</td>
-          <td class="cell-fed">Applies 1995 Bank Merger Guidelines; HHI 200 threshold</td>
-          <td class="cell-doj"><span class="status-tag tag-red">Stricter</span><br>HHI change &gt;100 presumptively anticompetitive; qualitative factors; product overlaps; rural/underserved impacts</td>
+          <td class="cell-occ">1995 Guidelines: &Delta;HHI &gt;200 presumptively problematic; deposit-based market analysis</td>
+          <td class="cell-fdic">1998 SOP: consistent with 1995 Guidelines; coordinates with DOJ</td>
+          <td class="cell-fed">1995 framework today; <b>HHI proposal in development</b> to modernize competitive analysis</td>
+          <td class="cell-doj"><span class="status-tag tag-red">Stricter</span><br>&Delta;HHI &gt;100 presumptively anticompetitive; qualitative factors; product overlaps; rural/underserved impact</td>
         </tr>
         <tr>
-          <td class="dim">Financial stability scrutiny ($100B+ deals)</td>
-          <td class="cell-occ">Elevated scrutiny for large transactions remains; safety &amp; soundness factors apply</td>
-          <td class="cell-fdic">$100B threshold removed as a categorical trigger; but large deals still scrutinized</td>
-          <td class="cell-fed">Board review required; Board-acted M&amp;A averaged 177 days in H1 2025. Cap One/Discover ran ~13 months end-to-end</td>
-          <td class="cell-doj">Systemic risk, network effects, and market concentration among review factors under 2023 Guidelines</td>
+          <td class="dim">Large-deal scrutiny ($100B+)</td>
+          <td class="cell-occ">Elevated scrutiny for large deals remains; safety &amp; soundness factors apply</td>
+          <td class="cell-fdic">$100B categorical trigger removed; large deals still scrutinized</td>
+          <td class="cell-fed">Board review required; recent large deals (Fifth Third–Comerica ~$290B) cleared in months, not the ~13 mo of Cap One–Discover</td>
+          <td class="cell-doj">Systemic risk, network effects, concentration among review factors under 2023 Guidelines</td>
         </tr>
         <tr>
           <td class="dim">Supervisory history / MRAs</td>
           <td class="cell-occ">Multiple enforcement actions in prior 3 years can block approval; open MRAs problematic</td>
-          <td class="cell-fdic">Supervisory record remains a key factor; 1998 SOP is less prescriptive on specifics</td>
-          <td class="cell-fed">SR 14-2 remains in effect: less-than-satisfactory supervisory ratings can prevent approval</td>
+          <td class="cell-fdic">Supervisory record remains a key factor; 1998 SOP less prescriptive</td>
+          <td class="cell-fed">SR 14-2 remains in effect; Bowman reviewing MRAs/MRIAs against the Oct 2025 supervisory operating principles</td>
           <td class="cell-doj">Not a primary DOJ consideration; DOJ focuses on antitrust</td>
         </tr>
         <tr>
           <td class="dim">CRA consideration</td>
-          <td class="cell-occ">CRA record expected to be satisfactory or better; a weaker record is a significant adverse factor, not an absolute bar</td>
-          <td class="cell-fdic">CRA record evaluated; 1998 SOP standard applies</td>
-          <td class="cell-fed">CRA record is a statutory factor; no new merger-specific guidance on weighting</td>
+          <td class="cell-occ">CRA record expected satisfactory+; a weak record is a significant adverse factor, not an absolute bar</td>
+          <td class="cell-fdic">CRA record evaluated under 1998 SOP standard</td>
+          <td class="cell-fed">Statutory factor; no new merger-specific weighting guidance</td>
           <td class="cell-doj">Not a DOJ factor</td>
         </tr>
         <tr>
           <td class="dim">Community benefit / convenience &amp; needs</td>
-          <td class="cell-occ">Statutory factor; applicants need not affirmatively prove merger is better than status quo</td>
-          <td class="cell-fdic"><span class="status-tag tag-green">Burden removed</span><br>Biden-era affirmative demonstration requirement dropped</td>
-          <td class="cell-fed">Statutory factor; no new guidance on how it is weighted</td>
-          <td class="cell-doj">Not a primary DOJ factor; community access may be considered in qualitative analysis</td>
+          <td class="cell-occ">Statutory factor; applicants need not affirmatively prove the deal beats the status quo</td>
+          <td class="cell-fdic"><span class="status-tag tag-green">Burden removed</span><br>Biden-era affirmative-demonstration requirement dropped</td>
+          <td class="cell-fed">Statutory factor; no new guidance on weighting</td>
+          <td class="cell-doj">Not a primary factor; community access may enter qualitative analysis</td>
         </tr>
         <tr>
           <td class="dim">Post-approval DOJ challenge risk</td>
           <td class="cell-occ">DOJ retains independent authority to challenge after agency approval</td>
           <td class="cell-fdic">Same — FDIC approval does not insulate from DOJ challenge</td>
           <td class="cell-fed">Same — Fed approval does not insulate from DOJ challenge</td>
-          <td class="cell-doj"><span class="status-tag tag-amber">Ongoing risk</span><br>DOJ stated it may challenge transactions post-approval under relevant enforcement authorities</td>
+          <td class="cell-doj"><span class="status-tag tag-amber">Ongoing risk</span><br>DOJ may challenge post-approval, though it has not done so in practice</td>
         </tr>
       </tbody>
     </table></div>
@@ -296,50 +367,78 @@ body{font-family:'Georgia','Times New Roman',serif;background:var(--bg-ter);colo
 
   <!-- Notable Deals -->
   <div id="panel-deals" class="tab-panel" role="tabpanel" aria-labelledby="tab-deals" data-label="Notable deals">
-    <p class="pillar-intro">Deal activity has accelerated since early 2025. Below are notable transactions that illustrate the current state of merger review — including what approval required and what issues remain live.</p>
+    <p class="pillar-intro">Deal activity has accelerated since early 2025. The transactions below illustrate the current state of review — what approval required, how fast it moved, and what remains live.</p>
     <div class="deals-list">
+
+      <div class="deal-card" onclick="tog(this)" role="button" tabindex="0" aria-expanded="false">
+        <div class="deal-head">
+          <span class="deal-date">Jan 2026</span>
+          <span class="deal-title">Fifth Third / Comerica</span>
+          <span class="status-tag tag-green" style="flex-shrink:0;margin:0">Approved</span>
+          <span class="caret">▼</span>
+        </div>
+        <div class="deal-detail">
+          <strong>Approving agency:</strong> Federal Reserve (Board approval Jan 13 2026); closed Feb 1 2026.<br><br>
+          <strong>Scale:</strong> ~$290B combined assets — forms the ninth-largest U.S. bank and crosses the $100B threshold. A Cincinnati–Dallas combination spanning many of the fastest-growing large markets.<br><br>
+          <strong>Why it matters:</strong> The current large-deal benchmark. It cleared far faster than Capital One–Discover despite crossing $100B, public comments, and branch consolidations — concrete evidence that large-bank timelines have compressed under the reset posture (Sullivan &amp; Cromwell flagged the acceleration in January 2026).<br><br>
+          <strong>DOJ posture:</strong> No challenge.
+        </div>
+      </div>
+
+      <div class="deal-card" onclick="tog(this)" role="button" tabindex="0" aria-expanded="false">
+        <div class="deal-head">
+          <span class="deal-date">Dec 2025</span>
+          <span class="deal-title">Huntington / Cadence</span>
+          <span class="status-tag tag-green" style="flex-shrink:0;margin:0">Approved</span>
+          <span class="caret">▼</span>
+        </div>
+        <div class="deal-detail">
+          <strong>Status:</strong> All required regulatory approvals received December 2025; closed Feb 1 2026.<br><br>
+          <strong>Scale:</strong> Huntington (~$223B assets, Columbus, OH) acquiring Cadence — a sizable regional combination cleared without protracted Board review.<br><br>
+          <strong>Why it matters:</strong> Reinforces the pattern: substantial regional deals moving through on routine timelines rather than the multi-quarter reviews of 2023–24.
+        </div>
+      </div>
+
+      <div class="deal-card" onclick="tog(this)" role="button" tabindex="0" aria-expanded="false">
+        <div class="deal-head">
+          <span class="deal-date">Feb 2026</span>
+          <span class="deal-title">Banco Santander / Webster Financial</span>
+          <span class="status-tag tag-blue" style="flex-shrink:0;margin:0">Announced</span>
+          <span class="caret">▼</span>
+        </div>
+        <div class="deal-detail">
+          <strong>Terms:</strong> ~$12.2B all-cash acquisition of Webster Financial by Banco Santander, disclosed early February 2026.<br><br>
+          <strong>Why it matters:</strong> A foreign-acquirer test of the permissive posture and of how the agencies treat large cross-border bank combinations under the reset framework. One to watch through the review cycle for any heightened conditions or financial-stability analysis.
+        </div>
+      </div>
 
       <div class="deal-card" onclick="tog(this)" role="button" tabindex="0" aria-expanded="false">
         <div class="deal-head">
           <span class="deal-date">Apr 2025</span>
           <span class="deal-title">Capital One / Discover Financial Services</span>
-          <span class="status-tag tag-green" style="flex-shrink:0">Approved</span>
+          <span class="status-tag tag-green" style="flex-shrink:0;margin:0">Approved · first big test</span>
           <span class="caret">▼</span>
         </div>
         <div class="deal-detail">
-          <strong>Approving agencies:</strong> Federal Reserve and OCC (April 2025). FDIC not a primary reviewer.<br><br>
-          <strong>Deal size:</strong> Approximately $35B; creates the largest U.S. credit card issuer by balances.<br><br>
-          <strong>Key issues addressed:</strong> Competitive effects in credit card and payments markets; CRA commitments; managerial capability; financial stability. The deal received over 6,000 public comments at the Fed and ran roughly 13 months from filing to approval (filed March 21, 2024; approved April 18, 2025).<br><br>
-          <strong>Notable:</strong> The Fed acknowledged DOJ's withdrawal from the 1995 Guidelines but confirmed it continues to apply the 1995 framework. This was the first major BHC merger approved under the Trump administration and set a template for large-deal review. The deal's approval despite its scale and public comment volume signals the agencies' willingness to clear complex transactions where statutory factors are satisfied.<br><br>
-          <strong>DOJ posture:</strong> No DOJ challenge was filed. Antitrust review coordinated with banking agency process.
+          <strong>Approving agencies:</strong> Federal Reserve and OCC (April 2025).<br><br>
+          <strong>Scale:</strong> ~$35B; created the largest U.S. credit-card issuer by balances.<br><br>
+          <strong>Key issues:</strong> Competitive effects in credit-card and payments markets; CRA commitments; managerial capability; financial stability. Over 6,000 public comments at the Fed; ~13 months from filing to approval (filed Mar 21 2024; approved Apr 18 2025).<br><br>
+          <strong>Notable:</strong> The first major BHC merger approved under the Trump administration and the template for large-deal review — though, as later deals show, the timeline has since shortened materially. The Fed acknowledged DOJ's 1995-guidelines withdrawal but confirmed it continues to apply the 1995 framework.<br><br>
+          <strong>DOJ posture:</strong> No challenge filed; antitrust review coordinated with the banking-agency process.
         </div>
       </div>
 
       <div class="deal-card" onclick="tog(this)" role="button" tabindex="0" aria-expanded="false">
         <div class="deal-head">
-          <span class="deal-date">2025 pipeline</span>
-          <span class="deal-title">Community bank M&amp;A wave: accelerating deal activity</span>
-          <span class="status-tag tag-blue" style="flex-shrink:0">Trend</span>
+          <span class="deal-date">2025–26</span>
+          <span class="deal-title">Community &amp; regional M&amp;A surge</span>
+          <span class="status-tag tag-blue" style="flex-shrink:0;margin:0">Trend</span>
           <span class="caret">▼</span>
         </div>
         <div class="deal-detail">
-          <strong>Context:</strong> Industry analysts and practitioners report that Q1 2025 merger activity approached pre-2021 levels following the policy reset. The restoration of expedited review pathways at the OCC and FDIC removed a significant structural barrier that had effectively frozen community bank consolidation since 2024.<br><br>
-          <strong>Key driver:</strong> The 15-day automatic approval pathway for qualifying smaller transactions at the OCC and FDIC meaningfully reduces regulatory risk and deal timeline uncertainty — particularly for community bank transactions where competitive concerns are minimal.<br><br>
-          <strong>Remaining friction:</strong> BSA/AML compliance remains a gatekeeping issue — open MRAs, pending AML enforcement actions, or a weak AML program can block approval regardless of the agency's more permissive posture on other factors. Treasury Sec. Bessent specifically identified AML compliance as an area where supervisory issues were improperly used to block mergers under the prior administration.
-        </div>
-      </div>
-
-      <div class="deal-card" onclick="tog(this)" role="button" tabindex="0" aria-expanded="false">
-        <div class="deal-head">
-          <span class="deal-date">H1 2025</span>
-          <span class="deal-title">Federal Reserve: 413 applications approved in H1 2025</span>
-          <span class="status-tag tag-blue" style="flex-shrink:0">Activity data</span>
-          <span class="caret">▼</span>
-        </div>
-        <div class="deal-detail">
-          <strong>Fed application data (H1 2025):</strong> The Federal Reserve approved 413 applications in H1 2025 across all application types. Of those, 74 (18%) involved M&amp;A transactions. Nine of twelve applications requiring full Board approval involved M&amp;A; one involved a firm with more than $100 billion in assets (Capital One / Discover).<br><br>
-          <strong>Processing time:</strong> Board-acted M&amp;A applications averaged 177 days in H1 2025 (median 157), down from a 259-day average in 2024. The Capital One / Discover application — the sole $100B+ filing — ran roughly 13 months end-to-end (filed March 21, 2024; approved April 18, 2025), reflecting its complexity and 6,000+ comments. Smaller BHC transactions are processed significantly faster at the Reserve Bank level without Board action.<br><br>
-          <strong>Implication:</strong> The Fed's approval volume reflects continued openness to transactions, but its framework has not been formally updated and it retains the longest average processing times for large deals. For transactions requiring Fed approval (all BHC acquisitions), timeline uncertainty remains a planning factor even in the more permissive environment.
+          <strong>The numbers:</strong> Roughly 179 U.S. bank deals were announced in 2025 (Ankura), with about 25 more (~$15B) in the opening weeks of 2026 (S&amp;P Global) — activity approaching pre-2021 levels. For historical context, the Fed approved 413 applications in H1 2025, of which 74 (18%) were M&amp;A; Board-acted M&amp;A averaged 177 days (median 157), down from a 259-day average in 2024.<br><br>
+          <strong>Key driver:</strong> The restored 15-day expedited pathways at the OCC and FDIC, plus faster Fed throughput, removed a structural barrier that had effectively frozen community-bank consolidation in 2024 — particularly where competitive concerns are minimal.<br><br>
+          <strong>Remaining friction:</strong> BSA/AML compliance is still a gatekeeper — open MRAs, pending AML enforcement, or a weak program can block approval regardless of the more permissive posture elsewhere. Treasury's Bessent specifically named AML as an area where supervisory issues were improperly used to block deals.
         </div>
       </div>
 
@@ -348,65 +447,68 @@ body{font-family:'Georgia','Times New Roman',serif;background:var(--bg-ter);colo
 
   <!-- Open Questions -->
   <div id="panel-questions" class="tab-panel" role="tabpanel" aria-labelledby="tab-questions" data-label="Open questions">
-    <p class="pillar-intro">The policy reset has cleared considerable uncertainty for smaller and mid-size bank transactions. But for larger or more complex deals, significant interagency tensions and unresolved policy questions remain.</p>
+    <p class="pillar-intro">The reset has cleared considerable uncertainty for smaller and mid-size transactions. For larger or more complex deals, interagency tensions and unresolved policy questions remain.</p>
     <div class="q-list">
 
       <div class="q-item tension">
         <div class="q-label tension">Unresolved tension</div>
         <div class="q-text">Will DOJ rejoin the 1995 Bank Merger Guidelines?</div>
-        <div class="q-sub">The most consequential remaining misalignment is DOJ's continued use of the stricter 2023 Merger Guidelines (HHI-change threshold of 100, broader qualitative factors, no antitrust safe harbors) while the banking agencies have reverted to 1995-era standards. The Bank Policy Institute and others have called on DOJ to rejoin the 1995 Guidelines and rescind the 2024 Banking Addendum. Until resolved, applicants face the risk of a post-approval DOJ challenge even if banking agencies approve the transaction. No DOJ action has been announced.</div>
+        <div class="q-sub">The most consequential remaining misalignment: DOJ still uses the stricter 2023 Merger Guidelines (&Delta;HHI threshold of 100, broad qualitative factors, no safe harbors) while the banking agencies run on 1995-era standards. The Bank Policy Institute and others have urged DOJ to rejoin the 1995 Guidelines and rescind the 2024 Banking Addendum. Until resolved, applicants face theoretical post-approval challenge risk even where banking agencies approve — though DOJ has not exercised it in practice. No DOJ action announced.</div>
       </div>
 
-      <div class="q-item tension">
-        <div class="q-label tension">Unresolved tension</div>
-        <div class="q-text">Will the Federal Reserve update SR 14-2 and its merger framework?</div>
-        <div class="q-sub">SR 14-2 — the Fed's supervisory guidance that can block mergers based on less-than-satisfactory supervisory ratings — remains in effect. The Bank Policy Institute has called for its rescission, arguing that only supervisory issues creating a material concern about the merged entity's financial condition should be disqualifying. The Fed has neither rescinded SR 14-2 nor joined the OCC/FDIC policy reset. This is particularly significant because the Fed is the primary regulator for bank holding companies and approves most major merger applications. Its silence on merger reform is the largest remaining structural friction in the system.</div>
+      <div class="q-item watch">
+        <div class="q-label watch">Watch closely</div>
+        <div class="q-text">What will the Fed's HHI proposal contain — and will SR 14-2 be rescinded?</div>
+        <div class="q-sub">Bowman has confirmed the Board is developing an HHI-based competitive-analysis proposal and reviewing the M&amp;A and de novo processes, but no rule text has issued. Two open variables: (1) how the proposal recalibrates competitive screens and treats small-bank and non-bank competition, and (2) whether the Fed rescinds or narrows <b>SR 14-2</b> — the supervisory letter that can keep applicants with less-than-satisfactory ratings from even filing, which BPI has pressed the Fed to withdraw. As primary regulator for bank holding companies, the Fed's choices set the ceiling on how far the reset reaches.</div>
       </div>
 
       <div class="q-item tension">
         <div class="q-label tension">Unresolved tension</div>
         <div class="q-text">How will the new AML/CFT program rule affect merger review?</div>
-        <div class="q-sub">The April 7, 2026 FinCEN AML/CFT program rule NPRM — issued with a concurrent joint NPRM from the OCC, FDIC, and NCUA, with comments due June 9, 2026 — shifts from technical compliance to effectiveness-based standards and will interact directly with merger review. Strong AML/CFT compliance remains a gatekeeping factor at all agencies. If the new framework reduces the number and severity of AML MRAs, it may indirectly clear a path for transactions that previously faced supervisory obstacles. But the Fed's absence from the joint NPRM raises questions about whether Fed-supervised bank holding companies will benefit on the same timeline.</div>
+        <div class="q-sub">The April 7 2026 FinCEN AML/CFT program rule NPRM — paired with a joint NPRM from the OCC, FDIC, and NCUA, comments due June 9 2026 — shifts from technical compliance to effectiveness-based standards and interacts directly with merger review, where AML remains a gatekeeping factor at every agency. If the framework reduces the number and severity of AML MRAs, it may indirectly clear deals that previously stalled. But the Fed's absence from the joint banking NPRM raises whether Fed-supervised holding companies benefit on the same timeline.</div>
       </div>
 
       <div class="q-item watch">
         <div class="q-label watch">Watch closely</div>
-        <div class="q-text">FDIC comprehensive merger policy review: what comes next?</div>
-        <div class="q-sub">The FDIC's reinstatement of the 1998 Statement of Policy was explicitly described as an interim step "pending the FDIC's review of all aspects of the regulatory framework governing the evaluation of merger transactions." That comprehensive review has not yet produced a proposal. The 1998 framework is generally viewed favorably by industry, but the FDIC's forthcoming review could introduce new elements — particularly around financial stability review of larger transactions and CRA consideration methodology.</div>
+        <div class="q-text">FDIC comprehensive merger review: what comes next?</div>
+        <div class="q-sub">The FDIC framed its reinstatement of the 1998 Statement of Policy as an interim step "pending the FDIC's review of all aspects of the regulatory framework governing the evaluation of merger transactions." That comprehensive review has not yet produced a proposal. Industry views the 1998 framework favorably, but the forthcoming review could introduce new elements — particularly around financial-stability review of larger transactions and CRA methodology.</div>
       </div>
 
       <div class="q-item watch">
         <div class="q-label watch">Watch closely</div>
-        <div class="q-text">Large-bank merger review: how high does $100B scrutiny now go?</div>
-        <div class="q-sub">The Biden-era FDIC and OCC policy statements applied categorical heightened scrutiny to transactions producing an institution larger than $100 billion. Those triggers were removed with the policy resets. But the Capital One / Discover approval — the first large-bank test — ran roughly 13 months end-to-end at the Fed (filed March 2024; approved April 2025). For transactions creating institutions in the $250B–$500B range, the scope of financial stability analysis, FSOC consideration, and political environment remain undefined. This is the frontier question for large-bank consolidation strategy.</div>
+        <div class="q-text">Large-bank consolidation: how high does the cleared frontier now go?</div>
+        <div class="q-sub">The Biden-era $100B categorical scrutiny triggers were removed with the resets, and Fifth Third–Comerica (~$290B) has now cleared on a compressed timeline. The live question moves up the size curve: for combinations approaching the $400B–$700B range, the scope of financial-stability analysis, any FSOC interest, and the political environment remain undefined. That is the frontier for large-bank strategy.</div>
       </div>
 
       <div class="q-item resolved">
         <div class="q-label resolved">Largely settled</div>
-        <div class="q-text">Community convenience and needs burden: removed</div>
-        <div class="q-sub">The Biden-era FDIC requirement that applicants affirmatively demonstrate a proposed merger would better serve community needs than the status quo — with no objective or quantifiable criteria for how FDIC would evaluate this — has been eliminated. This was one of the most criticized features of the 2024 policy and its removal substantially reduces the discretion available to the FDIC to deny applications on vague public interest grounds. Applicants must still satisfy the convenience and needs statutory factor, but the affirmative burden of proof has been removed.</div>
+        <div class="q-text">Community convenience-and-needs burden: removed</div>
+        <div class="q-sub">The Biden-era FDIC requirement that applicants affirmatively show a merger would better serve community needs than the status quo — with no objective criteria for evaluation — has been eliminated. One of the most criticized features of the 2024 policy, its removal substantially cuts the discretion to deny on vague public-interest grounds. Applicants must still satisfy the statutory convenience-and-needs factor, but the affirmative burden of proof is gone.</div>
       </div>
 
       <div class="q-item resolved">
         <div class="q-label resolved">Largely settled</div>
-        <div class="q-text">Congressional Review Act lock — 2024 rules cannot simply be re-imposed</div>
-        <div class="q-sub">President Trump signed a joint CRA resolution invalidating the Biden-era OCC merger rule. Under the CRA, the agency is barred from reissuing a rule that is "substantially the same" as the invalidated rule without express congressional authorization. This provides a structural backstop against a future administration reimposing the 2024 OCC merger framework without legislation — more durable than a simple policy reversal.</div>
+        <div class="q-text">CRA lock — the 2024 OCC rule cannot simply be re-imposed</div>
+        <div class="q-sub">President Trump signed a joint Congressional Review Act resolution invalidating the Biden-era OCC merger rule. Under the CRA, the agency may not reissue a rule "substantially the same" as the invalidated one without express congressional authorization — a structural backstop against a future administration reimposing the 2024 OCC framework without legislation, more durable than a simple policy reversal.</div>
       </div>
 
     </div>
   </div>
 </div>
 
-<div class="footer">Sources: OCC (<a href="https://www.occ.gov/news-issuances/news-releases/2025/nr-occ-2025-44.html">NR-OCC-2025-44</a>, interim final rule May 8, 2025), FDIC (<a href="https://www.federalregister.gov/documents/2025/07/03/2025-12493/statement-of-policy-on-bank-merger-transactions">FR July 3, 2025</a>; FIL May 2025), Federal Reserve (<a href="https://www.federalreserve.gov/publications/2025-december-supervision-and-regulation-report-bank-applications-and-MA.htm">Dec 2025 S&amp;R Report</a>; H.2A), Jones Day, BPI, Sullivan &amp; Cromwell, Gibson Dunn, Skadden analyses &nbsp;·&nbsp; Compiled May 2026
+<div class="colophon">
+  <div class="wire" aria-hidden="true"></div>
+  <p><b>Primary sources.</b> OCC — <a href="https://www.occ.gov/news-issuances/news-releases/2025/nr-occ-2025-44.html">NR-OCC-2025-44</a> (interim final rule, May 8 2025). FDIC — <a href="https://www.federalregister.gov/documents/2025/07/03/2025-12493/statement-of-policy-on-bank-merger-transactions">FR July 3 2025</a> (reinstated 1998 SOP). Federal Reserve — Bowman remarks (Feb 19 2026 Atlanta; reported HHI-proposal comments, March 2026) and the Dec 2025 Supervision &amp; Regulation Report. Fifth Third–Comerica and Huntington–Cadence approvals via Fed and company 8-K filings.</p>
+  <p><b>Secondary synthesis</b> from Sullivan &amp; Cromwell (Jan 2026 large-deal timeline alert), Bank Policy Institute, Norton Rose Fulbright, Paul Weiss, and deal counts from S&amp;P Global and Ankura. Compiled for BankRegWire · informational tracker, not legal advice.</p>
 </div>
+
 </div>
 
 <script>
 function sw(id,btn){
-  document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-selected','false');});
+  document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-selected','false');b.tabIndex=-1;});
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-  btn.classList.add('active');
-  btn.setAttribute('aria-selected','true');
+  btn.classList.add('active');btn.setAttribute('aria-selected','true');btn.tabIndex=0;
   document.getElementById('panel-'+id).classList.add('active');
   if(history.replaceState)history.replaceState(null,'','#'+id);
 }
@@ -415,20 +517,26 @@ function tog(el){
   document.querySelectorAll('.deal-card.open').forEach(c=>{c.classList.remove('open');c.setAttribute('aria-expanded','false');});
   if(!was){el.classList.add('open');el.setAttribute('aria-expanded','true');}
 }
-// keyboard support for deal cards (Enter / Space)
 document.querySelectorAll('.deal-card').forEach(card=>{
-  card.addEventListener('keydown',e=>{
-    if(e.key==='Enter'||e.key===' '){e.preventDefault();tog(card);}
-  });
+  card.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();tog(card);} });
 });
-// deep-linking: open the tab named in the URL hash on load
+/* roving-tabindex arrow-key navigation for the tablist */
+(function(){
+  const tabs=Array.from(document.querySelectorAll('[role="tab"]'));
+  document.querySelector('[role="tablist"]').addEventListener('keydown',e=>{
+    const i=tabs.indexOf(document.activeElement); if(i<0)return;
+    let n=null;
+    if(e.key==='ArrowRight'||e.key==='ArrowDown')n=(i+1)%tabs.length;
+    else if(e.key==='ArrowLeft'||e.key==='ArrowUp')n=(i-1+tabs.length)%tabs.length;
+    else if(e.key==='Home')n=0; else if(e.key==='End')n=tabs.length-1;
+    if(n!==null){e.preventDefault();tabs[n].focus();tabs[n].click();}
+  });
+})();
+/* deep-linking: open the tab named in the URL hash on load */
 (function(){
   const id=(location.hash||'').replace('#','');
   const valid=['overview','compare','deals','questions'];
-  if(valid.includes(id)){
-    const btn=document.getElementById('tab-'+id);
-    if(btn)sw(id,btn);
-  }
+  if(valid.includes(id)){ const btn=document.getElementById('tab-'+id); if(btn)sw(id,btn); }
 })();
 </script>
 </body>
