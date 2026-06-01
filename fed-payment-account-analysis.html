@@ -9,20 +9,43 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Source+Serif+4:opsz,wght@8..60,300..600&family=Archivo:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
+    /* ── BankRegWire paper/ink system ── */
     --paper:#F1EDE2;
     --paper-2:#E8E2D2;
-    --ink:#1C1B16;
-    --ink-soft:#3A382C;
-    --muted:#7A7A64;
-    --spine:#143B32;
-    --spine-accent:#CDBF9A;
-    --rule:rgba(28,27,22,.35);
-    --rule-soft:rgba(28,27,22,.15);
+    --paper-card:#F7F3EA;
+    --ink:#16150f;
+    --ink-soft:#46433a;
+    --muted:#6c6859;
+    /* --spine kept as the structural accent name, now oxblood */
+    --spine:#7a1f2b;
+    --spine-accent:#e9d9c2;
+    --copper:#cf7714;
+    --copper-deep:#a85c08;
+    --copper-soft:rgba(207,119,20,.20);
+    --rule:rgba(22,21,15,.30);
+    --rule-soft:rgba(22,21,15,.14);
 
     --serif-d:'Fraunces',Georgia,serif;
     --serif-b:'Source Serif 4','Fraunces',Georgia,serif;
     --sans:'Archivo',system-ui,sans-serif;
     --mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  @media(prefers-color-scheme:dark){
+    :root{
+      --paper:#16150f;
+      --paper-2:#221f17;
+      --paper-card:#201e16;
+      --ink:#f1ede2;
+      --ink-soft:#c2bdac;
+      --muted:#928d7d;
+      --spine:#d27d88;
+      --spine-accent:#e9d9c2;
+      --copper:#e6973c;
+      --copper-deep:#f0a64f;
+      --copper-soft:rgba(230,151,60,.26);
+      --rule:rgba(241,237,226,.32);
+      --rule-soft:rgba(241,237,226,.15);
+    }
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -35,6 +58,41 @@
     -webkit-font-smoothing:antialiased;
   }
   ::selection{background:var(--spine);color:var(--paper)}
+  :focus-visible{outline:2px solid var(--copper-deep);outline-offset:2px}
+
+  /* ---------- BankRegWire brand bar ---------- */
+  .brandbar{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:12px;flex-wrap:wrap;
+    padding-bottom:14px;margin-bottom:22px;
+    border-bottom:0.5px solid var(--rule);
+  }
+  .brandbar .brand{display:flex;align-items:center;gap:10px}
+  .brandbar .node{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--copper);box-shadow:0 0 0 3px var(--copper-soft);flex-shrink:0;
+  }
+  .brandbar .mark{
+    font-family:var(--mono);font-size:10px;font-weight:500;
+    letter-spacing:.22em;text-transform:uppercase;color:var(--ink);
+  }
+  .brandbar .mark b{color:var(--spine)}
+  .brandbar .desk{
+    font-family:var(--mono);font-size:9.5px;font-weight:500;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+    border:0.5px solid var(--rule);border-radius:20px;padding:3px 10px;
+  }
+
+  /* ---------- animated copper wire ---------- */
+  .wire{position:relative;height:2px;background:var(--rule-soft);overflow:visible;margin:24px 0}
+  .wire::after{
+    content:"";position:absolute;top:50%;left:0;
+    width:7px;height:7px;border-radius:50%;background:var(--copper);
+    box-shadow:0 0 10px 2px var(--copper-soft);transform:translateY(-50%);
+    animation:wire-run 7.5s linear infinite;
+  }
+  @keyframes wire-run{0%{left:-1%;opacity:0}5%{opacity:1}93%{opacity:1}100%{left:101%;opacity:0}}
+  @media(prefers-reduced-motion:reduce){.wire::after{animation:none;left:0;opacity:1}}
 
   /* ---------- shell with spine ---------- */
   .shell{
@@ -48,15 +106,23 @@
   }
   .spine{
     width:62px;
-    background:var(--spine);
+    background:#5e1720;
     flex-shrink:0;
     display:flex;
+    flex-direction:column;
     align-items:center;
     justify-content:center;
+    gap:18px;
     position:sticky;
     top:0;
     height:100vh;
     align-self:flex-start;
+  }
+  .spine-node{
+    width:9px;height:9px;border-radius:50%;
+    background:var(--copper);
+    box-shadow:0 0 10px 2px var(--copper-soft);
+    flex-shrink:0;
   }
   .spine span{
     writing-mode:vertical-rl;
@@ -129,24 +195,64 @@
     margin-top:2px;
   }
 
-  /* ---------- executive summary ---------- */
+  /* ---------- executive summary (collapsible) ---------- */
   .exsum{
     margin:36px 0 36px;
-    border:1.5px solid var(--spine);
-    background:var(--paper);
+    border:1px solid var(--spine);
+    background:var(--paper-card);
     padding:0;
     position:relative;
+    overflow:hidden;
   }
   .exsum-h{
-    background:var(--spine);
+    background:#5e1720;
     color:var(--spine-accent);
     font-family:var(--mono);
     font-size:10px;
     letter-spacing:.24em;
     text-transform:uppercase;
-    padding:9px 18px;
+    padding:11px 18px;
+    width:100%;
+    border:none;
+    text-align:left;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-weight:500;
   }
-  .exsum-body{padding:24px 28px}
+  .exsum-h .ex-node{
+    width:7px;height:7px;border-radius:50%;
+    background:var(--copper);
+    box-shadow:0 0 8px 1px var(--copper-soft);
+    flex-shrink:0;
+  }
+  .exsum-h .ex-hint{
+    margin-left:auto;
+    color:var(--spine-accent);
+    opacity:.7;
+    letter-spacing:.12em;
+    font-size:9px;
+  }
+  .exsum-h .ex-caret{
+    color:var(--spine-accent);
+    font-size:9px;
+    transition:transform .2s;
+    flex-shrink:0;
+  }
+  .exsum.collapsed .ex-caret{transform:rotate(-90deg)}
+  .exsum.collapsed .ex-hint::after{content:"Show"}
+  .exsum:not(.collapsed) .ex-hint::after{content:"Hide"}
+  .exsum-body{
+    padding:24px 28px;
+    border-top:2px solid var(--rule-soft);
+    position:relative;
+  }
+  .exsum-body::before{
+    content:"";position:absolute;left:0;top:-2px;height:2px;
+    width:38%;background:linear-gradient(90deg,var(--copper),transparent);
+  }
+  .exsum.collapsed .exsum-body{display:none}
   .exsum-body p{
     font-family:var(--serif-d);
     font-style:italic;
@@ -205,7 +311,7 @@
   }
   .partbtn:last-child{border-right:none;margin-right:0}
   .partbtn:hover{color:var(--ink)}
-  .partbtn.active{color:var(--spine);font-weight:500}
+  .partbtn.active{color:var(--spine);font-weight:500;box-shadow:inset 0 -2px 0 var(--copper)}
   .partbtn .rn{
     font-family:var(--mono);
     font-size:10px;
@@ -636,10 +742,11 @@
 
   /* ---------- print ---------- */
   @media print{
-    .partnav,.colophon{display:none}
+    .partnav,.colophon,.wire,.exsum-h .ex-hint,.exsum-h .ex-caret,.brandbar .desk{display:none}
     .part{display:block!important;page-break-before:always}
     .part:first-of-type{page-break-before:auto}
-    .spine{position:absolute;height:auto;min-height:100vh}
+    .exsum.collapsed .exsum-body{display:block!important}
+    .spine{position:absolute;height:auto;min-height:100vh;background:#5e1720!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
     body{background:white}
     .shell{max-width:100%;border:none}
   }
@@ -649,13 +756,17 @@
 
 <div class="shell">
 
-  <aside class="spine"><span>Working Paper · Banking Regulation Analysis</span></aside>
+  <aside class="spine"><span class="spine-node" aria-hidden="true"></span><span>Working Paper · Banking Regulation Analysis</span></aside>
 
   <main class="body">
 
     <!-- ============== MASTHEAD ============== -->
     <header class="mast">
-      <p class="kick"><b>Working Paper № 26-03</b> &nbsp;·&nbsp; May 2026 &nbsp;·&nbsp; Banking Regulation / Reserve Bank Access</p>
+      <div class="brandbar">
+        <div class="brand"><span class="node" aria-hidden="true"></span><span class="mark"><b>BANK</b>REG<b>WIRE</b></span></div>
+        <span class="desk">Working Paper · Payments Desk</span>
+      </div>
+      <p class="kick"><b>Working Paper № 26-03</b> &nbsp;·&nbsp; June 2026 &nbsp;·&nbsp; Banking Regulation / Reserve Bank Access</p>
 
       <h1 class="title">The Federal Reserve's <em>Payment Account</em> proposal</h1>
 
@@ -668,6 +779,7 @@
         <div><span>Comments close</span><b>July 27, 2026</b></div>
         <div><span>Vote</span><b>6–1 (Barr dissent)</b></div>
       </div>
+      <div class="wire" aria-hidden="true"></div>
     </header>
 
     <!-- ============== PART NAV ============== -->
@@ -678,10 +790,15 @@
       <button class="partbtn" data-part="iv" role="tab"><span class="rn">Part IV</span>Fed leadership</button>
     </nav>
 
-    <!-- ============== EXECUTIVE SUMMARY ============== -->
-    <section class="exsum">
-      <div class="exsum-h">Executive Summary</div>
-      <div class="exsum-body">
+    <!-- ============== EXECUTIVE SUMMARY (collapsible) ============== -->
+    <section class="exsum" id="exsum">
+      <button class="exsum-h" id="exsumToggle" aria-expanded="true" aria-controls="exsumBody" onclick="toggleExsum()">
+        <span class="ex-node" aria-hidden="true"></span>
+        <span>Executive Summary</span>
+        <span class="ex-hint" aria-hidden="true"></span>
+        <span class="ex-caret" aria-hidden="true">▼</span>
+      </button>
+      <div class="exsum-body" id="exsumBody">
         <p>The Board of Governors has proposed a new, optional <em>Payment Account</em> at the Reserve Banks for institutions clearing and settling payment activity. The package consists of three companion Federal Register notices — revisions to the Policy on Payment System Risk (PSR Policy), an amendment to Regulation A, and an amendment to Regulation D<sup><a href="#fn1">1</a></sup> — together establishing a standardized, lower-risk account type with a $1 billion closing balance ceiling, zero interest, no discount window access, no intraday credit, restricted services excluding FedACH, and a 90-day review target.<sup><a href="#fn2">2</a></sup></p>
 
         <p>The proposal creates a parallel access lane but leaves intact the three-tier review framework adopted in 2022.<sup><a href="#fn3">3</a></sup> Reserve Banks are asked to <em>pause</em> all Tier 3 decisions pending policy completion, with no published end date.<sup><a href="#fn4">4</a></sup> Governor Barr dissented on AML/BSA examination-authority grounds; Governor Cook supported, framing the action as a structured framework for innovation.<sup><a href="#fn5">5</a></sup> The Board's vote followed by one day a May 19 executive order directing comprehensive review of Reserve Bank account access for uninsured and nonbank firms.<sup><a href="#fn6">6</a></sup></p>
@@ -1001,7 +1118,7 @@
         <p class="tl-date"><b>May 26, 2026</b></p>
         <div class="tl-c">
           <h4>Federal Register publication</h4>
-          <p>Three notices appear: <em>OP-1878</em> (PSR Policy revisions), <em>R-1892</em> (Regulation A), and a companion Regulation D notice. Comment period opens.<sup><a href="#fn1">1</a></sup></p>
+          <p>Three notices appear: <em>OP-1878</em> (PSR Policy revisions), <em>R-1892</em> (Regulation A), and <em>R-1893</em> (Regulation D). Comment period opens.<sup><a href="#fn1">1</a></sup></p>
         </div>
       </div>
 
@@ -1101,12 +1218,12 @@
     <section class="fnotes">
       <h3 class="fnotes-h">Sources &amp; primary citations</h3>
       <ol>
-        <li id="fn1">Federal Reserve System, <em>Proposed Revisions to the Federal Reserve Policy on Payment System Risk and the Guidelines for Account and Services Requests</em>, 91 Fed. Reg. 30627 (May 26, 2026), Docket No. OP-1878; companion notices Docket No. R-1892 (Regulation A, 12 CFR Part 201) and the Regulation D NPR (12 CFR Part 204), same publication date.</li>
+        <li id="fn1">Federal Reserve System, <em>Proposed Revisions to the Federal Reserve Policy on Payment System Risk and the Guidelines for Account and Services Requests</em>, 91 Fed. Reg. 30627 (May 26, 2026), Docket No. OP-1878; companion notices Docket No. R-1892 (Regulation A, 12 CFR Part 201) and Docket No. R-1893 (Regulation D, 12 CFR Part 204), same publication date.</li>
         <li id="fn2">Proposed PSR Policy Part IV, "Policy on Reserve Bank Accounts and Services," set forth at 91 Fed. Reg. 30636–37 (terms summary table). Review timeline at proposed Account Access Guidelines, Section 4.</li>
         <li id="fn3">Board of Governors, <em>Guidelines for Evaluating Account and Services Requests</em>, adopted August 15, 2022. Six principles and three-tier review framework retained unchanged by this proposal.</li>
         <li id="fn4">Staff memo to the Board of Governors, "Request for Comment on Proposed Establishment of a Payment Account" (May 7, 2026) at n.3 (recommending pause "on or before December 31, 2026"). Published proposal tied pause to completion of policy development process without a fixed end date.</li>
         <li id="fn5">Federal Reserve Board, "Federal Reserve Board requests public comment on a proposal to establish a 'payment account'…" press release, May 20, 2026; vote and dissent recorded at Board Votes.</li>
-        <li id="fn6">Executive Order of May 19, 2026, directing Federal Reserve evaluation of the legal, regulatory, and policy framework governing access to Reserve Bank accounts and services by uninsured depository institutions and nonbank financial companies, including those engaged in digital assets.</li>
+        <li id="fn6">Executive Order of May 19, 2026, "Integrating Financial Technology Innovation Into Regulatory Frameworks," directing Federal Reserve evaluation of the legal, regulatory, and policy framework governing access to Reserve Bank accounts and services by uninsured depository institutions and nonbank financial companies, including those engaged in digital assets.</li>
         <li id="fn7">Proposed PSR Policy Part IV, Section B (Payment Account Terms), 91 Fed. Reg. 30640–41.</li>
         <li id="fn8">Proposed amendments to 12 CFR § 201.2 (defining "payment account") and § 201.3 (precluding lending under § 201.4 to a depository institution holding a payment account). 91 Fed. Reg. 30498–30503.</li>
         <li id="fn9">Proposed amendments to Regulation D, 12 CFR Part 204, excluding Payment Account balances from interest-bearing treatment and excluding Payment Account holders from Excess Balance Account participation.</li>
@@ -1127,17 +1244,26 @@
     </section>
 
     <!-- ============== COLOPHON ============== -->
-    <p class="colophon"><b>Working Paper № 26-03</b> &nbsp;·&nbsp; Financial Services Policy &nbsp;·&nbsp; Prepared for internal circulation. Subject to revision as comment letters and Federal Reserve clarifications appear. All citations to primary sources; no secondary commentary relied upon for material findings.</p>
+    <div class="wire" aria-hidden="true"></div>
+    <p class="colophon"><b>Working Paper № 26-03</b> &nbsp;·&nbsp; BankRegWire · Payments Desk &nbsp;·&nbsp; Current as of June 1, 2026. Subject to revision as comment letters and Federal Reserve clarifications appear. All citations to primary sources; no secondary commentary relied upon for material findings. Informational analysis, not legal advice.</p>
 
   </main>
 </div>
 
 <script>
+  // Collapsible executive summary
+  function toggleExsum(){
+    var ex = document.getElementById('exsum');
+    var btn = document.getElementById('exsumToggle');
+    var collapsed = ex.classList.toggle('collapsed');
+    btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+  }
+
   (function(){
     var btns = document.querySelectorAll('.partbtn');
     var parts = document.querySelectorAll('.part');
     function show(name){
-      btns.forEach(function(b){ b.classList.toggle('active', b.dataset.part === name); });
+      btns.forEach(function(b){ b.classList.toggle('active', b.dataset.part === name); b.setAttribute('aria-selected', b.dataset.part === name ? 'true':'false'); });
       parts.forEach(function(p){ p.classList.toggle('active', p.dataset.panel === name); });
       window.scrollTo({top: 0, behavior: 'smooth'});
     }
@@ -1145,10 +1271,9 @@
       b.addEventListener('click', function(){ show(b.dataset.part); });
     });
 
-    // Footnote click — switch to a part containing that footnote if needed
+    // Footnote click — reveal all parts so the target footnote is reachable
     document.querySelectorAll('sup a').forEach(function(a){
       a.addEventListener('click', function(){
-        // Show all parts briefly for footnote navigation
         parts.forEach(function(p){ p.classList.add('active'); });
         btns.forEach(function(b){ b.classList.remove('active'); });
       });
