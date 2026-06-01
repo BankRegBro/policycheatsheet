@@ -3,183 +3,252 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AML/CFT Program Rule Navigator — FinCEN NPRM April 2026</title>
+<title>AML/CFT Program Rule Navigator — FinCEN NPRM · BankRegWire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#ffffff;--bg-sec:#f7f6f3;--bg-ter:#f0efe9;
-  --text:#1a1a18;--text-sec:#5a5a56;--text-ter:#9a9994;
-  --border:rgba(0,0,0,0.09);--border-mid:rgba(0,0,0,0.16);--border-str:rgba(0,0,0,0.26);
-  --radius-md:8px;--radius-lg:12px;
-  --fincen-bg:#e6f1fb;--fincen-text:#0c447c;
-  --occ-bg:#e6f1fb;--occ-text:#0c447c;
-  --fdic-bg:#eaf3de;--fdic-text:#27500a;
-  --fed-bg:#fcebeb;--fed-text:#a32d2d;
-  --ncua-bg:#faeeda;--ncua-text:#633806;
-  --green-bg:#eaf3de;--green-text:#27500a;
-  --amber-bg:#faeeda;--amber-text:#633806;
-  --red-bg:#fcebeb;--red-text:#a32d2d;
-  --gray-bg:#f1efe8;--gray-text:#444441;
-  --blue-bg:#e6f1fb;--blue-text:#0c447c;
-  --purple-bg:#eeedfe;--purple-text:#3c3489;
+  /* ── BankRegWire paper/ink system ── */
+  --paper:#f1ede2; --paper-card:#f7f3ea; --paper-sunk:#e9e3d4;
+  --ink:#16150f; --ink-2:#46433a; --ink-3:#6c6859;
+  --oxblood:#7a1f2b; --oxblood-tx:#6a1a25;
+  --copper:#cf7714; --copper-deep:#a85c08;
+  --rule:rgba(22,21,15,.14); --rule-2:rgba(22,21,15,.24); --rule-3:rgba(22,21,15,.40);
+  --copper-soft:rgba(207,119,20,.20); --oxblood-soft:rgba(122,31,43,.09);
+  --focus:#1f6aa8; --radius:4px;
+
+  /* agency accents (warmed to sit on paper) */
+  --fincen:#3f4a7a; --fincen-bg:#e3e4ef;
+  --occ:#27567f;    --occ-bg:#e0ebf4;
+  --fdic:#3c6a2c;   --fdic-bg:#e6efd9;
+  --ncua:#8a5a1e;   --ncua-bg:#f4e9d3;
+  --fed:#a23030;    --fed-bg:#f4e1df;
+
+  /* semantic tags */
+  --green-bg:#dfe9d0; --green-tx:#33500f;
+  --amber-bg:#f6e6c7; --amber-tx:#7a4a06;
+  --red-bg:#f4dad7;   --red-tx:#933030;
+  --gray-bg:#e6e1d4;  --gray-tx:#4c483c;
+  --blue-bg:#dde7f2;  --blue-tx:#1d4a78;
+  --purple-bg:#e6e2f0; --purple-tx:#473f7a;
 }
 @media(prefers-color-scheme:dark){
   :root{
-    --bg:#1c1c1a;--bg-sec:#252522;--bg-ter:#2e2e2b;
-    --text:#f0efe8;--text-sec:#a8a79f;--text-ter:#6a6a62;
-    --border:rgba(255,255,255,0.09);--border-mid:rgba(255,255,255,0.16);--border-str:rgba(255,255,255,0.26);
-    --fincen-bg:#042c53;--fincen-text:#b5d4f4;
-    --occ-bg:#042c53;--occ-text:#b5d4f4;
-    --fdic-bg:#173404;--fdic-text:#c0dd97;
-    --fed-bg:#501313;--fed-text:#f7c1c1;
-    --ncua-bg:#412402;--ncua-text:#fac775;
-    --green-bg:#173404;--green-text:#c0dd97;
-    --amber-bg:#412402;--amber-text:#fac775;
-    --red-bg:#501313;--red-text:#f7c1c1;
-    --gray-bg:#2c2c2a;--gray-text:#d3d1c7;
-    --blue-bg:#042c53;--blue-text:#b5d4f4;
-    --purple-bg:#26215c;--purple-text:#ceccf8;
+    --paper:#16150f; --paper-card:#201e16; --paper-sunk:#12110b;
+    --ink:#f1ede2; --ink-2:#c2bdac; --ink-3:#928d7d;
+    --oxblood:#d27d88; --oxblood-tx:#dc8c96;
+    --copper:#e6973c; --copper-deep:#f0a64f;
+    --rule:rgba(241,237,226,.15); --rule-2:rgba(241,237,226,.26); --rule-3:rgba(241,237,226,.42);
+    --copper-soft:rgba(230,151,60,.26); --oxblood-soft:rgba(210,125,136,.12);
+    --focus:#6fb2ec;
+
+    --fincen:#9aa3d4; --fincen-bg:#23264a;
+    --occ:#84b3df;    --occ-bg:#0c2c4b;
+    --fdic:#9cca74;   --fdic-bg:#1b3409;
+    --ncua:#d9a85a;   --ncua-bg:#3a2606;
+    --fed:#e69a9a;    --fed-bg:#3a1614;
+
+    --green-bg:#22340c; --green-tx:#bcdd95;
+    --amber-bg:#3c2706; --amber-tx:#f0c882;
+    --red-bg:#3a1614;   --red-tx:#eaa6a6;
+    --gray-bg:#2e2b22;  --gray-tx:#d2cdbd;
+    --blue-bg:#102c47;  --blue-tx:#a9cdef;
+    --purple-bg:#26224a; --purple-tx:#c6c2ee;
   }
 }
-body{font-family:'Georgia','Times New Roman',serif;background:var(--bg-ter);color:var(--text);min-height:100vh;padding:2rem 1rem;line-height:1.6}
-.shell{max-width:880px;margin:0 auto}
+body{font-family:'Archivo',system-ui,sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;padding:2.25rem 1rem 3rem;line-height:1.62;-webkit-font-smoothing:antialiased;background-image:radial-gradient(rgba(22,21,15,.022) 1px,transparent 1px);background-size:3px 3px}
+@media(prefers-color-scheme:dark){body{background-image:radial-gradient(rgba(241,237,226,.025) 1px,transparent 1px)}}
+.shell{max-width:900px;margin:0 auto}
+a{color:var(--oxblood-tx)}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:3px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);border:0}
+
+/* animated copper wire */
+.wire{position:relative;height:2px;background:var(--rule-2);overflow:visible}
+.wire::after{content:"";position:absolute;top:50%;left:0;width:7px;height:7px;border-radius:50%;background:var(--copper);box-shadow:0 0 10px 2px var(--copper-soft);transform:translateY(-50%);animation:wire-run 7.5s linear infinite}
+@keyframes wire-run{0%{left:-1%;opacity:0}5%{opacity:1}93%{opacity:1}100%{left:101%;opacity:0}}
+@media(prefers-reduced-motion:reduce){.wire::after{animation:none;left:0;opacity:1}}
+
 /* masthead */
-.masthead{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1.75rem 2rem 1.5rem;margin-bottom:1.25rem}
-.mh-top{display:flex;align-items:flex-start;gap:14px;margin-bottom:1rem}
-.mh-badge{font-family:'Helvetica Neue',Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--text);color:var(--bg);padding:5px 12px;border-radius:4px;flex-shrink:0;align-self:flex-start;margin-top:4px}
-h1{font-family:'Georgia',serif;font-size:20px;font-weight:normal;color:var(--text);line-height:1.3}
-.mh-sub{font-family:'Helvetica Neue',Arial,sans-serif;font-size:12.5px;color:var(--text-sec);margin-top:3px}
-.mh-lede{font-family:'Helvetica Neue',Arial,sans-serif;font-size:13.5px;color:var(--text-sec);border-top:0.5px solid var(--border);padding-top:1rem;line-height:1.65}
-/* urgency banner */
-.deadline-banner{background:var(--red-bg);border:0.5px solid;border-color:var(--red-text);border-radius:var(--radius-md);padding:.75rem 1rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:10px}
-.deadline-label{font-family:'Helvetica Neue',Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--red-text);white-space:nowrap}
-.deadline-text{font-family:'Helvetica Neue',Arial,sans-serif;font-size:13px;color:var(--red-text);line-height:1.45}
+.masthead{background:var(--paper-card);border:1px solid var(--rule-2);border-radius:var(--radius);padding:1.6rem 1.9rem 0;margin-bottom:1.1rem}
+.brandbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-bottom:1rem;border-bottom:1px solid var(--rule);margin-bottom:1.15rem}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-mark{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--ink)}
+.brand-mark b{color:var(--oxblood)}
+.node{width:8px;height:8px;border-radius:50%;background:var(--copper);box-shadow:0 0 0 3px var(--copper-soft);flex-shrink:0}
+.desk-tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);border:1px solid var(--rule-2);border-radius:20px;padding:3px 10px}
+.kicker{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--copper-deep);margin-bottom:.5rem}
+.masthead h1{font-family:'Fraunces',Georgia,serif;font-optical-sizing:auto;font-size:clamp(27px,4.8vw,38px);font-weight:600;letter-spacing:-.015em;line-height:1.05;color:var(--ink)}
+.masthead h1 em{font-style:italic;color:var(--oxblood)}
+.mh-sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-3);margin-top:.65rem;letter-spacing:.01em;line-height:1.6}
+.mh-lede{font-size:15px;color:var(--ink-2);margin:1.05rem 0 .2rem;line-height:1.66;max-width:66ch}
+.mh-lede b{color:var(--ink);font-weight:600}
+.masthead .wire{margin:1.25rem -1.9rem 0}
+
+/* deadline wire-alert */
+.alert{display:flex;align-items:center;gap:12px;background:var(--copper-soft);border:1px solid var(--copper);border-radius:var(--radius);padding:.8rem 1.1rem;margin-bottom:1.1rem}
+.alert-pulse{width:9px;height:9px;border-radius:50%;background:var(--copper);box-shadow:0 0 0 0 var(--copper);flex-shrink:0;animation:pulse 2.2s ease-out infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(207,119,20,.5)}70%{box-shadow:0 0 0 8px rgba(207,119,20,0)}100%{box-shadow:0 0 0 0 rgba(207,119,20,0)}}
+@media(prefers-reduced-motion:reduce){.alert-pulse{animation:none}}
+.alert-body{flex:1;font-size:12.5px;color:var(--ink-2);line-height:1.5}
+.alert-body strong{color:var(--ink);font-weight:600}
+.alert-count{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--copper-deep);white-space:nowrap;border:1px solid var(--copper);border-radius:20px;padding:4px 10px}
+
 /* metrics */
-.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.25rem}
-@media(max-width:580px){.metrics{grid-template-columns:repeat(2,1fr)}}
-.metric{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-md);padding:.875rem 1rem}
-.metric-val{font-family:'Georgia',serif;font-size:22px;color:var(--text)}
-.metric-lbl{font-family:'Helvetica Neue',Arial,sans-serif;font-size:10.5px;color:var(--text-ter);margin-top:3px;text-transform:uppercase;letter-spacing:.05em}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:1.1rem}
+@media(max-width:620px){.metrics{grid-template-columns:repeat(2,1fr)}}
+.metric{background:var(--paper-card);border:1px solid var(--rule-2);border-radius:var(--radius);padding:.85rem .95rem;position:relative;overflow:hidden}
+.metric::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--copper);transform:scaleY(0);transform-origin:top;transition:transform .2s}
+.metric:hover::before{transform:scaleY(1)}
+.metric-val{font-family:'Fraunces',Georgia,serif;font-size:24px;font-weight:600;color:var(--ink);letter-spacing:-.01em;line-height:1.05}
+.metric-lbl{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--ink-3);margin-top:5px;text-transform:uppercase;letter-spacing:.045em;line-height:1.45}
+
 /* tabs */
-.tabs-wrap{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
-.tab-nav{display:flex;border-bottom:0.5px solid var(--border);overflow-x:auto;background:var(--bg-sec)}
-.tab-btn{font-family:'Helvetica Neue',Arial,sans-serif;font-size:13px;padding:10px 18px;border:none;background:none;cursor:pointer;color:var(--text-sec);border-bottom:2px solid transparent;white-space:nowrap;transition:color .15s,border-color .15s}
-.tab-btn:hover{color:var(--text);background:var(--bg-ter)}
-.tab-btn.active{color:var(--text);font-weight:600;border-bottom-color:var(--text)}
-.tab-panel{display:none;padding:1.5rem 2rem}
+.tabs-wrap{background:var(--paper-card);border:1px solid var(--rule-2);border-radius:var(--radius);overflow:hidden}
+.tab-nav{display:flex;border-bottom:1px solid var(--rule-2);overflow-x:auto;background:var(--paper-sunk)}
+.tab-btn{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:.04em;padding:13px 16px;border:none;background:none;cursor:pointer;color:var(--ink-3);border-bottom:2px solid transparent;white-space:nowrap;transition:color .15s,border-color .15s,background .15s;text-transform:uppercase}
+.tab-btn:hover{color:var(--ink);background:var(--paper-card)}
+.tab-btn.active{color:var(--ink);font-weight:600;border-bottom-color:var(--copper);background:var(--paper-card)}
+.tab-panel{display:none;padding:1.5rem 1.9rem 1.9rem}
 .tab-panel.active{display:block}
+
 /* pillar intro */
-.pillar-intro{font-family:'Helvetica Neue',Arial,sans-serif;font-size:13.5px;color:var(--text-sec);line-height:1.65;margin-bottom:1.25rem;padding:.875rem 1.1rem;background:var(--bg-sec);border-left:3px solid var(--border-str);border-radius:0 var(--radius-md) var(--radius-md) 0}
+.pillar-intro{font-size:14px;color:var(--ink-2);line-height:1.66;margin-bottom:1.2rem;padding:.9rem 1.1rem;background:var(--oxblood-soft);border-left:3px solid var(--oxblood);border-radius:0 var(--radius) var(--radius) 0}
+.pillar-intro em{font-style:italic;color:var(--ink)}
+
 /* section label */
-.section-label{font-family:'Helvetica Neue',Arial,sans-serif;font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-ter);margin-bottom:.75rem}
-/* status tag */
-.stag{display:inline-block;font-family:'Helvetica Neue',Arial,sans-serif;font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600;letter-spacing:.03em}
-.tag-green{background:var(--green-bg);color:var(--green-text)}
-.tag-amber{background:var(--amber-bg);color:var(--amber-text)}
-.tag-red{background:var(--red-bg);color:var(--red-text)}
-.tag-gray{background:var(--gray-bg);color:var(--gray-text)}
-.tag-blue{background:var(--blue-bg);color:var(--blue-text)}
-.tag-purple{background:var(--purple-bg);color:var(--purple-text)}
+.section-label{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin-bottom:.8rem;display:flex;align-items:center;gap:8px}
+.section-label::after{content:"";flex:1;height:1px;background:var(--rule)}
+
+/* status tags */
+.stag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9.5px;padding:3px 9px;border-radius:20px;font-weight:600;letter-spacing:.03em;text-transform:uppercase}
+.tag-green{background:var(--green-bg);color:var(--green-tx)}
+.tag-amber{background:var(--amber-bg);color:var(--amber-tx)}
+.tag-red{background:var(--red-bg);color:var(--red-tx)}
+.tag-gray{background:var(--gray-bg);color:var(--gray-tx)}
+.tag-blue{background:var(--blue-bg);color:var(--blue-tx)}
+.tag-purple{background:var(--purple-bg);color:var(--purple-tx)}
+
 /* interagency grid */
 .agency-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:1.5rem}
-@media(max-width:660px){.agency-grid{grid-template-columns:repeat(2,1fr)}}
-.agency-card{border:0.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
-.agency-header{padding:.55rem .75rem;font-family:'Helvetica Neue',Arial,sans-serif;font-weight:700;font-size:11.5px;letter-spacing:.03em}
-.ah-fincen{background:var(--blue-bg);color:var(--blue-text)}
-.ah-occ{background:var(--occ-bg);color:var(--occ-text)}
-.ah-fdic{background:var(--fdic-bg);color:var(--fdic-text)}
-.ah-ncua{background:var(--ncua-bg);color:var(--ncua-text)}
-.ah-fed{background:var(--amber-bg);color:var(--amber-text)}
-.agency-body{padding:.7rem .75rem;background:var(--bg)}
-.agency-body p{font-family:'Helvetica Neue',Arial,sans-serif;font-size:12px;color:var(--text-sec);line-height:1.5;margin-top:.4rem}
-/* provision cards */
-.provision-list{display:flex;flex-direction:column;gap:10px;margin-bottom:1.5rem}
-.provision-card{border:0.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;cursor:pointer;transition:border-color .15s}
-.provision-card:hover{border-color:var(--border-mid)}
-.provision-card.open{border-color:var(--border-str)}
-.prov-head{display:flex;align-items:center;gap:10px;padding:.875rem 1.1rem;background:var(--bg)}
-.prov-num{font-family:'Helvetica Neue',Arial,sans-serif;font-size:11px;font-weight:700;color:var(--text-ter);min-width:24px}
-.prov-title{font-family:'Georgia',serif;font-size:14px;color:var(--text);flex:1;line-height:1.3}
-.prov-detail{display:none;padding:.875rem 1.1rem 1rem;border-top:0.5px solid var(--border);background:var(--bg-sec);font-family:'Helvetica Neue',Arial,sans-serif;font-size:13px;color:var(--text-sec);line-height:1.65}
-.provision-card.open .prov-detail{display:block}
-.caret{font-size:10px;color:var(--text-ter);transition:transform .2s;margin-left:auto;flex-shrink:0}
-.provision-card.open .caret{transform:rotate(180deg)}
-.prov-sub{font-family:'Helvetica Neue',Arial,sans-serif;font-size:12px;color:var(--text-ter);margin-top:2px}
+@media(max-width:680px){.agency-grid{grid-template-columns:repeat(2,1fr)}}
+.agency-card{border:1px solid var(--rule-2);border-radius:var(--radius);overflow:hidden;background:var(--paper-card)}
+.agency-header{padding:.5rem .7rem;font-family:'JetBrains Mono',monospace;font-weight:600;font-size:11px;letter-spacing:.05em;border-bottom:2px solid currentColor}
+.ah-fincen{background:var(--fincen-bg);color:var(--fincen)}
+.ah-occ{background:var(--occ-bg);color:var(--occ)}
+.ah-fdic{background:var(--fdic-bg);color:var(--fdic)}
+.ah-ncua{background:var(--ncua-bg);color:var(--ncua)}
+.ah-fed{background:var(--fed-bg);color:var(--fed)}
+.agency-body{padding:.65rem .7rem}
+.agency-body p{font-size:12px;color:var(--ink-2);line-height:1.5;margin-top:.45rem}
+.agency-body .stag{margin-bottom:0}
+
+/* generic note item */
+.q-item{border:1px solid var(--rule-2);border-radius:var(--radius);padding:.9rem 1rem;border-left:3px solid var(--rule-3);background:var(--paper-card)}
+.q-item.tension{border-left-color:var(--fed)}
+.q-item.watch{border-left-color:var(--ncua)}
+.q-item.noted{border-left-color:var(--fdic)}
+.ql{font-family:'JetBrains Mono',monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:.35rem;color:var(--ink-3)}
+.ql.tension{color:var(--fed)}.ql.watch{color:var(--ncua)}.ql.noted{color:var(--fdic)}
+.qt{font-family:'Fraunces',Georgia,serif;font-size:14.5px;font-weight:500;color:var(--ink);line-height:1.38;margin-bottom:.4rem}
+.qs{font-size:12.5px;color:var(--ink-2);line-height:1.6}
+.qs b{color:var(--ink);font-weight:600}.qs em{font-style:italic}
+
 /* two-tier diagram */
-.tier-diagram{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.25rem}
-@media(max-width:540px){.tier-diagram{grid-template-columns:1fr}}
-.tier-box{border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.1rem;background:var(--bg)}
-.tier-label{font-family:'Helvetica Neue',Arial,sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:.07em;font-weight:700;margin-bottom:.5rem}
-.tier-label.tier1{color:var(--blue-text)}
-.tier-label.tier2{color:var(--green-text)}
-.tier-name{font-family:'Georgia',serif;font-size:15px;color:var(--text);margin-bottom:.5rem}
-.tier-desc{font-family:'Helvetica Neue',Arial,sans-serif;font-size:12.5px;color:var(--text-sec);line-height:1.55}
-.tier-arrow{text-align:center;font-size:20px;color:var(--text-ter);display:flex;align-items:center;justify-content:center}
+.tier-diagram{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.25rem}
+@media(max-width:560px){.tier-diagram{grid-template-columns:1fr}}
+.tier-box{border:1px solid var(--rule-2);border-radius:var(--radius);padding:1rem 1.1rem;background:var(--paper-card);position:relative;overflow:hidden}
+.tier-box::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px}
+.tier-box.t1::before{background:var(--occ)}.tier-box.t2::before{background:var(--fdic)}
+.tier-label{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-bottom:.5rem}
+.tier-label.tier1{color:var(--occ)}.tier-label.tier2{color:var(--fdic)}
+.tier-name{font-family:'Fraunces',Georgia,serif;font-size:16px;font-weight:600;color:var(--ink);margin-bottom:.5rem}
+.tier-desc{font-size:12.5px;color:var(--ink-2);line-height:1.56}
+.tier-desc em{font-style:italic;color:var(--ink)}
+
+/* prior vs proposed split */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.25rem}
+@media(max-width:560px){.split{grid-template-columns:1fr}}
+
+/* provision cards */
+.prov-controls{display:flex;justify-content:flex-end;margin-bottom:.6rem}
+.prov-toggle-all{font-family:'JetBrains Mono',monospace;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-2);background:none;border:1px solid var(--rule-2);border-radius:20px;padding:5px 12px;cursor:pointer;transition:border-color .15s,color .15s}
+.prov-toggle-all:hover{color:var(--ink);border-color:var(--rule-3)}
+.provision-list{display:flex;flex-direction:column;gap:9px;margin-bottom:1rem}
+.provision-card{border:1px solid var(--rule-2);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:border-color .15s;background:var(--paper-card);position:relative}
+.provision-card::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,var(--copper),transparent 60%);transform:scaleX(0);transform-origin:left;transition:transform .35s ease;z-index:1}
+.provision-card:hover::before,.provision-card.open::before{transform:scaleX(1)}
+.provision-card:hover{border-color:var(--rule-3)}
+.provision-card.open{border-color:var(--rule-3)}
+.prov-head{display:flex;align-items:center;gap:10px;padding:.9rem 1.1rem;background:none}
+.prov-num{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--copper-deep);min-width:22px}
+.prov-title{font-family:'Fraunces',Georgia,serif;font-size:15px;font-weight:500;color:var(--ink);line-height:1.3}
+.prov-sub{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-3);margin-top:3px;letter-spacing:.01em}
+.prov-detail{display:none;padding:.9rem 1.1rem 1rem;border-top:1px solid var(--rule);background:var(--paper-sunk);font-size:13px;color:var(--ink-2);line-height:1.68}
+.provision-card.open .prov-detail{display:block}
+.prov-detail strong{color:var(--ink);font-weight:600}.prov-detail em{font-style:italic}
+.caret{font-size:9px;color:var(--ink-3);transition:transform .2s;flex-shrink:0}
+.provision-card.open .caret{transform:rotate(180deg)}
+
 /* institution table */
-.inst-table{width:100%;border-collapse:collapse;font-family:'Helvetica Neue',Arial,sans-serif;font-size:12.5px;margin-bottom:1.25rem}
-.inst-table th{text-align:left;padding:.5rem .75rem;border-bottom:0.5px solid var(--border-mid);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-ter);font-weight:600;background:var(--bg-sec)}
-.inst-table td{padding:.55rem .75rem;border-bottom:0.5px solid var(--border);vertical-align:top;line-height:1.5;color:var(--text-sec)}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--rule-2);border-radius:var(--radius)}
+.inst-table{width:100%;border-collapse:collapse;font-size:12px}
+@media(max-width:680px){.inst-table{min-width:640px}}
+.inst-table th{text-align:left;padding:.55rem .75rem;border-bottom:1px solid var(--rule-2);font-family:'JetBrains Mono',monospace;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);font-weight:600;background:var(--paper-sunk)}
+.inst-table td{padding:.6rem .75rem;border-bottom:1px solid var(--rule);vertical-align:top;line-height:1.5;color:var(--ink-2);background:var(--paper-card)}
 .inst-table tr:last-child td{border-bottom:none}
-.inst-table .dim{font-weight:600;color:var(--text)}
-/* open questions */
-.q-list{display:flex;flex-direction:column;gap:8px}
-.q-item{border:0.5px solid var(--border);border-radius:var(--radius-md);padding:.875rem 1rem}
-.q-item.tension{border-left:3px solid #d85a30}
-.q-item.watch{border-left:3px solid #ba7517}
-.q-item.noted{border-left:3px solid #639922}
-.ql{font-family:'Helvetica Neue',Arial,sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-bottom:.3rem}
-.ql.tension{color:#d85a30}.ql.watch{color:#ba7517}.ql.noted{color:#639922}
-.qt{font-family:'Georgia',serif;font-size:13.5px;color:var(--text);line-height:1.4;margin-bottom:.35rem}
-.qs{font-family:'Helvetica Neue',Arial,sans-serif;font-size:12.5px;color:var(--text-sec);line-height:1.55}
-/* footer */
-.footer{margin-top:1.5rem;font-family:'Helvetica Neue',Arial,sans-serif;font-size:11.5px;color:var(--text-ter);text-align:center;line-height:1.6}
-.footer a{color:var(--fincen-text);text-decoration:none;border-bottom:1px solid var(--border-mid)}
-.footer a:hover{border-bottom-color:var(--fincen-text)}
-/* table scroll wrapper for mobile */
-.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-@media(max-width:660px){.inst-table{min-width:600px}}
-/* expand-all control */
-.prov-controls{display:flex;justify-content:flex-end;margin-bottom:.5rem}
-.prov-toggle-all{font-family:'Helvetica Neue',Arial,sans-serif;font-size:11.5px;color:var(--text-sec);background:none;border:0.5px solid var(--border-mid);border-radius:4px;padding:4px 10px;cursor:pointer}
-.prov-toggle-all:hover{color:var(--text);border-color:var(--border-str)}
-/* focus visibility for keyboard users */
-.tab-btn:focus-visible,.provision-card:focus-visible,.prov-toggle-all:focus-visible{outline:2px solid var(--fincen-text);outline-offset:2px}
-/* print: expand everything, drop interactive chrome */
+.inst-table .dim{font-family:'Fraunces',Georgia,serif;font-weight:600;color:var(--ink);font-size:12.5px}
+
+/* colophon */
+.colophon{margin-top:1.3rem;background:var(--paper-card);border:1px solid var(--rule);border-radius:var(--radius);padding:1.1rem 1.4rem}
+.colophon .wire{margin:0 -1.4rem .9rem}
+.colophon p{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--ink-3);line-height:1.7}
+.colophon p+p{margin-top:.55rem}
+.colophon b{color:var(--ink-2)}
+.colophon a{color:var(--oxblood-tx)}
+
+/* print */
 @media print{
-  body{background:#fff;color:#000;padding:0}
-  .tab-nav,.caret,.prov-controls{display:none!important}
+  body{background:#fff;color:#000;padding:0;background-image:none}
+  .wire,.tab-nav,.caret,.prov-controls,.metrics,.brand-mark,.desk-tag,.alert-pulse{display:none!important}
+  .tabs-wrap,.masthead,.provision-card,.agency-card,.q-item,.colophon,.table-scroll,.tier-box,.alert{border-color:#999}
   .tab-panel{display:block!important;padding:1rem 0;break-inside:avoid}
-  .tab-panel::before{content:attr(data-title);display:block;font-family:'Georgia',serif;font-size:16px;font-weight:bold;margin:1.25rem 0 .5rem;border-bottom:1px solid #000;padding-bottom:.25rem}
+  .tab-panel::before{content:attr(data-title);display:block;font-family:'Fraunces',serif;font-size:17px;font-weight:600;margin:1.3rem 0 .6rem;border-bottom:1px solid #000}
   .prov-detail{display:block!important}
-  .provision-card,.q-item,.agency-card,.metric,.tier-box{break-inside:avoid}
-  .masthead,.tabs-wrap{border:none}
+  .provision-card,.q-item,.agency-card,.metric,.tier-box,.masthead,.tabs-wrap{break-inside:avoid}
+  a[href]::after{content:" (" attr(href) ")";font-size:8px;color:#444;word-break:break-all}
 }
 </style>
 </head>
 <body>
 <div class="shell">
 
-<div class="masthead">
-  <div class="mh-top">
-    <div class="mh-badge">Rule Navigator</div>
-    <div>
-      <h1>AML/CFT Program Rule Navigator — FinCEN NPRM</h1>
-      <p class="mh-sub">FinCEN / OCC / FDIC / NCUA joint NPRM &nbsp;·&nbsp; Issued April 7, 2026 · Published April 10, 2026 &nbsp;·&nbsp; 60-day comment period closing June 9, 2026</p>
-    </div>
+<header class="masthead">
+  <div class="brandbar">
+    <div class="brand"><span class="node" aria-hidden="true"></span><span class="brand-mark"><b>BANK</b>REG<b>WIRE</b></span></div>
+    <span class="desk-tag">Rule Navigator · BSA/AML Desk</span>
   </div>
-  <p class="mh-lede">On April 7, 2026, FinCEN issued a notice of proposed rulemaking to fundamentally reform AML/CFT program requirements under the Bank Secrecy Act — replacing the prevailing technical compliance model with an effectiveness-based, risk-driven framework. The OCC, FDIC, and NCUA issued a concurrent joint NPRM for banks. The Federal Reserve did not join. The FinCEN NPRM was published in the Federal Register on April 10, 2026 (91 FR 18704; Docket FINCEN-2026-0034; RIN 1506-AB72), opening a 60-day comment period. This navigator maps the proposed framework, the interagency picture, and the key open questions.</p>
-</div>
+  <p class="kicker">FinCEN · OCC · FDIC · NCUA — joint rulemaking</p>
+  <h1>AML/CFT Program Rule <em>Navigator</em></h1>
+  <p class="mh-sub">FinCEN NPRM 91 FR 18704 &nbsp;·&nbsp; Joint banking NPRM 91 FR 18304 &nbsp;·&nbsp; RIN 1506-AB72 &nbsp;·&nbsp; Issued Apr 7 2026 · Published Apr 10 2026 &nbsp;·&nbsp; Comments close Jun 9 2026</p>
+  <p class="mh-lede">On April 7 2026, FinCEN issued an NPRM to fundamentally reform AML/CFT program requirements under the Bank Secrecy Act — replacing the technical-compliance model with an <b>effectiveness-based, risk-driven</b> framework. The <b>OCC, FDIC, and NCUA</b> issued a concurrent joint NPRM for banks; the <b>Federal Reserve did not join</b>, the central fault line of this rulemaking. This navigator maps the proposed framework, the interagency picture, what it means by institution type, and the questions still open as the comment window closes.</p>
+  <p class="mh-sub" id="asof-line">Verified against FinCEN, OCC, FDIC, NCUA, and Federal Register primary sources; current as of June 1, 2026.</p>
+  <div class="wire" aria-hidden="true"></div>
+</header>
 
-<div class="deadline-banner">
-  <div class="deadline-label">Comment deadline</div>
-  <div class="deadline-text">Public comments on both the FinCEN NPRM (91 FR 18704) and the OCC/FDIC/NCUA joint NPRM (91 FR 18304) are due <strong>June 9, 2026</strong> — a 60-day period running from the April 10 Federal Register publication. FinCEN proposes a 12-month implementation period following issuance of a final rule. The July 3, 2024 FinCEN NPRM (and the August 9, 2024 banking-agency joint NPRM, which the Fed joined) have been withdrawn and superseded.</div>
+<div class="alert" role="status">
+  <span class="alert-pulse" aria-hidden="true"></span>
+  <div class="alert-body">Comments on both the FinCEN NPRM (91 FR 18704) and the OCC/FDIC/NCUA joint NPRM (91 FR 18304) are due <strong>June 9, 2026</strong> — a 60-day period from the April 10 Federal Register publication. FinCEN proposes a 12-month implementation period after a final rule. The 2024 FinCEN and banking-agency NPRMs (the latter joined by the Fed) have been withdrawn and superseded.</div>
+  <span class="alert-count" id="deadline-count">—</span>
 </div>
 
 <div class="metrics">
-  <div class="metric"><div class="metric-val">3 of 4</div><div class="metric-lbl">Banking agencies joined (Fed absent)</div></div>
-  <div class="metric"><div class="metric-val">2-tier</div><div class="metric-lbl">New establishment vs. implementation framework</div></div>
-  <div class="metric"><div class="metric-val">30 days</div><div class="metric-lbl">Advance notice required before significant supervisory action</div></div>
-  <div class="metric"><div class="metric-val">12 mo.</div><div class="metric-lbl">Proposed implementation period post-final rule</div></div>
+  <div class="metric"><div class="metric-val">3 of 4</div><div class="metric-lbl">Banking agencies joined the joint NPRM (Fed absent)</div></div>
+  <div class="metric"><div class="metric-val">2-tier</div><div class="metric-lbl">Establishment vs. implementation enforcement framework</div></div>
+  <div class="metric"><div class="metric-val">30 days</div><div class="metric-lbl">Advance notice to FinCEN before significant supervisory action</div></div>
+  <div class="metric"><div class="metric-val">12 mo.</div><div class="metric-lbl">Proposed implementation period after a final rule</div></div>
 </div>
 
 <div class="tabs-wrap">
@@ -193,42 +262,42 @@ h1{font-family:'Georgia',serif;font-size:20px;font-weight:normal;color:var(--tex
 
   <!-- Interagency -->
   <div id="panel-interagency" class="tab-panel active" role="tabpanel" aria-labelledby="tab-interagency" data-title="Interagency picture">
-    <p class="pillar-intro">The AML/CFT program rule involves a complex interagency structure. FinCEN issued the primary NPRM covering all covered financial institutions. The OCC, FDIC, and NCUA issued a concurrent joint NPRM for banks. The Federal Reserve — which joined the 2024 Biden-era NPRM — did not join the 2026 proposal, creating a significant fault line.</p>
+    <p class="pillar-intro">FinCEN issued the lead NPRM covering all covered financial institutions. The OCC, FDIC, and NCUA issued a concurrent joint NPRM for banks. The Federal Reserve — which joined the 2024 Biden-era NPRM — did not join the 2026 proposal, creating a significant fault line.</p>
     <div class="section-label">Agency participation</div>
     <div class="agency-grid">
       <div class="agency-card">
         <div class="agency-header ah-fincen">FinCEN</div>
         <div class="agency-body">
           <div class="stag tag-blue">Primary NPRM</div>
-          <p>Issued the lead NPRM covering all 11 categories of covered financial institutions (banks; casinos and card clubs; MSBs; broker-dealers; mutual funds; insurance companies; FCMs/IBCs; dealers in precious metals, stones, or jewels; credit-card-system operators; loan or finance companies; and housing GSEs — enumerated at 31 CFR §§ 1020.210–1030.210). Supersedes and withdraws the July 3, 2024 prior NPRM. Expands FinCEN's supervisory consultation role.</p>
+          <p>Lead NPRM covering all 11 categories of covered financial institutions (banks; casinos &amp; card clubs; MSBs; broker-dealers; mutual funds; insurers; FCMs/IBCs; dealers in precious metals/stones/jewels; credit-card-system operators; loan/finance companies; housing GSEs — at 31 CFR §§1020.210–1030.210). Supersedes the July 3 2024 NPRM. Expands FinCEN's supervisory consultation role.</p>
         </div>
       </div>
       <div class="agency-card">
         <div class="agency-header ah-occ">OCC</div>
         <div class="agency-body">
           <div class="stag tag-green">Joined</div>
-          <p>Co-issued joint banking agency NPRM on April 7, 2026. Applies to national banks and federal savings associations. Aligns OCC BSA/AML program requirements with FinCEN's proposed framework.</p>
+          <p>Co-issued the joint banking-agency NPRM (Apr 7 2026). Applies to national banks and federal savings associations; aligns OCC BSA/AML program requirements with FinCEN's framework.</p>
         </div>
       </div>
       <div class="agency-card">
         <div class="agency-header ah-fdic">FDIC</div>
         <div class="agency-body">
           <div class="stag tag-green">Joined</div>
-          <p>Co-issued joint banking agency NPRM. Applies to FDIC-supervised state nonmember banks and savings associations. FDIC board approved issuance April 7, 2026.</p>
+          <p>Co-issued the joint NPRM; board approved issuance Apr 7 2026. Applies to FDIC-supervised state nonmember banks and savings associations.</p>
         </div>
       </div>
       <div class="agency-card">
         <div class="agency-header ah-ncua">NCUA</div>
         <div class="agency-body">
           <div class="stag tag-green">Joined</div>
-          <p>Co-issued joint banking agency NPRM. Applies to federally insured credit unions. NCUA's participation aligns credit union AML/CFT requirements with the banking agency framework.</p>
+          <p>Co-issued the joint NPRM. Applies to federally insured credit unions; aligns credit-union AML/CFT requirements with the banking-agency framework.</p>
         </div>
       </div>
       <div class="agency-card">
         <div class="agency-header ah-fed">Federal Reserve</div>
         <div class="agency-body">
-          <div class="stag tag-amber">Did not join</div>
-          <p>The Fed joined the 2024 Biden-era joint NPRM but did not join the 2026 proposal. FinCEN states the rule was prepared "in consultation with" the Fed, but the Fed has not issued its own NPRM. Potential signal of disagreement with FinCEN's expanded supervisory consultation role.</p>
+          <div class="stag tag-red">Did not join</div>
+          <p>Joined the 2024 NPRM but not the 2026 proposal. FinCEN says the rule was "prepared in consultation with" the Fed, but it issued no NPRM of its own — a likely signal of disagreement with FinCEN's expanded consultation role.</p>
         </div>
       </div>
     </div>
@@ -236,165 +305,130 @@ h1{font-family:'Georgia',serif;font-size:20px;font-weight:normal;color:var(--tex
     <div class="section-label">Statutory basis</div>
     <div class="q-item noted" style="margin-bottom:.75rem">
       <div class="ql noted">Legal authority</div>
-      <div class="qt">AML Act of 2020 implementation — mandate for effectiveness-based, risk-based programs</div>
-      <div class="qs">The Anti-Money Laundering Act of 2020 (enacted as part of the National Defense Authorization Act) directed FinCEN and the federal banking agencies to modernize and strengthen the AML/CFT regulatory framework. It expressly required AML/CFT programs to be risk-based, directing more attention and resources toward higher-risk customers and activities. It also directed FinCEN to issue government-wide AML/CFT priorities and incorporate them into program requirements. The 2026 NPRM implements these AML Act provisions — five years after enactment.</div>
+      <div class="qt">AML Act of 2020 — the mandate for effectiveness-based, risk-based programs</div>
+      <div class="qs">The Anti-Money Laundering Act of 2020 (enacted within the NDAA) directed FinCEN and the federal banking agencies to modernize the AML/CFT framework, expressly requiring programs to be risk-based — more attention and resources to higher-risk customers and activities — and directing FinCEN to issue government-wide AML/CFT priorities and fold them into program requirements. The 2026 NPRM implements these provisions five years on.</div>
     </div>
     <div class="q-item watch">
       <div class="ql watch">Context</div>
       <div class="qt">Treasury Secretary Bessent: refocus AML/CFT on national security and higher-risk activity</div>
-      <div class="qs">The NPRM is explicitly framed around Treasury's BSA-modernization priority. The preamble quotes Secretary Bessent's April 2025 speech, in which he said Treasury "will advocate for changes to the AML/CFT framework to truly focus on national security priorities and higher-risk areas and explicitly permit financial institutions to de-prioritize lower risks." The preamble also cites his criticism that AML/CFT supervision has too often involved a "zero-tolerance focus on process and documentation and wide latitude for supervisory expectations and judgments that are not always consistent with the law or our national security priorities." This is a top-down Treasury-driven priority, situated within E.O. 14192 (<em>Unleashing Prosperity Through Deregulation</em>), not simply an agency-level reform. (The widely circulated "volume of paperwork" framing is Bessent's public messaging on the rule, not a phrase in the preamble.)</div>
+      <div class="qs">The NPRM is framed around Treasury's BSA-modernization priority. The preamble quotes Bessent's April 2025 remarks that Treasury "will advocate for changes to the AML/CFT framework to truly focus on national security priorities and higher-risk areas and explicitly permit financial institutions to de-prioritize lower risks," and cites his critique of a "zero-tolerance focus on process and documentation." This sits within E.O. 14192, <em>Unleashing Prosperity Through Deregulation</em> — a top-down Treasury priority, not just an agency reform. (The widely circulated "volume of paperwork" line is Bessent's public messaging, not preamble text.)</div>
     </div>
   </div>
 
   <!-- Framework -->
   <div id="panel-framework" class="tab-panel" role="tabpanel" aria-labelledby="tab-framework" data-title="Core framework">
-    <p class="pillar-intro">The centerpiece of the NPRM is a two-tiered framework distinguishing program "establishment" from program "implementation." This structural shift is designed to protect institutions from enforcement actions for minor technical deficiencies in implementation once they have properly established their AML/CFT program.</p>
+    <p class="pillar-intro">The centerpiece is a two-tiered framework distinguishing program <em>establishment</em> from program <em>implementation</em> — designed to shield institutions from enforcement over minor technical implementation gaps once they have properly established a program.</p>
 
     <div class="section-label">The two-tiered framework</div>
     <div class="tier-diagram">
-      <div class="tier-box">
+      <div class="tier-box t1">
         <div class="tier-label tier1">Tier 1</div>
         <div class="tier-name">Program establishment</div>
-        <div class="tier-desc">A financial institution must establish an AML/CFT program incorporating the four existing BSA components: (1) risk-based internal policies and controls; (2) independent testing; (3) designation of a U.S.-based AML/CFT compliance officer accessible to FinCEN; and (4) an ongoing employee training program. Institutions must also incorporate FinCEN's published AML/CFT priorities into their risk assessments. <em>Full enforcement and supervisory authority applies to failures to establish a compliant program.</em></div>
+        <div class="tier-desc">An institution must establish an AML/CFT program with the four existing BSA components: (1) risk-based internal policies and controls; (2) independent testing; (3) a designated U.S.-based AML/CFT compliance officer accessible to FinCEN; and (4) ongoing employee training — and must incorporate FinCEN's published AML/CFT priorities into its risk assessment. <em>Full enforcement and supervisory authority applies to failures to establish a compliant program.</em></div>
       </div>
-      <div class="tier-box">
+      <div class="tier-box t2">
         <div class="tier-label tier2">Tier 2</div>
         <div class="tier-name">Program implementation</div>
-        <div class="tier-desc">Once a program is properly established, the institution must implement it "in all material respects." Only significant or systemic implementation failures — not minor technical or de minimis deficiencies — would warrant enforcement or significant supervisory actions by banking regulators. This is the key structural change: regulators can no longer take significant action against minor implementation gaps. The proposed rule appears intended to reduce the "check the box" compliance culture that has driven disproportionate resources to lower-risk areas.</div>
+        <div class="tier-desc">Once established, the program must be implemented "in all material respects." Only significant or systemic implementation failures — not minor technical or de minimis deficiencies — would warrant enforcement or significant supervisory action. This is the key structural change, aimed at the "check-the-box" culture that has driven disproportionate resources to lower-risk areas.</div>
       </div>
     </div>
 
     <div class="section-label">From technical compliance to effectiveness</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.25rem">
-      <div class="q-item" style="border-left:3px solid var(--red-text)">
-        <div class="ql" style="color:var(--red-text)">Prior model</div>
-        <div class="qt" style="font-size:13px">Technical, process-driven compliance</div>
-        <div class="qs">Institutions measured success by the volume and completeness of compliance documentation — SAR filings, CDD records, training logs, audit reports. Examiners could criticize process deficiencies regardless of whether they reflected actual AML/CFT risk or impaired effectiveness. This incentivized uniform treatment of all customer categories regardless of risk.</div>
+    <div class="split">
+      <div class="q-item" style="border-left-color:var(--fed)">
+        <div class="ql" style="color:var(--fed)">Prior model</div>
+        <div class="qt" style="font-size:13.5px">Technical, process-driven compliance</div>
+        <div class="qs">Success measured by the volume and completeness of documentation — SAR filings, CDD records, training logs, audits. Examiners could criticize process deficiencies regardless of actual ML/TF risk, incentivizing uniform treatment of all customer categories.</div>
       </div>
-      <div class="q-item" style="border-left:3px solid var(--green-text)">
-        <div class="ql" style="color:var(--green-text)">Proposed model</div>
-        <div class="qt" style="font-size:13px">Effectiveness-based, risk-driven compliance</div>
-        <div class="qs">Institutions direct resources toward higher-risk customers and activities, consistent with their individual risk profile. Risk assessments must incorporate FinCEN's AML/CFT priorities. Examiners and auditors cannot substitute their subjective judgment for the institution's risk-based and reasonably designed program. Technology and AI use is explicitly encouraged and cannot alone trigger a significant supervisory action. Note: "effectiveness" is layered on top of — not a replacement for — the statutory standard; the rule still requires a risk-based set of internal policies, procedures, and controls "reasonably designed to ensure compliance" with the BSA.</div>
+      <div class="q-item" style="border-left-color:var(--fdic)">
+        <div class="ql" style="color:var(--fdic)">Proposed model</div>
+        <div class="qt" style="font-size:13.5px">Effectiveness-based, risk-driven compliance</div>
+        <div class="qs">Resources flow to higher-risk customers and activities per the institution's risk profile; risk assessments must fold in FinCEN's priorities; examiners cannot substitute subjective judgment for a risk-based, reasonably designed program; technology/AI use is encouraged and cannot alone trigger significant action. Note: "effectiveness" layers on top of — not replaces — the statutory standard of controls "reasonably designed to ensure compliance" with the BSA.</div>
       </div>
     </div>
 
     <div class="section-label">FinCEN's expanded supervisory role</div>
     <div class="q-item watch">
       <div class="ql watch">Structural change</div>
-      <div class="qt">30-day advance notice required before significant supervisory actions</div>
-      <div class="qs">Under the proposed rule (codified at proposed 31 CFR 1020.221), the banking agencies — when acting under supervisory authority delegated by FinCEN — must provide FinCEN at least 30 days' advance written notice, <em>absent urgent circumstances</em>, before taking any "significant supervisory action" related to AML/CFT, and must consider FinCEN's input. A "significant supervisory action" is defined broadly to include a formal written communication that identifies deficiencies, weaknesses, violations, or unsafe/unsound practices related to AML/CFT requirements and contemplates significant or programmatic remedial measures. Examiner observations, suggestions, and informal comments are excluded. The provision is structured as (a) definitions, (b) FinCEN enforcement and supervision policy, (c) FinCEN consultation, and (d) FinCEN considerations. This gives FinCEN a consultation and input role it has not previously held in the supervisory process.</div>
+      <div class="qt">30-day advance notice before significant supervisory actions</div>
+      <div class="qs">Under proposed 31 CFR 1020.221, banking agencies acting under FinCEN-delegated authority must give FinCEN at least 30 days' advance written notice — <em>absent urgent circumstances</em> — before any "significant supervisory action" related to AML/CFT, and must consider FinCEN's input. A "significant supervisory action" is a formal written communication identifying deficiencies, weaknesses, violations, or unsafe/unsound practices and contemplating significant or programmatic remediation; examiner observations and informal comments are excluded. The provision is structured as (a) definitions, (b) FinCEN policy, (c) consultation, and (d) considerations — a consultation and input role FinCEN has not previously held.</div>
     </div>
   </div>
 
   <!-- Key Provisions -->
   <div id="panel-provisions" class="tab-panel" role="tabpanel" aria-labelledby="tab-provisions" data-title="Key provisions">
-    <p class="pillar-intro">Below are the key provisions of the April 2026 FinCEN NPRM and the concurrent OCC/FDIC/NCUA banking agency NPRM. Click any provision to expand the full description.</p>
+    <p class="pillar-intro">The key provisions of the April 2026 FinCEN NPRM and the concurrent OCC/FDIC/NCUA banking-agency NPRM. Select any provision to expand.</p>
     <div class="prov-controls"><button class="prov-toggle-all" id="provToggleAll" onclick="toggleAll()" aria-pressed="false">Expand all</button></div>
     <div class="provision-list">
 
       <div class="provision-card" onclick="tog(this)">
         <div class="prov-head">
           <span class="prov-num">01</span>
-          <div style="flex:1">
-            <div class="prov-title">Two-tiered establishment vs. implementation framework</div>
-            <div class="prov-sub">Core structural change — separates program design from execution</div>
-          </div>
+          <div style="flex:1"><div class="prov-title">Two-tiered establishment vs. implementation framework</div><div class="prov-sub">Core structural change — separates program design from execution</div></div>
           <span class="stag tag-blue">Core change</span>
           <span class="caret">▼</span>
         </div>
-        <div class="prov-detail">
-          The proposed rule creates a two-pronged framework under which an institution's AML/CFT program "establishment" is evaluated separately from its "implementation." Establishing a program requires the four traditional BSA pillars (internal controls, independent testing, designated compliance officer, and training) plus risk assessment processes incorporating FinCEN's AML/CFT priorities. Implementation must be in "all material respects." Only significant or systemic failures in implementation would warrant enforcement or significant supervisory actions — protecting institutions from action based on minor technical or de minimis deficiencies. This is the single most consequential structural change in the proposed rule.
-        </div>
+        <div class="prov-detail">A two-pronged framework evaluating program "establishment" separately from "implementation." Establishment requires the four traditional BSA pillars plus risk-assessment processes incorporating FinCEN's priorities; implementation must be "in all material respects." Only significant or systemic implementation failures warrant enforcement or significant supervisory action — shielding institutions from action over minor technical or de minimis deficiencies. The single most consequential change in the proposal.</div>
       </div>
 
       <div class="provision-card" onclick="tog(this)">
         <div class="prov-head">
           <span class="prov-num">02</span>
-          <div style="flex:1">
-            <div class="prov-title">Mandatory risk-based resource allocation</div>
-            <div class="prov-sub">Institutions must direct more attention to higher-risk customers and activities</div>
-          </div>
+          <div style="flex:1"><div class="prov-title">Mandatory risk-based resource allocation</div><div class="prov-sub">More attention to higher-risk customers and activities</div></div>
           <span class="stag tag-green">AML Act mandate</span>
           <span class="caret">▼</span>
         </div>
-        <div class="prov-detail">
-          Implementing the AML Act's express requirement, the proposed rule mandates that AML/CFT programs be risk-based — ensuring institutions direct more attention and resources toward higher-risk customers and activities, consistent with the institution's risk profile, rather than toward lower-risk areas. This is a meaningful departure from prevailing compliance culture, which has incentivized uniform attention across all customer and product categories. The proposed rule explicitly states that institutions may direct resources away from lower-risk areas. For community banks with generally lower ML/TF risk profiles, this could significantly reduce the compliance burden associated with lower-risk customer segments.
-        </div>
+        <div class="prov-detail">Implementing the AML Act, the rule mandates risk-based programs that direct more attention and resources to higher-risk customers and activities, and expressly permits directing resources <em>away</em> from lower-risk areas. A meaningful departure from a culture that incentivized uniform attention across all categories. For community banks with generally lower ML/TF risk, this could materially reduce burden on lower-risk segments.</div>
       </div>
 
       <div class="provision-card" onclick="tog(this)">
         <div class="prov-head">
           <span class="prov-num">03</span>
-          <div style="flex:1">
-            <div class="prov-title">FinCEN consultation role in significant supervisory actions</div>
-            <div class="prov-sub">30-day advance notice required; FinCEN input before major bank AML/CFT actions</div>
-          </div>
+          <div style="flex:1"><div class="prov-title">FinCEN consultation role in significant supervisory actions</div><div class="prov-sub">30-day advance notice; FinCEN input before major bank AML/CFT actions</div></div>
           <span class="stag tag-purple">Power shift</span>
           <span class="caret">▼</span>
         </div>
-        <div class="prov-detail">
-          Banking regulators must provide FinCEN at least 30 days' advance written notice, absent urgent circumstances, before taking a "significant supervisory action" related to AML/CFT. A significant supervisory action is defined as a formal written communication that: (i) identifies deficiencies, weaknesses, violations, or unsafe/unsound practices related to AML/CFT; (ii) communicates supervisory expectations for correction; and (iii) contemplates significant or programmatic remedial measures. This excludes examiner observations, suggestions, and informal comments. The notice obligation applies when the agencies act under authority delegated by FinCEN, and the agencies must consider FinCEN's input (proposed 31 CFR 1020.221(c)); a separate provision sets out the factors the FinCEN Director should weigh before pursuing an action (1020.221(d)). <strong>A key alternative is on the table for the final rule:</strong> FinCEN expressly requests comment on whether, instead of <em>requiring</em> agency-initiated consultation, the rule should make it optional — providing the option for banks to request that their Agency consult with FinCEN prior to initiating a significant AML/CFT supervisory action. This bank-initiated version would materially shift the mechanism (from an automatic regulator obligation to a bank-elected one) and is a live possibility for the final rule, so commenters focused on the consultation framework should weigh in on it directly. As drafted, the framework applies only to banks (not the other covered institution categories) and does not reach state agencies that supervise and take BSA enforcement actions against banks. This represents a meaningful centralization of AML/CFT oversight and is a likely reason the Federal Reserve did not join the joint NPRM — the Fed may be resistant to FinCEN acquiring a consultative review role over its supervisory actions regarding its member banks.
-        </div>
+        <div class="prov-detail">Banking regulators must give FinCEN ≥30 days' advance written notice (absent urgent circumstances) before a "significant supervisory action" — a formal written communication that (i) identifies AML/CFT deficiencies/violations/unsafe-or-unsound practices, (ii) communicates correction expectations, and (iii) contemplates significant or programmatic remediation — excluding examiner observations and informal comments. Agencies must consider FinCEN's input (proposed §1020.221(c)); a separate provision sets the factors the FinCEN Director weighs (§1020.221(d)). <strong>A key alternative is on the table:</strong> FinCEN expressly seeks comment on making consultation <em>optional</em> — bank-initiated rather than agency-initiated — which would convert it from a regulator obligation into a bank-elected tool. As drafted, the framework applies only to banks and <strong>does not reach state agencies that supervise and take BSA enforcement actions against banks</strong> — a meaningful centralization and a likely reason the Fed did not join.</div>
       </div>
 
       <div class="provision-card" onclick="tog(this)">
         <div class="prov-head">
           <span class="prov-num">04</span>
-          <div style="flex:1">
-            <div class="prov-title">Technology and AI: explicitly encouraged, cannot alone trigger enforcement</div>
-            <div class="prov-sub">Machine learning, AI, blockchain analytics, digital identity tools recognized</div>
-          </div>
+          <div style="flex:1"><div class="prov-title">Technology and AI: encouraged, cannot alone trigger enforcement</div><div class="prov-sub">ML, generative AI, blockchain analytics, digital identity tools recognized</div></div>
           <span class="stag tag-green">Innovation-friendly</span>
           <span class="caret">▼</span>
         </div>
-        <div class="prov-detail">
-          The proposed rule explicitly recognizes and encourages responsible adoption of innovative technologies in AML/CFT programs — including machine learning, generative AI, digital identity tools, blockchain analytics, and other advanced monitoring tools. Critically, the proposed rule states that banks that responsibly incorporate such technologies would not incur additional risk of being subject to a significant supervisory action or enforcement action solely based on their use of innovative technologies. This addresses a long-standing concern in the industry that examiners were implicitly discouraging technology adoption by treating unfamiliar approaches as inherently suspect. The cooperation of financial institutions with law enforcement is also recognized as a mitigating factor in enforcement considerations.
-        </div>
+        <div class="prov-detail">The rule recognizes and encourages responsible adoption of innovative AML/CFT technologies — machine learning, generative AI, digital identity, blockchain analytics, and other advanced monitoring tools — and states that responsible adoption would not, on its own, expose a bank to significant supervisory or enforcement action. It addresses the long-standing concern that examiners implicitly discouraged technology adoption by treating unfamiliar approaches as suspect. Cooperation with law enforcement is also recognized as a mitigating factor.</div>
       </div>
 
       <div class="provision-card" onclick="tog(this)">
         <div class="prov-head">
           <span class="prov-num">05</span>
-          <div style="flex:1">
-            <div class="prov-title">U.S.-based AML/CFT compliance officer requirement</div>
-            <div class="prov-sub">Officer must be located in U.S. and accessible to FinCEN</div>
-          </div>
+          <div style="flex:1"><div class="prov-title">U.S.-based AML/CFT compliance officer requirement</div><div class="prov-sub">Officer must be located in the U.S. and accessible to FinCEN</div></div>
           <span class="stag tag-amber">New requirement</span>
           <span class="caret">▼</span>
         </div>
-        <div class="prov-detail">
-          Implementing an AML Act mandate, the proposed rule requires financial institutions to designate an AML/CFT compliance officer located in the United States and accessible to FinCEN. This codifies into regulation a requirement that was previously less formally stated. The proposed rule does preserve flexibility: personnel located outside the U.S. may still perform certain AML/CFT functions, so institutions are not required to relocate their entire AML function — only to ensure the designated officer can be reached by and is physically based in the U.S. For large internationally active banks, this may require restructuring of AML/CFT governance where current compliance officer functions are located offshore.
-        </div>
+        <div class="prov-detail">Implementing an AML Act mandate, the rule requires a designated AML/CFT compliance officer located in the U.S. and accessible to FinCEN — codifying a previously less-formal expectation. It preserves flexibility: personnel outside the U.S. may still perform certain AML/CFT functions, so institutions need not relocate the whole function, only ensure the designated officer is U.S.-based and reachable. Large internationally active banks with offshore compliance functions may need governance restructuring.</div>
       </div>
 
       <div class="provision-card" onclick="tog(this)">
         <div class="prov-head">
           <span class="prov-num">06</span>
-          <div style="flex:1">
-            <div class="prov-title">Integration of FinCEN's AML/CFT national priorities into risk assessments</div>
-            <div class="prov-sub">Institutions must incorporate FinCEN's published priorities (2021) into program design</div>
-          </div>
+          <div style="flex:1"><div class="prov-title">Integration of FinCEN's national AML/CFT priorities into risk assessments</div><div class="prov-sub">Institutions must fold the 2021 priorities into program design</div></div>
           <span class="stag tag-blue">AML Act mandate</span>
           <span class="caret">▼</span>
         </div>
-        <div class="prov-detail">
-          The proposed rule requires financial institutions to incorporate the AML/CFT priorities published by FinCEN pursuant to 31 U.S.C. 5318(h)(4) as part of their internal controls risk assessment processes. FinCEN issued its first national AML/CFT priorities on June 30, 2021, identifying eight priority areas: corruption, cybercrime, foreign and domestic terrorist financing, fraud, transnational criminal organization activity, drug trafficking organization activity, human trafficking and smuggling, and proliferation financing. The proposed rule essentially codifies the expectation that institutions must show their risk assessment processes review and, as appropriate, incorporate these published priority areas — moving from a suggestion to a regulatory requirement.
-        </div>
+        <div class="prov-detail">Institutions must incorporate the AML/CFT priorities FinCEN publishes under 31 U.S.C. 5318(h)(4) into their internal-controls risk-assessment processes. FinCEN's first priorities (June 30 2021) named eight areas: corruption, cybercrime, foreign and domestic terrorist financing, fraud, transnational criminal organization activity, drug trafficking, human trafficking/smuggling, and proliferation financing. The rule moves incorporation from suggestion to regulatory requirement.</div>
       </div>
 
       <div class="provision-card" onclick="tog(this)">
         <div class="prov-head">
           <span class="prov-num">07</span>
-          <div style="flex:1">
-            <div class="prov-title">CDD requirements incorporated into banking agency program rules</div>
-            <div class="prov-sub">Ongoing customer due diligence added to FDIC/OCC/NCUA program requirements</div>
-          </div>
+          <div style="flex:1"><div class="prov-title">CDD requirements incorporated into banking-agency program rules</div><div class="prov-sub">Ongoing customer due diligence added to OCC/FDIC/NCUA program rules</div></div>
           <span class="stag tag-gray">Clarification</span>
           <span class="caret">▼</span>
         </div>
-        <div class="prov-detail">
-          FinCEN's existing ongoing customer due diligence (CDD) requirement — previously found in FinCEN's own regulations — is proposed to be added to the banking agencies' program requirements in the concurrent NPRM. This eliminates a structural gap where FinCEN's CDD rule applied directly to banks, but the banking agencies' own program rules did not incorporate it, creating potential confusion about supervisory authority and expectations. The addition is primarily a clarifying and harmonizing measure. Banks already subject to the 2018 CDD rule (which requires identifying beneficial owners and understanding the nature and purpose of customer relationships) are not likely to face new substantive requirements from this change alone.
-        </div>
+        <div class="prov-detail">FinCEN's existing ongoing CDD requirement is proposed to be added to the banking agencies' program rules in the concurrent NPRM, closing a structural gap where FinCEN's CDD rule applied to banks but the agencies' own program rules did not incorporate it. Primarily clarifying and harmonizing; banks already subject to the 2018 CDD rule (beneficial-owner identification; nature and purpose of relationships) are unlikely to face new substantive requirements from this change alone.</div>
       </div>
 
     </div>
@@ -402,7 +436,7 @@ h1{font-family:'Georgia',serif;font-size:20px;font-weight:normal;color:var(--tex
 
   <!-- Implications -->
   <div id="panel-implications" class="tab-panel" role="tabpanel" aria-labelledby="tab-implications" data-title="Implications">
-    <p class="pillar-intro">The proposed rule's implications vary significantly by institution type. The shift from technical compliance to effectiveness-based standards is broadly welcome in the industry, but its real-world impact will depend heavily on how examiners apply the new standards — and how the Fed's absence from the rulemaking resolves.</p>
+    <p class="pillar-intro">Impact varies sharply by institution type. The shift from technical compliance to effectiveness is broadly welcomed, but its real-world effect turns on how examiners apply the new standards — and how the Fed's absence resolves.</p>
     <div class="table-scroll">
     <table class="inst-table">
       <thead>
@@ -416,33 +450,33 @@ h1{font-family:'Georgia',serif;font-size:20px;font-weight:normal;color:var(--tex
       <tbody>
         <tr>
           <td class="dim">Community banks (OCC / FDIC-supervised)</td>
-          <td>Risk-based resource allocation formally allows directing less attention to lower-risk customers. BSA/AML examination tailoring (Nov 2025 OCC guidance) already moving in this direction. Two-tier framework protects against enforcement for minor implementation deficiencies.</td>
-          <td>Must still establish a compliant four-pillar program. Risk assessments must address FinCEN national priorities even if local risk is low. U.S.-based AML officer requirement already met for most community banks.</td>
-          <td>How examiners define "significant or systemic" failure. Comment deadline June 9 — community bank trade associations filing comments on implementation burden.</td>
+          <td>Risk-based allocation formally allows less attention to lower-risk customers. OCC BSA/AML exam tailoring (Nov 2025) already moving this way. Two-tier framework shields minor implementation gaps.</td>
+          <td>Must still establish a compliant four-pillar program. Risk assessments must address FinCEN priorities even where local risk is low. U.S.-based AML officer requirement already met for most.</td>
+          <td>How examiners define "significant or systemic" failure. Community-bank trade groups filing on implementation burden before June 9.</td>
         </tr>
         <tr>
           <td class="dim">Large national banks (OCC-supervised)</td>
-          <td>Technology and AI use explicitly protected from triggering enforcement action. Reduced risk of enforcement for de minimis technical deficiencies. FinCEN's 30-day consultation notice may delay or moderate aggressive supervisory actions.</td>
-          <td>FinCEN's expanded consultation role introduces a new actor into the supervisory relationship — potential for delay or inconsistency. Large banks operating cross-jurisdictionally must ensure U.S.-based AML/CFT officer structure.</td>
-          <td>How FinCEN exercises its new consultation role in practice. Whether the Fed's absence creates a two-tier experience for BHC vs. subsidiary bank supervisory actions.</td>
+          <td>Technology/AI use protected from triggering enforcement. Lower risk of action for de minimis technical gaps. FinCEN's 30-day notice may moderate aggressive actions.</td>
+          <td>FinCEN's expanded consultation role adds a new actor to the supervisory relationship — potential delay or inconsistency. Cross-jurisdictional banks must ensure a U.S.-based AML officer structure.</td>
+          <td>How FinCEN exercises consultation in practice. Whether the Fed's absence creates a two-tier experience for BHC vs. subsidiary-bank actions.</td>
         </tr>
         <tr>
           <td class="dim">State member banks (Fed-supervised)</td>
-          <td>FinCEN's NPRM applies broadly to all banks. If finalized, effectiveness-based standards and two-tier framework should benefit Fed-supervised banks as well.</td>
-          <td>The Fed has not issued a concurrent NPRM and has not announced its own proposal. It is unclear when or whether the Fed will align its program requirements. This creates the possibility of continued technical compliance expectations for state member banks even after the OCC/FDIC/NCUA rule is finalized.</td>
-          <td>Whether the Fed issues its own NPRM before June 9 comment deadline, and how it addresses the FinCEN consultation role that may be the source of its non-participation.</td>
+          <td>FinCEN's NPRM applies to all banks; if finalized, effectiveness-based standards and the two-tier framework should benefit Fed-supervised banks too.</td>
+          <td>The Fed issued no concurrent NPRM and announced no proposal. Unclear when/whether it aligns — raising the prospect of continued technical-compliance expectations for state member banks after the OCC/FDIC/NCUA rule is final.</td>
+          <td>Whether the Fed issues its own NPRM, and how it treats the consultation role that may underlie its non-participation.</td>
         </tr>
         <tr>
-          <td class="dim">Non-bank financial institutions (MSBs, broker-dealers, etc.)</td>
-          <td>FinCEN's NPRM applies directly to all 11 categories of covered financial institutions. Technology adoption protection and effectiveness-based standards apply equally. Reduced risk of enforcement for minor technical gaps in non-bank context where compliance infrastructure is typically less robust.</td>
-          <td>Non-bank institutions do not benefit from the concurrent banking agency NPRM — they operate solely under FinCEN's authority. The FinCEN consultation mechanism is less relevant where FinCEN is already the primary regulator.</td>
-          <td>How FinCEN's national priorities requirement is applied to non-bank sectors with very different risk profiles (e.g., insurance companies vs. money service businesses).</td>
+          <td class="dim">Non-bank FIs (MSBs, broker-dealers, etc.)</td>
+          <td>FinCEN's NPRM applies directly to all 11 covered categories. Technology protection and effectiveness standards apply equally; lower enforcement risk for minor technical gaps where compliance infrastructure is leaner.</td>
+          <td>No benefit from the concurrent banking-agency NPRM — they operate solely under FinCEN's authority. The consultation mechanism is less relevant where FinCEN is already primary regulator.</td>
+          <td>How the priorities requirement is applied to sectors with very different risk profiles (insurers vs. MSBs).</td>
         </tr>
         <tr>
-          <td class="dim">Fintech / digital asset firms</td>
-          <td>Blockchain analytics and other digital identity tools explicitly recognized as appropriate AML/CFT tools. Risk-based allocation allows directing resources away from lower-risk crypto transaction patterns. Reduced exposure to examiner skepticism about novel monitoring approaches.</td>
-          <td>Firms subject to bank-type AML requirements (e.g., stablecoin issuers under the GENIUS Act, or those with national bank or trust charters) will need to align programs with the new framework. FinCEN's national priorities explicitly include cybercrime — relevant for digital asset compliance programs.</td>
-          <td>How the GENIUS Act's stablecoin issuer AML requirements interact with the new FinCEN framework. OCC's stablecoin charter pipeline (Erebor, WLF application) will operate under this new framework.</td>
+          <td class="dim">Fintech / digital-asset firms</td>
+          <td>Blockchain analytics and digital identity tools explicitly recognized. Risk-based allocation allows steering resources away from lower-risk crypto patterns. Less exposure to examiner skepticism of novel monitoring.</td>
+          <td>Firms with bank-type AML duties (e.g., GENIUS Act stablecoin issuers; national bank/trust charters) must align programs to the new framework. FinCEN priorities include cybercrime — relevant to digital-asset programs.</td>
+          <td>How GENIUS Act stablecoin-issuer AML duties interact with the new FinCEN framework. The OCC's stablecoin charter pipeline (Erebor, WLF) will operate under it.</td>
         </tr>
       </tbody>
     </table>
@@ -451,77 +485,83 @@ h1{font-family:'Georgia',serif;font-size:20px;font-weight:normal;color:var(--tex
 
   <!-- Open Questions -->
   <div id="panel-questions" class="tab-panel" role="tabpanel" aria-labelledby="tab-questions" data-title="Open questions">
-    <p class="pillar-intro">The proposed rule's direction is widely welcomed. But several consequential structural and implementation questions remain unresolved — and the June 9 comment deadline makes this an active rulemaking moment.</p>
-    <div class="q-list">
+    <p class="pillar-intro">The direction is widely welcomed. But several consequential structural and implementation questions remain unresolved — and the June 9 deadline makes this an active rulemaking moment.</p>
+    <div style="display:flex;flex-direction:column;gap:8px">
 
       <div class="q-item tension">
         <div class="ql tension">Critical fault line</div>
         <div class="qt">Why did the Federal Reserve not join — and what happens next?</div>
-        <div class="qs">The Fed joined the Biden-era August 2024 joint NPRM but did not join the 2026 proposal. Multiple law firm analyses flag this as a potential signal of the Fed's disagreement with FinCEN's proposed 30-day consultation mechanism, which would give FinCEN advance notice and input before the Fed takes significant supervisory action against state member banks and bank holding companies. If the Fed remains outside the framework, it is possible that state member banks and their holding companies will continue under a more process-oriented AML/CFT supervisory model even after OCC/FDIC/NCUA-supervised institutions have moved to the new effectiveness-based standard. The Fed's silence is the largest structural uncertainty in this rulemaking.</div>
+        <div class="qs">The Fed joined the August 2024 joint NPRM but not the 2026 proposal. Multiple analyses read this as disagreement with the 30-day consultation mechanism, which would give FinCEN advance notice and input before the Fed takes significant action against state member banks and holding companies. If the Fed stays outside, state member banks and their holding companies may continue under a more process-oriented model even after OCC/FDIC/NCUA institutions move to the effectiveness-based standard. The Fed's silence is the largest structural uncertainty here.</div>
       </div>
 
       <div class="q-item tension">
         <div class="ql tension">Critical fault line</div>
         <div class="qt">How will "significant or systemic" implementation failure be defined in practice?</div>
-        <div class="qs">The entire enforcement protection of the two-tier framework turns on the distinction between minor/de minimis implementation deficiencies (not subject to significant supervisory action) and significant or systemic failures (subject to full enforcement). The proposed rule defines "significant supervisory action" but does not exhaustively define when an implementation failure rises to that threshold. Industry commenters — and CSBS — have a strong interest in ensuring the final rule's definitions are objective and enforceable, rather than recreating examiner discretion under a different label. The risk of the new framework is that it replicates the process-driven compliance model it seeks to replace through vague implementation standards.</div>
+        <div class="qs">The whole enforcement protection turns on the line between minor/de minimis deficiencies (no significant action) and significant or systemic failures (full enforcement). The rule defines "significant supervisory action" but not exhaustively when an implementation failure crosses the threshold. Industry — and CSBS — have a strong interest in objective, enforceable definitions rather than examiner discretion relabeled. The risk: recreating the process-driven model through vague implementation standards.</div>
       </div>
 
       <div class="q-item watch">
         <div class="ql watch">Watch closely</div>
-        <div class="qt">How will FinCEN exercise its new consultation role — will it function as a check on aggressive supervisory actions?</div>
-        <div class="qs">The proposed 30-day advance notice requirement is designed to give FinCEN an opportunity to provide input before banking regulators take significant AML/CFT supervisory action. In theory, this could moderate overly aggressive or technically-oriented examiner actions — particularly the kind of MRA-driven compliance expectations that have driven banks to over-comply with lower-risk BSA obligations. In practice, the mechanism's effectiveness will depend on how actively FinCEN uses its consultation window, whether it establishes clear consultation standards, and whether banking regulators treat FinCEN's input as advisory or presumptively binding. For CSBS and state supervisors, the question is whether FinCEN's expanded federal role creates a new layer of federal preemption over state-chartered bank AML/CFT supervision. A significant variable for the final rule: FinCEN solicits comment on whether the framework should be optional rather than mandatory — letting banks themselves request Agency-FinCEN consultation — which would convert the mechanism from a regulator obligation into a bank-elected tool and change its character as a check on aggressive actions.</div>
+        <div class="qt">Preamble vs. regulatory text — where do the reforms actually live?</div>
+        <div class="qs">A recurring theme in the early commentary (Mondaq, Greenberg Traurig, and others): many of the most consequential expectations — on effectiveness, priorities, information sharing, and innovation — are articulated in the <em>preamble</em> rather than the operative regulatory text. Preamble statements guide interpretation but are not independently enforceable, so a program built to the preamble's spirit may still be examined against the narrower codified text. For commenters, the live ask is to move the load-bearing reforms into the rule itself — a point well suited to a state-regulator letter focused on enforceable, predictable standards.</div>
       </div>
 
       <div class="q-item watch">
         <div class="ql watch">Watch closely</div>
-        <div class="qt">What happens to the 2021 AML/CFT national priorities — and will they be updated?</div>
-        <div class="qs">The proposed rule requires institutions to incorporate FinCEN's AML/CFT priorities (published June 2021) into their risk assessment processes. Those priorities were issued by the Biden administration and reflect that administration's threat assessment. The Trump administration has different national security and law enforcement priorities — particularly a stronger focus on immigration-related financial crimes, fraud, and cryptocurrency-related illicit finance. FinCEN has not issued updated priorities under the Trump administration. If the final rule requires institutions to program-design around the 2021 priorities while the administration is focused on different threat areas, there is a potential misalignment between regulatory requirements and supervisory expectations in practice.</div>
+        <div class="qt">How will FinCEN exercise its consultation role — a real check on aggressive actions?</div>
+        <div class="qs">The 30-day advance-notice window could, in theory, moderate overly process-oriented examiner actions — but only if FinCEN actively uses it, sets clear consultation standards, and the agencies treat its input as more than advisory. For CSBS and state supervisors, the question is whether FinCEN's expanded federal role creates a new layer of preemption over state-chartered bank AML/CFT supervision. The proposed optional/bank-initiated variant would change the mechanism's character as a check.</div>
       </div>
 
       <div class="q-item watch">
         <div class="ql watch">Watch closely</div>
-        <div class="qt">Does the proposed rule effectively address the AML/CFT debanking nexus?</div>
-        <div class="qs">OCC Comptroller Gould has repeatedly identified BSA/AML supervision as a source of unlawful debanking pressure — banks feeling caught between examiner expectations and the legal and reputational risk of maintaining accounts for higher-risk or politically disfavored lawful businesses. Unlike a common reading, the NPRM's preamble <em>does</em> address debanking directly: in analyzing the AML Act's statutory factors, FinCEN frames the risk-based approach as a debanking mitigant — intended to ensure account-closure decisions rest on legitimate ML/TF risk rather than broad de-risking — and ties the rule to E.O. 14331, <em>Guaranteeing Fair Banking for All Americans</em>, which targets "politicized or unlawful debanking." The caveat is that this lives in the preamble's rationale; the operative program-design text governs program establishment and enforcement standards, not account-termination decisions. Whether the framework reduces debanking in practice will depend on examiner implementation and how the parallel interagency debanking actions (OCC Sep 2025; reputation-risk final rule Apr 2026) are applied alongside it.</div>
+        <div class="qt">What happens to the 2021 national priorities — will they be updated?</div>
+        <div class="qs">The rule requires institutions to fold FinCEN's June 2021 priorities into risk assessments. Those reflect the prior administration's threat assessment; the current administration emphasizes immigration-related financial crime, fraud, and crypto-related illicit finance, and has not issued updated priorities. Requiring program design around the 2021 list while supervisory focus shifts elsewhere risks a mismatch between the rule and examination practice.</div>
+      </div>
+
+      <div class="q-item watch">
+        <div class="ql watch">Watch closely</div>
+        <div class="qt">Does the rule effectively address the AML/CFT debanking nexus?</div>
+        <div class="qs">OCC Comptroller Gould has repeatedly tied BSA/AML supervision to unlawful debanking pressure. The NPRM's preamble does address it: in analyzing the AML Act factors, FinCEN frames the risk-based approach as a debanking mitigant — keeping account-closure decisions on legitimate ML/TF risk rather than broad de-risking — and ties the rule to E.O. 14331, <em>Guaranteeing Fair Banking for All Americans</em>. The caveat: that lives in the preamble's rationale; the operative text governs program design, not account termination. Whether it reduces debanking turns on examiner implementation and the parallel actions (OCC Sep 2025; reputation-risk final rule Apr 2026).</div>
       </div>
 
       <div class="q-item noted">
         <div class="ql noted">Positive signal</div>
-        <div class="qt">Technology adoption protection is a meaningful step toward modernizing monitoring infrastructure</div>
-        <div class="qs">One of the most constructive aspects of the proposed rule is its explicit protection for responsible AI and advanced technology use in AML/CFT programs. For years, examiners' implicit skepticism of novel monitoring approaches — even where those approaches demonstrably improved detection effectiveness — has discouraged technology investment. The proposed rule's statement that technology adoption cannot alone trigger a significant supervisory action, combined with recognition of machine learning, generative AI, blockchain analytics, and digital identity tools as appropriate AML/CFT tools, creates a regulatory safe harbor for modernization. The comment period is an opportunity to push for specificity about what "responsible" use means in the supervisory context.</div>
+        <div class="qt">Technology-adoption protection is a meaningful modernization step</div>
+        <div class="qs">Among the most constructive features: explicit protection for responsible AI and advanced technology in AML/CFT programs. Years of implicit examiner skepticism of novel monitoring — even where it improved detection — discouraged investment. Stating that technology adoption cannot alone trigger significant action, paired with recognition of ML, generative AI, blockchain analytics, and digital identity tools, creates a safe harbor for modernization. The comment period is an opportunity to press for specificity on what "responsible" use means in supervision.</div>
       </div>
 
     </div>
   </div>
 </div>
 
-<div class="footer">Primary sources: <a href="https://www.federalregister.gov/documents/2026/04/10/2026-07033/anti-money-laundering-and-countering-the-financing-of-terrorism-programs">FinCEN NPRM (91 FR 18704, Apr. 10, 2026)</a> &nbsp;·&nbsp; OCC/FDIC/NCUA joint NPRM (91 FR 18304, Apr. 10, 2026) &nbsp;·&nbsp; <a href="https://www.fincen.gov/system/files/2026-04/Program-NPRM-FactSheet.pdf">FinCEN Fact Sheet</a> &nbsp;·&nbsp; <a href="https://www.regulations.gov/docket/FINCEN-2026-0034">Docket FINCEN-2026-0034</a> &nbsp;·&nbsp; Secondary analyses: Morrison Foerster, Sullivan &amp; Cromwell, Gibson Dunn, Jones Day, Covington, Davis Wright Tremaine, Mayer Brown &nbsp;·&nbsp; Compiled May 2026 &nbsp;·&nbsp; Comment deadline: June 9, 2026
+<div class="colophon">
+  <div class="wire" aria-hidden="true"></div>
+  <p><b>Primary sources.</b> <a href="https://www.federalregister.gov/documents/2026/04/10/2026-07033/anti-money-laundering-and-countering-the-financing-of-terrorism-programs">FinCEN NPRM, 91 FR 18704</a> (Apr 10 2026) · OCC/FDIC/NCUA joint NPRM, 91 FR 18304 · <a href="https://www.fincen.gov/system/files/2026-04/Program-NPRM-FactSheet.pdf">FinCEN Fact Sheet</a> · <a href="https://www.regulations.gov/docket/FINCEN-2026-0034">Docket FINCEN-2026-0034</a> (RIN 1506-AB72).</p>
+  <p><b>Secondary synthesis</b> from Gibson Dunn, Jones Day, Perkins Coie, Greenberg Traurig, Mondaq, Sullivan &amp; Cromwell, Morrison Foerster, and Covington. Compiled for BankRegWire · informational tracker, not legal advice.</p>
 </div>
+
 </div>
 
 <script>
 var TABS=['interagency','framework','provisions','implications','questions'];
 
 function sw(id,btn){
-  document.querySelectorAll('.tab-btn').forEach(function(b){
-    b.classList.remove('active');b.setAttribute('aria-selected','false');b.tabIndex=-1;
-  });
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');b.setAttribute('aria-selected','false');b.tabIndex=-1;});
   document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
   btn.classList.add('active');btn.setAttribute('aria-selected','true');btn.tabIndex=0;
   document.getElementById('panel-'+id).classList.add('active');
-  if(history.replaceState)history.replaceState(null,'','#'+id);
+  // shareable deep-link; guarded because a sandboxed about:srcdoc preview blocks replaceState with a URL
+  try{ if(history.replaceState) history.replaceState(null,'','#'+id); }catch(e){}
 }
 
 function tog(el){
   var was=el.classList.contains('open');
-  document.querySelectorAll('.provision-card.open').forEach(function(c){
-    c.classList.remove('open');c.setAttribute('aria-expanded','false');
-  });
+  document.querySelectorAll('.provision-card.open').forEach(function(c){c.classList.remove('open');c.setAttribute('aria-expanded','false');});
   if(!was){el.classList.add('open');el.setAttribute('aria-expanded','true');}
   syncToggleAll();
 }
 
 function toggleAll(){
-  var btn=document.getElementById('provToggleAll');
   var cards=document.querySelectorAll('.provision-card');
   var anyClosed=Array.prototype.some.call(cards,function(c){return !c.classList.contains('open');});
   cards.forEach(function(c){
@@ -539,37 +579,36 @@ function syncToggleAll(){
   btn.setAttribute('aria-pressed',allOpen?'true':'false');
 }
 
+/* live countdown to the comment deadline */
+(function(){
+  var el=document.getElementById('deadline-count');if(!el)return;
+  var deadline=new Date('2026-06-09T23:59:59-04:00');
+  var ms=deadline-new Date();
+  if(ms<=0){ el.textContent='Comment period closed'; el.style.opacity='.7'; return; }
+  var days=Math.ceil(ms/86400000);
+  el.textContent=days+(days===1?' day left':' days left');
+})();
+
 document.addEventListener('DOMContentLoaded',function(){
-  // accessible accordion cards
   document.querySelectorAll('.provision-card').forEach(function(card){
-    card.setAttribute('role','button');
-    card.setAttribute('tabindex','0');
-    card.setAttribute('aria-expanded','false');
-    card.addEventListener('keydown',function(e){
-      if(e.key==='Enter'||e.key===' '){e.preventDefault();tog(card);}
-    });
+    card.setAttribute('role','button');card.setAttribute('tabindex','0');card.setAttribute('aria-expanded','false');
+    card.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){e.preventDefault();tog(card);} });
   });
   document.querySelectorAll('.caret').forEach(function(c){c.setAttribute('aria-hidden','true');});
 
-  // arrow-key navigation across tabs
   var tabs=Array.prototype.slice.call(document.querySelectorAll('.tab-btn'));
   tabs.forEach(function(tab,i){
     tab.addEventListener('keydown',function(e){
       var n=null;
-      if(e.key==='ArrowRight')n=(i+1)%tabs.length;
-      else if(e.key==='ArrowLeft')n=(i-1+tabs.length)%tabs.length;
-      else if(e.key==='Home')n=0;
-      else if(e.key==='End')n=tabs.length-1;
+      if(e.key==='ArrowRight'||e.key==='ArrowDown')n=(i+1)%tabs.length;
+      else if(e.key==='ArrowLeft'||e.key==='ArrowUp')n=(i-1+tabs.length)%tabs.length;
+      else if(e.key==='Home')n=0; else if(e.key==='End')n=tabs.length-1;
       if(n!==null){e.preventDefault();tabs[n].focus();tabs[n].click();}
     });
   });
 
-  // deep-link: open the tab named in the URL hash
   var h=(location.hash||'').replace('#','');
-  if(TABS.indexOf(h)!==-1){
-    var b=document.getElementById('tab-'+h);
-    if(b)sw(h,b);
-  }
+  if(TABS.indexOf(h)!==-1){ var b=document.getElementById('tab-'+h); if(b)sw(h,b); }
 });
 </script>
 </body>
