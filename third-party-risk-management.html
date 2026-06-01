@@ -7,30 +7,33 @@
   <meta name="description" content="Interactive reference for the third-party relationship lifecycle under FIL-29-2023, the 2024 Community Bank TPRM Guide, and DORA." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { width: 100%; background: #050d1f; min-height: 100%; }
-  body { overflow-x: hidden; }
+  html, body { width: 100%; background: #f4eee2; min-height: 100%; }
+  body { overflow-x: hidden; font-family:'Archivo', system-ui, -apple-system, sans-serif; color:#34323d; }
   #root { width: 100%; }
   button { cursor: pointer; border: none; background: none; font-family: inherit; }
+  .stagestep { transition: background .15s ease, border-color .15s ease, transform .12s ease; }
+  .stagestep:hover { transform: translateY(-1px); }
+  .stagestep:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
   .fade-up { animation: fu .22s ease forwards; }
   @keyframes fu { from { opacity:0; transform:translateY(7px); } to { opacity:1; transform:translateY(0); } }
   @keyframes slideIn { from { transform:translateX(100%); } to { transform:translateX(0); } }
   ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: #1a3870; border-radius: 3px; }
-  #loading { position:fixed; inset:0; background:#050d1f; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; z-index:9999; transition:opacity .35s ease; }
+  ::-webkit-scrollbar-thumb { background: #cdbf9f; border-radius: 3px; }
+  #loading { position:fixed; inset:0; background:#f4eee2; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; z-index:9999; transition:opacity .35s ease; }
   #loading.hidden { opacity:0; pointer-events:none; }
   .ld { display:flex; gap:7px; }
   .ld span { width:8px; height:8px; border-radius:50%; animation:ldp 1.1s ease-in-out infinite; }
-  .ld span:nth-child(1) { background:#c9a84c; }
-  .ld span:nth-child(2) { background:#5ad4c0; animation-delay:.18s; }
-  .ld span:nth-child(3) { background:#7ab07a; animation-delay:.36s; }
+  .ld span:nth-child(1) { background:#9a7a1f; }
+  .ld span:nth-child(2) { background:#2f7363; animation-delay:.18s; }
+  .ld span:nth-child(3) { background:#3f7d5f; animation-delay:.36s; }
   @keyframes ldp { 0%,100%{transform:scale(.55);opacity:.35} 50%{transform:scale(1);opacity:1} }
-  #loading p { font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:3px; text-transform:uppercase; color:#8aaad4; }
-  #loading small { font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:2px; color:#4a6a90; }
-  #err { display:none; position:fixed; inset:0; z-index:99999; background:#050d1f; color:#ef4444; font-family:'IBM Plex Mono',monospace; font-size:12px; padding:32px; white-space:pre-wrap; overflow:auto; line-height:1.7; }
+  #loading p { font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:3px; text-transform:uppercase; color:#5a6f96; }
+  #loading small { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:2px; color:#9a8f78; }
+  #err { display:none; position:fixed; inset:0; z-index:99999; background:#f4eee2; color:#b0402f; font-family:'JetBrains Mono',monospace; font-size:12px; padding:32px; white-space:pre-wrap; overflow:auto; line-height:1.7; }
 
   @media (max-width: 900px) {
     .app-body { flex-direction: column !important; }
@@ -41,6 +44,7 @@
     .tri-col { grid-template-columns: 1fr !important; }
     .about-drawer { width: 100vw !important; }
     .stage-context { flex-wrap: wrap !important; }
+    .stage-stepper { flex-direction: column !important; }
   }
 
   @media print {
@@ -82,7 +86,7 @@
   <script>if (!window.ReactDOM) document.write('<scr'+'ipt src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"><\/scr'+'ipt>');</script>
   <script>
 /* =============================================================================
-   THIRD-PARTY RELATIONSHIP LIFECYCLE  v6.0  (May 2026)
+   THIRD-PARTY RELATIONSHIP LIFECYCLE  v6.1  (June 2026)
    Sources of record:
      - Interagency Guidance on Third-Party Relationships: Risk Management
        (FDIC FIL-29-2023 / Fed SR 23-4 / OCC Bulletin 2023-17; June 6, 2023;
@@ -92,7 +96,7 @@
      - Joint Statement on Banks' Arrangements with Third Parties (July 25, 2024)
      - FDIC NPRM, Recordkeeping for Custodial Accounts (RIN 3064-AG07;
        proposed Sept 17, 2024; comment period closed Jan 16, 2025; not
-       finalized as of May 2026)
+       finalized as of mid-2026; prospects uncertain)
      - Revised Interagency Model Risk Management Guidance
        (FDIC FIL-15-2026 / Fed SR 26-2 / OCC Bulletin 2026-13; April 17, 2026;
        rescinds SR 11-7 / OCC 2011-12 / FIL-22-2017 / SR 21-8 / FIL-27-2021)
@@ -105,32 +109,32 @@
    ============================================================================ */
 
 const C = {
-  bg0:'#050d1f', bg1:'#091428', bg2:'#0c1a35', bg3:'#132952',
-  border:'#1e3a6e', borderSoft:'#152844',
-  text0:'#f0e8d0', text1:'#ccd8f0', text2:'#9ab4d8', text3:'#8499bf',
-  gold:'#c9a84c', goldDim:'#3a2a0a', goldMid:'#d4b86a',
-  teal:'#5ad4c0', tealDim:'#0a2520',
-  danger:'#c05050', dangerDim:'rgba(192,80,80,0.10)',
-  warn:'#c9a84c', safe:'#4a9a7a', violet:'#8a80d4'
+  bg0:'#f4eee2', bg1:'#ece3d1', bg2:'#fcf9f2', bg3:'#f6eed8',
+  border:'#d8cdb4', borderSoft:'#e7dcc5',
+  text0:'#1c1b26', text1:'#34323d', text2:'#5b5648', text3:'#6e6656',
+  gold:'#9a7a1f', goldDim:'#efe3c2', goldMid:'#caa84d',
+  teal:'#2f7363', tealDim:'#e0ece6',
+  danger:'#b0402f', dangerDim:'rgba(176,64,47,0.08)',
+  warn:'#b8862e', safe:'#3f7d5f', violet:'#4a3f8a'
 };
 
 const NTH_PARTY = {
   tiers: [
-    { tier:'Third Party', color:'#c9a84c',
+    { tier:'Third Party', color:'#9a7a1f',
       oversight:'Direct contract, audits, due diligence, SLAs, compliance reporting',
       example:'PayFlow, LoanBridge, ServiceEdge, VerifyNow, ClearTrace' },
-    { tier:'Fourth Party', color:'#5aabdf',
+    { tier:'Fourth Party', color:'#2f6da8',
       oversight:'Review of the third party\u2019s own TPRM program; SOC 2 subservice disclosures; contractual flow-down; bank right to require substitution',
       example:'Verified Inc. (KYC sub-processor), Stripe (payment rails), AWS (cloud), Refinitiv/LSEG (watchlist data)' },
-    { tier:'Fifth / Nth Party', color:'#8a80d4',
+    { tier:'Fifth / Nth Party', color:'#4a3f8a',
       oversight:'Portfolio concentration analysis; industry-wide systemic risk intelligence; business impact analysis to underlying dependencies',
       example:'AWS/Azure/GCP hyperscalers (~63% of global market); central bank payment rails; SWIFT' }
   ],
   cloudData:[
-    { provider:'AWS', share:32, color:'#f97316' },
-    { provider:'Azure', share:22, color:'#3b82f6' },
-    { provider:'GCP', share:9, color:'#22c55e' },
-    { provider:'Other', share:37, color:'#8499bf' }
+    { provider:'AWS', share:28, color:'#e0791a' },
+    { provider:'Azure', share:21, color:'#2f6fce' },
+    { provider:'GCP', share:14, color:'#1f9d52' },
+    { provider:'Other', share:37, color:'#6b7589' }
   ],
   concentrationRisks:[
     { risk:'Cloud Hyperscaler Concentration', severity:'high',
@@ -148,29 +152,30 @@ const NTH_PARTY = {
 const ENFORCEMENT = {
   disclaimer: 'Illustrative figures. The percentages below are composite, directional estimates synthesized from public enforcement actions and secondary analysis (e.g., Klaros Group BaaS enforcement tracking, Fintech Takes reporting). They are not from a single published dataset and should be read as enforcement patterns, not as citable statistics.',
   headline: 'Industry analyses have observed that banks running BaaS programs \u2014 a small share of all banks nationally \u2014 have drawn a disproportionate share of severe enforcement actions across 2023\u20132025, and that a substantial portion of fintech BaaS programs are supported by banks operating under formal enforcement action.',
+  posture: 'Context: the 2023\u20132025 BaaS enforcement wave was driven overwhelmingly by the prudential regulators (FDIC and OCC), not the CFPB. The consumer-protection backdrop then shifted sharply \u2014 the CFPB withdrew its 2024 BNPL interpretive rule in May 2025 and has deprioritized fintech-partnership enforcement \u2014 so in the current environment the prudential agencies, and increasingly the states, are the binding constraint.',
   findings: [
-    { factor:'Lookback Requirement', pct:79, color:'#c05050',
+    { factor:'Lookback Requirement', pct:79, color:'#b0402f',
       detail:'In the large majority of BaaS-related enforcement actions, the FDIC and OCC have required institutions to engage an independent third party to conduct a retrospective review of transactions to identify AML gaps or consumer protection violations. Lookbacks are costly \u2014 the primary financial cost of getting it wrong at the onset of the relationship.' },
-    { factor:'New Partner Moratorium', pct:85, color:'#d47a5a',
+    { factor:'New Partner Moratorium', pct:85, color:'#b05f33',
       detail:'Regulators routinely require banks to cease onboarding new fintech partners until they implement a board-approved TPRM program. Unmanaged growth is treated as a safety-and-soundness concern in its own right.' },
-    { factor:'Independent Audit Mandate', pct:100, color:'#d4a84c',
+    { factor:'Independent Audit Mandate', pct:100, color:'#a87f24',
       detail:'Internal testing is consistently viewed as insufficient for high-risk BaaS arrangements. Recent enforcement actions have generally included a requirement for independent third-party assessment of the compliance management system \u2014 not self-assessment.' },
-    { factor:'Board Oversight Citation', pct:90, color:'#8a80d4',
+    { factor:'Board Oversight Citation', pct:90, color:'#4a3f8a',
       detail:'Directors are held accountable for third-party failures. Consent orders increasingly name specific board-level failures: lack of independent oversight, insufficient reporting, or failure to act on escalated compliance concerns.' },
-    { factor:'BSA/AML Finding', pct:88, color:'#5aabdf',
+    { factor:'BSA/AML Finding', pct:88, color:'#2f6da8',
       detail:'BSA/AML failures are the most common predicate finding. The fintech\u2019s AML program being \u201cless stringent\u201d than MSB requirements is not a defense \u2014 the bank\u2019s comprehensive AML obligations are non-delegable.' },
-    { factor:'Consumer Protection Finding', pct:72, color:'#5ad4c0',
+    { factor:'Consumer Protection Finding', pct:72, color:'#2f7363',
       detail:'Consumer protection violations \u2014 including UDAP/UDAAP, FDIC insurance misrepresentation, and adverse action notice failures \u2014 appear in a large share of BaaS enforcement actions. The fintech\u2019s customer interface is the bank\u2019s regulatory interface.' }
   ],
   fdic_rule: {
     title: 'FDIC NPRM: Recordkeeping for Custodial Accounts (RIN 3064-AG07)',
-    status: 'Proposed Sept 17, 2024 \u00b7 Comments closed Jan 16, 2025 \u00b7 Not finalized as of May 2026',
+    status: 'Proposed Sept 17, 2024 \u00b7 Comments closed Jan 16, 2025 \u00b7 Not finalized as of mid-2026; prospects uncertain (12 CFR pt. 375)',
     provisions: [
       'For covered custodial accounts, banks would reconcile the account for each individual beneficial owner on a daily basis.',
       'Banks would maintain accurate records sufficient to identify beneficial owners and balances, in a standardized format, independent of any middleware provider.',
       'Banks would be able to take over account management functions, or otherwise ensure access to records, if the fintech or middleware partner fails.',
       'The May 2024 Synapse collapse is the explicit regulatory predicate: when the middleware entered bankruptcy, no party had a daily reconciliation obligation, and an estimated $65\u2013$96M in consumer funds became inaccessible for months (reported estimates varied).',
-      'Effectively ends reliance on a third party\u2019s ledger as the sole record \u2014 it would codify what the 2023 guidance implied but did not require.'
+      'If finalized, it would effectively end reliance on a third party\u2019s ledger as the sole record \u2014 codifying what the 2023 guidance implied but did not require. The rule is still only a proposal, and its prospects are uncertain under current FDIC leadership.'
     ]
   },
   consumer: {
@@ -203,22 +208,83 @@ const DORA = {
 // Bank TPRM Guide, the 2024 Joint Statement, the FFIEC examination manuals,
 // and the 2026 interagency model risk guidance. NOT an official standard.
 const OMF = {
-  tprm:     { label:'OMF \u00b7 TPRM',                color:'#c9a84c', domain:'Third-Party Risk Management' },
-  aml:      { label:'OMF \u00b7 BSA/AML',             color:'#5aabdf', domain:'BSA/AML Program' },
-  cms:      { label:'OMF \u00b7 Compliance Mgmt',     color:'#7ab07a', domain:'Compliance Management System' },
-  ops:      { label:'OMF \u00b7 Operational Resil.',  color:'#8a80d4', domain:'Operational Resilience' },
-  consumer: { label:'OMF \u00b7 Consumer & Cplts',    color:'#d47a5a', domain:'Consumer Protection & Complaints' },
-  model:    { label:'OMF \u00b7 Model Risk',          color:'#d4b86a', domain:'Model Risk Management' }
+  tprm:     { label:'OMF \u00b7 TPRM',                color:'#9a7a1f', domain:'Third-Party Risk Management' },
+  aml:      { label:'OMF \u00b7 BSA/AML',             color:'#2f6da8', domain:'BSA/AML Program' },
+  cms:      { label:'OMF \u00b7 Compliance Mgmt',     color:'#3f7d5f', domain:'Compliance Management System' },
+  ops:      { label:'OMF \u00b7 Operational Resil.',  color:'#4a3f8a', domain:'Operational Resilience' },
+  consumer: { label:'OMF \u00b7 Consumer & Cplts',    color:'#b05f33', domain:'Consumer Protection & Complaints' },
+  model:    { label:'OMF \u00b7 Model Risk',          color:'#a6831f', domain:'Model Risk Management' }
 };
 
 const OMF_LEVELS = [
-  { id:'L1', name:'Ad Hoc',     color:'#c05050', note:'Undocumented, reactive, person-dependent' },
-  { id:'L2', name:'Developing', color:'#d47a5a', note:'Policies drafted, inconsistently applied' },
-  { id:'L3', name:'Defined',    color:'#7ab07a', note:'Documented, repeatable, evidenced' },
-  { id:'L4', name:'Managed',    color:'#d4b86a', note:'Measured, tested, independently reviewed' },
-  { id:'L5', name:'Optimized',  color:'#c9a84c', note:'Continuously improved, scenario-tested' }
+  { id:'L1', name:'Ad Hoc',     color:'#b0402f', note:'Undocumented, reactive, person-dependent' },
+  { id:'L2', name:'Developing', color:'#b05f33', note:'Policies drafted, inconsistently applied' },
+  { id:'L3', name:'Defined',    color:'#3f7d5f', note:'Documented, repeatable, evidenced' },
+  { id:'L4', name:'Managed',    color:'#a6831f', note:'Measured, tested, independently reviewed' },
+  { id:'L5', name:'Optimized',  color:'#9a7a1f', note:'Continuously improved, scenario-tested' }
 ];
 const OMF_THRESHOLD = 'Critical-tier relationships: reach L3 (Defined) minimum before go-live; L4 (Managed) within 12 months. A regression in any domain warrants a formal remediation plan.';
+
+// Per-scenario maturity baseline. Levels (lvl 1-5) are derived from the documented
+// findings in each scenario's worked example; lvl 0 = not material to this relationship.
+const OMF_SCORES = {
+  baas: {
+    tprm:{lvl:2,why:'Nth-party scan done, but PayFlow runs no vendor-management program of its own \u2014 \u201cmanage the manager\u201d unmet.'},
+    aml:{lvl:1,why:'Ad Hoc; no capacity for daily BSA monitoring at full volume. Automatic go-live blocker.'},
+    cms:{lvl:2,why:'Compliance staffing plan drafted but not yet hired or operating at projected volume.'},
+    ops:{lvl:2,why:'RTO claimed 4h, tested 11h; single AWS region with undocumented failover.'},
+    consumer:{lvl:2,why:'FDIC Part 328 issue caught at planning; ongoing UI surveillance not yet operating.'},
+    model:{lvl:0,why:'No material model in a prepaid-card program.'}
+  },
+  lending: {
+    tprm:{lvl:2,why:'Nth-party map produced; bureau feeds carved out with no data-validation layer.'},
+    aml:{lvl:0,why:'BSA is not the focus of this credit relationship\u2019s diligence.'},
+    cms:{lvl:0,why:'Fair-lending governance is captured under the Consumer and Model rows.'},
+    ops:{lvl:2,why:'India data-normalization sub-processor with no GLBA-compliant agreement.'},
+    consumer:{lvl:2,why:'ECOA/fair-lending exposure is live; disparate-impact monitoring not yet operating.'},
+    model:{lvl:1,why:'14% lower approval for Hispanic applicants, zip-code proxies, single-source training data, no independent validation.'}
+  },
+  bnpl: {
+    tprm:{lvl:2,why:'Single-bank concentration; SOC 2 carve-outs (Adyen, merchant API) with uneven oversight.'},
+    aml:{lvl:0,why:'Not central to this installment-credit relationship.'},
+    cms:{lvl:2,why:'State installment-lending license footprint not yet confirmed across operating states.'},
+    ops:{lvl:2,why:'Synchronous merchant-API dependency makes effective RTO longer than ShopLater\u2019s stated SLA.'},
+    consumer:{lvl:1,why:'31 of 40 merchant integrations show only ShopLater branding at the point of credit \u2014 Part 328 exposure.'},
+    model:{lvl:0,why:'Underwriting model not surfaced in this diligence example.'}
+  },
+  core: {
+    tprm:{lvl:2,why:'Big-4 technical diligence underway; two fraud-analytics sub-processors have no independent SOC reports.'},
+    aml:{lvl:0,why:'BSA stays in the bank\u2019s own systems; the core is back-office.'},
+    cms:{lvl:0,why:'Bank remains the customer-facing entity; CMS is unaffected.'},
+    ops:{lvl:2,why:'RTO 2h claimed, 6h tested against a 4h requirement; single GovCloud region, no geographic redundancy.'},
+    consumer:{lvl:0,why:'No consumer-facing surface \u2014 the bank fronts every interaction.'},
+    model:{lvl:0,why:'No material model inside the core platform itself.'}
+  },
+  ai: {
+    tprm:{lvl:2,why:'Snowflake (holding transaction data) and the training-data provider are carved out of SOC 2.'},
+    aml:{lvl:2,why:'AI generates SAR inputs; the bank keeps SAR authority but cannot yet independently validate the system.'},
+    cms:{lvl:0,why:'Not separately surfaced; governance runs through the Model Risk row.'},
+    ops:{lvl:2,why:'Quarterly training events are periods of elevated data exposure; training-data quality unauditable.'},
+    consumer:{lvl:0,why:'A BSA tool \u2014 regulatory, not consumer, audience.'},
+    model:{lvl:1,why:'22% higher false positives for MSB accounts (31% for newer MSBs); aggregated, unauditable training data; no independent validation.'}
+  },
+  regtech: {
+    tprm:{lvl:2,why:'All three identity/watchlist feeds carved out; VerifyNow\u2019s oversight cadence inconsistent (Experian: none documented).'},
+    aml:{lvl:2,why:'Bank owns CIP/OFAC; VerifyNow automates it, but BSA adequacy not yet independently confirmed.'},
+    cms:{lvl:0,why:'Captured under the BSA/AML and Consumer rows.'},
+    ops:{lvl:2,why:'VerifyNow and the core both on AWS \u2014 concentration needing a manual fallback; cross-border transfer mechanism unconfirmed.'},
+    consumer:{lvl:2,why:'Disparate access: 91.3% accuracy on foreign-issued IDs vs 99.2% aggregate in a 12% immigrant market.'},
+    model:{lvl:2,why:'Identity-verification model; disaggregated accuracy gap flagged, remediation pending.'}
+  },
+  bpo: {
+    tprm:{lvl:2,why:'Salesforce and Avaya carved out and must be independently assessed; offshore sites not in SOC 2 scope.'},
+    aml:{lvl:0,why:'Not central to a customer-service relationship.'},
+    cms:{lvl:2,why:'Scope control and EFTA/Reg E dispute-handling governance still being built.'},
+    ops:{lvl:2,why:'Only Atlanta\u2192Manila failover tested; Bogot\u00e1 failover has no test data.'},
+    consumer:{lvl:2,why:'GLBA and EFTA obligations run through offshore agents; examination-access rights still being negotiated.'},
+    model:{lvl:0,why:'No material model in contact-center BPO.'}
+  }
+};
 
 const EXAMINER_QUESTIONS = {
   planning: [
@@ -240,7 +306,7 @@ const EXAMINER_QUESTIONS = {
   contract: [
     { cat:'Data Rights', q:'Does the contract guarantee that the third party will provide all data and records in a format that allows the bank to migrate to a new provider without disruption \u2014 and is this obligation enforceable against the vendor\u2019s bankruptcy receiver?', flag:'Data portability provisions enforceable only against a solvent vendor are not exit provisions \u2014 they are commercial terms that evaporate at insolvency.' },
     { cat:'BSA/AML', q:'Does the contract explicitly prohibit the third party from reusing or redisclosing bank customer NPI for its own marketing purposes or selling it to other parties?', flag:'GLBA non-disclosure provisions must be explicit and contractually binding \u2014 general \u201cdata protection\u201d language is insufficient.' },
-    { cat:'Ledger Access', q:'Does the agreement provide for daily \u2014 or more frequent \u2014 automated reconciliation between the third party\u2019s records and the bank\u2019s core, with protocols to resolve any reconciliation breaks?', flag:'This is the provision absent in Synapse arrangements. Daily reconciliation for covered custodial accounts would become a regulatory baseline under the FDIC\u2019s proposed rule.' },
+    { cat:'Ledger Access', q:'Does the agreement provide for daily \u2014 or more frequent \u2014 automated reconciliation between the third party\u2019s records and the bank\u2019s core, with protocols to resolve any reconciliation breaks?', flag:'This is the provision absent in Synapse arrangements. Daily reconciliation for covered custodial accounts would, if the FDIC\u2019s proposed rule is finalized, become a regulatory baseline \u2014 but that rule\u2019s prospects are uncertain.' },
     { cat:'Cybersecurity', q:'What is the timeline for the third party to notify the bank of a potential data breach, and does the contract allow the bank to participate in the forensic investigation?', flag:'A 36\u201372 hour window is a reasonable minimum for initial notification \u2014 not the window to complete the investigation.' },
     { cat:'Cybersecurity', q:'Does the third-party integration provide an additional access point into the bank\u2019s network, and what zero-trust controls prevent lateral movement following a breach at the third party?', flag:'A breach at the fintech that allows lateral movement into the bank\u2019s core has been the predicate for several major cybersecurity enforcement actions.' },
     { cat:'Consumer', q:'Have customer-facing interfaces and marketing materials been reviewed to ensure they do not imply the fintech is a bank or misrepresent FDIC insurance coverage \u2014 and is this review required on an ongoing basis by contract?', flag:'A one-time pre-launch review is insufficient \u2014 the contract should require ongoing review as the fintech updates its UI.' },
@@ -265,23 +331,23 @@ const EXAMINER_QUESTIONS = {
 
 const TAXONOMY = {
   traditional: [
-    { id:'core', label:'Core Banking System', tier:'Critical', color:'#8a80d4',
+    { id:'core', label:'Core Banking System', tier:'Critical', color:'#4a3f8a',
       relationship:'Bank retains customer relationship; provider is subordinate operational component. Nth-party: cloud host (AWS/Azure) plus payment network operators.' },
-    { id:'regtech', label:'RegTech / KYC Platform', tier:'Significant', color:'#5ad4c0',
+    { id:'regtech', label:'RegTech / KYC Platform', tier:'Significant', color:'#2f7363',
       relationship:'Bank owns compliance obligation; vendor automates execution. Nth-party: Refinitiv/LSEG, Experian, Dow Jones risk data feeds.' },
-    { id:'bpo', label:'Contact Center BPO', tier:'Significant', color:'#d4905a',
+    { id:'bpo', label:'Contact Center BPO', tier:'Significant', color:'#ad6630',
       relationship:'Bank bears regulatory and reputational risk for all customer interactions. Nth-party: telephony provider, CRM platform, offshore data center.' },
-    { id:'loanops', label:'Loan Operations BPO', tier:'Significant', color:'#b0a060',
+    { id:'loanops', label:'Loan Operations BPO', tier:'Significant', color:'#877526',
       relationship:'Bank retains underwriting authority; operational execution outsourced. Nth-party: document management platform, title data providers.' }
   ],
   baas: [
-    { id:'baas', label:'BaaS / Deposit Program', tier:'Critical', color:'#c9a84c',
+    { id:'baas', label:'BaaS / Deposit Program', tier:'Critical', color:'#9a7a1f',
       relationship:'Inverted \u2014 fintech faces consumer; bank holds charter liability. Nth-party: middleware platform, KYC sub-processor, Stripe/Marqeta, AWS.' },
-    { id:'lending', label:'AI Lending Fintech', tier:'Critical', color:'#5aabdf',
+    { id:'lending', label:'AI Lending Fintech', tier:'Critical', color:'#2f6da8',
       relationship:'Bank is named originator; fintech controls credit model. Nth-party: Experian/Equifax/TransUnion, cloud host, securitization trust.' },
-    { id:'bnpl', label:'BNPL / Consumer Credit', tier:'Critical', color:'#7ab07a',
+    { id:'bnpl', label:'BNPL / Consumer Credit', tier:'Critical', color:'#3f7d5f',
       relationship:'Bank is issuer; fintech is servicer. Nth-party: payment processor (Stripe/Adyen), merchant platform, cloud infrastructure.' },
-    { id:'ai', label:'AML AI Vendor', tier:'Critical', color:'#d47a5a',
+    { id:'ai', label:'AML AI Vendor', tier:'Critical', color:'#b05f33',
       relationship:'Bank retains SAR filing authority; AI generates inputs. Nth-party: training data provider, cloud compute, model monitoring platform.' }
   ],
   differences: [
@@ -319,14 +385,16 @@ const SCENARIOS = [
 const STATE_LENS = {
   intro: 'FIL-29-2023 and the 2024 Community Bank TPRM Guide are federal, but most bank-fintech arrangements also sit inside a state supervisory frame. A state-chartered bank answers to its state banking department as chartering authority alongside its federal regulator, and the fintech partner is frequently itself a state-licensed money transmitter or lender. The dual banking system makes third-party oversight a two-track exercise \u2014 and the state track is often where the fintech partner\u2019s own licensing risk actually lives.',
   mechanisms: [
-    { title:'State Chartering Authority', color:'#c9a84c',
+    { title:'State Chartering Authority', color:'#9a7a1f',
       detail:'For a state-chartered bank, the state banking department is the chartering authority and conducts safety-and-soundness examination alongside the FDIC or Federal Reserve. A BaaS or third-party program is examinable at the state level too \u2014 and state examiners may reach conclusions, or impose conditions, that differ from the federal view.' },
-    { title:'Licensing of the Fintech Partner', color:'#5aabdf',
+    { title:'Licensing of the Fintech Partner', color:'#2f6da8',
       detail:'The fintech partner often must hold state money transmitter licenses (MTLs) or installment-lender / consumer-lender licenses in each operating state. Diligence should confirm the partner\u2019s licensing footprint actually matches the states where it operates \u2014 a gap here is a recurring finding in lending and BNPL programs.' },
-    { title:'Multistate Coordination (CSBS)', color:'#7ab07a',
+    { title:'Multistate Coordination (CSBS)', color:'#3f7d5f',
       detail:'CSBS coordinates multistate supervision through the Nationwide Multistate Licensing System (NMLS), networked / coordinated examinations, and the Money Transmission Modernization Act (MTMA) model law \u2014 creating a more harmonized multistate frame for the nonbank partner. State and federal examiners increasingly share findings on bank-fintech arrangements.' },
-    { title:'State True Lender & Rate Laws', color:'#c05050',
-      detail:'Even where the bank is the named lender, state true-lender statutes and anti-evasion laws can reach bank-fintech lending. The OCC\u2019s 2020 \u201ctrue lender\u201d rule was rescinded by Congress under the Congressional Review Act in 2021, so there is no federal safe harbor \u2014 the analysis is governed by evolving state law and case law.' }
+    { title:'State True Lender & \u201cValid-When-Made\u201d', color:'#b0402f',
+      detail:'Even where the bank is the named lender, state true-lender statutes and anti-evasion laws can reach a bank-fintech program. The OCC\u2019s 2020 \u201ctrue lender\u201d rule was rescinded under the Congressional Review Act in 2021, so there is no federal safe harbor on who the lender is \u2014 that turns on evolving state law and case law. Distinct from the true-lender question is \u201cvalid-when-made\u201d (whether interest lawful at origination survives sale or assignment \u2014 the Madden v. Midland problem): the OCC and FDIC 2020 valid-when-made rules were upheld in court and remain in force, so the secondary-market and securitization leg is settled federal law even where the true-lender leg is not.' },
+    { title:'DIDMCA Rate-Exportation Opt-Out', color:'#b8792e',
+      detail:'For a state-chartered bank, rate exportation runs through DIDMCA \u00a7\u00a7521\u2013523 (parity with national banks), but \u00a7525 lets a state opt out for \u201cloans made in such State.\u201d Colorado opted out (effective July 2024); after a 2024 preliminary injunction, the Tenth Circuit reversed in November 2025 (NAIB v. Weiser), reading the opt-out to reach any loan where the lender or the borrower sits in the state \u2014 reopening state rate caps against out-of-state state banks lending to residents. The FDIC withdrew its brief supporting Colorado during the appeal. National banks are unaffected (their authority runs through the National Bank Act, with no opt-out), and several other states are weighing opt-outs \u2014 a charter-choice and rate-exportation fault line that sits squarely on the state track.' }
   ],
   stages: {
     planning: [
@@ -375,7 +443,7 @@ const CROSS_CUTTING = {
   ]
 };
 const STAGES = [{
-  id:'planning', number:'01', title:'Planning', sub:'Before engagement begins', color:'#c9a84c',
+  id:'planning', number:'01', title:'Planning', sub:'Before engagement begins', color:'#9a7a1f',
   guidance:'Before entering into a third-party relationship, a banking organization should develop a plan for managing the relationship commensurate with the level of risk and complexity of the relationship. Planning should address how the relationship aligns with the bank\u2019s strategic goals, the nature of the activity, and how the bank will oversee the third party throughout the relationship.',
   cites:['FIL-29-2023 (June 6, 2023) \u2014 Life Cycle: Planning', '2024 Community Bank TPRM Guide (May 3, 2024)', 'OMF: TPRM + Operational Resilience'],
   activities: [
@@ -428,6 +496,7 @@ const STAGES = [{
       ],
       flags: [
         'True lender risk at planning: if LoanBridge marketing obscures Heartland as the originator, a court may find LoanBridge is the true lender \u2014 no charter-based preemption defense for state usury.',
+        'Rate-exportation risk at planning: if Heartland is state-chartered, the Tenth Circuit\u2019s 2025 DIDMCA ruling (NAIB v. Weiser) lets an opt-out state apply its rate caps to loans made to its residents \u2014 map the operating-state rate landscape now, not after launch. (\u201cValid-when-made\u201d separately protects the assignment and securitization leg.)',
         'Bureau data dependency is both a fourth-party risk and a fair lending risk \u2014 historical inequities in bureau data bake into the LoanBridge model\u2019s training.'
       ]
     },
@@ -504,7 +573,7 @@ const STAGES = [{
   }
 },
 {
-  id:'duediligence', number:'02', title:'Due Diligence', sub:'Know your third party \u2014 and their third parties', color:'#5aabdf',
+  id:'duediligence', number:'02', title:'Due Diligence', sub:'Know your third party \u2014 and their third parties', color:'#2f6da8',
   guidance:'Banking organizations should conduct due diligence on prospective third parties before entering into contracts or relationships. The level of due diligence should be commensurate with the level of risk and complexity of the relationship. For relationships involving critical activities, more robust due diligence is warranted.',
   cites:['FIL-29-2023 \u2014 Life Cycle: Due Diligence & Third-Party Selection', '2024 Community Bank TPRM Guide (May 3, 2024)', 'OMF: all domains'],
   activities: [
@@ -635,7 +704,7 @@ const STAGES = [{
   }
 },
 {
-  id:'contract', number:'03', title:'Contract', sub:'Terms that protect the bank, consumer, and supply chain', color:'#7ab07a',
+  id:'contract', number:'03', title:'Contract', sub:'Terms that protect the bank, consumer, and supply chain', color:'#3f7d5f',
   guidance:'Banking organizations should have written contracts that clearly define the rights and responsibilities of all parties. Contracts with third parties involved in critical activities should address the nature and scope of the arrangement, performance measures, audit and inspection rights, ownership of data, confidentiality and integrity, business continuity obligations, default and termination provisions, dispute resolution, and applicable law.',
   cites:['FIL-29-2023 \u2014 Life Cycle: Contract Negotiation', '2024 Community Bank TPRM Guide (May 3, 2024)', 'OMF: TPRM + Consumer'],
   activities: [
@@ -644,7 +713,7 @@ const STAGES = [{
     { label:'Unconditional audit and inspection rights \u2014 including nth parties', cfes:'tprm',
       detail:'Retain the right to audit the vendor and all material subcontractors, without advance notice or vendor consent. For AI vendors: audit rights extend to model documentation, training data descriptions, and performance logs. Allow the bank to participate in forensic investigations following any breach at the vendor or any named subcontractor.' },
     { label:'Daily FBO reconciliation with automated verification', cfes:'ops',
-      detail:'For BaaS and BNPL: require daily automated reconciliation between the third party\u2019s records and the bank\u2019s core, with protocols to resolve breaks. The FDIC\u2019s proposed custodial deposit rule would make daily reconciliation a regulatory baseline for covered accounts. \u201cLedger hostage\u201d clauses \u2014 where only the fintech can produce the reconciliation \u2014 are unacceptable.' },
+      detail:'For BaaS and BNPL: require daily automated reconciliation between the third party\u2019s records and the bank\u2019s core, with protocols to resolve breaks. If finalized, the FDIC\u2019s proposed custodial deposit rule would make daily reconciliation a regulatory baseline for covered accounts; it remains a proposal. \u201cLedger hostage\u201d clauses \u2014 where only the fintech can produce the reconciliation \u2014 are unacceptable.' },
     { label:'Cybersecurity: zero-trust, breach notification, API security', cfes:'ops',
       detail:'Address: (1) zero-trust or network segmentation controls to prevent lateral movement following a breach at the third party; (2) a specific breach notification timeline (a 36\u201372 hour maximum from initial detection is a reasonable benchmark); (3) the bank\u2019s right to participate in forensic investigation; (4) the third party\u2019s obligation to maintain cyber insurance.' },
     { label:'FDIC insurance representation and consumer confusion controls', cfes:'cms',
@@ -770,12 +839,12 @@ const STAGES = [{
   }
 },
 {
-  id:'monitoring', number:'04', title:'Monitoring', sub:'Continuous oversight \u2014 near real-time for critical relationships', color:'#d4a84c',
+  id:'monitoring', number:'04', title:'Monitoring', sub:'Continuous oversight \u2014 near real-time for critical relationships', color:'#a87f24',
   guidance:'Banking organizations should conduct ongoing monitoring of their third-party relationships throughout the life of the relationship. Monitoring activities should be commensurate with the level of risk and complexity of the relationship and should include reviewing and analyzing reports, monitoring for changing conditions that may affect the third party\u2019s risk profile, and evaluating business continuity and information security.',
   cites:['FIL-29-2023 \u2014 Life Cycle: Ongoing Monitoring', 'FDIC NPRM: Custodial Accounts (RIN 3064-AG07, Sept 17, 2024)', 'DORA Op. Resilience Standards'],
   activities: [
     { label:'Daily FBO triangular reconciliation \u2014 automated, not periodic', cfes:'ops',
-      detail:'For deposit and credit BaaS: execute daily triangular reconciliation \u2014 Bank Core / Middleware Sub-ledger / Fintech App Ledger. The FDIC\u2019s proposed custodial deposit rule would make daily reconciliation a regulatory baseline. Any discrepancy over a defined threshold should be investigated and resolved within 24 hours. The Synapse failure left an estimated $65\u2013$96M in consumer funds unreconcilable because no party was performing this continuously.' },
+      detail:'For deposit and credit BaaS: execute daily triangular reconciliation \u2014 Bank Core / Middleware Sub-ledger / Fintech App Ledger. If finalized, the FDIC\u2019s proposed custodial deposit rule would make daily reconciliation a regulatory baseline (it is not yet final). Any discrepancy over a defined threshold should be investigated and resolved within 24 hours. The Synapse failure left an estimated $65\u2013$96M in consumer funds unreconcilable because no party was performing this continuously.' },
     { label:'Portfolio-level cloud and nth-party concentration monitoring', cfes:'ops',
       detail:'Maintain a bank-wide fourth-party dependency map updated quarterly. Track which cloud providers, data bureaus, and payment rails support which third-party relationships. When a concentration threshold is crossed (e.g., 3+ Critical-tier vendors on the same cloud provider), escalate to the CRO with a mitigation plan.' },
     { label:'FDIC advertising and consumer confusion surveillance', cfes:'cms',
@@ -901,7 +970,7 @@ const STAGES = [{
   }
 },
 {
-  id:'termination', number:'05', title:'Termination', sub:'Ending relationships without ending the bank', color:'#c06060',
+  id:'termination', number:'05', title:'Termination', sub:'Ending relationships without ending the bank', color:'#a83f3f',
   guidance:'Banking organizations should develop contingency plans for when third-party relationships are terminated or fail. For critical activities, plans should address how the banking organization would continue to operate in the absence of the third party, how it would protect customer information, and how it would manage the transition. Termination provisions should be included in contracts.',
   cites:['FIL-29-2023 \u2014 Life Cycle: Termination', '2024 Joint Statement on Banks\u2019 Arrangements with Third Parties (July 25, 2024)', 'FDIC NPRM Custodial Accounts (RIN 3064-AG07)'],
   activities: [
@@ -921,7 +990,7 @@ const STAGES = [{
       detail:'Documented lessons-learned review after every Critical or Significant termination. Record what the exit plan required vs. what was delivered. Update the TPRM framework. Proactively share material findings with the board Risk Committee. The primary mechanism for institutional learning in TPRM \u2014 and the one most frequently skipped.' }
   ],
   risks: [
-    { level:'high', text:'FBO ledger gap at termination \u2014 the FDIC\u2019s proposed rule would make daily reconciliation a regulatory baseline precisely to prevent the Synapse-type failure mode' },
+    { level:'high', text:'FBO ledger gap at termination \u2014 the FDIC\u2019s proposed rule would, if finalized, make daily reconciliation a regulatory baseline precisely to prevent the Synapse-type failure mode' },
     { level:'high', text:'Substitute servicer identified but not under agreement \u2014 a name in the exit plan is not a servicer; a firm that declines to take the portfolio in a crisis is not a contingency' },
     { level:'high', text:'Lookback triggered by regulator, not proactive \u2014 a proactive lookback costs less than a regulator-mandated one' },
     { level:'med', text:'Multi-party data destruction incomplete \u2014 certification from the vendor without certification from each named subprocessor is a GLBA gap' },
@@ -1072,7 +1141,7 @@ const STAGE_DIFFS = {
   planning: 'At planning, the structural difference manifests in the leverage dynamic. Traditional outsourcing decisions are bank-driven \u2014 the bank identifies a need, solicits vendors, and retains negotiating authority. BaaS relationships are often fintech-driven: fintechs seek sponsor banks, and in a supply-constrained market, banks eager for fee income accept terms they would reject in traditional procurement. Planning for a BaaS arrangement must explicitly account for this inverted leverage.',
   duediligence: 'Traditional due diligence focuses on the vendor\u2019s ability to perform a defined function reliably. BaaS due diligence must also assess whether the fintech\u2019s compliance culture, customer base, and business model create consumer harm risks the bank will ultimately own. A fintech with a compliant vendor management program but a consumer-hostile product design is a BaaS risk no SOC 2 report will surface.',
   contract: 'Traditional contracts define what the vendor delivers and what the bank pays. BaaS contracts must additionally define how the bank retains control over its charter \u2014 through FBO reconciliation rights, consumer protection pass-throughs, and step-in rights. The contract is the primary mechanism by which a bank avoids becoming a \u201cname only\u201d regulatory cover for a fintech\u2019s product.',
-  monitoring: 'Traditional monitoring is periodic \u2014 monthly or quarterly reviews of SLA performance and financial condition. BaaS monitoring must be continuous for deposit arrangements: daily FBO reconciliation, real-time transaction visibility, and monthly consumer complaint surveillance. The FDIC\u2019s proposed custodial deposit rule would make daily reconciliation a regulatory requirement, not a best practice.',
+  monitoring: 'Traditional monitoring is periodic \u2014 monthly or quarterly reviews of SLA performance and financial condition. BaaS monitoring must be continuous for deposit arrangements: daily FBO reconciliation, real-time transaction visibility, and monthly consumer complaint surveillance. The FDIC\u2019s proposed custodial deposit rule would, if finalized, make daily reconciliation a regulatory requirement rather than a best practice \u2014 though it remains a proposal with uncertain prospects.',
   termination: 'Traditional relationship termination is operationally complex but legally straightforward \u2014 the bank transitions to a substitute vendor. BaaS termination must resolve who owns the customers, who holds their money, and who is responsible for the loans. Regulators have routinely required independent lookback reviews after BaaS termination. Exit from a BaaS relationship is not a procurement event \u2014 it is a regulatory event.'
 };
 
@@ -1084,63 +1153,63 @@ const ABOUT = {
     { icon:'\u25c7', label:'Cross-Cutting Always Visible', desc:'The Guidance tab surfaces FIL-29-2023\u2019s Governance section elements that span the whole life cycle.' }
   ],
   tabs: [
-    { tab:'Scenario',    color:'#c9a84c', desc:'A worked example for the selected scenario at this stage \u2014 situation, numbered steps, practitioner flags, and an industry insight.' },
-    { tab:'Compare',     color:'#5ad4c0', desc:'Side-by-side view of two scenarios at the current stage. Defaults to an opposite-type scenario to surface the Traditional vs. BaaS structural difference.' },
-    { tab:'Activities',  color:'#c9a84c', desc:'Key activities at this stage. Each is tagged with the applicable OMF domain. Click to expand detail.' },
-    { tab:'Risks',       color:'#c05050', desc:'Risk signals by severity. Includes enforcement analytics (illustrative), the FDIC custodial deposit NPRM, and FDIC Part 328 advertising rules.' },
-    { tab:'Examiner',    color:'#d4b86a', desc:'The specific questions a federal examiner is likely to explore at this stage, synthesized from FIL-29-2023 and the 2024 Community Bank TPRM Guide.' },
-    { tab:'State Lens',  color:'#7ab07a', desc:'The state-supervisory and state-licensing dimension at this stage. Most bank-fintech arrangements sit inside both federal and state oversight frames.' },
-    { tab:'Taxonomy',    color:'#5ad4c0', desc:'Three views: Spectrum (Traditional-to-BaaS continuum), Compare (dimension table), Nth-Party (tier model, cloud concentration, concentration risks).' },
-    { tab:'Guidance',    color:'#9ab4d8', desc:'The verbatim FIL-29-2023 guidance text, cross-cutting governance elements, what the guidance does not say, and the U.S. vs. EU (DORA) comparison.' }
+    { tab:'Scenario',    color:'#9a7a1f', desc:'A worked example for the selected scenario at this stage \u2014 situation, numbered steps, practitioner flags, and an industry insight.' },
+    { tab:'Compare',     color:'#2f7363', desc:'Side-by-side view of two scenarios at the current stage. Defaults to an opposite-type scenario to surface the Traditional vs. BaaS structural difference.' },
+    { tab:'Activities',  color:'#9a7a1f', desc:'Key activities at this stage. Each is tagged with the applicable OMF domain. Click to expand detail.' },
+    { tab:'Risks',       color:'#b0402f', desc:'Risk signals by severity. Includes enforcement analytics (illustrative), the FDIC custodial deposit NPRM, and FDIC Part 328 advertising rules.' },
+    { tab:'Examiner',    color:'#a6831f', desc:'The specific questions a federal examiner is likely to explore at this stage, synthesized from FIL-29-2023 and the 2024 Community Bank TPRM Guide.' },
+    { tab:'State Lens',  color:'#3f7d5f', desc:'The state-supervisory and state-licensing dimension at this stage. Most bank-fintech arrangements sit inside both federal and state oversight frames.' },
+    { tab:'Taxonomy',    color:'#2f7363', desc:'Three views: Spectrum (Traditional-to-BaaS continuum), Compare (dimension table), Nth-Party (tier model, cloud concentration, concentration risks).' },
+    { tab:'Guidance',    color:'#54617e', desc:'The verbatim FIL-29-2023 guidance text, cross-cutting governance elements, what the guidance does not say, and the U.S. vs. EU (DORA) comparison.' }
   ],
   glossary: [
-    { term:'FIL-29-2023 \u2014 Interagency Guidance on Third-Party Relationships', color:'#c9a84c',
+    { term:'FIL-29-2023 \u2014 Interagency Guidance on Third-Party Relationships', color:'#9a7a1f',
       def:'Final interagency guidance issued June 6, 2023 by the FDIC (FIL-29-2023), Federal Reserve (SR 23-4), and OCC (Bulletin 2023-17), published at 88 Fed. Reg. 37,920 (June 9, 2023). Replaced prior agency-specific guidance (OCC Bulletin 2013-29, FDIC FIL-44-2008, Fed SR 13-19, OCC FAQs 2020). Establishes a unified life cycle framework and articulates the foundational principle that a bank may delegate the performance of an activity but cannot delegate its legal and regulatory responsibility. Intentionally principles-based.' },
-    { term:'2024 Community Bank TPRM Guide', color:'#c9a84c',
+    { term:'2024 Community Bank TPRM Guide', color:'#9a7a1f',
       def:'\u201cThird-Party Risk Management: A Guide for Community Banks,\u201d issued May 3, 2024 by the Fed, FDIC, and OCC. Companion to FIL-29-2023, offering practical considerations, examples, and resources through each lifecycle stage. Does not substitute the 2023 guidance.' },
-    { term:'2024 Joint Statement', color:'#c9a84c',
+    { term:'2024 Joint Statement', color:'#9a7a1f',
       def:'\u201cJoint Statement on Banks\u2019 Arrangements with Third Parties to Deliver Bank Products and Services\u201d (July 25, 2024). Addresses risks of bank-fintech deposit arrangements specifically, including pass-through deposit insurance, BSA/AML, consumer protection, and information security.' },
-    { term:'FDIC NPRM \u2014 Recordkeeping for Custodial Accounts', color:'#5aabdf',
-      def:'Notice of Proposed Rulemaking (RIN 3064-AG07) issued by the FDIC on September 17, 2024 (published 89 Fed. Reg. 80,135, October 2, 2024). Would require IDIs to maintain accurate records of beneficial owners of covered custodial accounts and reconcile each individual owner\u2019s balance on a daily basis. Comment period closed January 16, 2025; not finalized as of May 2026. The Synapse collapse (May 2024) is the explicit regulatory predicate.' },
-    { term:'2026 Interagency Model Risk Management Guidance', color:'#d4b86a',
-      def:'Revised Interagency Guidance on Model Risk Management issued April 17, 2026 by the FDIC (FIL-15-2026), Federal Reserve (SR 26-2), and OCC (Bulletin 2026-13). Rescinds and supersedes SR 11-7 / OCC 2011-12 / FIL-22-2017 and the related BSA/AML model risk guidance (SR 21-8 / FIL-27-2021). Principles-based and risk-tiered. Generative AI and agentic AI models are explicitly outside its scope; the agencies have committed to a forthcoming RFI on AI model risk.' },
-    { term:'OMF \u2014 Oversight Maturity Framework', color:'#c9a84c',
+    { term:'FDIC NPRM \u2014 Recordkeeping for Custodial Accounts', color:'#2f6da8',
+      def:'Notice of Proposed Rulemaking (RIN 3064-AG07) issued by the FDIC on September 17, 2024 (published 89 Fed. Reg. 80,135, October 2, 2024). Would require IDIs to maintain accurate records of beneficial owners of covered custodial accounts and reconcile each individual owner\u2019s balance on a daily basis. Comment period closed January 16, 2025; not finalized as of mid-2026, and its prospects are uncertain under current FDIC leadership. The Synapse collapse (May 2024) is the explicit regulatory predicate.' },
+    { term:'2026 Interagency Model Risk Management Guidance', color:'#a6831f',
+      def:'Revised Interagency Guidance on Model Risk Management issued April 17, 2026 by the FDIC (FIL-15-2026), Federal Reserve (SR 26-2), and OCC (Bulletin 2026-13). Rescinds and supersedes SR 11-7 / OCC 2011-12 / FIL-22-2017 and the related BSA/AML model risk guidance (SR 21-8 / FIL-27-2021 / OCC 2021-19); the OCC also rescinded Bulletin 1997-24 on credit-scoring models and the MRM booklet of the Comptroller\u2019s Handbook. Principles-based and risk-tiered, and stated to be most relevant to banking organizations with over $30 billion in total assets. Generative AI and agentic AI models are explicitly outside its scope; the agencies have committed to a forthcoming RFI on AI model risk.' },
+    { term:'OMF \u2014 Oversight Maturity Framework', color:'#9a7a1f',
       def:'An analytical maturity framework developed for this reference tool. Synthesizes supervisory expectations from FIL-29-2023, the 2024 Community Bank TPRM Guide, the 2024 Joint Statement, the FFIEC examination manuals, and the 2026 interagency model risk guidance. Six domains (TPRM, BSA/AML, CMS, Operational Resilience, Consumer & Complaints, Model Risk); five maturity levels (L1 Ad Hoc \u2192 L5 Optimized). NOT an official standard, certification, or coalition product.' },
-    { term:'Banking as a Service (BaaS)', color:'#c9a84c',
+    { term:'Banking as a Service (BaaS)', color:'#9a7a1f',
       def:'A model in which a licensed, FDIC-insured bank provides its regulated infrastructure \u2014 charter, balance sheet, payment network access \u2014 to non-bank entities via APIs, enabling those entities to offer financial products under their own brand without obtaining a banking license. The bank is the legal issuer, deposit holder, and regulatory accountable party. The fintech is the customer-facing entity. This inversion is the structural source of most BaaS compliance failures.' },
-    { term:'FBO Account \u2014 For Benefit Of', color:'#5ad4c0',
+    { term:'FBO Account \u2014 For Benefit Of', color:'#2f7363',
       def:'A legal account structure in which a bank holds funds in a single omnibus account on behalf of many end users (the fintech\u2019s customers), with individual user balances tracked in a sub-ledger maintained by the fintech or its middleware provider. The FBO structure makes BaaS deposit programs operationally feasible at scale \u2014 and is what created the Synapse failure when the sub-ledger diverged from the banks\u2019 core systems.' },
-    { term:'The Three-Ledger Problem', color:'#5ad4c0',
-      def:'The reconciliation challenge unique to BaaS deposit arrangements using FBO accounts. Three separate records must be continuously synchronized: (1) Bank Core \u2014 authoritative FBO balance; (2) Middleware Sub-ledger \u2014 how the omnibus balance is allocated; (3) Fintech App Ledger \u2014 the individual user-facing balance. Daily triangular reconciliation would become a regulatory baseline under the FDIC\u2019s proposed custodial deposit rule.' },
-    { term:'Nth-Party Risk', color:'#8a80d4',
+    { term:'The Three-Ledger Problem', color:'#2f7363',
+      def:'The reconciliation challenge unique to BaaS deposit arrangements using FBO accounts. Three separate records must be continuously synchronized: (1) Bank Core \u2014 authoritative FBO balance; (2) Middleware Sub-ledger \u2014 how the omnibus balance is allocated; (3) Fintech App Ledger \u2014 the individual user-facing balance. Daily triangular reconciliation would, if the FDIC\u2019s proposed custodial deposit rule is finalized, become a regulatory baseline \u2014 the rule remains a proposal.' },
+    { term:'Nth-Party Risk', color:'#4a3f8a',
       def:'The risk from a bank\u2019s indirect exposure to the vendors of its vendors. A fourth party is a vendor or subcontractor of the bank\u2019s direct third-party relationship; a fifth party is a vendor of that fourth party. Industry analyses indicate the large majority of financial institutions have experienced exposure to a fourth-party data breach. The Big Three cloud hyperscalers (AWS, Azure, GCP) control roughly two-thirds of global cloud market share \u2014 a systemic concentration risk.' },
-    { term:'DORA \u2014 EU Digital Operational Resilience Act', color:'#5a80d4',
+    { term:'DORA \u2014 EU Digital Operational Resilience Act', color:'#3f4f9a',
       def:'Regulation (EU) 2022/2554. In force January 16, 2023; applied from January 17, 2025. Broader and more prescriptive than U.S. interagency guidance: applies to all ICT service providers, mandates specific contractual provisions, requires threat-led penetration testing for critical providers, and establishes standardized incident reporting timelines. Increasingly influencing global TPRM best practices.' },
-    { term:'True Lender Doctrine', color:'#c05050',
-      def:'A legal doctrine applied by state courts and regulators to determine which party \u2014 bank or fintech \u2014 is the actual lender in a bank-fintech lending partnership. If a court finds the fintech is the true lender, the bank\u2019s charter-based preemption of state usury laws does not apply. The OCC\u2019s 2020 \u201ctrue lender\u201d rule was rescinded under the Congressional Review Act in 2021 \u2014 no federal safe harbor.' },
-    { term:'BNPL \u2014 Buy Now Pay Later', color:'#5ad4c0',
-      def:'Consumer credit product splitting a purchase into a series of installment payments. In a bank-fintech BNPL arrangement, the bank is typically the credit issuer (regulated lender) while the fintech is the servicer, underwriter, and merchant integrator. Subject to Regulation Z for loans with more than 4 installments, state installment lending licensing, and CFPB supervisory oversight.' },
-    { term:'UDAP / UDAAP', color:'#5ad4c0',
+    { term:'True Lender Doctrine', color:'#b0402f',
+      def:'A legal doctrine applied by state courts and regulators to determine which party \u2014 bank or fintech \u2014 is the actual lender in a bank-fintech lending partnership. If a court finds the fintech is the true lender, the bank\u2019s charter-based preemption of state usury laws does not apply. The OCC\u2019s 2020 \u201ctrue lender\u201d rule was rescinded under the Congressional Review Act in 2021 \u2014 no federal safe harbor. Distinct from this is \u201cvalid-when-made\u201d (whether interest lawful at origination survives assignment \u2014 the Madden v. Midland issue): the OCC and FDIC 2020 valid-when-made rules were upheld and remain in force. For state-chartered banks, rate exportation also turns on DIDMCA \u00a7525; in NAIB v. Weiser (10th Cir., Nov. 2025) the court let Colorado\u2019s opt-out reach loans where either lender or borrower sits in the state.' },
+    { term:'BNPL \u2014 Buy Now Pay Later', color:'#2f7363',
+      def:'Consumer credit product splitting a purchase into a series of installment payments. In a bank-fintech BNPL arrangement, the bank is typically the credit issuer (regulated lender) while the fintech is the servicer, underwriter, and merchant integrator. Classic pay-in-4 BNPL is generally closed-end credit, reached by Regulation Z only above the four-installment threshold; the CFPB\u2019s May 2024 interpretive rule treating BNPL providers as credit-card issuers was withdrawn in May 2025, and the Bureau has said it will not reissue it. State installment-lending licensing still applies.' },
+    { term:'UDAP / UDAAP', color:'#2f7363',
       def:'Unfair, Deceptive, or Abusive Acts or Practices. UDAP (FTC Act \u00a75) applies to all businesses. UDAAP (Dodd-Frank \u00a71031) applies to CFPB-supervised entities. In BaaS, FDIC insurance misrepresentation and hidden fees in fintech products are the most common predicates.' },
-    { term:'SOC 2 Type II', color:'#8a80d4',
+    { term:'SOC 2 Type II', color:'#4a3f8a',
       def:'A System and Organization Controls report covering a period of time, providing an opinion on whether described controls operated effectively. Critical limitation: SOC 2 only covers the controls the vendor chose to include in its scope; carved-out subservice organizations are excluded and must be assessed separately. Provides no assurance about BSA/AML compliance, fair lending compliance, or the adequacy of the vendor\u2019s own vendor management program.' },
-    { term:'BSA / AML', color:'#5aabdf',
+    { term:'BSA / AML', color:'#2f6da8',
       def:'The Bank Secrecy Act (31 U.S.C. \u00a75311 et seq.) is the primary U.S. anti-money laundering statute. Banks file Suspicious Activity Reports (SARs) with FinCEN and Currency Transaction Reports (CTRs) for cash transactions exceeding $10,000. In BaaS: the BSA obligation is entirely non-delegable. The fintech\u2019s MSB-level AML obligations are less stringent than the bank\u2019s \u2014 the most common predicate in BaaS enforcement actions.' },
-    { term:'CSBS \u2014 Conference of State Bank Supervisors', color:'#7ab07a',
+    { term:'CSBS \u2014 Conference of State Bank Supervisors', color:'#3f7d5f',
       def:'The nationwide organization of state banking and financial services regulators. Coordinates multistate supervision through NMLS, networked / coordinated examinations, and the Money Transmission Modernization Act (MTMA) model law for state harmonization of money transmitter licensing.' }
   ],
   sources: [
-    { src:'FIL-29-2023 / SR 23-4 / OCC 2023-17', full:'Interagency Guidance on Third-Party Relationships: Risk Management, 88 Fed. Reg. 37,920 (June 9, 2023)', color:'#c9a84c' },
-    { src:'2024 Community Bank TPRM Guide', full:'Third-Party Risk Management: A Guide for Community Banks (Fed/FDIC/OCC, May 3, 2024)', color:'#c9a84c' },
-    { src:'2024 Joint Statement', full:'Joint Statement on Banks\u2019 Arrangements with Third Parties to Deliver Bank Products and Services (July 25, 2024)', color:'#c9a84c' },
-    { src:'FDIC NPRM (RIN 3064-AG07)', full:'Recordkeeping for Custodial Accounts; proposed Sept 17, 2024; 89 Fed. Reg. 80,135 (Oct 2, 2024); comment period closed Jan 16, 2025', color:'#5aabdf' },
-    { src:'FIL-15-2026 / SR 26-2 / OCC 2026-13', full:'Revised Interagency Model Risk Management Guidance (April 17, 2026); rescinds SR 11-7 / OCC 2011-12 / FIL-22-2017 / SR 21-8 / FIL-27-2021', color:'#d4b86a' },
-    { src:'DORA', full:'EU Regulation 2022/2554 \u2014 Digital Operational Resilience Act; in force Jan 16, 2023; applied from Jan 17, 2025', color:'#5a80d4' },
-    { src:'FDIC Part 328', full:'FDIC Advertising of Membership rules (12 CFR Part 328), as amended', color:'#c9a84c' },
-    { src:'FFIEC BSA/AML Manual', full:'FFIEC Bank Secrecy Act / Anti-Money Laundering Examination Manual (current edition)', color:'#5aabdf' },
-    { src:'CSBS', full:'Conference of State Bank Supervisors \u2014 NMLS, MTMA model law, networked examinations', color:'#7ab07a' },
-    { src:'Klaros Group', full:'BaaS enforcement action analysis and supervisory trend data (2024-2025)', color:'#8aaad4' },
-    { src:'Fintech Takes', full:'Alex Johnson, Fintech Takes newsletter \u2014 BaaS compliance and enforcement analysis (2023-2025)', color:'#8aaad4' }
+    { src:'FIL-29-2023 / SR 23-4 / OCC 2023-17', full:'Interagency Guidance on Third-Party Relationships: Risk Management, 88 Fed. Reg. 37,920 (June 9, 2023)', color:'#9a7a1f' },
+    { src:'2024 Community Bank TPRM Guide', full:'Third-Party Risk Management: A Guide for Community Banks (Fed/FDIC/OCC, May 3, 2024)', color:'#9a7a1f' },
+    { src:'2024 Joint Statement', full:'Joint Statement on Banks\u2019 Arrangements with Third Parties to Deliver Bank Products and Services (July 25, 2024)', color:'#9a7a1f' },
+    { src:'FDIC NPRM (RIN 3064-AG07)', full:'Recordkeeping for Custodial Accounts; proposed Sept 17, 2024; 89 Fed. Reg. 80,135 (Oct 2, 2024); comment period closed Jan 16, 2025', color:'#2f6da8' },
+    { src:'FIL-15-2026 / SR 26-2 / OCC 2026-13', full:'Revised Interagency Model Risk Management Guidance (April 17, 2026); rescinds SR 11-7 / OCC 2011-12 / FIL-22-2017 / SR 21-8 / FIL-27-2021', color:'#a6831f' },
+    { src:'DORA', full:'EU Regulation 2022/2554 \u2014 Digital Operational Resilience Act; in force Jan 16, 2023; applied from Jan 17, 2025', color:'#3f4f9a' },
+    { src:'FDIC Part 328', full:'FDIC Advertising of Membership rules (12 CFR Part 328), as amended', color:'#9a7a1f' },
+    { src:'FFIEC BSA/AML Manual', full:'FFIEC Bank Secrecy Act / Anti-Money Laundering Examination Manual (current edition)', color:'#2f6da8' },
+    { src:'CSBS', full:'Conference of State Bank Supervisors \u2014 NMLS, MTMA model law, networked examinations', color:'#3f7d5f' },
+    { src:'Klaros Group', full:'BaaS enforcement action analysis and supervisory trend data (2024-2025)', color:'#5a6f96' },
+    { src:'Fintech Takes', full:'Alex Johnson, Fintech Takes newsletter \u2014 BaaS compliance and enforcement analysis (2023-2025)', color:'#5a6f96' }
   ]
 };
 // ============================================================================
@@ -1150,9 +1219,33 @@ const { useState, useEffect, useMemo, useRef } = React;
 const E = React.createElement;
 function el(tag, props) { return E(tag, props, ...Array.prototype.slice.call(arguments, 2)); }
 
+// -- Deep-link hash routing (shareable URLs) ---------------------------------
+var TAB_IDS = ['example','compare','activities','risks','examiner','state','taxonomy','guidance'];
+var TAX_IDS = ['spectrum','compare','nth'];
+function readHash() {
+  var h = ((typeof window !== 'undefined' && window.location.hash) || '').replace(/^#\/?/, '');
+  var p = h.split('/').filter(Boolean);
+  var si = 0, sid = 'baas', tb = 'example', tx = 'spectrum';
+  if (p[0]) { var idx = STAGES.findIndex(function(s){ return s.id === p[0]; }); if (idx >= 0) si = idx; }
+  if (p[1] && SCENARIOS.some(function(s){ return s.id === p[1]; })) sid = p[1];
+  if (p[2] && TAB_IDS.indexOf(p[2]) >= 0) tb = p[2];
+  if (p[3] && TAX_IDS.indexOf(p[3]) >= 0) tx = p[3];
+  return { stageIdx: si, scenarioId: sid, tab: tb, taxView: tx };
+}
+function writeHash(stageIdx, scenarioId, tab, taxView) {
+  if (typeof window === 'undefined') return;
+  var parts = [ (STAGES[stageIdx] && STAGES[stageIdx].id) || 'planning', scenarioId, tab ];
+  if (tab === 'taxonomy') parts.push(taxView);
+  var nh = '#' + parts.join('/');
+  if ((window.location.hash || '') !== nh) {
+    try { history.replaceState(null, '', nh); }
+    catch (e) { try { window.location.hash = nh; } catch (_e) {} }
+  }
+}
+
 // -- Small reusable bits -----------------------------------------------------
 function Tag(props) {
-  return el('span', { style: { display:'inline-flex', alignItems:'center', padding:'2px 8px', borderRadius:3, fontSize:9, fontFamily:'"IBM Plex Mono",monospace', letterSpacing:1, textTransform:'uppercase', fontWeight:500, ...props.style } }, props.children);
+  return el('span', { style: { display:'inline-flex', alignItems:'center', padding:'2px 8px', borderRadius:3, fontSize:9, fontFamily:'"JetBrains Mono",monospace', letterSpacing:1, textTransform:'uppercase', fontWeight:500, ...props.style } }, props.children);
 }
 function OMFTag(domain) {
   const m = OMF[domain]; if (!m) return null;
@@ -1166,10 +1259,10 @@ function Card(props) {
   return el('div', { style:{ background:C.bg2, border:'1px solid '+C.border, borderRadius:5, padding:'14px 18px', ...props.style } }, props.children);
 }
 function H(props) {
-  return el('h2', { style:{ fontFamily:'"EB Garamond",serif', fontStyle:'italic', fontWeight:400, fontSize:24, color:C.text0, marginBottom:6, ...props.style } }, props.children);
+  return el('h2', { style:{ fontFamily:'"Fraunces",serif', fontStyle:'italic', fontWeight:400, fontSize:24, color:C.text0, marginBottom:6, ...props.style } }, props.children);
 }
 function MonoLabel(props) {
-  return el('div', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:10, letterSpacing:2, textTransform:'uppercase', color:C.text3, ...props.style } }, props.children);
+  return el('div', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:10, letterSpacing:2, textTransform:'uppercase', color:C.text3, ...props.style } }, props.children);
 }
 
 // -- Expandable card for activities/risks/examiner ---------------------------
@@ -1179,7 +1272,7 @@ function ExpandCard(props) {
     el('button', { onClick:()=>setOpen(!open), style:{ width:'100%', textAlign:'left', padding:'12px 16px', display:'flex', alignItems:'flex-start', gap:12, color:C.text1, fontSize:13, fontFamily:'inherit', lineHeight:1.55 } },
       props.leading,
       el('span', { style:{ flex:1 } }, props.title),
-      el('span', { style:{ flexShrink:0, marginLeft:8, color:C.text3, fontSize:11, fontFamily:'"IBM Plex Mono",monospace' } }, open?'\u2212':'+')
+      el('span', { style:{ flexShrink:0, marginLeft:8, color:C.text3, fontSize:11, fontFamily:'"JetBrains Mono",monospace' } }, open?'\u2212':'+')
     ),
     open ? el('div', { style:{ padding:'0 16px 14px 40px', color:C.text2, fontSize:12, lineHeight:1.65 } },
       props.detail,
@@ -1196,31 +1289,81 @@ function ScenarioCard(props) {
   const accent = sc.type==='baas' ? C.gold : C.teal;
   return el('div', { className:'fade-up', style:{ background:C.bg1, border:'1px solid '+C.border, borderLeft:'3px solid '+accent, borderRadius:5, padding:'18px 22px' } },
     el('div', { style:{ display:'flex', alignItems:'baseline', gap:10, marginBottom:6 } },
-      el('span', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:11, color:accent, letterSpacing:2 } }, sc.abbr),
+      el('span', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:11, color:accent, letterSpacing:2 } }, sc.abbr),
       el('span', { style:{ fontSize:11, color:C.text3 } }, sc.tier+' \u00b7 '+(sc.type==='baas'?'BaaS':'Traditional'))
     ),
-    el('h3', { style:{ fontFamily:'"EB Garamond",serif', fontStyle:'italic', fontWeight:400, fontSize:21, color:C.text0, marginBottom:10, lineHeight:1.25 } }, ex.title),
+    el('h3', { style:{ fontFamily:'"Fraunces",serif', fontStyle:'italic', fontWeight:400, fontSize:21, color:C.text0, marginBottom:10, lineHeight:1.25 } }, ex.title),
     el('p', { style:{ fontSize:12.5, color:C.text2, lineHeight:1.7, marginBottom:14, fontStyle:'italic' } }, ex.situation),
     el('ol', { style:{ listStyle:'none', counterReset:'step', padding:0, margin:'0 0 14px 0' } },
       ex.steps.map((st,i)=>el('li', { key:i, style:{ position:'relative', paddingLeft:32, marginBottom:10, fontSize:12.5, color:C.text1, lineHeight:1.7 } },
-        el('span', { style:{ position:'absolute', left:0, top:0, fontFamily:'"IBM Plex Mono",monospace', fontSize:10, color:accent, letterSpacing:1 } }, String(i+1).padStart(2,'0')),
+        el('span', { style:{ position:'absolute', left:0, top:0, fontFamily:'"JetBrains Mono",monospace', fontSize:10, color:accent, letterSpacing:1 } }, String(i+1).padStart(2,'0')),
         st
       ))
     ),
     ex.flags && ex.flags.length ? el('div', { style:{ background:C.dangerDim, border:'1px solid '+C.danger+'44', borderLeft:'2px solid '+C.danger, padding:'10px 14px', borderRadius:3 } },
-      el('div', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:10, color:C.danger, letterSpacing:2, textTransform:'uppercase', marginBottom:6 } }, 'Practitioner Flags'),
+      el('div', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:10, color:C.danger, letterSpacing:2, textTransform:'uppercase', marginBottom:6 } }, 'Practitioner Flags'),
       ex.flags.map((f,i)=>el('div', { key:i, style:{ fontSize:12, color:C.text1, lineHeight:1.65, marginBottom:i<ex.flags.length-1?6:0 } }, '\u00b7 '+f))
     ) : null
   );
 }
 
+// -- OMF maturity profile (per-scenario domain x level readout) --------------
+function MaturityProfile(props) {
+  var sc = SCENARIOS.find(function(s){ return s.id === props.scenarioId; });
+  var scores = OMF_SCORES[props.scenarioId];
+  if (!sc || !scores) return null;
+  var domains = ['tprm','aml','cms','ops','consumer','model'];
+  return el('div', { className:'fade-up', style:{ marginTop:18, padding:'16px 18px', background:C.bg2, border:'1px solid '+C.border, borderLeft:'3px solid '+C.gold, borderRadius:5 } },
+    el('div', { style:{ display:'flex', alignItems:'baseline', justifyContent:'space-between', flexWrap:'wrap', gap:8, marginBottom:5 } },
+      el('div', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:10, letterSpacing:2, color:C.gold, textTransform:'uppercase' } }, 'OMF Maturity Profile'),
+      el(Tag, { style:{ background:C.gold+'18', color:C.gold, border:'1px solid '+C.gold+'55' } }, 'Analytical \u00b7 not a rating')
+    ),
+    el('p', { style:{ fontSize:11.5, color:C.text3, fontStyle:'italic', lineHeight:1.55, marginBottom:16 } }, 'As-found baseline surfaced by this scenario\u2019s worked example. For Critical-tier relationships, L3 (Defined) is the go-live minimum and L4 (Managed) the 12-month target; the outlined cell marks the go-live line.'),
+    domains.map(function(d){
+      var m = OMF[d]; var sv = scores[d];
+      if (!m || !sv) return null;
+      var lvl = sv.lvl;
+      return el('div', { key:d, style:{ marginBottom:13 } },
+        el('div', { style:{ display:'flex', alignItems:'baseline', justifyContent:'space-between', gap:8, marginBottom:5 } },
+          el('span', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:10, letterSpacing:1, color:m.color, textTransform:'uppercase' } }, m.domain),
+          lvl ? el('span', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:10, color:OMF_LEVELS[lvl-1].color } }, OMF_LEVELS[lvl-1].id+' \u00b7 '+OMF_LEVELS[lvl-1].name) : el('span', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:9.5, letterSpacing:1, color:C.text3, textTransform:'uppercase' } }, 'Not material')
+        ),
+        lvl ? el('div', { style:{ display:'flex', gap:3, marginBottom:6 } },
+          OMF_LEVELS.map(function(L,i){
+            var idx = i+1; var filled = idx <= lvl;
+            var st = { flex:1, height:15, borderRadius:2, background: filled ? L.color : C.bg0, border:'1px solid '+(filled ? L.color : C.borderSoft) };
+            if (idx === 3) { st.outline = '1.5px solid '+C.safe; st.outlineOffset = '-1.5px'; }
+            return el('div', { key:L.id, title:L.id+' \u00b7 '+L.name, style:st });
+          })
+        ) : null,
+        el('p', { style:{ fontSize:11.5, color:C.text2, lineHeight:1.6 } }, sv.why)
+      );
+    }),
+    el('div', { style:{ marginTop:10, paddingTop:12, borderTop:'1px solid '+C.borderSoft } },
+      el('div', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:9, letterSpacing:1.5, color:C.text3, textTransform:'uppercase', marginBottom:9 } }, 'Maturity levels \u2014 L3 is the go-live minimum'),
+      el('div', { style:{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(150px,1fr))', gap:9 } },
+        OMF_LEVELS.map(function(L){
+          return el('div', { key:L.id, style:{ display:'flex', gap:7, alignItems:'flex-start' } },
+            el('span', { style:{ width:9, height:9, marginTop:3, flexShrink:0, background:L.color, borderRadius:2 } }),
+            el('div', null,
+              el('div', { style:{ fontSize:11, color:C.text1 } }, el('span', { style:{ fontFamily:'"JetBrains Mono",monospace', color:L.color } }, L.id), ' '+L.name),
+              el('div', { style:{ fontSize:10.5, color:C.text3, lineHeight:1.5 } }, L.note)
+            )
+          );
+        })
+      )
+    )
+  );
+}
+
 // -- The main component ------------------------------------------------------
 function TPRM6() {
-  const [stageIdx, setStageIdx] = useState(0);
-  const [scenarioId, setScenarioId] = useState('baas');
+  var _h = (typeof readHash === 'function') ? readHash() : { stageIdx:0, scenarioId:'baas', tab:'example', taxView:'spectrum' };
+  const [stageIdx, setStageIdx] = useState(_h.stageIdx);
+  const [scenarioId, setScenarioId] = useState(_h.scenarioId);
   const [compareId, setCompareId] = useState('core');
-  const [tab, setTab] = useState('example');
-  const [taxView, setTaxView] = useState('spectrum');
+  const [tab, setTab] = useState(_h.tab);
+  const [taxView, setTaxView] = useState(_h.taxView);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [aboutTab, setAboutTab] = useState('how');
 
@@ -1243,33 +1386,39 @@ function TPRM6() {
       if (opposite) setCompareId(opposite.id);
     }
   }, [tab, compareId, scenarioId]);
+  useEffect(()=>{ writeHash(stageIdx, scenarioId, tab, taxView); }, [stageIdx, scenarioId, tab, taxView]);
+  useEffect(()=>{
+    function onHash(){ var s = readHash(); setStageIdx(s.stageIdx); setScenarioId(s.scenarioId); setTab(s.tab); setTaxView(s.taxView); }
+    window.addEventListener('hashchange', onHash);
+    return function(){ window.removeEventListener('hashchange', onHash); };
+  }, []);
 
   const currentScenario = SCENARIOS.find(s=>s.id===scenarioId);
 
   // -- HEADER --------------------------------------------------------------
   const header = el('header', { className:'app-header', style:{ position:'sticky', top:0, zIndex:100, background:C.bg0, borderBottom:'1px solid '+C.border } },
     // Strip 1: metadata
-    el('div', { style:{ height:24, padding:'0 22px', display:'flex', alignItems:'center', justifyContent:'space-between', background:C.bg1, borderBottom:'1px solid '+C.borderSoft, fontFamily:'"IBM Plex Mono",monospace', fontSize:9, letterSpacing:2, color:C.text3, textTransform:'uppercase' } },
-      el('span', null, 'FIL-29-2023 \u00b7 SR 23-4 \u00b7 OCC 2023-17 \u00b7 v6.0'),
+    el('div', { style:{ height:24, padding:'0 22px', display:'flex', alignItems:'center', justifyContent:'space-between', background:C.bg1, borderBottom:'1px solid '+C.borderSoft, fontFamily:'"JetBrains Mono",monospace', fontSize:9, letterSpacing:2, color:C.text3, textTransform:'uppercase' } },
+      el('span', null, 'FIL-29-2023 \u00b7 SR 23-4 \u00b7 OCC 2023-17 \u00b7 v6.1'),
       el('span', null, 'Reference Tool \u00b7 Not Official Guidance')
     ),
     // Strip 2: brand + stagenav + about button
     el('div', { className:'app-header-row2', style:{ display:'grid', gridTemplateColumns:'1fr auto 1fr', alignItems:'center', height:62, padding:'0 22px', gap:18 } },
       // Left: brand
       el('div', null,
-        el('div', { style:{ fontFamily:'"EB Garamond",serif', fontStyle:'italic', fontWeight:400, fontSize:22, color:C.text0, lineHeight:1 } }, 'Third-Party Relationship'),
-        el('div', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:9, letterSpacing:3, color:C.gold, textTransform:'uppercase', marginTop:3 } }, 'Lifecycle Reference')
+        el('div', { style:{ fontFamily:'"Fraunces",serif', fontStyle:'italic', fontWeight:400, fontSize:22, color:C.text0, lineHeight:1 } }, 'Third-Party Relationship'),
+        el('div', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:9, letterSpacing:3, color:C.gold, textTransform:'uppercase', marginTop:3 } }, 'Lifecycle Reference')
       ),
       // Center: stagenav
       el('div', { className:'app-stagenav', style:{ display:'flex', alignItems:'center', gap:6 } },
         el('button', { onClick:()=>setStageIdx(Math.max(0,stageIdx-1)), disabled:stageIdx===0, style:{ width:24, height:24, color:stageIdx===0?C.text3+'44':C.text2, fontSize:14 } }, '\u2039'),
-        STAGES.map((s,i)=>el('button', { key:s.id, onClick:()=>setStageIdx(i), style:{ padding:'5px 10px', borderRadius:3, background:i===stageIdx?s.color+'22':'transparent', border:'1px solid '+(i===stageIdx?s.color:C.borderSoft), color:i===stageIdx?s.color:C.text2, fontFamily:'"IBM Plex Mono",monospace', fontSize:10, letterSpacing:1.5, textTransform:'uppercase' } }, s.number)),
+        STAGES.map((s,i)=>el('button', { key:s.id, onClick:()=>setStageIdx(i), style:{ padding:'5px 10px', borderRadius:3, background:i===stageIdx?s.color+'22':'transparent', border:'1px solid '+(i===stageIdx?s.color:C.borderSoft), color:i===stageIdx?s.color:C.text2, fontFamily:'"JetBrains Mono",monospace', fontSize:10, letterSpacing:1.5, textTransform:'uppercase' } }, s.number)),
         el('button', { onClick:()=>setStageIdx(Math.min(STAGES.length-1,stageIdx+1)), disabled:stageIdx===STAGES.length-1, style:{ width:24, height:24, color:stageIdx===STAGES.length-1?C.text3+'44':C.text2, fontSize:14 } }, '\u203a')
       ),
       // Right: about
       el('div', { style:{ display:'flex', justifyContent:'flex-end', alignItems:'center', gap:14 } },
-        el('span', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:9, letterSpacing:2, color:C.text3, textTransform:'uppercase' } }, 'Stage '+stage.number+' of 05'),
-        el('button', { onClick:()=>setAboutOpen(true), style:{ padding:'5px 12px', border:'1px solid '+C.border, borderRadius:3, color:C.text2, fontFamily:'"IBM Plex Mono",monospace', fontSize:10, letterSpacing:2, textTransform:'uppercase' } }, 'About')
+        el('span', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:9, letterSpacing:2, color:C.text3, textTransform:'uppercase' } }, 'Stage '+stage.number+' of 05'),
+        el('button', { onClick:()=>setAboutOpen(true), style:{ padding:'5px 12px', border:'1px solid '+C.border, borderRadius:3, color:C.text2, fontFamily:'"JetBrains Mono",monospace', fontSize:10, letterSpacing:2, textTransform:'uppercase' } }, 'About')
       )
     ),
     // Strip 3: tab strip
@@ -1277,7 +1426,7 @@ function TPRM6() {
       ['example','compare','activities','risks','examiner','state','taxonomy','guidance'].map(t => {
         const labels = { example:'Scenario', compare:'Compare', activities:'Activities', risks:'Risks', examiner:'Examiner', state:'State Lens', taxonomy:'Taxonomy', guidance:'Guidance' };
         const isActive = tab===t;
-        return el('button', { key:t, onClick:()=>setTab(t), style:{ padding:'0 14px', height:'100%', color:isActive?C.gold:C.text2, fontFamily:'"IBM Plex Mono",monospace', fontSize:10, letterSpacing:2, textTransform:'uppercase', borderBottom:'2px solid '+(isActive?C.gold:'transparent'), whiteSpace:'nowrap' } }, labels[t]);
+        return el('button', { key:t, onClick:()=>setTab(t), style:{ padding:'0 14px', height:'100%', color:isActive?C.gold:C.text2, fontFamily:'"JetBrains Mono",monospace', fontSize:10, letterSpacing:2, textTransform:'uppercase', borderBottom:'2px solid '+(isActive?C.gold:'transparent'), whiteSpace:'nowrap' } }, labels[t]);
       })
     )
   );
@@ -1286,16 +1435,16 @@ function TPRM6() {
   const sidebar = el('aside', { className:'app-sidebar', style:{ width:240, flexShrink:0, background:C.bg1, borderRight:'1px solid '+C.border, position:'sticky', top:124, alignSelf:'flex-start', maxHeight:'calc(100vh - 124px)', overflowY:'auto', padding:'18px 14px' } },
     el(MonoLabel, { style:{ marginBottom:10, color:C.gold } }, 'Scenarios'),
     el('div', { style:{ marginBottom:14 } },
-      el('div', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:9, letterSpacing:2, textTransform:'uppercase', color:C.text3, marginBottom:6 } }, 'BaaS / Charter Extension'),
+      el('div', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:9, letterSpacing:2, textTransform:'uppercase', color:C.text3, marginBottom:6 } }, 'BaaS / Charter Extension'),
       SCENARIOS.filter(s=>s.type==='baas').map(s=>el('button', { key:s.id, onClick:()=>pickScenario(s.id), style:{ display:'block', width:'100%', textAlign:'left', padding:'8px 10px', marginBottom:4, background:scenarioId===s.id?C.gold+'22':'transparent', border:'1px solid '+(scenarioId===s.id?C.gold:'transparent'), borderLeft:'3px solid '+C.gold, borderRadius:3, color:scenarioId===s.id?C.text0:C.text2, fontSize:12 } },
-        el('div', { style:{ display:'flex', alignItems:'center', gap:8 } }, el('span', { style:{ color:C.gold } }, s.icon), el('span', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:10, letterSpacing:1 } }, s.abbr)),
+        el('div', { style:{ display:'flex', alignItems:'center', gap:8 } }, el('span', { style:{ color:C.gold } }, s.icon), el('span', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:10, letterSpacing:1 } }, s.abbr)),
         el('div', { style:{ marginTop:3, fontSize:11.5, lineHeight:1.4 } }, s.label)
       ))
     ),
     el('div', null,
-      el('div', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:9, letterSpacing:2, textTransform:'uppercase', color:C.text3, marginBottom:6 } }, 'Traditional Outsourcing'),
+      el('div', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:9, letterSpacing:2, textTransform:'uppercase', color:C.text3, marginBottom:6 } }, 'Traditional Outsourcing'),
       SCENARIOS.filter(s=>s.type==='trad').map(s=>el('button', { key:s.id, onClick:()=>pickScenario(s.id), style:{ display:'block', width:'100%', textAlign:'left', padding:'8px 10px', marginBottom:4, background:scenarioId===s.id?C.teal+'22':'transparent', border:'1px solid '+(scenarioId===s.id?C.teal:'transparent'), borderLeft:'3px solid '+C.teal, borderRadius:3, color:scenarioId===s.id?C.text0:C.text2, fontSize:12 } },
-        el('div', { style:{ display:'flex', alignItems:'center', gap:8 } }, el('span', { style:{ color:C.teal } }, s.icon), el('span', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:10, letterSpacing:1 } }, s.abbr)),
+        el('div', { style:{ display:'flex', alignItems:'center', gap:8 } }, el('span', { style:{ color:C.teal } }, s.icon), el('span', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:10, letterSpacing:1 } }, s.abbr)),
         el('div', { style:{ marginTop:3, fontSize:11.5, lineHeight:1.4 } }, s.label)
       ))
     )
@@ -1308,12 +1457,13 @@ function TPRM6() {
   if (tab === 'example') {
     content = el('div', null,
       el('div', { className:'stage-context', style:{ display:'flex', alignItems:'baseline', gap:14, marginBottom:14, flexWrap:'wrap' } },
-        el('span', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:11, letterSpacing:3, color:stage.color, textTransform:'uppercase' } }, stage.number+' \u00b7 '+stage.title),
+        el('span', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:11, letterSpacing:3, color:stage.color, textTransform:'uppercase' } }, stage.number+' \u00b7 '+stage.title),
         el('span', { style:{ fontSize:12, color:C.text3, fontStyle:'italic' } }, stage.sub)
       ),
       E(ScenarioCard, { stage:stage, scenarioId:scenarioId }),
+      E(MaturityProfile, { scenarioId:scenarioId }),
       stage.insight ? el('div', { style:{ marginTop:18, padding:'14px 18px', background:C.bg3, border:'1px solid '+C.gold+'55', borderLeft:'3px solid '+C.gold, borderRadius:4 } },
-        el('div', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:10, letterSpacing:2, color:C.gold, textTransform:'uppercase', marginBottom:6 } }, 'Industry Insight \u00b7 '+stage.insight.src),
+        el('div', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:10, letterSpacing:2, color:C.gold, textTransform:'uppercase', marginBottom:6 } }, 'Industry Insight \u00b7 '+stage.insight.src),
         el('p', { style:{ fontSize:12.5, color:C.text1, lineHeight:1.7, fontStyle:'italic' } }, stage.insight.text)
       ) : null
     );
@@ -1328,18 +1478,18 @@ function TPRM6() {
       ),
       el('div', { style:{ display:'flex', alignItems:'center', gap:10, marginBottom:14, flexWrap:'wrap' } },
         el('span', { style:{ fontSize:11, color:C.text3 } }, 'Compare against:'),
-        SCENARIOS.filter(s=>s.id!==scenarioId).map(s=>el('button', { key:s.id, onClick:()=>setCompareId(s.id), style:{ padding:'4px 9px', borderRadius:3, background:compareId===s.id?s.color+'22':'transparent', border:'1px solid '+(compareId===s.id?s.color:C.borderSoft), color:compareId===s.id?s.color:C.text2, fontFamily:'"IBM Plex Mono",monospace', fontSize:10, letterSpacing:1, textTransform:'uppercase' } }, s.abbr))
+        SCENARIOS.filter(s=>s.id!==scenarioId).map(s=>el('button', { key:s.id, onClick:()=>setCompareId(s.id), style:{ padding:'4px 9px', borderRadius:3, background:compareId===s.id?s.color+'22':'transparent', border:'1px solid '+(compareId===s.id?s.color:C.borderSoft), color:compareId===s.id?s.color:C.text2, fontFamily:'"JetBrains Mono",monospace', fontSize:10, letterSpacing:1, textTransform:'uppercase' } }, s.abbr))
       ),
       el('div', { className:'compare-cols', style:{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:14 } },
         E(ScenarioCard, { stage:stage, scenarioId:scenarioId }),
         E(ScenarioCard, { stage:stage, scenarioId:compareId })
       ),
       diff ? el('div', { style:{ marginTop:16, padding:'14px 18px', background:C.bg3, border:'1px solid '+C.violet+'55', borderLeft:'3px solid '+C.violet, borderRadius:4 } },
-        el('div', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:10, letterSpacing:2, color:C.violet, textTransform:'uppercase', marginBottom:6 } }, 'Structural Difference'),
+        el('div', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:10, letterSpacing:2, color:C.violet, textTransform:'uppercase', marginBottom:6 } }, 'Structural Difference'),
         el('p', { style:{ fontSize:12.5, color:C.text1, lineHeight:1.7 } }, diff)
       ) : null,
       STAGE_DIFFS[stage.id] ? el('div', { style:{ marginTop:12, padding:'14px 18px', background:C.bg2, border:'1px solid '+C.border, borderLeft:'3px solid '+stage.color, borderRadius:4 } },
-        el('div', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:10, letterSpacing:2, color:stage.color, textTransform:'uppercase', marginBottom:6 } }, 'At This Stage'),
+        el('div', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:10, letterSpacing:2, color:stage.color, textTransform:'uppercase', marginBottom:6 } }, 'At This Stage'),
         el('p', { style:{ fontSize:12.5, color:C.text1, lineHeight:1.7 } }, STAGE_DIFFS[stage.id])
       ) : null
     );
@@ -1352,7 +1502,7 @@ function TPRM6() {
       el('p', { style:{ fontSize:12, color:C.text3, marginBottom:14, fontStyle:'italic' } }, stage.guidance.slice(0,160)+'\u2026'),
       stage.activities.map((a,i)=>E(ExpandCard, { key:i, title:a.label, detail:a.detail, accent:OMF[a.cfes] && OMF[a.cfes].color, meta:[OMFTag(a.cfes)] })),
       el('div', { style:{ marginTop:16, padding:'12px 16px', background:C.bg1, border:'1px solid '+C.borderSoft, borderRadius:4 } },
-        el('div', { style:{ fontSize:11, color:C.text3, marginBottom:6, fontFamily:'"IBM Plex Mono",monospace', letterSpacing:1.5, textTransform:'uppercase' } }, 'Cites'),
+        el('div', { style:{ fontSize:11, color:C.text3, marginBottom:6, fontFamily:'"JetBrains Mono",monospace', letterSpacing:1.5, textTransform:'uppercase' } }, 'Cites'),
         stage.cites.map((c,i)=>el('div', { key:i, style:{ fontSize:11, color:C.text2, lineHeight:1.6 } }, '\u00b7 '+c))
       )
     );
@@ -1366,7 +1516,7 @@ function TPRM6() {
       el(H, null, 'Risk Signals'),
       el('p', { style:{ fontSize:12, color:C.text3, marginBottom:14, fontStyle:'italic' } }, 'Severity reflects practitioner judgment about supervisory consequence. Higher = more likely to be cited in examination findings.'),
       ['high','med','low'].map(level => grouped[level].length ? el('div', { key:level, style:{ marginBottom:16 } },
-        el('div', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:10, letterSpacing:2, color:level==='high'?C.danger:level==='med'?C.warn:C.safe, textTransform:'uppercase', marginBottom:8 } }, level==='high'?'High severity':level==='med'?'Medium severity':'Lower severity'),
+        el('div', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:10, letterSpacing:2, color:level==='high'?C.danger:level==='med'?C.warn:C.safe, textTransform:'uppercase', marginBottom:8 } }, level==='high'?'High severity':level==='med'?'Medium severity':'Lower severity'),
         grouped[level].map((r,i)=>el('div', { key:i, style:{ display:'flex', alignItems:'flex-start', padding:'10px 14px', background:C.bg2, border:'1px solid '+C.border, borderLeft:'3px solid '+(level==='high'?C.danger:level==='med'?C.warn:C.safe), borderRadius:3, marginBottom:6, fontSize:12.5, color:C.text1, lineHeight:1.65 } },
           SeverityDot(level), el('span', null, r.text)
         ))
@@ -1379,10 +1529,11 @@ function TPRM6() {
         ),
         el('div', { style:{ padding:'10px 14px', background:C.dangerDim, border:'1px solid '+C.danger+'33', borderRadius:3, fontSize:11, color:C.text2, lineHeight:1.65, marginBottom:12, fontStyle:'italic' } }, ENFORCEMENT.disclaimer),
         el('p', { style:{ fontSize:12.5, color:C.text1, lineHeight:1.7, marginBottom:14 } }, ENFORCEMENT.headline),
+        ENFORCEMENT.posture ? el('p', { style:{ fontSize:12, color:C.text2, lineHeight:1.7, marginBottom:14, fontStyle:'italic' } }, ENFORCEMENT.posture) : null,
         ENFORCEMENT.findings.map((f,i)=>el('div', { key:i, style:{ marginBottom:10 } },
           el('div', { style:{ display:'flex', justifyContent:'space-between', alignItems:'baseline', marginBottom:4 } },
             el('span', { style:{ fontSize:12, color:C.text1 } }, f.factor),
-            el('span', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:11, color:f.color } }, f.pct+'%')
+            el('span', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:11, color:f.color } }, f.pct+'%')
           ),
           el('div', { style:{ height:4, background:C.bg2, borderRadius:2, overflow:'hidden', marginBottom:5 } },
             el('div', { style:{ height:'100%', width:f.pct+'%', background:f.color } })
@@ -1392,13 +1543,13 @@ function TPRM6() {
       ) : null,
       // FDIC NPRM
       (stage.id==='planning' || stage.id==='contract' || stage.id==='monitoring') ? el('div', { style:{ marginTop:20, padding:'14px 18px', background:C.bg2, border:'1px solid '+C.border, borderLeft:'3px solid '+C.gold, borderRadius:4 } },
-        el('div', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:10, letterSpacing:2, color:C.gold, textTransform:'uppercase', marginBottom:4 } }, ENFORCEMENT.fdic_rule.title),
+        el('div', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:10, letterSpacing:2, color:C.gold, textTransform:'uppercase', marginBottom:4 } }, ENFORCEMENT.fdic_rule.title),
         el('div', { style:{ fontSize:11, color:C.text3, marginBottom:10, fontStyle:'italic' } }, ENFORCEMENT.fdic_rule.status),
         ENFORCEMENT.fdic_rule.provisions.map((p,i)=>el('div', { key:i, style:{ fontSize:12, color:C.text1, lineHeight:1.65, marginBottom:5 } }, '\u00b7 '+p))
       ) : null,
       // Part 328
       (stage.id==='planning' || stage.id==='contract' || stage.id==='monitoring') ? el('div', { style:{ marginTop:14, padding:'14px 18px', background:C.bg2, border:'1px solid '+C.border, borderLeft:'3px solid '+C.violet, borderRadius:4 } },
-        el('div', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:10, letterSpacing:2, color:C.violet, textTransform:'uppercase', marginBottom:8 } }, ENFORCEMENT.consumer.title),
+        el('div', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:10, letterSpacing:2, color:C.violet, textTransform:'uppercase', marginBottom:8 } }, ENFORCEMENT.consumer.title),
         ENFORCEMENT.consumer.requirements.map((p,i)=>el('div', { key:i, style:{ fontSize:12, color:C.text1, lineHeight:1.65, marginBottom:5 } }, '\u00b7 '+p))
       ) : null
     );
@@ -1411,9 +1562,9 @@ function TPRM6() {
       el(H, null, 'Examiner Lens'),
       el('p', { style:{ fontSize:12, color:C.text3, marginBottom:14, fontStyle:'italic' } }, 'Questions an examiner is likely to explore at this stage, synthesized from FIL-29-2023 and the 2024 Community Bank TPRM Guide. These are not formal published examination procedures.'),
       qs.map((q,i)=>E(ExpandCard, { key:i, title:q.q, detail:el('div', null,
-        el('div', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:10, letterSpacing:1.5, color:C.danger, textTransform:'uppercase', marginBottom:5 } }, 'If absent'),
+        el('div', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:10, letterSpacing:1.5, color:C.danger, textTransform:'uppercase', marginBottom:5 } }, 'If absent'),
         el('p', null, q.flag)
-      ), accent:C.gold, leading:el('span', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:9, letterSpacing:1.5, color:C.text3, paddingTop:2 } }, q.cat) }))
+      ), accent:C.gold, leading:el('span', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:9, letterSpacing:1.5, color:C.text3, paddingTop:2 } }, q.cat) }))
     );
   }
 
@@ -1426,7 +1577,7 @@ function TPRM6() {
       el(MonoLabel, { style:{ marginBottom:10, color:C.text2 } }, 'How the State Track Works'),
       el('div', { style:{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(260px,1fr))', gap:10, marginBottom:24 } },
         STATE_LENS.mechanisms.map((m,i)=>el('div', { key:i, style:{ padding:'12px 14px', background:C.bg2, border:'1px solid '+C.border, borderLeft:'3px solid '+m.color, borderRadius:4 } },
-          el('div', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:10, letterSpacing:1.5, color:m.color, textTransform:'uppercase', marginBottom:6 } }, m.title),
+          el('div', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:10, letterSpacing:1.5, color:m.color, textTransform:'uppercase', marginBottom:6 } }, m.title),
           el('p', { style:{ fontSize:11.5, color:C.text2, lineHeight:1.65 } }, m.detail)
         ))
       ),
@@ -1444,13 +1595,13 @@ function TPRM6() {
   else if (tab === 'taxonomy') {
     content = el('div', null,
       el('div', { style:{ display:'flex', gap:6, marginBottom:14 } },
-        [['spectrum','Spectrum'],['compare','Compare'],['nth','Nth-Party']].map(([v,l])=>el('button', { key:v, onClick:()=>setTaxView(v), style:{ padding:'5px 11px', borderRadius:3, background:taxView===v?C.gold+'22':'transparent', border:'1px solid '+(taxView===v?C.gold:C.border), color:taxView===v?C.gold:C.text2, fontFamily:'"IBM Plex Mono",monospace', fontSize:10, letterSpacing:1.5, textTransform:'uppercase' } }, l))
+        [['spectrum','Spectrum'],['compare','Compare'],['nth','Nth-Party']].map(([v,l])=>el('button', { key:v, onClick:()=>setTaxView(v), style:{ padding:'5px 11px', borderRadius:3, background:taxView===v?C.gold+'22':'transparent', border:'1px solid '+(taxView===v?C.gold:C.border), color:taxView===v?C.gold:C.text2, fontFamily:'"JetBrains Mono",monospace', fontSize:10, letterSpacing:1.5, textTransform:'uppercase' } }, l))
       ),
       taxView==='spectrum' ? el('div', null,
         el(H, null, 'Outsourcing Taxonomy'),
         el('p', { style:{ fontSize:12, color:C.text3, marginBottom:14, fontStyle:'italic' } }, 'A continuum from operational support to charter extension. The structural inversion at the BaaS end is the source of most novel compliance challenges.'),
         el('div', { style:{ marginBottom:18 } },
-          el('div', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:10, letterSpacing:2, color:C.teal, textTransform:'uppercase', marginBottom:8 } }, 'Traditional Outsourcing \u2014 bank-centric'),
+          el('div', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:10, letterSpacing:2, color:C.teal, textTransform:'uppercase', marginBottom:8 } }, 'Traditional Outsourcing \u2014 bank-centric'),
           TAXONOMY.traditional.map((t,i)=>el('div', { key:i, style:{ padding:'10px 14px', background:C.bg2, border:'1px solid '+C.border, borderLeft:'3px solid '+t.color, borderRadius:3, marginBottom:6 } },
             el('div', { style:{ display:'flex', justifyContent:'space-between', alignItems:'baseline', marginBottom:4 } },
               el('span', { style:{ fontSize:13, color:C.text0, fontWeight:500 } }, t.label),
@@ -1460,7 +1611,7 @@ function TPRM6() {
           ))
         ),
         el('div', null,
-          el('div', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:10, letterSpacing:2, color:C.gold, textTransform:'uppercase', marginBottom:8 } }, 'BaaS / Charter Extension \u2014 fintech-centric'),
+          el('div', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:10, letterSpacing:2, color:C.gold, textTransform:'uppercase', marginBottom:8 } }, 'BaaS / Charter Extension \u2014 fintech-centric'),
           TAXONOMY.baas.map((t,i)=>el('div', { key:i, style:{ padding:'10px 14px', background:C.bg2, border:'1px solid '+C.border, borderLeft:'3px solid '+t.color, borderRadius:3, marginBottom:6 } },
             el('div', { style:{ display:'flex', justifyContent:'space-between', alignItems:'baseline', marginBottom:4 } },
               el('span', { style:{ fontSize:13, color:C.text0, fontWeight:500 } }, t.label),
@@ -1474,7 +1625,7 @@ function TPRM6() {
         el(H, null, 'Traditional vs. BaaS \u2014 Structural Differences'),
         el('div', { style:{ marginTop:10 } },
           TAXONOMY.differences.map((d,i)=>el('div', { key:i, className:'tri-col', style:{ display:'grid', gridTemplateColumns:'160px 1fr 1fr', gap:10, padding:'10px 0', borderBottom:'1px solid '+C.borderSoft } },
-            el('div', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:10, letterSpacing:1.5, color:C.text3, textTransform:'uppercase' } }, d.dimension),
+            el('div', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:10, letterSpacing:1.5, color:C.text3, textTransform:'uppercase' } }, d.dimension),
             el('div', { style:{ fontSize:12, color:C.text1, lineHeight:1.6, paddingLeft:10, borderLeft:'2px solid '+C.teal } }, d.traditional),
             el('div', { style:{ fontSize:12, color:C.text1, lineHeight:1.6, paddingLeft:10, borderLeft:'2px solid '+C.gold } }, d.baas)
           ))
@@ -1484,14 +1635,14 @@ function TPRM6() {
         el(H, null, 'Nth-Party Tiers & Concentration'),
         el('div', { style:{ marginBottom:18 } },
           NTH_PARTY.tiers.map((t,i)=>el('div', { key:i, style:{ padding:'12px 14px', background:C.bg2, border:'1px solid '+C.border, borderLeft:'3px solid '+t.color, borderRadius:3, marginBottom:8 } },
-            el('div', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:11, letterSpacing:2, color:t.color, textTransform:'uppercase', marginBottom:6 } }, t.tier),
+            el('div', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:11, letterSpacing:2, color:t.color, textTransform:'uppercase', marginBottom:6 } }, t.tier),
             el('p', { style:{ fontSize:12, color:C.text1, lineHeight:1.6, marginBottom:6 } }, t.oversight),
             el('p', { style:{ fontSize:11, color:C.text3, lineHeight:1.6, fontStyle:'italic' } }, 'e.g., '+t.example)
           ))
         ),
         el(MonoLabel, { style:{ marginBottom:8, color:C.text2 } }, 'Cloud Market Share (approx.)'),
         el('div', { style:{ display:'flex', height:18, borderRadius:3, overflow:'hidden', marginBottom:8, border:'1px solid '+C.border } },
-          NTH_PARTY.cloudData.map((d,i)=>el('div', { key:i, style:{ width:d.share+'%', background:d.color, display:'flex', alignItems:'center', justifyContent:'center', fontSize:10, color:'#fff', fontFamily:'"IBM Plex Mono",monospace' } }, d.share+'%'))
+          NTH_PARTY.cloudData.map((d,i)=>el('div', { key:i, style:{ width:d.share+'%', background:d.color, display:'flex', alignItems:'center', justifyContent:'center', fontSize:10, color:'#fff', fontFamily:'"JetBrains Mono",monospace' } }, d.share+'%'))
         ),
         el('div', { style:{ display:'flex', gap:14, marginBottom:18, flexWrap:'wrap' } }, NTH_PARTY.cloudData.map((d,i)=>el('span', { key:i, style:{ display:'inline-flex', alignItems:'center', gap:5, fontSize:11, color:C.text2 } }, el('span', { style:{ width:8, height:8, background:d.color, borderRadius:2 } }), d.provider))),
         el(MonoLabel, { style:{ marginBottom:8, color:C.text2 } }, 'Concentration Risks'),
@@ -1500,7 +1651,7 @@ function TPRM6() {
           el('p', { style:{ fontSize:11.5, color:C.text2, lineHeight:1.65 } }, r.detail)
         )),
         el('div', { style:{ marginTop:14, padding:'14px 18px', background:C.bg3, border:'1px solid '+C.gold+'55', borderRadius:4 } },
-          el('div', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:10, letterSpacing:2, color:C.gold, textTransform:'uppercase', marginBottom:6 } }, 'Managing the Manager'),
+          el('div', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:10, letterSpacing:2, color:C.gold, textTransform:'uppercase', marginBottom:6 } }, 'Managing the Manager'),
           el('p', { style:{ fontSize:12, color:C.text1, lineHeight:1.7 } }, NTH_PARTY.managingTheManager)
         )
       )
@@ -1512,8 +1663,8 @@ function TPRM6() {
     content = el('div', null,
       el(H, null, 'Guidance for This Stage'),
       el('div', { style:{ padding:'16px 22px', background:C.bg3, borderLeft:'3px solid '+stage.color, borderRadius:4, marginBottom:14 } },
-        el('div', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:10, letterSpacing:2, color:stage.color, textTransform:'uppercase', marginBottom:8 } }, 'FIL-29-2023 \u00b7 '+stage.title),
-        el('blockquote', { style:{ fontFamily:'"EB Garamond",serif', fontStyle:'italic', fontSize:14.5, color:C.text0, lineHeight:1.75, paddingLeft:14, borderLeft:'2px solid '+stage.color } }, '\u201c'+stage.guidance+'\u201d'),
+        el('div', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:10, letterSpacing:2, color:stage.color, textTransform:'uppercase', marginBottom:8 } }, 'FIL-29-2023 \u00b7 '+stage.title),
+        el('blockquote', { style:{ fontFamily:'"Fraunces",serif', fontStyle:'italic', fontSize:14.5, color:C.text0, lineHeight:1.75, paddingLeft:14, borderLeft:'2px solid '+stage.color } }, '\u201c'+stage.guidance+'\u201d'),
         el('div', { style:{ marginTop:10, fontSize:11, color:C.text3 } }, stage.cites.join(' \u00b7 '))
       ),
       // Cross-cutting elements
@@ -1522,7 +1673,7 @@ function TPRM6() {
       CROSS_CUTTING.elements.map((c,i)=>el('div', { key:i, style:{ padding:'10px 14px', background:C.bg2, border:'1px solid '+C.border, borderLeft:'3px solid '+C.gold, borderRadius:3, marginBottom:6 } },
         el('div', { style:{ display:'flex', justifyContent:'space-between', alignItems:'baseline', marginBottom:4 } },
           el('span', { style:{ fontSize:12.5, color:C.text0, fontWeight:500 } }, c.title),
-          el('span', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:9, letterSpacing:1, color:C.text3 } }, c.cite)
+          el('span', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:9, letterSpacing:1, color:C.text3 } }, c.cite)
         ),
         el('p', { style:{ fontSize:12, color:C.text2, lineHeight:1.65 } }, c.detail)
       )),
@@ -1533,7 +1684,7 @@ function TPRM6() {
           '\u00b7 Specific contract terms or templates \u2014 contrast DORA, which mandates minimum clauses.',
           el('br'), '\u00b7 A specific cloud architecture, AI governance model, or technology stack \u2014 the guidance is technology-neutral.',
           el('br'), '\u00b7 Specific maturity levels or scoring methodologies \u2014 OMF in this tool is an analytical construct, not a regulatory standard.',
-          el('br'), '\u00b7 Daily reconciliation for custodial accounts \u2014 that obligation is in the FDIC NPRM (RIN 3064-AG07), which is proposed but not yet finalized as of May 2026.'
+          el('br'), '\u00b7 Daily reconciliation for custodial accounts \u2014 that obligation is in the FDIC NPRM (RIN 3064-AG07), which is proposed but not yet finalized as of mid-2026 and faces uncertain prospects.'
         )
       ),
       // DORA comparison
@@ -1541,7 +1692,7 @@ function TPRM6() {
         el(MonoLabel, { style:{ color:C.violet, marginBottom:8 } }, 'U.S. vs. EU (DORA)'),
         el('p', { style:{ fontSize:12, color:C.text2, lineHeight:1.7, marginBottom:10 } }, DORA.overview),
         el('div', null, DORA.comparison.map((d,i)=>el('div', { key:i, style:{ display:'grid', gridTemplateColumns:'120px 1fr 1fr', gap:10, padding:'8px 0', borderBottom:'1px solid '+C.borderSoft, fontSize:11.5 } },
-          el('div', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:10, letterSpacing:1, color:C.text3, textTransform:'uppercase' } }, d.dimension),
+          el('div', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:10, letterSpacing:1, color:C.text3, textTransform:'uppercase' } }, d.dimension),
           el('div', { style:{ color:C.text1, paddingLeft:10, borderLeft:'2px solid '+C.teal, lineHeight:1.6 } }, d.us),
           el('div', { style:{ color:C.text1, paddingLeft:10, borderLeft:'2px solid '+C.violet, lineHeight:1.6 } }, d.eu)
         ))),
@@ -1555,11 +1706,11 @@ function TPRM6() {
     el('div', { onClick:()=>setAboutOpen(false), style:{ position:'fixed', inset:0, background:'rgba(0,0,0,0.5)', zIndex:200 } }),
     el('aside', { className:'about-drawer', style:{ position:'fixed', top:0, right:0, height:'100vh', width:460, maxWidth:'100vw', background:C.bg1, borderLeft:'1px solid '+C.border, zIndex:201, overflowY:'auto', animation:'slideIn .3s ease' } },
       el('div', { style:{ padding:'18px 22px', borderBottom:'1px solid '+C.border, display:'flex', justifyContent:'space-between', alignItems:'center' } },
-        el('div', { style:{ fontFamily:'"EB Garamond",serif', fontStyle:'italic', fontSize:22, color:C.text0 } }, 'About'),
+        el('div', { style:{ fontFamily:'"Fraunces",serif', fontStyle:'italic', fontSize:22, color:C.text0 } }, 'About'),
         el('button', { onClick:()=>setAboutOpen(false), style:{ color:C.text2, fontSize:18 } }, '\u2715')
       ),
       el('div', { style:{ display:'flex', borderBottom:'1px solid '+C.border, padding:'0 22px' } },
-        [['how','How It Works'],['tabs','Tabs Guide'],['glossary','Glossary'],['sources','Sources']].map(([v,l])=>el('button', { key:v, onClick:()=>setAboutTab(v), style:{ padding:'10px 14px', color:aboutTab===v?C.gold:C.text2, fontFamily:'"IBM Plex Mono",monospace', fontSize:10, letterSpacing:1.5, textTransform:'uppercase', borderBottom:'2px solid '+(aboutTab===v?C.gold:'transparent') } }, l))
+        [['how','How It Works'],['tabs','Tabs Guide'],['glossary','Glossary'],['sources','Sources']].map(([v,l])=>el('button', { key:v, onClick:()=>setAboutTab(v), style:{ padding:'10px 14px', color:aboutTab===v?C.gold:C.text2, fontFamily:'"JetBrains Mono",monospace', fontSize:10, letterSpacing:1.5, textTransform:'uppercase', borderBottom:'2px solid '+(aboutTab===v?C.gold:'transparent') } }, l))
       ),
       el('div', { style:{ padding:'18px 22px' } },
         aboutTab==='how' ? el('div', null,
@@ -1572,19 +1723,19 @@ function TPRM6() {
             )
           )),
           el('div', { style:{ marginTop:14, padding:'12px 14px', background:C.dangerDim, border:'1px solid '+C.danger+'44', borderRadius:3 } },
-            el('div', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:10, letterSpacing:2, color:C.danger, textTransform:'uppercase', marginBottom:5 } }, 'Important Caveat'),
+            el('div', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:10, letterSpacing:2, color:C.danger, textTransform:'uppercase', marginBottom:5 } }, 'Important Caveat'),
             el('p', { style:{ fontSize:12, color:C.text1, lineHeight:1.7 } }, 'OMF \u2014 the Oversight Maturity Framework \u2014 is an analytical construct developed for this tool. It is NOT an official standard, certification, or coalition product. Enforcement percentages shown are illustrative composites, not citable statistics. This tool is a reference, not regulatory guidance.')
           )
         ) :
         aboutTab==='tabs' ? el('div', null,
           ABOUT.tabs.map((t,i)=>el('div', { key:i, style:{ padding:'10px 14px', marginBottom:8, background:C.bg2, border:'1px solid '+C.border, borderLeft:'3px solid '+t.color, borderRadius:3 } },
-            el('div', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:11, letterSpacing:1.5, color:t.color, textTransform:'uppercase', marginBottom:5 } }, t.tab),
+            el('div', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:11, letterSpacing:1.5, color:t.color, textTransform:'uppercase', marginBottom:5 } }, t.tab),
             el('p', { style:{ fontSize:12, color:C.text2, lineHeight:1.65 } }, t.desc)
           ))
         ) :
         aboutTab==='glossary' ? el('div', null,
           ABOUT.glossary.map((g,i)=>el('div', { key:i, style:{ marginBottom:14, paddingBottom:12, borderBottom:'1px solid '+C.borderSoft } },
-            el('div', { style:{ fontSize:12.5, fontFamily:'"IBM Plex Mono",monospace', letterSpacing:1, color:g.color, marginBottom:6 } }, g.term),
+            el('div', { style:{ fontSize:12.5, fontFamily:'"JetBrains Mono",monospace', letterSpacing:1, color:g.color, marginBottom:6 } }, g.term),
             el('p', { style:{ fontSize:11.5, color:C.text2, lineHeight:1.65 } }, g.def)
           ))
         ) :
@@ -1598,6 +1749,27 @@ function TPRM6() {
     )
   ) : null;
 
+  // -- BOTTOM STAGE STEPPER ------------------------------------------------
+  const prevStage = stageIdx > 0 ? STAGES[stageIdx - 1] : null;
+  const nextStage = stageIdx < STAGES.length - 1 ? STAGES[stageIdx + 1] : null;
+  const stageNav = el('div', { className:'stage-stepper no-print', style:{ display:'flex', justifyContent:'space-between', alignItems:'stretch', gap:12, marginTop:30, paddingTop:18, borderTop:'1px solid '+C.borderSoft } },
+    prevStage
+      ? el('button', { className:'stagestep', onClick:()=>setStageIdx(stageIdx-1), style:{ display:'flex', flexDirection:'column', alignItems:'flex-start', gap:3, padding:'10px 16px', borderRadius:5, background:'transparent', border:'1px solid '+C.border, borderLeft:'3px solid '+prevStage.color, color:C.text2, minWidth:172 } },
+          el('span', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:9, letterSpacing:2, textTransform:'uppercase', color:prevStage.color } }, '\u2190 Previous'),
+          el('span', { style:{ fontSize:13.5, color:C.text1, fontWeight:500 } }, prevStage.number+' \u00b7 '+prevStage.title)
+        )
+      : el('span'),
+    nextStage
+      ? el('button', { className:'stagestep', onClick:()=>setStageIdx(stageIdx+1), style:{ display:'flex', flexDirection:'column', alignItems:'flex-end', gap:3, padding:'10px 16px', borderRadius:5, background:nextStage.color+'18', border:'1px solid '+nextStage.color+'66', borderRight:'3px solid '+nextStage.color, color:C.text1, minWidth:172 } },
+          el('span', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:9, letterSpacing:2, textTransform:'uppercase', color:nextStage.color } }, 'Next stage \u2192'),
+          el('span', { style:{ fontSize:13.5, color:C.text0, fontWeight:500 } }, nextStage.number+' \u00b7 '+nextStage.title)
+        )
+      : el('span', { style:{ display:'flex', flexDirection:'column', alignItems:'flex-end', gap:3, padding:'10px 16px' } },
+          el('span', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:9, letterSpacing:2, textTransform:'uppercase', color:C.text3 } }, 'End of lifecycle'),
+          el('span', { style:{ fontSize:13.5, color:C.text2, fontStyle:'italic' } }, 'Termination is the final stage')
+        )
+  );
+
   // -- ASSEMBLE ------------------------------------------------------------
   return el('div', null,
     header,
@@ -1606,18 +1778,19 @@ function TPRM6() {
       el('main', { className:'app-main', style:{ flex:1, padding:'24px 30px', minWidth:0 } },
         // OMF maturity legend — small, persistent
         el('div', { style:{ display:'flex', alignItems:'center', gap:10, marginBottom:18, padding:'8px 12px', background:C.bg1, border:'1px solid '+C.borderSoft, borderRadius:3, flexWrap:'wrap', fontSize:10 } },
-          el('span', { style:{ fontFamily:'"IBM Plex Mono",monospace', letterSpacing:1.5, color:C.text3, textTransform:'uppercase' } }, 'OMF Maturity'),
-          OMF_LEVELS.map((l,i)=>el('span', { key:l.id, style:{ display:'inline-flex', alignItems:'center', gap:4, color:C.text2 } },
+          el('span', { style:{ fontFamily:'"JetBrains Mono",monospace', letterSpacing:1.5, color:C.text3, textTransform:'uppercase' } }, 'OMF Maturity'),
+          OMF_LEVELS.map((l,i)=>el('span', { key:l.id, title:l.note, style:{ display:'inline-flex', alignItems:'center', gap:4, color:C.text2 } },
             el('span', { style:{ width:8, height:8, background:l.color, borderRadius:2 } }),
-            el('span', { style:{ fontFamily:'"IBM Plex Mono",monospace', fontSize:9, letterSpacing:1, color:l.color } }, l.id),
+            el('span', { style:{ fontFamily:'"JetBrains Mono",monospace', fontSize:9, letterSpacing:1, color:l.color } }, l.id),
             el('span', { style:{ fontSize:10.5 } }, l.name)
           )),
           el('span', { style:{ fontSize:10, color:C.text3, fontStyle:'italic', flexBasis:'100%', lineHeight:1.5 } }, OMF_THRESHOLD)
         ),
-        content
+        content,
+        stageNav
       )
     ),
-    el('footer', { className:'app-footer', style:{ padding:'14px 22px', borderTop:'1px solid '+C.border, background:C.bg0, fontFamily:'"IBM Plex Mono",monospace', fontSize:9, letterSpacing:2, color:C.text3, textTransform:'uppercase', textAlign:'center', lineHeight:1.7 } },
+    el('footer', { className:'app-footer', style:{ padding:'14px 22px', borderTop:'1px solid '+C.border, background:C.bg0, fontFamily:'"JetBrains Mono",monospace', fontSize:9, letterSpacing:2, color:C.text3, textTransform:'uppercase', textAlign:'center', lineHeight:1.7 } },
       'Reference tool \u00b7 Not legal or regulatory advice \u00b7 OMF is an analytical construct, not an official standard',
       el('br'),
       'Sources: FIL-29-2023 \u00b7 2024 CB TPRM Guide \u00b7 2024 Joint Statement \u00b7 FDIC NPRM (RIN 3064-AG07) \u00b7 FIL-15-2026 \u00b7 DORA'
