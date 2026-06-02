@@ -461,6 +461,7 @@ const TABS = [
  {id:"policy",label:"Monetary Policy"},
  {id:"supervision",label:"Supervision"},
  {id:"payments",label:"Payments"},
+ {id:"masteraccounts",label:"Master Accounts"},
  {id:"history",label:"History & Statute"},
  {id:"glossary",label:"Glossary"}
 ];
@@ -721,12 +722,76 @@ main.insertAdjacentHTML('beforeend',`
   <p style="font-size:14.5px;color:var(--ink-2);max-width:80ch">Eight FMUs are designated — including DTCC's DTC, NSCC and FICC; CME Clearing and ICE Clear Credit; CLS Bank; and The Clearing House's CHIPS. Oversight is shared with the SEC and CFTC depending on the utility.</p>
 
   <div class="myth">
-    <p class="q">Master accounts &amp; the Custodia fight — the gateway to it all</p>
-    <p class="a">A <b>master account</b> is an institution's direct account at its Reserve Bank — the entrance to Fedwire and the other rails. The Fed's 2022 <b>Account Access Guidelines</b> grade applicants in three tiers, with the <b>strictest review</b> for entities that are <em>uninsured and lack a federal prudential supervisor</em>. <b>Custodia Bank</b>, a Wyoming crypto-focused SPDI, was denied in 2023; the <b>Tenth Circuit affirmed (Oct 2025)</b> that a Reserve Bank <em>may</em> grant access but isn't compelled to, and <b>denied rehearing en banc (Mar 2026)</b>. Meanwhile a "skinny" limited account was granted to Kraken (Mar 2026) — an emerging middle path. For state regulators, this is where chartering innovation collides with federal payment-system gatekeeping.</p>
+    <p class="q">Master accounts — the contested doorway to every rail above</p>
+    <p class="a">A <b>master account</b> is an institution's direct account at its Reserve Bank, and the entrance to Fedwire, FedACH, and the rest. Who gets one — and whether a Reserve Bank can refuse a state-chartered, legally eligible applicant — is now a live Supreme Court question and the subject of an active Fed rulemaking. → <b>See the Master Accounts tab</b> for the tiering framework, the Custodia litigation, and the new "Payment Account" proposal.</p>
   </div>
 </section>`);
 
-/* ---- Panel 7: History ---- */
+/* ---- Panel 7: Master Accounts ---- */
+const TL_MA=[
+ {y:"Oct 2020",h:"Custodia applies",p:"Custodia Bank — a Wyoming Special Purpose Depository Institution (SPDI) chartered to serve digital-asset clients, uninsured and with no Fed-supervised holding company — applies to the Kansas City Fed for a master account."},
+ {y:"Aug 2022",key:true,h:"Account Access Guidelines finalized",p:"The Board publishes the tiered review framework, with Tier 3 — uninsured institutions lacking a federal prudential supervisor — drawing the strictest scrutiny."},
+ {y:"Jan 2023",h:"Custodia denied",p:"The Kansas City Fed denies the application, citing safety-and-soundness concerns tied to the crypto-focused business model. Custodia sues."},
+ {y:"2024",h:"District court for the Fed",p:"The U.S. District Court for Wyoming rules against Custodia on the merits — a Reserve Bank has discretion to grant or deny."},
+ {y:"Oct 31 2025",key:true,h:"Tenth Circuit affirms 2–1",p:"The panel reads FRA §13 (§342) as permitting, not compelling, a Reserve Bank to receive deposits, and the Monetary Control Act's 'shall be available' (§248a) as a pricing rule, not an access guarantee. Judge Tymkovich dissents — warning the ruling hands Reserve Banks a 'veto over states' chartering power.'"},
+ {y:"Mar 4 2026",h:"Kraken pilot account",p:"The Kansas City Fed approves a limited-purpose account for Kraken Financial (also a Wyoming SPDI). Vice Chair for Supervision Bowman calls it a 'pilot' for nonbank access — an emerging middle path short of full Tier 3 access."},
+ {y:"Mar 13 2026",key:true,h:"En banc rehearing denied 7–3",p:"The full Tenth Circuit declines to revisit the panel, without further opinion. Tymkovich dissents again. The decision confirms broad Reserve Bank discretion as the law of the circuit."},
+ {y:"May 2026",h:"Payment Account proposed + Tier 3 pause",p:"The Board publishes a formal 'Payment Account' framework for comment (6–1, Gov. Barr dissenting) and asks Reserve Banks to pause Tier 3 access decisions while it finishes the policy. A White House executive order (EO 14405) separately directs the Fed to review its access framework."},
+ {y:"Jul 11 2026",h:"Cert deadline",p:"After Justice Gorsuch granted a 30-day extension, Custodia's deadline to petition the Supreme Court (docket 25A1320) is July 11, 2026. As of early June it had not yet filed, and appeared to be weighing both tracks — cert and a limited-account application."}
+];
+
+main.insertAdjacentHTML('beforeend',`
+<section class="panel" id="p-masteraccounts">
+  <div class="sec-head"><span class="sec-num">7</span><h2>Master accounts &amp; access</h2></div>
+  <p class="lede">A master account is the <b>single doorway</b> to everything in the Payments tab — reserves, Fedwire, FedACH, settlement. Who is allowed through that door, and whether a Reserve Bank can refuse a <b>legally eligible, state-chartered</b> applicant, is the sharpest live fight in U.S. payments law — now pending before the Supreme Court and the subject of an active Fed rulemaking.</p>
+
+  <h3 class="sub">What a master account actually is</h3>
+  <div class="grid g2">
+    <div class="fcard nv"><span class="tagn">The bundle</span><h3>One account, the whole System</h3>
+      <p>An institution's <b>direct account at its district Reserve Bank</b>. It holds the institution's reserve balances and is the on-ramp to Fedwire Funds &amp; Securities, FedACH, and the National Settlement Service — without it, a firm must rent access through a correspondent bank, adding cost, delay, and dependency.</p></div>
+    <div class="fcard ox"><span class="tagn">The statutory fault line</span><h3>"May receive" vs. "shall be available"</h3>
+      <p>Two provisions are in tension. FRA §13 (<span class="codecite">12 U.S.C. §342</span>) says a Reserve Bank <em>may</em> receive deposits — permissive. The Monetary Control Act (<span class="codecite">12 U.S.C. §248a</span>) says services <em>"shall be available"</em> to nonmember depository institutions. The Fed reads that as a <b>pricing</b> mandate; applicants read it as an <b>access</b> entitlement. That single question drives the entire Custodia case.</p></div>
+  </div>
+
+  <h3 class="sub">The Account Access Guidelines (Aug 2022) — a tiered gate</h3>
+  <p class="subnote">The same legal standard applies to every request, but the depth of review scales with risk and oversight.</p>
+  <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>Tier</th><th>Who</th><th>Review</th></tr></thead>
+      <tbody>
+        <tr><td><b>Tier 1</b></td><td>Federally insured institutions</td><td>Streamlined — the baseline case.</td></tr>
+        <tr><td><b>Tier 2</b></td><td>Not federally insured, but subject to federal prudential supervision (directly or via a holding company)</td><td>Intermediate scrutiny.</td></tr>
+        <tr><td><b>Tier 3</b></td><td><b>Not federally insured <em>and</em> no federal prudential supervisor</b> — e.g. many state special-purpose charters</td><td><b>Strictest review.</b> This is where novel state charters (SPDIs, special trust charters) land.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="myth">
+    <p class="q">The reviewability wrinkle: are Reserve Banks even "agencies"?</p>
+    <p class="a">A denial is hard to challenge because courts have held that the <b>Reserve Banks are not federal "agencies"</b> for Administrative Procedure Act purposes — only the Board is. So an applicant can't simply sue a Reserve Bank as it would a federal agency, which is part of why Custodia's statutory-entitlement theory became the whole ballgame.</p>
+  </div>
+
+  <h3 class="sub">The litigation: <em>Custodia Bank v. Federal Reserve</em></h3>
+  <p class="subnote">The case that will likely settle whether eligibility means entitlement. The lineage before it: <b>The Narrow Bank (TNB)</b> and <b>Fourth Corner Credit Union</b> were earlier access denials; <b>Reserve Trust</b> held and then lost an account amid controversy.</p>
+  <div class="tl">${TL_MA.map(t=>`
+    <div class="tl-item ${t.key?'key':''}">
+      <div class="tl-year">${t.y}</div>
+      <h4>${t.h}</h4><p>${t.p}</p>
+    </div>`).join('')}</div>
+
+  <h3 class="sub">The middle path: the "Payment Account" (a/k/a "skinny" master account)</h3>
+  <p class="subnote">A lighter, lower-risk account the Fed is building as an alternative to full master-account status — Governor Waller's October 2025 framing, now a formal proposal.</p>
+  <div class="grid g2">
+    <div class="fcard"><span class="tagn">What it is</span><h3>A stripped-down on-ramp</h3>
+      <p>A special-purpose Reserve Bank account for payments-focused firms. Holders would clear and settle their own payments but get <b>no intraday credit, no discount window, and no interest</b> on balances, with automated controls to prevent overdrafts. An institution may hold a Payment Account <b>or</b> a master account — not both.</p></div>
+    <div class="fcard ox"><span class="tagn">Where it stands</span><h3>Proposed, comment open</h3>
+      <p>A December 2025 prototype RFI (Docket OP-1877) advanced to a <b>formal proposed framework in May 2026</b>, approved <b>6–1</b> with Governor Barr dissenting on oversight grounds, on a 60-day comment period. The Board asked Reserve Banks to <b>pause Tier 3 decisions</b> meanwhile; Waller is targeting a final rule by <b>year-end 2026</b>. A White House order (EO 14405, <span class="codecite">91 FR 30475</span>) separately directs a review of access policy.</p></div>
+  </div>
+
+  <div class="note"><b>Why this sits in your lane.</b> Master-account access is the precise seam where the <b>dual banking system</b> meets federal payment infrastructure: a state can charter an innovative institution, but a Reserve Bank's gate can render that charter commercially hollow. The unresolved questions — does statutory eligibility confer entitlement, and does a "skinny" account become the de facto answer for nonbanks — will shape charter strategy for stablecoin issuers, fintechs, and trust companies well beyond the crypto framing the headlines use.</div>
+</section>`);
+
+/* ---- Panel 8: History ---- */
 const TL=[
  {y:"1913",key:true,h:"Federal Reserve Act",p:"Signed by Wilson. The Panic-of-1907 compromise: privately capitalized regional Banks under a public central Board — federalism baked into the architecture."},
  {y:"1932",h:"Section 13(3) added",p:"Emergency lending authority for 'unusual and exigent circumstances' — later the basis for the 2008 and 2020 crisis facilities."},
@@ -761,7 +826,7 @@ const CITES=[
 ];
 main.insertAdjacentHTML('beforeend',`
 <section class="panel" id="p-history">
-  <div class="sec-head"><span class="sec-num">7</span><h2>History &amp; statutory basis</h2></div>
+  <div class="sec-head"><span class="sec-num">8</span><h2>History &amp; statutory basis</h2></div>
   <p class="lede">Every modern feature of the Fed is the residue of a specific statute. The structure that confuses people is just <b>layered compromises</b> — 1913, 1935, 1980, 2010 — each visible in the citation map below.</p>
   <div class="map-wrap" style="grid-template-columns:1fr 1fr;align-items:start">
     <div>
@@ -834,6 +899,8 @@ const GLOSSARY=[
  {t:"Financial Market Utility",abbr:"FMU",cat:"payments",d:"A system that clears, settles, or records financial transactions. FSOC can designate one as systemically important under Dodd-Frank Title VIII, triggering Fed risk-management standards (Regulation HH)."},
  {t:"Master account",cat:"payments",d:"An institution's direct account at its Reserve Bank — the gateway to holding reserves and accessing Fedwire and the other rails. Access is graded under the 2022 Account Access Guidelines."},
  {t:"Account Access Guidelines",cat:"payments",d:"The Fed's 2022 tiered framework for evaluating master-account requests, with the strictest review (Tier 3) for institutions that are uninsured and lack a federal prudential supervisor."},
+ {t:"Payment Account",abbr:"'skinny' master account",cat:"payments",d:"A proposed lighter Reserve Bank account for payments-focused firms — clearing and settlement only, with no intraday credit, discount window, or interest. Floated by Governor Waller (Oct 2025); a formal framework was proposed in May 2026 (6–1, Barr dissenting) on a 60-day comment period."},
+ {t:"Special Purpose Depository Institution",abbr:"SPDI",cat:"payments",d:"A Wyoming charter (also seen as special-purpose trust charters elsewhere) for institutions — often digital-asset firms — that take deposits but don't make conventional loans. Typically uninsured and without a federal prudential supervisor, placing them in Tier 3 for master-account review. Custodia and Kraken are SPDIs."},
 
  // legal / historical
  {t:"Federal Reserve Act",cat:"legal",d:"The 1913 statute (signed Dec. 23, 1913) creating the System as a compromise after the Panic of 1907 — regional banks under a central public board. The foundation for nearly all Fed authority."},
@@ -857,7 +924,7 @@ const GCAT_LABEL={structure:"Structure",policy:"Monetary Policy",supervision:"Su
 
 main.insertAdjacentHTML('beforeend',`
 <section class="panel" id="p-glossary">
-  <div class="sec-head"><span class="sec-num">8</span><h2>Glossary of terms</h2></div>
+  <div class="sec-head"><span class="sec-num">9</span><h2>Glossary of terms</h2></div>
   <p class="lede">The working vocabulary of the System — the acronyms, rating frameworks, payment rails, and statutory hooks used across the other tabs. <b>Search</b> or <b>filter by category</b>.</p>
   <div class="gloss-controls">
     <div class="gloss-search"><input type="text" id="glossSearch" placeholder="Search terms, acronyms, definitions…" aria-label="Search glossary"></div>
