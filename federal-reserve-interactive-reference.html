@@ -9,18 +9,37 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,900;1,9..144,400;1,9..144,500&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#1c1a17;          /* near-black wire ink */
-    --ink-2:#3a352e;
-    --paper:#f3eee2;        /* bone / newsprint */
-    --paper-2:#e9e1cf;
-    --card:#faf6ec;
-    --brass:#8a6d2f;        /* muted ochre rule */
-    --brass-2:#b3934f;
-    --oxblood:#7a2d2c;      /* the single editorial accent */
+    --ink:#16150f;          /* deep ink */
+    --ink-2:#46433a;
+    --paper:#f1ede2;        /* canonical paper */
+    --paper-2:#e9e3d4;
+    --card:#f7f3ea;
+    --brass:#cf7714;        /* copper — the live-wire accent */
+    --brass-2:#a85c08;      /* copper-deep */
+    --copper:#cf7714;
+    --copper-deep:#a85c08;
+    --copper-soft:rgba(207,119,20,.20);
+    --oxblood:#7a1f2b;      /* the editorial accent */
+    --oxblood-tx:#6a1a25;
     --rule:#cabf9f;
-    --muted:#6c6557;
-    --line:#d6cbb0;
-    --shadow:0 1px 2px rgba(28,26,23,.06),0 6px 22px rgba(28,26,23,.08);
+    --muted:#6c6859;
+    --line:rgba(22,21,15,.16);
+    --header-bg:rgba(247,243,234,.93);
+    --ink-fixed:#1c1a17;
+    --oxblood-fixed:#7a1f2b;
+    --shadow:0 1px 2px rgba(22,21,15,.05),0 6px 22px rgba(22,21,15,.07);
+  }
+  @media(prefers-color-scheme:dark){
+    :root{
+      --ink:#f1ede2; --ink-2:#c2bdac;
+      --paper:#16150f; --paper-2:#221f17; --card:#201e16;
+      --brass:#e6973c; --brass-2:#f0a64f;
+      --copper:#e6973c; --copper-deep:#f0a64f; --copper-soft:rgba(230,151,60,.26);
+      --oxblood:#d27d88; --oxblood-tx:#dc8c96;
+      --rule:#3a352a; --muted:#928d7d; --line:rgba(241,237,226,.16);
+      --header-bg:rgba(30,28,21,.94);
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 22px rgba(0,0,0,.35);
+    }
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -28,10 +47,16 @@
     margin:0;background:var(--paper);color:var(--ink);
     font-family:"Archivo",system-ui,sans-serif;
     font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
-    background-image:
-      radial-gradient(circle at 12% -10%, rgba(179,147,79,.06), transparent 42%),
-      radial-gradient(circle at 100% 0%, rgba(122,45,44,.045), transparent 35%);
+    background-image:radial-gradient(rgba(22,21,15,.022) 1px, transparent 1px);
+    background-size:3px 3px;
   }
+  @media(prefers-color-scheme:dark){body{background-image:radial-gradient(rgba(241,237,226,.025) 1px, transparent 1px)}}
+
+  /* ── animated copper wire (runs once on load, then rests off-screen) ── */
+  .wire{position:relative;height:2px;background:var(--line);overflow:visible;max-width:1180px;margin:0 auto}
+  .wire::after{content:"";position:absolute;top:50%;left:0;width:7px;height:7px;border-radius:50%;background:var(--copper);box-shadow:0 0 10px 2px var(--copper-soft);transform:translateY(-50%);animation:wire-run 7.5s linear 1 forwards}
+  @keyframes wire-run{0%{left:-1%;opacity:0}5%{opacity:1}93%{opacity:1}100%{left:101%;opacity:0}}
+  @media(prefers-reduced-motion:reduce){.wire::after{animation:none;left:0;opacity:1}}
   .mono{font-family:"JetBrains Mono",ui-monospace,monospace}
   .serif{font-family:"Fraunces","Spectral",Georgia,serif}
 
@@ -98,7 +123,7 @@
 
   /* ---------- Tabs ---------- */
   nav.tabs{
-    position:sticky;top:0;z-index:30;background:rgba(245,240,228,.93);
+    position:sticky;top:0;z-index:30;background:var(--header-bg);
     backdrop-filter:blur(8px);border-bottom:1px solid var(--line);
     margin-top:18px;
   }
@@ -117,7 +142,7 @@
   @media(max-width:820px){
     .tabs-inner{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-right:30px}
     nav.tabs::after{content:"";position:absolute;top:0;right:0;bottom:0;width:34px;
-      pointer-events:none;background:linear-gradient(90deg,rgba(245,240,228,0),rgba(245,240,228,.95))}
+      pointer-events:none;background:linear-gradient(90deg,transparent,var(--header-bg))}
   }
 
   /* ---------- Layout ---------- */
@@ -187,31 +212,36 @@
     text-transform:uppercase;color:var(--muted);flex:0 0 92px;padding-top:2px}
   .drow .v{color:var(--ink);flex:1}
   .drow .v b{font-weight:600}
-  .vote-y{display:inline-block;background:var(--oxblood);color:#fff;font-family:"JetBrains Mono",monospace;
+  .vote-y{display:inline-block;background:var(--oxblood-fixed);color:#fff;font-family:"JetBrains Mono",monospace;
     font-size:10px;padding:2px 7px;border-radius:4px;letter-spacing:.05em}
-  .vote-p{display:inline-block;background:var(--ink);color:#fff;font-family:"JetBrains Mono",monospace;
+  .vote-p{display:inline-block;background:var(--ink-fixed);color:#fff;font-family:"JetBrains Mono",monospace;
     font-size:10px;padding:2px 7px;border-radius:4px;letter-spacing:.05em}
   .vote-n{display:inline-block;background:var(--paper-2);color:var(--muted);border:1px solid var(--line);
     font-family:"JetBrains Mono",monospace;font-size:10px;padding:2px 7px;border-radius:4px}
-  .vacant-tag{background:var(--brass);color:#fff;font-family:"JetBrains Mono",monospace;font-size:10px;
+  .vacant-tag{background:var(--copper-deep);color:#fff;font-family:"JetBrains Mono",monospace;font-size:10px;
     padding:2px 7px;border-radius:4px;letter-spacing:.04em}
 
   /* presidents list */
   .prez-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px;margin-top:6px}
   .prez{display:flex;align-items:center;gap:11px;background:var(--card);border:1px solid var(--line);
-    border-radius:10px;padding:9px 12px;cursor:pointer;text-align:left;width:100%;
+    border-radius:10px;padding:9px 12px;cursor:pointer;text-align:left;width:100%;color:var(--ink);
     font-family:inherit;transition:border-color .15s,transform .1s}
   .prez:hover{border-color:var(--brass-2);transform:translateX(2px)}
   .prez.sel{border-color:var(--oxblood);box-shadow:0 0 0 1px var(--oxblood)}
   .prez .badge{width:30px;height:30px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center;
     color:#fff;font-family:"JetBrains Mono",monospace;font-weight:600;font-size:13px}
   .prez .who{line-height:1.15}
-  .prez .who .city{font-family:"Fraunces",serif;font-weight:600;font-size:14.5px}
+  .prez .who .city{font-family:"Fraunces",serif;font-weight:600;font-size:14.5px;color:var(--ink)}
   .prez .who .name{font-size:12.5px;color:var(--ink-2)}
+  /* president bio links */
+  a.biolink{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--copper-soft);transition:color .12s,border-color .12s}
+  a.biolink:hover{color:var(--oxblood-tx);border-bottom-color:var(--copper)}
+  .prez .who a.biolink{font-size:12.5px}
+  .biolink .ext{font-size:9px;opacity:.6;margin-left:2px;vertical-align:1px}
 
   /* board leadership */
   .board-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
-  .gov{background:linear-gradient(180deg,var(--ink),var(--ink-2));color:#f5f0e4;
+  .gov{background:linear-gradient(180deg,#1f1d16,#2c2920);color:#f5f0e4;
     border-radius:12px;padding:16px 16px 14px;box-shadow:var(--shadow);position:relative;overflow:hidden}
   .gov::after{content:"";position:absolute;right:-30px;top:-30px;width:90px;height:90px;
     border-radius:50%;background:rgba(191,154,82,.16)}
@@ -219,14 +249,14 @@
     text-transform:uppercase;color:var(--brass-2);font-weight:600}
   .gov .pname{font-family:"Fraunces",serif;font-weight:700;font-size:21px;margin:5px 0 3px}
   .gov .meta{font-size:12.5px;color:#cdbf9e}
-  .gov.super{background:linear-gradient(180deg,var(--oxblood),#5a1f1f)}
+  .gov.super{background:linear-gradient(180deg,#7a1f2b,#5a1f1f)}
   .gov.super .role{color:#e6b98f}
   .gov.super .meta{color:#e7cdb8}
 
   /* ---------- Tables ---------- */
   .tbl-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
   table{border-collapse:collapse;width:100%;background:var(--card);font-size:13.5px;min-width:520px}
-  th{background:var(--ink);color:#f5f0e4;font-family:"Archivo",sans-serif;font-weight:600;
+  th{background:var(--ink-fixed);color:#f5f0e4;font-family:"Archivo",sans-serif;font-weight:600;
     text-align:left;padding:11px 13px;font-size:12px;letter-spacing:.02em;position:sticky;top:0}
   td{padding:10px 13px;border-bottom:1px solid var(--line);color:var(--ink-2);vertical-align:top}
   tr:last-child td{border-bottom:none}
@@ -262,7 +292,7 @@
   .note{background:var(--paper-2);border-left:4px solid var(--brass);border-radius:0 8px 8px 0;
     padding:12px 16px;font-size:13.5px;color:var(--ink-2);margin:16px 0}
   .note b{color:var(--ink)}
-  .myth{background:#fbf3ee;border:1px solid #e7c9b8;border-radius:10px;padding:14px 16px;margin:14px 0}
+  .myth{background:var(--paper-2);border:1px solid var(--line);border-left:3px solid var(--oxblood);border-radius:10px;padding:14px 16px;margin:14px 0}
   .myth .q{font-family:"Fraunces",serif;font-style:italic;font-weight:500;color:var(--oxblood);font-size:16px;margin:0 0 5px}
   .myth .a{margin:0;font-size:14px;color:var(--ink-2)}
   .myth .a b{color:var(--ink)}
@@ -308,7 +338,7 @@
   .gterm p .codecite{font-size:11px}
   .gloss-empty{font-family:"Fraunces",serif;font-style:italic;color:var(--muted);
     padding:30px 4px;font-size:16px;display:none}
-  mark{background:rgba(179,147,79,.32);color:inherit;border-radius:2px;padding:0 1px}
+  mark{background:var(--copper-soft);color:inherit;border-radius:2px;padding:0 1px}
 
   footer{max-width:1180px;margin:0 auto;padding:24px 20px 60px;border-top:1px solid var(--line)}
   footer p{font-size:12px;color:var(--muted);max-width:90ch}
@@ -329,6 +359,7 @@
   </div>
   <h1 class="title">The Federal Reserve <em>System</em></h1>
   <p class="dek">What the central bank actually does — monetary policy, supervision, payments, financial stability — and the deliberately split structure of a federal-agency Board overseeing twelve quasi-private Reserve Banks, read from statute and the System's own org charts.</p>
+  <div class="wire" aria-hidden="true" style="margin-top:16px"></div>
 </header>
 
 <div class="summary-bar">
@@ -373,51 +404,51 @@ const DISTRICT_COLORS = {
 };
 
 const DISTRICTS = [
- {n:1,L:"A",city:"Boston",cover:"New England — CT, MA, ME, NH, RI, VT",
+ {n:1,L:"A",bio:"https://www.federalreserve.gov/aboutthefed/federal-reserve-system-boston.htm",city:"Boston",cover:"New England — CT, MA, ME, NH, RI, VT",
   prez:"Susan M. Collins",fvp:"Karen A. Pennell",vote:"n",
   branch:"No active branches",
   note:"New England district; rotated <b>off</b> FOMC voting for 2026."},
- {n:2,L:"B",city:"New York",cover:"New York, 12 NJ counties, Fairfield County CT",
+ {n:2,L:"B",bio:"https://www.federalreserve.gov/aboutthefed/federal-reserve-system-new-york.htm",city:"New York",cover:"New York, 12 NJ counties, Fairfield County CT",
   prez:"John C. Williams",fvp:"Sushmita Shukla",vote:"p",
   branch:"East Rutherford operations center",
   note:"<b>First among equals.</b> Runs the Open Market Trading Desk and the System Open Market Account (SOMA), executes the ON RRP / Standing Repo Facility, conducts FX operations and Treasury auctions. Its president is the <b>permanent FOMC Vice Chair</b> and a permanent voter."},
- {n:3,L:"C",city:"Philadelphia",cover:"Eastern PA, southern NJ, Delaware",
+ {n:3,L:"C",bio:"https://www.federalreserve.gov/aboutthefed/federal-reserve-system-philadelphia.htm",city:"Philadelphia",cover:"Eastern PA, southern NJ, Delaware",
   prez:"Anna Paulson",fvp:"Jeanne R. Rentezelas",vote:"y",
   branch:"No active branches",
   note:"Payments and consumer-finance research hub. <b>2026 FOMC voter.</b>"},
- {n:4,L:"D",city:"Cleveland",cover:"Ohio, western PA, eastern KY, the WV panhandle",
+ {n:4,L:"D",bio:"https://www.federalreserve.gov/aboutthefed/federal-reserve-system-cleveland.htm",city:"Cleveland",cover:"Ohio, western PA, eastern KY, the WV panhandle",
   prez:"Beth M. Hammack",fvp:"Mark S. Meder",vote:"y",
   branch:"Cincinnati · Pittsburgh",
   note:"Inflation research and U.S. Treasury payment-systems work. <b>2026 FOMC voter.</b>"},
- {n:5,L:"E",city:"Richmond",cover:"VA, MD, NC, SC, most of WV, DC",
+ {n:5,L:"E",bio:"https://www.federalreserve.gov/aboutthefed/federal-reserve-system-richmond.htm",city:"Richmond",cover:"VA, MD, NC, SC, most of WV, DC",
   prez:"Thomas I. Barkin",fvp:"Becky C. Bareford",vote:"n",
   branch:"Baltimore · Charlotte",
   note:"Houses key System IT and the Fed's national operations support."},
- {n:6,L:"F",city:"Atlanta",cover:"AL, FL, GA, and parts of LA, MS, TN",
+ {n:6,L:"F",bio:"https://www.atlantafed.org/who-we-are/people/executive-leadership-committee/cheryl-venable",city:"Atlanta",cover:"AL, FL, GA, and parts of LA, MS, TN",
   prez:"VACANT — interim leadership",fvp:"Cheryl L. Venable (First VP, acting)",vote:"n",
   branch:"Birmingham · Jacksonville · Miami · Nashville · New Orleans",
   note:"<b>Leadership transition.</b> Raphael W. Bostic retired Feb. 28, 2026; First Vice President Cheryl L. Venable is leading the Bank while the board of directors conducts a search for the next president.",vacant:true},
- {n:7,L:"G",city:"Chicago",cover:"IA, most of IL & IN, southern WI, lower MI",
+ {n:7,L:"G",bio:"https://www.federalreserve.gov/aboutthefed/federal-reserve-system-chicago.htm",city:"Chicago",cover:"IA, most of IL & IN, southern WI, lower MI",
   prez:"Austan D. Goolsbee",fvp:"Shonda S. Clay",vote:"n",
   branch:"Detroit",
   note:"Industrial Midwest and agriculture. Rotated <b>off</b> FOMC voting for 2026."},
- {n:8,L:"H",city:"St. Louis",cover:"AR and parts of IL, IN, KY, MS, MO, TN",
+ {n:8,L:"H",bio:"https://www.federalreserve.gov/aboutthefed/federal-reserve-system-st-louis.htm",city:"St. Louis",cover:"AR and parts of IL, IN, KY, MS, MO, TN",
   prez:"Alberto Musalem",fvp:"François G. Henriquez, II",vote:"n",
   branch:"Little Rock · Louisville · Memphis",
   note:"Home of <b>FRED</b> and an outsized research / economic-education footprint."},
- {n:9,L:"I",city:"Minneapolis",cover:"MN, MT, ND, SD, northern WI, Upper Peninsula MI",
+ {n:9,L:"I",bio:"https://www.federalreserve.gov/aboutthefed/federal-reserve-system-minneapolis.htm",city:"Minneapolis",cover:"MN, MT, ND, SD, northern WI, Upper Peninsula MI",
   prez:"Neel T. Kashkari",fvp:"Ron J. Feldman",vote:"y",
   branch:"Helena",
   note:"Known for too-big-to-fail and banking-stability research. <b>2026 FOMC voter.</b>"},
- {n:10,L:"J",city:"Kansas City",cover:"CO, KS, NE, OK, WY, northern NM, western MO",
+ {n:10,L:"J",bio:"https://www.federalreserve.gov/aboutthefed/federal-reserve-system-kansas-city.htm",city:"Kansas City",cover:"CO, KS, NE, OK, WY, northern NM, western MO",
   prez:"Jeffrey R. Schmid",fvp:"Kimberly N. Robbins",vote:"n",
   branch:"Denver · Oklahoma City · Omaha",
   note:"Energy- and agriculture-weighted economy; hosts the annual <b>Jackson Hole</b> symposium. Rotated off voting for 2026."},
- {n:11,L:"K",city:"Dallas",cover:"Texas, northern Louisiana, southern New Mexico",
+ {n:11,L:"K",bio:"https://www.federalreserve.gov/aboutthefed/federal-reserve-system-dallas.htm",city:"Dallas",cover:"Texas, northern Louisiana, southern New Mexico",
   prez:"Lorie K. Logan",fvp:"Robert L. Triplett, III",vote:"y",
   branch:"El Paso · Houston · San Antonio",
   note:"Energy-economy expertise; president formerly ran the NY Fed's Desk. <b>2026 FOMC voter.</b>"},
- {n:12,L:"L",city:"San Francisco",cover:"9 western states + AK, HI, Guam, American Samoa, N. Marianas",
+ {n:12,L:"L",bio:"https://www.federalreserve.gov/aboutthefed/federal-reserve-system-san-francisco.htm",city:"San Francisco",cover:"9 western states + AK, HI, Guam, American Samoa, N. Marianas",
   prez:"Mary C. Daly",fvp:"Sarah E. Devany",vote:"n",
   branch:"Los Angeles · Portland · Salt Lake City · Seattle",
   note:"<b>Largest district by geography and population</b> — covers roughly a fifth of the U.S. economy."}
@@ -1020,7 +1051,7 @@ MAP.cities.forEach(c=>{
   const col=DISTRICT_COLORS[c.num];
   // ring color encodes voting status
   let ring="#ffffff";
-  if(d.vote==='y')ring="#7a2d2c";else if(d.vote==='p')ring="#1c1a17";
+  if(d.vote==='y')ring="#7a1f2b";else if(d.vote==='p')ring="#16150f";
   g.appendChild(el('circle',{class:'halo',cx:c.x,cy:c.y,r:16,fill:"none",stroke:col,'stroke-width':2}));
   const dot=el('circle',{class:'dot',cx:c.x,cy:c.y,r:11,fill:col});
   if(d.vote==='y'||d.vote==='p'){dot.setAttribute('stroke',ring);dot.setAttribute('stroke-width',3);}
@@ -1035,11 +1066,16 @@ MAP.cities.forEach(c=>{
 // presidents roster
 const prezList=document.getElementById('prezList');
 DISTRICTS.forEach(d=>{
-  const b=document.createElement('button');b.className='prez';b.dataset.num=d.n;
-  const nameShort=d.vacant?'Vacant — C. Venable (acting)':d.prez;
+  const b=document.createElement('div');b.className='prez';b.dataset.num=d.n;
+  b.setAttribute('role','button');b.setAttribute('tabindex','0');
+  b.setAttribute('aria-label',`District ${d.n}, ${d.city}`);
+  const nameHtml=d.vacant
+    ? `<a class="biolink" href="${d.bio}" target="_blank" rel="noopener">Cheryl L. Venable (acting)<span class="ext">↗</span></a>`
+    : `<a class="biolink" href="${d.bio}" target="_blank" rel="noopener">${d.prez}<span class="ext">↗</span></a>`;
   b.innerHTML=`<span class="badge" style="background:${DISTRICT_COLORS[d.n]}">${d.n}</span>
-    <span class="who"><span class="city">${d.city}</span><br><span class="name">${nameShort}</span></span>`;
-  b.onclick=()=>select(d.n);
+    <span class="who"><span class="city">${d.city}</span><br><span class="name">${nameHtml}</span></span>`;
+  b.addEventListener('click',e=>{ if(e.target.closest('a.biolink'))return; select(d.n); });
+  b.addEventListener('keydown',e=>{ if((e.key==='Enter'||e.key===' ')&&!e.target.closest('a.biolink')){e.preventDefault();select(d.n);} });
   prezList.appendChild(b);
 });
 
@@ -1060,7 +1096,7 @@ function select(num){
       <div class="dcity">${d.city}</div>
     </div>
     <div class="dbody">
-      <div class="drow"><div class="k">President</div><div class="v">${d.vacant?`<span class="vacant-tag">VACANT</span> &nbsp;<b>Cheryl L. Venable</b>, First VP (acting)`:`<b>${d.prez}</b>`}</div></div>
+      <div class="drow"><div class="k">President</div><div class="v">${d.vacant?`<span class="vacant-tag">VACANT</span> &nbsp;<a class="biolink" href="${d.bio}" target="_blank" rel="noopener"><b>Cheryl L. Venable</b>, First VP (acting)<span class="ext">↗</span></a>`:`<a class="biolink" href="${d.bio}" target="_blank" rel="noopener"><b>${d.prez}</b><span class="ext">↗</span></a>`}</div></div>
       <div class="drow"><div class="k">First VP</div><div class="v">${d.vacant?'(see above)':d.fvp}</div></div>
       <div class="drow"><div class="k">Supervision</div><div class="v"><b>${SUPERVISORS[num].name}</b><br><span style="font-size:12px;color:var(--muted)">${SUPERVISORS[num].title}</span>${SUPERVISORS[num].flag?`<br><span style="font-size:11.5px;color:var(--oxblood)">${SUPERVISORS[num].flag}</span>`:''}</div></div>
       <div class="drow"><div class="k">Coverage</div><div class="v">${d.cover}</div></div>
