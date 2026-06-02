@@ -372,7 +372,20 @@ body.no-results .section{display:none}
 .featured::before{content:"";position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,rgba(241,237,226,.015) 0px,rgba(241,237,226,.015) 1px,transparent 1px,transparent 3px);pointer-events:none}
 .featured-eyebrow{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:clamp(28px,4vw,48px);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:rgba(241,237,226,.6);position:relative;z-index:2}
 .featured-eyebrow .stamp{display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--wire);color:var(--wire);padding:6px 12px;letter-spacing:.28em;font-weight:600;transform:rotate(-1.2deg);background:var(--wire-tint)}
+.featured-stack{display:flex;flex-direction:column;gap:clamp(20px,3vw,32px);position:relative;z-index:2}
 .featured-card{display:grid;grid-template-columns:minmax(180px,32%) 1fr;gap:clamp(28px,5vw,72px);align-items:stretch;border:1.5px solid rgba(241,237,226,.3);padding:clamp(28px,4vw,48px);background:rgba(241,237,226,.02);position:relative;z-index:2;cursor:pointer;transition:background .3s ease, border-color .3s ease;color:inherit}
+/* Featured collapse toggle */
+.featured-toggle{position:absolute;top:14px;right:14px;z-index:6;width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:rgba(241,237,226,.04);border:1px solid rgba(241,237,226,.3);color:var(--paper);cursor:pointer;transition:border-color .2s ease,color .2s ease,background .2s ease}
+.featured-toggle:hover{border-color:var(--wire);color:var(--wire);background:var(--wire-tint)}
+.featured-toggle .chev{font-size:11px;line-height:1;transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+.featured-card .featured-body{padding-right:40px}
+.featured-card.is-collapsed{grid-template-columns:1fr}
+.featured-card.is-collapsed .featured-frame,
+.featured-card.is-collapsed .featured-desc,
+.featured-card.is-collapsed .featured-sources,
+.featured-card.is-collapsed .featured-cta{display:none}
+.featured-card.is-collapsed .featured-toggle .chev{transform:rotate(180deg)}
+.featured-card.is-collapsed .featured-title{margin-bottom:0}
 .featured-card:hover{background:var(--wire-tint);border-color:var(--wire)}
 .featured-card:hover .featured-frame{border-color:var(--wire)}
 .featured-card:hover .featured-frame .acc-stroke{stroke:var(--wire)}
@@ -409,6 +422,19 @@ body.no-results .section{display:none}
    ============================================================ */
 .section{padding:clamp(48px,7vw,112px) clamp(22px,5vw,80px) clamp(56px,8vw,128px);border-bottom:2px solid var(--ink);position:relative}
 .section:last-of-type{border-bottom:1px solid var(--line-mid)}
+/* Section collapse toggle */
+.section-toggle{position:absolute;top:clamp(48px,7vw,112px);right:clamp(22px,5vw,80px);z-index:3;display:inline-flex;align-items:center;gap:9px;background:transparent;border:1px solid var(--line-mid);color:var(--ink-soft);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;padding:8px 12px;cursor:pointer;transition:border-color .2s ease,color .2s ease,background .2s ease}
+.section-toggle:hover{border-color:var(--wire);color:var(--wire);background:var(--wire-tint)}
+.section-toggle .chev{font-size:9px;line-height:1;transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+.section.is-collapsed .section-toggle .chev{transform:rotate(180deg)}
+.section.is-collapsed .section-toggle .sct-label::after{content:"";}
+.section.is-collapsed .section-head{margin-bottom:0;padding-bottom:clamp(24px,3.5vw,40px);border-bottom-color:transparent}
+.section.is-collapsed .plates{display:none}
+.section.is-collapsed .section-head::after{display:none}
+@media(max-width:620px){
+  .section-toggle{top:auto;bottom:auto;position:static;margin-bottom:18px}
+  .section-toggle .sct-label{display:inline}
+}
 .section-head{display:grid;grid-template-columns:auto 1fr;gap:clamp(20px,3vw,48px);align-items:start;padding-bottom:clamp(36px,5vw,64px);margin-bottom:clamp(36px,5vw,72px);border-bottom:1px solid var(--line-mid);position:relative}
 .section-roman{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(60px,9vw,140px);line-height:.85;color:var(--accent);font-style:italic;letter-spacing:-.03em}
 .section-meta{padding-top:clamp(8px,1.5vw,20px)}
@@ -579,7 +605,7 @@ body.index-open .index-panel{transform:translateX(0)}
   <div class="index-head">
     <div>
       <div class="ttl">The <em>Wire</em> Index</div>
-      <div class="sub">21 dispatches &middot; 1 featured</div>
+      <div class="sub">19 dispatches &middot; 2 featured</div>
     </div>
     <button class="index-close" id="index-close" aria-label="Close index">&times;</button>
   </div>
@@ -587,6 +613,7 @@ body.index-open .index-panel{transform:translateX(0)}
     <div class="index-group">
       <div class="index-group-label">Featured</div>
       <button class="index-item" data-target="plate-00"><span class="ix-num">&#9670;</span><span class="ix-title">BaaS &amp; Fintech <em>Enforcement</em></span></button>
+      <button class="index-item" data-target="plate-20"><span class="ix-num">&#9670;</span><span class="ix-title">The <em>Fed</em> and Its Functions</span></button>
     </div>
     <div class="index-group">
       <div class="index-group-label">I &middot; Rules &amp; Guidance</div>
@@ -603,24 +630,22 @@ body.index-open .index-panel{transform:translateX(0)}
       <button class="index-item" data-target="plate-06"><span class="ix-num">08</span><span class="ix-title">Bank Merger Reform Scorecard</span></button>
       <button class="index-item" data-target="plate-07"><span class="ix-num">09</span><span class="ix-title">Fed Payment Account Analysis</span></button>
       <button class="index-item" data-target="plate-08"><span class="ix-num">10</span><span class="ix-title">Gould OCC Policy Tracker</span></button>
-      <button class="index-item" data-target="plate-09"><span class="ix-num">11</span><span class="ix-title">H.R. 941 Small Lender Act</span></button>
-      <button class="index-item" data-target="plate-10"><span class="ix-num">12</span><span class="ix-title">Global Fintech <em>Licensing</em></span></button>
-      <button class="index-item" data-target="plate-11"><span class="ix-num">13</span><span class="ix-title">A Policy Lookahead</span></button>
-      <button class="index-item" data-target="plate-12"><span class="ix-num">14</span><span class="ix-title">ABA &middot; BPI &middot; ICBA <em>Comparison</em></span></button>
-      <button class="index-item" data-target="plate-21"><span class="ix-num">15</span><span class="ix-title">Financial Services <em>Bill Tracker</em></span></button>
+      <button class="index-item" data-target="plate-10"><span class="ix-num">11</span><span class="ix-title">Global Fintech <em>Licensing</em></span></button>
+      <button class="index-item" data-target="plate-11"><span class="ix-num">12</span><span class="ix-title">A Policy Lookahead</span></button>
+      <button class="index-item" data-target="plate-12"><span class="ix-num">13</span><span class="ix-title">ABA &middot; BPI &middot; ICBA <em>Comparison</em></span></button>
+      <button class="index-item" data-target="plate-21"><span class="ix-num">14</span><span class="ix-title">Financial Services <em>Bill Tracker</em></span></button>
     </div>
     <div class="index-group">
       <div class="index-group-label">III &middot; Structural Frameworks</div>
-      <button class="index-item" data-target="plate-13"><span class="ix-num">16</span><span class="ix-title">New Federal Reserve Supervisory <em>Operating Principles</em></span></button>
-      <button class="index-item" data-target="plate-14"><span class="ix-num">17</span><span class="ix-title">U.S. Trust Company Regulatory Framework</span></button>
-      <button class="index-item" data-target="plate-15"><span class="ix-num">18</span><span class="ix-title">OCC Preemption Timeline</span></button>
-      <button class="index-item" data-target="plate-16"><span class="ix-num">19</span><span class="ix-title">Regulatory Map</span></button>
-      <button class="index-item" data-target="plate-18"><span class="ix-num">20</span><span class="ix-title">History of <em>Banking</em></span></button>
-      <button class="index-item" data-target="plate-20"><span class="ix-num">21</span><span class="ix-title">The <em>Fed</em> and Its Functions</span></button>
+      <button class="index-item" data-target="plate-13"><span class="ix-num">15</span><span class="ix-title">New Federal Reserve Supervisory <em>Operating Principles</em></span></button>
+      <button class="index-item" data-target="plate-14"><span class="ix-num">16</span><span class="ix-title">U.S. Trust Company Regulatory Framework</span></button>
+      <button class="index-item" data-target="plate-15"><span class="ix-num">17</span><span class="ix-title">OCC Preemption Timeline</span></button>
+      <button class="index-item" data-target="plate-16"><span class="ix-num">18</span><span class="ix-title">Regulatory Map</span></button>
+      <button class="index-item" data-target="plate-18"><span class="ix-num">19</span><span class="ix-title">History of <em>Banking</em></span></button>
     </div>
   </div>
   <div class="index-foot">
-    <span class="count"><b id="index-count">22</b> entries</span>
+    <span class="count"><b id="index-count">21</b> entries</span>
     <button id="index-top">&uarr; Top</button>
   </div>
 </nav>
@@ -640,7 +665,7 @@ body.index-open .index-panel{transform:translateX(0)}
   <div class="masthead-sub">
     <p>A bank regulatory wire service — <em>guidance, rule text, and legislation read from the primary source, filed with conclusions front-loaded.</em></p>
     <div class="masthead-meta">
-      <div><b>21</b> dispatches &middot; <b>1</b> featured &middot; <b>3</b> desks</div>
+      <div><b>19</b> dispatches &middot; <b>2</b> featured &middot; <b>3</b> desks</div>
       <div>Federal banking · State coordination</div>
       <div>Filed from the primary source</div>
     </div>
@@ -659,7 +684,7 @@ body.index-open .index-panel{transform:translateX(0)}
       <span><b>Fed Payment Account</b> — May 2026 formal proposal logged</span>
       <span><b>Bowman</b> — supervisory operating principles, Apr 2026 revision</span>
       <span><b>Bank merger reform</b> — OCC threshold alignment tracking</span>
-      <span><b>H.R. 941</b> — Small Lender Act advanced in HFSC</span>
+      <span><b>Bill tracker</b> — financial services legislation in Congress, live status</span>
       <span><b>Cantero</b> — OCC preemption standard reassessed</span>
     </div>
   </div>
@@ -693,13 +718,13 @@ body.index-open .index-panel{transform:translateX(0)}
       <kbd class="search-kbd">/</kbd>
       <button type="button" class="search-clear" aria-label="Clear search">&times;</button>
     </div>
-    <div class="search-count"><b id="search-visible">21</b> &nbsp;/&nbsp; 21 dispatches</div>
+    <div class="search-count"><b id="search-visible">19</b> &nbsp;/&nbsp; 19 dispatches</div>
   </div>
   <div class="desk-filters" role="group" aria-label="Filter by desk">
-    <button type="button" class="desk-pill is-active" data-desk="all">All <span class="pill-n">21</span></button>
+    <button type="button" class="desk-pill is-active" data-desk="all">All <span class="pill-n">19</span></button>
     <button type="button" class="desk-pill" data-desk="section-i">Rules &amp; Guidance <span class="pill-n">6</span></button>
-    <button type="button" class="desk-pill" data-desk="section-ii">Reform Trackers <span class="pill-n">9</span></button>
-    <button type="button" class="desk-pill" data-desk="section-iii">Structural Frameworks <span class="pill-n">6</span></button>
+    <button type="button" class="desk-pill" data-desk="section-ii">Reform Trackers <span class="pill-n">8</span></button>
+    <button type="button" class="desk-pill" data-desk="section-iii">Structural Frameworks <span class="pill-n">5</span></button>
   </div>
 </section>
 
@@ -709,82 +734,124 @@ body.index-open .index-panel{transform:translateX(0)}
 </section>
 
 <!-- ============================================================
-     FEATURED / CORNERSTONE
+     FEATURED
      ============================================================ -->
 <section class="featured" id="featured">
   <div class="featured-eyebrow">
-    <span>Enforcement &middot; On the wire</span>
+    <span>Featured dispatches</span>
     <span class="stamp">Featured</span>
-    <span>The most active front in bank&ndash;fintech oversight</span>
+    <span>The two we&rsquo;d open first</span>
   </div>
 
-  <a class="featured-card" id="plate-00" href="consent-order-matrix.html" aria-label="BaaS and Fintech-Forward Enforcement Actions: the consent order matrix">
-    <div class="featured-frame">
-      <svg viewBox="0 0 200 140" aria-hidden="true">
-        <!-- Consent-order matrix: rows = institutions, cols = enforcement themes -->
-        <text x="6" y="30" font-family="JetBrains Mono" font-size="5.5" fill="currentColor" opacity=".55" letter-spacing="1">BAAS BANK</text>
-        <text x="6" y="52" font-family="JetBrains Mono" font-size="5.5" fill="currentColor" opacity=".55" letter-spacing="1">FINTECH</text>
-        <text x="6" y="74" font-family="JetBrains Mono" font-size="5.5" fill="currentColor" opacity=".85" letter-spacing="1">MIDDLEWARE</text>
-        <text x="6" y="96" font-family="JetBrains Mono" font-size="5.5" fill="currentColor" opacity=".55" letter-spacing="1">PROGRAM</text>
-        <!-- Column header ticks -->
-        <text x="70" y="16" font-family="JetBrains Mono" font-size="5" fill="currentColor" text-anchor="middle" opacity=".5">AML</text>
-        <text x="104" y="16" font-family="JetBrains Mono" font-size="5" fill="currentColor" text-anchor="middle" opacity=".5">3RD-PTY</text>
-        <text x="138" y="16" font-family="JetBrains Mono" font-size="5" fill="currentColor" text-anchor="middle" opacity=".5">RECON</text>
-        <text x="172" y="16" font-family="JetBrains Mono" font-size="5" fill="currentColor" text-anchor="middle" opacity=".5">CAP</text>
-        <!-- Grid -->
-        <g stroke="currentColor" stroke-width="0.5" opacity=".3">
-          <line x1="56" y1="22" x2="56" y2="104"/>
-          <line x1="90" y1="22" x2="90" y2="104"/>
-          <line x1="122" y1="22" x2="122" y2="104"/>
-          <line x1="156" y1="22" x2="156" y2="104"/>
-          <line x1="188" y1="22" x2="188" y2="104"/>
-          <line x1="56" y1="22" x2="188" y2="22"/>
-          <line x1="56" y1="44" x2="188" y2="44"/>
-          <line x1="56" y1="66" x2="188" y2="66"/>
-          <line x1="56" y1="88" x2="188" y2="88"/>
-          <line x1="56" y1="104" x2="188" y2="104"/>
-        </g>
-        <!-- Cells: filled = action present. Accent = the live/most-cited cluster. -->
-        <rect x="58" y="24" width="30" height="18" fill="currentColor" opacity=".75"/>
-        <rect x="92" y="24" width="28" height="18" fill="currentColor" opacity=".4"/>
-        <rect x="92" y="46" width="28" height="18" class="acc-fill"/>
-        <rect x="124" y="46" width="30" height="18" class="acc-fill"/>
-        <rect x="58" y="68" width="30" height="18" fill="currentColor" opacity=".55"/>
-        <rect x="124" y="68" width="30" height="18" fill="currentColor" opacity=".75"/>
-        <rect x="158" y="68" width="28" height="18" fill="currentColor" opacity=".4"/>
-        <rect x="92" y="90" width="28" height="12" fill="currentColor" opacity=".55"/>
-        <rect x="158" y="90" width="28" height="12" fill="currentColor" opacity=".75"/>
-        <!-- Live enforcement pulse marker on the hottest cell -->
-        <circle cx="138" cy="55" r="3.4" class="acc-fill"/>
-        <circle cx="138" cy="55" r="6" fill="none" class="acc-stroke" stroke-width="0.8" opacity=".6"/>
-        <!-- Baseline + count cue -->
-        <line x1="6" y1="118" x2="194" y2="118" stroke="currentColor" stroke-width="0.6" opacity=".3"/>
-        <text x="6" y="132" font-family="JetBrains Mono" font-size="6" fill="currentColor" opacity=".7" letter-spacing="0.5">FDIC &middot; OCC &middot; FRB &middot; STATE</text>
-        <text x="188" y="132" font-family="JetBrains Mono" font-size="6" fill="currentColor" text-anchor="end" opacity=".85" letter-spacing="0.5">2023&ndash;26</text>
-      </svg>
-      <span class="corner-tag">Live matrix</span>
-    </div>
-    <div class="featured-body">
-      <div class="featured-kicker">Featured &middot; Enforcement matrix</div>
-      <h3 class="featured-title">BaaS &amp; Fintech-Forward <em>Enforcement Actions</em></h3>
-      <p class="featured-desc">
-        An interactive matrix of the <strong>consent orders</strong> reshaping the bank&ndash;fintech relationship &mdash; mapping each action across sponsor banks, middleware providers, and programs by theme: <strong>AML/BSA, third-party risk, ledger reconciliation,</strong> and capital. The single clearest read on where supervisors are actually drawing the line.
-      </p>
-      <div class="featured-sources">
-        <div class="src"><div class="src-label">Theme</div><div class="src-name">Third-Party / Vendor Risk</div></div>
-        <div class="src"><div class="src-label">Theme</div><div class="src-name">AML / BSA Programs</div></div>
-        <div class="src"><div class="src-label">Theme</div><div class="src-name">For-Benefit-Of Reconciliation</div></div>
-        <div class="src"><div class="src-label">Agencies</div><div class="src-name">FDIC &middot; OCC &middot; FRB &middot; State</div></div>
+  <div class="featured-stack">
+
+    <a class="featured-card" id="plate-00" href="consent-order-matrix.html" aria-label="BaaS and Fintech-Forward Enforcement Actions: the consent order matrix">
+      <button type="button" class="featured-toggle" aria-expanded="true" aria-label="Collapse this featured dispatch"><span class="chev">&#9650;</span></button>
+      <div class="featured-frame">
+        <svg viewBox="0 0 200 140" aria-hidden="true">
+          <text x="6" y="30" font-family="JetBrains Mono" font-size="5.5" fill="currentColor" opacity=".55" letter-spacing="1">BAAS BANK</text>
+          <text x="6" y="52" font-family="JetBrains Mono" font-size="5.5" fill="currentColor" opacity=".55" letter-spacing="1">FINTECH</text>
+          <text x="6" y="74" font-family="JetBrains Mono" font-size="5.5" fill="currentColor" opacity=".85" letter-spacing="1">MIDDLEWARE</text>
+          <text x="6" y="96" font-family="JetBrains Mono" font-size="5.5" fill="currentColor" opacity=".55" letter-spacing="1">PROGRAM</text>
+          <text x="70" y="16" font-family="JetBrains Mono" font-size="5" fill="currentColor" text-anchor="middle" opacity=".5">AML</text>
+          <text x="104" y="16" font-family="JetBrains Mono" font-size="5" fill="currentColor" text-anchor="middle" opacity=".5">3RD-PTY</text>
+          <text x="138" y="16" font-family="JetBrains Mono" font-size="5" fill="currentColor" text-anchor="middle" opacity=".5">RECON</text>
+          <text x="172" y="16" font-family="JetBrains Mono" font-size="5" fill="currentColor" text-anchor="middle" opacity=".5">CAP</text>
+          <g stroke="currentColor" stroke-width="0.5" opacity=".3">
+            <line x1="56" y1="22" x2="56" y2="104"/><line x1="90" y1="22" x2="90" y2="104"/>
+            <line x1="122" y1="22" x2="122" y2="104"/><line x1="156" y1="22" x2="156" y2="104"/>
+            <line x1="188" y1="22" x2="188" y2="104"/>
+            <line x1="56" y1="22" x2="188" y2="22"/><line x1="56" y1="44" x2="188" y2="44"/>
+            <line x1="56" y1="66" x2="188" y2="66"/><line x1="56" y1="88" x2="188" y2="88"/>
+            <line x1="56" y1="104" x2="188" y2="104"/>
+          </g>
+          <rect x="58" y="24" width="30" height="18" fill="currentColor" opacity=".75"/>
+          <rect x="92" y="24" width="28" height="18" fill="currentColor" opacity=".4"/>
+          <rect x="92" y="46" width="28" height="18" class="acc-fill"/>
+          <rect x="124" y="46" width="30" height="18" class="acc-fill"/>
+          <rect x="58" y="68" width="30" height="18" fill="currentColor" opacity=".55"/>
+          <rect x="124" y="68" width="30" height="18" fill="currentColor" opacity=".75"/>
+          <rect x="158" y="68" width="28" height="18" fill="currentColor" opacity=".4"/>
+          <rect x="92" y="90" width="28" height="12" fill="currentColor" opacity=".55"/>
+          <rect x="158" y="90" width="28" height="12" fill="currentColor" opacity=".75"/>
+          <circle cx="138" cy="55" r="3.4" class="acc-fill"/>
+          <circle cx="138" cy="55" r="6" fill="none" class="acc-stroke" stroke-width="0.8" opacity=".6"/>
+          <line x1="6" y1="118" x2="194" y2="118" stroke="currentColor" stroke-width="0.6" opacity=".3"/>
+          <text x="6" y="132" font-family="JetBrains Mono" font-size="6" fill="currentColor" opacity=".7" letter-spacing="0.5">FDIC &middot; OCC &middot; FRB &middot; STATE</text>
+          <text x="188" y="132" font-family="JetBrains Mono" font-size="6" fill="currentColor" text-anchor="end" opacity=".85" letter-spacing="0.5">2023&ndash;26</text>
+        </svg>
+        <span class="corner-tag">Live matrix</span>
       </div>
-      <span class="featured-cta"><span>Open the matrix</span><span class="arrow">&rarr;</span></span>
-    </div>
-  </a>
+      <div class="featured-body">
+        <div class="featured-kicker">Featured &middot; Enforcement matrix</div>
+        <h3 class="featured-title">BaaS &amp; Fintech-Forward <em>Enforcement Actions</em></h3>
+        <p class="featured-desc">
+          An interactive matrix of the <strong>consent orders</strong> reshaping the bank&ndash;fintech relationship &mdash; mapping each action across sponsor banks, middleware providers, and programs by theme: <strong>AML/BSA, third-party risk, ledger reconciliation,</strong> and capital. The single clearest read on where supervisors are actually drawing the line.
+        </p>
+        <div class="featured-sources">
+          <div class="src"><div class="src-label">Theme</div><div class="src-name">Third-Party / Vendor Risk</div></div>
+          <div class="src"><div class="src-label">Theme</div><div class="src-name">AML / BSA Programs</div></div>
+          <div class="src"><div class="src-label">Theme</div><div class="src-name">For-Benefit-Of Reconciliation</div></div>
+          <div class="src"><div class="src-label">Agencies</div><div class="src-name">FDIC &middot; OCC &middot; FRB &middot; State</div></div>
+        </div>
+        <span class="featured-cta"><span>Open the matrix</span><span class="arrow">&rarr;</span></span>
+      </div>
+    </a>
+
+    <a class="featured-card" id="plate-20" href="federal-reserve-interactive-reference.html" aria-label="An In-Depth Look at the Fed and Its Functions">
+      <button type="button" class="featured-toggle" aria-expanded="true" aria-label="Collapse this featured dispatch"><span class="chev">&#9650;</span></button>
+      <div class="featured-frame">
+        <svg viewBox="0 0 200 140" aria-hidden="true">
+          <!-- Federal Reserve System: Board at center, 12 district banks around -->
+          <circle cx="100" cy="68" r="48" fill="none" stroke="currentColor" stroke-width="0.6" stroke-dasharray="2 3" opacity=".5"/>
+          <g fill="currentColor">
+            <circle cx="100" cy="20" r="2.6"/><circle cx="124" cy="26.4" r="2.6"/>
+            <circle cx="141.6" cy="44" r="2.6"/><circle cx="148" cy="68" r="2.6"/>
+            <circle cx="141.6" cy="92" r="2.6"/><circle cx="124" cy="109.6" r="2.6"/>
+            <circle cx="100" cy="116" r="2.6"/><circle cx="76" cy="109.6" r="2.6"/>
+            <circle cx="58.4" cy="92" r="2.6"/><circle cx="52" cy="68" r="2.6"/>
+            <circle cx="58.4" cy="44" r="2.6"/><circle cx="76" cy="26.4" r="2.6"/>
+          </g>
+          <g stroke="currentColor" stroke-width="0.5" opacity=".4">
+            <line x1="100" y1="68" x2="100" y2="20"/><line x1="100" y1="68" x2="148" y2="68"/>
+            <line x1="100" y1="68" x2="52" y2="68"/><line x1="100" y1="68" x2="100" y2="116"/>
+          </g>
+          <!-- Board of Governors façade -->
+          <path d="M 84 56 L 100 44 L 116 56 Z" fill="none" stroke="currentColor" stroke-width="1.2"/>
+          <line x1="82" y1="56" x2="118" y2="56" stroke="currentColor" stroke-width="1.4"/>
+          <line x1="86" y1="58" x2="86" y2="80" class="acc-stroke" stroke-width="1.4"/>
+          <line x1="95" y1="58" x2="95" y2="80" class="acc-stroke" stroke-width="1.4"/>
+          <line x1="105" y1="58" x2="105" y2="80" class="acc-stroke" stroke-width="1.4"/>
+          <line x1="114" y1="58" x2="114" y2="80" class="acc-stroke" stroke-width="1.4"/>
+          <line x1="82" y1="80" x2="118" y2="80" class="acc-stroke" stroke-width="1.6"/>
+          <text x="100" y="132" font-family="JetBrains Mono" font-size="6" fill="currentColor" text-anchor="middle" opacity=".7" letter-spacing="0.5">MONETARY POLICY &middot; SUPERVISION &middot; PAYMENTS</text>
+        </svg>
+        <span class="corner-tag">Reference</span>
+      </div>
+      <div class="featured-body">
+        <div class="featured-kicker">Featured &middot; System reference</div>
+        <h3 class="featured-title">An In-Depth Look at the <em>Fed</em> and Its Functions</h3>
+        <p class="featured-desc">
+          An interactive reference to the <strong>Federal Reserve System</strong> &mdash; the dual mandate and the FOMC, the supervisory role, the payments and discount-window functions, and the structure of the <strong>Board of Governors and the twelve district Reserve Banks</strong>. The foundation under every monetary and supervisory dispatch on the wire.
+        </p>
+        <div class="featured-sources">
+          <div class="src"><div class="src-label">Function</div><div class="src-name">Monetary Policy &middot; FOMC</div></div>
+          <div class="src"><div class="src-label">Function</div><div class="src-name">Bank Supervision</div></div>
+          <div class="src"><div class="src-label">Function</div><div class="src-name">Payments &middot; Discount Window</div></div>
+          <div class="src"><div class="src-label">Structure</div><div class="src-name">Board &middot; 12 District Banks</div></div>
+        </div>
+        <span class="featured-cta"><span>Open the reference</span><span class="arrow">&rarr;</span></span>
+      </div>
+    </a>
+
+  </div>
 </section>
 
 <!-- ============================================================
      SECTION I — RULES & GUIDANCE
      ============================================================ -->
 <section class="section" id="section-i">
+  <button type="button" class="section-toggle" aria-expanded="true" aria-controls="section-i" aria-label="Collapse Rules and Guidance"><span class="sct-label">Collapse</span> <span class="chev">&#9650;</span></button>
   <header class="section-head">
     <span class="section-roman">I.</span>
     <div class="section-meta">
@@ -962,6 +1029,7 @@ body.index-open .index-panel{transform:translateX(0)}
      SECTION II — REFORM TRACKERS
      ============================================================ -->
 <section class="section" id="section-ii">
+  <button type="button" class="section-toggle" aria-expanded="true" aria-controls="section-ii" aria-label="Collapse Reform Trackers"><span class="sct-label">Collapse</span> <span class="chev">&#9650;</span></button>
   <header class="section-head">
     <span class="section-roman">II.</span>
     <div class="section-meta">
@@ -1067,30 +1135,7 @@ body.index-open .index-panel{transform:translateX(0)}
       </div>
     </a>
 
-    <a class="plate" id="plate-09" data-updated="2026-05-06" data-status="live" href="hr941-small-lender-act.html" aria-label="Plate 11: H.R. 941 Small Lender Act">
-      <div class="symbol-frame">
-        <svg viewBox="0 0 100 100" aria-hidden="true">
-          <rect x="24" y="14" width="52" height="72" fill="none" stroke="currentColor" stroke-width="1.5"/>
-          <line x1="32" y1="28" x2="68" y2="28" stroke="currentColor" stroke-width="1.2"/>
-          <line x1="32" y1="36" x2="68" y2="36" stroke="currentColor" stroke-width="0.8"/>
-          <line x1="32" y1="44" x2="68" y2="44" stroke="currentColor" stroke-width="0.8"/>
-          <line x1="32" y1="52" x2="56" y2="52" stroke="currentColor" stroke-width="0.8"/>
-          <line x1="32" y1="60" x2="64" y2="60" stroke="currentColor" stroke-width="0.8"/>
-          <path d="M 32 72 Q 38 68, 44 72 T 56 72" fill="none" class="accent-stroke" stroke-width="1.4"/>
-          <circle cx="64" cy="74" r="3.5" class="accent-fill"/>
-        </svg>
-        <span class="plate-stamp">№ 11</span>
-      </div>
-      <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 11</span><span class="plate-section">Reform Trackers</span></div>
-        <h3 class="plate-title">H.R. 941 Small Lender <em>Act</em></h3>
-        <p class="plate-desc">A plain-text reading of <strong>H.R. 941</strong> — what it would change, who it covers, and where it sits on the legislative calendar in the House Financial Services Committee.</p>
-        <div class="plate-tags"><span>H.R. 941</span><span>HFSC</span><span>Community Banks</span></div>
-        <span class="plate-link"><span>Open dispatch</span><span class="arrow">→</span></span>
-      </div>
-    </a>
-
-    <a class="plate" id="plate-10" data-updated="2026-05-30" data-status="live" href="bankregwire-licensing.html" aria-label="Plate 12: Global Fintech Licensing">
+    <a class="plate" id="plate-10" data-updated="2026-05-30" data-status="live" href="bankregwire-licensing.html" aria-label="Plate 11: Global Fintech Licensing">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- globe with licensing nodes across jurisdictions -->
@@ -1111,10 +1156,10 @@ body.index-open .index-panel{transform:translateX(0)}
           <circle cx="64" cy="62" r="3.2" class="accent-fill"/>
           <circle cx="64" cy="62" r="6" fill="none" class="accent-stroke" stroke-width="0.8" opacity=".6"/>
         </svg>
-        <span class="plate-stamp">№ 12</span>
+        <span class="plate-stamp">№ 11</span>
       </div>
       <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 12</span><span class="plate-section">Reform Trackers</span></div>
+        <div class="plate-meta"><span class="plate-num">Dispatch 11</span><span class="plate-section">Reform Trackers</span></div>
         <h3 class="plate-title">Global Fintech <em>Licensing</em></h3>
         <p class="plate-desc">A comparative reading of how major jurisdictions license fintechs &mdash; <strong>U.S. state MTLs and special-purpose charters</strong> set against the UK, EU/MiCA, Singapore and others &mdash; mapping where the perimeter is drawn and how passporting works.</p>
         <div class="plate-tags"><span>Licensing</span><span>MTL</span><span>MiCA</span><span>Cross-Border</span></div>
@@ -1122,7 +1167,7 @@ body.index-open .index-panel{transform:translateX(0)}
       </div>
     </a>
 
-    <a class="plate" id="plate-11" data-updated="2026-05-25" data-status="live" href="rulemaking-calendar.html" aria-label="Plate 13: A Policy Lookahead">
+    <a class="plate" id="plate-11" data-updated="2026-05-25" data-status="live" href="rulemaking-calendar.html" aria-label="Plate 12: A Policy Lookahead">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <line x1="12" y1="28" x2="48" y2="50" stroke="currentColor" stroke-width="1.2" opacity=".55"/>
@@ -1141,10 +1186,10 @@ body.index-open .index-panel{transform:translateX(0)}
           <line x1="72" y1="44" x2="72" y2="56" stroke="currentColor" stroke-width="0.5" opacity=".35"/>
           <line x1="78" y1="44" x2="78" y2="56" stroke="currentColor" stroke-width="0.5" opacity=".35"/>
         </svg>
-        <span class="plate-stamp">&#8470; 13</span>
+        <span class="plate-stamp">&#8470; 12</span>
       </div>
       <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 13</span><span class="plate-section">Reform Trackers</span></div>
+        <div class="plate-meta"><span class="plate-num">Dispatch 12</span><span class="plate-section">Reform Trackers</span></div>
         <h3 class="plate-title">A Policy <em>Lookahead</em></h3>
         <p class="plate-desc">An experimental rulemaking calendar that triangulates <strong>what is coming</strong> from agency principals&#39; on-the-record comments, the Federal Register, OIRA&#39;s pending review queue, and each agency&#39;s Unified Spring Agenda.</p>
         <div class="plate-tags"><span>Proof of Concept</span><span>Multi-source</span><span>Forecast</span></div>
@@ -1152,7 +1197,7 @@ body.index-open .index-panel{transform:translateX(0)}
       </div>
     </a>
 
-    <a class="plate" id="plate-12" data-updated="2026-05-09" data-status="live" href="aba-bpi-icba-comparison-sourced.html" aria-label="Plate 14: ABA / BPI / ICBA Position Comparison">
+    <a class="plate" id="plate-12" data-updated="2026-05-09" data-status="live" href="aba-bpi-icba-comparison-sourced.html" aria-label="Plate 13: ABA / BPI / ICBA Position Comparison">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <circle cx="40" cy="40" r="24" fill="none" stroke="currentColor" stroke-width="1.4"/>
@@ -1163,10 +1208,10 @@ body.index-open .index-panel{transform:translateX(0)}
           <text x="73" y="30" font-family="JetBrains Mono" font-size="7" fill="currentColor" text-anchor="middle" opacity=".7">BPI</text>
           <text x="50" y="82" font-family="JetBrains Mono" font-size="7" fill="currentColor" text-anchor="middle" opacity=".7">ICBA</text>
         </svg>
-        <span class="plate-stamp">№ 14</span>
+        <span class="plate-stamp">№ 13</span>
       </div>
       <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 14</span><span class="plate-section">Reform Trackers</span></div>
+        <div class="plate-meta"><span class="plate-num">Dispatch 13</span><span class="plate-section">Reform Trackers</span></div>
         <h3 class="plate-title">ABA &middot; BPI &middot; ICBA <em>Position Comparison</em></h3>
         <p class="plate-desc">A sourced comparison of the headline policy positions of the <strong>ABA, BPI, and ICBA</strong> &mdash; mapping where the three trade groups align (Basel capital, supervisory reform) and where ICBA's community-bank principles diverge on consolidation and the separation of banking and commerce.</p>
         <div class="plate-tags"><span>Basel III</span><span>Trade Groups</span><span>Joint Letters</span></div>
@@ -1174,7 +1219,7 @@ body.index-open .index-panel{transform:translateX(0)}
       </div>
     </a>
 
-    <a class="plate" id="plate-21" data-updated="2026-06-01" data-status="live" href="financial-services-bill-tracker.html" aria-label="Plate 15: Financial Services Bill Tracker">
+    <a class="plate" id="plate-21" data-updated="2026-06-01" data-status="live" href="financial-services-bill-tracker.html" aria-label="Plate 14: Financial Services Bill Tracker">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- Capitol dome over a legislative progress track -->
@@ -1202,10 +1247,10 @@ body.index-open .index-panel{transform:translateX(0)}
           <text x="60.6" y="86" font-family="JetBrains Mono" font-size="5" fill="currentColor" text-anchor="middle" opacity=".85">FLOOR</text>
           <text x="82" y="86" font-family="JetBrains Mono" font-size="5" fill="currentColor" text-anchor="middle" opacity=".55">LAW</text>
         </svg>
-        <span class="plate-stamp">№ 15</span>
+        <span class="plate-stamp">№ 14</span>
       </div>
       <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 15</span><span class="plate-section">Reform Trackers</span></div>
+        <div class="plate-meta"><span class="plate-num">Dispatch 14</span><span class="plate-section">Reform Trackers</span></div>
         <h3 class="plate-title">Financial Services <em>Bill Tracker</em></h3>
         <p class="plate-desc">A live tracker of <strong>financial services legislation</strong> moving through Congress — bills by chamber and committee, sponsor and posture, and where each sits on the path from <strong>introduction to enactment</strong>.</p>
         <div class="plate-tags"><span>Legislation</span><span>HFSC</span><span>Senate Banking</span><span>Bill Status</span></div>
@@ -1220,6 +1265,7 @@ body.index-open .index-panel{transform:translateX(0)}
      SECTION III — STRUCTURAL FRAMEWORKS
      ============================================================ -->
 <section class="section" id="section-iii">
+  <button type="button" class="section-toggle" aria-expanded="true" aria-controls="section-iii" aria-label="Collapse Structural Frameworks"><span class="sct-label">Collapse</span> <span class="chev">&#9650;</span></button>
   <header class="section-head">
     <span class="section-roman">III.</span>
     <div class="section-meta">
@@ -1231,7 +1277,7 @@ body.index-open .index-panel{transform:translateX(0)}
 
   <div class="plates">
 
-    <a class="plate" id="plate-13" data-updated="2026-04-22" data-status="live" href="fed-supervisory-comp.html" aria-label="Plate 16: New Federal Reserve Supervisory Operating Principles">
+    <a class="plate" id="plate-13" data-updated="2026-04-22" data-status="live" href="fed-supervisory-comp.html" aria-label="Plate 15: New Federal Reserve Supervisory Operating Principles">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <line x1="16" y1="84" x2="50" y2="50" stroke="currentColor" stroke-width="1.8"/>
@@ -1244,10 +1290,10 @@ body.index-open .index-panel{transform:translateX(0)}
           <text x="78" y="12" font-family="JetBrains Mono" font-size="5.5" fill="currentColor" opacity=".4" text-anchor="middle" letter-spacing="0.5">PROCESS</text>
           <text x="74" y="64" font-family="JetBrains Mono" font-size="5.5" fill="currentColor" opacity=".8" text-anchor="middle" letter-spacing="0.5">MATERIAL RISK</text>
         </svg>
-        <span class="plate-stamp">№ 16</span>
+        <span class="plate-stamp">№ 15</span>
       </div>
       <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 16</span><span class="plate-section">Structural Frameworks</span></div>
+        <div class="plate-meta"><span class="plate-num">Dispatch 15</span><span class="plate-section">Structural Frameworks</span></div>
         <h3 class="plate-title">New Federal Reserve Supervisory <em>Operating Principles</em></h3>
         <p class="plate-desc">A look at an important pivot &mdash; Vice Chair Bowman's <strong>Statement of Supervisory Operating Principles</strong>, which redirects Federal Reserve examiners toward material financial risk and away from process, and the October 2025 &rarr; April 2026 revision arc.</p>
         <div class="plate-tags"><span>Material Risk</span><span>MRA / MRIA</span><span>VCfS Bowman</span></div>
@@ -1255,7 +1301,7 @@ body.index-open .index-panel{transform:translateX(0)}
       </div>
     </a>
 
-    <a class="plate" id="plate-14" data-updated="2026-03-30" data-status="live" href="us-trust-company-regulatory-framework.html" aria-label="Plate 17: U.S. Trust Company Regulatory Framework">
+    <a class="plate" id="plate-14" data-updated="2026-03-30" data-status="live" href="us-trust-company-regulatory-framework.html" aria-label="Plate 16: U.S. Trust Company Regulatory Framework">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <rect x="20" y="20" width="60" height="60" fill="none" stroke="currentColor" stroke-width="1.5"/>
@@ -1267,10 +1313,10 @@ body.index-open .index-panel{transform:translateX(0)}
           <circle cx="26" cy="74" r="1.5" fill="currentColor"/>
           <circle cx="74" cy="74" r="1.5" fill="currentColor"/>
         </svg>
-        <span class="plate-stamp">№ 17</span>
+        <span class="plate-stamp">№ 16</span>
       </div>
       <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 17</span><span class="plate-section">Structural Frameworks</span></div>
+        <div class="plate-meta"><span class="plate-num">Dispatch 16</span><span class="plate-section">Structural Frameworks</span></div>
         <h3 class="plate-title">U.S. Trust Company <em>Regulatory Framework</em></h3>
         <p class="plate-desc">How state-chartered and OCC-chartered trust companies are supervised, including the <strong>CSBS Nationwide Cooperative Agreement</strong>, MTL exposure, and federal preemption posture.</p>
         <div class="plate-tags"><span>12 CFR Pt. 9</span><span>CSBS NCA</span><span>State Law</span></div>
@@ -1278,7 +1324,7 @@ body.index-open .index-panel{transform:translateX(0)}
       </div>
     </a>
 
-    <a class="plate" id="plate-15" data-updated="2026-04-15" data-status="live" href="occ-preemption-timeline.html" aria-label="Plate 18: OCC Preemption Timeline">
+    <a class="plate" id="plate-15" data-updated="2026-04-15" data-status="live" href="occ-preemption-timeline.html" aria-label="Plate 17: OCC Preemption Timeline">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <line x1="14" y1="28" x2="58" y2="28" stroke="currentColor" stroke-width="2.4"/>
@@ -1289,10 +1335,10 @@ body.index-open .index-panel{transform:translateX(0)}
           <line x1="14" y1="22" x2="14" y2="90" stroke="currentColor" stroke-width="0.8"/>
           <circle cx="88" cy="56" r="3" class="accent-fill"/>
         </svg>
-        <span class="plate-stamp">№ 18</span>
+        <span class="plate-stamp">№ 17</span>
       </div>
       <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 18</span><span class="plate-section">Structural Frameworks</span></div>
+        <div class="plate-meta"><span class="plate-num">Dispatch 17</span><span class="plate-section">Structural Frameworks</span></div>
         <h3 class="plate-title">OCC Preemption <em>Timeline</em></h3>
         <p class="plate-desc">A timeline of OCC preemption authority — statute, regulation, and litigation — through the Dodd-Frank standard at <strong>12 USC § 25b</strong> and the recent reassertions.</p>
         <div class="plate-tags"><span>12 USC § 25b</span><span>Cuomo v. Clearing House</span><span>Cantero</span></div>
@@ -1300,7 +1346,7 @@ body.index-open .index-panel{transform:translateX(0)}
       </div>
     </a>
 
-    <a class="plate" id="plate-16" data-updated="2026-03-18" data-status="live" href="regulatory-map.html" aria-label="Plate 19: Regulatory Map">
+    <a class="plate" id="plate-16" data-updated="2026-03-18" data-status="live" href="regulatory-map.html" aria-label="Plate 18: Regulatory Map">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <circle cx="50" cy="50" r="34" fill="none" stroke="currentColor" stroke-width="1"/>
@@ -1312,10 +1358,10 @@ body.index-open .index-panel{transform:translateX(0)}
           <circle cx="50" cy="50" r="2" fill="currentColor"/>
           <text x="50" y="14" font-family="JetBrains Mono" font-size="7" fill="currentColor" text-anchor="middle">N</text>
         </svg>
-        <span class="plate-stamp">№ 19</span>
+        <span class="plate-stamp">№ 18</span>
       </div>
       <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 19</span><span class="plate-section">Structural Frameworks</span></div>
+        <div class="plate-meta"><span class="plate-num">Dispatch 18</span><span class="plate-section">Structural Frameworks</span></div>
         <h3 class="plate-title">Regulatory <em>Map</em></h3>
         <p class="plate-desc">A working map of the federal–state supervisory architecture: <strong>who charters, who examines, who enforces</strong>, and where authority overlaps across the dual banking system.</p>
         <div class="plate-tags"><span>FDIC</span><span>OCC</span><span>FRB</span><span>CSBS</span></div>
@@ -1323,7 +1369,7 @@ body.index-open .index-panel{transform:translateX(0)}
       </div>
     </a>
 
-    <a class="plate" id="plate-18" data-updated="2026-02-10" data-status="live" href="history-of-banking.html" aria-label="Plate 20: History of Banking">
+    <a class="plate" id="plate-18" data-updated="2026-02-10" data-status="live" href="history-of-banking.html" aria-label="Plate 19: History of Banking">
       <div class="symbol-frame">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- four era rails stacking through time -->
@@ -1340,59 +1386,13 @@ body.index-open .index-panel{transform:translateX(0)}
           <text x="90" y="28" font-family="JetBrains Mono" font-size="5" fill="currentColor" opacity=".5">1791</text>
           <text x="90" y="64" font-family="JetBrains Mono" font-size="5" fill="currentColor" opacity=".8">1913</text>
         </svg>
-        <span class="plate-stamp">№ 20</span>
+        <span class="plate-stamp">№ 19</span>
       </div>
       <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 20</span><span class="plate-section">Structural Frameworks</span></div>
+        <div class="plate-meta"><span class="plate-num">Dispatch 19</span><span class="plate-section">Structural Frameworks</span></div>
         <h3 class="plate-title">History of <em>Banking</em></h3>
         <p class="plate-desc">A long-arc reading of U.S. banking structure — from the <strong>First Bank of the United States</strong> through the National Bank Act, the founding of the <strong>Federal Reserve</strong>, Glass–Steagall and FDIC, to the dual-charter system today. The reference layer beneath every other dispatch.</p>
         <div class="plate-tags"><span>National Bank Act</span><span>Federal Reserve Act</span><span>Glass–Steagall</span></div>
-        <span class="plate-link"><span>Open dispatch</span><span class="arrow">→</span></span>
-      </div>
-    </a>
-
-    <a class="plate" id="plate-20" data-updated="2026-05-31" data-status="live" href="federal-reserve-interactive-reference.html" aria-label="Plate 21: An In-Depth Look at the Fed and Its Functions">
-      <div class="symbol-frame">
-        <svg viewBox="0 0 100 100" aria-hidden="true">
-          <!-- Federal Reserve System: Board of Governors at center, 12 district banks around -->
-          <!-- district ring -->
-          <circle cx="50" cy="50" r="33" fill="none" stroke="currentColor" stroke-width="0.6" stroke-dasharray="2 3" opacity=".5"/>
-          <!-- 12 district nodes -->
-          <g fill="currentColor">
-            <circle cx="50" cy="17" r="2.1"/>
-            <circle cx="66.5" cy="21.4" r="2.1"/>
-            <circle cx="78.6" cy="33.5" r="2.1"/>
-            <circle cx="83" cy="50" r="2.1"/>
-            <circle cx="78.6" cy="66.5" r="2.1"/>
-            <circle cx="66.5" cy="78.6" r="2.1"/>
-            <circle cx="50" cy="83" r="2.1"/>
-            <circle cx="33.5" cy="78.6" r="2.1"/>
-            <circle cx="21.4" cy="66.5" r="2.1"/>
-            <circle cx="17" cy="50" r="2.1"/>
-            <circle cx="21.4" cy="33.5" r="2.1"/>
-            <circle cx="33.5" cy="21.4" r="2.1"/>
-          </g>
-          <!-- a couple of spokes to the Board -->
-          <line x1="50" y1="50" x2="50" y2="17" stroke="currentColor" stroke-width="0.5" opacity=".4"/>
-          <line x1="50" y1="50" x2="83" y2="50" stroke="currentColor" stroke-width="0.5" opacity=".4"/>
-          <line x1="50" y1="50" x2="17" y2="50" stroke="currentColor" stroke-width="0.5" opacity=".4"/>
-          <line x1="50" y1="50" x2="50" y2="83" stroke="currentColor" stroke-width="0.5" opacity=".4"/>
-          <!-- Board of Governors: a small classical façade -->
-          <line x1="36" y1="42" x2="64" y2="42" stroke="currentColor" stroke-width="1.4"/>
-          <path d="M 38 42 L 50 35 L 62 42 Z" fill="none" stroke="currentColor" stroke-width="1.2"/>
-          <line x1="39" y1="44" x2="39" y2="58" class="accent-stroke" stroke-width="1.3"/>
-          <line x1="47" y1="44" x2="47" y2="58" class="accent-stroke" stroke-width="1.3"/>
-          <line x1="53" y1="44" x2="53" y2="58" class="accent-stroke" stroke-width="1.3"/>
-          <line x1="61" y1="44" x2="61" y2="58" class="accent-stroke" stroke-width="1.3"/>
-          <line x1="36" y1="58" x2="64" y2="58" class="accent-stroke" stroke-width="1.6"/>
-        </svg>
-        <span class="plate-stamp">№ 21</span>
-      </div>
-      <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 21</span><span class="plate-section">Structural Frameworks</span></div>
-        <h3 class="plate-title">An In-Depth Look at the <em>Fed</em> and Its Functions</h3>
-        <p class="plate-desc">An interactive reference to the <strong>Federal Reserve System</strong> — the dual mandate and the FOMC, its supervisory role, the payments and discount-window functions, and the structure of the <strong>Board of Governors and the twelve district Reserve Banks</strong>.</p>
-        <div class="plate-tags"><span>Federal Reserve</span><span>Monetary Policy</span><span>12 Districts</span><span>Supervision</span></div>
         <span class="plate-link"><span>Open dispatch</span><span class="arrow">→</span></span>
       </div>
     </a>
@@ -1414,7 +1414,7 @@ body.index-open .index-panel{transform:translateX(0)}
 </footer>
 
 <div class="print-strip">
-  <span>End of Catalogue &middot; <span class="acc">Dispatches 01 — 21</span></span>
+  <span>End of Catalogue &middot; <span class="acc">Dispatches 01 — 19</span></span>
   <span>U.S. Financial Services Regulation</span>
   <span>Set in Fraunces, Archivo &amp; JetBrains Mono</span>
 </div>
@@ -1468,6 +1468,45 @@ body.index-open .index-panel{transform:translateX(0)}
 })();
 
 // ============================================================
+// ============================================================
+// COLLAPSE — featured cards & sections
+// ============================================================
+(function(){
+  // Featured cards: toggle button lives inside the <a>, so block navigation
+  document.querySelectorAll('.featured-toggle').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault(); e.stopPropagation();
+      const card = btn.closest('.featured-card');
+      if(!card) return;
+      const collapsed = card.classList.toggle('is-collapsed');
+      btn.setAttribute('aria-expanded', String(!collapsed));
+      btn.setAttribute('aria-label', (collapsed ? 'Expand' : 'Collapse') + ' this featured dispatch');
+    });
+  });
+
+  // Sections
+  function setSection(section, collapse){
+    const btn = section.querySelector('.section-toggle');
+    section.classList.toggle('is-collapsed', collapse);
+    if(btn){
+      btn.setAttribute('aria-expanded', String(!collapse));
+      const lbl = btn.querySelector('.sct-label');
+      if(lbl) lbl.textContent = collapse ? 'Expand' : 'Collapse';
+    }
+  }
+  document.querySelectorAll('.section-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const section = btn.closest('section.section');
+      if(section) setSection(section, !section.classList.contains('is-collapsed'));
+    });
+  });
+
+  // Expose an expander so search / filter / index can reveal collapsed desks
+  window.__rwExpandSection = (section) => { if(section) setSection(section, false); };
+  window.__rwExpandAll = () => document.querySelectorAll('section.section').forEach(s => setSection(s, false));
+})();
+
+// ============================================================
 // SEARCH + DESK FILTER (coordinated)
 // ============================================================
 (function(){
@@ -1482,13 +1521,14 @@ body.index-open .index-panel{transform:translateX(0)}
 
   const norm = s => s.toLowerCase().replace(/\s+/g, ' ').trim();
   const index = plates.map(p => norm(p.textContent));
-  // which desk (section id) each plate belongs to
   const deskOf = plates.map(p => { const s = p.closest('section.section'); return s ? s.id : ''; });
   let activeDesk = 'all';
 
   function run(){
     const q = norm(input.value);
     const terms = q ? q.split(' ').filter(Boolean) : [];
+    // A search term should reveal results even inside collapsed desks
+    if(terms.length && window.__rwExpandAll) window.__rwExpandAll();
     let visible = 0;
     plates.forEach((plate, i) => {
       const textMatch = terms.length === 0 || terms.every(t => index[i].includes(t));
@@ -1514,8 +1554,10 @@ body.index-open .index-panel{transform:translateX(0)}
     pill.addEventListener('click', () => {
       activeDesk = pill.dataset.desk;
       pills.forEach(p => p.classList.toggle('is-active', p === pill));
+      // make sure the relevant desk(s) are expanded so the filter is visible
+      if(activeDesk === 'all'){ if(window.__rwExpandAll) window.__rwExpandAll(); }
+      else { const t = document.getElementById(activeDesk); if(t && window.__rwExpandSection) window.__rwExpandSection(t); }
       run();
-      // scroll the relevant desk into view (skip for "all")
       if(activeDesk !== 'all'){
         const target = document.getElementById(activeDesk);
         if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
@@ -1656,7 +1698,17 @@ body.index-open .index-panel{transform:translateX(0)}
   items.forEach(item => {
     item.addEventListener('click', () => {
       const target = document.getElementById(item.dataset.target);
-      if(target){ close(); setTimeout(() => target.scrollIntoView({behavior:'smooth', block:'start'}), 120); }
+      if(target){
+        // if the target sits inside a collapsed section, expand it first
+        const sec = target.closest('section.section');
+        if(sec && sec.classList.contains('is-collapsed') && window.__rwExpandSection) window.__rwExpandSection(sec);
+        // if it's a collapsed featured card, expand it too
+        if(target.classList.contains('featured-card') && target.classList.contains('is-collapsed')){
+          const t = target.querySelector('.featured-toggle'); if(t) t.click();
+        }
+        close();
+        setTimeout(() => target.scrollIntoView({behavior:'smooth', block:'start'}), 120);
+      }
     });
   });
   if(topBtn){ topBtn.addEventListener('click', () => { close(); setTimeout(() => window.scrollTo({top:0, behavior:'smooth'}), 120); }); }
