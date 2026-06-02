@@ -37,6 +37,7 @@
 
     --hairline:    rgba(22,21,15,0.10);
     --zebra:       rgba(122,31,43,0.035);
+    --header-bg:   rgba(247,243,234,0.96);
   }
   @media(prefers-color-scheme:dark){
     :root{
@@ -50,6 +51,7 @@
       --white:#f1ede2; --neutral:#c2bdac; --muted:#928d7d;
       --border:rgba(241,237,226,0.22); --card:#201e16;
       --hairline:rgba(241,237,226,0.12); --zebra:rgba(210,125,136,0.05);
+      --header-bg:rgba(30,28,21,0.97);
     }
   }
 
@@ -89,7 +91,7 @@
     justify-content: space-between;
     gap: 20px;
     position: sticky; top: 0; z-index: 100;
-    background: rgba(247,243,234,0.96);
+    background: var(--header-bg);
     backdrop-filter: blur(14px);
   }
   .header-eyebrow {
@@ -116,7 +118,7 @@
   .tabs {
     border-bottom: 1px solid var(--border);
     display: flex; gap: 0; padding: 0 40px;
-    background: rgba(247,243,234,0.96); overflow-x: auto;
+    background: var(--header-bg); overflow-x: auto;
   }
   .tab {
     font-family: 'JetBrains Mono', monospace; font-size: 11px;
