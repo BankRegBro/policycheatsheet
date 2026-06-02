@@ -4,42 +4,87 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fed Supervisory Operating Principles — Comparison Tool</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --navy: #0d1b2a;
-    --navy-mid: #162234;
-    --navy-light: #1e3050;
-    --gold: #c9a84c;
-    --gold-light: #e8c97a;
-    --gold-dim: rgba(201,168,76,0.15);
-    --red: #c0392b;
-    --red-dim: rgba(192,57,43,0.12);
-    --green: #27ae60;
-    --green-dim: rgba(39,174,96,0.12);
-    --amber: #d4860a;
-    --amber-dim: rgba(212,134,10,0.12);
-    --slate: #6b8cae;
-    --slate-dim: rgba(107,140,174,0.12);
-    --text: #e8e4d9;
-    --text-muted: #8a9bb5;
-    --border: rgba(201,168,76,0.2);
-    --card: rgba(22,34,52,0.9);
+    /* ── BankRegWire paper/ink system (mapped onto the original token names) ── */
+    --paper:       #f1ede2;
+    --paper-card:  #f7f3ea;
+    --paper-sunk:  #e9e3d4;
+    --copper:      #cf7714;
+    --copper-deep: #a85c08;
+    --copper-soft: rgba(207,119,20,0.20);
+    --oxblood:     #7a1f2b;
+    --oxblood-tx:  #6a1a25;
+
+    /* legacy names remapped → resolve existing var() references to the new palette */
+    --navy:        #f1ede2;   /* was page bg */
+    --navy-mid:    #f7f3ea;
+    --navy-light:  #d8d2c2;   /* scrollbar thumb / subtle */
+    --gold:        #a85c08;   /* primary live accent → copper */
+    --gold-light:  #cf7714;
+    --gold-dim:    rgba(207,119,20,0.14);
+    --red:         #9a3324;
+    --red-dim:     rgba(154,51,36,0.12);
+    --green:       #3c6a2c;   /* "new" → olive green on paper */
+    --green-dim:   rgba(60,106,44,0.12);
+    --amber:       #8a5f1f;   /* "medium" significance */
+    --amber-dim:   rgba(138,95,31,0.12);
+    --slate:       #4c5a6e;   /* "removed/resolved" */
+    --slate-dim:   rgba(76,90,110,0.12);
+    --text:        #16150f;   /* primary text → ink */
+    --text-muted:  #6c6859;
+    --border:      rgba(22,21,15,0.20);
+    --card:        #f7f3ea;
+
+    --hairline:    rgba(22,21,15,0.10);
+    --zebra:       rgba(122,31,43,0.035);
+  }
+  @media(prefers-color-scheme:dark){
+    :root{
+      --paper:#16150f; --paper-card:#201e16; --paper-sunk:#12110b;
+      --copper:#e6973c; --copper-deep:#f0a64f; --copper-soft:rgba(230,151,60,0.26);
+      --oxblood:#d27d88; --oxblood-tx:#dc8c96;
+      --navy:#16150f; --navy-mid:#201e16; --navy-light:#2e2b22;
+      --gold:#e6973c; --gold-light:#f0a64f; --gold-dim:rgba(230,151,60,0.16);
+      --red:#e69a9a; --red-dim:rgba(230,154,154,0.14);
+      --green:#9cca74; --green-dim:rgba(156,202,116,0.14);
+      --amber:#d9a85a; --amber-dim:rgba(217,168,90,0.14);
+      --slate:#9bb0c8; --slate-dim:rgba(155,176,200,0.14);
+      --text:#f1ede2; --text-muted:#928d7d;
+      --border:rgba(241,237,226,0.22); --card:#201e16;
+      --hairline:rgba(241,237,226,0.12); --zebra:rgba(210,125,136,0.05);
+    }
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
+  /* ── BankRegWire brand bar ── */
+  .brandbar { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:14px; }
+  .brandbar .brand { display:flex; align-items:center; gap:10px; }
+  .brandbar .node { width:8px; height:8px; border-radius:50%; background:var(--copper); box-shadow:0 0 0 3px var(--copper-soft); flex-shrink:0; }
+  .brandbar .mark { font-family:'JetBrains Mono',monospace; font-size:10px; font-weight:600; letter-spacing:.22em; text-transform:uppercase; color:var(--text); }
+  .brandbar .mark b { color:var(--oxblood); }
+  .brandbar .desk { font-family:'JetBrains Mono',monospace; font-size:9.5px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:var(--text-muted); border:1px solid var(--border); border-radius:20px; padding:3px 10px; }
+
+  /* ── animated copper wire (runs once on load, then rests off-screen) ── */
+  .wire { position:relative; height:2px; background:var(--border); overflow:visible; margin:14px 0 0; }
+  .wire::after { content:""; position:absolute; top:50%; left:0; width:7px; height:7px; border-radius:50%; background:var(--copper); box-shadow:0 0 10px 2px var(--copper-soft); transform:translateY(-50%); animation:wire-run 7.5s linear 1 forwards; }
+  @keyframes wire-run { 0%{left:-1%;opacity:0} 5%{opacity:1} 93%{opacity:1} 100%{left:101%;opacity:0} }
+  @media (prefers-reduced-motion: reduce){ .wire::after{ animation:none; left:0; opacity:1; } }
+
   body {
-    background: var(--navy);
+    background: var(--paper);
     color: var(--text);
-    font-family: 'Source Serif 4', Georgia, serif;
+    font-family: 'Archivo', system-ui, sans-serif;
     min-height: 100vh;
-    background-image:
-      radial-gradient(ellipse at 20% 0%, rgba(201,168,76,0.06) 0%, transparent 60%),
-      radial-gradient(ellipse at 80% 100%, rgba(13,27,42,0.8) 0%, transparent 60%),
-      repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(201,168,76,0.03) 80px),
-      repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(201,168,76,0.03) 80px);
+    -webkit-font-smoothing: antialiased;
+    background-image: radial-gradient(rgba(22,21,15,0.022) 1px, transparent 1px);
+    background-size: 3px 3px;
   }
+  @media(prefers-color-scheme:dark){ body{ background-image: radial-gradient(rgba(241,237,226,0.025) 1px, transparent 1px); } }
 
   /* ─── HEADER ─── */
   header {
@@ -52,7 +97,7 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(13,27,42,0.97);
+    background: rgba(247,243,234,0.96);
     backdrop-filter: blur(12px);
   }
   .header-left {}
@@ -66,7 +111,7 @@
     opacity: 0.8;
   }
   header h1 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Fraunces', Georgia, serif;
     font-size: 22px;
     font-weight: 700;
     color: var(--text);
@@ -88,8 +133,8 @@
     text-transform: uppercase;
     font-weight: 500;
   }
-  .v-old { background: rgba(138,155,181,0.15); color: var(--text-muted); border: 1px solid rgba(138,155,181,0.3); }
-  .v-new { background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(201,168,76,0.4); }
+  .v-old { background: var(--hairline); color: var(--text-muted); border: 1px solid var(--border); }
+  .v-new { background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(207,119,20,0.4); }
 
   /* ─── LEGEND ─── */
   .legend {
@@ -123,7 +168,7 @@
   .dot-new { background: var(--green); }
   .dot-changed { background: var(--gold); }
   .dot-removed { background: var(--slate); }
-  .dot-insight { background: #7c6fcd; }
+  .dot-insight { background: #5a4fae; }
 
   /* ─── TABS ─── */
   .tabs {
@@ -131,7 +176,7 @@
     display: flex;
     gap: 0;
     padding: 0 40px;
-    background: rgba(13,27,42,0.95);
+    background: rgba(247,243,234,0.96);
     overflow-x: auto;
   }
   .tab {
@@ -179,7 +224,7 @@
     transition: all 0.25s;
     animation: fadeUp 0.4s ease both;
   }
-  .change-card:hover { border-color: rgba(201,168,76,0.45); transform: translateY(-1px); }
+  .change-card:hover { border-color: rgba(207,119,20,0.45); transform: translateY(-1px); }
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(12px); }
     to { opacity: 1; transform: translateY(0); }
@@ -207,12 +252,12 @@
     font-weight: 500;
     flex-shrink: 0;
   }
-  .badge-new { background: var(--green-dim); color: var(--green); border: 1px solid rgba(39,174,96,0.3); }
-  .badge-changed { background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); }
-  .badge-removed { background: var(--slate-dim); color: var(--slate); border: 1px solid rgba(107,140,174,0.3); }
+  .badge-new { background: var(--green-dim); color: var(--green); border: 1px solid rgba(60,106,44,0.32); }
+  .badge-changed { background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(207,119,20,0.32); }
+  .badge-removed { background: var(--slate-dim); color: var(--slate); border: 1px solid rgba(76,90,110,0.30); }
 
   .card-title {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Fraunces', Georgia, serif;
     font-size: 15px;
     font-weight: 600;
     color: var(--text);
@@ -226,7 +271,7 @@
     color: var(--text-muted);
     flex-shrink: 0;
   }
-  .sig-high { color: #e74c3c; }
+  .sig-high { color: #a5331f; }
   .sig-med { color: var(--amber); }
   .sig-low { color: var(--text-muted); }
 
@@ -273,14 +318,14 @@
   }
   .diff-text.updated { color: var(--text); font-style: normal; }
 
-  .highlight-added { background: rgba(39,174,96,0.18); color: #4eca8b; padding: 1px 3px; border-radius: 2px; }
-  .highlight-removed { background: rgba(231,76,60,0.18); color: #e74c3c; padding: 1px 3px; text-decoration: line-through; border-radius: 2px; }
+  .highlight-added { background: rgba(60,106,44,0.16); color: #2f7d5b; padding: 1px 3px; border-radius: 2px; }
+  .highlight-removed { background: rgba(165,51,31,0.16); color: #a5331f; padding: 1px 3px; text-decoration: line-through; border-radius: 2px; }
   .highlight-changed { background: var(--gold-dim); color: var(--gold-light); padding: 1px 3px; border-radius: 2px; }
 
   .analysis-box {
     margin-top: 16px;
     padding: 14px 16px;
-    background: rgba(201,168,76,0.06);
+    background: rgba(207,119,20,0.06);
     border-left: 3px solid var(--gold);
     border-radius: 0 3px 3px 0;
   }
@@ -297,23 +342,23 @@
   /* ─── INSIGHT PANEL (FDIC/OCC) ─── */
   .insight-panel {
     background: var(--card);
-    border: 1px solid rgba(124,111,205,0.35);
+    border: 1px solid rgba(90,79,174,0.32);
     border-radius: 4px;
     overflow: hidden;
     margin-bottom: 20px;
   }
   .insight-panel-header {
-    background: linear-gradient(135deg, rgba(124,111,205,0.15), rgba(124,111,205,0.05));
+    background: linear-gradient(135deg, rgba(90,79,174,0.10), rgba(90,79,174,0.04));
     padding: 16px 24px;
     display: flex;
     align-items: center;
     gap: 12px;
-    border-bottom: 1px solid rgba(124,111,205,0.25);
+    border-bottom: 1px solid rgba(90,79,174,0.22);
     cursor: pointer;
   }
   .insight-icon { font-size: 18px; }
   .insight-panel-title {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Fraunces', Georgia, serif;
     font-size: 16px;
     color: var(--text);
     flex: 1;
@@ -322,7 +367,7 @@
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
     letter-spacing: 0.1em;
-    color: #9d8fe0;
+    color: #5a4fae;
   }
 
   .insight-grid {
@@ -347,14 +392,14 @@
     padding-bottom: 8px;
     border-bottom: 1px solid var(--border);
   }
-  .fdic-title { color: #5dade2; }
-  .occ-title { color: #82e0aa; }
+  .fdic-title { color: #2f6090; }
+  .occ-title { color: #3c6a2c; }
   .fed-title { color: var(--gold); }
 
   .insight-item {
     margin-bottom: 14px;
     padding-bottom: 14px;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid var(--hairline);
   }
   .insight-item:last-child { border-bottom: none; margin-bottom: 0; }
   .insight-item-label {
@@ -369,14 +414,14 @@
   .tension-box {
     padding: 20px 24px;
     border-top: 1px solid var(--border);
-    background: rgba(192,57,43,0.04);
+    background: rgba(165,51,31,0.05);
   }
   .tension-label {
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: #e74c3c;
+    color: #a5331f;
     margin-bottom: 12px;
     display: flex;
     align-items: center;
@@ -387,20 +432,35 @@
 
   .tension-item {
     padding: 12px;
-    background: rgba(192,57,43,0.08);
-    border: 1px solid rgba(192,57,43,0.2);
+    background: rgba(165,51,31,0.08);
+    border: 1px solid rgba(165,51,31,0.22);
     border-radius: 3px;
   }
-  .tension-item-title { font-size: 12px; font-weight: 600; color: #e07060; margin-bottom: 5px; }
+  .tension-item-title { font-size: 12px; font-weight: 600; color: #a5331f; margin-bottom: 5px; }
   .tension-item-text { font-size: 12px; line-height: 1.6; color: var(--text-muted); }
 
-  /* ─── SUMMARY STATS ─── */
+  /* ─── SUMMARY STATS (collapsible) ─── */
+  .stats-collapse { margin-bottom: 28px; }
+  .stats-toggle {
+    display: flex; align-items: center; gap: 10px; width: 100%;
+    background: transparent; border: none; cursor: pointer;
+    padding: 0 0 12px; margin: 0; text-align: left;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold);
+  }
+  .stats-toggle .st-node { width: 7px; height: 7px; border-radius: 50%; background: var(--copper); box-shadow: 0 0 8px 1px var(--copper-soft); flex-shrink: 0; }
+  .stats-toggle .st-rule { flex: 1; height: 1px; background: var(--border); }
+  .stats-toggle .st-hint { color: var(--text-muted); letter-spacing: 0.12em; }
+  .stats-toggle .st-caret { color: var(--text-muted); font-size: 9px; transition: transform 0.2s; flex-shrink: 0; }
+  .stats-collapse.collapsed .stats-toggle .st-caret { transform: rotate(-90deg); }
+  .stats-collapse.collapsed .stats-toggle .st-hint::after { content: "Show"; }
+  .stats-collapse:not(.collapsed) .stats-toggle .st-hint::after { content: "Hide"; }
   .stats-bar {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 16px;
-    margin-bottom: 28px;
   }
+  .stats-collapse.collapsed .stats-bar { display: none; }
   @media (max-width: 700px) { .stats-bar { grid-template-columns: 1fr 1fr; } }
 
   .stat-card {
@@ -411,7 +471,7 @@
     text-align: center;
   }
   .stat-number {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Fraunces', Georgia, serif;
     font-size: 32px;
     font-weight: 700;
     line-height: 1;
@@ -506,7 +566,7 @@
     color: var(--text-muted);
     transition: all 0.2s;
   }
-  .ctrl-btn:hover { color: var(--gold); border-color: rgba(201,168,76,0.45); }
+  .ctrl-btn:hover { color: var(--gold); border-color: rgba(207,119,20,0.45); }
   .ctrl-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
   .ctrl-spacer { flex: 1; }
 
@@ -522,7 +582,7 @@
     flex-wrap: wrap;
   }
   .sig-key b { font-weight: 500; }
-  .sig-key .sig-high { color: #e74c3c; }
+  .sig-key .sig-high { color: #a5331f; }
   .sig-key .sig-med { color: var(--amber); }
   .sig-key .sig-low { color: var(--text-muted); }
 
@@ -534,16 +594,16 @@
     flex-wrap: wrap;
     margin-bottom: 24px;
     padding: 12px 18px;
-    background: rgba(201,168,76,0.05);
+    background: rgba(207,119,20,0.05);
     border: 1px solid var(--border);
     border-radius: 4px;
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
     color: var(--text-muted);
   }
-  .source-bar a { color: var(--gold); text-decoration: none; border-bottom: 1px dotted rgba(201,168,76,0.5); }
+  .source-bar a { color: var(--gold); text-decoration: none; border-bottom: 1px dotted rgba(207,119,20,0.5); }
   .source-bar a:hover { color: var(--gold-light); }
-  .source-note { font-style: italic; font-family: 'Source Serif 4', serif; font-size: 11.5px; }
+  .source-note { font-style: italic; font-family: 'Archivo', system-ui, sans-serif; font-size: 11.5px; }
 
   .page-ref {
     font-family: 'JetBrains Mono', monospace;
@@ -560,7 +620,7 @@
   th.sortable .arrow { opacity: 0.4; font-size: 8px; margin-left: 4px; }
   th.sortable.sorted .arrow { opacity: 1; color: var(--gold); }
   #matrix-body tr { cursor: pointer; transition: background 0.15s; }
-  #matrix-body tr:hover { background: rgba(201,168,76,0.07) !important; }
+  #matrix-body tr:hover { background: rgba(207,119,20,0.07) !important; }
 
   /* accessibility focus */
   .card-header:focus-visible,
@@ -572,6 +632,9 @@
   @media print {
     header { position: static; }
     .tabs, .controls-bar, .source-bar a, .chevron { display: none !important; }
+    .wire, .brandbar .desk { display: none !important; }
+    .stats-collapse.collapsed .stats-bar { display: grid !important; }
+    .stats-toggle { display: none !important; }
     body { background: #fff; color: #111; }
     .container.hidden { display: block !important; }
     .card-body, .insight-body { display: block !important; }
@@ -585,7 +648,11 @@
 <body>
 
 <header>
-  <div class="header-left">
+  <div class="header-left" style="flex:1;min-width:0;">
+    <div class="brandbar">
+      <div class="brand"><span class="node" aria-hidden="true"></span><span class="mark"><b>BANK</b>REG<b>WIRE</b></span></div>
+      <span class="desk">Rule Navigator · Supervision Desk</span>
+    </div>
     <div class="header-seal">Board of Governors · Division of Supervision and Regulation</div>
     <h1>Statement of Supervisory Operating Principles<br><span>Change Analysis Tool</span></h1>
     <div class="header-meta">
@@ -594,7 +661,7 @@
       <span class="version-badge v-new">Updated · Apr 21, 2026</span>
     </div>
     <div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.04em; color:var(--text-muted); margin-top:8px; line-height:1.6;">
-      Original: M. Aiken (Acting Dir.) &amp; J. Williams · Released Nov 18, 2025<br>
+      Original: Mary Aiken (Acting Dir.) &amp; J. Williams · Released Nov 18, 2025<br>
       Updated: <span style="color:var(--gold-light)">R. Guynn (Dir.)</span> &amp; J. Williams (Acting Dep. Dir.) · Released Apr 30, 2026
     </div>
   </div>
@@ -611,6 +678,8 @@
     </div>
   </div>
 </header>
+
+<div class="wire" aria-hidden="true" style="max-width:1400px;margin:0 auto;"></div>
 
 <div class="tabs" role="tablist">
   <div class="tab active" data-tabkey="changes" onclick="switchTab('changes', this)">Line-by-Line Changes</div>
@@ -629,22 +698,31 @@
     <span class="source-note">Diffs below are editorially summarized for clarity — not the official redline. Page refs cite the Apr 21 memo.</span>
   </div>
 
-  <div class="stats-bar">
-    <div class="stat-card">
-      <div class="stat-number" id="stat-new" style="color:var(--green)">8</div>
-      <div class="stat-label">New Provisions</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number" id="stat-revised" style="color:var(--gold)">7</div>
-      <div class="stat-label">Revised Provisions</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number" id="stat-resolved" style="color:var(--slate)">1</div>
-      <div class="stat-label">Resolved Placeholder</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number" id="stat-total" style="color:var(--text-muted)">16</div>
-      <div class="stat-label">Provisions Tracked</div>
+  <div class="stats-collapse" id="stats-collapse">
+    <button class="stats-toggle" id="stats-toggle" aria-expanded="true" aria-controls="stats-bar" onclick="toggleStats()">
+      <span class="st-node" aria-hidden="true"></span>
+      <span>Change summary</span>
+      <span class="st-rule" aria-hidden="true"></span>
+      <span class="st-hint" aria-hidden="true"></span>
+      <span class="st-caret" aria-hidden="true">▼</span>
+    </button>
+    <div class="stats-bar" id="stats-bar">
+      <div class="stat-card">
+        <div class="stat-number" id="stat-new" style="color:var(--green)">8</div>
+        <div class="stat-label">New Provisions</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="stat-revised" style="color:var(--gold)">7</div>
+        <div class="stat-label">Revised Provisions</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="stat-resolved" style="color:var(--slate)">1</div>
+        <div class="stat-label">Resolved Placeholder</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="stat-total" style="color:var(--text-muted)">16</div>
+        <div class="stat-label">Provisions Tracked</div>
+      </div>
     </div>
   </div>
 
@@ -1252,7 +1330,7 @@
           </div>
         </div>
         <div>
-          <div class="insight-col-title" style="color:#e74c3c; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:14px; padding-bottom:8px; border-bottom:1px solid var(--border);">Risks and Watch Areas</div>
+          <div class="insight-col-title" style="color:#a5331f; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:14px; padding-bottom:8px; border-bottom:1px solid var(--border);">Risks and Watch Areas</div>
           <div class="insight-item">
             <div class="insight-item-label">"Timely Access to All Information" Trigger</div>
             <div class="insight-item-text">The new trigger for Fed override—failure to provide "timely access to all supervisory information"—sets a demanding standard. States with confidentiality constraints on sharing certain examination materials could inadvertently trigger the "not reasonably possible" exception, leading to direct Fed examination of state-chartered subsidiaries.</div>
@@ -1280,7 +1358,7 @@
   <div style="background:var(--card); border:1px solid var(--border); border-radius:4px; overflow:hidden;">
     <table style="width:100%; border-collapse:collapse; font-size:13px;">
       <thead>
-        <tr style="background:rgba(201,168,76,0.08); border-bottom:1px solid var(--border);">
+        <tr style="background:rgba(207,119,20,0.08); border-bottom:1px solid var(--border);">
           <th style="padding:12px 20px; text-align:left; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.1em; color:var(--gold); font-weight:500; text-transform:uppercase;">Provision</th>
           <th style="padding:12px 16px; text-align:center; font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-muted); font-weight:500; text-transform:uppercase;">Type</th>
           <th class="sortable" data-sort="sig" style="padding:12px 16px; text-align:center; font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-muted); font-weight:500; text-transform:uppercase;">Significance<span class="arrow">▾</span></th>
@@ -1294,8 +1372,27 @@
   </div>
 </div>
 
+<div style="max-width:1400px;margin:0 auto;padding:8px 40px 40px;">
+  <div class="wire" aria-hidden="true" style="margin-bottom:18px;"></div>
+  <p style="font-family:'JetBrains Mono',monospace;font-size:10.5px;line-height:1.7;color:var(--text-muted);">
+    <b style="color:var(--text);">Primary sources.</b>
+    <a href="https://www.federalreserve.gov/supervisionreg/files/statement-of-supervisory-operating-principles-20260430.pdf" style="color:var(--oxblood-tx);">Updated Statement of Supervisory Operating Principles</a> (dated Apr 21, 2026; released Apr 30, 2026 — Guynn &amp; Williams) ·
+    <a href="https://www.federalreserve.gov/newsevents/pressreleases/files/bcreg20251118a1.pdf" style="color:var(--oxblood-tx);">Original Statement</a> (Oct 29, 2025 — Aiken &amp; Williams; released Nov 18, 2025 with Gov. Barr dissent). Both implement VCS Bowman's Aug 6, 2025 supervisory priorities.
+  </p>
+  <p style="font-family:'JetBrains Mono',monospace;font-size:10.5px;line-height:1.7;color:var(--text-muted);margin-top:8px;">
+    Diffs are editorially summarized for clarity, not the official redline; see the <a href="https://www.sullcrom.com/insights/memo/2026/May/Federal-Reserve-Revises-Statement-Supervisory-Operating-Principles" style="color:var(--oxblood-tx);">Sullivan &amp; Cromwell redline</a> (also Davis Wright Tremaine, Sheppard Mullin, KPMG). Compiled for BankRegWire · Supervision Desk · current as of June 1, 2026. Informational comparison, not legal advice.
+  </p>
+</div>
+
 <script>
-// ─── Provisions derived from the cards themselves (single source of truth) ───
+// ─── Collapsible "Change summary" stat tiles ───
+function toggleStats() {
+  var wrap = document.getElementById('stats-collapse');
+  var btn = document.getElementById('stats-toggle');
+  var collapsed = wrap.classList.toggle('collapsed');
+  btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+}
+
 const cardEls = Array.from(document.querySelectorAll('.change-card'));
 const RANK = { High: 3, Medium: 2, Low: 1 };
 
@@ -1322,14 +1419,14 @@ function getTypeHTML(t) {
   return '<span class="change-type-badge badge-removed">Resolved</span>';
 }
 function getSigColor(s) {
-  if (s === 'High') return '#e74c3c';
+  if (s === 'High') return '#a5331f';
   if (s === 'Medium') return 'var(--amber)';
   return 'var(--text-muted)';
 }
 function getImpactBar(s) {
   const w = s === 'High' ? 100 : s === 'Medium' ? 60 : 25;
   const c = getSigColor(s);
-  return `<div style="display:flex;align-items:center;gap:8px;justify-content:center"><div style="width:60px;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden"><div style="width:${w}%;height:100%;background:${c};border-radius:2px"></div></div><span style="font-size:11px;color:${c};font-family:'JetBrains Mono',monospace">${s}</span></div>`;
+  return `<div style="display:flex;align-items:center;gap:8px;justify-content:center"><div style="width:60px;height:4px;background:rgba(22,21,15,0.08);border-radius:2px;overflow:hidden"><div style="width:${w}%;height:100%;background:${c};border-radius:2px"></div></div><span style="font-size:11px;color:${c};font-family:'JetBrains Mono',monospace">${s}</span></div>`;
 }
 
 const matrixRows = cardEls.map(c => ({
@@ -1349,7 +1446,7 @@ function renderMatrix() {
   if (sortKey) rows.sort((a,b) => (RANK[a[sortKey]] - RANK[b[sortKey]]) * sortDir);
   rows.forEach((row, i) => {
     const tr = document.createElement('tr');
-    tr.style.cssText = `border-bottom:1px solid rgba(255,255,255,0.05); ${i%2===0?'background:rgba(255,255,255,0.015)':''}`;
+    tr.style.cssText = `border-bottom:1px solid var(--hairline); ${i%2===0?'background:var(--zebra)':''}`;
     tr.setAttribute('role','button');
     tr.setAttribute('tabindex','0');
     tr.title = 'Open this provision in the Changes tab';
