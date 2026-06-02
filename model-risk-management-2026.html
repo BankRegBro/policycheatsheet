@@ -4,38 +4,81 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Model Risk Management Guidance — SR 11-7 vs 2026</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --navy:        #1B354A;
-    --navy-mid:    #1e3d56;
-    --indigo:      #2A2D71;
-    --blue:        #4879AA;
-    --blue-dim:    rgba(72,121,170,0.14);
-    --teal:        #05A08E;
-    --teal-dim:    rgba(5,160,142,0.14);
-    --red:         #c0392b;
-    --red-dim:     rgba(192,57,43,0.12);
-    --white:       #FFFFFF;
-    --neutral:     #EDEFF3;
-    --muted:       #7B8BA3;
-    --border:      rgba(72,121,170,0.22);
-    --card:        rgba(27,53,74,0.93);
+    /* ── BankRegWire paper/ink system (mapped onto the original token names) ── */
+    --paper:       #f1ede2;
+    --paper-card:  #f7f3ea;
+    --paper-sunk:  #e9e3d4;
+    --copper:      #cf7714;
+    --copper-deep: #a85c08;
+    --copper-soft: rgba(207,119,20,0.20);
+    --oxblood:     #7a1f2b;
+    --oxblood-tx:  #6a1a25;
+
+    /* legacy names remapped → resolve existing var() references to the new palette */
+    --navy:        #f1ede2;   /* was bg */
+    --navy-mid:    #f7f3ea;
+    --indigo:      #46433a;    /* structural slate-ink */
+    --blue:        #6a1a25;    /* "revised" accent → oxblood family */
+    --blue-dim:    rgba(122,31,43,0.10);
+    --teal:        #a85c08;    /* primary live accent → copper */
+    --teal-dim:    rgba(207,119,20,0.16);
+    --red:         #9a3324;
+    --red-dim:     rgba(154,51,36,0.12);
+    --white:       #16150f;    /* primary text → ink */
+    --neutral:     #2c2a22;
+    --muted:       #6c6859;
+    --border:      rgba(22,21,15,0.20);
+    --card:        #f7f3ea;
+
+    --hairline:    rgba(22,21,15,0.10);
+    --zebra:       rgba(122,31,43,0.035);
+  }
+  @media(prefers-color-scheme:dark){
+    :root{
+      --paper:#16150f; --paper-card:#201e16; --paper-sunk:#12110b;
+      --copper:#e6973c; --copper-deep:#f0a64f; --copper-soft:rgba(230,151,60,0.26);
+      --oxblood:#d27d88; --oxblood-tx:#dc8c96;
+      --navy:#16150f; --navy-mid:#201e16; --indigo:#c2bdac;
+      --blue:#dc8c96; --blue-dim:rgba(210,125,136,0.14);
+      --teal:#e6973c; --teal-dim:rgba(230,151,60,0.18);
+      --red:#e69a9a; --red-dim:rgba(230,154,154,0.14);
+      --white:#f1ede2; --neutral:#c2bdac; --muted:#928d7d;
+      --border:rgba(241,237,226,0.22); --card:#201e16;
+      --hairline:rgba(241,237,226,0.12); --zebra:rgba(210,125,136,0.05);
+    }
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
+  /* ── BankRegWire brand bar ── */
+  .brandbar { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:14px; }
+  .brandbar .brand { display:flex; align-items:center; gap:10px; }
+  .brandbar .node { width:8px; height:8px; border-radius:50%; background:var(--copper); box-shadow:0 0 0 3px var(--copper-soft); flex-shrink:0; }
+  .brandbar .mark { font-family:'JetBrains Mono',monospace; font-size:10px; font-weight:600; letter-spacing:.22em; text-transform:uppercase; color:var(--white); }
+  .brandbar .mark b { color:var(--oxblood); }
+  .brandbar .desk { font-family:'JetBrains Mono',monospace; font-size:9.5px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); border:1px solid var(--border); border-radius:20px; padding:3px 10px; }
+
+  /* ── animated copper wire (runs once on load, then rests off-screen) ── */
+  .wire { position:relative; height:2px; background:var(--border); overflow:visible; margin:16px 0 0; }
+  .wire::after { content:""; position:absolute; top:50%; left:0; width:7px; height:7px; border-radius:50%; background:var(--copper); box-shadow:0 0 10px 2px var(--copper-soft); transform:translateY(-50%); animation:wire-run 7.5s linear 1 forwards; }
+  @keyframes wire-run { 0%{left:-1%;opacity:0} 5%{opacity:1} 93%{opacity:1} 100%{left:101%;opacity:0} }
+  @media (prefers-reduced-motion: reduce){ .wire::after{ animation:none; left:0; opacity:1; } }
+
   body {
-    background: var(--navy);
+    background: var(--paper);
     color: var(--white);
-    font-family: 'Source Serif 4', Georgia, serif;
+    font-family: 'Archivo', system-ui, sans-serif;
     min-height: 100vh;
-    background-image:
-      radial-gradient(ellipse at 15% 0%,   rgba(5,160,142,0.07) 0%, transparent 55%),
-      radial-gradient(ellipse at 85% 100%, rgba(42,45,113,0.45) 0%, transparent 55%),
-      repeating-linear-gradient(0deg,  transparent, transparent 79px, rgba(72,121,170,0.035) 80px),
-      repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(72,121,170,0.035) 80px);
+    -webkit-font-smoothing: antialiased;
+    background-image: radial-gradient(rgba(22,21,15,0.022) 1px, transparent 1px);
+    background-size: 3px 3px;
   }
+  @media(prefers-color-scheme:dark){ body{ background-image: radial-gradient(rgba(241,237,226,0.025) 1px, transparent 1px); } }
 
   /* ── HEADER ── */
   header {
@@ -46,7 +89,7 @@
     justify-content: space-between;
     gap: 20px;
     position: sticky; top: 0; z-index: 100;
-    background: rgba(27,53,74,0.97);
+    background: rgba(247,243,234,0.96);
     backdrop-filter: blur(14px);
   }
   .header-eyebrow {
@@ -55,7 +98,7 @@
     color: var(--teal); margin-bottom: 5px; opacity: 0.85;
   }
   header h1 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Fraunces', Georgia, serif;
     font-size: 21px; font-weight: 700; color: var(--white); line-height: 1.25;
   }
   header h1 em { color: var(--teal); font-style: normal; }
@@ -65,15 +108,15 @@
     padding: 3px 10px; border-radius: 2px; letter-spacing: 0.07em; text-transform: uppercase;
   }
   .vbadge-old { background: rgba(123,139,163,0.15); color: var(--muted); border: 1px solid rgba(123,139,163,0.3); }
-  .vbadge-new { background: var(--teal-dim); color: var(--teal); border: 1px solid rgba(5,160,142,0.4); }
-  .vbadge-joint { background: rgba(42,45,113,0.3); color: #9fa3e0; border: 1px solid rgba(42,45,113,0.5); }
+  .vbadge-new { background: var(--teal-dim); color: var(--teal); border: 1px solid rgba(207,119,20,0.45); }
+  .vbadge-joint { background: rgba(67,70,143,0.14); color: #43468f; border: 1px solid rgba(67,70,143,0.4); }
   .arrow { color: var(--muted); font-size: 13px; line-height: 2; }
 
   /* ── TABS ── */
   .tabs {
     border-bottom: 1px solid var(--border);
     display: flex; gap: 0; padding: 0 40px;
-    background: rgba(27,53,74,0.95); overflow-x: auto;
+    background: rgba(247,243,234,0.96); overflow-x: auto;
   }
   .tab {
     font-family: 'JetBrains Mono', monospace; font-size: 11px;
@@ -99,17 +142,33 @@
   }
   .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-  /* ── STATS BAR ── */
-  .stats-bar {
-    display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-bottom: 26px;
+  /* ── STATS BAR (collapsible) ── */
+  .stats-collapse { margin-bottom: 26px; }
+  .stats-toggle {
+    display: flex; align-items: center; gap: 10px; width: 100%;
+    background: transparent; border: none; cursor: pointer;
+    padding: 0 0 10px; margin: 0; text-align: left;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal);
   }
+  .stats-toggle .st-node { width: 7px; height: 7px; border-radius: 50%; background: var(--copper); box-shadow: 0 0 8px 1px var(--copper-soft); flex-shrink: 0; }
+  .stats-toggle .st-rule { flex: 1; height: 1px; background: var(--border); }
+  .stats-toggle .st-hint { color: var(--muted); letter-spacing: 0.12em; }
+  .stats-toggle .st-caret { color: var(--muted); font-size: 9px; transition: transform 0.2s; flex-shrink: 0; }
+  .stats-collapse.collapsed .stats-toggle .st-caret { transform: rotate(-90deg); }
+  .stats-collapse.collapsed .stats-toggle .st-hint::after { content: "Show"; }
+  .stats-collapse:not(.collapsed) .stats-toggle .st-hint::after { content: "Hide"; }
+  .stats-bar {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px;
+  }
+  .stats-collapse.collapsed .stats-bar { display: none; }
   @media(max-width:800px) { .stats-bar { grid-template-columns: repeat(3,1fr); } }
   .stat-card {
     background: var(--card); border: 1px solid var(--border); border-radius: 4px;
     padding: 15px 18px; text-align: center;
   }
   .stat-number {
-    font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 700;
+    font-family: 'Fraunces', Georgia, serif; font-size: 30px; font-weight: 700;
     line-height: 1; margin-bottom: 4px;
   }
   .stat-label {
@@ -126,20 +185,20 @@
     border: 1px solid var(--border); background: transparent; color: var(--muted);
     transition: all 0.2s;
   }
-  .filter-btn:hover { color: var(--white); border-color: rgba(72,121,170,0.5); }
+  .filter-btn:hover { color: var(--white); border-color: rgba(122,31,43,0.45); }
   .filter-btn.active { color: var(--blue); border-color: var(--blue); background: var(--blue-dim); }
 
   /* ── SEARCH + CARD TOOLS ── */
   .card-tools { display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; align-items: center; }
   .search-wrap { position: relative; flex: 1; min-width: 200px; max-width: 360px; }
   .search-input {
-    width: 100%; font-family: 'Source Serif 4', Georgia, serif; font-size: 13px;
+    width: 100%; font-family: 'Archivo', system-ui, sans-serif; font-size: 13px;
     padding: 7px 28px 7px 30px; border-radius: 3px;
-    border: 1px solid var(--border); background: rgba(72,121,170,0.06); color: var(--white);
+    border: 1px solid var(--border); background: rgba(122,31,43,0.05); color: var(--white);
     transition: border-color 0.2s, background 0.2s;
   }
   .search-input::placeholder { color: var(--muted); }
-  .search-input:focus { outline: none; border-color: var(--blue); background: rgba(72,121,170,0.10); }
+  .search-input:focus { outline: none; border-color: var(--blue); background: rgba(122,31,43,0.08); }
   .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 12px; pointer-events: none; }
   .search-clear {
     position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
@@ -151,7 +210,7 @@
     text-transform: uppercase; padding: 6px 13px; border-radius: 2px; cursor: pointer;
     border: 1px solid var(--border); background: transparent; color: var(--muted); transition: all 0.2s;
   }
-  .tool-btn:hover { color: var(--white); border-color: rgba(72,121,170,0.5); }
+  .tool-btn:hover { color: var(--white); border-color: rgba(122,31,43,0.45); }
   .changes-empty {
     background: var(--card); border: 1px dashed var(--border); border-radius: 4px;
     padding: 28px 20px; text-align: center; color: var(--muted);
@@ -180,7 +239,7 @@
     background: var(--card); border: 1px solid var(--border); border-radius: 4px;
     overflow: hidden; transition: all 0.22s; animation: fadeUp 0.4s ease both;
   }
-  .change-card:hover { border-color: rgba(72,121,170,0.5); transform: translateY(-1px); }
+  .change-card:hover { border-color: rgba(122,31,43,0.45); transform: translateY(-1px); }
 
   .card-header {
     display: flex; align-items: center; gap: 12px; padding: 13px 20px;
@@ -192,14 +251,14 @@
     font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em;
     text-transform: uppercase; padding: 3px 8px; border-radius: 2px; font-weight: 500; flex-shrink: 0;
   }
-  .badge-new     { background: var(--teal-dim); color: var(--teal); border: 1px solid rgba(5,160,142,0.35); }
-  .badge-changed { background: var(--blue-dim); color: #6b9dc4;     border: 1px solid rgba(72,121,170,0.35); }
-  .badge-removed { background: var(--red-dim);  color: #e07060;     border: 1px solid rgba(231,76,60,0.3); }
-  .badge-ai      { background: rgba(42,45,113,0.25); color: #9fa3e0; border: 1px solid rgba(42,45,113,0.5); }
+  .badge-new     { background: var(--teal-dim); color: var(--teal); border: 1px solid rgba(207,119,20,0.4); }
+  .badge-changed { background: var(--blue-dim); color: #2f6090;     border: 1px solid rgba(122,31,43,0.30); }
+  .badge-removed { background: var(--red-dim);  color: #a5331f;     border: 1px solid rgba(165,51,31,0.35); }
+  .badge-ai      { background: rgba(67,70,143,0.12); color: #43468f; border: 1px solid rgba(67,70,143,0.4); }
 
-  .card-title { font-family: 'Playfair Display', serif; font-size: 14.5px; font-weight: 600; color: var(--white); flex: 1; }
+  .card-title { font-family: 'Fraunces', Georgia, serif; font-size: 14.5px; font-weight: 600; color: var(--white); flex: 1; }
   .card-sig { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.09em; text-transform: uppercase; flex-shrink: 0; }
-  .sig-h { color: #e74c3c; } .sig-m { color: var(--blue); } .sig-l { color: var(--muted); }
+  .sig-h { color: #a5331f; } .sig-m { color: var(--blue); } .sig-l { color: var(--muted); }
   .chevron { color: var(--muted); transition: transform 0.22s; font-size: 11px; flex-shrink: 0; }
   .card-header.open .chevron { transform: rotate(90deg); }
 
@@ -227,14 +286,14 @@
   .diff-text { font-size: 13.5px; line-height: 1.75; color: var(--muted); font-style: italic; }
   .diff-text.live { color: var(--neutral); font-style: normal; }
 
-  .hl-add { background: rgba(5,160,142,0.18); color: var(--teal); padding: 1px 3px; border-radius: 2px; }
-  .hl-del { background: rgba(231,76,60,0.18); color: #e74c3c; padding: 1px 3px; text-decoration: line-through; border-radius: 2px; }
-  .hl-chg { background: var(--blue-dim); color: #6b9dc4; padding: 1px 3px; border-radius: 2px; }
-  .hl-ai  { background: rgba(42,45,113,0.3); color: #b0b4f0; padding: 1px 3px; border-radius: 2px; }
+  .hl-add { background: var(--copper-soft); color: var(--teal); padding: 1px 3px; border-radius: 2px; }
+  .hl-del { background: rgba(165,51,31,0.16); color: #a5331f; padding: 1px 3px; text-decoration: line-through; border-radius: 2px; }
+  .hl-chg { background: var(--blue-dim); color: #2f6090; padding: 1px 3px; border-radius: 2px; }
+  .hl-ai  { background: rgba(67,70,143,0.14); color: #43468f; padding: 1px 3px; border-radius: 2px; }
 
   .analysis-box {
     margin-top: 16px; padding: 14px 16px;
-    background: rgba(72,121,170,0.07); border-left: 3px solid var(--blue); border-radius: 0 3px 3px 0;
+    background: rgba(122,31,43,0.05); border-left: 3px solid var(--blue); border-radius: 0 3px 3px 0;
   }
   .analysis-label {
     font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.14em;
@@ -258,16 +317,16 @@
 
   /* ── COMPARISON PANEL ── */
   .cmp-panel {
-    background: var(--card); border: 1px solid rgba(42,45,113,0.45); border-radius: 4px;
+    background: var(--card); border: 1px solid rgba(67,70,143,0.35); border-radius: 4px;
     overflow: hidden; margin-bottom: 18px;
   }
   .cmp-panel-hdr {
-    background: linear-gradient(135deg, rgba(42,45,113,0.22), rgba(42,45,113,0.06));
+    background: linear-gradient(135deg, rgba(67,70,143,0.12), rgba(67,70,143,0.04));
     padding: 15px 22px; display: flex; align-items: center; gap: 12px;
-    border-bottom: 1px solid rgba(42,45,113,0.28); cursor: pointer;
+    border-bottom: 1px solid rgba(67,70,143,0.22); cursor: pointer;
   }
-  .cmp-panel-title { font-family: 'Playfair Display', serif; font-size: 15px; color: var(--white); flex: 1; }
-  .cmp-panel-sub { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: #7b7fc0; }
+  .cmp-panel-title { font-family: 'Fraunces', Georgia, serif; font-size: 15px; color: var(--white); flex: 1; }
+  .cmp-panel-sub { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: #43468f; }
   .cmp-body { display: none; }
   .cmp-body.open { display: block; }
 
@@ -281,9 +340,9 @@
   }
   .ct-old { color: var(--muted); }
   .ct-new { color: var(--teal); }
-  .ct-ai  { color: #9fa3e0; }
+  .ct-ai  { color: #43468f; }
 
-  .cmp-item { margin-bottom: 13px; padding-bottom: 13px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .cmp-item { margin-bottom: 13px; padding-bottom: 13px; border-bottom: 1px solid var(--hairline); }
   .cmp-item:last-child { border-bottom: none; margin-bottom: 0; }
   .cmp-item-lbl { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 4px; }
   .cmp-item-txt { font-size: 13px; line-height: 1.65; color: var(--white); }
@@ -303,21 +362,21 @@
   .sm-arrow { color: var(--teal); font-size: 11px; flex-shrink: 0; margin-top: 2px; }
   .sm-new { width: 56%; font-size: 12px; color: var(--neutral); }
   .sm-tag { font-family: 'JetBrains Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 5px; border-radius: 2px; margin-left: 5px; display: inline-block; vertical-align: middle; }
-  .sm-tag-new { background: var(--teal-dim); color: var(--teal); border: 1px solid rgba(5,160,142,0.3); }
-  .sm-tag-rm  { background: var(--red-dim); color: #e07060; border: 1px solid rgba(231,76,60,0.25); }
-  .sm-tag-rv  { background: var(--blue-dim); color: #6b9dc4; border: 1px solid rgba(72,121,170,0.3); }
+  .sm-tag-new { background: var(--teal-dim); color: var(--teal); border: 1px solid rgba(207,119,20,0.35); }
+  .sm-tag-rm  { background: var(--red-dim); color: #a5331f; border: 1px solid rgba(165,51,31,0.30); }
+  .sm-tag-rv  { background: var(--blue-dim); color: #2f6090; border: 1px solid rgba(122,31,43,0.30); }
 
   /* ── SIGNIFICANCE TABLE ── */
   .sig-table { background: var(--card); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  thead tr { background: rgba(72,121,170,0.10); border-bottom: 1px solid var(--border); }
+  thead tr { background: rgba(122,31,43,0.08); border-bottom: 1px solid var(--border); }
   th { padding: 11px 18px; text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.09em; color: var(--blue); font-weight: 500; text-transform: uppercase; }
   td { padding: 11px 18px; vertical-align: middle; }
-  tbody tr { border-bottom: 1px solid rgba(255,255,255,0.05); }
-  tbody tr:nth-child(even) { background: rgba(255,255,255,0.018); }
+  tbody tr { border-bottom: 1px solid var(--hairline); }
+  tbody tr:nth-child(even) { background: var(--zebra); }
 
   .bar-wrap { display:flex; align-items:center; gap:8px; }
-  .bar-track { width: 60px; height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; }
+  .bar-track { width: 60px; height: 4px; background: rgba(22,21,15,0.08); border-radius: 2px; overflow: hidden; }
   .bar-fill  { height: 100%; border-radius: 2px; }
   .bar-label { font-family:'JetBrains Mono',monospace; font-size:10px; }
 
@@ -341,7 +400,7 @@
       backdrop-filter: none !important;
     }
     header h1 { color: #000 !important; font-size: 18pt !important; }
-    header h1 em { color: #1B354A !important; }
+    header h1 em { color: #7a1f2b !important; }
     .header-eyebrow, .vbadge, .vbadge-old, .vbadge-new, .vbadge-joint {
       color: #000 !important; background: #f0f0f0 !important; border-color: #999 !important;
     }
@@ -369,11 +428,13 @@
     .hl-ai  { background: #ececf9 !important; color: #3a3e8c !important; }
     .analysis-box {
       background: #f7f7f7 !important;
-      border-left-color: #1B354A !important;
+      border-left-color: #7a1f2b !important;
       page-break-inside: avoid;
     }
-    .analysis-label { color: #1B354A !important; }
+    .analysis-label { color: #7a1f2b !important; }
     .stat-card, .timeline, .cmp-panel, .sig-table, .sm-card { background: white !important; border-color: #999 !important; color: #000 !important; }
+    .stats-collapse.collapsed .stats-bar { display: grid !important; }
+    .stats-toggle { display: none !important; }
     .stat-number, .stat-label, .tl-label, .tl-date, .cmp-col-title, .cmp-item-lbl, .section-label, .sm-title { color: #000 !important; }
     .section-label::after { background: #999 !important; }
     table, th, td { color: #000 !important; }
@@ -386,23 +447,27 @@
 
 <!-- ══════════ HEADER ══════════ -->
 <header>
-  <div>
+  <div style="flex:1;min-width:0;">
+    <div class="brandbar">
+      <div class="brand"><span class="node" aria-hidden="true"></span><span class="mark"><b>BANK</b>REG<b>WIRE</b></span></div>
+      <span class="desk">Rule Navigator · Model Risk Desk</span>
+    </div>
     <div class="header-eyebrow">Interagency Supervisory Guidance · MRM Comparison Tool</div>
     <h1>Model Risk Management Guidance<br><em>SR 11-7 / OCC 2011-12 → April 2026 Update</em></h1>
     <div class="header-badges">
       <span class="vbadge vbadge-old" title="Also rescinded: SR 21-8 / OCC 2021-19 (BSA/AML); OCC 1997-24 (Credit Scoring); Comptroller's Handbook MRM booklet">SR 11-7 + 3 more · 2011–2021</span>
       <span class="arrow">→</span>
-      <span class="vbadge vbadge-new">OCC Bulletin 2026-13 · April 17, 2026</span>
-      <span class="vbadge vbadge-joint">Fed · FDIC · OCC Joint</span>
-      <span class="vbadge vbadge-joint" style="background:rgba(192,57,43,0.15);color:#e07060;border-color:rgba(192,57,43,0.4)">Forthcoming: Joint AI RFI</span>
+      <span class="vbadge vbadge-new">OCC Bull. 2026-13 · Fed SR 26-2 · FDIC FIL-15-2026</span>
+      <span class="vbadge vbadge-joint">Apr 17, 2026 · Fed · FDIC · OCC Joint</span>
+      <span class="vbadge vbadge-joint" style="background:rgba(165,51,31,0.12);color:#a5331f;border-color:rgba(165,51,31,0.4)">Forthcoming: Joint AI RFI</span>
     </div>
   </div>
   <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
     <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;">
       <span style="display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)"><span style="width:8px;height:8px;background:var(--teal);border-radius:50%;display:inline-block"></span>New Provision</span>
       <span style="display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)"><span style="width:8px;height:8px;background:var(--blue);border-radius:50%;display:inline-block"></span>Revised</span>
-      <span style="display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)"><span style="width:8px;height:8px;background:#e74c3c;border-radius:50%;display:inline-block"></span>Removed</span>
-      <span style="display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)"><span style="width:8px;height:8px;background:#9fa3e0;border-radius:50%;display:inline-block"></span>AI-Specific</span>
+      <span style="display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)"><span style="width:8px;height:8px;background:#a5331f;border-radius:50%;display:inline-block"></span>Removed</span>
+      <span style="display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)"><span style="width:8px;height:8px;background:#43468f;border-radius:50%;display:inline-block"></span>AI-Specific</span>
     </div>
   </div>
 </header>
@@ -417,19 +482,28 @@
 <!-- ══════════ TAB: CHANGES ══════════ -->
 <div id="tab-changes" class="container panel">
 
-  <div style="background:linear-gradient(135deg,rgba(5,160,142,0.10),rgba(72,121,170,0.05));border:1px solid rgba(5,160,142,0.3);border-radius:4px;padding:18px 22px;margin-bottom:22px;">
+  <div style="background:linear-gradient(135deg,rgba(207,119,20,0.08),rgba(122,31,43,0.04));border:1px solid rgba(207,119,20,0.35);border-radius:4px;padding:18px 22px;margin-bottom:22px;">
     <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--teal);margin-bottom:10px;">▎ Three Structural Shifts</div>
     <div style="font-size:13.5px;line-height:1.7;color:var(--neutral)">
       Bulletin 2026-13 reshapes MRM around three deliberate structural changes: <strong>(1)</strong> guidance is <a href="#card-scope-30b" onclick="jumpToCard('card-scope-30b');return false;" style="color:var(--teal);text-decoration:none;border-bottom:1px dotted var(--teal)">scoped to $30B+ institutions</a> with sub-threshold banks presumptively excluded; <strong>(2)</strong> guidance is <a href="#card-non-enforceable" onclick="jumpToCard('card-non-enforceable');return false;" style="color:var(--teal);text-decoration:none;border-bottom:1px dotted var(--teal)">explicitly non-enforceable</a> with supervisory criticism disclaimed; and <strong>(3)</strong> <a href="#card-genai-carveout" onclick="jumpToCard('card-genai-carveout');return false;" style="color:var(--teal);text-decoration:none;border-bottom:1px dotted var(--teal)">generative and agentic AI are carved out</a>, with a joint RFI on AI announced concurrently. The <a href="#card-bsa-aml-rescission" onclick="jumpToCard('card-bsa-aml-rescission');return false;" style="color:var(--teal);text-decoration:none;border-bottom:1px dotted var(--teal)">2021 BSA/AML model risk statement</a> is also rescinded, folding AML model governance back into general MRM principles.
     </div>
   </div>
 
-  <div class="stats-bar">
-    <div class="stat-card"><div class="stat-number" style="color:var(--teal)">4</div><div class="stat-label">New Provisions</div></div>
-    <div class="stat-card"><div class="stat-number" style="color:#6b9dc4">9</div><div class="stat-label">Revised</div></div>
-    <div class="stat-card"><div class="stat-number" style="color:#e74c3c">4</div><div class="stat-label">Removed</div></div>
-    <div class="stat-card"><div class="stat-number" style="color:#9fa3e0">3</div><div class="stat-label">AI-Specific Carve-Outs</div></div>
-    <div class="stat-card"><div class="stat-number" style="color:var(--white)">4</div><div class="stat-label">Documents Rescinded</div></div>
+  <div class="stats-collapse" id="stats-collapse">
+    <button class="stats-toggle" id="stats-toggle" aria-expanded="true" aria-controls="stats-bar" onclick="toggleStats()">
+      <span class="st-node" aria-hidden="true"></span>
+      <span>Change summary</span>
+      <span class="st-rule" aria-hidden="true"></span>
+      <span class="st-hint" aria-hidden="true"></span>
+      <span class="st-caret" aria-hidden="true">▼</span>
+    </button>
+    <div class="stats-bar" id="stats-bar">
+      <div class="stat-card"><div class="stat-number" style="color:var(--teal)">4</div><div class="stat-label">New Provisions</div></div>
+      <div class="stat-card"><div class="stat-number" style="color:#2f6090">9</div><div class="stat-label">Revised</div></div>
+      <div class="stat-card"><div class="stat-number" style="color:#a5331f">4</div><div class="stat-label">Removed</div></div>
+      <div class="stat-card"><div class="stat-number" style="color:#43468f">3</div><div class="stat-label">AI-Specific Carve-Outs</div></div>
+      <div class="stat-card"><div class="stat-number" style="color:var(--white)">4</div><div class="stat-label">Documents Rescinded</div></div>
+    </div>
   </div>
 
   <div class="timeline">
@@ -460,11 +534,11 @@
     <div class="tl-node">
       <div class="tl-dot teal"></div>
       <div class="tl-date">Apr 17, 2026</div>
-      <div class="tl-label">Joint Interagency<br>Revised Guidance</div>
+      <div class="tl-label">Joint Revised Guidance<br>Bull. 2026-13 · SR 26-2 · FIL-15-2026</div>
     </div>
     <div class="tl-line"></div>
     <div class="tl-node" style="opacity:0.85">
-      <div class="tl-dot" style="background:#e07060"></div>
+      <div class="tl-dot" style="background:#a5331f"></div>
       <div class="tl-date">Forthcoming</div>
       <div class="tl-label">Joint RFI on MRM<br>and AI (Gen + Agentic)</div>
     </div>
@@ -489,8 +563,8 @@
     <button class="tool-btn" onclick="setAllCards(false)">Collapse all</button>
   </div>
 
-  <div style="background:rgba(72,121,170,0.06);border:1px solid var(--border);border-radius:3px;padding:10px 14px;margin-bottom:18px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.05em;color:var(--muted);line-height:1.6;">
-    <span style="color:var(--teal);text-transform:uppercase;letter-spacing:0.1em;">Reading the diffs:</span> old guidance text is shown in <em style="color:var(--muted)">muted italic</em> · new guidance text is shown in <span style="color:var(--neutral)">standard weight</span> · highlighted spans show <span class="hl-add" style="font-style:normal">additions</span>, <span style="background:rgba(231,76,60,0.18);color:#e74c3c;padding:1px 3px;border-radius:2px">deletions</span>, and <span class="hl-ai" style="font-style:normal">AI-specific provisions</span>
+  <div style="background:rgba(122,31,43,0.05);border:1px solid var(--border);border-radius:3px;padding:10px 14px;margin-bottom:18px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.05em;color:var(--muted);line-height:1.6;">
+    <span style="color:var(--teal);text-transform:uppercase;letter-spacing:0.1em;">Reading the diffs:</span> old guidance text is shown in <em style="color:var(--muted)">muted italic</em> · new guidance text is shown in <span style="color:var(--neutral)">standard weight</span> · highlighted spans show <span class="hl-add" style="font-style:normal">additions</span>, <span style="background:rgba(165,51,31,0.16);color:#a5331f;padding:1px 3px;border-radius:2px">deletions</span>, and <span class="hl-ai" style="font-style:normal">AI-specific provisions</span>
   </div>
 
   <div class="section-label">Provision Analysis</div>
@@ -1020,7 +1094,7 @@
 
   </div><!-- /changes-grid -->
 
-  <div style="margin-top:30px;padding:16px 18px;background:rgba(72,121,170,0.05);border:1px solid var(--border);border-radius:4px;font-size:11.5px;line-height:1.6;color:var(--muted)">
+  <div style="margin-top:30px;padding:16px 18px;background:rgba(122,31,43,0.04);border:1px solid var(--border);border-radius:4px;font-size:11.5px;line-height:1.6;color:var(--muted)">
     <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--blue);margin-bottom:6px;">About this analysis</div>
     Significance ratings reflect the analyst's judgment of three factors: <strong style="color:var(--neutral)">scope of affected institutions</strong> (how many institutions are practically affected), <strong style="color:var(--neutral)">operational/structural impact</strong> (how meaningfully an institution's MRM program must change), and <strong style="color:var(--neutral)">examination impact</strong> (how examination practice is likely to shift). High = all three; Medium = two of three; Low = primarily stylistic or limited-scope. Source text is taken from OCC Bulletin 2026-13 (April 17, 2026) and SR 11-7 (April 4, 2011). This tool is an interpretive analytical aid, not a substitute for primary-source review or legal counsel.
   </div>
@@ -1070,9 +1144,9 @@
         <div class="sm-new">VII. Vendor and Other Third-Party Products <span class="sm-tag sm-tag-new">Elevated</span></div>
       </div>
       <div class="sm-row">
-        <div class="sm-old" style="font-style:normal;color:#e07060;">— (embedded in governance)</div>
+        <div class="sm-old" style="font-style:normal;color:#a5331f;">— (embedded in governance)</div>
         <div class="sm-arrow">→</div>
-        <div class="sm-new" style="color:#e07060;">Conclusion: <em>Removed</em> <span class="sm-tag sm-tag-rm">Dropped</span></div>
+        <div class="sm-new" style="color:#a5331f;">Conclusion: <em>Removed</em> <span class="sm-tag sm-tag-rm">Dropped</span></div>
       </div>
     </div>
 
@@ -1211,7 +1285,7 @@
     <div class="cmp-body open">
       <div style="padding:20px 24px;">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
-          <div style="background:rgba(5,160,142,0.08);border:1px solid rgba(5,160,142,0.25);border-radius:4px;padding:18px 20px">
+          <div style="background:rgba(207,119,20,0.08);border:1px solid rgba(207,119,20,0.30);border-radius:4px;padding:18px 20px">
             <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;">✓ In Scope — MRM Principles Apply</div>
             <div style="font-size:13px;line-height:1.7;color:var(--neutral)">
               <div style="margin-bottom:8px;">• Traditional statistical models (regression, time-series, factor models)</div>
@@ -1222,7 +1296,7 @@
             </div>
           </div>
           <div style="background:rgba(192,57,43,0.08);border:1px solid rgba(192,57,43,0.25);border-radius:4px;padding:18px 20px">
-            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#e07060;margin-bottom:12px;">✗ Out of Scope — Separate Framework Needed</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#a5331f;margin-bottom:12px;">✗ Out of Scope — Separate Framework Needed</div>
             <div style="font-size:13px;line-height:1.7;color:var(--neutral)">
               <div style="margin-bottom:8px;">• <strong>Generative AI</strong> — LLMs, foundation models, text/image/code generation (GPT-4, Claude, Llama, Gemini in banking contexts)</div>
               <div style="margin-bottom:8px;">• <strong>Agentic AI</strong> — autonomous AI systems taking multi-step actions, tool-using models, AI agents in workflows</div>
@@ -1232,19 +1306,19 @@
           </div>
         </div>
 
-        <div style="background:rgba(42,45,113,0.2);border:1px solid rgba(42,45,113,0.4);border-radius:4px;padding:18px 20px">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#9fa3e0;margin-bottom:12px;">⚠ Gray Zone — Classification Unclear</div>
+        <div style="background:rgba(67,70,143,0.10);border:1px solid rgba(67,70,143,0.35);border-radius:4px;padding:18px 20px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#43468f;margin-bottom:12px;">⚠ Gray Zone — Classification Unclear</div>
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
             <div>
-              <div style="font-size:12px;font-weight:600;color:#b0b4f0;margin-bottom:5px">RAG / Retrieval-Augmented Models</div>
+              <div style="font-size:12px;font-weight:600;color:#43468f;margin-bottom:5px">RAG / Retrieval-Augmented Models</div>
               <div style="font-size:12px;line-height:1.6;color:var(--muted)">LLMs augmented with structured data for credit or risk decisions. Generative backbone likely excludes from scope, but outputs drive quantitative decisions—uncertain classification.</div>
             </div>
             <div>
-              <div style="font-size:12px;font-weight:600;color:#b0b4f0;margin-bottom:5px">Hybrid ML + Expert System</div>
+              <div style="font-size:12px;font-weight:600;color:#43468f;margin-bottom:5px">Hybrid ML + Expert System</div>
               <div style="font-size:12px;line-height:1.6;color:var(--muted)">ML scoring model with rule-based override logic. Statistical component in scope; deterministic override layer excluded. Combined governance unclear.</div>
             </div>
             <div>
-              <div style="font-size:12px;font-weight:600;color:#b0b4f0;margin-bottom:5px">Fine-Tuned Open-Source LLMs for Classification</div>
+              <div style="font-size:12px;font-weight:600;color:#43468f;margin-bottom:5px">Fine-Tuned Open-Source LLMs for Classification</div>
               <div style="font-size:12px;line-height:1.6;color:var(--muted)">An LLM fine-tuned purely for binary classification (fraud/not fraud). Generative architecture but non-generative use. The guidance's exclusion may not cleanly apply.</div>
             </div>
           </div>
@@ -1252,27 +1326,27 @@
       </div>
 
       <div style="padding:0 24px 20px">
-        <div style="background:linear-gradient(135deg,rgba(5,160,142,0.15),rgba(5,160,142,0.04));border:1px solid rgba(5,160,142,0.4);border-radius:4px;padding:16px 20px;margin-bottom:16px">
+        <div style="background:linear-gradient(135deg,rgba(207,119,20,0.12),rgba(207,119,20,0.05));border:1px solid rgba(207,119,20,0.45);border-radius:4px;padding:16px 20px;margin-bottom:16px">
           <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--teal);margin-bottom:8px;">▶ Forthcoming Joint RFI on MRM and AI</div>
           <div style="font-size:13px;line-height:1.65;color:var(--neutral)">The OCC, Federal Reserve, and FDIC announced concurrently with Bulletin 2026-13 that they plan to issue a joint <strong>Request for Information</strong> addressing model risk management generally and, in particular, banks' use of <strong>generative AI, agentic AI, and AI-based models</strong>. This is the primary signal that the GenAI carve-out is intended as a placeholder pending a separate framework—not an indefinite gap. <em>Institutions, trade associations, and state banking supervisors should plan to engage substantively with the comment process when published.</em></div>
         </div>
 
-        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:#e74c3c;margin-bottom:12px;display:flex;align-items:center;gap:8px">⚑ Key Governance Implications of the GenAI Gap</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:#a5331f;margin-bottom:12px;display:flex;align-items:center;gap:8px">⚑ Key Governance Implications of the GenAI Gap</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
           <div style="padding:14px;background:rgba(192,57,43,0.07);border:1px solid rgba(192,57,43,0.2);border-radius:3px">
-            <div style="font-size:12px;font-weight:600;color:#e07060;margin-bottom:5px">No Formal Validation Standard for LLMs</div>
+            <div style="font-size:12px;font-weight:600;color:#a5331f;margin-bottom:5px">No Formal Validation Standard for LLMs</div>
             <div style="font-size:12px;line-height:1.6;color:var(--muted)">Banks deploying LLMs for document analysis, regulatory Q&A, or customer-facing credit decisions have no agency-approved validation methodology. Benchmarking, red-teaming, and evaluation frameworks are self-defined.</div>
           </div>
           <div style="padding:14px;background:rgba(192,57,43,0.07);border:1px solid rgba(192,57,43,0.2);border-radius:3px">
-            <div style="font-size:12px;font-weight:600;color:#e07060;margin-bottom:5px">Examination Coverage Still Applies</div>
+            <div style="font-size:12px;font-weight:600;color:#a5331f;margin-bottom:5px">Examination Coverage Still Applies</div>
             <div style="font-size:12px;line-height:1.6;color:var(--muted)">Out-of-scope from MRM guidance doesn't mean out-of-scope from examination. Examiners can cite unsafe/unsound practices for inadequate GenAI governance under the general carve-out preserved in Footnote 1.</div>
           </div>
           <div style="padding:14px;background:rgba(192,57,43,0.07);border:1px solid rgba(192,57,43,0.2);border-radius:3px">
-            <div style="font-size:12px;font-weight:600;color:#e07060;margin-bottom:5px">ECOA / Fair Lending Intersection Unresolved</div>
+            <div style="font-size:12px;font-weight:600;color:#a5331f;margin-bottom:5px">ECOA / Fair Lending Intersection Unresolved</div>
             <div style="font-size:12px;line-height:1.6;color:var(--muted)">GenAI models used in adverse action notices, credit evaluation, or marketing segmentation intersect ECOA/Regulation B obligations regardless of MRM scope. Consumer protection frameworks may require validation-like discipline even without MRM citation authority.</div>
           </div>
           <div style="padding:14px;background:rgba(192,57,43,0.07);border:1px solid rgba(192,57,43,0.2);border-radius:3px">
-            <div style="font-size:12px;font-weight:600;color:#e07060;margin-bottom:5px">Third-Party Risk Fills Part of the Gap</div>
+            <div style="font-size:12px;font-weight:600;color:#a5331f;margin-bottom:5px">Third-Party Risk Fills Part of the Gap</div>
             <div style="font-size:12px;line-height:1.6;color:var(--muted)">Where GenAI tools are sourced from vendors, OCC Bulletin 2023-17 (third-party risk management) applies and requires due diligence, ongoing monitoring, and contract rights. Third-party risk frameworks may effectively impose MRM-like discipline on vendor GenAI.</div>
           </div>
         </div>
@@ -1304,7 +1378,29 @@
   </div>
 </div>
 
+<div style="max-width:1380px;margin:0 auto;padding:0 40px 40px;">
+  <div class="wire" aria-hidden="true" style="margin-bottom:18px;"></div>
+  <p style="font-family:'JetBrains Mono',monospace;font-size:10.5px;line-height:1.7;color:var(--muted);">
+    <b style="color:var(--neutral);">Primary sources.</b>
+    <a href="https://www.occ.gov/news-issuances/bulletins/2026/bulletin-2026-13.html" style="color:var(--oxblood-tx);">OCC Bulletin 2026-13</a>,
+    "Model Risk Management: Revised Guidance" (Apr 17, 2026) · Federal Reserve SR 26-2 · FDIC FIL-15-2026 ·
+    <a href="https://www.occ.treas.gov/news-issuances/news-releases/2026/nr-occ-2026-29.html" style="color:var(--oxblood-tx);">OCC News Release 2026-29</a>.
+    Rescinds OCC 2011-12 / SR 11-7, FDIC FIL-22-2017, the 2021 BSA/AML statement (SR 21-8 / OCC 2021-19 / FIL-27-2021), OCC Bulletin 1997-24 (Credit Scoring Models), and the Comptroller's Handbook MRM booklet. A joint Fed/FDIC/OCC RFI on MRM and AI (generative + agentic) is forthcoming.
+  </p>
+  <p style="font-family:'JetBrains Mono',monospace;font-size:10.5px;line-height:1.7;color:var(--muted);margin-top:8px;">
+    <b style="color:var(--neutral);">Secondary synthesis</b> from Davis Polk, Sullivan &amp; Cromwell, Orrick, and Schneider Downs. Compiled for BankRegWire · Model Risk Desk · current as of June 1, 2026. Informational comparison, not legal advice.
+  </p>
+</div>
+
 <script>
+// ── Collapsible "Change summary" stat tiles ──
+function toggleStats() {
+  var wrap = document.getElementById('stats-collapse');
+  var btn = document.getElementById('stats-toggle');
+  var collapsed = wrap.classList.toggle('collapsed');
+  btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+}
+
 // ── Matrix Data ──
 const matrixRows = [
   { name:"Scope Limited to $30B+ Institutions",            type:"changed", sig:"High",   inst:"High",   exam:"High",   anchor:"card-scope-30b" },
@@ -1336,7 +1432,7 @@ function typeHTML(t) {
   return '<span class="type-badge badge-ai">AI-Specific</span>';
 }
 function barColor(s) {
-  return s === 'High' ? '#e74c3c' : s === 'Medium' ? '#4879AA' : '#7B8BA3';
+  return s === 'High' ? '#a5331f' : s === 'Medium' ? '#7a1f2b' : '#7B8BA3';
 }
 function barWidth(s) {
   return s === 'High' ? 100 : s === 'Medium' ? 60 : 25;
