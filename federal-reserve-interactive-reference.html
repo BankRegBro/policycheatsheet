@@ -267,6 +267,44 @@
   ul.clean li{margin-bottom:7px;font-size:14.5px;color:var(--ink-2)}
   ul.clean li b{color:var(--ink)}
 
+  /* ---------- Glossary ---------- */
+  .gloss-controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 6px}
+  .gloss-search{flex:1;min-width:220px;position:relative}
+  .gloss-search input{
+    width:100%;font-family:"Archivo",sans-serif;font-size:15px;color:var(--ink);
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:11px 13px 11px 36px;box-shadow:var(--shadow);outline:none;
+  }
+  .gloss-search input:focus{border-color:var(--brass-2)}
+  .gloss-search::before{content:"⌕";position:absolute;left:12px;top:50%;transform:translateY(-50%);
+    color:var(--muted);font-size:18px}
+  .gloss-filters{display:flex;gap:5px;flex-wrap:wrap}
+  .gfilter{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.06em;
+    text-transform:uppercase;cursor:pointer;background:var(--card);border:1px solid var(--line);
+    color:var(--muted);padding:7px 11px;border-radius:7px;transition:all .14s;font-weight:500}
+  .gfilter:hover{border-color:var(--brass-2);color:var(--ink)}
+  .gfilter.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .gloss-count{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--muted);margin:2px 2px 16px}
+  .gloss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:13px}
+  .gterm{background:var(--card);border:1px solid var(--line);border-radius:11px;
+    padding:14px 16px 13px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .gterm::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--brass)}
+  .gterm[data-cat="structure"]::before{background:var(--ink)}
+  .gterm[data-cat="policy"]::before{background:var(--brass)}
+  .gterm[data-cat="supervision"]::before{background:var(--oxblood)}
+  .gterm[data-cat="payments"]::before{background:#2f6f6a}
+  .gterm[data-cat="legal"]::before{background:#5a4b8c}
+  .gterm h4{font-family:"Fraunces",serif;font-weight:600;font-size:17px;margin:0 0 2px;
+    letter-spacing:-.01em;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+  .gterm .abbr{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--oxblood);font-weight:500}
+  .gterm .gcat{font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
+  .gterm p{margin:0;font-size:13.5px;color:var(--ink-2);line-height:1.5}
+  .gterm p .codecite{font-size:11px}
+  .gloss-empty{font-family:"Fraunces",serif;font-style:italic;color:var(--muted);
+    padding:30px 4px;font-size:16px;display:none}
+  mark{background:rgba(179,147,79,.32);color:inherit;border-radius:2px;padding:0 1px}
+
   footer{max-width:1180px;margin:0 auto;padding:24px 20px 60px;border-top:1px solid var(--line)}
   footer p{font-size:12px;color:var(--muted);max-width:90ch}
   footer a{color:var(--oxblood)}
@@ -423,7 +461,8 @@ const TABS = [
  {id:"policy",label:"Monetary Policy"},
  {id:"supervision",label:"Supervision"},
  {id:"payments",label:"Payments"},
- {id:"history",label:"History & Statute"}
+ {id:"history",label:"History & Statute"},
+ {id:"glossary",label:"Glossary"}
 ];
 
 /* ============ RENDER: status ============ */
@@ -746,6 +785,144 @@ main.insertAdjacentHTML('beforeend',`
     </div>
   </div>
 </section>`);
+
+/* ---- Panel 8: Glossary ---- */
+const GLOSSARY=[
+ // structure
+ {t:"Federal Reserve System",cat:"structure",d:"The U.S. central bank as a whole — the Board of Governors plus the twelve regional Reserve Banks plus the FOMC. Not a single institution but a deliberately federated one."},
+ {t:"Board of Governors",cat:"structure",d:"The federal-agency half of the System, in Washington, D.C. Seven Senate-confirmed governors on 14-year terms; writes rules and oversees the Reserve Banks. Funded by the Reserve Banks, not Congress."},
+ {t:"Federal Reserve Bank",cat:"structure",d:"One of twelve federally chartered, member-bank-capitalized corporations that operate the System day-to-day — running exams, the discount window, payments, and currency in their district."},
+ {t:"Federal Open Market Committee",abbr:"FOMC",cat:"structure",d:"The monetary-policy body: seven governors + the New York Fed president (permanent) + four rotating Reserve Bank presidents = twelve votes. Sets the federal funds target range."},
+ {t:"Member bank",cat:"structure",d:"A bank that holds stock in its Reserve Bank. National banks must be members; state banks may opt in. The stock is non-transferable, pays a capped dividend, and confers no control."},
+ {t:"Class A / B / C directors",cat:"structure",d:"The nine-member Reserve Bank board: three Class A (bankers, elected by member banks), three Class B (public, elected by member banks), three Class C (public, appointed by the Board of Governors)."},
+ {t:"System Open Market Account",abbr:"SOMA",cat:"structure",d:"The System-wide securities portfolio managed by the New York Fed's trading desk. Holds the Treasuries and agency MBS acquired through monetary policy and supplies essentially all of the Fed's income."},
+ {t:"Federal Reserve district",cat:"structure",d:"One of twelve geographic regions, each served by a Reserve Bank and identified by a number (1–12) and a letter (A–L). The letter appears on Federal Reserve notes."},
+ {t:"Dual banking system",cat:"structure",d:"The parallel federal and state systems for chartering and supervising banks — a deliberate U.S. federalism feature, and the reason multiple regulators share jurisdiction."},
+ {t:"Vice Chair for Supervision",cat:"structure",d:"The Board governor who serves as the System's chief supervisory official, setting supervisory policy and recommending rules. Created by Dodd-Frank §1108."},
+
+ // monetary policy
+ {t:"Dual mandate",cat:"policy",d:"The Fed's statutory goals of maximum employment and stable prices (a 2% PCE inflation target). Codified at <span class='codecite'>12 U.S.C. §225a</span>; a third goal, moderate long-term interest rates, is generally treated as a byproduct."},
+ {t:"Federal funds rate",cat:"policy",d:"The overnight, unsecured rate at which banks lend reserve balances to each other. The FOMC sets a 25-basis-point target range for it — currently 3.50–3.75%."},
+ {t:"Ample reserves regime",cat:"policy",d:"The post-2008/2020 operating framework in which the Fed steers rates with administered rates rather than by rationing reserve scarcity through daily open market operations."},
+ {t:"Interest on Reserve Balances",abbr:"IORB",cat:"policy",d:"The rate the Board pays banks on reserves held at the Fed — the primary monetary-policy tool and the floor under money-market rates, since banks won't lend reserves for less."},
+ {t:"Overnight Reverse Repo",abbr:"ON RRP",cat:"policy",d:"A facility offering money funds and GSEs (which can't earn IORB) a risk-free overnight investment, reinforcing the rate floor. Usage fell to near zero by late 2025."},
+ {t:"Standing Repo Facility",abbr:"SRF",cat:"policy",d:"A facility that lends cash against Treasuries and agency securities on demand, capping upward pressure on money-market rates — the ceiling. Its daily cap was removed in December 2025."},
+ {t:"Open market operations",abbr:"OMO",cat:"policy",d:"The New York Fed's purchases and sales of securities for the SOMA portfolio, executed under FOMC direction. Authority: FRA §§12A/14 (<span class='codecite'>12 U.S.C. §§263, 355</span>)."},
+ {t:"Quantitative easing / tightening",abbr:"QE / QT",cat:"policy",d:"Large-scale asset purchases that expand the balance sheet (QE) or passive runoff that shrinks it (QT). QT concluded December 1, 2025 at roughly $6.65 trillion."},
+ {t:"Reserve requirements",cat:"policy",d:"The fraction of deposits a bank must hold in reserve — the classic textbook tool, now set to <b>zero</b> for all depository institutions since March 26, 2020 and treated as permanent."},
+ {t:"Discount window",cat:"policy",d:"The Fed's standing facility for lending to depository institutions — primary, secondary, and seasonal credit. The lender-of-last-resort backstop (<span class='codecite'>12 U.S.C. §347b</span>)."},
+ {t:"Summary of Economic Projections",abbr:"SEP / 'dot plot'",cat:"policy",d:"The quarterly release of FOMC participants' rate and economic forecasts. The 'dots' are individual rate projections — conditional expectations, not commitments."},
+
+ // supervision
+ {t:"State member bank",cat:"supervision",d:"A state-chartered bank that has elected Fed membership — one of the institution types the Federal Reserve directly supervises (as opposed to OCC- or FDIC-supervised banks)."},
+ {t:"Bank holding company",abbr:"BHC",cat:"supervision",d:"A company that controls one or more banks. The Fed is the umbrella (consolidated) supervisor of all BHCs and savings-and-loan holding companies, regardless of where the subsidiary bank is chartered."},
+ {t:"CAMELS",cat:"supervision",d:"The Uniform Financial Institutions Rating System for banks: Capital, Asset quality, Management, Earnings, Liquidity, Sensitivity to market risk — each scored 1 (best) to 5 (worst), plus a composite."},
+ {t:"RFI/C(D)",cat:"supervision",d:"The rating framework for holding companies under $100 billion: Risk management, Financial condition, potential Impact on the bank, a Composite, and a Depository indicator."},
+ {t:"Large Financial Institution rating",abbr:"LFI",cat:"supervision",d:"The framework for firms ≥ $100 billion. Three components — Capital, Liquidity, Governance & Controls — on a four-point scale, with no composite. A 'well managed' recalibration was proposed in 2025."},
+ {t:"CCAR / DFAST",cat:"supervision",d:"The Fed's annual capital-plan review (CCAR) and Dodd-Frank stress tests (DFAST) of large banks against severe hypothetical scenarios. Results feed the LFI capital rating and set firm-specific buffers."},
+ {t:"LISCC",cat:"supervision",d:"The Large Institution Supervision Coordinating Committee — the Board program overseeing the largest, most systemically important firms. Big-district supervision heads sit on it."},
+ {t:"FSOC",cat:"supervision",d:"The Financial Stability Oversight Council, created by Dodd-Frank. Designates nonbank SIFIs and financial-market utilities for heightened oversight, including Fed supervision."},
+ {t:"OCC",cat:"supervision",d:"The Office of the Comptroller of the Currency — the Treasury bureau that charters and supervises national banks, federal savings associations, and federal branches of foreign banks."},
+ {t:"FDIC",cat:"supervision",d:"The Federal Deposit Insurance Corporation — primary supervisor of state non-member banks, the deposit insurer, and receiver for failed banks (e.g., SVB and Signature in March 2023)."},
+ {t:"FFIEC",cat:"supervision",d:"The Federal Financial Institutions Examination Council — the interagency body that coordinates exam standards across the Fed, OCC, FDIC, NCUA, and CFPB, plus a state liaison."},
+
+ // payments
+ {t:"Fedwire Funds Service",cat:"payments",d:"The Fed's real-time gross settlement system for large-value interbank transfers — each settles individually, immediately, and with finality across Reserve Bank accounts."},
+ {t:"FedACH",cat:"payments",d:"The Fed's automated clearing house service, settling on a deferred-net basis. Competes with The Clearing House's EPN — the two U.S. ACH operators."},
+ {t:"FedNow",cat:"payments",d:"The Fed's instant-payments rail, live since July 2023 — 24×7×365 credit-push settlement in seconds. The first new Fed rail in ~50 years. Per-transaction limit raised to $10M in late 2025. Not a CBDC."},
+ {t:"National Settlement Service",abbr:"NSS",cat:"payments",d:"A multilateral net settlement service that lets private clearing arrangements settle across Reserve Bank accounts."},
+ {t:"Financial Market Utility",abbr:"FMU",cat:"payments",d:"A system that clears, settles, or records financial transactions. FSOC can designate one as systemically important under Dodd-Frank Title VIII, triggering Fed risk-management standards (Regulation HH)."},
+ {t:"Master account",cat:"payments",d:"An institution's direct account at its Reserve Bank — the gateway to holding reserves and accessing Fedwire and the other rails. Access is graded under the 2022 Account Access Guidelines."},
+ {t:"Account Access Guidelines",cat:"payments",d:"The Fed's 2022 tiered framework for evaluating master-account requests, with the strictest review (Tier 3) for institutions that are uninsured and lack a federal prudential supervisor."},
+
+ // legal / historical
+ {t:"Federal Reserve Act",cat:"legal",d:"The 1913 statute (signed Dec. 23, 1913) creating the System as a compromise after the Panic of 1907 — regional banks under a central public board. The foundation for nearly all Fed authority."},
+ {t:"Section 13(3)",cat:"legal",d:"The emergency-lending authority (<span class='codecite'>12 U.S.C. §343(3)</span>) used in 'unusual and exigent circumstances.' Basis for the 2008 and 2020 crisis facilities; Dodd-Frank now requires broad-based programs and Treasury approval."},
+ {t:"Dodd-Frank Act",cat:"legal",d:"The 2010 reform law: created the Vice Chair for Supervision, FSOC, Title VIII FMU oversight, and DFAST/CCAR; restricted §13(3); and moved most consumer rulewriting to the new CFPB."},
+ {t:"Monetary Control Act of 1980",cat:"legal",d:"Extended reserve requirements to all depositories and required the Fed to price its services and make them 'available to nonmember depository institutions' (<span class='codecite'>12 U.S.C. §248a</span>) — the hook now litigated in master-account cases."},
+ {t:"Regulation HH",cat:"legal",d:"The Board rule setting risk-management standards for designated financial-market utilities under Dodd-Frank Title VIII (<span class='codecite'>12 U.S.C. §5464</span>)."},
+ {t:"CFPB",cat:"legal",d:"The Consumer Financial Protection Bureau, created by Dodd-Frank (effective July 21, 2011). Took over most consumer-finance rulewriting; the Fed retains consumer-compliance supervision of its own smaller institutions."},
+ {t:"Federal Reserve note",cat:"legal",d:"U.S. paper currency (<span class='codecite'>12 U.S.C. §411</span>) — a liability of the Reserve Banks, printed by the Treasury's Bureau of Engraving and Printing and distributed through the twelve Banks."}
+];
+
+const GCATS=[
+ {id:"all",label:"All"},
+ {id:"structure",label:"Structure"},
+ {id:"policy",label:"Monetary Policy"},
+ {id:"supervision",label:"Supervision"},
+ {id:"payments",label:"Payments"},
+ {id:"legal",label:"Legal / Historical"}
+];
+const GCAT_LABEL={structure:"Structure",policy:"Monetary Policy",supervision:"Supervision",payments:"Payments",legal:"Legal / Historical"};
+
+main.insertAdjacentHTML('beforeend',`
+<section class="panel" id="p-glossary">
+  <div class="sec-head"><span class="sec-num">8</span><h2>Glossary of terms</h2></div>
+  <p class="lede">The working vocabulary of the System — the acronyms, rating frameworks, payment rails, and statutory hooks used across the other tabs. <b>Search</b> or <b>filter by category</b>.</p>
+  <div class="gloss-controls">
+    <div class="gloss-search"><input type="text" id="glossSearch" placeholder="Search terms, acronyms, definitions…" aria-label="Search glossary"></div>
+    <div class="gloss-filters" id="glossFilters"></div>
+  </div>
+  <div class="gloss-count" id="glossCount"></div>
+  <div class="gloss-grid" id="glossGrid"></div>
+  <div class="gloss-empty" id="glossEmpty">No terms match — try a broader word.</div>
+</section>`);
+
+/* glossary interactivity */
+(function(){
+  const grid=document.getElementById('glossGrid');
+  const filtersEl=document.getElementById('glossFilters');
+  const countEl=document.getElementById('glossCount');
+  const emptyEl=document.getElementById('glossEmpty');
+  const searchEl=document.getElementById('glossSearch');
+  let activeCat="all", query="";
+
+  const sorted=[...GLOSSARY].sort((a,b)=>a.t.localeCompare(b.t));
+
+  GCATS.forEach((c,i)=>{
+    const b=document.createElement('button');
+    b.className='gfilter'+(i===0?' active':'');
+    b.textContent=c.label;b.dataset.cat=c.id;
+    b.onclick=()=>{activeCat=c.id;
+      filtersEl.querySelectorAll('.gfilter').forEach(f=>f.classList.toggle('active',f.dataset.cat===c.id));
+      render();};
+    filtersEl.appendChild(b);
+  });
+
+  function esc(s){return s.replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));}
+  function hl(text,q){
+    if(!q)return text;
+    // highlight only outside HTML tags
+    return text.replace(/(<[^>]+>)|([^<]+)/g,(m,tag,txt)=>{
+      if(tag)return tag;
+      const re=new RegExp('('+q.replace(/[.*+?^${}()|[\\]\\\\]/g,'\\\\$&')+')','ig');
+      return txt.replace(re,'<mark>$1</mark>');
+    });
+  }
+  function render(){
+    const q=query.trim().toLowerCase();
+    let shown=0;
+    grid.innerHTML='';
+    sorted.forEach(g=>{
+      const inCat = activeCat==="all"||g.cat===activeCat;
+      const hay=(g.t+' '+(g.abbr||'')+' '+g.d).toLowerCase();
+      const inQ = !q||hay.includes(q);
+      if(inCat&&inQ){
+        shown++;
+        const card=document.createElement('div');
+        card.className='gterm';card.dataset.cat=g.cat;
+        card.innerHTML=`<h4>${hl(esc(g.t),q)}${g.abbr?`<span class="abbr">${hl(esc(g.abbr),q)}</span>`:''}</h4>
+          <span class="gcat">${GCAT_LABEL[g.cat]}</span>
+          <p>${hl(g.d,q)}</p>`;
+        grid.appendChild(card);
+      }
+    });
+    emptyEl.style.display=shown?'none':'block';
+    countEl.textContent=shown+' of '+GLOSSARY.length+' terms'+(activeCat!=="all"?' · '+GCAT_LABEL[activeCat]:'')+(q?' · "'+query.trim()+'"':'');
+  }
+  searchEl.addEventListener('input',e=>{query=e.target.value;render();});
+  render();
+})();
 
 /* ============ MAP RENDERING ============ */
 const svg=document.getElementById('usmap');
