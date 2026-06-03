@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Market Structure Watch: Will the CLARITY Act Pass in 2026? · BankRegWire</title>
+<meta name="description" content="A BankRegWire policy monitor on the passage outlook for U.S. digital-asset market-structure legislation in the 119th Congress, with an interactive Senate cloture whip count.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f1ede2;
+  --paper-card:#f7f3ea;
+  --paper-sunk:#e9e3d4;
+  --ink:#16150f;
+  --ink-2:#46433a;
+  --ink-3:#6c6859;
+  --oxblood:#7a1f2b;
+  --oxblood-tx:#6a1a25;       /* STRUCTURAL accent */
+  --copper:#cf7714;
+  --copper-deep:#a85c08;      /* LIVE-SIGNAL accent */
+  --copper-soft:rgba(207,119,20,.20);
+  --rule:rgba(22,21,15,.14);
+  --rule-2:rgba(22,21,15,.24);
+  --rule-3:rgba(22,21,15,.40);
+  --header-bg:rgba(247,243,234,.96);
+  --ink-fixed:#1c1a17;
+  --oxblood-fixed:#7a1f2b;
+  --dot:rgba(22,21,15,.022);
+}
+@media(prefers-color-scheme:dark){:root{
+  --paper:#16150f;
+  --paper-card:#201e16;
+  --paper-sunk:#12110b;
+  --ink:#f1ede2;
+  --ink-2:#c2bdac;
+  --ink-3:#928d7d;
+  --oxblood:#d27d88;
+  --oxblood-tx:#dc8c96;
+  --copper:#e6973c;
+  --copper-deep:#f0a64f;
+  --copper-soft:rgba(230,151,60,.26);
+  --rule:rgba(241,237,226,.15);
+  --rule-2:rgba(241,237,226,.26);
+  --rule-3:rgba(241,237,226,.42);
+  --header-bg:rgba(30,28,21,.97);
+  --dot:rgba(241,237,226,.025);
+}}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{
+  margin:0;
+  background:var(--paper);
+  background-image:radial-gradient(var(--dot) 1px,transparent 1px);
+  background-size:3px 3px;
+  color:var(--ink);
+  font-family:"Archivo",-apple-system,system-ui,sans-serif;
+  font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+
+/* ── Typography ── */
+h1,h2,h3,h4{font-family:"Fraunces",Georgia,serif;font-weight:600;line-height:1.12;color:var(--ink);letter-spacing:-.01em}
+.kicker{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--oxblood-tx)}
+.mono{font-family:"JetBrains Mono",monospace}
+em.lead{font-style:italic;color:var(--oxblood-tx)}
+a{color:var(--copper-deep);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px}
+a:hover{color:var(--copper)}
+
+/* ── Masthead ── */
+.masthead{padding:34px 0 0}
+.masthead-top{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:10px}
+.wordmark{font-family:"Fraunces",serif;font-weight:700;font-size:clamp(26px,4.2vw,38px);letter-spacing:-.02em;line-height:1}
+.wordmark .reg{color:var(--oxblood-tx)}
+.masthead-meta{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);text-align:right;line-height:1.7}
+.masthead-strap{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:7px 0 0}
+.masthead-strap .kicker{font-size:10px}
+
+/* ── Run-once copper wire ── */
+.wire{position:relative;height:2px;background:var(--rule-2);overflow:visible;margin:0}
+.wire::after{
+  content:"";position:absolute;top:50%;left:0;
+  width:7px;height:7px;margin-top:-3.5px;border-radius:50%;
+  background:var(--copper);
+  box-shadow:0 0 9px 1px var(--copper-soft);
+  animation:wire-run 2.4s cubic-bezier(.42,0,.18,1) .25s forwards;
+  opacity:0;
+}
+@keyframes wire-run{
+  0%{left:0;opacity:0}
+  5%{opacity:1}
+  93%{opacity:1}
+  100%{left:100%;opacity:0}
+}
+@media(prefers-reduced-motion:reduce){.wire::after{animation:none;opacity:0}}
+
+/* ── Hero ── */
+.hero{padding:30px 0 20px}
+.dateline{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:14px}
+.dateline b{color:var(--oxblood-tx);font-weight:600}
+.hero h1{font-size:clamp(30px,5.6vw,52px);margin:0 0 14px;max-width:18ch}
+.hero h1 em{font-style:italic;color:var(--oxblood-tx)}
+.deck{font-size:clamp(17px,2.3vw,20px);line-height:1.5;color:var(--ink-2);max-width:62ch;font-weight:400}
+
+/* verdict strip */
+.verdict{
+  display:grid;grid-template-columns:auto 1fr;gap:0;
+  margin:26px 0 4px;border:1px solid var(--rule-2);
+  background:var(--paper-card);
+}
+.verdict-gauge{
+  padding:22px 26px;border-right:1px solid var(--rule-2);
+  display:flex;flex-direction:column;justify-content:center;gap:4px;min-width:172px;
+  background:var(--paper-sunk);
+}
+.verdict-gauge .lbl{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.verdict-gauge .pct{font-family:"Fraunces",serif;font-weight:700;font-size:46px;line-height:1;color:var(--oxblood-tx);letter-spacing:-.02em}
+.verdict-gauge .sub{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-3)}
+.verdict-body{padding:20px 26px;display:flex;flex-direction:column;justify-content:center}
+.verdict-body .tag{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--copper-deep);font-weight:600;margin-bottom:6px}
+.verdict-body p{margin:0;font-size:15.5px;line-height:1.55;color:var(--ink)}
+@media(max-width:620px){.verdict{grid-template-columns:1fr}.verdict-gauge{border-right:none;border-bottom:1px solid var(--rule-2)}}
+
+/* ── Tabs ── */
+.tabs-shell{position:sticky;top:0;z-index:20;background:var(--header-bg);backdrop-filter:saturate(140%) blur(6px);-webkit-backdrop-filter:saturate(140%) blur(6px);border-bottom:1px solid var(--rule-2);margin-top:30px}
+.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+  appearance:none;background:none;border:none;cursor:pointer;
+  font-family:"JetBrains Mono",monospace;font-size:11.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--ink-3);padding:15px 16px 13px;white-space:nowrap;
+  border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s;
+}
+.tab:hover{color:var(--copper-deep)}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--copper)}
+.tab:focus-visible{outline:2px solid var(--copper);outline-offset:-3px;border-radius:2px}
+
+/* ── Panels ── */
+.panel{padding:36px 0 8px}
+.panel[hidden]{display:none}
+.sec-head{display:flex;align-items:baseline;gap:12px;border-bottom:1px solid var(--rule-2);padding-bottom:10px;margin-bottom:24px}
+.sec-head .kicker{flex-shrink:0}
+.sec-head h2{font-size:clamp(22px,3.4vw,30px);margin:0}
+.sec-num{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-3);margin-left:auto;flex-shrink:0}
+
+p.body{font-size:16px;line-height:1.65;color:var(--ink-2);max-width:68ch;margin:0 0 16px}
+p.body strong{color:var(--ink);font-weight:600}
+
+/* TLDR list */
+.findings{list-style:none;margin:0 0 8px;padding:0;display:grid;gap:0;border-top:1px solid var(--rule)}
+.findings li{padding:16px 0 16px 0;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:30px 1fr;gap:14px;align-items:start}
+.findings li .n{font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:600;color:var(--oxblood-tx);padding-top:2px}
+.findings li p{margin:0;font-size:15.5px;line-height:1.55;color:var(--ink-2)}
+.findings li p b{color:var(--ink);font-weight:600}
+
+/* Force cards (headwinds / tailwinds) */
+.force-meta{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-3);margin:-8px 0 22px}
+details.force{
+  border:1px solid var(--rule-2);background:var(--paper-card);
+  margin:0 0 12px;border-left:3px solid var(--accent,var(--oxblood));
+}
+details.force.tail{--accent:var(--copper-deep)}
+details.force summary{
+  list-style:none;cursor:pointer;padding:16px 20px;
+  display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;
+}
+details.force summary::-webkit-details-marker{display:none}
+.force .badge{font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:600;letter-spacing:.1em;color:#fff;background:var(--accent,var(--oxblood-fixed));padding:4px 8px;border-radius:2px;white-space:nowrap}
+details.force.tail .badge{background:var(--copper-deep)}
+@media(prefers-color-scheme:dark){.force .badge{color:var(--ink-fixed)}}
+.force .ttl{font-family:"Fraunces",serif;font-weight:600;font-size:18px;line-height:1.2;color:var(--ink)}
+.force .chev{font-family:"JetBrains Mono",monospace;color:var(--ink-3);font-size:14px;transition:transform .2s}
+details.force[open] .chev{transform:rotate(90deg)}
+.force-body{padding:2px 20px 20px;border-top:1px solid var(--rule)}
+.force-body p{font-size:15px;line-height:1.6;color:var(--ink-2);margin:14px 0 0;max-width:70ch}
+.force-body p strong{color:var(--ink)}
+.force-body .pull{
+  font-family:"Fraunces",serif;font-style:italic;font-size:16px;color:var(--oxblood-tx);
+  border-left:2px solid var(--copper);padding:2px 0 2px 16px;margin:16px 0 0;line-height:1.45;
+}
+.force-body .src{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-3);margin-top:14px;letter-spacing:.02em}
+
+/* ── Whip count ── */
+.whip{display:grid;grid-template-columns:1fr;gap:0}
+.meter-card{border:1px solid var(--rule-2);background:var(--paper-card);padding:22px 24px;margin-bottom:22px}
+.meter-top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+.meter-count{display:flex;align-items:baseline;gap:10px}
+.meter-count .big{font-family:"Fraunces",serif;font-weight:700;font-size:54px;line-height:.9;letter-spacing:-.02em;color:var(--ink)}
+.meter-count .of{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink-3)}
+.meter-status{font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:600;letter-spacing:.04em;padding:6px 12px;border-radius:2px;white-space:nowrap}
+.meter-status.short{color:#fff;background:var(--oxblood-fixed)}
+.meter-status.clear{color:var(--ink-fixed);background:var(--copper)}
+@media(prefers-color-scheme:dark){.meter-status.short{color:var(--ink-fixed)}}
+.bar{position:relative;height:30px;background:var(--paper-sunk);border:1px solid var(--rule-2);overflow:hidden}
+.bar .fill-r{position:absolute;left:0;top:0;bottom:0;background:var(--ink-3);transition:width .35s cubic-bezier(.4,0,.2,1)}
+.bar .fill-d{position:absolute;top:0;bottom:0;background:var(--copper);transition:width .35s cubic-bezier(.4,0,.2,1),left .35s cubic-bezier(.4,0,.2,1)}
+.bar .thresh{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--oxblood-fixed);z-index:3}
+.bar .thresh::after{content:"60";position:absolute;top:-15px;left:50%;transform:translateX(-50%);font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:600;color:var(--oxblood-tx);background:var(--paper);padding:0 3px}
+.meter-legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px;font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-3)}
+.meter-legend span{display:inline-flex;align-items:center;gap:6px}
+.meter-legend .sw{width:11px;height:11px;border-radius:2px;display:inline-block}
+.sw.r{background:var(--ink-3)} .sw.d{background:var(--copper)} .sw.t{background:var(--oxblood-fixed)}
+
+.whip-note{font-size:13.5px;line-height:1.55;color:var(--ink-2);background:var(--paper-sunk);border-left:3px solid var(--copper);padding:13px 16px;margin:0 0 22px;max-width:none}
+.whip-note b{color:var(--ink)}
+
+.gop-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;border:1px solid var(--rule-2);background:var(--paper-card);padding:14px 18px;margin-bottom:8px}
+.gop-row .gl{flex:1;min-width:220px}
+.gop-row .gl .t{font-family:"Fraunces",serif;font-weight:600;font-size:16px}
+.gop-row .gl .d{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-3);margin-top:2px}
+.stepper{display:flex;align-items:center;gap:2px}
+.stepper button{
+  appearance:none;font-family:"JetBrains Mono",monospace;font-size:15px;font-weight:600;width:32px;height:32px;
+  border:1px solid var(--rule-3);background:var(--paper);color:var(--ink);cursor:pointer;line-height:1
+}
+.stepper button:hover{border-color:var(--copper);color:var(--copper-deep)}
+.stepper button:focus-visible{outline:2px solid var(--copper);outline-offset:1px}
+.stepper .val{font-family:"JetBrains Mono",monospace;font-size:16px;font-weight:600;min-width:38px;text-align:center}
+
+.dem-head{display:flex;justify-content:space-between;align-items:baseline;margin:18px 0 10px;flex-wrap:wrap;gap:8px}
+.dem-head .kicker{font-size:10px}
+.dem-head .reset{appearance:none;background:none;border:1px solid var(--rule-3);color:var(--ink-2);font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding:6px 11px;cursor:pointer}
+.dem-head .reset:hover{border-color:var(--copper);color:var(--copper-deep)}
+.dem-head .reset:focus-visible{outline:2px solid var(--copper);outline-offset:1px}
+
+.dem-list{display:grid;gap:6px}
+.dem{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;border:1px solid var(--rule);background:var(--paper-card);padding:12px 16px;border-left:3px solid var(--pos,var(--ink-3))}
+.dem .pip{width:9px;height:9px;border-radius:50%;background:var(--pos,var(--ink-3));flex-shrink:0}
+.dem .who{min-width:0}
+.dem .who .nm{font-family:"Fraunces",serif;font-weight:600;font-size:15.5px;line-height:1.15}
+.dem .who .st{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-3)}
+.dem .who .nt{font-size:12.5px;color:var(--ink-2);line-height:1.4;margin-top:3px}
+.dem select{
+  appearance:none;-webkit-appearance:none;font-family:"JetBrains Mono",monospace;font-size:11.5px;font-weight:600;
+  color:var(--ink);background:var(--paper);border:1px solid var(--rule-3);padding:8px 28px 8px 11px;cursor:pointer;
+  background-image:linear-gradient(45deg,transparent 50%,var(--ink-3) 50%),linear-gradient(135deg,var(--ink-3) 50%,transparent 50%);
+  background-position:calc(100% - 14px) 52%,calc(100% - 9px) 52%;background-size:5px 5px,5px 5px;background-repeat:no-repeat;
+  border-radius:2px;min-width:118px
+}
+.dem select:hover{border-color:var(--copper)}
+.dem select:focus-visible{outline:2px solid var(--copper);outline-offset:1px}
+/* position colours */
+.dem[data-pos="yes"]{--pos:var(--copper-deep)}
+.dem[data-pos="leanyes"]{--pos:var(--copper)}
+.dem[data-pos="undecided"]{--pos:var(--ink-3)}
+.dem[data-pos="leanno"]{--pos:var(--oxblood)}
+.dem[data-pos="no"]{--pos:var(--oxblood-tx)}
+@media(max-width:560px){.dem{grid-template-columns:auto 1fr;gap:10px}.dem select{grid-column:2;justify-self:start}}
+
+/* ── Calendar ── */
+.cal{border:1px solid var(--rule-2);background:var(--paper-card);padding:24px 24px 12px;margin-bottom:8px}
+.cal-track{position:relative;margin:34px 0 8px;padding-top:4px}
+.cal-line{position:absolute;left:0;right:0;top:9px;height:2px;background:var(--rule-2)}
+.cal-window{position:absolute;top:5px;height:10px;background:var(--copper-soft);border-left:2px solid var(--copper);border-right:2px solid var(--copper);z-index:1}
+.cal-months{display:grid;grid-template-columns:repeat(7,1fr);position:relative;z-index:2}
+.cal-mo{text-align:center;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-3);position:relative;padding-top:20px}
+.cal-mo::before{content:"";position:absolute;top:5px;left:50%;width:1px;height:8px;background:var(--rule-3);transform:translateX(-50%)}
+.cal-mo.hot{color:var(--oxblood-tx);font-weight:600}
+.cal-events{display:grid;gap:8px;margin-top:26px;border-top:1px solid var(--rule)}
+.cal-ev{display:grid;grid-template-columns:96px 1fr;gap:14px;padding:12px 0 0;align-items:baseline}
+.cal-ev .when{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:600;color:var(--copper-deep)}
+.cal-ev .when.dl{color:var(--oxblood-tx)}
+.cal-ev .what{font-size:14.5px;line-height:1.5;color:var(--ink-2)}
+.cal-ev .what b{color:var(--ink);font-weight:600}
+.cal-cap{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-3);text-align:center;margin-top:4px}
+
+/* ── Scenario / reco ── */
+.scen{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px}
+@media(max-width:640px){.scen{grid-template-columns:1fr}}
+.scen-card{border:1px solid var(--rule-2);background:var(--paper-card);padding:20px 22px;border-top:3px solid var(--accent)}
+.scen-card.base{--accent:var(--copper-deep)}
+.scen-card.down{--accent:var(--oxblood-tx)}
+.scen-card .pr{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.scen-card h3{font-size:20px;margin:4px 0 10px}
+.scen-card p{font-size:14.5px;line-height:1.6;color:var(--ink-2);margin:0}
+
+.reco{list-style:none;padding:0;margin:0;counter-reset:r;border-top:1px solid var(--rule)}
+.reco li{counter-increment:r;padding:18px 0;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:38px 1fr;gap:16px}
+.reco li::before{content:counter(r,decimal-leading-zero);font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:600;color:var(--copper-deep)}
+.reco li .h{font-family:"Fraunces",serif;font-weight:600;font-size:16.5px;color:var(--ink);margin-bottom:4px}
+.reco li p{margin:0;font-size:14.5px;line-height:1.55;color:var(--ink-2)}
+
+.caveats{border:1px solid var(--rule-2);background:var(--paper-sunk);padding:20px 24px;margin-top:8px}
+.caveats h3{font-size:16px;margin:0 0 12px;display:flex;align-items:center;gap:10px}
+.caveats h3 .kicker{font-size:10px}
+.caveats ul{margin:0;padding-left:18px}
+.caveats li{font-size:13.5px;line-height:1.55;color:var(--ink-2);margin-bottom:9px}
+.caveats li b{color:var(--ink)}
+
+/* ── Colophon ── */
+.colophon{margin:50px 0 40px;padding-top:0}
+.colo-body{padding:22px 0 0;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.colo-body .blk{max-width:46ch}
+.colo-body .kicker{display:block;margin-bottom:8px}
+.colo-body p{font-size:12.5px;line-height:1.6;color:var(--ink-3);margin:0}
+.colo-body p a{color:var(--ink-3)}
+.colo-mark{font-family:"Fraunces",serif;font-weight:700;font-size:15px;letter-spacing:-.01em}
+.colo-mark .reg{color:var(--oxblood-tx)}
+
+:focus-visible{outline:2px solid var(--copper);outline-offset:2px}
+.skip{position:absolute;left:-9999px;top:0;background:var(--ink);color:var(--paper);padding:10px 16px;font-family:"JetBrains Mono",monospace;font-size:12px;z-index:99}
+.skip:focus{left:8px;top:8px}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+</style>
+</head>
+<body>
+<a href="#main" class="skip">Skip to content</a>
+
+<header class="masthead wrap" role="banner">
+  <div class="masthead-top">
+    <div class="wordmark">Bank<span class="reg">Reg</span>Wire</div>
+    <div class="masthead-meta">
+      Policy Monitor · No. 042<br>
+      119th Congress · 2nd Session
+    </div>
+  </div>
+  <div class="masthead-strap">
+    <span class="kicker">Digital Assets Desk · Legislative Tracking</span>
+    <span class="kicker" style="color:var(--ink-3)">Updated 03 June 2026</span>
+  </div>
+</header>
+<div class="wire wrap" aria-hidden="true"></div>
+
+<main id="main" class="wrap" role="main">
+
+  <section class="hero">
+    <p class="dateline"><b>Washington</b> · Filed 3 June 2026 · 119th Cong.</p>
+    <h1>Will market-structure legislation <em>actually pass</em> in 2026?</h1>
+    <p class="deck">The CLARITY Act has reached the Senate calendar, the furthest a comprehensive crypto framework has ever traveled. Whether it clears the chamber this year turns on one variable: an ethics deal over the Trump family's crypto ventures that the White House has not yet agreed to.</p>
+
+    <div class="verdict">
+      <div class="verdict-gauge">
+        <span class="lbl">2026 Enactment</span>
+        <span class="pct">~60–75%</span>
+        <span class="sub">likely · conditional</span>
+      </div>
+      <div class="verdict-body">
+        <span class="tag">The Read</span>
+        <p>More likely than not, but not the near-certainty the industry narrative suggests. Galaxy Research models 75% (and placed a $10M institutional trade on 2026 passage); Polymarket has slipped to roughly 55% as of June 3, down about ten points. Every credible path now runs through a late-summer floor vote and a fall signing. The July 4 White House target has lapsed.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="tabs-shell">
+    <div class="wrap" style="padding:0 24px">
+      <div class="tabs" role="tablist" aria-label="Sections">
+        <button class="tab" role="tab" id="tab-read" aria-controls="p-read" aria-selected="true">The Read</button>
+        <button class="tab" role="tab" id="tab-whip" aria-controls="p-whip" aria-selected="false" tabindex="-1">Whip Count</button>
+        <button class="tab" role="tab" id="tab-head" aria-controls="p-head" aria-selected="false" tabindex="-1">Headwinds</button>
+        <button class="tab" role="tab" id="tab-tail" aria-controls="p-tail" aria-selected="false" tabindex="-1">Tailwinds</button>
+        <button class="tab" role="tab" id="tab-cal" aria-controls="p-cal" aria-selected="false" tabindex="-1">Calendar</button>
+        <button class="tab" role="tab" id="tab-out" aria-controls="p-out" aria-selected="false" tabindex="-1">Outlook</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE READ -->
+  <section class="panel" id="p-read" role="tabpanel" aria-labelledby="tab-read" tabindex="0">
+    <div class="sec-head">
+      <span class="kicker">Summary</span>
+      <h2>Where things stand</h2>
+    </div>
+    <p class="body">The House passed its CLARITY Act 294–134 in July 2025. In the Senate, the Agriculture Committee advanced its narrower intermediaries bill on a party-line vote (Jan. 29), and the Banking Committee advanced the broader <strong>Digital Asset Market Clarity Act 15–9 on May 14</strong>, with Democrats Ruben Gallego and Angela Alsobrooks crossing over. The bill was placed on the <strong>Senate Legislative Calendar on June 1</strong>, but that only means it is eligible for scheduling, not that a floor date exists. It still must be merged with the Agriculture text, clear a 60-vote cloture threshold, and be reconciled with the year-old House version.</p>
+
+    <ul class="findings">
+      <li><span class="n">01</span><p><b>Likely but conditional.</b> The bill is the furthest it has ever been. But the make-or-break issue is the conflict-of-interest provision driven by the Trump family's crypto ventures: a political negotiation, not a drafting problem.</p></li>
+      <li><span class="n">02</span><p><b>The math is a Democratic problem.</b> With a 53–47 Senate, backers need roughly seven Democrats for cloture. All 13 Banking Republicans voted yes, and even the three departing GOP senators are pro-bill or neutral on crypto. The bottleneck is whether the conditional Democratic bloc gets enforceable ethics language.</p></li>
+      <li><span class="n">03</span><p><b>The calendar is the silent killer.</b> Between the August recess and the early-October campaign break, only a handful of working weeks remain, competing with FY2027 appropriations (Sept. 30), the NDAA, and reconciliation. Negotiators privately target August as the practical deadline.</p></li>
+      <li><span class="n">04</span><p><b>The tailwinds are formidable.</b> A ~$193M crypto super-PAC war chest, the GENIUS Act precedent (passed the Senate 68–30), active White House and Treasury pressure, a workable two-committee architecture, and a March SEC–CFTC joint interpretation already providing interim clarity.</p></li>
+    </ul>
+  </section>
+
+  <!-- WHIP COUNT -->
+  <section class="panel" id="p-whip" role="tabpanel" aria-labelledby="tab-whip" tabindex="0" hidden>
+    <div class="sec-head">
+      <span class="kicker">Interactive</span>
+      <h2>The cloture whip count</h2>
+      <span class="sec-num">60 to invoke</span>
+    </div>
+    <p class="body">Cloture needs 60 votes. Republicans hold 53; the committee vote was 13–0 among them, so the GOP bloc is assumed to hold on this bill. That leaves a roughly seven-Democrat ask. Model the pivotal swing senators below. The defaults reflect each member's <em>documented</em> position as of early June, when supporters are short of the line. Counts <b>Yes</b> and <b>Lean Yes</b> as cloture-supporting.</p>
+
+    <div class="meter-card" aria-hidden="false">
+      <div class="meter-top">
+        <div class="meter-count">
+          <span class="big" id="m-total">57</span>
+          <span class="of">/ 60 for cloture</span>
+        </div>
+        <span class="meter-status short" id="m-status" role="status" aria-live="polite">Short by 3</span>
+      </div>
+      <div class="bar" role="img" aria-label="Vote tally bar toward the 60-vote cloture threshold">
+        <div class="fill-r" id="bar-r" style="width:0"></div>
+        <div class="fill-d" id="bar-d" style="left:0;width:0"></div>
+        <div class="thresh" id="bar-t"></div>
+      </div>
+      <div class="meter-legend">
+        <span><i class="sw r"></i>Republican bloc <b id="leg-r" class="mono" style="margin-left:4px">53</b></span>
+        <span><i class="sw d"></i>Democratic Yes/Lean <b id="leg-d" class="mono" style="margin-left:4px">4</b></span>
+        <span><i class="sw t"></i>Cloture threshold 60</span>
+      </div>
+    </div>
+
+    <p class="whip-note"><b>One condition governs every Democratic "yes" below.</b> Each conditional supporter has tied a floor vote to enforceable ethics language barring the president, vice president, members of Congress, and senior officials from profiting off digital assets. The White House will accept rules applying "across the board" but rejects anything that singles out the president, the exact knot negotiators have not untied since mid-2025.</p>
+
+    <div class="gop-row">
+      <div class="gl">
+        <div class="t">Republican bloc</div>
+        <div class="d">Committee was 13–0 among R · assumed to hold · stress-test defections</div>
+      </div>
+      <div class="stepper" role="group" aria-label="Republican vote count">
+        <button type="button" id="gop-minus" aria-label="Decrease Republican votes">−</button>
+        <span class="val mono" id="gop-val" aria-live="polite">53</span>
+        <button type="button" id="gop-plus" aria-label="Increase Republican votes">+</button>
+      </div>
+    </div>
+
+    <div class="dem-head">
+      <span class="kicker">Pivotal Democrats · set each position</span>
+      <button type="button" class="reset" id="reset-whip">Reset to baseline</button>
+    </div>
+    <div class="dem-list" id="dem-list"><!-- injected --></div>
+
+    <div class="gop-row" style="margin-top:8px">
+      <div class="gl">
+        <div class="t">Other gettable Democrats</div>
+        <div class="d">GENIUS-era precedent (18–19 D backed related measures) · modeled, not individually whipped</div>
+      </div>
+      <div class="stepper" role="group" aria-label="Additional gettable Democrats">
+        <button type="button" id="bench-minus" aria-label="Decrease additional Democrats">−</button>
+        <span class="val mono" id="bench-val" aria-live="polite">0</span>
+        <button type="button" id="bench-plus" aria-label="Increase additional Democrats">+</button>
+      </div>
+    </div>
+
+    <p class="force-meta" style="margin-top:20px">The defaults open three short of cloture. The arithmetic of the base case is unforgiving: 53 Republicans plus exactly the seven named conditional Democrats lands at 60 with no margin. Flip any single conditional supporter to undecided, and cloture fails unless the GENIUS-era bench is tapped.</p>
+  </section>
+
+  <!-- HEADWINDS -->
+  <section class="panel" id="p-head" role="tabpanel" aria-labelledby="tab-head" tabindex="0" hidden>
+    <div class="sec-head">
+      <span class="kicker">Against</span>
+      <h2>Three headwinds</h2>
+    </div>
+    <p class="force-meta">Tap each to expand. Ordered by weight on the outcome.</p>
+
+    <details class="force" open>
+      <summary><span class="badge">No. 1 · Dispositive</span><span class="ttl">The Trump crypto conflicts &amp; the Democratic ethics revolt</span><span class="chev">›</span></summary>
+      <div class="force-body">
+        <p>This is the single largest obstacle, and it has hardened over the past year. World Liberty Financial, in which a Trump-family entity holds a large revenue share, issues the USD1 stablecoin used by Abu Dhabi's MGX in a $2B Binance investment, settled roughly two weeks before the administration agreed to sell the UAE advanced AI chips. Add the October 2025 pardon of Binance founder Changpeng Zhao, the $TRUMP memecoin (in which Chainalysis estimated 764,000 of ~2 million wallets lost money), and a pending OCC bank-charter bid, and Democrats have a unifying corruption narrative.</p>
+        <p><strong>The split.</strong> The hard-no bloc (Warren, Reed, Van Hollen, Warnock, Smith) is building a record that the bill is industry-written. The conditional bloc (Gallego, Alsobrooks, Warner, Cortez Masto, Gillibrand) wants to shape it but has drawn a line. Cory Booker walked away from the bipartisan Agriculture draft over the issue.</p>
+        <p class="pull">"There will be no one voting for this bill if we don't have an ethics provision." · Sen. Gillibrand, Consensus Miami 2026</p>
+        <p><strong>The knot.</strong> Republicans say existing OGE rules suffice and that ethics sits outside committee jurisdiction, so any provision must be added on the floor, the exact scenario Democrats distrust. The White House will accept a generally applicable standard but rejects anything binding the president specifically. That is a political ask, not a drafting fix.</p>
+        <p class="src">Sources: Bloomberg (Jan. 20, 2026); WSJ; Chainalysis; Senate Banking Committee minority releases; Common Dreams.</p>
+      </div>
+    </details>
+
+    <details class="force">
+      <summary><span class="badge">No. 2 · Indirect</span><span class="ttl">The narrow Senate margin &amp; the GOP lame-duck wildcards</span><span class="chev">›</span></summary>
+      <div class="force-body">
+        <p>Republicans hold 53 seats; 60 are needed for cloture, so backers need about seven Democrats. The encouraging precedent: GENIUS passed 68–30, and 19 Democrats joined the CRA resolution overturning the IRS DeFi broker rule. The three departing GOP senators flagged as wildcards cut differently than feared for <em>this</em> bill:</p>
+        <p><strong>Cornyn (TX)</strong> lost his May 26 runoff to Ken Paxton (~64–36) after Trump's late endorsement (the first Texas senator to lose renomination since 1970), but professes loyalty and is not a crypto no-vote. <strong>Cassidy (LA)</strong> lost his May 16 primary (third place) and has since become a documented thorn, condemning the DOJ "slush fund," opposing the ballroom project, and advancing the Iran War Powers resolution, yet has not signaled crypto opposition. <strong>Tillis (NC)</strong>, who announced in June 2025 he would not seek reelection, is on crypto a <em>co-author</em>: he brokered the stablecoin-yield compromise with Alsobrooks.</p>
+        <p class="pull">"We have a 53–47 majority. If you lose four senators, you're below 50, and you can't get anything done." · Sen. Cruz, May 2026</p>
+        <p><strong>The real risk is indirect.</strong> A less Trump-deferential conference makes the floor and the calendar harder to manage, not the whip count on a bipartisan, industry-backed bill where every committee Republican voted yes.</p>
+        <p class="src">Sources: NYT; NOTUS; PBS NewsHour; Roll Call.</p>
+      </div>
+    </details>
+
+    <details class="force">
+      <summary><span class="badge">No. 3 · Structural</span><span class="ttl">The legislative calendar &amp; competing must-pass priorities</span><span class="chev">›</span></summary>
+      <div class="force-body">
+        <p>The most underrated risk. The Senate designates Aug. 10–Sept. 11 as the long state work period, with the campaign recess from early October, roughly 18 working weeks in the window, and as of early June the two Senate committee versions had not even been merged. Reconciling Banking and Agriculture text is a multi-week exercise; reconciling the merged Senate bill with the House version could add weeks more.</p>
+        <p><strong>The competition is severe.</strong> FY2026 funding required the longest shutdown in modern history (43 days) plus a second partial shutdown around Jan. 30; FY2027 faces a Sept. 30 deadline and the same dynamics. The NDAA, possible second reconciliation, FISA reauthorization and confirmation fights all compete for floor time, while primary season degrades attendance.</p>
+        <p class="pull">"I would love to have this bill on the floor in June. That's probably pretty optimistic." · Sen. Lummis</p>
+        <p>Once the calendar tips past Labor Day into appropriations and campaigning, the realistic window for a complex 60-vote financial bill effectively closes for the year. Industry and Gillibrand alike peg August as the practical deadline.</p>
+        <p class="src">Sources: 2026 Senate calendar; Roll Call; The Hill; Digital Chamber.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- TAILWINDS -->
+  <section class="panel" id="p-tail" role="tabpanel" aria-labelledby="tab-tail" tabindex="0" hidden>
+    <div class="sec-head">
+      <span class="kicker">In favor</span>
+      <h2>Five tailwinds</h2>
+    </div>
+    <p class="force-meta">The forces pushing toward passage are organized, well-funded, and bipartisan at the committee level.</p>
+
+    <details class="force tail" open>
+      <summary><span class="badge">Force 1</span><span class="ttl">Industry money &amp; lobbying muscle</span><span class="chev">›</span></summary>
+      <div class="force-body">
+        <p>The Fairshake super-PAC network reported roughly <strong>$193M cash on hand</strong> for the 2026 midterms, more than it spent in the record-setting 2024 cycle, built on contributions from Coinbase, Ripple, and a16z. By early May, crypto-aligned groups had reportedly deployed over $271M across 2026 races. The strategic effect is less any single vote than the standing knowledge that opposing crypto invites a flood of opposition spending.</p>
+        <p>The caveat: spending has tilted heavily Republican, which feeds the Democratic "industry capture" critique and can make the bipartisan ask harder, not easier.</p>
+        <p class="src">Sources: FEC filings; CoinDesk; The Hill.</p>
+      </div>
+    </details>
+
+    <details class="force tail">
+      <summary><span class="badge">Force 2</span><span class="ttl">The GENIUS Act template &amp; momentum</span><span class="chev">›</span></summary>
+      <div class="force-body">
+        <p>The 2025 stablecoin law passed the Senate <strong>68–30</strong> despite earlier Democratic revolts and a contentious committee process, proof that crypto bills tend to draw lopsided bipartisan final votes once a deal is struck. It also built the licensing framework that CLARITY's market-structure architecture is meant to complete, giving supporters a coherent "finish the job" narrative. CLARITY's partisan committee votes mirror GENIUS's early trajectory.</p>
+        <p class="src">Sources: Congress.gov; CNBC.</p>
+      </div>
+    </details>
+
+    <details class="force tail">
+      <summary><span class="badge">Force 3</span><span class="ttl">White House &amp; administration prioritization</span><span class="chev">›</span></summary>
+      <div class="force-body">
+        <p>The administration has treated market structure as a top legislative priority. The crypto adviser set a (now-lapsed) July 4 signing target; Treasury Secretary Bessent has actively mediated the bank-versus-crypto yield dispute. A <strong>March 17 joint SEC–CFTC interpretation</strong> classified 18 assets (BTC, ETH, SOL, XRP, LTC and others) as digital commodities, providing interim clarity that both demonstrates regulator alignment and reduces urgency.</p>
+        <p class="src">Sources: SEC/CFTC joint statement (Mar. 17, 2026); Treasury.</p>
+      </div>
+    </details>
+
+    <details class="force tail">
+      <summary><span class="badge">Force 4</span><span class="ttl">Bipartisan committee architecture &amp; willing Democrats</span><span class="chev">›</span></summary>
+      <div class="force-body">
+        <p>The dual-committee structure (Banking under Scott, Agriculture under Boozman; House chairs Hill and Thompson) has produced workable text despite friction. A real bloc of Democrats wants to shape rather than kill the bill: Gallego and Alsobrooks supplied the decisive committee votes; Warner helped draft DeFi language; Cortez Masto negotiated law-enforcement provisions with Grassley; Gillibrand is whipping off-committee members. The Tillis–Alsobrooks stablecoin-yield compromise cleared the issue that had blocked the bill for four months.</p>
+        <p class="src">Sources: Senate Banking Committee; member statements.</p>
+      </div>
+    </details>
+
+    <details class="force tail">
+      <summary><span class="badge">Force 5</span><span class="ttl">The jurisdictional clarity industry wants</span><span class="chev">›</span></summary>
+      <div class="force-body">
+        <p>The core deliverable, splitting oversight so the CFTC regulates digital-commodity spot markets while the SEC keeps digital-securities authority, is something major firms (Coinbase, Circle, Ripple, a16z, Anchorage) actively want, giving the bill an organized, motivated, well-resourced constituency that will keep pressure on through the summer. The bill also carries a popular anti-CBDC provision, adding intra-GOP enthusiasm.</p>
+        <p class="src">Sources: industry comment letters; CoinDesk.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- CALENDAR -->
+  <section class="panel" id="p-cal" role="tabpanel" aria-labelledby="tab-cal" tabindex="0" hidden>
+    <div class="sec-head">
+      <span class="kicker">The window</span>
+      <h2>What's left of the year</h2>
+    </div>
+    <p class="body">The practical runway closes well before December. The shaded band marks the realistic legislative window; once appropriations and the campaign recess take hold, a complex 60-vote financial bill loses its lane.</p>
+
+    <div class="cal">
+      <div class="cal-track" aria-hidden="true">
+        <div class="cal-line"></div>
+        <!-- window: roughly June through mid-September, i.e. months 1..3.5 of 7 -->
+        <div class="cal-window" style="left:0%;width:46%"></div>
+        <div class="cal-months">
+          <div class="cal-mo hot">JUN</div>
+          <div class="cal-mo hot">JUL</div>
+          <div class="cal-mo hot">AUG</div>
+          <div class="cal-mo hot">SEP</div>
+          <div class="cal-mo">OCT</div>
+          <div class="cal-mo">NOV</div>
+          <div class="cal-mo">DEC</div>
+        </div>
+      </div>
+      <p class="cal-cap" aria-hidden="true">▸ Shaded band = realistic legislative window</p>
+
+      <div class="cal-events">
+        <div class="cal-ev"><span class="when">JUN</span><span class="what"><b>Merge the Senate texts.</b> Watch for the Scott–Boozman chairman's amendment combining the Banking and Agriculture bills. Until it lands, floor timing is speculative. If it isn't public and on the calendar by end of June, the July window is gone.</span></div>
+        <div class="cal-ev"><span class="when">JUL</span><span class="what"><b>Optimistic floor window.</b> A cloture vote with 7–12 Democrats is feasible here if the ethics deal closes. The lapsed July 4 White House signing target is already behind schedule.</span></div>
+        <div class="cal-ev"><span class="when dl">AUG 10</span><span class="what"><b>Recess begins: the practical deadline.</b> The long state work period runs Aug. 10–Sept. 11. Industry and Gillibrand both treat early August as the last clean shot.</span></div>
+        <div class="cal-ev"><span class="when">SEP</span><span class="what"><b>The narrow post-recess window.</b> A second realistic shot, but now contending directly with funding brinkmanship.</span></div>
+        <div class="cal-ev"><span class="when dl">SEP 30</span><span class="what"><b>FY2027 appropriations deadline.</b> The most likely thing to crowd out floor time. A CR or shutdown fight in September almost certainly pushes crypto.</span></div>
+        <div class="cal-ev"><span class="when dl">OCT</span><span class="what"><b>Campaign recess.</b> Members scatter to the midterms. For practical purposes, the 2026 window closes here.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OUTLOOK -->
+  <section class="panel" id="p-out" role="tabpanel" aria-labelledby="tab-out" tabindex="0" hidden>
+    <div class="sec-head">
+      <span class="kicker">Forecast</span>
+      <h2>Outlook &amp; what to watch</h2>
+    </div>
+
+    <div class="scen">
+      <div class="scen-card base">
+        <span class="pr">Base case · ~60–75%</span>
+        <h3>Fall signing</h3>
+        <p>The Senate merges the two texts over June; a generally applicable ethics framework is negotiated in a form the White House tolerates; cloture clears in July or early-to-mid September with 7–12 Democrats; the House accepts or quickly conferences; Trump signs in the fall. Aligns with Galaxy's ~75% and the August deadline both industry and Gillibrand cite.</p>
+      </div>
+      <div class="scen-card down">
+        <span class="pr">Downside · ~25–35%</span>
+        <h3>Slip to 2027</h3>
+        <p>Ethics talks collapse, or the White House refuses any standard that meaningfully binds the president; appropriations and a possible shutdown consume September; the bill misses the pre-campaign window. A likely Democratic House in 2027 would then demand far more, including the very ethics provisions Republicans now resist. TD Cowen's slippage warning is the credible bear case.</p>
+      </div>
+    </div>
+
+    <h3 style="font-size:20px;margin:0 0 4px">What to watch</h3>
+    <ol class="reco">
+      <li><div><div class="h">Treat the merged Senate text as the first hard signal.</div><p>Watch for the Scott–Boozman chairman's amendment. If it isn't public and on the floor calendar by end of June, the July window is effectively gone.</p></div></li>
+      <li><div><div class="h">Track the ethics provision directly, not the policy titles.</div><p>The dispositive variable. A White House signal of acceptance is the strongest leading indicator of passage; a renewed "won't target the president" statement is the strongest negative one.</p></div></li>
+      <li><div><div class="h">Count to seven, then to twelve.</div><p>Conditional Democrats to monitor: Gallego, Alsobrooks, Warner, Cortez Masto, Warnock, plus off-committee Gillibrand, Booker, Coons. Hard-no anchors: Warren, Reed, Van Hollen, Smith.</p></div></li>
+      <li><div><div class="h">Watch the appropriations calendar as the crowd-out threat.</div><p>The Sept. 30 FY2027 deadline and any shutdown brinkmanship are the likeliest things to consume floor time. If a CR fight dominates September, assume crypto slips.</p></div></li>
+      <li><div><div class="h">Don't over-weight the GOP primary turmoil as a crypto risk.</div><p>Cornyn, Cassidy, and Tillis complicate Trump's broader agenda and chamber cohesion, but they are not crypto no-votes; Tillis is an author. Their risk is an unrulier floor, not a lost tally.</p></div></li>
+      <li><div><div class="h">Position for a fall signing and rulemaking into 2027–2028.</div><p>Even on the optimistic path, enforceable rules require SEC/CFTC rulemaking and phase-ins. Compliance planning should assume enactment late 2026 at the earliest and operative rules in 2027–2028.</p></div></li>
+    </ol>
+
+    <div class="caveats">
+      <h3><span class="kicker">Caveats</span></h3>
+      <ul>
+        <li><b>Fast-moving target.</b> Reflects the state of play as of June 3, 2026. The bill had reached the Senate calendar but had not been merged, floor-scheduled, passed, reconciled, or signed. Any step could shift the outlook within days.</li>
+        <li><b>Probabilities are third-party and noisy.</b> The 60–75% range blends Galaxy Research (75%), Polymarket (~55% on June 3, down from ~68% in mid-May) and the Solana Policy Institute (60%). Characterizations of how Cornyn, Cassidy, and Tillis "might" behave are journalistic predictions; only Cassidy has a documented post-loss record of breaking with the administration, and none has signaled opposition to crypto legislation specifically.</li>
+        <li><b>Conflict-of-interest claims are contested.</b> Democrats and watchdogs call the Trump-family dealings corruption; the White House, World Liberty Financial, and Binance dispute that. The whip-count effect is real regardless of the unresolved legal questions.</li>
+        <li><b>Bank-sector opposition persists.</b> Beyond ethics, the major bank trade groups (ABA, BPI, ICBA) rejected the stablecoin-yield compromise, and JPMorgan's Jamie Dimon continues to oppose the current text, a parallel pressure that could reopen negotiated provisions on the floor.</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<div class="wire wrap" aria-hidden="true" style="margin-top:24px"></div>
+<footer class="colophon wrap" role="contentinfo">
+  <div class="colo-body">
+    <div class="blk">
+      <span class="kicker">Colophon</span>
+      <p>A <span class="colo-mark">Bank<span class="reg">Reg</span>Wire</span> policy monitor. Conclusion-first analysis built from primary sources (Congress.gov, Senate committee releases, and member statements), corroborated by CoinDesk, CNBC, Roll Call, Bloomberg, PBS, The Hill, and NOTUS. Figures from interested or lower-tier trackers are flagged in context.</p>
+    </div>
+    <div class="blk">
+      <span class="kicker">On the whip count</span>
+      <p>The cloture model covers the pivotal named senators with documented positions; the broader 47-member Democratic caucus splits along similar lines, with a deeper gettable pool implied by GENIUS-era precedent. Default positions reflect the early-June record. This is an analytic tool, not a vote prediction.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ───────── Tabs (ARIA tablist) ───────── */
+  var tablist = document.querySelector('[role="tablist"]');
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+
+  function selectTab(tab, setFocus){
+    tabs.forEach(function(t){
+      var selected = (t === tab);
+      t.setAttribute('aria-selected', selected ? 'true' : 'false');
+      t.tabIndex = selected ? 0 : -1;
+      var panel = document.getElementById(t.getAttribute('aria-controls'));
+      if(panel){ panel.hidden = !selected; }
+    });
+    if(setFocus){ tab.focus(); }
+  }
+
+  tabs.forEach(function(tab, i){
+    tab.addEventListener('click', function(){ selectTab(tab, false); });
+    tab.addEventListener('keydown', function(e){
+      var idx = i, handled = true;
+      switch(e.key){
+        case 'ArrowRight': case 'ArrowDown': idx = (i + 1) % tabs.length; break;
+        case 'ArrowLeft':  case 'ArrowUp':   idx = (i - 1 + tabs.length) % tabs.length; break;
+        case 'Home': idx = 0; break;
+        case 'End':  idx = tabs.length - 1; break;
+        default: handled = false;
+      }
+      if(handled){ e.preventDefault(); selectTab(tabs[idx], true); }
+    });
+  });
+
+  /* ───────── Whip count ───────── */
+  var THRESHOLD = 60;
+
+  var DEMS = [
+    {name:"Ruben Gallego",        st:"D-AZ", def:"leanyes",  note:"Committee yes (5/14); conditions a floor yes on enforceable ethics language."},
+    {name:"Angela Alsobrooks",    st:"D-MD", def:"leanyes",  note:"Committee yes (5/14); co-authored the stablecoin-yield compromise with Tillis."},
+    {name:"Mark Warner",          st:"D-VA", def:"leanyes",  note:"Helped draft DeFi language; self-described \u201Ccrypto purgatory\u201D moving toward yes."},
+    {name:"Kirsten Gillibrand",   st:"D-NY", def:"leanyes",  note:"Whipping off-committee Democrats \u2014 but \u201Cno one votes for this without an ethics provision.\u201D"},
+    {name:"Catherine Cortez Masto",st:"D-NV",def:"undecided",note:"Negotiating law-enforcement provisions with Grassley."},
+    {name:"Cory Booker",          st:"D-NJ", def:"undecided",note:"Walked away from the bipartisan Agriculture draft over ethics."},
+    {name:"Chris Coons",          st:"D-DE", def:"undecided",note:"Institutionalist; gettable with guardrails."},
+    {name:"Raphael Warnock",      st:"D-GA", def:"leanno",   note:"Committee no (5/14), citing the missing ethics provision; gettable if resolved."},
+    {name:"Elizabeth Warren",     st:"D-MA", def:"no",       note:"Lead opponent; says the bill would \u201Cturbocharge\u201D Trump crypto corruption."},
+    {name:"Jack Reed",            st:"D-RI", def:"no",        note:"Aligned with the Warren bloc."},
+    {name:"Chris Van Hollen",     st:"D-MD", def:"no",        note:"Authored the failed committee ethics amendment (11\u201313)."},
+    {name:"Tina Smith",           st:"D-MN", def:"no",        note:"Hard no; industry-capture critique."}
+  ];
+
+  var POS = [
+    {v:"yes",      label:"Yes"},
+    {v:"leanyes",  label:"Lean Yes"},
+    {v:"undecided",label:"Undecided"},
+    {v:"leanno",   label:"Lean No"},
+    {v:"no",       label:"No"}
+  ];
+  function counts(v){ return v === "yes" || v === "leanyes"; }
+
+  var gop = 53, bench = 0;
+  var state = DEMS.map(function(d){ return d.def; });
+
+  var listEl   = document.getElementById('dem-list');
+  var totalEl  = document.getElementById('m-total');
+  var statusEl = document.getElementById('m-status');
+  var legRel   = document.getElementById('leg-r');
+  var legDel   = document.getElementById('leg-d');
+  var barR     = document.getElementById('bar-r');
+  var barD     = document.getElementById('bar-d');
+  var barT     = document.getElementById('bar-t');
+
+  function buildList(){
+    listEl.innerHTML = "";
+    DEMS.forEach(function(d, i){
+      var row = document.createElement('div');
+      row.className = 'dem';
+      row.setAttribute('data-pos', state[i]);
+
+      var pip = document.createElement('span');
+      pip.className = 'pip'; pip.setAttribute('aria-hidden','true');
+
+      var who = document.createElement('div');
+      who.className = 'who';
+      who.innerHTML = '<div class="nm">' + d.name + ' <span class="st">' + d.st + '</span></div>' +
+                      '<div class="nt">' + d.note + '</div>';
+
+      var sel = document.createElement('select');
+      var selId = 'sel-' + i;
+      sel.id = selId;
+      sel.setAttribute('aria-label', 'Position for ' + d.name + ' (' + d.st + ')');
+      POS.forEach(function(p){
+        var o = document.createElement('option');
+        o.value = p.v; o.textContent = p.label;
+        if(p.v === state[i]) o.selected = true;
+        sel.appendChild(o);
+      });
+      sel.addEventListener('change', function(){
+        state[i] = sel.value;
+        row.setAttribute('data-pos', sel.value);
+        recalc();
+      });
+
+      row.appendChild(pip);
+      row.appendChild(who);
+      row.appendChild(sel);
+      listEl.appendChild(row);
+    });
+  }
+
+  function recalc(){
+    var demYes = 0;
+    state.forEach(function(v){ if(counts(v)) demYes++; });
+    var demTotal = demYes + bench;
+    var total = gop + demTotal;
+
+    totalEl.textContent = total;
+    legRel.textContent = gop;
+    legDel.textContent = demTotal;
+
+    var gap = THRESHOLD - total;
+    if(gap > 0){
+      statusEl.textContent = 'Short by ' + gap;
+      statusEl.className = 'meter-status short';
+    } else if(gap === 0){
+      statusEl.textContent = 'Cloture cleared · no margin';
+      statusEl.className = 'meter-status clear';
+    } else {
+      statusEl.textContent = 'Cloture cleared · +' + (-gap) + ' to spare';
+      statusEl.className = 'meter-status clear';
+    }
+
+    // bar scaled so 60 sits at ~78% of width (room to show overflow)
+    var scale = 78 / THRESHOLD;          // % per vote
+    var rPct = gop * scale;
+    var dPct = demTotal * scale;
+    barR.style.width = rPct + '%';
+    barD.style.left  = rPct + '%';
+    barD.style.width = dPct + '%';
+    barT.style.left  = (THRESHOLD * scale) + '%';
+  }
+
+  function setGop(n){
+    gop = Math.max(48, Math.min(53, n));
+    document.getElementById('gop-val').textContent = gop;
+    recalc();
+  }
+  function setBench(n){
+    bench = Math.max(0, Math.min(10, n));
+    document.getElementById('bench-val').textContent = bench;
+    recalc();
+  }
+
+  document.getElementById('gop-minus').addEventListener('click', function(){ setGop(gop - 1); });
+  document.getElementById('gop-plus').addEventListener('click',  function(){ setGop(gop + 1); });
+  document.getElementById('bench-minus').addEventListener('click',function(){ setBench(bench - 1); });
+  document.getElementById('bench-plus').addEventListener('click', function(){ setBench(bench + 1); });
+
+  document.getElementById('reset-whip').addEventListener('click', function(){
+    state = DEMS.map(function(d){ return d.def; });
+    gop = 53; bench = 0;
+    document.getElementById('gop-val').textContent = gop;
+    document.getElementById('bench-val').textContent = bench;
+    buildList();
+    recalc();
+  });
+
+  buildList();
+  recalc();
+})();
+</script>
+</body>
+</html>
