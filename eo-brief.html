@@ -747,12 +747,12 @@
   .tool-btn svg { width: 13px; height: 13px; }
 
   /* Expand / collapse all controls */
-  .prov-controls {
+  .prov-controls, .collapse-controls {
     display: flex;
     gap: 1rem;
     margin-bottom: 1rem;
   }
-  .prov-controls button {
+  .prov-controls button, .collapse-controls button {
     font-family: var(--mono);
     font-size: 10px;
     letter-spacing: 0.12em;
@@ -764,7 +764,43 @@
     padding: 0;
     border-bottom: 1px solid transparent;
   }
-  .prov-controls button:hover { color: var(--ink); border-bottom-color: var(--accent); }
+  .prov-controls button:hover, .collapse-controls button:hover { color: var(--ink); border-bottom-color: var(--accent); }
+
+  /* Generic collapsible cards (reaction, counsel, watch) */
+  .collapsible { cursor: pointer; }
+  .collapsible:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .collapse-arrow { width: 18px; height: 18px; color: var(--slate); transition: transform 0.3s; flex-shrink: 0; }
+  .collapsible.open .collapse-arrow { transform: rotate(90deg); }
+  .collapse-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    overflow: hidden;
+    transition: grid-template-rows 0.35s ease, margin-top 0.3s ease;
+  }
+  .collapse-body > div { min-height: 0; }
+  .collapsible.open .collapse-body { grid-template-rows: 1fr; margin-top: 0.85rem; }
+  /* counsel card arrow + source link */
+  .c-card.collapsible { position: relative; padding-right: 2.5rem; }
+  .c-card .collapse-arrow { position: absolute; top: 1.1rem; right: 1rem; }
+  .c-link {
+    display: inline-block;
+    margin-top: 0.65rem;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+  .c-link:hover { border-bottom-color: var(--accent); }
+  /* watch rows as collapsibles */
+  .w-row.collapsible { display: block; }
+  .w-head { display: flex; align-items: center; gap: 1rem; }
+  .w-head .w-item { flex: 1; }
+  @media (min-width: 768px) { .w-head .w-num { min-width: 2.5rem; text-align: center; } }
+  .w-stakes-wrap { padding-left: 0; }
+  @media (min-width: 768px) { .w-stakes-wrap { padding-left: 3.5rem; } }
 
   /* Timeline "today" marker */
   .tl-today {
@@ -838,7 +874,7 @@
   @media print {
     body { background: #fff; color: #000; }
     body::before { display: none; }
-    .tabs-wrapper, .toolbar, .prov-controls, .filter-row, .prov-arrow { display: none !important; }
+    .tabs-wrapper, .toolbar, .prov-controls, .collapse-controls, .filter-row, .prov-arrow, .collapse-arrow { display: none !important; }
     .panel { display: block !important; animation: none; page-break-inside: auto; margin-bottom: 2rem; }
     .panel::before {
       content: attr(data-print-title);
@@ -854,7 +890,9 @@
       letter-spacing: 0.08em;
     }
     .prov-detail { grid-template-rows: 1fr !important; margin-top: 1rem !important; }
-    .prov-card, .tl-content, .card, .r-card, .w-row, .synth-box, .read-box, .eo-card {
+    .collapse-body { grid-template-rows: 1fr !important; margin-top: 0.85rem !important; }
+    .c-card.collapsible { padding-right: 1.25rem; }
+    .prov-card, .tl-content, .card, .r-card, .c-card, .w-row, .synth-box, .read-box, .eo-card {
       page-break-inside: avoid;
     }
     .tl-event { opacity: 1 !important; animation: none !important; }
@@ -1226,6 +1264,11 @@
       <p class="eo-thesis" style="max-width: 48rem;">The Semafor reporting is the key day-one context — it is what tells us how far the final text retreated from earlier drafts. Industry split cleanly: incumbents cautiously neutral, fintech and crypto bullish, community banks worried about disintermediation, and consumer advocates opposed. The richest analysis now, though, is coming from outside counsel — collected in <em>Counsel's read</em> below.</p>
     </div>
 
+    <div class="collapse-controls" data-target="panel-reaction">
+      <button type="button" data-act="expand">+ Expand all</button>
+      <button type="button" data-act="collapse">– Collapse all</button>
+    </div>
+
     <div class="r-legend" aria-label="Reaction card color key">
       <span class="r-legend-item"><span class="r-legend-swatch navy"></span> Sympathetic to banks</span>
       <span class="r-legend-item"><span class="r-legend-swatch gold"></span> Market implications</span>
@@ -1329,66 +1372,79 @@
           <p class="c-firm">Sullivan &amp; Cromwell</p>
           <span class="c-theme">Fed access · §3 / §4 mechanics</span>
           <p class="c-take">Reads the EO as directing every federal financial regulator <em>except</em> the FRB to streamline, while only "requesting" the Board's evaluation and Sept. 16 report — a clean independence-preserving line.</p>
+          <a class="c-link" href="https://www.sullcrom.com/insights/2026/May/Executive-Order-Fintech-Innovation-Access-Federal-Reserve-Payment-Accounts" target="_blank" rel="noopener">Read the alert ↗</a>
         </div>
         <div class="c-card access">
           <p class="c-firm">Mayer Brown · "Fed Access for Fintechs"</p>
           <span class="c-theme">Fed access · eligibility</span>
           <p class="c-take">The load-bearing point: the May 20 proposal <em>does not expand legal eligibility</em> — it streamlines for the already-eligible (mostly depositories). The §3 clocks run from May 19 (mid-Aug / mid-Nov).</p>
+          <a class="c-link" href="https://www.mayerbrown.com/en/insights/publications/2026/05/federal-reserve-access-for-fintechs-executive-order-and-federal-reserve-payment-account-proposal-signal-potential-new-era-for-fintech-payment-access" target="_blank" rel="noopener">Read the alert ↗</a>
         </div>
         <div class="c-card access">
           <p class="c-firm">Davis Wright Tremaine</p>
           <span class="c-theme">Fed access · supervisory arc</span>
           <p class="c-take">"Federal Reserve payment access remains the hard part." Situates both orders in the 2026 supervisory reset — reputation-risk rule, Guynn principles, FFIEC CAMELS RFC.</p>
+          <a class="c-link" href="https://www.dwt.com/blogs/financial-services-law-advisor/2026/05/fintech-deregulation-executive-order" target="_blank" rel="noopener">Read the alert ↗</a>
         </div>
         <div class="c-card access">
           <p class="c-firm">Freshfields · "Knocking at the Fed's Door"</p>
           <span class="c-theme">Fed access · open questions</span>
           <p class="c-take">Reads the EO and Fed proposal together as the most serious opening yet for non-bank rail access, with the Reserve-Bank-level authority question left unresolved.</p>
+          <a class="c-link" href="https://www.freshfields.com/en/our-thinking/blogs/a-fresh-take/knocking-at-the-feds-door-recent-executive-order-and-regulatory-proposals-signa-102n0qo" target="_blank" rel="noopener">Read the alert ↗</a>
         </div>
         <div class="c-card access">
           <p class="c-firm">Steptoe</p>
           <span class="c-theme">Fed access · provenance</span>
           <p class="c-take">Traces the Payment Account from Waller's Oct. 2025 "skinny" concept through the Dec. RFI to Kraken's March approval — which Gov. Bowman characterized as a "pilot" for non-bank access.</p>
+          <a class="c-link" href="https://www.steptoe.com/en/news-publications/federal-reserve-requests-comment-on-payment-account-proposal.html" target="_blank" rel="noopener">Read the alert ↗</a>
         </div>
         <div class="c-card access">
           <p class="c-firm">Norton Rose Fulbright</p>
           <span class="c-theme">Fed access · perimeter</span>
           <p class="c-take">Frames the order as another step integrating fintech and digital-asset firms into the federal perimeter, building on EO 14178 (Jan. 2025) and EO 14331 (Aug. 2025).</p>
+          <a class="c-link" href="https://www.nortonrosefulbright.com/en-us/knowledge/publications/18a1466e/trump-executive-order-directs-federal-financial-regulators-to-open-doors-for-fintech" target="_blank" rel="noopener">Read the alert ↗</a>
         </div>
         <div class="c-card access">
           <p class="c-firm">Troutman Pepper Locke · Financial Services</p>
           <span class="c-theme">Fed access · application pause</span>
           <p class="c-take">Flags the same-week signal that Reserve Banks should temporarily pause decisions on certain higher-risk master-account applications while the policy work proceeds.</p>
+          <a class="c-link" href="https://www.troutmanfinancialservices.com/2026/05/federal-reserve-proposes-special-purpose-payment-account-for-eligible-institutions/" target="_blank" rel="noopener">Read the alert ↗</a>
         </div>
         <div class="c-card integrity">
           <p class="c-firm">Mayer Brown · "Customer Immigration Status"</p>
           <span class="c-theme">Integrity · advisory + CDD</span>
           <p class="c-take">Walks the six advisory red-flag categories and the 60/90/180 sequence, stressing the order is less prescriptive than the trailed citizenship-collection mandate.</p>
+          <a class="c-link" href="https://www.mayerbrown.com/en/insights/publications/2026/05/president-trump-signs-executive-order-directing-federal-financial-regulators-to-address-risks-to-us-financial-system-presented-by-customer-immigration-status" target="_blank" rel="noopener">Read the alert ↗</a>
         </div>
         <div class="c-card integrity">
           <p class="c-firm">Perkins Coie</p>
           <span class="c-theme">Integrity · ATR safe harbor / MSBs</span>
           <p class="c-take">Reads §4(a) as a regulatory "safe harbor of sorts," sequences it against FinCEN's AML/CFT program rule (comment closes June 9), and flags MSB banking-partner spillover.</p>
+          <a class="c-link" href="https://perkinscoie.com/insights/update/restoring-integrity-americas-financial-system-what-executive-order-and-fincens" target="_blank" rel="noopener">Read the alert ↗</a>
         </div>
         <div class="c-card integrity">
           <p class="c-firm">Cooley</p>
           <span class="c-theme">Integrity · Reg B baseline</span>
           <p class="c-take">Stops short of citizenship verification; reminds that Reg B already permits considering immigration/citizenship status so long as it is not used to discriminate on a prohibited basis.</p>
+          <a class="c-link" href="https://finsights.cooley.com/white-house-issues-executive-orders-targeting-financial-system-integrity-fintech-innovation/" target="_blank" rel="noopener">Read the alert ↗</a>
         </div>
         <div class="c-card integrity">
           <p class="c-firm">Duane Morris</p>
           <span class="c-theme">Integrity · client to-dos</span>
           <p class="c-take">Covers both orders in one alert with action items: reassess CIP/CDD/BSA programs and underwriting/ATR practices ahead of the Treasury Advisory and rulemaking.</p>
+          <a class="c-link" href="https://blogs.duanemorris.com/fintech/2026/05/21/white-house-executive-orders-on-restoring-integrity-to-americas-financial-system-and-integrating-financial-technology-innovation-into-regulatory-frameworks/" target="_blank" rel="noopener">Read the alert ↗</a>
         </div>
         <div class="c-card cross">
           <p class="c-firm">Consumer Finance Monitor · Ballard Spahr</p>
           <span class="c-theme">Cross-cutting · stakes</span>
           <p class="c-take">Calls the fintech EO potentially one of 2026's most consequential financial-regulatory developments and surfaces the sharp consumer-advocacy opposition.</p>
+          <a class="c-link" href="https://www.consumerfinancemonitor.com/2026/05/21/white-house-executive-order-signals-major-shift-in-federal-policy-for-fintechs-and-payment-systems/" target="_blank" rel="noopener">Read the alert ↗</a>
         </div>
         <div class="c-card cross">
           <p class="c-firm">Consumer Financial Services Law Monitor · Troutman</p>
           <span class="c-theme">Cross-cutting · fair-lending arc</span>
           <p class="c-take">Tracks the fair-lending throughline — including the Dec. 2025 OIRA notice and the Jan. 12, 2026 withdrawal of the 2023 immigration-status guidance.</p>
+          <a class="c-link" href="https://www.consumerfinancialserviceslawmonitor.com/2025/12/cfpb-reportedly-plans-to-scrap-biden-era-guidance-on-immigration-status-in-lending/" target="_blank" rel="noopener">Read the alert ↗</a>
         </div>
       </div>
       <p class="counsel-note">Takeaways are paraphrased from each firm's public client alert (May 20 – June 3, 2026); titles and authors on file. Treat as secondary commentary keyed to the primary §-citations elsewhere in this brief, not as legal advice. Confirm any firm attribution against the published alert before external use.</p>
@@ -1400,6 +1456,11 @@
     <div style="margin-bottom: 2rem;">
       <h2 class="section bigger">What to watch.</h2>
       <p class="eo-thesis" style="max-width: 48rem;">Eight flashpoints over the next six months. Several have implications for state-federal coordination and the dual banking system that won't show up in the EO text itself.</p>
+    </div>
+
+    <div class="collapse-controls" data-target="panel-watch">
+      <button type="button" data-act="expand">+ Expand all</button>
+      <button type="button" data-act="collapse">– Collapse all</button>
     </div>
 
     <div class="watch-list" id="watch-list"></div>
@@ -1555,21 +1616,95 @@
     });
   });
 
-  // Watch items
+  // ---- Shared collapsible engine (reaction, counsel, watch cards) ----
+  const ARROW = '<svg class="collapse-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
+  function setOpen(card, open) {
+    card.classList.toggle('open', open);
+    card.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  function attachToggle(card, defaultOpen) {
+    card.classList.add('collapsible');
+    card.setAttribute('role', 'button');
+    if (!card.hasAttribute('tabindex')) card.tabIndex = 0;
+    setOpen(card, !!defaultOpen);
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('a')) return;
+      setOpen(card, !card.classList.contains('open'));
+    });
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        if (e.target.closest('a')) return;
+        e.preventDefault();
+        setOpen(card, !card.classList.contains('open'));
+      }
+    });
+  }
+
+  // Watch items (collapsible)
   const watchContainer = document.getElementById('watch-list');
   watchItems.forEach((w, i) => {
     const div = document.createElement('div');
-    div.className = 'w-row';
+    div.className = 'w-row collapsible';
     const num = String(i + 1).padStart(2, '0');
     div.innerHTML = `
-      <div class="w-num-col"><span class="w-num">${num}</span></div>
-      <div class="w-item-col"><p class="w-item">${w.item}</p></div>
-      <div class="w-stakes-col">
+      <div class="w-head">
+        <span class="w-num">${num}</span>
+        <p class="w-item">${w.item}</p>
+        ${ARROW}
+      </div>
+      <div class="collapse-body"><div class="w-stakes-wrap">
         <p class="w-stakes-label">Stakes</p>
         <p class="w-stakes">${w.stakes}</p>
-      </div>
+      </div></div>
     `;
     watchContainer.appendChild(div);
+    attachToggle(div, false);
+  });
+
+  // Reaction cards (collapsible): header = .r-head, body = .r-take
+  document.querySelectorAll('.r-card').forEach(card => {
+    const head = card.querySelector('.r-head');
+    const take = card.querySelector('.r-take');
+    if (!head || !take) return;
+    const body = document.createElement('div');
+    body.className = 'collapse-body';
+    const inner = document.createElement('div');
+    body.appendChild(inner);
+    inner.appendChild(take);
+    card.appendChild(body);
+    const left = document.createElement('div');
+    left.style.cssText = 'display:flex;align-items:center;gap:0.6rem;';
+    left.innerHTML = ARROW;
+    head.insertBefore(left, head.firstChild);
+    if (head.children[1]) left.appendChild(head.children[1]);
+    attachToggle(card, false);
+  });
+
+  // Counsel cards (collapsible): header = firm + theme, body = take + source link
+  document.querySelectorAll('.c-card').forEach(card => {
+    const take = card.querySelector('.c-take');
+    const link = card.querySelector('.c-link');
+    const body = document.createElement('div');
+    body.className = 'collapse-body';
+    const inner = document.createElement('div');
+    body.appendChild(inner);
+    if (take) inner.appendChild(take);
+    if (link) inner.appendChild(link);
+    card.appendChild(body);
+    card.insertAdjacentHTML('afterbegin', ARROW);
+    attachToggle(card, false);
+  });
+
+  // Expand / collapse all (per panel)
+  document.querySelectorAll('.collapse-controls').forEach(ctrl => {
+    const target = document.getElementById(ctrl.dataset.target);
+    if (!target) return;
+    ctrl.querySelectorAll('button').forEach(b => {
+      b.addEventListener('click', () => {
+        const open = b.dataset.act === 'expand';
+        target.querySelectorAll('.collapsible').forEach(card => setOpen(card, open));
+      });
+    });
   });
 </script>
 
