@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Regulatory Wire — Federal Financial Agency Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f0e7; --paper-2: #ece6d8; --card: #fbf8f1;
+    --ink: #1f1a16; --ink-2: #5c5249; --ink-3: #8a7f72;
+    --rule: #d9d0bf; --rule-2: #e6ddcd;
+    --oxblood: #7a2230; --oxblood-2: #9a3140;
+    --copper: #b06a30; --copper-2: #c8843f;
+    --green: #3f6b4a;
+    --shadow: 0 1px 2px rgba(31,26,22,.05), 0 8px 24px rgba(31,26,22,.06);
+  }
+  html[data-theme="dark"] {
+    --paper: #14110e; --paper-2: #1c1813; --card: #1f1a15;
+    --ink: #f0e9dc; --ink-2: #b8ac9b; --ink-3: #837868;
+    --rule: #342d24; --rule-2: #28221b;
+    --oxblood: #c96b76; --oxblood-2: #d98590;
+    --copper: #d59a55; --copper-2: #e3ad68;
+    --green: #6fa37c;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: 'Archivo', sans-serif; line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    transition: background .4s ease, color .4s ease; min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
+
+  /* Masthead */
+  .masthead { padding: 34px 0 0; position: relative; }
+  .topline { display: flex; justify-content: space-between; align-items: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); }
+  .topline .left { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
+  .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); display: inline-block; animation: pulse 2.4s infinite; }
+  @keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(63,107,74,.5)} 70%{box-shadow:0 0 0 7px rgba(63,107,74,0)} 100%{box-shadow:0 0 0 0 rgba(63,107,74,0)} }
+  .theme-btn { background: none; border: 1px solid var(--rule); color: var(--ink-2);
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .12em;
+    text-transform: uppercase; padding: 6px 11px; border-radius: 4px; cursor: pointer; transition: all .2s; }
+  .theme-btn:hover { border-color: var(--copper); color: var(--copper); }
+
+  .title-row { margin-top: 22px; }
+  h1.brand { font-family: 'Fraunces', serif; font-weight: 600; letter-spacing: -.02em;
+    font-size: clamp(38px, 6vw, 66px); line-height: .98; color: var(--ink); }
+  h1.brand .em { font-style: italic; color: var(--oxblood); }
+  .sub { margin-top: 12px; font-size: 15px; color: var(--ink-2); max-width: 640px; }
+  .wire { height: 2px; margin: 24px 0 0; position: relative; overflow: hidden; background: var(--rule-2); }
+  .wire::after { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 100%;
+    background: linear-gradient(90deg, var(--copper), var(--oxblood));
+    transform: scaleX(0); transform-origin: left;
+    animation: wirerun 1.5s .25s cubic-bezier(.2,.7,.2,1) forwards; }
+  @keyframes wirerun { to { transform: scaleX(1); } }
+
+  /* Status strip */
+  .status { display: flex; flex-wrap: wrap; gap: 18px 34px; align-items: center;
+    padding: 18px 0 22px; font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--ink-3); letter-spacing: .04em; }
+  .status .stat b { color: var(--ink); font-weight: 600; }
+  .sync-btn { margin-left: auto; background: var(--oxblood); color: #fff; border: none;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .1em;
+    text-transform: uppercase; padding: 9px 16px; border-radius: 5px; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 8px; transition: background .2s; }
+  .sync-btn:hover { background: var(--oxblood-2); }
+  .sync-btn:disabled { opacity: .6; cursor: default; }
+  .spin { width: 11px; height: 11px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff;
+    border-radius: 50%; display: none; animation: spin .7s linear infinite; }
+  .sync-btn.loading .spin { display: inline-block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Controls */
+  .controls { border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 18px 0; }
+  .filter-block { margin-bottom: 14px; }
+  .filter-block:last-child { margin-bottom: 0; }
+  .filter-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--ink-3); display: block; margin-bottom: 9px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 7px; }
+  .chip { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .03em;
+    padding: 6px 12px; border-radius: 20px; cursor: pointer; border: 1px solid var(--rule);
+    background: var(--card); color: var(--ink-2); transition: all .18s; user-select: none;
+    display: inline-flex; align-items: center; gap: 6px; }
+  .chip:hover { border-color: var(--ink-3); }
+  .chip .dot { width: 7px; height: 7px; border-radius: 2px; }
+  .chip.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .chip.active .dot { box-shadow: 0 0 0 1.5px var(--paper); }
+  .search-row { display: flex; gap: 12px; align-items: center; margin-top: 4px; flex-wrap: wrap; }
+  .search-input { flex: 1; min-width: 200px; background: var(--card); border: 1px solid var(--rule); border-radius: 6px;
+    padding: 11px 14px; font-family: 'Archivo', sans-serif; font-size: 14px; color: var(--ink); transition: border-color .2s; }
+  .search-input:focus { outline: none; border-color: var(--copper); }
+  .search-input::placeholder { color: var(--ink-3); }
+  .sort-select { background: var(--card); border: 1px solid var(--rule); border-radius: 6px;
+    padding: 11px 14px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-2);
+    cursor: pointer; letter-spacing: .04em; }
+
+  /* Feed */
+  .feed-head { display: flex; justify-content: space-between; align-items: baseline; padding: 26px 0 6px; }
+  .feed-head h2 { font-family: 'Fraunces', serif; font-weight: 600; font-size: 22px; letter-spacing: -.01em; }
+  .count { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-3); letter-spacing: .06em; }
+
+  .dispatch { display: grid; grid-template-columns: 144px 1fr; gap: 24px;
+    padding: 22px 0; border-bottom: 1px solid var(--rule);
+    opacity: 0; transform: translateY(8px); animation: rise .5s forwards; }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+  .dispatch .meta { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+  .agency-tag { display: inline-block; font-weight: 600; letter-spacing: .06em; font-size: 10.5px;
+    padding: 3px 8px; border-radius: 4px; margin-bottom: 9px; text-transform: uppercase; color: #fff; }
+  .meta .date { color: var(--ink-3); letter-spacing: .02em; display: block; margin-bottom: 6px; }
+  .badges { display: flex; gap: 5px; flex-wrap: wrap; }
+  .type-badge { display: inline-block; font-size: 9.5px; letter-spacing: .09em; text-transform: uppercase;
+    color: var(--ink-2); border: 1px solid var(--rule); padding: 2px 7px; border-radius: 3px; }
+  .src-badge { font-size: 9px; letter-spacing: .1em; text-transform: uppercase; padding: 2px 7px; border-radius: 3px; font-weight: 600; }
+  .src-badge.live { color: #fff; background: var(--green); }
+  .src-badge.mock { color: var(--copper); border: 1px dashed var(--copper); }
+  .dispatch .body h3 { font-family: 'Fraunces', serif; font-weight: 600; font-size: 19px; line-height: 1.25;
+    letter-spacing: -.01em; margin-bottom: 7px; }
+  .dispatch .body h3 a { color: var(--ink); text-decoration: none;
+    background-image: linear-gradient(var(--copper),var(--copper)); background-size: 0 1.5px;
+    background-repeat: no-repeat; background-position: 0 100%; transition: background-size .25s; }
+  .dispatch .body h3 a:hover { background-size: 100% 1.5px; }
+  .dispatch .excerpt { color: var(--ink-2); font-size: 14px; line-height: 1.55; }
+  .dispatch .source { margin-top: 9px; font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
+    color: var(--ink-3); letter-spacing: .04em; }
+  .dispatch .source .src-pill { color: var(--copper); }
+  .dispatch .source a { color: var(--copper); text-decoration: none; }
+  .dispatch .source a:hover { text-decoration: underline; }
+
+  .feed-msg { padding: 46px 0; text-align: center; color: var(--ink-3);
+    font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: .03em; }
+  .feed-msg .spin-lg { width: 18px; height: 18px; border: 2px solid var(--rule); border-top-color: var(--copper);
+    border-radius: 50%; display: inline-block; animation: spin .7s linear infinite; vertical-align: middle; margin-right: 10px; }
+  .feed-err { color: var(--oxblood); }
+
+  .mockbar { background: repeating-linear-gradient(45deg, var(--paper-2), var(--paper-2) 10px, var(--card) 10px, var(--card) 20px);
+    border: 1px dashed var(--copper); border-radius: 6px; padding: 11px 16px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--copper);
+    letter-spacing: .03em; margin: 22px 0 0; line-height: 1.5; }
+
+  footer { padding: 50px 0 60px; color: var(--ink-3); font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: .04em; line-height: 1.8; }
+  footer a { color: var(--copper); text-decoration: none; }
+
+  @media (max-width: 640px) {
+    .dispatch { grid-template-columns: 1fr; gap: 10px; }
+    .wrap { padding: 0 18px; }
+    .sync-btn { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="topline">
+      <div class="left">
+        <span><span class="live-dot"></span> &nbsp;LIVE FEED</span>
+        <span>FED · OCC · FDIC · CFPB · TREASURY · FINCEN · FHFA</span>
+      </div>
+      <button class="theme-btn" id="themeBtn">◐ Dark</button>
+    </div>
+    <div class="title-row">
+      <h1 class="brand">The Regulatory <span class="em">Wire</span></h1>
+      <p class="sub">A consolidated dispatch feed for U.S. federal financial regulators. Rules, proposed rules, and notices stream live from the Federal Register; leadership remarks, guidance, interpretive letters, and reports are shown as illustrative placeholders pending agency-feed adapters.</p>
+    </div>
+    <div class="wire"></div>
+  </header>
+
+  <div class="status">
+    <span class="stat">LAST SYNCED &nbsp;<b id="syncTime">—</b></span>
+    <span class="stat">LIVE &nbsp;<b id="liveCount">0</b></span>
+    <span class="stat">PLACEHOLDER &nbsp;<b id="mockCount">0</b></span>
+    <span class="stat">AGENCIES &nbsp;<b id="agencyOk">0/7</b></span>
+    <button class="sync-btn" id="syncBtn"><span class="spin"></span><span class="lbl">Sync now</span></button>
+  </div>
+
+  <section class="controls">
+    <div class="filter-block">
+      <span class="filter-label">Agency</span>
+      <div class="chips" id="agencyChips"></div>
+    </div>
+    <div class="filter-block">
+      <span class="filter-label">Document type</span>
+      <div class="chips" id="typeChips"></div>
+    </div>
+    <div class="filter-block">
+      <span class="filter-label">Search & sort</span>
+      <div class="search-row">
+        <input class="search-input" id="search" placeholder="Search titles, topics, dockets…">
+        <select class="sort-select" id="sort">
+          <option value="new">Newest first</option>
+          <option value="old">Oldest first</option>
+          <option value="agency">By agency</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <div class="mockbar" id="mockbar">◆ LIVE — rules, proposed rules &amp; notices pulled in real time from federalregister.gov/api/v1. &nbsp; ◇ PLACEHOLDER — speeches, guidance, interpretive letters &amp; reports are sample data until per-agency RSS/HTML adapters are wired (server-side).</div>
+
+  <section>
+    <div class="feed-head">
+      <h2>Dispatches</h2>
+      <span class="count" id="resultCount"></span>
+    </div>
+    <div id="feed"></div>
+  </section>
+
+  <footer>
+    THE REGULATORY WIRE · LIVE-WIRED BUILD v0.2 · bankregwire.com<br>
+    Layer 1 (live): federalregister.gov/api/v1 — public, no key, CORS-enabled, queried client-side per agency<br>
+    Layer 2 (placeholder): agency speeches/guidance/letters/reports — RSS + HTML adapters via a Cloudflare Worker (next step)<br>
+    Auto-update target: Worker on a Cron Trigger → KV/D1 cache · static front end on GitHub Pages
+  </footer>
+</div>
+
+<script>
+/* ---------------- Agency taxonomy (slugs confirmed against live FR agency pages) ---------------- */
+const AGENCIES = {
+  FRB:    { name: 'Federal Reserve', color: '#5b3a6b', slug: 'federal-reserve-system' },
+  OCC:    { name: 'OCC',             color: '#1f5673', slug: 'comptroller-of-the-currency' },
+  FDIC:   { name: 'FDIC',            color: '#2d6a4f', slug: 'federal-deposit-insurance-corporation' },
+  CFPB:   { name: 'CFPB',            color: '#7a2230', slug: 'consumer-financial-protection-bureau' },
+  TREAS:  { name: 'Treasury',        color: '#3a4a6b', slug: 'treasury-department' },
+  FinCEN: { name: 'FinCEN',          color: '#8a5a1f', slug: 'financial-crimes-enforcement-network' },
+  FHFA:   { name: 'FHFA',            color: '#6b5b2d', slug: 'federal-housing-finance-agency' }
+};
+const TYPES = ['Final Rule','Proposed Rule','Notice','Speech','Guidance','Interpretive Letter','Report'];
+const LIVE_TYPES = new Set(['Final Rule','Proposed Rule','Notice']);
+const FR_TYPE_MAP = { 'Rule':'Final Rule', 'Proposed Rule':'Proposed Rule', 'Notice':'Notice', 'Presidential Document':'Notice' };
+
+/* ---------------- Layer 2 placeholder data (speeches / guidance / letters / reports) ---------------- */
+const MOCK = [
+  { ag:'FRB',    type:'Speech',              date:'2026-06-04', title:'Vice Chair for Supervision on Tailoring and the Future of Bank Capital', src:'federalreserve.gov · speeches', excerpt:'Remarks revisiting the supervisory framework and signaling a recalibration of large-bank capital expectations ahead of a forthcoming proposal.' },
+  { ag:'OCC',    type:'Interpretive Letter', date:'2026-06-03', title:'Interpretive Letter on National Bank Authority to Provide Crypto-Asset Custody and Stablecoin Reserve Services', src:'occ.gov · interpretations', excerpt:'Clarifies permissibility conditions and risk-management expectations for custody and reserve-holding activities under the GENIUS Act framework.' },
+  { ag:'FinCEN', type:'Guidance',            date:'2026-05-30', title:'FinCEN Guidance on AML/CFT Program Rule Risk-Assessment Expectations', src:'fincen.gov · guidance', excerpt:'Companion guidance to the AML/CFT Program Rule addressing how covered institutions should document the new mandatory risk-assessment process.' },
+  { ag:'FHFA',   type:'Report',              date:'2026-05-28', title:'FHFA Annual Report on the Housing Mission of the Enterprises', src:'fhfa.gov · reports', excerpt:'Assesses Fannie Mae and Freddie Mac performance against affordable-housing goals and previews capital framework considerations.' },
+  { ag:'OCC',    type:'Guidance',            date:'2026-05-26', title:'OCC Bulletin: Updated Third-Party Risk Management Expectations for Bank-Fintech Arrangements', src:'occ.gov · bulletins', excerpt:'Refreshes due-diligence and ongoing-monitoring expectations for deposit and lending partnerships, consistent with interagency TPRM guidance.' },
+  { ag:'CFPB',   type:'Speech',              date:'2026-05-21', title:'Acting Director Remarks on the Bureau\u2019s Supervisory Priorities', src:'consumerfinance.gov · newsroom', excerpt:'Outlines a narrowed examination posture and emphasis on statutory mandates, with reduced focus on novel enforcement theories.' },
+  { ag:'TREAS',  type:'Report',              date:'2026-05-20', title:'Treasury Report on Digital Asset Market Structure and Stablecoin Oversight', src:'treasury.gov · reports', excerpt:'Surveys the post-GENIUS Act landscape and offers recommendations on the division of authority anticipated under the CLARITY Act.' },
+  { ag:'FDIC',   type:'Interpretive Letter', date:'2026-05-19', title:'FDIC Advisory on Brokered Deposit Classification for Fintech Sweep Programs', src:'fdic.gov · FILs', excerpt:'Financial Institution Letter clarifying treatment of deposits sourced through technology-driven sweep and program arrangements.' },
+  { ag:'FRB',    type:'Report',              date:'2026-05-16', title:'Federal Reserve Semiannual Monetary Policy Report to Congress', src:'federalreserve.gov · reports', excerpt:'Reviews economic conditions, the policy stance, and a special topic box on bank lending standards and commercial real estate exposure.' },
+  { ag:'OCC',    type:'Speech',              date:'2026-05-12', title:'Comptroller Address on Modernizing the National Bank Charter', src:'occ.gov · speeches', excerpt:'Remarks on de novo formation, the business of banking, and the agency\u2019s posture toward novel charter applicants.' },
+  { ag:'FinCEN', type:'Report',              date:'2026-05-05', title:'FinCEN Financial Trend Analysis on Elder Financial Exploitation', src:'fincen.gov · reports', excerpt:'Analyzes Bank Secrecy Act reporting patterns and identifies typologies for institutions to incorporate into monitoring.' }
+].map(d => ({ ...d, live:false }));
+
+/* ---------------- State ---------------- */
+let LIVE = [];
+let activeAgencies = new Set();
+let activeTypes = new Set();
+let loading = false;
+
+/* ---------------- Build filters ---------------- */
+const agencyChips = document.getElementById('agencyChips');
+Object.entries(AGENCIES).forEach(([k,v]) => {
+  const c = document.createElement('div');
+  c.className = 'chip'; c.dataset.ag = k;
+  c.innerHTML = `<span class="dot" style="background:${v.color}"></span>${v.name}`;
+  c.onclick = () => { c.classList.toggle('active'); activeAgencies.has(k)?activeAgencies.delete(k):activeAgencies.add(k); render(); };
+  agencyChips.appendChild(c);
+});
+const typeChips = document.getElementById('typeChips');
+TYPES.forEach(t => {
+  const c = document.createElement('div');
+  c.className = 'chip'; c.dataset.type = t; c.textContent = t;
+  c.onclick = () => { c.classList.toggle('active'); activeTypes.has(t)?activeTypes.delete(t):activeTypes.add(t); render(); };
+  typeChips.appendChild(c);
+});
+
+/* ---------------- Helpers ---------------- */
+function fmtDate(d){ const dt = new Date(d+'T00:00'); return isNaN(dt) ? d : dt.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }
+function truncate(s, n){ if(!s) return ''; s = s.replace(/\s+/g,' ').trim(); return s.length>n ? s.slice(0,n).replace(/\s+\S*$/,'')+'…' : s; }
+function esc(s){ const d=document.createElement('div'); d.textContent=s==null?'':s; return d.innerHTML; }
+
+/* ---------------- Live fetch: Federal Register API, per agency, client-side ---------------- */
+function frUrl(slug){
+  const fields = ['title','type','abstract','publication_date','html_url','document_number','agencies'];
+  const fq = fields.map(f => 'fields[]=' + f).join('&');
+  return 'https://www.federalregister.gov/api/v1/documents.json'
+    + '?conditions[agencies][]=' + encodeURIComponent(slug)
+    + '&order=newest&per_page=20&' + fq;
+}
+function normalizeFR(doc, agKey){
+  return {
+    ag: agKey,
+    type: FR_TYPE_MAP[doc.type] || doc.type || 'Notice',
+    date: doc.publication_date,
+    title: doc.title || '(untitled document)',
+    src: 'Federal Register',
+    url: doc.html_url,
+    excerpt: doc.abstract ? truncate(doc.abstract, 260)
+             : 'No abstract was published with this document. Open the full text on the Federal Register.',
+    live: true
+  };
+}
+async function fetchLive(){
+  if (loading) return;
+  loading = true;
+  const btn = document.getElementById('syncBtn');
+  btn.classList.add('loading'); btn.disabled = true;
+  btn.querySelector('.lbl').textContent = 'Fetching…';
+  renderLoading();
+
+  const keys = Object.keys(AGENCIES);
+  const settled = await Promise.allSettled(
+    keys.map(k => fetch(frUrl(AGENCIES[k].slug))
+      .then(r => { if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); }))
+  );
+
+  const byDoc = new Map();
+  let ok = 0;
+  settled.forEach(res => {
+    if (res.status === 'fulfilled' && res.value && Array.isArray(res.value.results)) {
+      ok++;
+      res.value.results.forEach(doc => {
+        // Defensive: attribute to the first tracked agency actually listed on the doc.
+        // (Guards against any filter drift and dedupes interagency documents.)
+        const docSlugs = new Set((doc.agencies||[]).map(a => a.slug));
+        const agKey = keys.find(k => docSlugs.has(AGENCIES[k].slug));
+        if (!agKey) return;
+        if (!doc.document_number || byDoc.has(doc.document_number)) return;
+        byDoc.set(doc.document_number, normalizeFR(doc, agKey));
+      });
+    }
+  });
+
+  LIVE = [...byDoc.values()];
+  loading = false;
+  btn.classList.remove('loading'); btn.disabled = false;
+  btn.querySelector('.lbl').textContent = 'Sync now';
+  document.getElementById('agencyOk').textContent = ok + '/7';
+  document.getElementById('syncTime').textContent =
+    new Date().toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}) + ' ET';
+
+  if (ok === 0) { renderError(); return; }
+  render();
+}
+
+/* ---------------- Render ---------------- */
+const feed = document.getElementById('feed');
+function renderLoading(){ feed.innerHTML = '<div class="feed-msg"><span class="spin-lg"></span>Contacting the Federal Register…</div>'; }
+function renderError(){
+  feed.innerHTML = '<div class="feed-msg feed-err">Could not reach the Federal Register API. Showing placeholder layer only — retry with “Sync now”.</div>';
+  // still show layer 2
+  setTimeout(()=>render(), 10);
+}
+function render(){
+  const all = [...LIVE, ...MOCK];
+  document.getElementById('liveCount').textContent = LIVE.length;
+  document.getElementById('mockCount').textContent = MOCK.length;
+
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const sort = document.getElementById('sort').value;
+  let rows = all.filter(d => {
+    if (activeAgencies.size && !activeAgencies.has(d.ag)) return false;
+    if (activeTypes.size && !activeTypes.has(d.type)) return false;
+    if (q && !((d.title||'').toLowerCase().includes(q) || (d.excerpt||'').toLowerCase().includes(q) || AGENCIES[d.ag].name.toLowerCase().includes(q))) return false;
+    return true;
+  });
+  if (sort==='new') rows.sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  else if (sort==='old') rows.sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+  else rows.sort((a,b)=>AGENCIES[a.ag].name.localeCompare(AGENCIES[b.ag].name) || (b.date||'').localeCompare(a.date||''));
+
+  document.getElementById('resultCount').textContent = rows.length + (rows.length===1?' result':' results');
+  feed.innerHTML = '';
+  if (!rows.length){ feed.innerHTML = '<div class="feed-msg">No dispatches match the current filters.</div>'; return; }
+
+  rows.forEach((d,i) => {
+    const a = AGENCIES[d.ag];
+    const el = document.createElement('article');
+    el.className = 'dispatch';
+    el.style.animationDelay = Math.min(i*0.03, 0.6)+'s';
+    const titleHtml = d.url
+      ? `<a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(d.title)}</a>`
+      : `<a href="#" onclick="return false;">${esc(d.title)}</a>`;
+    const srcHtml = d.url
+      ? `<a href="${esc(d.url)}" target="_blank" rel="noopener">▸ ${esc(d.src)} ↗</a>`
+      : `<span class="src-pill">▸ ${esc(d.src)}</span>`;
+    el.innerHTML = `
+      <div class="meta">
+        <span class="agency-tag" style="background:${a.color}">${esc(a.name)}</span>
+        <span class="date">${fmtDate(d.date)}</span>
+        <div class="badges">
+          <span class="type-badge">${esc(d.type)}</span>
+          <span class="src-badge ${d.live?'live':'mock'}">${d.live?'Live':'Placeholder'}</span>
+        </div>
+      </div>
+      <div class="body">
+        <h3>${titleHtml}</h3>
+        <p class="excerpt">${esc(d.excerpt)}</p>
+        <div class="source">${srcHtml}</div>
+      </div>`;
+    feed.appendChild(el);
+  });
+}
+
+/* ---------------- Wire up ---------------- */
+document.getElementById('search').addEventListener('input', render);
+document.getElementById('sort').addEventListener('change', render);
+document.getElementById('syncBtn').onclick = fetchLive;
+
+const themeBtn = document.getElementById('themeBtn');
+themeBtn.onclick = () => {
+  const html = document.documentElement;
+  const dark = html.getAttribute('data-theme')==='dark';
+  html.setAttribute('data-theme', dark?'light':'dark');
+  themeBtn.textContent = dark ? '◐ Dark' : '◑ Light';
+};
+
+/* initial load */
+render();      // paint placeholder layer immediately
+fetchLive();   // then stream in live Federal Register data
+</script>
+</body>
+</html>
