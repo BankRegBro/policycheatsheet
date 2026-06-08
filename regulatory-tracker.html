@@ -167,16 +167,15 @@
     </div>
     <div class="title-row">
       <h1 class="brand">The Regulatory <span class="em">Wire</span></h1>
-      <p class="sub">A consolidated dispatch feed for U.S. federal financial regulators. Rules, proposed rules, and notices stream live from the Federal Register; leadership remarks, guidance, interpretive letters, and reports are shown as illustrative placeholders pending agency-feed adapters.</p>
+      <p class="sub">A consolidated dispatch feed for the FDIC, Federal Reserve, OCC, CFPB, Treasury, FinCEN, and FHFA — rules and notices from the Federal Register, alongside leadership speeches and supervisory guidance, aggregated by a scheduled service and refreshed through the day.</p>
     </div>
     <div class="wire"></div>
   </header>
 
   <div class="status">
     <span class="stat">LAST SYNCED &nbsp;<b id="syncTime">—</b></span>
-    <span class="stat">LIVE &nbsp;<b id="liveCount">0</b></span>
-    <span class="stat">PLACEHOLDER &nbsp;<b id="mockCount">0</b></span>
-    <span class="stat">AGENCIES &nbsp;<b id="agencyOk">0/7</b></span>
+    <span class="stat">DISPATCHES &nbsp;<b id="liveCount">0</b></span>
+    <span class="stat">SOURCES &nbsp;<b id="agencyOk">0/0</b></span>
     <button class="sync-btn" id="syncBtn"><span class="spin"></span><span class="lbl">Sync now</span></button>
   </div>
 
@@ -202,7 +201,7 @@
     </div>
   </section>
 
-  <div class="mockbar" id="mockbar">◆ LIVE — rules, proposed rules &amp; notices pulled in real time from federalregister.gov/api/v1. &nbsp; ◇ PLACEHOLDER — speeches, guidance, interpretive letters &amp; reports are sample data until per-agency RSS/HTML adapters are wired (server-side).</div>
+  <div class="mockbar" id="mockbar">◆ Rules &amp; notices from federalregister.gov · speeches &amp; guidance from agency RSS feeds · aggregated by a scheduled Cloudflare Worker and cached, so the feed loads fast and refreshes through the day.</div>
 
   <section>
     <div class="feed-head">
@@ -213,10 +212,10 @@
   </section>
 
   <footer>
-    THE REGULATORY WIRE · LIVE-WIRED BUILD v0.2 · bankregwire.com<br>
-    Layer 1 (live): federalregister.gov/api/v1 — public, no key, CORS-enabled, queried client-side per agency<br>
-    Layer 2 (placeholder): agency speeches/guidance/letters/reports — RSS + HTML adapters via a Cloudflare Worker (next step)<br>
-    Auto-update target: Worker on a Cron Trigger → KV/D1 cache · static front end on GitHub Pages
+    THE REGULATORY WIRE · bankregwire.com<br>
+    Federal Register (rules &amp; notices) + agency RSS (speeches &amp; guidance), normalized to one feed<br>
+    Aggregated by a scheduled Cloudflare Worker → KV cache · static front end on GitHub Pages<br>
+    Always verify against the primary source on the Federal Register and each agency's site.
   </footer>
 </div>
 
@@ -236,7 +235,9 @@ const LIVE_TYPES = new Set(['Final Rule','Proposed Rule','Notice']);
 const FR_TYPE_MAP = { 'Rule':'Final Rule', 'Proposed Rule':'Proposed Rule', 'Notice':'Notice', 'Presidential Document':'Notice' };
 
 /* ---------------- Layer 2 placeholder data (speeches / guidance / letters / reports) ---------------- */
-const MOCK = [
+const MOCK = [];
+/* Placeholder layer retired — the Worker now supplies live speeches & guidance.
+const _retired = [
   { ag:'FRB',    type:'Speech',              date:'2026-06-04', title:'Vice Chair for Supervision on Tailoring and the Future of Bank Capital', src:'federalreserve.gov · speeches', excerpt:'Remarks revisiting the supervisory framework and signaling a recalibration of large-bank capital expectations ahead of a forthcoming proposal.' },
   { ag:'OCC',    type:'Interpretive Letter', date:'2026-06-03', title:'Interpretive Letter on National Bank Authority to Provide Crypto-Asset Custody and Stablecoin Reserve Services', src:'occ.gov · interpretations', excerpt:'Clarifies permissibility conditions and risk-management expectations for custody and reserve-holding activities under the GENIUS Act framework.' },
   { ag:'FinCEN', type:'Guidance',            date:'2026-05-30', title:'FinCEN Guidance on AML/CFT Program Rule Risk-Assessment Expectations', src:'fincen.gov · guidance', excerpt:'Companion guidance to the AML/CFT Program Rule addressing how covered institutions should document the new mandatory risk-assessment process.' },
@@ -248,7 +249,7 @@ const MOCK = [
   { ag:'FRB',    type:'Report',              date:'2026-05-16', title:'Federal Reserve Semiannual Monetary Policy Report to Congress', src:'federalreserve.gov · reports', excerpt:'Reviews economic conditions, the policy stance, and a special topic box on bank lending standards and commercial real estate exposure.' },
   { ag:'OCC',    type:'Speech',              date:'2026-05-12', title:'Comptroller Address on Modernizing the National Bank Charter', src:'occ.gov · speeches', excerpt:'Remarks on de novo formation, the business of banking, and the agency\u2019s posture toward novel charter applicants.' },
   { ag:'FinCEN', type:'Report',              date:'2026-05-05', title:'FinCEN Financial Trend Analysis on Elder Financial Exploitation', src:'fincen.gov · reports', excerpt:'Analyzes Bank Secrecy Act reporting patterns and identifies typologies for institutions to incorporate into monitoring.' }
-].map(d => ({ ...d, live:false }));
+].map(d => ({ ...d, live:false })); */
 
 /* ---------------- State ---------------- */
 let LIVE = [];
@@ -299,6 +300,8 @@ function normalizeFR(doc, agKey){
     live: true
   };
 }
+const WORKER_URL = 'https://bankregtracker.joeysamowitz.workers.dev';
+
 async function fetchLive(){
   if (loading) return;
   loading = true;
@@ -306,54 +309,35 @@ async function fetchLive(){
   btn.classList.add('loading'); btn.disabled = true;
   btn.querySelector('.lbl').textContent = 'Fetching…';
   renderLoading();
-
-  const keys = Object.keys(AGENCIES);
-  const settled = await Promise.allSettled(
-    keys.map(k => fetch(frUrl(AGENCIES[k].slug))
-      .then(r => { if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); }))
-  );
-
-  const byDoc = new Map();
-  let ok = 0;
-  settled.forEach(res => {
-    if (res.status === 'fulfilled' && res.value && Array.isArray(res.value.results)) {
-      ok++;
-      res.value.results.forEach(doc => {
-        // Defensive: attribute to the first tracked agency actually listed on the doc.
-        // (Guards against any filter drift and dedupes interagency documents.)
-        const docSlugs = new Set((doc.agencies||[]).map(a => a.slug));
-        const agKey = keys.find(k => docSlugs.has(AGENCIES[k].slug));
-        if (!agKey) return;
-        if (!doc.document_number || byDoc.has(doc.document_number)) return;
-        byDoc.set(doc.document_number, normalizeFR(doc, agKey));
-      });
-    }
-  });
-
-  LIVE = [...byDoc.values()];
-  loading = false;
-  btn.classList.remove('loading'); btn.disabled = false;
-  btn.querySelector('.lbl').textContent = 'Sync now';
-  document.getElementById('agencyOk').textContent = ok + '/7';
-  document.getElementById('syncTime').textContent =
-    new Date().toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}) + ' ET';
-
-  if (ok === 0) { renderError(); return; }
-  render();
+  try {
+    const r = await fetch(WORKER_URL);
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const payload = await r.json();
+    LIVE = Array.isArray(payload.dispatches) ? payload.dispatches : [];
+    document.getElementById('agencyOk').textContent =
+      (payload.sourcesOk ?? '?') + '/' + (payload.sourcesTotal ?? '?');
+    document.getElementById('syncTime').textContent =
+      new Date(payload.generatedAt || Date.now())
+        .toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}) + ' ET';
+    render();
+  } catch (e) {
+    renderError();
+  } finally {
+    loading = false;
+    btn.classList.remove('loading'); btn.disabled = false;
+    btn.querySelector('.lbl').textContent = 'Sync now';
+  }
 }
 
 /* ---------------- Render ---------------- */
 const feed = document.getElementById('feed');
-function renderLoading(){ feed.innerHTML = '<div class="feed-msg"><span class="spin-lg"></span>Contacting the Federal Register…</div>'; }
+function renderLoading(){ feed.innerHTML = '<div class="feed-msg"><span class="spin-lg"></span>Loading the latest dispatches…</div>'; }
 function renderError(){
-  feed.innerHTML = '<div class="feed-msg feed-err">Could not reach the Federal Register API. Showing placeholder layer only — retry with “Sync now”.</div>';
-  // still show layer 2
-  setTimeout(()=>render(), 10);
+  feed.innerHTML = '<div class="feed-msg feed-err">Could not reach the dispatch feed right now. Retry with “Sync now”.</div>';
 }
 function render(){
   const all = [...LIVE, ...MOCK];
   document.getElementById('liveCount').textContent = LIVE.length;
-  document.getElementById('mockCount').textContent = MOCK.length;
 
   const q = document.getElementById('search').value.trim().toLowerCase();
   const sort = document.getElementById('sort').value;
@@ -414,8 +398,8 @@ themeBtn.onclick = () => {
 };
 
 /* initial load */
-render();      // paint placeholder layer immediately
-fetchLive();   // then stream in live Federal Register data
+render();      // paint immediately
+fetchLive();   // then pull the cached feed from the aggregator Worker
 </script>
 </body>
 </html>
