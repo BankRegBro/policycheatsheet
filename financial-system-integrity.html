@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Integrity Package — BankRegWire</title>
+<meta name="description" content="How EO 14406, the FinCEN non-work-authorized advisory, and the CFPB ability-to-repay statement wire together into one federal action on immigration status and the financial system.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f3ebdd;
+    --paper-2:#efe6d4;
+    --card:#fbf6ec;
+    --ink:#211b13;
+    --ink-soft:#5c5142;
+    --ink-faint:#8a7d68;
+    --oxblood:#7a1d1d;
+    --oxblood-deep:#5e1616;
+    --copper:#b06a2c;
+    --copper-bright:#c9802f;
+    --rule:#d8caaf;
+    --rule-soft:#e4d8bf;
+    --green:#4d6b3c;
+    --shadow:0 1px 0 rgba(33,27,19,.04), 0 14px 30px -22px rgba(33,27,19,.45);
+    --maxw:1080px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 500px at 70% -10%, rgba(176,106,44,.07), transparent 60%),
+      var(--paper);
+    color:var(--ink);
+    font-family:"Archivo",system-ui,sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+
+  /* ---------- Masthead ---------- */
+  header.masthead{padding:34px 0 0}
+  .brandline{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;flex-wrap:wrap;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:10px;
+  }
+  .brand{
+    font-family:"JetBrains Mono",monospace;
+    font-weight:700;letter-spacing:.32em;text-transform:uppercase;
+    font-size:13px;color:var(--oxblood);
+  }
+  .brand a{color:inherit;text-decoration:none}
+  .brand a:hover{color:var(--copper)}
+  .issue{
+    font-family:"JetBrains Mono",monospace;font-size:11px;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);
+    text-align:right;
+  }
+  .eyebrow{
+    margin:22px 0 0;
+    font-family:"JetBrains Mono",monospace;font-size:11.5px;
+    letter-spacing:.28em;text-transform:uppercase;color:var(--copper);
+    display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  }
+  .eyebrow::before{content:"";width:34px;height:2px;background:var(--copper);display:inline-block}
+  h1.headline{
+    font-family:"Fraunces",Georgia,serif;
+    font-weight:600;font-size:clamp(34px,6.2vw,62px);
+    line-height:1.02;letter-spacing:-.018em;
+    margin:14px 0 6px;max-width:16ch;
+  }
+  .deck{
+    font-family:"Fraunces",Georgia,serif;font-style:italic;font-weight:400;
+    font-size:clamp(17px,2.4vw,22px);color:var(--ink-soft);
+    max-width:62ch;margin:0 0 22px;line-height:1.45;
+  }
+  .byline{
+    font-family:"JetBrains Mono",monospace;font-size:11px;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);
+    border-top:1px solid var(--rule);padding-top:12px;margin-bottom:6px;
+    display:flex;gap:18px;flex-wrap:wrap;
+  }
+
+  /* ---------- Tabs ---------- */
+  nav.tabs{
+    position:sticky;top:0;z-index:30;
+    background:linear-gradient(var(--paper) 78%, rgba(243,235,221,0));
+    padding-top:14px;margin-top:14px;
+  }
+  .tabrow{
+    display:flex;gap:2px;flex-wrap:wrap;
+    border-bottom:2px solid var(--ink);
+  }
+  .tab{
+    appearance:none;border:0;background:transparent;cursor:pointer;
+    font-family:"JetBrains Mono",monospace;font-size:11.5px;font-weight:500;
+    letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft);
+    padding:11px 15px 12px;position:relative;border-radius:0;
+    transition:color .18s ease, background .18s ease;
+  }
+  .tab .idx{color:var(--copper);margin-right:7px;font-weight:700}
+  .tab:hover{color:var(--ink);background:rgba(176,106,44,.06)}
+  .tab[aria-selected="true"]{color:var(--paper);background:var(--oxblood)}
+  .tab[aria-selected="true"] .idx{color:var(--copper-bright)}
+  .tab:focus-visible{outline:2px solid var(--copper);outline-offset:2px}
+
+  /* ---------- Panels ---------- */
+  main{padding:30px 0 40px}
+  .panel{display:none;animation:fade .4s ease both}
+  .panel.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  section{margin:0 0 34px}
+  .lede{
+    font-family:"Fraunces",Georgia,serif;font-size:clamp(19px,2.7vw,24px);
+    line-height:1.5;color:var(--ink);max-width:60ch;margin:0 0 8px;
+  }
+  .lede .drop{
+    float:left;font-weight:600;font-size:3.1em;line-height:.78;
+    padding:7px 9px 0 0;color:var(--oxblood);font-family:"Fraunces",serif;
+  }
+  p{max-width:66ch}
+  h2.sec{
+    font-family:"Fraunces",serif;font-weight:600;font-size:clamp(22px,3.2vw,30px);
+    letter-spacing:-.01em;margin:38px 0 4px;line-height:1.1;
+    display:flex;align-items:baseline;gap:12px;
+  }
+  h2.sec .num{
+    font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:700;
+    color:var(--copper);letter-spacing:.05em;
+  }
+  .sec-rule{height:1px;background:var(--rule);margin:0 0 18px}
+  h3.sub{
+    font-family:"Archivo",sans-serif;font-weight:700;font-size:13px;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--oxblood);
+    margin:26px 0 8px;
+  }
+  strong{font-weight:700}
+  a.inline{color:var(--oxblood);text-underline-offset:3px;text-decoration-thickness:1px}
+  a.inline:hover{color:var(--copper)}
+
+  /* ---------- ID slug bar ---------- */
+  .idbar{
+    display:flex;flex-wrap:wrap;gap:0;border:1px solid var(--rule);
+    background:var(--card);border-radius:3px;overflow:hidden;margin:6px 0 26px;
+  }
+  .idbar .cell{
+    padding:11px 16px;flex:1 1 150px;min-width:140px;
+    border-right:1px solid var(--rule-soft);
+  }
+  .idbar .cell:last-child{border-right:0}
+  .idbar .k{
+    font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--ink-faint);margin-bottom:3px;
+  }
+  .idbar .v{font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:500;color:var(--ink)}
+
+  /* ---------- Wire bus diagram (signature) ---------- */
+  .bus{position:relative;margin:28px 0 8px;padding-left:6px}
+  .bus .spine{
+    position:absolute;left:21px;top:30px;bottom:34px;width:3px;
+    background:linear-gradient(var(--copper),var(--copper-bright));
+    border-radius:2px;
+  }
+  .bus .spine::before,.bus .spine::after{
+    content:"";position:absolute;left:50%;transform:translateX(-50%);
+    width:11px;height:11px;border-radius:50%;background:var(--copper);
+    box-shadow:0 0 0 3px var(--paper);
+  }
+  .bus .spine::before{top:-6px}
+  .bus .spine::after{bottom:-6px;background:var(--copper-bright)}
+  .node{
+    position:relative;display:grid;grid-template-columns:44px 1fr;
+    align-items:start;margin:0 0 14px;
+  }
+  .node .joint{
+    position:relative;height:22px;display:flex;align-items:center;
+  }
+  .node .joint::before{
+    content:"";position:absolute;left:15px;top:9px;width:26px;height:3px;
+    background:var(--copper);
+  }
+  .node .dot{
+    width:16px;height:16px;border-radius:50%;background:var(--copper);
+    border:3px solid var(--paper);box-shadow:0 0 0 2px var(--copper);
+    margin-left:13px;z-index:2;
+  }
+  .node.pending .joint::before{background:repeating-linear-gradient(90deg,var(--ink-faint) 0 4px,transparent 4px 8px)}
+  .node.pending .dot{background:var(--paper);box-shadow:0 0 0 2px var(--ink-faint)}
+  .node .body{
+    background:var(--card);border:1px solid var(--rule);border-left:3px solid var(--oxblood);
+    border-radius:3px;padding:13px 16px;box-shadow:var(--shadow);
+  }
+  .node.pending .body{border-left-color:var(--ink-faint)}
+  .node.origin .body{border-left-color:var(--copper);background:#fcf3e4}
+  .node .ntop{display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap}
+  .node .ntitle{font-family:"Fraunces",serif;font-weight:600;font-size:18px;line-height:1.2}
+  .node .ntag{
+    font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.12em;
+    text-transform:uppercase;padding:3px 8px;border-radius:2px;white-space:nowrap;
+  }
+  .ntag.done{background:rgba(77,107,60,.14);color:var(--green)}
+  .ntag.wait{background:rgba(138,125,104,.16);color:var(--ink-soft)}
+  .node .nmeta{
+    font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--copper);
+    margin:2px 0 5px;letter-spacing:.04em;
+  }
+  .node .ndesc{font-size:14px;color:var(--ink-soft);margin:0;max-width:none}
+
+  /* ---------- Generic cards ---------- */
+  .grid{display:grid;gap:14px}
+  .grid.two{grid-template-columns:1fr 1fr}
+  .grid.three{grid-template-columns:repeat(3,1fr)}
+  .cardx{
+    background:var(--card);border:1px solid var(--rule);border-radius:3px;
+    padding:18px 18px 16px;box-shadow:var(--shadow);
+  }
+  .cardx .ck{
+    font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--copper);margin-bottom:7px;
+  }
+  .cardx h4{font-family:"Fraunces",serif;font-weight:600;font-size:18px;margin:0 0 6px;line-height:1.2}
+  .cardx p{font-size:14px;color:var(--ink-soft);margin:0;max-width:none}
+
+  /* ---------- Directive / deadline list ---------- */
+  .directive{
+    display:grid;grid-template-columns:78px 1fr;gap:0;
+    border:1px solid var(--rule);border-radius:3px;background:var(--card);
+    margin-bottom:10px;overflow:hidden;
+  }
+  .directive .clock{
+    background:var(--oxblood);color:var(--paper);padding:14px 10px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  }
+  .directive.pending .clock{background:var(--ink-soft)}
+  .directive .clock .big{font-family:"Fraunces",serif;font-weight:600;font-size:26px;line-height:1}
+  .directive .clock .lbl{font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;margin-top:3px;opacity:.85}
+  .directive .dbody{padding:13px 16px}
+  .directive .dtop{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline}
+  .directive .dsec{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--copper)}
+  .directive .ddate{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-faint)}
+  .directive h4{font-family:"Fraunces",serif;font-weight:600;font-size:17px;margin:3px 0 4px}
+  .directive p{font-size:13.5px;color:var(--ink-soft);margin:0;max-width:none}
+  .status-pill{
+    font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+    padding:2px 7px;border-radius:2px;
+  }
+  .status-pill.done{background:rgba(77,107,60,.14);color:var(--green)}
+  .status-pill.wait{background:rgba(138,125,104,.16);color:var(--ink-soft)}
+
+  /* ---------- Redflag accordion ---------- */
+  .flags{border-top:1px solid var(--rule)}
+  .flag{border-bottom:1px solid var(--rule)}
+  .flag > button{
+    appearance:none;width:100%;background:transparent;border:0;cursor:pointer;
+    display:flex;align-items:center;gap:14px;padding:15px 4px;text-align:left;
+    font-family:"Archivo",sans-serif;
+  }
+  .flag > button:focus-visible{outline:2px solid var(--copper);outline-offset:-2px}
+  .flag .fnum{font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:700;color:var(--copper);min-width:26px}
+  .flag .fname{font-family:"Fraunces",serif;font-weight:600;font-size:18px;flex:1;color:var(--ink)}
+  .flag .chev{font-family:"JetBrains Mono",monospace;color:var(--ink-faint);transition:transform .25s ease;font-size:18px}
+  .flag[data-open="true"] .chev{transform:rotate(45deg)}
+  .flag .fbody{
+    max-height:0;overflow:hidden;transition:max-height .3s ease;
+  }
+  .flag .fbody-inner{padding:0 4px 16px 40px}
+  .flag .fbody-inner ul{margin:0;padding-left:18px}
+  .flag .fbody-inner li{font-size:14px;color:var(--ink-soft);margin-bottom:5px}
+
+  /* ---------- Scheme rail ---------- */
+  .rail{
+    display:flex;align-items:stretch;gap:0;flex-wrap:wrap;
+    border:1px solid var(--rule);border-radius:3px;background:var(--card);
+    overflow:hidden;margin:14px 0 6px;
+  }
+  .rail .step{flex:1 1 120px;min-width:120px;padding:13px 14px;border-right:1px solid var(--rule-soft);position:relative}
+  .rail .step:last-child{border-right:0}
+  .rail .step .rn{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--copper);margin-bottom:5px}
+  .rail .step .rt{font-family:"Fraunces",serif;font-weight:600;font-size:15px;line-height:1.15;margin-bottom:3px}
+  .rail .step .rd{font-size:12px;color:var(--ink-soft);line-height:1.4}
+  .rail .step::after{content:"→";position:absolute;right:-8px;top:50%;transform:translateY(-50%);color:var(--copper);font-family:"JetBrains Mono",monospace;font-weight:700;background:var(--card);z-index:2;padding:0 1px}
+  .rail .step:last-child::after{display:none}
+  .casestudy{border-left:3px solid var(--ink-soft);background:#f6f0e2}
+  .casestudy .ck{color:var(--ink-soft)}
+  .flag .fbody-inner ul.tight li{margin-bottom:7px;line-height:1.45}
+  @media (max-width:680px){
+    .rail .step{flex:1 1 100%;border-right:0;border-bottom:1px solid var(--rule-soft)}
+    .rail .step:last-child{border-bottom:0}
+    .rail .step::after{content:"↓";right:50%;top:auto;bottom:-9px;transform:translateX(50%)}
+  }
+  /* ---------- Callout ---------- */
+  .callout{
+    background:#fcf3e4;border:1px solid var(--rule);border-left:3px solid var(--copper);
+    border-radius:3px;padding:16px 18px;margin:20px 0;
+  }
+  .callout .ck{
+    font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--copper);margin-bottom:6px;
+  }
+  .callout p{margin:0;font-size:14.5px;color:var(--ink-soft)}
+  .callout.ox{border-left-color:var(--oxblood);background:#fbf1ee}
+  .callout.ox .ck{color:var(--oxblood)}
+
+  /* ---------- Connective tissue strip ---------- */
+  .threads{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+  .thread{padding:16px;border:1px solid var(--rule);border-radius:3px;background:var(--card);position:relative}
+  .thread .tn{font-family:"JetBrains Mono",monospace;font-size:22px;font-weight:700;color:var(--copper);line-height:1}
+  .thread h4{font-family:"Fraunces",serif;font-weight:600;font-size:17px;margin:8px 0 5px}
+  .thread p{font-size:13.5px;color:var(--ink-soft);margin:0;max-width:none}
+
+  /* ---------- Coverage tab ---------- */
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 22px}
+  .fbtn{
+    appearance:none;border:1px solid var(--rule);background:var(--card);cursor:pointer;
+    font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink-soft);padding:7px 13px;border-radius:2px;transition:.15s;
+  }
+  .fbtn:hover{border-color:var(--copper);color:var(--ink)}
+  .fbtn[aria-pressed="true"]{background:var(--oxblood);color:var(--paper);border-color:var(--oxblood)}
+  .fbtn:focus-visible{outline:2px solid var(--copper);outline-offset:2px}
+  .src-group{margin-bottom:26px}
+  .src-group h3{
+    font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--oxblood);border-bottom:1px solid var(--rule);padding-bottom:8px;margin:0 0 4px;
+  }
+  .src{
+    display:block;text-decoration:none;color:inherit;
+    border-bottom:1px solid var(--rule-soft);padding:15px 2px;
+    transition:background .15s, padding-left .15s;
+  }
+  .src:hover{background:rgba(176,106,44,.05);padding-left:10px}
+  .src:focus-visible{outline:2px solid var(--copper);outline-offset:-2px}
+  .src .stop{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .src .stitle{font-family:"Fraunces",serif;font-weight:600;font-size:18px;color:var(--ink);line-height:1.25}
+  .src .stype{
+    font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+    padding:2px 7px;border-radius:2px;white-space:nowrap;
+  }
+  .stype.primary{background:rgba(122,29,29,.12);color:var(--oxblood)}
+  .stype.law{background:rgba(176,106,44,.16);color:var(--copper)}
+  .stype.media{background:rgba(77,107,60,.14);color:var(--green)}
+  .stype.tracker{background:rgba(138,125,104,.16);color:var(--ink-soft)}
+  .src .smeta{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-faint);margin:4px 0 3px;letter-spacing:.03em}
+  .src .sdesc{font-size:13.5px;color:var(--ink-soft);margin:0;max-width:78ch}
+  .src .sarrow{color:var(--copper);font-family:"JetBrains Mono",monospace}
+
+  /* ---------- Footer ---------- */
+  footer{border-top:2px solid var(--ink);margin-top:30px;padding:22px 0 50px}
+  footer p{font-size:12px;color:var(--ink-faint);max-width:none;font-family:"JetBrains Mono",monospace;line-height:1.7;letter-spacing:.02em}
+  footer .fbrand{color:var(--oxblood);font-weight:700;letter-spacing:.2em;text-transform:uppercase}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:760px){
+    .grid.two,.grid.three,.threads{grid-template-columns:1fr}
+    .idbar .cell{flex:1 1 100%;border-right:0;border-bottom:1px solid var(--rule-soft)}
+    .idbar .cell:last-child{border-bottom:0}
+    .wrap{padding:0 18px}
+    .directive{grid-template-columns:64px 1fr}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="brandline">
+      <div class="brand"><a href="https://bankregwire.com">BankRegWire</a></div>
+      <div class="issue">Policy Tools Desk · Vol. 2026 · Filed June 9</div>
+    </div>
+    <div class="eyebrow">Connected Action · Immigration &amp; the Financial System</div>
+    <h1 class="headline">The Integrity Package</h1>
+    <p class="deck">One executive order, two implementing actions, and a rolling regulatory clock — how Washington recast immigration status as a financial-system risk factor across AML, customer identification, and consumer credit underwriting in seventeen days.</p>
+    <div class="byline">
+      <span>EO 14406 → FinCEN FIN-2026-A002 → CFPB 91 FR 34607</span>
+      <span>May 19 – June 8, 2026</span>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Sections">
+  <div class="wrap">
+    <div class="tabrow" role="tablist">
+      <button class="tab" role="tab" aria-selected="true"  id="t-overview" aria-controls="p-overview"><span class="idx">00</span>Overview</button>
+      <button class="tab" role="tab" aria-selected="false" id="t-eo"       aria-controls="p-eo"><span class="idx">01</span>Executive Order</button>
+      <button class="tab" role="tab" aria-selected="false" id="t-fincen"   aria-controls="p-fincen"><span class="idx">02</span>FinCEN Advisory</button>
+      <button class="tab" role="tab" aria-selected="false" id="t-cfpb"     aria-controls="p-cfpb"><span class="idx">03</span>CFPB Statement</button>
+      <button class="tab" role="tab" aria-selected="false" id="t-coverage" aria-controls="p-coverage"><span class="idx">04</span>Coverage &amp; Analysis</button>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="wrap">
+
+  <!-- ================= OVERVIEW ================= -->
+  <section class="panel active" id="p-overview" role="tabpanel" aria-labelledby="t-overview" tabindex="0">
+    <p class="lede"><span class="drop">B</span>etween May 19 and June 8, 2026, a single executive order and its first two deliverables moved together to treat a customer's immigration status — and especially the use of an ITIN — as a risk signal that banks and lenders may, and in some cases must, weigh. The order is the source instrument; the FinCEN advisory and the CFPB statement are the first transmissions down the wire.</p>
+
+    <h2 class="sec"><span class="num">MAP</span>How the package wires together</h2>
+    <div class="sec-rule"></div>
+    <p style="margin-top:-6px">Executive Order 14406 sits at the top of the bus. Each operative directive runs to a separate agency action on its own statutory clock. Two have landed; three are still pending.</p>
+
+    <div class="bus" aria-label="Diagram of EO 14406 and its downstream actions">
+      <div class="spine" aria-hidden="true"></div>
+
+      <div class="node origin">
+        <div class="joint" aria-hidden="true"><span class="dot"></span></div>
+        <div class="body">
+          <div class="ntop">
+            <span class="ntitle">EO 14406 — Restoring Integrity to America's Financial System</span>
+            <span class="ntag done">Signed</span>
+          </div>
+          <div class="nmeta">Source instrument · May 19, 2026 · 91 FR 30479</div>
+          <p class="ndesc">Frames lending to non-work-authorized borrowers as a structural "ability-to-repay" deficiency and illicit cross-border flows as a national-security risk. Directs Treasury, FinCEN, the CFPB, and the federal banking agencies to act.</p>
+        </div>
+      </div>
+
+      <div class="node">
+        <div class="joint" aria-hidden="true"><span class="dot"></span></div>
+        <div class="body">
+          <div class="ntop">
+            <span class="ntitle">FinCEN Joint Advisory</span>
+            <span class="ntag done">Delivered Jun 5</span>
+          </div>
+          <div class="nmeta">From §3(a) · 60-day clock · FIN-2026-A002</div>
+          <p class="ndesc">Issued with the FDIC, OCC, and NCUA. Eighteen red flags and two core typologies — identity theft and off-the-books payroll fraud — across five labor-intensive sectors, plus ITIN due-diligence guidance and the SAR key term.</p>
+        </div>
+      </div>
+
+      <div class="node">
+        <div class="joint" aria-hidden="true"><span class="dot"></span></div>
+        <div class="body">
+          <div class="ntop">
+            <span class="ntitle">CFPB Statement on Ability to Repay</span>
+            <span class="ntag done">Delivered Jun 5–8</span>
+          </div>
+          <div class="nmeta">From §4(a) · 60-day clock · 91 FR 34607</div>
+          <p class="ndesc">Tells creditors that under TILA / Regulation Z they may — and sometimes must — consider whether removal risk will disrupt a borrower's U.S.-based income.</p>
+        </div>
+      </div>
+
+      <div class="node pending">
+        <div class="joint" aria-hidden="true"><span class="dot"></span></div>
+        <div class="body">
+          <div class="ntop">
+            <span class="ntitle">BSA Customer Due Diligence rulemaking</span>
+            <span class="ntag wait">Pending · ~Aug 17</span>
+          </div>
+          <div class="nmeta">From §3(b) · 90-day clock · proposed rule</div>
+          <p class="ndesc">Treasury to propose stronger risk-based CDD, including authority to seek immigration-status and work-authorization information where other risk indicators warrant.</p>
+        </div>
+      </div>
+
+      <div class="node pending">
+        <div class="joint" aria-hidden="true"><span class="dot"></span></div>
+        <div class="body">
+          <div class="ntop">
+            <span class="ntitle">Customer Identification Program review</span>
+            <span class="ntag wait">Pending · ~Nov 15</span>
+          </div>
+          <div class="nmeta">From §3(c) · 180-day clock</div>
+          <p class="ndesc">Treasury and the banking agencies to weigh CIP changes addressing the risks foreign consular identification cards pose at account opening.</p>
+        </div>
+      </div>
+
+      <div class="node pending">
+        <div class="joint" aria-hidden="true"><span class="dot"></span></div>
+        <div class="body">
+          <div class="ntop">
+            <span class="ntitle">Prudential credit-risk guidance</span>
+            <span class="ntag wait">Pending · ~Jul 18</span>
+          </div>
+          <div class="nmeta">From §4(b) · 60-day clock · Fed / OCC / FDIC / NCUA</div>
+          <p class="ndesc">Each federal banking regulator to issue guidance on managing the credit risk posed by the non-work-authorized population.</p>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="sec"><span class="num">LINK</span>The connective tissue</h2>
+    <div class="sec-rule"></div>
+    <div class="threads">
+      <div class="thread">
+        <div class="tn">A</div>
+        <h4>One source, two clocks fired first</h4>
+        <p>The advisory (§3(a)) and the CFPB statement (§4(a)) share the same 60-day deadline. Both landed inside two weeks of each other — a coordinated rollout, not three separate events.</p>
+      </div>
+      <div class="thread">
+        <div class="tn">B</div>
+        <h4>The ITIN is the shared hinge</h4>
+        <p>An ITIN presented in lieu of an SSN or work authorization is a CDD risk factor in the FinCEN advisory and, separately, a possible signal of removal risk in the CFPB statement. The same data point now reads across both AML and credit.</p>
+      </div>
+      <div class="thread">
+        <div class="tn">C</div>
+        <h4>A predicate was already laid</h4>
+        <p>In January 2026 the CFPB and DOJ withdrew their 2023 joint statement on noncitizen borrowers (91 FR 1138). The package builds on that reversal and on EO 14159's removal policy.</p>
+      </div>
+    </div>
+
+    <div class="callout ox">
+      <div class="ck">State angle</div>
+      <p>EO 14406 defines "Federal functional financial regulator" as the Fed, OCC, FDIC, and NCUA — state regulators are not named. But state-chartered banks and credit unions remain fully subject to the Bank Secrecy Act and to FinCEN advisories, and reach the federal credit-risk guidance through their federal prudential overseers. The supervisory expectations flow downhill regardless of charter.</p>
+    </div>
+  </section>
+
+  <!-- ================= EXECUTIVE ORDER ================= -->
+  <section class="panel" id="p-eo" role="tabpanel" aria-labelledby="t-eo" tabindex="0">
+    <h2 class="sec" style="margin-top:6px"><span class="num">01</span>Executive Order 14406</h2>
+    <div class="sec-rule"></div>
+    <div class="idbar">
+      <div class="cell"><div class="k">Title</div><div class="v">Restoring Integrity to America's Financial System</div></div>
+      <div class="cell"><div class="k">Signed</div><div class="v">May 19, 2026</div></div>
+      <div class="cell"><div class="k">Citation</div><div class="v">91 FR 30479</div></div>
+      <div class="cell"><div class="k">FR Doc</div><div class="v">2026-10400</div></div>
+    </div>
+
+    <p>The order rests on two distinct risk theories. The first is a <strong>national-security and public-safety</strong> argument: it points to low-dollar cross-border transfers used in terrorist financing, narcotics and human trafficking, fentanyl flows tied to Mexico-based cartels, and a cited analysis of Chinese money-laundering networks said to have moved more than $312 billion through U.S.-based accounts held by foreign passport holders.</p>
+    <p>The second is a <strong>safety-and-soundness</strong> argument aimed at consumer credit. The order asserts that lending to borrowers who lack work authorization or face a substantial loss-of-wage risk creates a structural <em>ability-to-repay</em> deficiency, because removal or an employer's compliance with immigration law could cut off the borrower's income. It also flags employer schemes — underreported wages, mismatched tax IDs, unremitted payroll taxes — as a vulnerability that distorts credit underwriting.</p>
+
+    <h3 class="sub">The five operative directives</h3>
+    <p style="margin-top:0">Most are framed as actions agencies must <em>consider</em> or <em>propose</em> — the order itself imposes no new customer-facing requirement, and it stopped short of mandating citizenship verification for every account.</p>
+
+    <div class="directive">
+      <div class="clock"><span class="big">60</span><span class="lbl">Days · §3(a)</span></div>
+      <div class="dbody">
+        <div class="dtop"><span class="dsec">Treasury Advisory</span><span class="ddate">Due ~Jul 18 · <span class="status-pill done">Done Jun 5</span></span></div>
+        <h4>Issue a red-flags advisory</h4>
+        <p>Describe typologies of suspicious activity tied to non-work-authorized populations and their employers — payroll-tax evasion, nominee/funnel structures, off-the-books wage rails, structuring, labor trafficking, and ITIN-based account or credit access.</p>
+      </div>
+    </div>
+
+    <div class="directive">
+      <div class="clock"><span class="big">60</span><span class="lbl">Days · §4(a)</span></div>
+      <div class="dbody">
+        <div class="dtop"><span class="dsec">CFPB</span><span class="ddate">Due ~Jul 18 · <span class="status-pill done">Done Jun 5–8</span></span></div>
+        <h4>Clarify the ability-to-repay standard</h4>
+        <p>Consider clarifying that potential deportation and loss of wages are factors that can bear on a non-work-authorized borrower's ability to repay under the Regulation Z standards in 12 CFR Part 1026, and that lenders may weigh them in good-faith underwriting.</p>
+      </div>
+    </div>
+
+    <div class="directive">
+      <div class="clock"><span class="big">60</span><span class="lbl">Days · §4(b)</span></div>
+      <div class="dbody">
+        <div class="dtop"><span class="dsec">Banking Agencies</span><span class="ddate">Due ~Jul 18 · <span class="status-pill wait">Pending</span></span></div>
+        <h4>Issue credit-risk guidance</h4>
+        <p>Each federal functional financial regulator (Fed, OCC, FDIC, NCUA) to issue guidance on managing the potential credit risks posed by the non-work-authorized population.</p>
+      </div>
+    </div>
+
+    <div class="directive pending">
+      <div class="clock"><span class="big">90</span><span class="lbl">Days · §3(b)</span></div>
+      <div class="dbody">
+        <div class="dtop"><span class="dsec">Treasury</span><span class="ddate">Due ~Aug 17 · <span class="status-pill wait">Pending</span></span></div>
+        <h4>Propose stronger CDD rules</h4>
+        <p>Propose Bank Secrecy Act changes to strengthen risk-based customer due diligence, including verifying beneficial owners and preserving authority to obtain immigration-status and work-authorization information where other risk indicators warrant.</p>
+      </div>
+    </div>
+
+    <div class="directive pending">
+      <div class="clock"><span class="big">180</span><span class="lbl">Days · §3(c)</span></div>
+      <div class="dbody">
+        <div class="dtop"><span class="dsec">Treasury + Agencies</span><span class="ddate">Due ~Nov 15 · <span class="status-pill wait">Pending</span></span></div>
+        <h4>Consider CIP changes</h4>
+        <p>Weigh customer-identification-program changes that account for the risks foreign consular identification cards (e.g., the matrícula consular) pose to the integrity of the financial system.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="ck">Reading it precisely</div>
+      <p>The verbs matter. "Consider," "propose," and "issue guidance" set a rulemaking and supervisory agenda rather than a self-executing mandate. Commentators note the immigration-status inquiry in §3(b) is framed as confirming existing risk-based authority — permissive, not a categorical new obligation.</p>
+    </div>
+  </section>
+
+  <!-- ================= FINCEN ================= -->
+  <section class="panel" id="p-fincen" role="tabpanel" aria-labelledby="t-fincen" tabindex="0">
+    <h2 class="sec" style="margin-top:6px"><span class="num">02</span>FinCEN Joint Advisory</h2>
+    <div class="sec-rule"></div>
+    <div class="idbar">
+      <div class="cell"><div class="k">Number</div><div class="v">FIN-2026-A002</div></div>
+      <div class="cell"><div class="k">Issued</div><div class="v">June 5, 2026</div></div>
+      <div class="cell"><div class="k">Issuers</div><div class="v">FinCEN · FDIC · OCC · NCUA</div></div>
+      <div class="cell"><div class="k">SAR key term</div><div class="v">FINANCIALINTEGRITY-2026-A002</div></div>
+    </div>
+
+    <p>The advisory executes §3(a) of EO 14406. FinCEN issued it <strong>jointly with the FDIC, OCC, and NCUA</strong> — the Federal Reserve is not among the joint issuers — and in coordination with the IRS. It tells institutions, banks in particular, to watch for fraud tied to the unlawful employment of workers without authorization, framing that activity as depressing wages, enabling identity theft of work-authorized people (including U.S. citizens), and diverting payroll-tax revenue. It maps to FinCEN's AML/CFT National Priorities — fraud, terrorist financing, drug- and transnational-criminal-organization activity, and human trafficking and smuggling — and builds on FinCEN's 2023 construction-sector payroll-tax notice and a November 2025 cross-border-transfer alert.</p>
+
+    <div class="callout">
+      <div class="ck">How much weight it carries</div>
+      <p>The advisory is guidance, and it says so plainly: its red-flag indicators do not, on their own, convey or alter any independent regulatory obligation or supervisory expectation. In practice, counsel still expect it to shape transaction-monitoring scenarios and SAR narratives — but the document is careful not to claim it creates new duties.</p>
+    </div>
+
+    <h3 class="sub">How the scheme works</h3>
+    <p style="margin-top:0">Two typologies anchor the advisory. Both turn on concealing who is really being employed and paid.</p>
+
+    <div class="grid two">
+      <div class="cardx">
+        <div class="ck">Typology 1 · Identity theft</div>
+        <h4>Borrowed identities to pass I-9</h4>
+        <p>Workers without authorization obtain SSNs and other personal data of citizens and lawful residents to make Form I-9s look legitimate, draw wages and benefits, and — per FinCEN's review of BSA reporting — obtain auto and other credit. Complicit employers may help procure the fraudulent documents.</p>
+      </div>
+      <div class="cardx">
+        <div class="ck">Typology 2 · Payroll fraud</div>
+        <h4>Off-the-books pay via labor brokers</h4>
+        <p>Employers route wages through complicit labor brokers who stand up shell companies — often unregistered money services businesses — to cash employer checks and pay workers off the books, withholding no payroll tax and "renting" minimal workers'-comp policies to commit insurance fraud.</p>
+      </div>
+    </div>
+
+    <div class="rail" aria-label="Payroll-fraud money flow">
+      <div class="step"><div class="rn">Source</div><div class="rt">Complicit employer</div><div class="rd">Writes checks to a shell company for purported industry services.</div></div>
+      <div class="step"><div class="rn">Intermediary</div><div class="rt">Labor broker</div><div class="rd">Takes a 4–10% fee; opens shell accounts with a foreign passport or ITIN; uses a mail-drop to dodge CIP.</div></div>
+      <div class="step"><div class="rn">Conduit</div><div class="rt">Shell co / unregistered MSB</div><div class="rd">Cashes checks in structured transactions through banks and check cashers.</div></div>
+      <div class="step"><div class="rn">Payout</div><div class="rt">Worker, off the books</div><div class="rd">Paid by cash courier, check, or P2P — structured below BSA thresholds on payroll cycles.</div></div>
+    </div>
+    <p style="font-size:13.5px;color:var(--ink-soft);margin-top:8px">FinCEN reports institutions flagged more than <strong>$2.5 billion</strong> in suspicious activity tied to this scheme in 2025; the 2022 employment-tax gap was roughly <strong>$127 billion</strong>.</p>
+
+    <div class="grid two" style="margin-top:14px">
+      <div class="cardx casestudy">
+        <div class="ck">Case study · Identity theft</div>
+        <p style="font-size:13.5px">A Mexican national pleaded guilty in July 2025 after working at a North Carolina manufacturer since 2022 using another person's driver's license and Social Security card, and falsely attesting U.S. citizenship on his I-9.</p>
+      </div>
+      <div class="cardx casestudy">
+        <div class="ck">Case study · Payroll fraud</div>
+        <p style="font-size:13.5px">Two Honduran nationals were sentenced in April 2026 over a years-long scheme that cashed roughly $89 million in construction checks through shell companies, evaded payroll taxes, and caused a federal loss exceeding $38 million.</p>
+      </div>
+    </div>
+
+    <h3 class="sub">Enhanced due diligence for ITINs</h3>
+    <p style="margin-top:0">Under existing CIP rules a bank must collect and verify customer identity, including an identification number — a TIN for U.S. persons, or for non-U.S. persons a TIN, passport, alien ID card, or other government photo ID. An ITIN (nine digits, beginning with 9, in the form 9XX-7X-XXXX) is issued for federal tax purposes only and does <strong>not</strong> prove legal status, grant work authorization, or serve as identification outside the tax system.</p>
+    <p>Per EO 14406, the Agencies say an ITIN presented in lieu of an SSN or valid work-authorization document may be a risk factor warranting enhanced due diligence — judged against the totality of available information — and they flag particular concern when an ITIN is used to obtain credit or open an account where legal presence isn't verified. Separately, where a bank doubts an SSN's authenticity, FinCEN encourages checking it against Social Security Administration records.</p>
+
+    <div class="callout">
+      <div class="ck">On the ITIN</div>
+      <p>The ITIN is positioned as a trigger for closer, risk-based review judged in context — not an automatic bar to an account or product. The advisory ties this directly to the executive order rather than to any new rule.</p>
+    </div>
+
+    <h3 class="sub">Red-flag indicators</h3>
+    <p style="margin-top:0">All eighteen indicators target five labor-intensive sectors — <strong>agriculture, construction, domestic service, hospitality, and staffing</strong> — and are grouped by customer type. Tap a group to expand. No single flag is determinative; FinCEN says to weigh the totality of facts and look for several flags together.</p>
+
+    <div class="flags" id="flagAccordion">
+      <div class="flag" data-open="false">
+        <button aria-expanded="false"><span class="fnum">I</span><span class="fname">Individual customers <span style="font-weight:400;color:var(--ink-faint);font-size:13px">· 8 flags</span></span><span class="chev">+</span></button>
+        <div class="fbody"><div class="fbody-inner"><ul class="tight">
+          <li>Presents an SSN that, on verification, doesn't match SSA records.</li>
+          <li>Opens an account with a non-U.S. passport or ITIN as "self-employed" in the five sectors, takes in large recurring check deposits from many companies, then makes structured cash withdrawals or writes low-dollar checks to many people.</li>
+          <li>Cashes a large, recurring volume of checks drawn on companies in those sectors at an MSB or check casher.</li>
+          <li>Receives recurring P2P payments from a small, newly formed company in those sectors.</li>
+          <li>Works in those sectors and opens an ITIN account with little activity beyond foreign remittances.</li>
+          <li>Tries to open a company account in those sectors using a commercial mail-receiving agency instead of a business address.</li>
+          <li>Has no prior tie to those sectors but uses a non-U.S. passport or ITIN to open a new company account in them.</li>
+          <li>Tells tellers or check cashers the cash or check-cashing is "payroll," in volumes out of step with a small-staff business.</li>
+        </ul></div></div>
+      </div>
+      <div class="flag" data-open="false">
+        <button aria-expanded="false"><span class="fnum">II</span><span class="fname">Large company customers <span style="font-weight:400;color:var(--ink-faint);font-size:13px">· 5 flags</span></span><span class="chev">+</span></button>
+        <div class="fbody"><div class="fbody-inner"><ul class="tight">
+          <li>Appears in ICE worksite-enforcement releases or open-source reporting for a history of compliance violations.</li>
+          <li>Has substantial operations and transaction volume but little payroll activity for its profile.</li>
+          <li>Makes federal and state payroll-tax deposits far below what its operations and workforce would imply.</li>
+          <li>Issues large, repetitive checks to one or a few newly formed companies with little online presence.</li>
+          <li>Recently bought a workers'-comp policy covering few workers, inconsistent with its profile and activity.</li>
+        </ul></div></div>
+      </div>
+      <div class="flag" data-open="false">
+        <button aria-expanded="false"><span class="fnum">III</span><span class="fname">Small company customers <span style="font-weight:400;color:var(--ink-faint);font-size:13px">· 5 flags</span></span><span class="chev">+</span></button>
+        <div class="fbody"><div class="fbody-inner"><ul class="tight">
+          <li>Beneficial owners with no prior tie to the company or industry, sometimes with prior fraud convictions.</li>
+          <li>Little or no tax- or payroll-related payments to the IRS, state authorities, or a payroll provider despite heavy client deposits.</li>
+          <li>Large or unusual cash withdrawals or check-cashing — often accompanied by others or using an armored-car service for bulk cash (informal, off-the-books payroll).</li>
+          <li>Issues recurring, high volumes of sub-$1,000 checks payable to many separate individuals who cash them.</li>
+          <li>New (under two years old), with minimal online presence and other shell-company indicators.</li>
+        </ul></div></div>
+      </div>
+    </div>
+
+    <div class="callout ox">
+      <div class="ck">FinCEN's own caveats</div>
+      <p>No single indicator is determinative, and none should be read in isolation. Institutions should weigh surrounding facts — a customer's history, whether activity fits prevailing business practice, and whether several flags appear together. FinCEN stresses no customer type carries a uniform risk profile, and that the indicators themselves do not alter any regulatory obligation or supervisory expectation.</p>
+    </div>
+
+    <div class="callout">
+      <div class="ck">Reporting &amp; tips</div>
+      <p>Reference the advisory by placing <strong>FINANCIALINTEGRITY-2026-A002</strong> in SAR field 2 and the narrative. FinCEN also points institutions and the public to ICE's tip line, (866) 347-2423, for employers suspected of knowingly employing or exploiting unauthorized workers, and notes its whistleblower program offers awards where an enforcement action yields penalties over $1 million, with anonymous submission available through counsel.</p>
+    </div>
+  </section>
+  <!-- ================= CFPB ================= -->
+  <section class="panel" id="p-cfpb" role="tabpanel" aria-labelledby="t-cfpb" tabindex="0">
+    <h2 class="sec" style="margin-top:6px"><span class="num">03</span>CFPB Statement</h2>
+    <div class="sec-rule"></div>
+    <div class="idbar">
+      <div class="cell"><div class="k">Title</div><div class="v">Ability to Repay &amp; Immigration Status</div></div>
+      <div class="cell"><div class="k">Citation</div><div class="v">91 FR 34607</div></div>
+      <div class="cell"><div class="k">Applicable</div><div class="v">June 8, 2026</div></div>
+      <div class="cell"><div class="k">Signed by</div><div class="v">Russell Vought, Acting Dir.</div></div>
+    </div>
+
+    <p>The statement executes §4(a) of the order. Its core move: under the Truth in Lending Act and Regulation Z, creditors must make a reasonable, good-faith ability-to-repay determination before extending mortgages and certain open-end credit. That determination rests on current or reasonably expected income — and the Bureau reminds lenders that where the application or records indicate a reasonably anticipated change in repayment ability, the creditor <strong>must</strong> consider it.</p>
+    <p>Applied to immigration: if a creditor relies on income from U.S.-based employment, and information in the file (including reliance on atypical identification such as an ITIN) suggests the borrower may be unlawfully present and at risk of removal, the Bureau says that bears on whether the income will remain available. Overlooking it, in the Bureau's view, may fall short of the ATR obligation.</p>
+
+    <div class="grid two">
+      <div class="cardx">
+        <div class="ck">Mortgages</div>
+        <h4>12 CFR 1026.43(c)</h4>
+        <p>Creditors must reasonably and in good faith determine ability to repay, considering current or reasonably expected income and employment status. A post-consummation change that couldn't be reasonably anticipated from the file isn't relevant.</p>
+      </div>
+      <div class="cardx">
+        <div class="ck">Credit cards</div>
+        <h4>12 CFR 1026.51(a)</h4>
+        <p>Issuers must consider the consumer's ability to make required minimum payments, using income or assets to which the consumer has a reasonable expectation of access at account opening or a credit-limit increase.</p>
+      </div>
+    </div>
+
+    <h3 class="sub">The Regulation B / ECOA backdrop</h3>
+    <p style="margin-top:0">The statement leans on existing fair-lending text: Regulation B, implementing ECOA, already says a creditor may take an applicant's immigration status into account, and may consider status and related information needed to ascertain its rights and remedies on repayment. The Bureau ties this to its January 2026 withdrawal of the 2023 CFPB–DOJ joint statement on noncitizen borrowers, which had cautioned against using immigration status in credit decisions.</p>
+
+    <div class="callout ox">
+      <div class="ck">What it does not do</div>
+      <p>The Bureau states the guidance has no force or effect of law. It declines to map each lawful immigration status to a repayment expectation, stressing that statuses vary widely and can't be assumed identical. Changes that can't be reasonably anticipated from the file need not be considered — the obligation is triggered by what the record actually shows.</p>
+    </div>
+
+    <div class="callout">
+      <div class="ck">The fair-lending tension</div>
+      <p>Industry analysts flag the hard part: incorporating removal risk into underwriting while staying clear of ECOA's prohibition on discrimination by national origin or race. Some firms note the statement reminds lenders of an obligation without supplying status-by-status detail to operationalize it — leaving institutions to document a defensible, individualized rationale rather than apply blanket rules.</p>
+    </div>
+  </section>
+
+  <!-- ================= COVERAGE ================= -->
+  <section class="panel" id="p-coverage" role="tabpanel" aria-labelledby="t-coverage" tabindex="0">
+    <h2 class="sec" style="margin-top:6px"><span class="num">04</span>Coverage &amp; Analysis</h2>
+    <div class="sec-rule"></div>
+    <p style="margin-top:-4px">Everything cited in this tool, with links. Filter by type, or read top to bottom: primary government sources first, then law-firm analysis, news media, and trackers.</p>
+
+    <div class="filters" role="group" aria-label="Filter sources by type">
+      <button class="fbtn" data-filter="all" aria-pressed="true">All</button>
+      <button class="fbtn" data-filter="primary" aria-pressed="false">Primary</button>
+      <button class="fbtn" data-filter="law" aria-pressed="false">Law firm</button>
+      <button class="fbtn" data-filter="media" aria-pressed="false">Media</button>
+      <button class="fbtn" data-filter="tracker" aria-pressed="false">Trackers</button>
+    </div>
+
+    <div class="src-group" data-group="primary">
+      <h3>Primary sources — government</h3>
+      <a class="src" data-type="primary" href="https://www.whitehouse.gov/presidential-actions/2026/05/restoring-integrity-to-americas-financial-system/" target="_blank" rel="noopener">
+        <div class="stop"><span class="stitle">Restoring Integrity to America's Financial System</span><span class="stype primary">EO · White House</span></div>
+        <div class="smeta">The White House · May 19, 2026</div>
+        <p class="sdesc">Full text of EO 14406 as posted by the White House. <span class="sarrow">→</span></p>
+      </a>
+      <a class="src" data-type="primary" href="https://www.federalregister.gov/documents/2026/05/22/2026-10400/restoring-integrity-to-americas-financial-system" target="_blank" rel="noopener">
+        <div class="stop"><span class="stitle">EO 14406 in the Federal Register</span><span class="stype primary">91 FR 30479</span></div>
+        <div class="smeta">Federal Register · FR Doc 2026-10400 · May 22, 2026</div>
+        <p class="sdesc">Official published version of the executive order. <span class="sarrow">→</span></p>
+      </a>
+      <a class="src" data-type="primary" href="https://www.whitehouse.gov/fact-sheets/2026/05/fact-sheet-president-donald-j-trump-restores-integrity-to-americas-financial-system/" target="_blank" rel="noopener">
+        <div class="stop"><span class="stitle">Fact Sheet on the executive order</span><span class="stype primary">Fact sheet</span></div>
+        <div class="smeta">The White House · May 19, 2026</div>
+        <p class="sdesc">Administration's summary of the order's goals and directives. <span class="sarrow">→</span></p>
+      </a>
+      <a class="src" data-type="primary" href="https://www.fincen.gov/system/files/2026-06/FinCEN-Advisory-Non-Work-Authorized-Populations.pdf" target="_blank" rel="noopener">
+        <div class="stop"><span class="stitle">FinCEN Joint Advisory (full PDF)</span><span class="stype primary">FIN-2026-A002</span></div>
+        <div class="smeta">FinCEN · June 5, 2026</div>
+        <p class="sdesc">The advisory itself — red flags, typologies, and SAR filing instructions. <span class="sarrow">→</span></p>
+      </a>
+      <a class="src" data-type="primary" href="https://home.treasury.gov/news/press-releases/sb0523" target="_blank" rel="noopener">
+        <div class="stop"><span class="stitle">Treasury press release on the advisory</span><span class="stype primary">Treasury</span></div>
+        <div class="smeta">U.S. Department of the Treasury · June 5, 2026</div>
+        <p class="sdesc">Announcement with Secretary Bessent's framing and the ITIN guidance summary. <span class="sarrow">→</span></p>
+      </a>
+      <a class="src" data-type="primary" href="https://ncua.gov/newsroom/press-release/2026/federal-prudential-regulators-ask-financial-institutions-detect-report-illicit-activity-related-illegal-aliens" target="_blank" rel="noopener">
+        <div class="stop"><span class="stitle">NCUA press release on the joint advisory</span><span class="stype primary">NCUA</span></div>
+        <div class="smeta">National Credit Union Administration · June 5, 2026</div>
+        <p class="sdesc">Prudential-regulator framing; confirms the advisory supports EO 14406. <span class="sarrow">→</span></p>
+      </a>
+      <a class="src" data-type="primary" href="https://www.federalregister.gov/documents/2026/06/08/2026-11447/statement-on-ability-to-repay-and-immigration-status" target="_blank" rel="noopener">
+        <div class="stop"><span class="stitle">CFPB Statement on Ability to Repay &amp; Immigration Status</span><span class="stype primary">91 FR 34607</span></div>
+        <div class="smeta">Federal Register · FR Doc 2026-11447 · June 8, 2026</div>
+        <p class="sdesc">Full text and footnotes of the CFPB statement. <span class="sarrow">→</span></p>
+      </a>
+      <a class="src" data-type="primary" href="https://www.govinfo.gov/content/pkg/FR-2026-06-08/pdf/2026-11447.pdf" target="_blank" rel="noopener">
+        <div class="stop"><span class="stitle">CFPB statement — official PDF</span><span class="stype primary">govinfo</span></div>
+        <div class="smeta">GPO govinfo · June 8, 2026</div>
+        <p class="sdesc">The authoritative print edition of the CFPB statement. <span class="sarrow">→</span></p>
+      </a>
+      <a class="src" data-type="primary" href="https://www.consumerfinance.gov/about-us/newsroom/consumer-financial-protection-bureau-and-the-department-of-justice-withdraw-joint-statement-on-fair-lending-and-credit-opportunities-for-noncitizen-borrowers/" target="_blank" rel="noopener">
+        <div class="stop"><span class="stitle">Withdrawal of the 2023 noncitizen-borrower joint statement</span><span class="stype primary">Predicate · 91 FR 1138</span></div>
+        <div class="smeta">CFPB · January 12, 2026</div>
+        <p class="sdesc">The January reversal that set the stage for the June statement. <span class="sarrow">→</span></p>
+      </a>
+    </div>
+
+    <div class="src-group" data-group="law">
+      <h3>Law firm &amp; industry analysis</h3>
+      <a class="src" data-type="law" href="https://www.consumerfinancemonitor.com/2026/06/01/executive-order-signals-major-shift-in-federal-expectations-for-aml-customer-identification-and-credit-underwriting/" target="_blank" rel="noopener">
+        <div class="stop"><span class="stitle">Executive Order Signals Major Shift in Federal Expectations</span><span class="stype law">Ballard Spahr</span></div>
+        <div class="smeta">Consumer Finance Monitor · Lenahan-Pfahlert &amp; Grugan · June 1, 2026</div>
+        <p class="sdesc">Deadline-by-deadline breakdown across BSA/AML, CIP, CDD, and underwriting, with practical implications. <span class="sarrow">→</span></p>
+      </a>
+      <a class="src" data-type="law" href="https://www.consumerfinancemonitor.com/2026/06/08/cfpb-issues-guidance-on-consideration-of-immigration-status-based-on-ability-to-repay-requirements-without-providing-sufficient-detail-to-assist-creditors/" target="_blank" rel="noopener">
+        <div class="stop"><span class="stitle">CFPB Guidance Without Sufficient Detail to Assist Creditors</span><span class="stype law">Ballard Spahr</span></div>
+        <div class="smeta">Consumer Finance Monitor · June 8, 2026</div>
+        <p class="sdesc">Critique of the CFPB statement for reminding lenders of an obligation without operational status-by-status detail. <span class="sarrow">→</span></p>
+      </a>
+      <a class="src" data-type="law" href="https://perkinscoie.com/insights/update/restoring-integrity-americas-financial-system-what-executive-order-and-fincens" target="_blank" rel="noopener">
+        <div class="stop"><span class="stitle">What the EO and FinCEN's Proposed Rules Mean for Banks and MSBs</span><span class="stype law">Perkins Coie</span></div>
+        <div class="smeta">Perkins Coie · June 2026</div>
+        <p class="sdesc">Reads §3(b) immigration-status authority as permissive; covers CIP, consular IDs, and MSB scope. <span class="sarrow">→</span></p>
+      </a>
+      <a class="src" data-type="law" href="https://www.mayerbrown.com/en/insights/publications/2026/05/president-trump-signs-executive-order-directing-federal-financial-regulators-to-address-risks-to-us-financial-system-presented-by-customer-immigration-status" target="_blank" rel="noopener">
+        <div class="stop"><span class="stitle">EO Directing Regulators to Address Risks from Customer Immigration Status</span><span class="stype law">Mayer Brown</span></div>
+        <div class="smeta">Mayer Brown · May 2026</div>
+        <p class="sdesc">Early read on the structural ability-to-repay theory and the directives' reach. <span class="sarrow">→</span></p>
+      </a>
+      <a class="src" data-type="law" href="https://finsights.cooley.com/white-house-issues-executive-orders-targeting-financial-system-integrity-fintech-innovation/" target="_blank" rel="noopener">
+        <div class="stop"><span class="stitle">White House Issues Orders Targeting Financial System Integrity</span><span class="stype law">Cooley</span></div>
+        <div class="smeta">Cooley Finsights · May 2026</div>
+        <p class="sdesc">Notes the order stops short of mandatory citizenship verification and creates rolling deadlines. <span class="sarrow">→</span></p>
+      </a>
+    </div>
+
+    <div class="src-group" data-group="media">
+      <h3>News media</h3>
+      <a class="src" data-type="media" href="https://time.com/article/2026/05/20/trump-executive-order-immigration-banking-access-non-citizens-itin/" target="_blank" rel="noopener">
+        <div class="stop"><span class="stitle">Trump Moves to Tighten Banking Access for Non-Citizens</span><span class="stype media">TIME</span></div>
+        <div class="smeta">TIME · May 20, 2026</div>
+        <p class="sdesc">News framing on the order and its potential effect on access to financial services. <span class="sarrow">→</span></p>
+      </a>
+      <a class="src" data-type="media" href="https://www.pymnts.com/news/cfpb/2026/cfpb-advises-lenders-to-consider-applicants-immigration-status/" target="_blank" rel="noopener">
+        <div class="stop"><span class="stitle">CFPB Advises Lenders to Consider Applicants' Immigration Status</span><span class="stype media">PYMNTS</span></div>
+        <div class="smeta">PYMNTS · June 2026</div>
+        <p class="sdesc">Coverage of the CFPB statement and its link to the January joint-statement withdrawal. <span class="sarrow">→</span></p>
+      </a>
+      <a class="src" data-type="media" href="https://www.housingwire.com/articles/cfpb-immigration-status-guidance/" target="_blank" rel="noopener">
+        <div class="stop"><span class="stitle">CFPB Guidance Points Mortgage Lenders to Consider Immigration Status</span><span class="stype media">HousingWire</span></div>
+        <div class="smeta">HousingWire · June 2026</div>
+        <p class="sdesc">Mortgage-industry angle on when status may need to factor into ATR. <span class="sarrow">→</span></p>
+      </a>
+    </div>
+
+    <div class="src-group" data-group="tracker">
+      <h3>Trackers &amp; explainers</h3>
+      <a class="src" data-type="tracker" href="https://immpolicytracking.org/policies/eo-14406-restoring-integrity-to-americas-financial-system/" target="_blank" rel="noopener">
+        <div class="stop"><span class="stitle">EO 14406 policy entry</span><span class="stype tracker">Immigration Policy Tracking</span></div>
+        <div class="smeta">ImmPolicyTracking.org</div>
+        <p class="sdesc">Tracked entry linking the order to the FinCEN advisory and downstream actions. <span class="sarrow">→</span></p>
+      </a>
+      <a class="src" data-type="tracker" href="https://www.executiveactions.org/actions/restoring-integrity-to-americas-financial-system" target="_blank" rel="noopener">
+        <div class="stop"><span class="stitle">EO 14406 — context and affected agencies</span><span class="stype tracker">Executive Actions</span></div>
+        <div class="smeta">ExecutiveActions.org</div>
+        <p class="sdesc">Plain-language summary, historical context, and the list of implementing agencies. <span class="sarrow">→</span></p>
+      </a>
+    </div>
+
+    <div class="callout" style="margin-top:8px">
+      <div class="ck">A note on framing</div>
+      <p>Coverage splits predictably. Industry counsel reads the package as a compliance-planning problem on a tight clock; news and immigration-advocacy outlets emphasize the risk of narrowing financial access for noncitizens, including some lawfully present. Both can be true at once — the documents set supervisory expectations whose real-world reach depends on the pending rules and guidance.</p>
+    </div>
+  </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><span class="fbrand">BankRegWire</span> · Policy Tools Desk · This tool is an independent secondary synthesis for informational and educational use. It is not legal advice and does not establish a client relationship. Citations are summarized and paraphrased; verify all details against the official editions linked under Coverage &amp; Analysis. Advisories and statements described here are non-binding guidance, and pending rulemakings may change the picture. Compiled June 9, 2026.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* ---- Tabs ---- */
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.panel'));
+  function select(tab){
+    tabs.forEach(function(t){
+      var on = t === tab;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    panels.forEach(function(p){
+      var on = p.id === tab.getAttribute('aria-controls');
+      p.classList.toggle('active', on);
+    });
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  tabs.forEach(function(tab, i){
+    tab.addEventListener('click', function(){ select(tab); });
+    tab.addEventListener('keydown', function(e){
+      var idx = null;
+      if(e.key === 'ArrowRight') idx = (i+1) % tabs.length;
+      else if(e.key === 'ArrowLeft') idx = (i-1+tabs.length) % tabs.length;
+      else if(e.key === 'Home') idx = 0;
+      else if(e.key === 'End') idx = tabs.length-1;
+      if(idx !== null){ e.preventDefault(); tabs[idx].focus(); select(tabs[idx]); }
+    });
+  });
+
+  /* ---- Red-flag accordion ---- */
+  document.querySelectorAll('#flagAccordion .flag').forEach(function(flag){
+    var btn = flag.querySelector('button');
+    var body = flag.querySelector('.fbody');
+    btn.addEventListener('click', function(){
+      var open = flag.getAttribute('data-open') === 'true';
+      flag.setAttribute('data-open', open ? 'false' : 'true');
+      btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+      body.style.maxHeight = open ? '0px' : (body.scrollHeight + 'px');
+    });
+  });
+
+  /* ---- Coverage filters ---- */
+  var fbtns = Array.prototype.slice.call(document.querySelectorAll('.fbtn'));
+  var srcs = Array.prototype.slice.call(document.querySelectorAll('.src'));
+  var groups = Array.prototype.slice.call(document.querySelectorAll('.src-group'));
+  fbtns.forEach(function(b){
+    b.addEventListener('click', function(){
+      var f = b.getAttribute('data-filter');
+      fbtns.forEach(function(x){ x.setAttribute('aria-pressed', x===b ? 'true':'false'); });
+      srcs.forEach(function(s){
+        s.style.display = (f==='all' || s.getAttribute('data-type')===f) ? 'block' : 'none';
+      });
+      groups.forEach(function(g){
+        var anyVisible = g.querySelector('.src[style*="block"]') ||
+          (f==='all') || g.getAttribute('data-group')===f;
+        // hide a group header when no rows match
+        var rows = Array.prototype.slice.call(g.querySelectorAll('.src'));
+        var visible = rows.some(function(r){ return r.style.display !== 'none'; });
+        g.style.display = visible ? 'block' : 'none';
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
