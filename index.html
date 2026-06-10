@@ -273,6 +273,26 @@ body.unlocked .gate{opacity:0;visibility:hidden;pointer-events:none}
   .rail::after,.gate-rule::after,.mh-kicker .live i,.h-kicker i,.gate-eyebrow i{animation:none}
   .rail-track{animation:none}
 }
+/* ============================================================
+   LEFT SECTION NAVIGATOR (seamless; markers expand on hover)
+   ============================================================ */
+.snav{position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:35;display:flex;flex-direction:column;gap:2px;padding:14px 12px 14px 10px;transition:opacity .4s ease}
+body:not(.unlocked) .snav{opacity:0;pointer-events:none}
+.snav::before{content:"";position:absolute;inset:0;border-radius:0 14px 14px 0;background:rgba(22,21,15,.5);-webkit-backdrop-filter:blur(8px) saturate(1.2);backdrop-filter:blur(8px) saturate(1.2);border:1px solid var(--rim);border-left:none;opacity:0;transition:opacity .3s ease;z-index:-1}
+.snav:hover::before,.snav:focus-within::before{opacity:1}
+.snav-item{display:flex;align-items:center;height:30px;color:var(--paper-soft);text-decoration:none;cursor:pointer}
+.snav-item:hover{color:var(--paper)}
+.snav-mark{font-family:'Fraunces',serif;font-style:italic;font-size:16px;line-height:1;width:22px;text-align:center;flex:none;transition:color .25s}
+.snav-tick{width:22px;display:flex;justify-content:center;flex:none}
+.snav-tick::before{content:"";width:7px;height:1px;background:currentColor;transition:width .25s,background .25s}
+.snav-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;max-width:0;opacity:0;overflow:hidden;transition:max-width .35s ease,opacity .3s ease,padding .35s ease}
+.snav:hover .snav-label,.snav:focus-within .snav-label{max-width:220px;opacity:1;padding-left:10px}
+.snav-item.is-active{color:var(--wire)}
+.snav-item.is-active .snav-mark{color:var(--wire)}
+.snav-item.is-active .snav-tick::before{width:14px;background:var(--wire)}
+@media (max-width:900px){.snav{display:none}}
+@media (prefers-reduced-transparency: reduce){.snav::before{background:rgba(17,16,11,.97);-webkit-backdrop-filter:none;backdrop-filter:none}}
+
 </style>
 </head>
 <body>
@@ -952,6 +972,15 @@ body.unlocked .gate{opacity:0;visibility:hidden;pointer-events:none}
   </footer>
 </div>
 
+<!-- left section navigator -->
+<nav class="snav" id="snav" aria-label="Section navigation">
+  <a class="snav-item" data-target="__top" href="#"><span class="snav-tick"></span><span class="snav-label">Top</span></a>
+  <a class="snav-item" data-target="#hero" href="#hero"><span class="snav-tick"></span><span class="snav-label">Featured</span></a>
+  <a class="snav-item" data-target="rules" href="#"><span class="snav-mark">I</span><span class="snav-label">Rules &amp; Guidance</span></a>
+  <a class="snav-item" data-target="reform" href="#"><span class="snav-mark">II</span><span class="snav-label">Reform Trackers</span></a>
+  <a class="snav-item" data-target="structural" href="#"><span class="snav-mark">III</span><span class="snav-label">Structural Frameworks</span></a>
+</nav>
+
 <!-- ============ ENTRY NOTICE (dismissible pop-up) ============ -->
 <div class="gate" id="entry">
   <div class="gate-inner">
@@ -1100,6 +1129,30 @@ body.unlocked .gate{opacity:0;visibility:hidden;pointer-events:none}
 
   function boot(){ size(); build(); raf=requestAnimationFrame(frame); }
   if(document.fonts&&document.fonts.ready){ var b=false; document.fonts.ready.then(function(){ if(!b){ b=true; boot(); } }); setTimeout(function(){ if(!b){ b=true; boot(); } },600); } else boot();
+})();
+</script>
+<script>
+(function(){
+  var snav=document.getElementById('snav'); if(!snav) return;
+  var items=Array.prototype.slice.call(snav.querySelectorAll('.snav-item'));
+  function targetEl(t){ if(t==='__top') return null; if(t.charAt(0)==='#') return document.querySelector(t); return document.querySelector('.section[data-desk="'+t+'"]'); }
+  items.forEach(function(it){
+    it.addEventListener('click', function(e){
+      e.preventDefault();
+      var t=it.dataset.target, el=targetEl(t);
+      if(t==='__top' || !el){ window.scrollTo({top:0, behavior:'smooth'}); }
+      else { el.scrollIntoView({behavior:'smooth', block:'start'}); }
+    });
+  });
+  var map=items.map(function(it){ return {t:it.dataset.target, el:targetEl(it.dataset.target)}; });
+  function refresh(){
+    var line=window.innerHeight*0.33, active='__top';
+    map.forEach(function(m){ if(m.el){ var r=m.el.getBoundingClientRect(); if(r.top<=line) active=m.t; } });
+    items.forEach(function(i){ i.classList.toggle('is-active', i.dataset.target===active); });
+  }
+  window.addEventListener('scroll', refresh, {passive:true});
+  window.addEventListener('resize', refresh);
+  refresh();
 })();
 </script>
 </body>
