@@ -4,917 +4,415 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="BankRegWire — a working catalogue of U.S. financial services regulation, filed from the primary source.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="BankRegWire">
-<meta property="og:description" content="A bank regulatory wire service. Guidance, rule text, and legislation read from the primary source, with conclusions front-loaded.">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="BankRegWire">
-<meta name="twitter:description" content="A working catalogue of U.S. financial services regulation, filed from the primary source.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2316150f'/%3E%3Cline x1='5' y1='16' x2='27' y2='16' stroke='%23d97e1d' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='3.5' fill='%23d97e1d'/%3E%3Ccircle cx='16' cy='16' r='1.4' fill='%2316150f'/%3E%3C/svg%3E">
 <title>BankRegWire · A bank regulatory wire service</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2316150f'/%3E%3Cline x1='5' y1='16' x2='27' y2='16' stroke='%23cf7714' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='3.5' fill='%23cf7714'/%3E%3Ccircle cx='16' cy='16' r='1.4' fill='%2316150f'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,400..700&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
-   BANKREGWIRE — Bank Regulatory Wire Service · Gallery Editorial
-   ------------------------------------------------------------
-   Concept: the steady institutional substance of regulation
-   (ink + oxblood) threaded by a live copper "wire" — the
-   signal of what is current, filed, moving. The wire is used
-   sparingly: the travelling pulse, the ticker, "live" marks.
+   BANKREGWIRE — production index on the engraved-glass system
+   · ONE page-wide currency substrate (single fixed canvas)
+   · every card is glass; REFRACTION is rationed to gate + hero
+   · catalogue plates use strong readable frost (no displacement)
+   Chromium gets refraction; everyone else gets clean frost.
    ============================================================ */
-
 :root{
-  --paper:#f1ede2;
-  --paper-2:#e8e3d3;
-  --paper-deep:#ddd8c5;
-  --ink:#16150f;
-  --ink-soft:#36342a;
-  --muted:#6a675d;
-  --line:#d4cfbe;
-  --line-mid:#b8b39e;
-  --accent:#7a1f2b;        /* oxblood — the institution */
-  --accent-deep:#5a141f;
-  --accent-tint:rgba(122,31,43,.08);
-  --wire:#cf7714;          /* copper — the live signal */
-  --wire-bright:#f0a546;   /* pulse highlight */
-  --wire-tint:rgba(207,119,20,.10);
+  --paper:#f1ede2; --paper-2:#e8e3d3; --paper-soft:rgba(241,237,226,.78);
+  --ink:#16150f; --ink-2:#1d1b13;
+  --accent:#7a1f2b; --accent-deep:#5a141f;
+  --wire:#cf7714; --wire-bright:#f0a546;
+  --glass-read:rgba(24,22,15,.55);   /* readable frost for catalogue */
+  --glass-hero:rgba(29,27,19,.34);   /* lighter, refracting */
+  --rim:rgba(240,165,70,.32);
+  --hairline:rgba(241,237,226,.14);
+  --read-blur:13px; --hero-blur:10px; --rail-blur:9px;
 }
-
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{
-  background:var(--paper);
-  color:var(--ink);
-  font-family:'Archivo',sans-serif;
-  font-size:16px;
-  line-height:1.55;
-  -webkit-font-smoothing:antialiased;
-  overflow-x:hidden;
-  background-image:
-    radial-gradient(circle at 20% 30%,rgba(22,21,15,.012) 0%,transparent 50%),
-    radial-gradient(circle at 80% 70%,rgba(22,21,15,.012) 0%,transparent 50%);
-}
-::selection{background:var(--accent);color:var(--paper)}
-a{color:inherit;text-decoration:none}
-img,svg{display:block;max-width:100%}
-.mono{font-family:'JetBrains Mono',monospace;letter-spacing:.18em;text-transform:uppercase;font-size:11px}
+body{font-family:'Archivo',sans-serif;color:var(--paper);background:var(--ink);
+  font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.mono{font-family:'JetBrains Mono',monospace;letter-spacing:.18em;text-transform:uppercase}
 .serif{font-family:'Fraunces',serif}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1140px;margin:0 auto;padding:0 clamp(22px,5vw,72px)}
+
+/* ---- page-wide living substrate (single fixed canvas) ---- */
+.ground{position:fixed;inset:0;z-index:-2;
+  background:radial-gradient(70% 60% at 50% 30%, rgba(207,119,20,.06) 0%, transparent 60%),
+             radial-gradient(120% 120% at 50% 50%, #1d1b13 0%, #16150f 58%, #100f0a 100%)}
+canvas#field{position:fixed;inset:0;z-index:-1;width:100%;height:100%;display:block}
+.grain{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.4;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E")}
 
 /* ============================================================
-   THE WIRE — shared live-signal primitives
+   GLASS PRIMITIVES
    ============================================================ */
-.wire-rule{
-  position:relative;
-  height:1px;
-  background:var(--line-mid);
-  overflow:visible;
-}
-.wire-rule::after{
-  content:"";
-  position:absolute;top:50%;left:-90px;
-  width:90px;height:1px;
-  transform:translateY(-50%);
-  background:linear-gradient(to right,transparent,var(--wire-bright),transparent);
-  box-shadow:0 0 8px var(--wire);
-  animation:wire-travel 7s linear infinite;
-}
-@keyframes wire-travel{to{left:100%}}
+.glass{position:relative;isolation:isolate;border-radius:18px;border:1px solid var(--rim);
+  box-shadow:inset 0 1px 1px rgba(255,247,232,.24), inset 0 -12px 24px rgba(0,0,0,.28),
+    0 28px 64px -24px rgba(0,0,0,.66)}
+.glass::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;pointer-events:none;z-index:1;
+  background:linear-gradient(135deg, rgba(240,165,70,.55), rgba(122,31,43,.4) 46%, rgba(255,231,196,.5) 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;opacity:.45;mix-blend-mode:screen}
+.glass::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:1;
+  background:radial-gradient(240px 240px at var(--mx,50%) var(--my,6%), rgba(255,231,196,.14), transparent 60%);
+  mix-blend-mode:screen}
+.glass > *{position:relative;z-index:2}
 
-/* Live wire riding existing divider lines on the main page.
-   The element's bottom border is the static wire; this pulse travels it. */
-.section-head::after,
-.colophon::after{
-  content:"";
-  position:absolute;left:-90px;bottom:-1px;
-  width:90px;height:1px;
-  background:linear-gradient(to right,transparent,var(--wire-bright),transparent);
-  box-shadow:0 0 8px var(--wire);
-  animation:wire-travel 7s linear infinite;
-  pointer-events:none;
-}
-/* Phase-shift each one so they never pulse in unison */
-.colophon::after{animation-delay:-1.2s;animation-duration:9s}
-#section-i  .section-head::after{animation-delay:-0.5s}
-#section-ii .section-head::after{animation-delay:-3.4s;animation-duration:8s}
-#section-iii .section-head::after{animation-delay:-5.6s;animation-duration:6.4s}
-
-.live-dot{
-  display:inline-block;width:7px;height:7px;border-radius:50%;
-  background:var(--wire);
-  position:relative;
-  box-shadow:0 0 0 0 var(--wire);
-  animation:live-pulse 2.4s ease-out infinite;
-}
-@keyframes live-pulse{
-  0%{box-shadow:0 0 0 0 rgba(207,119,20,.5)}
-  70%{box-shadow:0 0 0 7px rgba(207,119,20,0)}
-  100%{box-shadow:0 0 0 0 rgba(207,119,20,0)}
-}
-
-@media(prefers-reduced-motion:reduce){
-  .wire-rule::after{animation:none;left:0;width:100%;opacity:.5}
-  .section-head::after,.colophon::after{animation:none;left:0;width:100%;opacity:.4}
-  .plate:hover::before,.plate:focus-visible::before{animation:none;left:0;width:100%}
-  .plate:hover{transform:none}
-  .symbol-frame{transform:none !important}
-  .live-dot{animation:none}
-  *{scroll-behavior:auto !important}
-}
-
-/* ============================================================
-   LOGIN GATE
-   ============================================================ */
-.gate{
-  position:fixed;inset:0;z-index:1000;
-  background:var(--ink);
-  color:var(--paper);
-  display:flex;align-items:center;justify-content:center;
-  padding:clamp(22px,5vw,60px);
-  transition:opacity .5s ease, visibility .5s ease;
-}
-.gate::before{
-  content:"";position:absolute;inset:0;
-  background-image:repeating-linear-gradient(0deg,rgba(241,237,226,.014) 0px,rgba(241,237,226,.014) 1px,transparent 1px,transparent 3px);
-  pointer-events:none;
-}
-body.unlocked .gate{opacity:0;visibility:hidden;pointer-events:none}
-.gate-card{
-  position:relative;z-index:2;
-  width:min(440px,100%);
-}
-.gate-mark{
-  font-family:'Fraunces',serif;font-weight:300;
-  font-size:clamp(40px,8vw,60px);line-height:.9;letter-spacing:-.02em;
-  margin-bottom:6px;
-}
-.gate-mark .w{color:var(--wire);font-style:italic;font-weight:400}
-.gate-wire{height:1px;background:rgba(241,237,226,.18);margin:18px 0 26px;position:relative;overflow:visible}
-.gate-wire::after{
-  content:"";position:absolute;top:50%;left:-70px;width:70px;height:1px;transform:translateY(-50%);
-  background:linear-gradient(to right,transparent,var(--wire-bright),transparent);
-  box-shadow:0 0 8px var(--wire);animation:wire-travel 5s linear infinite;
-}
-.gate-eyebrow{
-  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.24em;text-transform:uppercase;
-  color:rgba(241,237,226,.55);margin-bottom:26px;display:flex;align-items:center;gap:10px;
-}
-.gate-field{margin-bottom:18px}
-.gate-field label{
-  display:block;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;
-  text-transform:uppercase;color:rgba(241,237,226,.55);margin-bottom:8px;
-}
-.gate-field input{
-  width:100%;background:transparent;border:none;border-bottom:1px solid rgba(241,237,226,.28);
-  color:var(--paper);font-family:'Fraunces',serif;font-size:20px;font-weight:300;
-  padding:6px 0 10px;outline:none;border-radius:0;-webkit-appearance:none;transition:border-color .25s ease;
-}
-.gate-field input::placeholder{color:rgba(241,237,226,.3);font-style:italic}
-.gate-field input:focus{border-bottom-color:var(--wire)}
-.gate-btn{
-  width:100%;margin-top:12px;cursor:pointer;
-  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;
-  background:var(--wire);color:var(--ink);border:none;padding:16px;font-weight:700;
-  display:flex;align-items:center;justify-content:center;gap:10px;transition:background .2s ease;
-}
-.gate-btn:hover{background:var(--wire-bright)}
-.gate-btn .arrow{transition:transform .2s ease}
-.gate-btn:hover .arrow{transform:translateX(5px)}
-.gate-err{
-  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--wire-bright);margin-top:14px;min-height:14px;opacity:0;transition:opacity .2s ease;
-}
-.gate-err.show{opacity:1}
-.gate-lede{
-  font-family:'Fraunces',serif;font-size:16px;line-height:1.6;
-  color:rgba(241,237,226,.72);margin-bottom:28px;max-width:42ch;
-}
-.gate-link{color:var(--wire);text-decoration:none;border-bottom:1px solid rgba(207,119,20,.4);transition:border-color .2s ease,color .2s ease}
-.gate-link:hover{color:var(--wire-bright);border-bottom-color:var(--wire-bright)}
-.gate-foot{
-  margin-top:28px;font-family:'Fraunces',serif;font-style:italic;font-size:13px;line-height:1.55;
-  color:rgba(241,237,226,.5);
-}
-.gate-foot code{font-family:'JetBrains Mono',monospace;font-style:normal;color:var(--wire);font-size:11px}
-.gate-foot kbd{font-family:'JetBrains Mono',monospace;font-style:normal;font-size:10px;color:var(--paper);border:1px solid rgba(241,237,226,.3);border-radius:3px;padding:1px 6px}
+/* readable frost (catalogue) — heavier tint, no displacement */
+.glass.read{background:var(--glass-read);
+  -webkit-backdrop-filter:blur(var(--read-blur)) saturate(1.35) brightness(1.02);
+  backdrop-filter:blur(var(--read-blur)) saturate(1.35) brightness(1.02)}
+/* hero frost — lighter; refracts on Chromium */
+.glass.hero{background:var(--glass-hero);
+  -webkit-backdrop-filter:blur(var(--hero-blur)) saturate(1.5) brightness(1.04);
+  backdrop-filter:blur(var(--hero-blur)) saturate(1.5) brightness(1.04)}
+body.refract .glass.hero{backdrop-filter:blur(var(--hero-blur)) saturate(1.5) brightness(1.04) url(#brw-glass)}
 
 /* ============================================================
    MASTHEAD
    ============================================================ */
-.masthead{
-  border-bottom:2px solid var(--ink);
-  padding:clamp(28px,4vw,52px) clamp(22px,5vw,80px) clamp(40px,7vw,96px);
-  position:relative;overflow:hidden;
-}
-.masthead::before{content:"";position:absolute;top:clamp(28px,4vw,52px);right:clamp(22px,5vw,80px);width:14px;height:14px;border-top:1.5px solid var(--ink);border-right:1.5px solid var(--ink)}
-.masthead::after{content:"";position:absolute;bottom:clamp(40px,7vw,96px);left:clamp(22px,5vw,80px);width:14px;height:14px;border-bottom:1.5px solid var(--ink);border-left:1.5px solid var(--ink)}
-.masthead-kicker{
-  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;
-  padding-bottom:clamp(36px,6vw,64px);
-  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);
-}
-.masthead-kicker .dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--wire);margin:0 8px;vertical-align:middle}
-.masthead h1{
-  font-family:'Fraunces',serif;font-weight:300;
-  font-size:clamp(46px,11.5vw,156px);line-height:.86;letter-spacing:-.03em;
-  font-variation-settings:"opsz" 144;position:relative;display:inline-block;
-}
-.masthead h1 .bank{font-weight:300}
-.masthead h1 .w{font-style:italic;font-weight:400;color:var(--accent);position:relative}
-/* the wire running under "Wire" */
-.masthead h1 .w::after{
-  content:"";position:absolute;left:0;right:-.06em;bottom:.06em;height:.045em;
-  background:var(--wire);
-}
-.masthead h1 .pdot{color:var(--wire);font-style:normal}
-.masthead-sub{
-  display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1.2fr);
-  gap:clamp(32px,5vw,80px);margin-top:clamp(36px,5vw,72px);align-items:end;
-}
-@media(max-width:760px){.masthead-sub{grid-template-columns:1fr;gap:28px}}
-.masthead-sub p{
-  font-size:clamp(16px,1.6vw,20px);line-height:1.55;color:var(--ink-soft);max-width:48ch;
-  font-family:'Fraunces',serif;font-weight:400;font-style:italic;
-}
-.masthead-sub p em{font-style:normal;color:var(--ink)}
-.masthead-meta{
-  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);text-align:right;
-}
-@media(max-width:760px){.masthead-meta{text-align:left}}
-.masthead-meta div{margin-bottom:6px}
-.masthead-meta div b{color:var(--ink);font-weight:500}
-
-/* Signed-in chip */
-.session-chip{
-  display:inline-flex;align-items:center;gap:9px;
-  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--ink-soft);border:1px solid var(--line-mid);background:var(--paper);
-  padding:6px 10px;
-}
-.session-chip b{color:var(--ink);font-weight:600}
-.session-chip button{
-  background:none;border:none;cursor:pointer;font:inherit;letter-spacing:inherit;text-transform:inherit;
-  color:var(--accent);padding:0 0 0 6px;border-left:1px solid var(--line-mid);margin-left:3px;
-}
-.session-chip button:hover{color:var(--wire)}
+.masthead{padding:clamp(40px,7vw,86px) 0 clamp(28px,4vw,46px);position:relative}
+.mh-kicker{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--paper-soft);margin-bottom:clamp(26px,4vw,46px)}
+.mh-kicker .dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--wire);margin:0 8px;vertical-align:middle}
+.mh-kicker .live{display:inline-flex;align-items:center;gap:9px}
+.mh-kicker .live i{width:7px;height:7px;border-radius:50%;background:var(--wire);box-shadow:0 0 8px var(--wire);animation:pulse 2.4s ease-out infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(207,119,20,.5)}70%{box-shadow:0 0 0 7px rgba(207,119,20,0)}100%{box-shadow:0 0 0 0 rgba(207,119,20,0)}}
+h1.mh-title{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(48px,11.5vw,150px);line-height:.86;
+  letter-spacing:-.03em;font-variation-settings:"opsz" 144}
+h1.mh-title em{font-style:italic;font-weight:400;color:var(--accent)}
+h1.mh-title .pdot{color:var(--wire);font-style:normal}
+.mh-sub{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1.1fr);gap:clamp(28px,5vw,72px);
+  margin-top:clamp(30px,4vw,56px);align-items:end}
+@media(max-width:760px){.mh-sub{grid-template-columns:1fr;gap:22px}}
+.mh-sub p{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(16px,1.6vw,21px);line-height:1.55;
+  color:var(--paper-soft);max-width:48ch}
+.mh-sub p em{font-style:normal;color:var(--paper)}
+.mh-meta{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--paper-soft);text-align:right}
+@media(max-width:760px){.mh-meta{text-align:left}}
+.mh-meta div{margin-bottom:6px}.mh-meta b{color:var(--paper);font-weight:600}
 
 /* ============================================================
-   THE TICKER — "On the wire"
+   RAIL (sticky glass ticker)
    ============================================================ */
-.ticker{
-  background:var(--ink);color:var(--paper);
-  border-bottom:2px solid var(--ink);
-  display:flex;align-items:stretch;overflow:hidden;position:relative;
-}
-.ticker-label{
-  flex-shrink:0;display:flex;align-items:center;gap:9px;
-  background:var(--wire);color:var(--ink);
-  font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
-  padding:0 16px;white-space:nowrap;z-index:2;
-}
-.ticker-label .live-dot{background:var(--ink);box-shadow:none;animation:none}
-.ticker-viewport{overflow:hidden;flex:1;position:relative}
-.ticker-track{
-  display:inline-flex;align-items:center;white-space:nowrap;
-  padding:11px 0;
-  animation:ticker-scroll 46s linear infinite;
-}
-.ticker:hover .ticker-track{animation-play-state:paused}
-.ticker-track span{
-  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;color:rgba(241,237,226,.85);
-  padding:0 22px;display:inline-flex;align-items:center;gap:10px;
-}
-.ticker-track span b{color:var(--wire-bright);font-weight:500}
-.ticker-track span::before{content:"";width:4px;height:4px;background:var(--accent);transform:rotate(45deg);display:inline-block}
-@keyframes ticker-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-@media(prefers-reduced-motion:reduce){.ticker-track{animation:none}}
+.rail{position:sticky;top:0;z-index:40;display:flex;align-items:stretch;overflow:hidden;border-radius:0;
+  border-top:1px solid var(--hairline);border-bottom:1px solid var(--rim);
+  background:rgba(22,21,15,.42);
+  -webkit-backdrop-filter:blur(var(--rail-blur)) saturate(1.3);
+  backdrop-filter:blur(var(--rail-blur)) saturate(1.3)}
+body.refract .rail{backdrop-filter:blur(var(--rail-blur)) saturate(1.3) url(#brw-glass)}
+.rail::after{content:"";position:absolute;left:-120px;bottom:-1px;width:120px;height:1px;
+  background:linear-gradient(to right,transparent,var(--wire-bright),transparent);box-shadow:0 0 8px var(--wire);
+  animation:travel 6s linear infinite;pointer-events:none}
+@keyframes travel{to{left:100%}}
+.rail-label{flex-shrink:0;display:flex;align-items:center;gap:9px;background:var(--wire);color:var(--ink);
+  font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  padding:0 16px;white-space:nowrap;z-index:2}
+.rail-label i{width:6px;height:6px;border-radius:50%;background:var(--ink)}
+.rail-vp{overflow:hidden;flex:1;position:relative}
+.rail-track{display:inline-flex;align-items:center;white-space:nowrap;padding:11px 0;animation:scroll 44s linear infinite}
+.rail:hover .rail-track{animation-play-state:paused}
+.rail-track span{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;padding:0 26px;color:var(--paper-soft)}
+.rail-track span b{color:var(--wire);font-weight:700}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* ============================================================
+   CONTROLS (search + desk filter) — glass
+   ============================================================ */
+.controls{margin:clamp(30px,4vw,52px) 0 clamp(10px,2vw,18px);padding:16px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.search{flex:1;min-width:220px;display:flex;align-items:center;gap:10px;background:rgba(241,237,226,.06);
+  border:1px solid var(--hairline);border-radius:10px;padding:10px 14px}
+.search svg{width:15px;height:15px;flex:none;opacity:.7}
+.search input{flex:1;background:transparent;border:none;outline:none;color:var(--paper);font-family:'Archivo',sans-serif;font-size:14px}
+.search input::placeholder{color:rgba(241,237,226,.42)}
+.search kbd{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--paper-soft);border:1px solid var(--hairline);border-radius:4px;padding:2px 6px}
+.pills{display:flex;gap:8px;flex-wrap:wrap}
+.pill{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--paper-soft);background:rgba(241,237,226,.05);border:1px solid var(--hairline);border-radius:30px;
+  padding:8px 13px;cursor:pointer;transition:all .2s ease}
+.pill:hover{border-color:var(--rim);color:var(--paper)}
+.pill.is-active{background:var(--wire);border-color:var(--wire);color:var(--ink)}
+
+/* ============================================================
+   FEATURED HERO (the one refracting dispatch)
+   ============================================================ */
+.hero{margin:clamp(14px,2vw,22px) 0 clamp(40px,6vw,70px);display:grid;grid-template-columns:1.35fr 1fr;
+  gap:0;overflow:hidden}
+@media(max-width:820px){.hero{grid-template-columns:1fr}}
+.hero .h-body{padding:clamp(30px,4vw,52px)}
+.hero .h-side{padding:clamp(30px,4vw,52px);border-left:1px solid var(--rim);display:flex;flex-direction:column;justify-content:center;gap:16px}
+@media(max-width:820px){.hero .h-side{border-left:none;border-top:1px solid var(--rim)}}
+.h-kicker{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--paper-soft);margin-bottom:18px;display:flex;align-items:center;gap:12px}
+.h-kicker i{width:6px;height:6px;border-radius:50%;background:var(--wire);box-shadow:0 0 8px var(--wire);animation:pulse 2.4s ease-out infinite}
+.hero h2{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(32px,5vw,62px);line-height:.96;letter-spacing:-.02em;margin-bottom:18px}
+.hero h2 em{font-style:italic;font-weight:400;color:var(--wire)}
+.hero .h-desc{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(15px,1.5vw,18px);line-height:1.6;color:var(--paper-soft);max-width:50ch}
+.hero .h-desc strong{font-style:normal;color:var(--paper);font-weight:500}
+.h-src .s-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--wire);margin-bottom:5px;display:flex;align-items:center;gap:8px}
+.h-src .s-label::before{content:"";width:4px;height:4px;background:var(--wire)}
+.h-src .s-name{font-size:13px;color:var(--paper);font-weight:500}
+.h-cta{margin-top:4px;align-self:flex-start;display:inline-flex;align-items:center;gap:10px;
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--paper);
+  padding:13px 17px;border:1px solid rgba(241,237,226,.5);transition:all .25s}
+.h-cta:hover{background:var(--wire);border-color:var(--wire);color:var(--ink)}
+.h-cta .arrow{transition:transform .25s}.h-cta:hover .arrow{transform:translateX(5px)}
+
+/* ============================================================
+   SECTIONS + GLASS PLATES (readable frost)
+   ============================================================ */
+.section{padding:clamp(28px,4vw,52px) 0}
+.sec-head{display:grid;grid-template-columns:auto 1fr;gap:clamp(18px,3vw,42px);align-items:start;margin-bottom:clamp(22px,3vw,36px)}
+.sec-roman{font-family:'Fraunces',serif;font-style:italic;font-weight:300;font-size:clamp(48px,8vw,118px);line-height:.82;color:var(--wire);letter-spacing:-.03em}
+.sec-kicker{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--paper-soft);margin-bottom:12px;display:flex;align-items:center;gap:14px}
+.sec-kicker::after{content:"";flex:1;max-width:120px;height:1px;background:var(--hairline)}
+.sec-name{font-family:'Fraunces',serif;font-weight:400;font-size:clamp(26px,4.2vw,50px);line-height:1;letter-spacing:-.015em;margin-bottom:12px}
+.sec-name em{font-style:italic;color:var(--wire)}
+.sec-desc{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(15px,1.4vw,18px);line-height:1.55;color:var(--paper-soft);max-width:60ch}
+
+.plates{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(14px,2vw,20px)}
+@media(max-width:760px){.plates{grid-template-columns:1fr}}
+.plate{display:grid;grid-template-columns:minmax(110px,30%) 1fr;gap:clamp(16px,2.2vw,26px);padding:clamp(22px,2.8vw,34px);
+  cursor:pointer;transition:transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s ease}
+.plate:hover{transform:translateY(-3px);box-shadow:inset 0 1px 1px rgba(255,247,232,.3), 0 30px 66px -22px rgba(0,0,0,.72)}
+.plate.is-hidden{display:none}
+/* symbol chip — cheap bevel glass on hover (no refraction) */
+.chip{aspect-ratio:1/1;border-radius:12px;border:1px solid var(--rim);background:rgba(241,237,226,.04);position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;transition:border-color .3s, box-shadow .35s}
+.chip svg{width:62%;height:62%;color:var(--paper);transition:color .3s;z-index:1;position:relative}
+.chip svg .accent-fill{fill:var(--wire)}.chip svg .accent-stroke{stroke:var(--wire)}
+.section.is-hidden{display:none}
+.chip::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;transition:opacity .35s;
+  background:radial-gradient(130% 100% at 28% 18%, rgba(255,247,232,.5) 0%, transparent 40%);
+  box-shadow:inset 0 1px 1px rgba(255,247,232,.5), inset 0 0 0 1px rgba(207,119,20,.4)}
+.chip::after{content:"";position:absolute;top:-60%;left:-30%;width:50%;height:220%;z-index:3;pointer-events:none;
+  background:linear-gradient(105deg, transparent, rgba(240,165,70,.34), transparent);
+  transform:translateX(-160%) rotate(8deg);transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.plate:hover .chip{border-color:var(--wire)}
+.plate:hover .chip::before{opacity:1}
+.plate:hover .chip::after{transform:translateX(360%) rotate(8deg)}
+.plate:hover .chip svg{color:var(--wire)}
+.plate-body{display:flex;flex-direction:column;min-width:0}
+.plate-num{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:var(--paper-soft);margin-bottom:9px;display:flex;gap:10px;align-items:center}
+.plate-num .desk{color:var(--wire)}
+.plate h3{font-family:'Fraunces',serif;font-weight:400;font-size:clamp(18px,2vw,25px);line-height:1.08;letter-spacing:-.01em;margin-bottom:9px;transition:color .3s}
+.plate:hover h3{color:var(--wire-bright)}
+.plate p{font-size:13px;line-height:1.5;color:var(--paper-soft)}
+.plate-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.plate-tags span{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--paper-soft);border:1px solid var(--hairline);border-radius:20px;padding:3px 8px}
+.plate-link{margin-top:auto;padding-top:14px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--paper-soft);border-top:1px solid var(--hairline);display:flex;align-items:center;gap:8px;transition:color .3s,border-color .3s}
+.plate:hover .plate-link{color:var(--wire);border-top-color:var(--rim)}
+.empty{display:none;text-align:center;padding:48px 20px;font-family:'Fraunces',serif;font-style:italic;color:var(--paper-soft)}
+.empty.show{display:block}
 
 /* ============================================================
    COLOPHON
    ============================================================ */
-.colophon{
-  border-bottom:1px solid var(--line-mid);
-  padding:clamp(28px,4vw,48px) clamp(22px,5vw,80px);
-  background:var(--paper-2);
-  display:grid;grid-template-columns:auto 1fr auto;gap:clamp(24px,4vw,56px);align-items:start;
-  position:relative;
-}
-@media(max-width:760px){.colophon{grid-template-columns:1fr;gap:18px}}
-.colophon-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--wire);white-space:nowrap;padding-top:4px}
-.colophon-body{font-family:'Fraunces',serif;font-size:clamp(15px,1.4vw,17px);line-height:1.65;color:var(--ink-soft);max-width:74ch}
-.colophon-body strong{color:var(--ink);font-weight:500}
-.colophon-body .colophon-link{color:var(--accent);border-bottom:1px solid var(--accent-tint);font-family:'JetBrains Mono',monospace;font-size:.85em;transition:border-color .2s ease,color .2s ease}
-.colophon-body .colophon-link:hover{color:var(--wire);border-bottom-color:var(--wire)}
-.colophon-nav{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);text-align:right;line-height:2;white-space:nowrap}
-@media(max-width:760px){.colophon-nav{text-align:left}}
-.colophon-nav a{display:block;transition:color .15s ease}
-.colophon-nav a:hover{color:var(--accent)}
-.colophon-nav a::before{content:"§ ";color:var(--wire)}
+.colophon{margin-top:clamp(40px,6vw,80px);padding:clamp(34px,5vw,60px) 0 clamp(56px,8vw,96px);border-top:1px solid var(--hairline)}
+.colophon .c-mark{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(28px,4vw,46px);line-height:1;letter-spacing:-.02em;margin-bottom:16px}
+.colophon .c-mark em{font-style:italic;color:var(--accent)}.colophon .c-mark .pdot{color:var(--wire)}
+.colophon p{font-family:'Fraunces',serif;font-style:italic;font-size:14px;line-height:1.6;color:var(--paper-soft);max-width:60ch;margin-bottom:10px}
+.colophon .c-meta{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--paper-soft);margin-top:22px;padding-top:16px;border-top:1px solid var(--hairline)}
 
 /* ============================================================
-   SEARCH BAR
+   GATE (baked in; refracts the same substrate)
    ============================================================ */
-.search-bar{
-  background:var(--paper-2);border-bottom:1px solid var(--line-mid);
-  padding:clamp(24px,3.5vw,44px) clamp(22px,5vw,80px);
-  position:sticky;top:0;z-index:50;box-shadow:0 1px 0 var(--line-mid);
-}
-.search-inner{display:grid;grid-template-columns:auto 1fr auto;gap:clamp(24px,4vw,56px);align-items:end}
-@media(max-width:760px){.search-inner{grid-template-columns:1fr;gap:14px}}
-.search-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--wire);padding-bottom:14px;white-space:nowrap;cursor:pointer;line-height:1.5}
-.search-input-wrap{position:relative;width:100%}
-.search-input{
-  width:100%;background:transparent;border:none;border-bottom:1px solid var(--line-mid);
-  font-family:'Fraunces',serif;font-size:clamp(18px,2.2vw,24px);font-style:italic;font-weight:300;color:var(--ink);
-  padding:8px 76px 12px 0;outline:none;letter-spacing:-.01em;transition:border-color .25s ease;border-radius:0;-webkit-appearance:none;appearance:none;
-}
-.search-input::placeholder{color:var(--muted);font-style:italic;opacity:.65}
-.search-input:focus{border-bottom-color:var(--wire)}
-.search-input::-webkit-search-cancel-button,.search-input::-webkit-search-decoration{display:none;-webkit-appearance:none}
-.search-kbd{position:absolute;right:30px;bottom:14px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);border:1px solid var(--line-mid);background:var(--paper);padding:2px 7px;border-radius:3px;pointer-events:none;transition:opacity .2s ease;letter-spacing:.05em}
-.search-input:focus ~ .search-kbd,body.has-search .search-kbd{opacity:0}
-.search-clear{position:absolute;right:0;bottom:10px;background:none;border:none;cursor:pointer;font-family:'Fraunces',serif;font-size:22px;color:var(--ink-soft);padding:0 6px;line-height:1;opacity:0;transition:opacity .2s ease, color .15s ease;pointer-events:none}
-.search-clear:hover{color:var(--accent)}
-body.has-search .search-clear{opacity:1;pointer-events:auto}
-.search-count{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);padding-bottom:14px;white-space:nowrap}
-.search-count b{color:var(--wire);font-weight:500;font-family:'JetBrains Mono',monospace}
-@media(max-width:760px){.search-label{padding-bottom:0}.search-count{padding-bottom:0;padding-top:4px}}
-/* Desk filter pills */
-.desk-filters{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
-.desk-pill{
-  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--ink-soft);background:transparent;border:1px solid var(--line-mid);
-  padding:7px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;
-  transition:border-color .18s ease, color .18s ease, background .18s ease;border-radius:0;
-}
-.desk-pill:hover{border-color:var(--wire);color:var(--wire)}
-.desk-pill .pill-n{font-size:9px;color:var(--muted);transition:color .18s ease}
-.desk-pill:hover .pill-n{color:var(--wire)}
-.desk-pill.is-active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-.desk-pill.is-active .pill-n{color:var(--wire-bright)}
-@media(prefers-reduced-motion:reduce){.desk-pill{transition:none}}
-
-.plate--hidden{display:none !important}
-.section--empty{display:none !important}
-.search-empty{display:none;padding:clamp(56px,8vw,112px) clamp(22px,5vw,80px);text-align:center;background:var(--paper);border-bottom:1px solid var(--line-mid)}
-body.no-results .search-empty{display:block}
-body.no-results .section{display:none}
-.search-empty .msg{font-family:'Fraunces',serif;font-style:italic;font-weight:300;font-size:clamp(22px,3vw,34px);color:var(--ink-soft);margin-bottom:24px;letter-spacing:-.01em}
-.search-empty .msg em{color:var(--accent);font-style:normal;font-weight:400}
-.search-empty .clear-cta{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;background:var(--ink);color:var(--paper);border:none;padding:14px 22px;cursor:pointer;transition:background .2s ease}
-.search-empty .clear-cta:hover{background:var(--accent)}
+.gate{position:fixed;inset:0;z-index:1000;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  transition:opacity .5s ease, visibility .5s ease}
+.gate-inner{min-height:100%;display:flex;align-items:center;justify-content:center;padding:clamp(20px,5vw,60px)}
+body.unlocked .gate{opacity:0;visibility:hidden;pointer-events:none}
+.gate-card{width:min(560px,100%);padding:clamp(28px,5vw,46px)}
+.gate-eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--paper);display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.gate-eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--wire);box-shadow:0 0 8px var(--wire);animation:pulse 2.4s ease-out infinite}
+.gate-mark{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(34px,6.5vw,50px);line-height:.92;letter-spacing:-.02em;margin-bottom:8px;overflow-wrap:break-word}
+.gate-mark em{font-style:italic;font-weight:400;color:var(--wire)}.gate-mark .pdot{color:var(--wire)}
+.gate-rule{height:1px;background:var(--hairline);margin:18px 0 24px;position:relative;overflow:visible}
+.gate-rule::after{content:"";position:absolute;top:0;left:-70px;width:70px;height:1px;background:linear-gradient(to right,transparent,var(--wire-bright),transparent);box-shadow:0 0 8px var(--wire);animation:travel 5s linear infinite}
+.gate-lede{font-family:'Fraunces',serif;font-size:15px;line-height:1.6;color:var(--paper-soft);max-width:50ch;margin-bottom:24px}
+.gate-field label{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--paper-soft);margin-bottom:8px}
+.gate-field input{width:100%;background:transparent;border:none;border-bottom:1px solid rgba(241,237,226,.3);color:var(--paper);font-family:'Fraunces',serif;font-size:20px;font-weight:300;padding:6px 0 10px;outline:none;-webkit-appearance:none;transition:border-color .25s}
+.gate-field input::placeholder{color:rgba(241,237,226,.32);font-style:italic}
+.gate-field input:focus{border-bottom-color:var(--wire)}
+.gate-btn{width:100%;margin-top:18px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;background:var(--wire);color:var(--ink);border:none;padding:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:10px;transition:background .2s}
+.gate-btn:hover{background:var(--wire-bright)}.gate-btn .arrow{transition:transform .2s}.gate-btn:hover .arrow{transform:translateX(5px)}
+.gate-err{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--wire-bright);margin-top:12px;min-height:13px;opacity:0;transition:opacity .2s}
+.gate-err.show{opacity:1}
+.gate-foot{margin-top:22px;font-family:'Fraunces',serif;font-style:italic;font-size:12.5px;line-height:1.5;color:rgba(241,237,226,.5)}
+.gate-foot code{font-family:'JetBrains Mono',monospace;font-style:normal;color:var(--wire);font-size:11px}
 
 /* ============================================================
-   FEATURED / CORNERSTONE
+   FALLBACKS / A11Y / PERFORMANCE
    ============================================================ */
-.featured{background:var(--ink);color:var(--paper);padding:clamp(40px,6vw,80px) clamp(22px,5vw,80px);border-bottom:2px solid var(--ink);position:relative;overflow:hidden}
-.featured::before{content:"";position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,rgba(241,237,226,.015) 0px,rgba(241,237,226,.015) 1px,transparent 1px,transparent 3px);pointer-events:none}
-.featured-eyebrow{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:clamp(28px,4vw,48px);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:rgba(241,237,226,.6);position:relative;z-index:2}
-.featured-eyebrow .stamp{display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--wire);color:var(--wire);padding:6px 12px;letter-spacing:.28em;font-weight:600;transform:rotate(-1.2deg);background:var(--wire-tint)}
-.featured-stack{display:flex;flex-direction:column;gap:clamp(20px,3vw,32px);position:relative;z-index:2}
-.featured-card{display:grid;grid-template-columns:minmax(180px,32%) 1fr;gap:clamp(28px,5vw,72px);align-items:stretch;border:1.5px solid rgba(241,237,226,.3);padding:clamp(28px,4vw,48px);background:rgba(241,237,226,.02);position:relative;z-index:2;cursor:pointer;transition:background .3s ease, border-color .3s ease;color:inherit}
-/* Featured collapse toggle */
-.featured-toggle{position:absolute;top:14px;right:14px;z-index:6;width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:rgba(241,237,226,.04);border:1px solid rgba(241,237,226,.3);color:var(--paper);cursor:pointer;transition:border-color .2s ease,color .2s ease,background .2s ease}
-.featured-toggle:hover{border-color:var(--wire);color:var(--wire);background:var(--wire-tint)}
-.featured-toggle .chev{font-size:11px;line-height:1;transition:transform .28s cubic-bezier(.2,.8,.2,1)}
-.featured-card .featured-body{padding-right:40px}
-.featured-card.is-collapsed{grid-template-columns:1fr}
-.featured-card.is-collapsed .featured-frame,
-.featured-card.is-collapsed .featured-desc,
-.featured-card.is-collapsed .featured-sources,
-.featured-card.is-collapsed .featured-cta{display:none}
-.featured-card.is-collapsed .featured-toggle .chev{transform:rotate(180deg)}
-.featured-card.is-collapsed .featured-title{margin-bottom:0}
-.featured-card:hover{background:var(--wire-tint);border-color:var(--wire)}
-.featured-card:hover .featured-frame{border-color:var(--wire)}
-.featured-card:hover .featured-frame .acc-stroke{stroke:var(--wire)}
-.featured-card:hover .featured-frame .acc-fill{fill:var(--wire)}
-.featured-card:hover .featured-title{color:var(--wire)}
-.featured-card:hover .featured-cta .arrow{transform:translateX(8px)}
-.featured-card:focus-visible{outline:2px solid var(--wire);outline-offset:4px}
-@media(max-width:760px){.featured-card{grid-template-columns:1fr;gap:24px}}
-.featured-frame{aspect-ratio:1.2/1;border:1px solid rgba(241,237,226,.4);display:flex;align-items:center;justify-content:center;position:relative;background:rgba(241,237,226,.015);transition:border-color .3s ease}
-.featured-frame svg{width:90%;height:80%;color:var(--paper)}
-.featured-frame .acc-stroke{stroke:var(--paper);transition:stroke .3s ease}
-.featured-frame .acc-fill{fill:var(--paper);transition:fill .3s ease}
-.featured-frame .corner-tag{position:absolute;top:-1px;right:-1px;background:var(--wire);color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;padding:4px 9px;text-transform:uppercase}
-.featured-body{display:flex;flex-direction:column}
-.featured-kicker{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(241,237,226,.55);margin-bottom:14px;display:flex;align-items:center;gap:14px}
-.featured-kicker::after{content:"";flex:1;height:1px;background:linear-gradient(to right, rgba(241,237,226,.4), transparent);max-width:140px}
-.featured-title{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(34px,5.4vw,68px);line-height:.95;letter-spacing:-.02em;margin-bottom:18px;transition:color .3s ease}
-.featured-title em{font-style:italic;font-weight:400;color:var(--wire)}
-.featured-desc{font-family:'Fraunces',serif;font-size:clamp(15px,1.5vw,18px);line-height:1.6;color:rgba(241,237,226,.78);max-width:60ch;margin-bottom:22px;font-style:italic}
-.featured-desc strong{font-style:normal;color:var(--paper);font-weight:500}
-.featured-sources{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0;margin-bottom:24px;border-top:1px solid rgba(241,237,226,.18)}
-.featured-sources .src{padding:14px 0;border-bottom:1px solid rgba(241,237,226,.12);padding-right:18px}
-.featured-sources .src + .src{padding-left:18px;border-left:1px solid rgba(241,237,226,.12)}
-@media(max-width:560px){.featured-sources .src + .src{padding-left:0;border-left:none}}
-.featured-sources .src-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--wire);margin-bottom:6px;display:flex;align-items:center;gap:8px}
-.featured-sources .src-label::before{content:"";width:4px;height:4px;background:var(--wire);display:inline-block}
-.featured-sources .src-name{font-family:'Archivo',sans-serif;font-size:13px;color:var(--paper);font-weight:500}
-.featured-cta{display:inline-flex;align-items:center;gap:12px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--paper);padding:14px 18px;border:1px solid var(--paper);align-self:flex-start;margin-top:auto;transition:background .25s ease, color .25s ease}
-.featured-card:hover .featured-cta{background:var(--wire);border-color:var(--wire);color:var(--ink)}
-.featured-cta .arrow{display:inline-block;transition:transform .25s ease;font-size:14px}
-
-/* ============================================================
-   SECTIONS
-   ============================================================ */
-.section{padding:clamp(48px,7vw,112px) clamp(22px,5vw,80px) clamp(56px,8vw,128px);border-bottom:2px solid var(--ink);position:relative}
-.section:last-of-type{border-bottom:1px solid var(--line-mid)}
-/* Section collapse toggle */
-.section-toggle{position:absolute;top:clamp(48px,7vw,112px);right:clamp(22px,5vw,80px);z-index:3;display:inline-flex;align-items:center;gap:9px;background:transparent;border:1px solid var(--line-mid);color:var(--ink-soft);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;padding:8px 12px;cursor:pointer;transition:border-color .2s ease,color .2s ease,background .2s ease}
-.section-toggle:hover{border-color:var(--wire);color:var(--wire);background:var(--wire-tint)}
-.section-toggle .chev{font-size:9px;line-height:1;transition:transform .28s cubic-bezier(.2,.8,.2,1)}
-.section.is-collapsed .section-toggle .chev{transform:rotate(180deg)}
-.section.is-collapsed .section-toggle .sct-label::after{content:"";}
-.section.is-collapsed .section-head{margin-bottom:0;padding-bottom:clamp(24px,3.5vw,40px);border-bottom-color:transparent}
-.section.is-collapsed .plates{display:none}
-.section.is-collapsed .section-head::after{display:none}
-@media(max-width:620px){
-  .section-toggle{top:auto;bottom:auto;position:static;margin-bottom:18px}
-  .section-toggle .sct-label{display:inline}
+/* drop the costly refraction on small screens (perf) */
+@media (max-width:760px){
+  body.refract .glass.hero,body.refract .rail,body.refract .gate-card{
+    -webkit-backdrop-filter:blur(var(--hero-blur)) saturate(1.4)!important;
+    backdrop-filter:blur(var(--hero-blur)) saturate(1.4)!important}
 }
-.section-head{display:grid;grid-template-columns:auto 1fr;gap:clamp(20px,3vw,48px);align-items:start;padding-bottom:clamp(36px,5vw,64px);margin-bottom:clamp(36px,5vw,72px);border-bottom:1px solid var(--line-mid);position:relative}
-.section-roman{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(60px,9vw,140px);line-height:.85;color:var(--accent);font-style:italic;letter-spacing:-.03em}
-.section-meta{padding-top:clamp(8px,1.5vw,20px)}
-.section-kicker{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:14px;display:flex;align-items:center;gap:14px}
-.section-kicker::after{content:"";flex:1;max-width:120px;height:1px;background:var(--line-mid)}
-.section-name{font-family:'Fraunces',serif;font-weight:400;font-size:clamp(30px,4.4vw,58px);line-height:1;letter-spacing:-.015em;margin-bottom:18px}
-.section-name em{font-style:italic;color:var(--accent)}
-.section-desc{font-family:'Fraunces',serif;font-size:clamp(15px,1.4vw,18px);line-height:1.6;color:var(--ink-soft);max-width:58ch;font-style:italic}
-
-/* ============================================================
-   PLATES
-   ============================================================ */
-.plates{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;border-top:1px solid var(--line-mid);border-left:1px solid var(--line-mid)}
-@media(max-width:860px){.plates{grid-template-columns:1fr}}
-.plate{display:grid;cursor:pointer;grid-template-columns:minmax(140px,38%) 1fr;gap:clamp(18px,2.5vw,32px);padding:clamp(24px,3vw,44px) clamp(24px,3vw,40px) clamp(28px,3.5vw,48px);border-right:1px solid var(--line-mid);border-bottom:1px solid var(--line-mid);position:relative;background:var(--paper);transition:background .35s ease, transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s ease;opacity:0;transform:translateY(20px);animation:reveal .8s ease forwards;z-index:1}
-.plate:nth-child(1){animation-delay:.05s}.plate:nth-child(2){animation-delay:.12s}.plate:nth-child(3){animation-delay:.19s}.plate:nth-child(4){animation-delay:.26s}.plate:nth-child(5){animation-delay:.33s}
-@keyframes reveal{to{opacity:1;transform:translateY(0)}}
-/* Wire-on-hover: a copper pulse rides the card's top edge */
-.plate::before{
-  content:"";position:absolute;top:-1px;left:-90px;width:90px;height:2px;
-  background:linear-gradient(to right,transparent,var(--wire-bright),transparent);
-  box-shadow:0 0 8px var(--wire);
-  opacity:0;pointer-events:none;z-index:3;
+@supports not ((backdrop-filter:blur(2px)) or (-webkit-backdrop-filter:blur(2px))){
+  .glass.read{background:rgba(20,19,13,.93)}
+  .glass.hero,.gate-card{background:rgba(20,19,13,.9)}
+  .rail{background:rgba(20,19,13,.95)}
 }
-.plate:hover::before,.plate:focus-visible::before{opacity:1;animation:wire-travel 1.4s linear infinite}
-.plate:focus-visible{outline:2px solid var(--wire);outline-offset:-2px}
-.plate:focus-visible .plate-title{color:var(--accent-deep)}
-@media(max-width:520px){.plate{grid-template-columns:1fr;gap:14px}}
-/* Hover: lift + raise above neighbors. Copper = interactive/live; oxblood = identity. */
-.plate:hover{background:var(--paper-2);transform:translateY(-2px);box-shadow:0 14px 30px -18px rgba(22,21,15,.45);z-index:2}
-.plate:hover .symbol-frame{border-color:var(--accent);background:var(--accent-tint)}
-.plate:hover .symbol-frame .accent-fill{fill:var(--accent)}
-.plate:hover .symbol-frame .accent-stroke{stroke:var(--accent)}
-.plate:hover .plate-num{color:var(--wire)}
-.plate:hover .plate-title{color:var(--accent-deep)}
-.plate:hover .plate-link{border-top-color:var(--wire);color:var(--wire)}
-.plate:hover .plate-link .arrow{transform:translateX(6px)}
-.plate:hover .plate-recency .live-dot{opacity:1}
-.symbol-frame{aspect-ratio:1/1;border:1px solid var(--ink);background:var(--paper-deep);display:flex;align-items:center;justify-content:center;position:relative;transition:border-color .25s ease, background .25s ease, transform .25s cubic-bezier(.2,.8,.2,1);overflow:hidden;transform:perspective(520px) rotateX(0deg) rotateY(0deg)}
-.symbol-frame::before,.symbol-frame::after{content:"";position:absolute;width:8px;height:8px;border:1px solid var(--ink);background:var(--paper)}
-.symbol-frame::before{top:-1px;left:-1px;border-right:none;border-bottom:none}
-.symbol-frame::after{bottom:-1px;right:-1px;border-left:none;border-top:none}
-.symbol-frame svg{width:62%;height:62%;color:var(--ink);transition:transform .4s cubic-bezier(.2,.8,.2,1)}
-.plate:hover .symbol-frame svg{transform:scale(1.04)}
-.symbol-frame .accent-fill{fill:var(--ink);transition:fill .25s ease}
-.symbol-frame .accent-stroke{stroke:var(--ink);transition:stroke .25s ease}
-.symbol-frame .plate-stamp{position:absolute;bottom:6px;left:6px;font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.18em;color:var(--ink-soft);text-transform:uppercase}
-.plate-body{display:flex;flex-direction:column;min-width:0}
-.plate-meta{display:flex;align-items:baseline;gap:14px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:14px;flex-wrap:wrap}
-.plate-recency{margin-left:auto;display:inline-flex;align-items:center;gap:7px;font-size:9.5px;letter-spacing:.14em;color:var(--muted)}
-.plate-recency .live-dot{width:6px;height:6px;opacity:.55;transition:opacity .25s ease}
-.plate-recency.is-fresh{color:var(--wire)}
-.plate-recency.is-fresh .live-dot{opacity:1}
-.plate-num{color:var(--ink);font-weight:500;transition:color .2s ease}
-.plate-section{color:var(--muted)}
-.plate-section::before{content:"— "}
-.plate-title{font-family:'Fraunces',serif;font-weight:400;font-size:clamp(20px,2.2vw,28px);line-height:1.1;letter-spacing:-.015em;margin-bottom:12px;transition:color .2s ease}
-.plate-title em{font-style:italic}
-.plate-desc{font-family:'Fraunces',serif;font-size:14px;line-height:1.55;color:var(--ink-soft);margin-bottom:16px;font-weight:400}
-.plate-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;margin-top:auto}
-.plate-tags span{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.08em;color:var(--ink-soft);border:1px solid var(--line-mid);padding:4px 7px 3px;background:var(--paper);white-space:nowrap;cursor:pointer}
-.plate-tags span:hover{border-color:var(--wire);color:var(--wire);background:var(--wire-tint)}
-.plate-link{display:inline-flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);padding:8px 0;border-top:1px solid var(--ink);align-self:flex-start;position:relative;width:100%;justify-content:space-between}
-.plate-link .arrow{display:inline-block;transition:transform .25s ease;color:var(--wire);font-size:14px}
-
-/* ============================================================
-   FOOTER
-   ============================================================ */
-.atlas-footer{padding:clamp(36px,5vw,72px) clamp(22px,5vw,80px) clamp(48px,6vw,96px);display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end;background:var(--paper-2)}
-@media(max-width:760px){.atlas-footer{grid-template-columns:1fr}}
-.atlas-footer .mark{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(28px,4vw,42px);line-height:1;letter-spacing:-.02em;color:var(--ink)}
-.atlas-footer .mark .w{color:var(--accent);font-style:italic}
-.atlas-footer .mark .pdot{color:var(--wire)}
-.atlas-footer .meta{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);text-align:right;line-height:1.9}
-@media(max-width:760px){.atlas-footer .meta{text-align:left}}
-.atlas-footer .meta div b{color:var(--ink);font-weight:500}
-.atlas-footer .meta a{transition:color .15s ease}
-.atlas-footer .meta a:hover{color:var(--accent)}
-.print-strip{border-top:1px solid var(--ink);padding:18px clamp(22px,5vw,80px);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;background:var(--ink);color:var(--paper)}
-.print-strip .acc{color:var(--wire)}
-
-.plate, .featured{scroll-margin-top:96px}
-
-/* ============================================================
-   INDEX DRAWER
-   ============================================================ */
-.index-tab{position:fixed;left:0;top:50%;z-index:60;background:var(--ink);color:var(--paper);border:none;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.28em;text-transform:uppercase;padding:16px 9px;writing-mode:vertical-rl;transform-origin:center;transform:translateY(-50%) rotate(180deg);transition:background .2s ease, padding .2s ease;border-radius:0 4px 4px 0;display:flex;align-items:center;gap:10px}
-.index-tab:hover{background:var(--accent);padding-left:13px}
-.index-tab .tab-mark{font-size:13px;transform:rotate(90deg);display:inline-block}
-@media print{.index-tab{display:none}}
-.index-scrim{position:fixed;inset:0;background:rgba(20,19,16,.42);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);z-index:90;opacity:0;pointer-events:none;transition:opacity .35s ease}
-body.index-open .index-scrim{opacity:1;pointer-events:auto}
-.index-panel{position:fixed;top:0;left:0;height:100%;width:min(360px,86vw);background:var(--paper);border-right:2px solid var(--ink);z-index:100;transform:translateX(-104%);transition:transform .4s cubic-bezier(.16,.84,.44,1);display:flex;flex-direction:column;box-shadow:24px 0 60px rgba(20,19,16,.18)}
-body.index-open .index-panel{transform:translateX(0)}
-.index-head{padding:clamp(24px,3vw,34px) clamp(22px,3vw,32px) 18px;border-bottom:2px solid var(--ink);display:flex;justify-content:space-between;align-items:flex-start;flex-shrink:0}
-.index-head .ttl{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(28px,4vw,38px);line-height:.95;letter-spacing:-.02em}
-.index-head .ttl em{font-style:italic;color:var(--accent)}
-.index-head .sub{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:8px}
-.index-close{background:none;border:none;cursor:pointer;font-family:'Fraunces',serif;font-size:30px;line-height:.6;color:var(--ink-soft);padding:0 2px;transition:color .15s ease}
-.index-close:hover{color:var(--accent)}
-.index-list{overflow-y:auto;padding:8px 0 24px;flex:1}
-.index-group{margin-top:14px}
-.index-group:first-child{margin-top:6px}
-.index-group-label{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--wire);padding:10px clamp(22px,3vw,32px) 8px;display:flex;align-items:center;gap:10px}
-.index-group-label::after{content:"";flex:1;height:1px;background:var(--line-mid)}
-.index-item{display:flex;align-items:baseline;gap:12px;padding:9px clamp(22px,3vw,32px);cursor:pointer;border:none;background:none;width:100%;text-align:left;font-family:inherit;transition:background .15s ease;border-left:2px solid transparent}
-.index-item:hover{background:var(--paper-2)}
-.index-item .ix-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.08em;flex-shrink:0;width:22px}
-.index-item .ix-title{font-family:'Fraunces',serif;font-size:15px;line-height:1.25;color:var(--ink)}
-.index-item .ix-title em{font-style:italic}
-.index-item.is-active{background:var(--wire-tint);border-left-color:var(--wire)}
-.index-item.is-active .ix-num{color:var(--wire)}
-.index-item.is-active .ix-title{color:var(--accent-deep)}
-.index-foot{flex-shrink:0;border-top:1px solid var(--line-mid);padding:14px clamp(22px,3vw,32px);display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase}
-.index-foot button{background:none;border:none;cursor:pointer;font-family:inherit;font-size:inherit;letter-spacing:inherit;text-transform:inherit;color:var(--ink-soft)}
-.index-foot button:hover{color:var(--accent)}
-.index-foot .count b{color:var(--wire)}
-
-@media print{
-  body{background:#fff;color:#000}
-  .gate,.ticker,.search-bar,.index-tab,.index-panel,.index-scrim,.search-kbd,.search-clear{display:none !important}
-  body:not(.unlocked) .gate{display:none !important}
-  .featured{background:#fff !important;color:#000 !important;border-bottom:2px solid #000 !important}
-  .featured *{color:#000 !important}
-  .featured-card,.featured-frame{border-color:#999 !important;background:#fff !important}
-  .featured-frame .acc-stroke{stroke:#000 !important}
-  .featured-frame .acc-fill{fill:#000 !important}
-  .featured-eyebrow .stamp{border-color:#000 !important;background:#fff !important}
-  .plate,.featured-card{break-inside:avoid}
-  .section{break-inside:auto}
-  .plate--hidden{display:grid !important}
-  .section--empty{display:block !important}
-  .plate-link .arrow,.featured-cta{display:none}
+@media (prefers-reduced-transparency: reduce){
+  .glass,.glass.read,.glass.hero,.rail,.gate-card,body.refract .glass.hero,body.refract .rail{
+    -webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+  .glass.read{background:rgba(19,18,12,.97)!important}
+  .glass.hero,.gate-card{background:rgba(17,16,11,.97)!important}
+  .rail{background:rgba(17,16,11,.98)!important}
+  .glass::after{display:none}
+}
+@media (prefers-reduced-motion: reduce){
+  .rail::after,.gate-rule::after,.mh-kicker .live i,.h-kicker i,.gate-eyebrow i{animation:none}
+  .rail-track{animation:none}
 }
 </style>
 </head>
 <body>
 
-<!-- ============================================================
-     INTRO SPLASH (no login)
-     ------------------------------------------------------------
-     This is a welcome screen, not a security gate. It opens the
-     site on a click — no password, no auth. The "enter the wire
-     room" design is kept purely as an intentional intro for the
-     preview/feedback stage. To add real access control later,
-     put the deployed site behind Cloudflare Access; this splash
-     can stay exactly as-is in front of it.
-     ============================================================ -->
-<div class="gate" id="gate" role="dialog" aria-modal="true" aria-label="Welcome to BankRegWire">
-  <div class="gate-card">
-    <div class="gate-mark">BankReg<span class="w">Wire</span></div>
-    <div class="gate-eyebrow"><span class="live-dot"></span> Preview edition · Wire room</div>
-    <div class="gate-wire"></div>
-    <p class="gate-lede">A working catalogue of U.S. financial services regulation &mdash; read from the primary source, with conclusions front-loaded. This is an early preview; <a class="gate-link" href="mailto:feedback@bankregwire.com?subject=BankRegWire%20feedback">your feedback is welcome</a>.</p>
-    <button class="gate-btn" id="gate-enter" type="button" autofocus>Enter the wire room <span class="arrow">&rarr;</span></button>
-    <p class="gate-foot">No login required. Press <kbd>Enter</kbd> or click above to come in.</p>
-  </div>
-</div>
+<div class="ground"></div>
+<canvas id="field"></canvas>
+<div class="grain"></div>
 
-<!-- ============================================================
-     INDEX DRAWER
-     ============================================================ -->
-<button class="index-tab" id="index-tab" aria-label="Open the catalogue index" aria-expanded="false">
-  <span class="tab-mark">&#9776;</span> Index
-</button>
-<div class="index-scrim" id="index-scrim"></div>
-<nav class="index-panel" id="index-panel" aria-label="Catalogue index" aria-hidden="true">
-  <div class="index-head">
-    <div>
-      <div class="ttl">The <em>Wire</em> Index</div>
-      <div class="sub">23 dispatches &middot; 2 featured</div>
-    </div>
-    <button class="index-close" id="index-close" aria-label="Close index">&times;</button>
-  </div>
-  <div class="index-list" id="index-list">
-    <div class="index-group">
-      <div class="index-group-label">Featured</div>
-      <button class="index-item" data-target="plate-00"><span class="ix-num">&#9670;</span><span class="ix-title">BaaS &amp; Fintech <em>Enforcement</em></span></button>
-      <button class="index-item" data-target="plate-20"><span class="ix-num">&#9670;</span><span class="ix-title">The <em>Fed</em> and Its Functions</span></button>
-    </div>
-    <div class="index-group">
-      <div class="index-group-label">I &middot; Rules &amp; Guidance</div>
-      <button class="index-item" data-target="plate-01"><span class="ix-num">01</span><span class="ix-title">Model Risk Management 2026</span></button>
-      <button class="index-item" data-target="plate-02"><span class="ix-num">02</span><span class="ix-title">GENIUS Act Dashboard</span></button>
-      <button class="index-item" data-target="plate-17"><span class="ix-num">03</span><span class="ix-title">The Two-Track <em>Republic</em></span></button>
-      <button class="index-item" data-target="plate-03"><span class="ix-num">04</span><span class="ix-title">AML/CFT Program Rule Navigator</span></button>
-      <button class="index-item" data-target="plate-04"><span class="ix-num">05</span><span class="ix-title">UFIRS CAMELS 2026 Change Briefing</span></button>
-      <button class="index-item" data-target="plate-19"><span class="ix-num">06</span><span class="ix-title">Third-Party Risk <em>Management</em></span></button>
-    </div>
-    <div class="index-group">
-      <div class="index-group-label">II &middot; Reform Trackers</div>
-      <button class="index-item" data-target="plate-05"><span class="ix-num">07</span><span class="ix-title">White House Innovation <em>Executive Orders</em></span></button>
-      <button class="index-item" data-target="plate-25"><span class="ix-num">08</span><span class="ix-title">Financial System <em>Integrity</em></span></button>
-      <button class="index-item" data-target="plate-06"><span class="ix-num">09</span><span class="ix-title">Bank Merger Reform Scorecard</span></button>
-      <button class="index-item" data-target="plate-07"><span class="ix-num">10</span><span class="ix-title">Fed Payment Account Analysis</span></button>
-      <button class="index-item" data-target="plate-08"><span class="ix-num">11</span><span class="ix-title">Gould OCC Policy Tracker</span></button>
-      <button class="index-item" data-target="plate-10"><span class="ix-num">12</span><span class="ix-title">Global Fintech <em>Licensing</em></span></button>
-      <button class="index-item" data-target="plate-11"><span class="ix-num">13</span><span class="ix-title">A Policy Lookahead</span></button>
-      <button class="index-item" data-target="plate-12"><span class="ix-num">14</span><span class="ix-title">ABA &middot; BPI &middot; ICBA <em>Comparison</em></span></button>
-      <button class="index-item" data-target="plate-21"><span class="ix-num">15</span><span class="ix-title">Financial Services <em>Bill Tracker</em></span></button>
-      <button class="index-item" data-target="plate-22"><span class="ix-num">16</span><span class="ix-title">The CFPB's <em>Transformation</em></span></button>
-      <button class="index-item" data-target="plate-23"><span class="ix-num">17</span><span class="ix-title">Odds on Digital Asset <em>Market Structure</em></span></button>
-      <button class="index-item" data-target="plate-24"><span class="ix-num">18</span><span class="ix-title">Regulatory <em>Tracker</em></span></button>
-    </div>
-    <div class="index-group">
-      <div class="index-group-label">III &middot; Structural Frameworks</div>
-      <button class="index-item" data-target="plate-13"><span class="ix-num">19</span><span class="ix-title">New Federal Reserve Supervisory <em>Operating Principles</em></span></button>
-      <button class="index-item" data-target="plate-14"><span class="ix-num">20</span><span class="ix-title">U.S. Trust Company Regulatory Framework</span></button>
-      <button class="index-item" data-target="plate-15"><span class="ix-num">21</span><span class="ix-title">OCC Preemption Timeline</span></button>
-      <button class="index-item" data-target="plate-16"><span class="ix-num">22</span><span class="ix-title">Regulatory Map</span></button>
-      <button class="index-item" data-target="plate-18"><span class="ix-num">23</span><span class="ix-title">History of <em>Banking</em></span></button>
-    </div>
-  </div>
-  <div class="index-foot">
-    <span class="count"><b id="index-count">25</b> entries</span>
-    <button id="index-top">&uarr; Top</button>
-  </div>
-</nav>
+<!-- edge-weighted lens displacement (gate card + hero + rail only) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="brw-glass" x="-25%" y="-25%" width="150%" height="150%" color-interpolation-filters="sRGB">
+    <feImage id="mapX" result="mapx" preserveAspectRatio="none"/>
+    <feImage id="mapY" result="mapy" preserveAspectRatio="none"/>
+    <feBlend in="mapx" in2="mapy" mode="screen" result="map"/>
+    <feGaussianBlur in="map" stdDeviation="1.1" result="mapb"/>
+    <feDisplacementMap id="dispmap" in="SourceGraphic" in2="mapb" scale="20" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
 
-<!-- ============================================================
-     MASTHEAD
-     ============================================================ -->
-<header class="masthead" id="top">
-  <div class="masthead-kicker">
-    <span><b style="color:var(--ink)">Vol. I</b><span class="dot"></span>No. 1<span class="dot"></span>The Wire Room</span>
-    <span>U.S. Financial Services · Primary Source</span>
-    <span id="masthead-session"></span>
-  </div>
-
-  <h1><span class="bank">BankReg</span><span class="w">Wire</span><span class="pdot">.</span></h1>
-
-  <div class="masthead-sub">
-    <p>A bank regulatory wire service — <em>guidance, rule text, and legislation read from the primary source, filed with conclusions front-loaded.</em></p>
-    <div class="masthead-meta">
-      <div><b>23</b> dispatches &middot; <b>2</b> featured &middot; <b>3</b> desks</div>
-      <div>Federal banking · State coordination</div>
-      <div>Filed from the primary source</div>
+<!-- ============ PAGE ============ -->
+<header class="masthead">
+  <div class="wrap">
+    <div class="mh-kicker">
+      <span>A bank regulatory wire service</span>
+      <span class="live"><i></i> On the wire <span class="dot"></span> 6 filed today</span>
+    </div>
+    <h1 class="mh-title serif">Bank<em>Reg</em>Wire<span class="pdot">.</span></h1>
+    <div class="mh-sub">
+      <p>A working catalogue of U.S. financial services regulation, <em>filed from the primary source</em>, with conclusions front-loaded and rule text read closely.</p>
+      <div class="mh-meta">
+        <div>Edition <b>VI · MMXXVI</b></div>
+        <div>Desks <b>five</b></div>
+        <div>Filed from <b>Arlington, VA</b></div>
+      </div>
     </div>
   </div>
 </header>
 
-<!-- ============================================================
-     ON THE WIRE — ticker
-     ============================================================ -->
-<div class="ticker" aria-label="Latest on the wire">
-  <div class="ticker-label"><span class="live-dot"></span> On the wire</div>
-  <div class="ticker-viewport">
-    <div class="ticker-track" id="ticker-track">
-      <span><b>FIL-15-2026</b> — model risk guidance mapped against SR 11-7</span>
-      <span><b>GENIUS Act</b> — OCC stablecoin issuer pathways updated</span>
-      <span><b>Fed Payment Account</b> — May 2026 formal proposal logged</span>
-      <span><b>Bowman</b> — supervisory operating principles, Apr 2026 revision</span>
-      <span><b>Bank merger reform</b> — OCC threshold alignment tracking</span>
-      <span><b>Bill tracker</b> — financial services legislation in Congress, live status</span>
-      <span><b>CFPB</b> — transformation tracker: funding, rulemaking, structure</span>
-      <span><b>Market structure</b> — odds digital asset framework clears the Senate this Congress</span>
-      <span><b>Reg tracker</b> — live agency feed: rules, guidance, enforcement via API</span>
-      <span><b>Executive order</b> — financial system integrity, agency releases tracked</span>
-      <span><b>Cantero</b> — OCC preemption standard reassessed</span>
-    </div>
-  </div>
+<div class="rail">
+  <div class="rail-label"><i></i> On the wire</div>
+  <div class="rail-vp"><div class="rail-track">
+    <span><b>FILED TODAY</b> · FDIC brokered deposits reproposal</span>
+    <span>BASEL ENDGAME · output floor recalibrated</span>
+    <span>FIL-15-2026 · model risk vs SR 11-7</span>
+    <span>GENIUS ACT · stablecoin implementation, two tracks</span>
+    <span>§ 1033 · open banking compliance dates</span>
+    <span><b>FILED TODAY</b> · FDIC brokered deposits reproposal</span>
+    <span>BASEL ENDGAME · output floor recalibrated</span>
+    <span>FIL-15-2026 · model risk vs SR 11-7</span>
+    <span>GENIUS ACT · stablecoin implementation, two tracks</span>
+    <span>§ 1033 · open banking compliance dates</span>
+  </div></div>
 </div>
 
-<!-- ============================================================
-     COLOPHON
-     ============================================================ -->
-<section class="colophon" id="about">
-  <div class="colophon-label">About<br>the wire</div>
-  <p class="colophon-body">
-    <strong>BankRegWire</strong> is a working catalogue of U.S. financial services regulation, maintained by a practitioner across state and federal supervision. Each dispatch distills a specific rule, piece of guidance, piece of legislation, or structural feature of the dual banking system into a single working document. <strong>Methodology favors statute and rule text over secondary commentary; conclusions are front-loaded.</strong> Dispatches are revised on the wire as agency actions and legislative posture evolve. Corrections and comments: <a class="colophon-link" href="mailto:feedback@bankregwire.com?subject=BankRegWire%20feedback">feedback@bankregwire.com</a>.
-  </p>
-  <nav class="colophon-nav">
-    <a href="#section-i">Rules &amp; Guidance</a>
-    <a href="#section-ii">Reform Trackers</a>
-    <a href="#section-iii">Structural Frameworks</a>
-  </nav>
-</section>
-
-<!-- ============================================================
-     SEARCH
-     ============================================================ -->
-<section class="search-bar" id="search">
-  <div class="search-inner">
-    <label class="search-label" for="catalogue-search">Search the<br>Wire</label>
-    <div class="search-input-wrap">
-      <input id="catalogue-search" type="search" class="search-input"
-             placeholder="Try GENIUS, OCC, FIL-15, preemption&hellip;"
-             autocomplete="off" spellcheck="false" aria-label="Search the catalogue">
-      <kbd class="search-kbd">/</kbd>
-      <button type="button" class="search-clear" aria-label="Clear search">&times;</button>
+<div class="wrap">
+  <!-- controls -->
+  <div class="controls glass read">
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="search" type="text" placeholder="Search the catalogue" spellcheck="false">
+      <kbd>/</kbd>
     </div>
-    <div class="search-count"><b id="search-visible">23</b> &nbsp;/&nbsp; 23 dispatches</div>
-  </div>
-  <div class="desk-filters" role="group" aria-label="Filter by desk">
-    <button type="button" class="desk-pill is-active" data-desk="all">All <span class="pill-n">23</span></button>
-    <button type="button" class="desk-pill" data-desk="section-i">Rules &amp; Guidance <span class="pill-n">6</span></button>
-    <button type="button" class="desk-pill" data-desk="section-ii">Reform Trackers <span class="pill-n">12</span></button>
-    <button type="button" class="desk-pill" data-desk="section-iii">Structural Frameworks <span class="pill-n">5</span></button>
-  </div>
-</section>
-
-<section class="search-empty" aria-live="polite">
-  <p class="msg">Nothing on the wire matches. Try a <em>broader</em> term.</p>
-  <button type="button" class="clear-cta">Clear search</button>
-</section>
-
-<!-- ============================================================
-     FEATURED
-     ============================================================ -->
-<section class="featured" id="featured">
-  <div class="featured-eyebrow">
-    <span>Featured dispatches</span>
-    <span class="stamp">Featured</span>
-    <span>The two we&rsquo;d open first</span>
-  </div>
-
-  <div class="featured-stack">
-
-    <a class="featured-card" id="plate-00" href="consent-order-matrix.html" aria-label="BaaS and Fintech-Forward Enforcement Actions: the consent order matrix">
-      <button type="button" class="featured-toggle" aria-expanded="true" aria-label="Collapse this featured dispatch"><span class="chev">&#9650;</span></button>
-      <div class="featured-frame">
-        <svg viewBox="0 0 200 140" aria-hidden="true">
-          <text x="6" y="30" font-family="JetBrains Mono" font-size="5.5" fill="currentColor" opacity=".55" letter-spacing="1">BAAS BANK</text>
-          <text x="6" y="52" font-family="JetBrains Mono" font-size="5.5" fill="currentColor" opacity=".55" letter-spacing="1">FINTECH</text>
-          <text x="6" y="74" font-family="JetBrains Mono" font-size="5.5" fill="currentColor" opacity=".85" letter-spacing="1">MIDDLEWARE</text>
-          <text x="6" y="96" font-family="JetBrains Mono" font-size="5.5" fill="currentColor" opacity=".55" letter-spacing="1">PROGRAM</text>
-          <text x="70" y="16" font-family="JetBrains Mono" font-size="5" fill="currentColor" text-anchor="middle" opacity=".5">AML</text>
-          <text x="104" y="16" font-family="JetBrains Mono" font-size="5" fill="currentColor" text-anchor="middle" opacity=".5">3RD-PTY</text>
-          <text x="138" y="16" font-family="JetBrains Mono" font-size="5" fill="currentColor" text-anchor="middle" opacity=".5">RECON</text>
-          <text x="172" y="16" font-family="JetBrains Mono" font-size="5" fill="currentColor" text-anchor="middle" opacity=".5">CAP</text>
-          <g stroke="currentColor" stroke-width="0.5" opacity=".3">
-            <line x1="56" y1="22" x2="56" y2="104"/><line x1="90" y1="22" x2="90" y2="104"/>
-            <line x1="122" y1="22" x2="122" y2="104"/><line x1="156" y1="22" x2="156" y2="104"/>
-            <line x1="188" y1="22" x2="188" y2="104"/>
-            <line x1="56" y1="22" x2="188" y2="22"/><line x1="56" y1="44" x2="188" y2="44"/>
-            <line x1="56" y1="66" x2="188" y2="66"/><line x1="56" y1="88" x2="188" y2="88"/>
-            <line x1="56" y1="104" x2="188" y2="104"/>
-          </g>
-          <rect x="58" y="24" width="30" height="18" fill="currentColor" opacity=".75"/>
-          <rect x="92" y="24" width="28" height="18" fill="currentColor" opacity=".4"/>
-          <rect x="92" y="46" width="28" height="18" class="acc-fill"/>
-          <rect x="124" y="46" width="30" height="18" class="acc-fill"/>
-          <rect x="58" y="68" width="30" height="18" fill="currentColor" opacity=".55"/>
-          <rect x="124" y="68" width="30" height="18" fill="currentColor" opacity=".75"/>
-          <rect x="158" y="68" width="28" height="18" fill="currentColor" opacity=".4"/>
-          <rect x="92" y="90" width="28" height="12" fill="currentColor" opacity=".55"/>
-          <rect x="158" y="90" width="28" height="12" fill="currentColor" opacity=".75"/>
-          <circle cx="138" cy="55" r="3.4" class="acc-fill"/>
-          <circle cx="138" cy="55" r="6" fill="none" class="acc-stroke" stroke-width="0.8" opacity=".6"/>
-          <line x1="6" y1="118" x2="194" y2="118" stroke="currentColor" stroke-width="0.6" opacity=".3"/>
-          <text x="6" y="132" font-family="JetBrains Mono" font-size="6" fill="currentColor" opacity=".7" letter-spacing="0.5">FDIC &middot; OCC &middot; FRB &middot; STATE</text>
-          <text x="188" y="132" font-family="JetBrains Mono" font-size="6" fill="currentColor" text-anchor="end" opacity=".85" letter-spacing="0.5">2023&ndash;26</text>
-        </svg>
-        <span class="corner-tag">Live matrix</span>
-      </div>
-      <div class="featured-body">
-        <div class="featured-kicker">Featured &middot; Enforcement matrix</div>
-        <h3 class="featured-title">BaaS &amp; Fintech-Forward <em>Enforcement Actions</em></h3>
-        <p class="featured-desc">
-          An interactive matrix of the <strong>consent orders</strong> reshaping the bank&ndash;fintech relationship &mdash; mapping each action across sponsor banks, middleware providers, and programs by theme: <strong>AML/BSA, third-party risk, ledger reconciliation,</strong> and capital. The single clearest read on where supervisors are actually drawing the line.
-        </p>
-        <div class="featured-sources">
-          <div class="src"><div class="src-label">Theme</div><div class="src-name">Third-Party / Vendor Risk</div></div>
-          <div class="src"><div class="src-label">Theme</div><div class="src-name">AML / BSA Programs</div></div>
-          <div class="src"><div class="src-label">Theme</div><div class="src-name">For-Benefit-Of Reconciliation</div></div>
-          <div class="src"><div class="src-label">Agencies</div><div class="src-name">FDIC &middot; OCC &middot; FRB &middot; State</div></div>
-        </div>
-        <span class="featured-cta"><span>Open the matrix</span><span class="arrow">&rarr;</span></span>
-      </div>
-    </a>
-
-    <a class="featured-card" id="plate-20" href="federal-reserve-interactive-reference.html" aria-label="An In-Depth Look at the Fed and Its Functions">
-      <button type="button" class="featured-toggle" aria-expanded="true" aria-label="Collapse this featured dispatch"><span class="chev">&#9650;</span></button>
-      <div class="featured-frame">
-        <svg viewBox="0 0 200 140" aria-hidden="true">
-          <!-- Federal Reserve System: Board at center, 12 district banks around -->
-          <circle cx="100" cy="68" r="48" fill="none" stroke="currentColor" stroke-width="0.6" stroke-dasharray="2 3" opacity=".5"/>
-          <g fill="currentColor">
-            <circle cx="100" cy="20" r="2.6"/><circle cx="124" cy="26.4" r="2.6"/>
-            <circle cx="141.6" cy="44" r="2.6"/><circle cx="148" cy="68" r="2.6"/>
-            <circle cx="141.6" cy="92" r="2.6"/><circle cx="124" cy="109.6" r="2.6"/>
-            <circle cx="100" cy="116" r="2.6"/><circle cx="76" cy="109.6" r="2.6"/>
-            <circle cx="58.4" cy="92" r="2.6"/><circle cx="52" cy="68" r="2.6"/>
-            <circle cx="58.4" cy="44" r="2.6"/><circle cx="76" cy="26.4" r="2.6"/>
-          </g>
-          <g stroke="currentColor" stroke-width="0.5" opacity=".4">
-            <line x1="100" y1="68" x2="100" y2="20"/><line x1="100" y1="68" x2="148" y2="68"/>
-            <line x1="100" y1="68" x2="52" y2="68"/><line x1="100" y1="68" x2="100" y2="116"/>
-          </g>
-          <!-- Board of Governors façade -->
-          <path d="M 84 56 L 100 44 L 116 56 Z" fill="none" stroke="currentColor" stroke-width="1.2"/>
-          <line x1="82" y1="56" x2="118" y2="56" stroke="currentColor" stroke-width="1.4"/>
-          <line x1="86" y1="58" x2="86" y2="80" class="acc-stroke" stroke-width="1.4"/>
-          <line x1="95" y1="58" x2="95" y2="80" class="acc-stroke" stroke-width="1.4"/>
-          <line x1="105" y1="58" x2="105" y2="80" class="acc-stroke" stroke-width="1.4"/>
-          <line x1="114" y1="58" x2="114" y2="80" class="acc-stroke" stroke-width="1.4"/>
-          <line x1="82" y1="80" x2="118" y2="80" class="acc-stroke" stroke-width="1.6"/>
-          <text x="100" y="132" font-family="JetBrains Mono" font-size="6" fill="currentColor" text-anchor="middle" opacity=".7" letter-spacing="0.5">MONETARY POLICY &middot; SUPERVISION &middot; PAYMENTS</text>
-        </svg>
-        <span class="corner-tag">Reference</span>
-      </div>
-      <div class="featured-body">
-        <div class="featured-kicker">Featured &middot; System reference</div>
-        <h3 class="featured-title">An In-Depth Look at the <em>Fed</em> and Its Functions</h3>
-        <p class="featured-desc">
-          An interactive reference to the <strong>Federal Reserve System</strong> &mdash; the dual mandate and the FOMC, the supervisory role, the payments and discount-window functions, and the structure of the <strong>Board of Governors and the twelve district Reserve Banks</strong>. The foundation under every monetary and supervisory dispatch on the wire.
-        </p>
-        <div class="featured-sources">
-          <div class="src"><div class="src-label">Function</div><div class="src-name">Monetary Policy &middot; FOMC</div></div>
-          <div class="src"><div class="src-label">Function</div><div class="src-name">Bank Supervision</div></div>
-          <div class="src"><div class="src-label">Function</div><div class="src-name">Payments &middot; Discount Window</div></div>
-          <div class="src"><div class="src-label">Structure</div><div class="src-name">Board &middot; 12 District Banks</div></div>
-        </div>
-        <span class="featured-cta"><span>Open the reference</span><span class="arrow">&rarr;</span></span>
-      </div>
-    </a>
-
-  </div>
-</section>
-
-<!-- ============================================================
-     SECTION I — RULES & GUIDANCE
-     ============================================================ -->
-<section class="section" id="section-i">
-  <button type="button" class="section-toggle" aria-expanded="true" aria-controls="section-i" aria-label="Collapse Rules and Guidance"><span class="sct-label">Collapse</span> <span class="chev">&#9650;</span></button>
-  <header class="section-head">
-    <span class="section-roman">I.</span>
-    <div class="section-meta">
-      <div class="section-kicker">Desk One</div>
-      <h2 class="section-name">Rules &amp; <em>Guidance</em></h2>
-      <p class="section-desc">Dispatches that map a specific federal rule, piece of supervisory guidance, or examiner framework against its primary-source text. The brief is always: what does the rule actually say, and where does it depart from what came before.</p>
+    <div class="pills" id="pills">
+      <button class="pill is-active" data-desk="all">All desks</button>
+      <button class="pill" data-desk="rules">Rules &amp; Guidance</button>
+      <button class="pill" data-desk="reform">Reform Trackers</button>
+      <button class="pill" data-desk="structural">Structural Frameworks</button>
     </div>
-  </header>
+  </div>
 
-  <div class="plates">
+  <!-- featured hero (the one refracting card) -->
+  <article class="hero glass hero" id="hero">
+    <div class="h-body">
+      <div class="h-kicker"><i></i> Featured dispatch</div>
+      <h2>BaaS &amp; Fintech-Forward Enforcement Actions</h2>
+      <p class="h-desc">An interactive matrix of the consent orders reshaping the bank–fintech relationship — mapping each action across sponsor banks, middleware providers, and programs by theme: AML/BSA, third-party risk, ledger reconciliation, and capital. The single clearest read on where supervisors are actually drawing the line.</p>
+    </div>
+    <div class="h-side">
+      <div class="h-src"><div class="s-label">Filed</div><div class="s-name">Primary source · BankRegWire desk</div></div>
+      <a class="h-cta" href="consent-order-matrix.html">Read the dispatch <span class="arrow">→</span></a>
+    </div>
+  </article>
 
-    <a class="plate" id="plate-01" data-updated="2026-05-26" data-status="live" href="model-risk-management-2026.html" aria-label="Plate 1: Model Risk Management 2026">
-      <div class="symbol-frame">
-        <svg viewBox="0 0 100 100" aria-hidden="true">
+  <a class="hero glass read" id="feature2" href="federal-reserve-interactive-reference.html">
+    <div class="h-body">
+      <div class="h-kicker"><i></i> Also featured</div>
+      <h2>An In-Depth Look at the Fed and Its Functions</h2>
+      <p class="h-desc">An interactive reference to the Federal Reserve System — the dual mandate and the FOMC, the supervisory role, the payments and discount-window functions, and the structure of the Board of Governors and the twelve district Reserve Banks. The foundation under every monetary and supervisory dispatch on the wire.</p>
+    </div>
+    <div class="h-side">
+      <div class="h-src"><div class="s-label">Reference</div><div class="s-name">Interactive · primary source</div></div>
+      <span class="h-cta">Open <span class="arrow">→</span></span>
+    </div>
+  </a>
+
+  <section class="section" data-desk="rules">
+    <div class="sec-head">
+      <div class="sec-roman">I.</div>
+      <div>
+        <div class="sec-kicker">Desk One</div>
+        <h2 class="sec-name">Rules &amp; Guidance</h2>
+        <p class="sec-desc">Dispatches that map a specific federal rule, piece of supervisory guidance, or examiner framework against its primary-source text. The brief is always: what does the rule actually say, and where does it depart from what came before.</p>
+      </div>
+    </div>
+    <div class="plates">
+      <a class="plate glass read" href="model-risk-management-2026.html" data-desk="rules" data-tags="fil-15-2026 sr 11-7 12 cfr pt. 30">
+        <div class="chip"><svg viewBox="0 0 100 100" aria-hidden="true">
           <rect x="14" y="14" width="72" height="72" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="3 3"/>
           <rect x="26" y="26" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.4"/>
           <rect x="38" y="38" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6"/>
           <rect x="46" y="46" width="8" height="8" class="accent-fill"/>
           <line x1="14" y1="14" x2="86" y2="86" class="accent-stroke" stroke-width="0.6" stroke-dasharray="1 3"/>
-        </svg>
-        <span class="plate-stamp">№ 01</span>
-      </div>
-      <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 01</span><span class="plate-section">Rules &amp; Guidance</span></div>
-        <h3 class="plate-title">Model Risk Management <em>2026</em></h3>
-        <p class="plate-desc">A side-by-side reading of <strong>FIL-15-2026</strong> against <strong>SR 11-7</strong>, mapping where the federal agencies' new model risk guidance retains, sharpens, or quietly narrows the 2011 baseline.</p>
-        <div class="plate-tags"><span>FIL-15-2026</span><span>SR 11-7</span><span>12 CFR Pt. 30</span></div>
-        <span class="plate-link"><span>Open dispatch</span><span class="arrow">→</span></span>
-      </div>
-    </a>
-
-    <a class="plate" id="plate-02" data-updated="2026-05-20" data-status="live" href="genius-act-dashboard.html" aria-label="Plate 2: GENIUS Act Dashboard">
-      <div class="symbol-frame">
-        <svg viewBox="0 0 100 100" aria-hidden="true">
+        </svg></div>
+        <div class="plate-body">
+          <div class="plate-num"><span class="desk">Rules</span> · 01</div>
+          <h3>Model Risk Management 2026</h3>
+          <p>A side-by-side reading of FIL-15-2026 against SR 11-7, mapping where the federal agencies' new model risk guidance retains, sharpens, or quietly narrows the 2011 baseline.</p>
+          <div class="plate-tags"><span>FIL-15-2026</span><span>SR 11-7</span><span>12 CFR Pt. 30</span></div>
+          <div class="plate-link">Open the file →</div>
+        </div>
+      </a>
+      <a class="plate glass read" href="genius-act-dashboard.html" data-desk="rules" data-tags="genius act payment stablecoins 12 usc § 1818">
+        <div class="chip"><svg viewBox="0 0 100 100" aria-hidden="true">
           <polygon points="50,12 84,32 84,68 50,88 16,68 16,32" fill="none" stroke="currentColor" stroke-width="1.5"/>
           <polygon points="50,26 71,38 71,62 50,74 29,62 29,38" fill="none" stroke="currentColor" stroke-width="0.8"/>
           <line x1="50" y1="12" x2="50" y2="88" stroke="currentColor" stroke-width="0.6"/>
           <line x1="16" y1="32" x2="84" y2="68" stroke="currentColor" stroke-width="0.4" opacity=".4"/>
           <line x1="16" y1="68" x2="84" y2="32" stroke="currentColor" stroke-width="0.4" opacity=".4"/>
           <circle cx="50" cy="50" r="6" class="accent-fill"/>
-        </svg>
-        <span class="plate-stamp">№ 02</span>
-      </div>
-      <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 02</span><span class="plate-section">Rules &amp; Guidance</span></div>
-        <h3 class="plate-title">GENIUS Act <em>Dashboard</em></h3>
-        <p class="plate-desc">A working framework for how the GENIUS Act applies to OCC-supervised stablecoin issuers — permitted issuer pathways, reserve composition, and statutory tripwires.</p>
-        <div class="plate-tags"><span>GENIUS Act</span><span>Payment Stablecoins</span><span>12 USC § 1818</span></div>
-        <span class="plate-link"><span>Open dispatch</span><span class="arrow">→</span></span>
-      </div>
-    </a>
-
-    <a class="plate" id="plate-17" data-updated="2026-05-29" data-status="live" href="two-track-republic.html" aria-label="Plate 3: The Two-Track Republic — a GENIUS Act reading">
-      <div class="symbol-frame">
-        <svg viewBox="0 0 100 100" aria-hidden="true">
+        </svg></div>
+        <div class="plate-body">
+          <div class="plate-num"><span class="desk">Rules</span> · 02</div>
+          <h3>GENIUS Act Dashboard</h3>
+          <p>A working framework for how the GENIUS Act applies to OCC-supervised stablecoin issuers — permitted issuer pathways, reserve composition, and statutory tripwires.</p>
+          <div class="plate-tags"><span>GENIUS Act</span><span>Payment Stablecoins</span><span>12 USC § 1818</span></div>
+          <div class="plate-link">Open the file →</div>
+        </div>
+      </a>
+      <a class="plate glass read" href="two-track-republic.html" data-desk="rules" data-tags="genius act dual track state vs. federal">
+        <div class="chip"><svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- Two divergent tracks from a single origin: federal vs state stablecoin pathways -->
           <circle cx="20" cy="50" r="3.5" class="accent-fill"/>
           <!-- shared trunk -->
@@ -936,42 +434,34 @@ body.index-open .index-panel{transform:translateX(0)}
           <!-- destination labels -->
           <text x="88" y="20" font-family="JetBrains Mono" font-size="6" fill="currentColor" text-anchor="end" opacity=".6">FED</text>
           <text x="88" y="86" font-family="JetBrains Mono" font-size="6" fill="currentColor" text-anchor="end" opacity=".8">STATE</text>
-        </svg>
-        <span class="plate-stamp">№ 03</span>
-      </div>
-      <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 03</span><span class="plate-section">Rules &amp; Guidance</span></div>
-        <h3 class="plate-title">The Two-Track <em>Republic</em></h3>
-        <p class="plate-desc">A second reading of the <strong>GENIUS Act</strong> through its defining structural choice — the <strong>dual federal and state pathways</strong> for payment stablecoin issuers, the $10B threshold that divides them, and what the bifurcation means for charter strategy.</p>
-        <div class="plate-tags"><span>GENIUS Act</span><span>Dual Track</span><span>State vs. Federal</span></div>
-        <span class="plate-link"><span>Open dispatch</span><span class="arrow">→</span></span>
-      </div>
-    </a>
-
-    <a class="plate" id="plate-03" data-updated="2026-05-12" data-status="live" href="aml-cft-program-rule-navigator.html" aria-label="Plate 4: AML/CFT Program Rule Navigator">
-      <div class="symbol-frame">
-        <svg viewBox="0 0 100 100" aria-hidden="true">
+        </svg></div>
+        <div class="plate-body">
+          <div class="plate-num"><span class="desk">Rules</span> · 03</div>
+          <h3>The Two-Track Republic</h3>
+          <p>A second reading of the GENIUS Act through its defining structural choice — the dual federal and state pathways for payment stablecoin issuers, the $10B threshold that divides them, and what the bifurcation means for charter strategy.</p>
+          <div class="plate-tags"><span>GENIUS Act</span><span>Dual Track</span><span>State vs. Federal</span></div>
+          <div class="plate-link">Open the file →</div>
+        </div>
+      </a>
+      <a class="plate glass read" href="aml-cft-program-rule-navigator.html" data-desk="rules" data-tags="31 cfr § 1020.210 fincen nprm fdic fil">
+        <div class="chip"><svg viewBox="0 0 100 100" aria-hidden="true">
           <path d="M 14 20 L 86 20 L 60 50 L 60 78 L 40 78 L 40 50 Z" fill="none" stroke="currentColor" stroke-width="1.5"/>
           <line x1="22" y1="30" x2="78" y2="30" stroke="currentColor" stroke-width="0.6" opacity=".5"/>
           <line x1="30" y1="38" x2="70" y2="38" stroke="currentColor" stroke-width="0.6" opacity=".5"/>
           <line x1="38" y1="46" x2="62" y2="46" stroke="currentColor" stroke-width="0.6" opacity=".5"/>
           <circle cx="50" cy="86" r="3.2" class="accent-fill"/>
           <circle cx="50" cy="94" r="1.8" class="accent-fill" opacity=".5"/>
-        </svg>
-        <span class="plate-stamp">№ 04</span>
-      </div>
-      <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 04</span><span class="plate-section">Rules &amp; Guidance</span></div>
-        <h3 class="plate-title">AML/CFT Program Rule <em>Navigator</em></h3>
-        <p class="plate-desc">A clause-anchored walkthrough of the <strong>2026 FinCEN and FDIC AML/CFT Program Rule proposals</strong>, grounded in the rule text itself rather than secondary commentary.</p>
-        <div class="plate-tags"><span>31 CFR § 1020.210</span><span>FinCEN NPRM</span><span>FDIC FIL</span></div>
-        <span class="plate-link"><span>Open dispatch</span><span class="arrow">→</span></span>
-      </div>
-    </a>
-
-    <a class="plate" id="plate-04" data-updated="2026-04-28" data-status="live" href="ufirs-camels-2026-change-briefing.html" aria-label="Plate 5: UFIRS CAMELS 2026 Change Briefing">
-      <div class="symbol-frame">
-        <svg viewBox="0 0 100 100" aria-hidden="true">
+        </svg></div>
+        <div class="plate-body">
+          <div class="plate-num"><span class="desk">Rules</span> · 04</div>
+          <h3>AML/CFT Program Rule Navigator</h3>
+          <p>A clause-anchored walkthrough of the 2026 FinCEN and FDIC AML/CFT Program Rule proposals, grounded in the rule text itself rather than secondary commentary.</p>
+          <div class="plate-tags"><span>31 CFR § 1020.210</span><span>FinCEN NPRM</span><span>FDIC FIL</span></div>
+          <div class="plate-link">Open the file →</div>
+        </div>
+      </a>
+      <a class="plate glass read" href="ufirs-camels-2026-change-briefing.html" data-desk="rules" data-tags="ufirs ffiec fil-2026">
+        <div class="chip"><svg viewBox="0 0 100 100" aria-hidden="true">
           <polygon points="50,16 79,33 79,67 50,84 21,67 21,33" fill="none" stroke="currentColor" stroke-width="1.4"/>
           <polygon points="50,28 68,38 68,62 50,72 32,62 32,38" fill="none" stroke="currentColor" stroke-width="0.8" opacity=".7"/>
           <line x1="50" y1="50" x2="50" y2="16" stroke="currentColor" stroke-width="0.7"/>
@@ -982,21 +472,17 @@ body.index-open .index-panel{transform:translateX(0)}
           <line x1="50" y1="50" x2="21" y2="33" stroke="currentColor" stroke-width="0.7"/>
           <circle cx="50" cy="50" r="4" class="accent-fill"/>
           <circle cx="50" cy="16" r="2.5" class="accent-fill"/>
-        </svg>
-        <span class="plate-stamp">№ 05</span>
-      </div>
-      <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 05</span><span class="plate-section">Rules &amp; Guidance</span></div>
-        <h3 class="plate-title">UFIRS CAMELS 2026 <em>Change Briefing</em></h3>
-        <p class="plate-desc">What changed in the Uniform Financial Institutions Rating System in 2026, and how examiner expectations shift in practice across the six CAMELS components.</p>
-        <div class="plate-tags"><span>UFIRS</span><span>FFIEC</span><span>FIL-2026</span></div>
-        <span class="plate-link"><span>Open dispatch</span><span class="arrow">→</span></span>
-      </div>
-    </a>
-
-    <a class="plate" id="plate-19" data-updated="2026-05-31" data-status="live" href="third-party-risk-management.html" aria-label="Plate 6: A New Way to Understand Third-Party Risk Management">
-      <div class="symbol-frame">
-        <svg viewBox="0 0 100 100" aria-hidden="true">
+        </svg></div>
+        <div class="plate-body">
+          <div class="plate-num"><span class="desk">Rules</span> · 05</div>
+          <h3>UFIRS CAMELS 2026 Change Briefing</h3>
+          <p>What changed in the Uniform Financial Institutions Rating System in 2026, and how examiner expectations shift in practice across the six CAMELS components.</p>
+          <div class="plate-tags"><span>UFIRS</span><span>FFIEC</span><span>FIL-2026</span></div>
+          <div class="plate-link">Open the file →</div>
+        </div>
+      </a>
+      <a class="plate glass read" href="third-party-risk-management.html" data-desk="rules" data-tags="third-party risk interagency guidance vendor oversight">
+        <div class="chip"><svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- central bank node with third-party relationships radiating out -->
           <!-- oversight ring -->
           <circle cx="50" cy="50" r="34" fill="none" stroke="currentColor" stroke-width="0.6" stroke-dasharray="2 3" opacity=".5"/>
@@ -1018,40 +504,30 @@ body.index-open .index-panel{transform:translateX(0)}
           <!-- central bank -->
           <rect x="42" y="42" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"/>
           <rect x="46" y="46" width="8" height="8" class="accent-fill"/>
-        </svg>
-        <span class="plate-stamp">№ 06</span>
-      </div>
-      <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 06</span><span class="plate-section">Rules &amp; Guidance</span></div>
-        <h3 class="plate-title">A New Way to Understand <em>Third-Party Risk Management</em></h3>
-        <p class="plate-desc">A ground-up rethink of the <strong>2023 interagency third-party risk guidance</strong> &mdash; what it left ambiguous, where the BaaS enforcement wave exposed the gaps, and <strong>what the guidance should have been</strong>.</p>
-        <div class="plate-tags"><span>Third-Party Risk</span><span>Interagency Guidance</span><span>Vendor Oversight</span></div>
-        <span class="plate-link"><span>Open dispatch</span><span class="arrow">→</span></span>
-      </div>
-    </a>
-
-  </div>
-</section>
-
-<!-- ============================================================
-     SECTION II — REFORM TRACKERS
-     ============================================================ -->
-<section class="section" id="section-ii">
-  <button type="button" class="section-toggle" aria-expanded="true" aria-controls="section-ii" aria-label="Collapse Reform Trackers"><span class="sct-label">Collapse</span> <span class="chev">&#9650;</span></button>
-  <header class="section-head">
-    <span class="section-roman">II.</span>
-    <div class="section-meta">
-      <div class="section-kicker">Desk Two</div>
-      <h2 class="section-name">Reform <em>Trackers</em></h2>
-      <p class="section-desc">Live records of regulatory and legislative reform — what each agency principal or sponsor has said on the record, what they have moved on, and where the gap between rhetoric and rule sits.</p>
+        </svg></div>
+        <div class="plate-body">
+          <div class="plate-num"><span class="desk">Rules</span> · 06</div>
+          <h3>A New Way to Understand Third-Party Risk Management</h3>
+          <p>A ground-up rethink of the 2023 interagency third-party risk guidance — what it left ambiguous, where the BaaS enforcement wave exposed the gaps, and what the guidance should have been.</p>
+          <div class="plate-tags"><span>Third-Party Risk</span><span>Interagency Guidance</span><span>Vendor Oversight</span></div>
+          <div class="plate-link">Open the file →</div>
+        </div>
+      </a>
     </div>
-  </header>
+  </section>
 
-  <div class="plates">
-
-    <a class="plate" id="plate-05" data-updated="2026-05-27" data-status="live" href="eo-brief.html" aria-label="Plate 7: The Recent White House Innovation Executive Orders">
-      <div class="symbol-frame">
-        <svg viewBox="0 0 100 100" aria-hidden="true">
+  <section class="section" data-desk="reform">
+    <div class="sec-head">
+      <div class="sec-roman">II.</div>
+      <div>
+        <div class="sec-kicker">Desk Two</div>
+        <h2 class="sec-name">Reform Trackers</h2>
+        <p class="sec-desc">Live records of regulatory and legislative reform — what each agency principal or sponsor has said on the record, what they have moved on, and where the gap between rhetoric and rule sits.</p>
+      </div>
+    </div>
+    <div class="plates">
+      <a class="plate glass read" href="eo-brief.html" data-desk="reform" data-tags="executive action federal register agency implementation">
+        <div class="chip"><svg viewBox="0 0 100 100" aria-hidden="true">
           <rect x="34" y="14" width="42" height="60" fill="var(--paper)" stroke="currentColor" stroke-width="1.2"/>
           <rect x="22" y="22" width="42" height="60" fill="var(--paper)" stroke="currentColor" stroke-width="1.5"/>
           <circle cx="54" cy="34" r="7" fill="none" class="accent-stroke" stroke-width="1.4"/>
@@ -1062,21 +538,17 @@ body.index-open .index-panel{transform:translateX(0)}
           <line x1="26" y1="62" x2="54" y2="62" stroke="currentColor" stroke-width="0.6"/>
           <line x1="26" y1="68" x2="60" y2="68" stroke="currentColor" stroke-width="0.6"/>
           <path d="M 26 76 Q 32 72, 38 76 T 52 74" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-        </svg>
-        <span class="plate-stamp">№ 07</span>
-      </div>
-      <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 07</span><span class="plate-section">Reform Trackers</span></div>
-        <h3 class="plate-title">The Recent White House Innovation <em>Executive Orders</em></h3>
-        <p class="plate-desc">A clause-anchored reading of <strong>two recent White House executive orders</strong> shaping financial services policy — what each order directs, the agencies tasked with implementation, and the regulatory cascade downstream.</p>
-        <div class="plate-tags"><span>Executive Action</span><span>Federal Register</span><span>Agency Implementation</span></div>
-        <span class="plate-link"><span>Open dispatch</span><span class="arrow">→</span></span>
-      </div>
-    </a>
-
-    <a class="plate" id="plate-25" data-updated="2026-06-03" data-status="live" href="financial-system-integrity.html" aria-label="Plate 8: Financial System Integrity Executive Order">
-      <div class="symbol-frame">
-        <svg viewBox="0 0 100 100" aria-hidden="true">
+        </svg></div>
+        <div class="plate-body">
+          <div class="plate-num"><span class="desk">Reform</span> · 07</div>
+          <h3>The Recent White House Innovation Executive Orders</h3>
+          <p>A clause-anchored reading of two recent White House executive orders shaping financial services policy — what each order directs, the agencies tasked with implementation, and the regulatory cascade downstream.</p>
+          <div class="plate-tags"><span>Executive Action</span><span>Federal Register</span><span>Agency Implementation</span></div>
+          <div class="plate-link">Open the file →</div>
+        </div>
+      </a>
+      <a class="plate glass read" href="financial-system-integrity.html" data-desk="reform" data-tags="executive order system integrity agency releases federal register">
+        <div class="chip"><svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- A shield (integrity) protecting the financial system, issued by executive order -->
           <path d="M 50 14 L 78 24 L 78 50 Q 78 76 50 88 Q 22 76 22 50 L 22 24 Z" fill="none" stroke="currentColor" stroke-width="1.5"/>
           <!-- EO seal at the crest -->
@@ -1089,40 +561,32 @@ body.index-open .index-panel{transform:translateX(0)}
           <circle cx="41" cy="48" r="2.6" fill="currentColor"/>
           <circle cx="59" cy="48" r="2.6" fill="currentColor"/>
           <circle cx="50" cy="64" r="3" class="accent-fill"/>
-        </svg>
-        <span class="plate-stamp">№ 08</span>
-      </div>
-      <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 08</span><span class="plate-section">Reform Trackers</span></div>
-        <h3 class="plate-title">Financial System <em>Integrity</em></h3>
-        <p class="plate-desc">A clause-anchored reading of the recent <strong>White House Executive Order on Financial System Integrity</strong> — what the order directs, the agencies tasked with carrying it out, and the <strong>agency releases</strong> issued in response.</p>
-        <div class="plate-tags"><span>Executive Order</span><span>System Integrity</span><span>Agency Releases</span><span>Federal Register</span></div>
-        <span class="plate-link"><span>Open dispatch</span><span class="arrow">→</span></span>
-      </div>
-    </a>
-
-    <a class="plate" id="plate-06" data-updated="2026-05-18" data-status="live" href="bank-merger-reform-scorecard.html" aria-label="Plate 9: Bank Merger Reform Scorecard">
-      <div class="symbol-frame">
-        <svg viewBox="0 0 100 100" aria-hidden="true">
+        </svg></div>
+        <div class="plate-body">
+          <div class="plate-num"><span class="desk">Reform</span> · 08</div>
+          <h3>Financial System Integrity</h3>
+          <p>A clause-anchored reading of the recent White House Executive Order on Financial System Integrity — what the order directs, the agencies tasked with carrying it out, and the agency releases issued in response.</p>
+          <div class="plate-tags"><span>Executive Order</span><span>System Integrity</span><span>Agency Releases</span><span>Federal Register</span></div>
+          <div class="plate-link">Open the file →</div>
+        </div>
+      </a>
+      <a class="plate glass read" href="bank-merger-reform-scorecard.html" data-desk="reform" data-tags="12 cfr § 5.33 hhi fdic statement">
+        <div class="chip"><svg viewBox="0 0 100 100" aria-hidden="true">
           <circle cx="36" cy="50" r="24" fill="none" stroke="currentColor" stroke-width="1.5"/>
           <circle cx="64" cy="50" r="24" fill="none" stroke="currentColor" stroke-width="1.5"/>
           <path d="M 50 30 A 24 24 0 0 1 50 70 A 24 24 0 0 1 50 30 Z" class="accent-fill" opacity=".85"/>
           <path d="M 42 50 L 48 56 L 58 44" fill="none" stroke="var(--paper)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span class="plate-stamp">№ 09</span>
-      </div>
-      <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 09</span><span class="plate-section">Reform Trackers</span></div>
-        <h3 class="plate-title">Bank Merger Reform <em>Scorecard</em></h3>
-        <p class="plate-desc">A live scorecard of pending bank M&amp;A reform across the FDIC, OCC, and Federal Reserve — tracking <strong>OCC threshold alignment</strong>, HHI modernization, and rural de minimis treatment.</p>
-        <div class="plate-tags"><span>12 CFR § 5.33</span><span>HHI</span><span>FDIC Statement</span></div>
-        <span class="plate-link"><span>Open dispatch</span><span class="arrow">→</span></span>
-      </div>
-    </a>
-
-    <a class="plate" id="plate-07" data-updated="2026-05-28" data-status="live" href="fed-payment-account-analysis.html" aria-label="Plate 10: Fed Payment Account Analysis">
-      <div class="symbol-frame">
-        <svg viewBox="0 0 100 100" aria-hidden="true">
+        </svg></div>
+        <div class="plate-body">
+          <div class="plate-num"><span class="desk">Reform</span> · 09</div>
+          <h3>Bank Merger Reform Scorecard</h3>
+          <p>A live scorecard of pending bank M&amp;A reform across the FDIC, OCC, and Federal Reserve — tracking OCC threshold alignment, HHI modernization, and rural de minimis treatment.</p>
+          <div class="plate-tags"><span>12 CFR § 5.33</span><span>HHI</span><span>FDIC Statement</span></div>
+          <div class="plate-link">Open the file →</div>
+        </div>
+      </a>
+      <a class="plate glass read" href="fed-payment-account-analysis.html" data-desk="reform" data-tags="payment account 12 usc § 342 account access">
+        <div class="chip"><svg viewBox="0 0 100 100" aria-hidden="true">
           <rect x="14" y="34" width="72" height="12" fill="none" stroke="currentColor" stroke-width="1.4"/>
           <circle cx="26" cy="40" r="2.4" fill="currentColor"/>
           <circle cx="42" cy="40" r="2.4" fill="currentColor"/>
@@ -1136,21 +600,17 @@ body.index-open .index-panel{transform:translateX(0)}
           <path d="M 94 65 L 89 68" class="accent-stroke" stroke-width="1.4" fill="none" stroke-linecap="round"/>
           <text x="50" y="26" font-family="JetBrains Mono" font-size="5.5" fill="currentColor" text-anchor="middle" opacity=".5" letter-spacing="1">FULL MASTER</text>
           <text x="50" y="80" font-family="JetBrains Mono" font-size="5.5" fill="currentColor" text-anchor="middle" opacity=".75" letter-spacing="1">PAYMENT ONLY</text>
-        </svg>
-        <span class="plate-stamp">№ 10</span>
-      </div>
-      <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 10</span><span class="plate-section">Reform Trackers</span></div>
-        <h3 class="plate-title">Fed Payment Account <em>Analysis</em></h3>
-        <p class="plate-desc">Analysis of the Federal Reserve's proposed <strong>Payment Account</strong> &mdash; colloquially the "skinny" master account &mdash; with a running record of Board action from Governor Waller's October 2025 framing through the May 2026 formal proposal.</p>
-        <div class="plate-tags"><span>Payment Account</span><span>12 USC &sect; 342</span><span>Account Access</span></div>
-        <span class="plate-link"><span>Open dispatch</span><span class="arrow">&rarr;</span></span>
-      </div>
-    </a>
-
-    <a class="plate" id="plate-08" data-updated="2026-05-22" data-status="live" href="gould-occ-policy-tracker.html" aria-label="Plate 11: Gould OCC Policy Tracker">
-      <div class="symbol-frame">
-        <svg viewBox="0 0 100 100" aria-hidden="true">
+        </svg></div>
+        <div class="plate-body">
+          <div class="plate-num"><span class="desk">Reform</span> · 10</div>
+          <h3>Fed Payment Account Analysis</h3>
+          <p>Analysis of the Federal Reserve's proposed Payment Account — colloquially the "skinny" master account — with a running record of Board action from Governor Waller's October 2025 framing through the May 2026 formal proposal.</p>
+          <div class="plate-tags"><span>Payment Account</span><span>12 USC § 342</span><span>Account Access</span></div>
+          <div class="plate-link">Open the file →</div>
+        </div>
+      </a>
+      <a class="plate glass read" href="gould-occ-policy-tracker.html" data-desk="reform" data-tags="occ bulletins 12 cfr pt. 5 licensing">
+        <div class="chip"><svg viewBox="0 0 100 100" aria-hidden="true">
           <path d="M 14 78 Q 32 70, 44 58 T 76 28" fill="none" stroke="currentColor" stroke-width="1.5"/>
           <circle cx="14" cy="78" r="3" fill="currentColor"/>
           <circle cx="34" cy="68" r="2.5" fill="currentColor"/>
@@ -1158,21 +618,17 @@ body.index-open .index-panel{transform:translateX(0)}
           <circle cx="68" cy="36" r="2.5" fill="currentColor"/>
           <path d="M 76 28 L 86 22 L 80 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
           <circle cx="86" cy="22" r="4" class="accent-fill"/>
-        </svg>
-        <span class="plate-stamp">№ 11</span>
-      </div>
-      <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 11</span><span class="plate-section">Reform Trackers</span></div>
-        <h3 class="plate-title">Gould OCC Policy <em>Tracker</em></h3>
-        <p class="plate-desc">A running record of OCC policy moves under <strong>Comptroller Gould</strong> — chartering decisions, preemption posture, supervisory letters, and licensing precedent.</p>
-        <div class="plate-tags"><span>OCC Bulletins</span><span>12 CFR Pt. 5</span><span>Licensing</span></div>
-        <span class="plate-link"><span>Open dispatch</span><span class="arrow">→</span></span>
-      </div>
-    </a>
-
-    <a class="plate" id="plate-10" data-updated="2026-05-30" data-status="live" href="bankregwire-licensing.html" aria-label="Plate 12: Global Fintech Licensing">
-      <div class="symbol-frame">
-        <svg viewBox="0 0 100 100" aria-hidden="true">
+        </svg></div>
+        <div class="plate-body">
+          <div class="plate-num"><span class="desk">Reform</span> · 11</div>
+          <h3>Gould OCC Policy Tracker</h3>
+          <p>A running record of OCC policy moves under Comptroller Gould — chartering decisions, preemption posture, supervisory letters, and licensing precedent.</p>
+          <div class="plate-tags"><span>OCC Bulletins</span><span>12 CFR Pt. 5</span><span>Licensing</span></div>
+          <div class="plate-link">Open the file →</div>
+        </div>
+      </a>
+      <a class="plate glass read" href="bankregwire-licensing.html" data-desk="reform" data-tags="licensing mtl mica cross-border">
+        <div class="chip"><svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- globe with licensing nodes across jurisdictions -->
           <circle cx="50" cy="50" r="34" fill="none" stroke="currentColor" stroke-width="1.5"/>
           <!-- latitude lines -->
@@ -1190,21 +646,17 @@ body.index-open .index-panel{transform:translateX(0)}
           <!-- the live/accent node -->
           <circle cx="64" cy="62" r="3.2" class="accent-fill"/>
           <circle cx="64" cy="62" r="6" fill="none" class="accent-stroke" stroke-width="0.8" opacity=".6"/>
-        </svg>
-        <span class="plate-stamp">№ 12</span>
-      </div>
-      <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 12</span><span class="plate-section">Reform Trackers</span></div>
-        <h3 class="plate-title">Global Fintech <em>Licensing</em></h3>
-        <p class="plate-desc">A comparative reading of how major jurisdictions license fintechs &mdash; <strong>U.S. state MTLs and special-purpose charters</strong> set against the UK, EU/MiCA, Singapore and others &mdash; mapping where the perimeter is drawn and how passporting works.</p>
-        <div class="plate-tags"><span>Licensing</span><span>MTL</span><span>MiCA</span><span>Cross-Border</span></div>
-        <span class="plate-link"><span>Open dispatch</span><span class="arrow">→</span></span>
-      </div>
-    </a>
-
-    <a class="plate" id="plate-11" data-updated="2026-05-25" data-status="live" href="rulemaking-calendar.html" aria-label="Plate 13: A Policy Lookahead">
-      <div class="symbol-frame">
-        <svg viewBox="0 0 100 100" aria-hidden="true">
+        </svg></div>
+        <div class="plate-body">
+          <div class="plate-num"><span class="desk">Reform</span> · 12</div>
+          <h3>Global Fintech Licensing</h3>
+          <p>A comparative reading of how major jurisdictions license fintechs — U.S. state MTLs and special-purpose charters set against the UK, EU/MiCA, Singapore and others — mapping where the perimeter is drawn and how passporting works.</p>
+          <div class="plate-tags"><span>Licensing</span><span>MTL</span><span>MiCA</span><span>Cross-Border</span></div>
+          <div class="plate-link">Open the file →</div>
+        </div>
+      </a>
+      <a class="plate glass read" href="rulemaking-calendar.html" data-desk="reform" data-tags="proof of concept multi-source forecast">
+        <div class="chip"><svg viewBox="0 0 100 100" aria-hidden="true">
           <line x1="12" y1="28" x2="48" y2="50" stroke="currentColor" stroke-width="1.2" opacity=".55"/>
           <line x1="12" y1="42" x2="48" y2="50" stroke="currentColor" stroke-width="1.2" opacity=".75"/>
           <line x1="12" y1="58" x2="48" y2="50" stroke="currentColor" stroke-width="1.2" opacity=".75"/>
@@ -1220,21 +672,17 @@ body.index-open .index-panel{transform:translateX(0)}
           <path d="M 78 46 L 86 50 L 78 54" fill="none" class="accent-stroke" stroke-width="1.8" stroke-linejoin="round"/>
           <line x1="72" y1="44" x2="72" y2="56" stroke="currentColor" stroke-width="0.5" opacity=".35"/>
           <line x1="78" y1="44" x2="78" y2="56" stroke="currentColor" stroke-width="0.5" opacity=".35"/>
-        </svg>
-        <span class="plate-stamp">&#8470; 13</span>
-      </div>
-      <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 13</span><span class="plate-section">Reform Trackers</span></div>
-        <h3 class="plate-title">A Policy <em>Lookahead</em></h3>
-        <p class="plate-desc">An experimental rulemaking calendar that triangulates <strong>what is coming</strong> from agency principals&#39; on-the-record comments, the Federal Register, OIRA&#39;s pending review queue, and each agency&#39;s Unified Spring Agenda.</p>
-        <div class="plate-tags"><span>Proof of Concept</span><span>Multi-source</span><span>Forecast</span></div>
-        <span class="plate-link"><span>Open dispatch</span><span class="arrow">&rarr;</span></span>
-      </div>
-    </a>
-
-    <a class="plate" id="plate-12" data-updated="2026-05-09" data-status="live" href="aba-bpi-icba-comparison-sourced.html" aria-label="Plate 14: ABA / BPI / ICBA Position Comparison">
-      <div class="symbol-frame">
-        <svg viewBox="0 0 100 100" aria-hidden="true">
+        </svg></div>
+        <div class="plate-body">
+          <div class="plate-num"><span class="desk">Reform</span> · 13</div>
+          <h3>A Policy Lookahead</h3>
+          <p>An experimental rulemaking calendar that triangulates what is coming from agency principals' on-the-record comments, the Federal Register, OIRA's pending review queue, and each agency's Unified Spring Agenda.</p>
+          <div class="plate-tags"><span>Proof of Concept</span><span>Multi-source</span><span>Forecast</span></div>
+          <div class="plate-link">Open the file →</div>
+        </div>
+      </a>
+      <a class="plate glass read" href="aba-bpi-icba-comparison-sourced.html" data-desk="reform" data-tags="basel iii trade groups joint letters">
+        <div class="chip"><svg viewBox="0 0 100 100" aria-hidden="true">
           <circle cx="40" cy="40" r="24" fill="none" stroke="currentColor" stroke-width="1.4"/>
           <circle cx="60" cy="40" r="24" fill="none" stroke="currentColor" stroke-width="1.4"/>
           <circle cx="50" cy="60" r="24" fill="none" stroke="currentColor" stroke-width="1.4"/>
@@ -1242,21 +690,17 @@ body.index-open .index-panel{transform:translateX(0)}
           <text x="27" y="30" font-family="JetBrains Mono" font-size="7" fill="currentColor" text-anchor="middle" opacity=".7">ABA</text>
           <text x="73" y="30" font-family="JetBrains Mono" font-size="7" fill="currentColor" text-anchor="middle" opacity=".7">BPI</text>
           <text x="50" y="82" font-family="JetBrains Mono" font-size="7" fill="currentColor" text-anchor="middle" opacity=".7">ICBA</text>
-        </svg>
-        <span class="plate-stamp">№ 14</span>
-      </div>
-      <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 14</span><span class="plate-section">Reform Trackers</span></div>
-        <h3 class="plate-title">ABA &middot; BPI &middot; ICBA <em>Position Comparison</em></h3>
-        <p class="plate-desc">A sourced comparison of the headline policy positions of the <strong>ABA, BPI, and ICBA</strong> &mdash; mapping where the three trade groups align (Basel capital, supervisory reform) and where ICBA's community-bank principles diverge on consolidation and the separation of banking and commerce.</p>
-        <div class="plate-tags"><span>Basel III</span><span>Trade Groups</span><span>Joint Letters</span></div>
-        <span class="plate-link"><span>Open dispatch</span><span class="arrow">&rarr;</span></span>
-      </div>
-    </a>
-
-    <a class="plate" id="plate-21" data-updated="2026-06-01" data-status="live" href="financial-services-bill-tracker.html" aria-label="Plate 15: Financial Services Bill Tracker">
-      <div class="symbol-frame">
-        <svg viewBox="0 0 100 100" aria-hidden="true">
+        </svg></div>
+        <div class="plate-body">
+          <div class="plate-num"><span class="desk">Reform</span> · 14</div>
+          <h3>ABA · BPI · ICBA Position Comparison</h3>
+          <p>A sourced comparison of the headline policy positions of the ABA, BPI, and ICBA — mapping where the three trade groups align (Basel capital, supervisory reform) and where ICBA's community-bank principles diverge on consolidation and the separation of banking and commerce.</p>
+          <div class="plate-tags"><span>Basel III</span><span>Trade Groups</span><span>Joint Letters</span></div>
+          <div class="plate-link">Open the file →</div>
+        </div>
+      </a>
+      <a class="plate glass read" href="financial-services-bill-tracker.html" data-desk="reform" data-tags="legislation hfsc senate banking bill status">
+        <div class="chip"><svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- Capitol dome over a legislative progress track -->
           <!-- dome -->
           <path d="M 38 40 Q 50 22 62 40" fill="none" stroke="currentColor" stroke-width="1.4"/>
@@ -1281,21 +725,17 @@ body.index-open .index-panel{transform:translateX(0)}
           <text x="39.3" y="86" font-family="JetBrains Mono" font-size="5" fill="currentColor" text-anchor="middle" opacity=".55">CMTE</text>
           <text x="60.6" y="86" font-family="JetBrains Mono" font-size="5" fill="currentColor" text-anchor="middle" opacity=".85">FLOOR</text>
           <text x="82" y="86" font-family="JetBrains Mono" font-size="5" fill="currentColor" text-anchor="middle" opacity=".55">LAW</text>
-        </svg>
-        <span class="plate-stamp">№ 15</span>
-      </div>
-      <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 15</span><span class="plate-section">Reform Trackers</span></div>
-        <h3 class="plate-title">Financial Services <em>Bill Tracker</em></h3>
-        <p class="plate-desc">A live tracker of <strong>financial services legislation</strong> moving through Congress — bills by chamber and committee, sponsor and posture, and where each sits on the path from <strong>introduction to enactment</strong>.</p>
-        <div class="plate-tags"><span>Legislation</span><span>HFSC</span><span>Senate Banking</span><span>Bill Status</span></div>
-        <span class="plate-link"><span>Open dispatch</span><span class="arrow">→</span></span>
-      </div>
-    </a>
-
-    <a class="plate" id="plate-22" data-updated="2026-06-03" data-status="live" href="cfpb-unmaking-tracker.html" aria-label="Plate 16: The CFPB's Transformation">
-      <div class="symbol-frame">
-        <svg viewBox="0 0 100 100" aria-hidden="true">
+        </svg></div>
+        <div class="plate-body">
+          <div class="plate-num"><span class="desk">Reform</span> · 15</div>
+          <h3>Financial Services Bill Tracker</h3>
+          <p>A live tracker of financial services legislation moving through Congress — bills by chamber and committee, sponsor and posture, and where each sits on the path from introduction to enactment.</p>
+          <div class="plate-tags"><span>Legislation</span><span>HFSC</span><span>Senate Banking</span><span>Bill Status</span></div>
+          <div class="plate-link">Open the file →</div>
+        </div>
+      </a>
+      <a class="plate glass read" href="cfpb-unmaking-tracker.html" data-desk="reform" data-tags="cfpb agency action rule rollback litigation">
+        <div class="chip"><svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- An agency façade being unmade: solid columns at left, fading/removed at right -->
           <!-- pediment -->
           <path d="M 20 34 L 50 18 L 80 34 Z" fill="none" stroke="currentColor" stroke-width="1.4"/>
@@ -1313,21 +753,17 @@ body.index-open .index-panel{transform:translateX(0)}
           <circle cx="62" cy="30" r="3.2" class="accent-fill"/>
           <line x1="60" y1="28" x2="64" y2="32" stroke="var(--paper)" stroke-width="1"/>
           <line x1="64" y1="28" x2="60" y2="32" stroke="var(--paper)" stroke-width="1"/>
-        </svg>
-        <span class="plate-stamp">№ 16</span>
-      </div>
-      <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 16</span><span class="plate-section">Reform Trackers</span></div>
-        <h3 class="plate-title">The CFPB's <em>Transformation</em></h3>
-        <p class="plate-desc">A running tracker of the changes remaking the <strong>Consumer Financial Protection Bureau</strong> — leadership and funding posture, rulemaking withdrawals, staffing and structural changes, and the <strong>litigation over its authority</strong>.</p>
-        <div class="plate-tags"><span>CFPB</span><span>Agency Action</span><span>Rule Rollback</span><span>Litigation</span></div>
-        <span class="plate-link"><span>Open dispatch</span><span class="arrow">→</span></span>
-      </div>
-    </a>
-
-    <a class="plate" id="plate-23" data-updated="2026-06-03" data-status="live" href="market-structure-watch.html" aria-label="Plate 17: The Odds Digital Asset Market Structure Gets Done">
-      <div class="symbol-frame">
-        <svg viewBox="0 0 100 100" aria-hidden="true">
+        </svg></div>
+        <div class="plate-body">
+          <div class="plate-num"><span class="desk">Reform</span> · 16</div>
+          <h3>The CFPB's Transformation</h3>
+          <p>A running tracker of the changes remaking the Consumer Financial Protection Bureau — leadership and funding posture, rulemaking withdrawals, staffing and structural changes, and the litigation over its authority.</p>
+          <div class="plate-tags"><span>CFPB</span><span>Agency Action</span><span>Rule Rollback</span><span>Litigation</span></div>
+          <div class="plate-link">Open the file →</div>
+        </div>
+      </a>
+      <a class="plate glass read" href="market-structure-watch.html" data-desk="reform" data-tags="digital assets market structure clarity act forecast">
+        <div class="chip"><svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- An odds gauge: semicircular dial with a needle weighing the chances -->
           <path d="M 20 64 A 30 30 0 0 1 80 64" fill="none" stroke="currentColor" stroke-width="1.5"/>
           <!-- tick marks along the arc -->
@@ -1347,21 +783,17 @@ body.index-open .index-panel{transform:translateX(0)}
           <!-- end labels -->
           <text x="18" y="76" font-family="JetBrains Mono" font-size="5.5" fill="currentColor" opacity=".6" letter-spacing="0.5">LONG SHOT</text>
           <text x="82" y="76" font-family="JetBrains Mono" font-size="5.5" fill="currentColor" text-anchor="end" opacity=".85" letter-spacing="0.5">DONE</text>
-        </svg>
-        <span class="plate-stamp">№ 17</span>
-      </div>
-      <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 17</span><span class="plate-section">Reform Trackers</span></div>
-        <h3 class="plate-title">The Odds Digital Asset <em>Market Structure</em> Gets Done</h3>
-        <p class="plate-desc">A handicapping of whether <strong>digital asset market structure</strong> legislation gets enacted — the <strong>CLARITY Act</strong>'s path through the Senate, the sticking points between the committees, and the odds the framework crosses the finish line this Congress.</p>
-        <div class="plate-tags"><span>Digital Assets</span><span>Market Structure</span><span>CLARITY Act</span><span>Forecast</span></div>
-        <span class="plate-link"><span>Open dispatch</span><span class="arrow">→</span></span>
-      </div>
-    </a>
-
-    <a class="plate" id="plate-24" data-updated="2026-06-03" data-status="live" href="regulatory-tracker.html" aria-label="Plate 18: Regulatory Tracker">
-      <div class="symbol-frame">
-        <svg viewBox="0 0 100 100" aria-hidden="true">
+        </svg></div>
+        <div class="plate-body">
+          <div class="plate-num"><span class="desk">Reform</span> · 17</div>
+          <h3>The Odds Digital Asset Market Structure Gets Done</h3>
+          <p>A handicapping of whether digital asset market structure legislation gets enacted — the CLARITY Act's path through the Senate, the sticking points between the committees, and the odds the framework crosses the finish line this Congress.</p>
+          <div class="plate-tags"><span>Digital Assets</span><span>Market Structure</span><span>CLARITY Act</span><span>Forecast</span></div>
+          <div class="plate-link">Open the file →</div>
+        </div>
+      </a>
+      <a class="plate glass read" href="regulatory-tracker.html" data-desk="reform" data-tags="live monitor multi-agency api federal register">
+        <div class="chip"><svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- Multi-agency sources feeding a live aggregated feed via API -->
           <!-- agency source nodes (left); accent = adjacent regulator -->
           <circle cx="16" cy="28" r="2.4" fill="currentColor"/>
@@ -1385,40 +817,30 @@ body.index-open .index-panel{transform:translateX(0)}
           <line x1="52" y1="78" x2="80" y2="78" stroke="currentColor" stroke-width="1.6" opacity=".8"/>
           <!-- live pulse on the newest entry -->
           <circle cx="86" cy="30" r="2.6" class="accent-fill"/>
-        </svg>
-        <span class="plate-stamp">№ 18</span>
-      </div>
-      <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 18</span><span class="plate-section">Reform Trackers</span></div>
-        <h3 class="plate-title">Regulatory <em>Tracker</em></h3>
-        <p class="plate-desc">A live monitor that pulls activity from the <strong>federal banking agencies</strong> — and adjacent regulators — directly via <strong>API</strong>: new rules, guidance, enforcement, and notices, aggregated into a single feed as they post.</p>
-        <div class="plate-tags"><span>Live Monitor</span><span>Multi-Agency</span><span>API</span><span>Federal Register</span></div>
-        <span class="plate-link"><span>Open dispatch</span><span class="arrow">→</span></span>
-      </div>
-    </a>
-
-  </div>
-</section>
-
-<!-- ============================================================
-     SECTION III — STRUCTURAL FRAMEWORKS
-     ============================================================ -->
-<section class="section" id="section-iii">
-  <button type="button" class="section-toggle" aria-expanded="true" aria-controls="section-iii" aria-label="Collapse Structural Frameworks"><span class="sct-label">Collapse</span> <span class="chev">&#9650;</span></button>
-  <header class="section-head">
-    <span class="section-roman">III.</span>
-    <div class="section-meta">
-      <div class="section-kicker">Desk Three</div>
-      <h2 class="section-name">Structural <em>Frameworks</em></h2>
-      <p class="section-desc">The architecture beneath the headlines — chartering authority, preemption, agency jurisdiction, and the long arc of how U.S. banking got to its present configuration. The reference layer for every other dispatch.</p>
+        </svg></div>
+        <div class="plate-body">
+          <div class="plate-num"><span class="desk">Reform</span> · 18</div>
+          <h3>Regulatory Tracker</h3>
+          <p>A live monitor that pulls activity from the federal banking agencies — and adjacent regulators — directly via API: new rules, guidance, enforcement, and notices, aggregated into a single feed as they post.</p>
+          <div class="plate-tags"><span>Live Monitor</span><span>Multi-Agency</span><span>API</span><span>Federal Register</span></div>
+          <div class="plate-link">Open the file →</div>
+        </div>
+      </a>
     </div>
-  </header>
+  </section>
 
-  <div class="plates">
-
-    <a class="plate" id="plate-13" data-updated="2026-04-22" data-status="live" href="fed-supervisory-comp.html" aria-label="Plate 19: New Federal Reserve Supervisory Operating Principles">
-      <div class="symbol-frame">
-        <svg viewBox="0 0 100 100" aria-hidden="true">
+  <section class="section" data-desk="structural">
+    <div class="sec-head">
+      <div class="sec-roman">III.</div>
+      <div>
+        <div class="sec-kicker">Desk Three</div>
+        <h2 class="sec-name">Structural Frameworks</h2>
+        <p class="sec-desc">The architecture beneath the headlines — chartering authority, preemption, agency jurisdiction, and the long arc of how U.S. banking got to its present configuration. The reference layer for every other dispatch.</p>
+      </div>
+    </div>
+    <div class="plates">
+      <a class="plate glass read" href="fed-supervisory-comp.html" data-desk="structural" data-tags="material risk mra / mria vcfs bowman">
+        <div class="chip"><svg viewBox="0 0 100 100" aria-hidden="true">
           <line x1="16" y1="84" x2="50" y2="50" stroke="currentColor" stroke-width="1.8"/>
           <line x1="50" y1="50" x2="84" y2="16" stroke="currentColor" stroke-width="1.2" stroke-dasharray="3 3" opacity=".35"/>
           <line x1="50" y1="50" x2="86" y2="50" class="accent-stroke" stroke-width="2.4"/>
@@ -1428,21 +850,17 @@ body.index-open .index-panel{transform:translateX(0)}
           <path d="M 67 33 A 24 24 0 0 1 70 50" fill="none" stroke="currentColor" stroke-width="0.7" opacity=".4"/>
           <text x="78" y="12" font-family="JetBrains Mono" font-size="5.5" fill="currentColor" opacity=".4" text-anchor="middle" letter-spacing="0.5">PROCESS</text>
           <text x="74" y="64" font-family="JetBrains Mono" font-size="5.5" fill="currentColor" opacity=".8" text-anchor="middle" letter-spacing="0.5">MATERIAL RISK</text>
-        </svg>
-        <span class="plate-stamp">№ 19</span>
-      </div>
-      <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 19</span><span class="plate-section">Structural Frameworks</span></div>
-        <h3 class="plate-title">New Federal Reserve Supervisory <em>Operating Principles</em></h3>
-        <p class="plate-desc">A look at an important pivot &mdash; Vice Chair Bowman's <strong>Statement of Supervisory Operating Principles</strong>, which redirects Federal Reserve examiners toward material financial risk and away from process, and the October 2025 &rarr; April 2026 revision arc.</p>
-        <div class="plate-tags"><span>Material Risk</span><span>MRA / MRIA</span><span>VCfS Bowman</span></div>
-        <span class="plate-link"><span>Open dispatch</span><span class="arrow">→</span></span>
-      </div>
-    </a>
-
-    <a class="plate" id="plate-14" data-updated="2026-03-30" data-status="live" href="us-trust-company-regulatory-framework.html" aria-label="Plate 20: U.S. Trust Company Regulatory Framework">
-      <div class="symbol-frame">
-        <svg viewBox="0 0 100 100" aria-hidden="true">
+        </svg></div>
+        <div class="plate-body">
+          <div class="plate-num"><span class="desk">Structural</span> · 19</div>
+          <h3>New Federal Reserve Supervisory Operating Principles</h3>
+          <p>A look at an important pivot — Vice Chair Bowman's Statement of Supervisory Operating Principles, which redirects Federal Reserve examiners toward material financial risk and away from process, and the October 2025 → April 2026 revision arc.</p>
+          <div class="plate-tags"><span>Material Risk</span><span>MRA / MRIA</span><span>VCfS Bowman</span></div>
+          <div class="plate-link">Open the file →</div>
+        </div>
+      </a>
+      <a class="plate glass read" href="us-trust-company-regulatory-framework.html" data-desk="structural" data-tags="12 cfr pt. 9 csbs nca state law">
+        <div class="chip"><svg viewBox="0 0 100 100" aria-hidden="true">
           <rect x="20" y="20" width="60" height="60" fill="none" stroke="currentColor" stroke-width="1.5"/>
           <circle cx="50" cy="50" r="22" fill="none" stroke="currentColor" stroke-width="1.2"/>
           <circle cx="50" cy="44" r="6" class="accent-fill"/>
@@ -1451,21 +869,17 @@ body.index-open .index-panel{transform:translateX(0)}
           <circle cx="74" cy="26" r="1.5" fill="currentColor"/>
           <circle cx="26" cy="74" r="1.5" fill="currentColor"/>
           <circle cx="74" cy="74" r="1.5" fill="currentColor"/>
-        </svg>
-        <span class="plate-stamp">№ 20</span>
-      </div>
-      <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 20</span><span class="plate-section">Structural Frameworks</span></div>
-        <h3 class="plate-title">U.S. Trust Company <em>Regulatory Framework</em></h3>
-        <p class="plate-desc">How state-chartered and OCC-chartered trust companies are supervised, including the <strong>CSBS Nationwide Cooperative Agreement</strong>, MTL exposure, and federal preemption posture.</p>
-        <div class="plate-tags"><span>12 CFR Pt. 9</span><span>CSBS NCA</span><span>State Law</span></div>
-        <span class="plate-link"><span>Open dispatch</span><span class="arrow">→</span></span>
-      </div>
-    </a>
-
-    <a class="plate" id="plate-15" data-updated="2026-04-15" data-status="live" href="occ-preemption-timeline.html" aria-label="Plate 21: OCC Preemption Timeline">
-      <div class="symbol-frame">
-        <svg viewBox="0 0 100 100" aria-hidden="true">
+        </svg></div>
+        <div class="plate-body">
+          <div class="plate-num"><span class="desk">Structural</span> · 20</div>
+          <h3>U.S. Trust Company Regulatory Framework</h3>
+          <p>How state-chartered and OCC-chartered trust companies are supervised, including the CSBS Nationwide Cooperative Agreement, MTL exposure, and federal preemption posture.</p>
+          <div class="plate-tags"><span>12 CFR Pt. 9</span><span>CSBS NCA</span><span>State Law</span></div>
+          <div class="plate-link">Open the file →</div>
+        </div>
+      </a>
+      <a class="plate glass read" href="occ-preemption-timeline.html" data-desk="structural" data-tags="12 usc § 25b cuomo v. clearing house cantero">
+        <div class="chip"><svg viewBox="0 0 100 100" aria-hidden="true">
           <line x1="14" y1="28" x2="58" y2="28" stroke="currentColor" stroke-width="2.4"/>
           <line x1="14" y1="42" x2="50" y2="42" stroke="currentColor" stroke-width="2.4"/>
           <line x1="14" y1="56" x2="88" y2="56" class="accent-stroke" stroke-width="3"/>
@@ -1473,21 +887,17 @@ body.index-open .index-panel{transform:translateX(0)}
           <line x1="14" y1="84" x2="54" y2="84" stroke="currentColor" stroke-width="2.4"/>
           <line x1="14" y1="22" x2="14" y2="90" stroke="currentColor" stroke-width="0.8"/>
           <circle cx="88" cy="56" r="3" class="accent-fill"/>
-        </svg>
-        <span class="plate-stamp">№ 21</span>
-      </div>
-      <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 21</span><span class="plate-section">Structural Frameworks</span></div>
-        <h3 class="plate-title">OCC Preemption <em>Timeline</em></h3>
-        <p class="plate-desc">A timeline of OCC preemption authority — statute, regulation, and litigation — through the Dodd-Frank standard at <strong>12 USC § 25b</strong> and the recent reassertions.</p>
-        <div class="plate-tags"><span>12 USC § 25b</span><span>Cuomo v. Clearing House</span><span>Cantero</span></div>
-        <span class="plate-link"><span>Open dispatch</span><span class="arrow">→</span></span>
-      </div>
-    </a>
-
-    <a class="plate" id="plate-16" data-updated="2026-03-18" data-status="live" href="regulatory-map.html" aria-label="Plate 22: Regulatory Map">
-      <div class="symbol-frame">
-        <svg viewBox="0 0 100 100" aria-hidden="true">
+        </svg></div>
+        <div class="plate-body">
+          <div class="plate-num"><span class="desk">Structural</span> · 21</div>
+          <h3>OCC Preemption Timeline</h3>
+          <p>A timeline of OCC preemption authority — statute, regulation, and litigation — through the Dodd-Frank standard at 12 USC § 25b and the recent reassertions.</p>
+          <div class="plate-tags"><span>12 USC § 25b</span><span>Cuomo v. Clearing House</span><span>Cantero</span></div>
+          <div class="plate-link">Open the file →</div>
+        </div>
+      </a>
+      <a class="plate glass read" href="regulatory-map.html" data-desk="structural" data-tags="fdic occ frb csbs">
+        <div class="chip"><svg viewBox="0 0 100 100" aria-hidden="true">
           <circle cx="50" cy="50" r="34" fill="none" stroke="currentColor" stroke-width="1"/>
           <circle cx="50" cy="50" r="22" fill="none" stroke="currentColor" stroke-width="0.6" stroke-dasharray="2 3"/>
           <polygon points="50,18 55,50 50,46 45,50" class="accent-fill"/>
@@ -1496,21 +906,17 @@ body.index-open .index-panel{transform:translateX(0)}
           <polygon points="18,50 50,55 46,50 50,45" fill="none" stroke="currentColor" stroke-width="1"/>
           <circle cx="50" cy="50" r="2" fill="currentColor"/>
           <text x="50" y="14" font-family="JetBrains Mono" font-size="7" fill="currentColor" text-anchor="middle">N</text>
-        </svg>
-        <span class="plate-stamp">№ 22</span>
-      </div>
-      <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 22</span><span class="plate-section">Structural Frameworks</span></div>
-        <h3 class="plate-title">Regulatory <em>Map</em></h3>
-        <p class="plate-desc">A working map of the federal–state supervisory architecture: <strong>who charters, who examines, who enforces</strong>, and where authority overlaps across the dual banking system.</p>
-        <div class="plate-tags"><span>FDIC</span><span>OCC</span><span>FRB</span><span>CSBS</span></div>
-        <span class="plate-link"><span>Open dispatch</span><span class="arrow">→</span></span>
-      </div>
-    </a>
-
-    <a class="plate" id="plate-18" data-updated="2026-02-10" data-status="live" href="history-of-banking.html" aria-label="Plate 23: History of Banking">
-      <div class="symbol-frame">
-        <svg viewBox="0 0 100 100" aria-hidden="true">
+        </svg></div>
+        <div class="plate-body">
+          <div class="plate-num"><span class="desk">Structural</span> · 22</div>
+          <h3>Regulatory Map</h3>
+          <p>A working map of the federal–state supervisory architecture: who charters, who examines, who enforces, and where authority overlaps across the dual banking system.</p>
+          <div class="plate-tags"><span>FDIC</span><span>OCC</span><span>FRB</span><span>CSBS</span></div>
+          <div class="plate-link">Open the file →</div>
+        </div>
+      </a>
+      <a class="plate glass read" href="history-of-banking.html" data-desk="structural" data-tags="national bank act federal reserve act glass–steagall">
+        <div class="chip"><svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- four era rails stacking through time -->
           <line x1="18" y1="26" x2="86" y2="26" stroke="currentColor" stroke-width="1.6" opacity=".75"/>
           <circle cx="18" cy="26" r="2.4" fill="currentColor"/>
@@ -1524,363 +930,177 @@ body.index-open .index-panel{transform:translateX(0)}
           <line x1="14" y1="20" x2="14" y2="86" stroke="currentColor" stroke-width="0.7"/>
           <text x="90" y="28" font-family="JetBrains Mono" font-size="5" fill="currentColor" opacity=".5">1791</text>
           <text x="90" y="64" font-family="JetBrains Mono" font-size="5" fill="currentColor" opacity=".8">1913</text>
-        </svg>
-        <span class="plate-stamp">№ 23</span>
-      </div>
-      <div class="plate-body">
-        <div class="plate-meta"><span class="plate-num">Dispatch 23</span><span class="plate-section">Structural Frameworks</span></div>
-        <h3 class="plate-title">History of <em>Banking</em></h3>
-        <p class="plate-desc">A long-arc reading of U.S. banking structure — from the <strong>First Bank of the United States</strong> through the National Bank Act, the founding of the <strong>Federal Reserve</strong>, Glass–Steagall and FDIC, to the dual-charter system today. The reference layer beneath every other dispatch.</p>
-        <div class="plate-tags"><span>National Bank Act</span><span>Federal Reserve Act</span><span>Glass–Steagall</span></div>
-        <span class="plate-link"><span>Open dispatch</span><span class="arrow">→</span></span>
-      </div>
-    </a>
+        </svg></div>
+        <div class="plate-body">
+          <div class="plate-num"><span class="desk">Structural</span> · 23</div>
+          <h3>History of Banking</h3>
+          <p>A long-arc reading of U.S. banking structure — from the First Bank of the United States through the National Bank Act, the founding of the Federal Reserve, Glass–Steagall and FDIC, to the dual-charter system today. The reference layer beneath every other dispatch.</p>
+          <div class="plate-tags"><span>National Bank Act</span><span>Federal Reserve Act</span><span>Glass–Steagall</span></div>
+          <div class="plate-link">Open the file →</div>
+        </div>
+      </a>
+    </div>
+  </section>
 
+  <div class="empty" id="empty">No dispatches match. Clear the search to see the full catalogue.</div>
+
+  <footer class="colophon">
+    <div class="c-mark serif">Bank<em>Reg</em>Wire<span class="pdot">.</span></div>
+    <p>Filed from the primary source. Guidance, rule text, and legislation read closely, with conclusions front-loaded and a working practitioner in mind.</p>
+    <p>The engraving beneath the page is a quiet field of currencies, dollar, euro, and bitcoin foremost. It runs the whole site as one plate; the glass above it carries the reading.</p>
+    <div class="c-meta">© 2026 BankRegWire · A working catalogue · Not legal advice</div>
+  </footer>
+</div>
+
+<!-- ============ ENTRY NOTICE (dismissible pop-up) ============ -->
+<div class="gate" id="entry">
+  <div class="gate-inner">
+    <div class="gate-card glass hero" id="entryCard" role="dialog" aria-modal="true" aria-labelledby="entryTitle">
+      <div class="gate-eyebrow"><i></i> Institutional preview</div>
+      <div class="gate-mark serif" id="entryTitle">Bank<em>Reg</em>Wire<span class="pdot">.</span></div>
+      <div class="gate-rule"></div>
+      <p class="gate-lede">A working catalogue of U.S. financial services regulation, <em>filed from the primary source</em>. Conclusions are front-loaded and the rule text is read closely. This is a working reference, not legal advice.</p>
+      <p class="gate-foot">Press <code>Esc</code> or click outside to continue.</p>
+      <button class="gate-btn" type="button" id="entryBtn">Enter <span class="arrow">→</span></button>
+    </div>
   </div>
-</section>
-
-<!-- ============================================================
-     FOOTER
-     ============================================================ -->
-<footer class="atlas-footer">
-  <div class="mark">BankReg<span class="w">Wire</span><span class="pdot">.</span></div>
-  <div class="meta">
-    <div><b>Vol. I &middot; No. 1</b> &middot; Rev. May 2026</div>
-    <div>Primary-source methodology &middot; Conclusions front-loaded</div>
-    <div>Preview edition &middot; <a href="mailto:feedback@bankregwire.com?subject=BankRegWire%20feedback">Send feedback</a></div>
-    <div>Filed from the wire room &middot; <a href="#top">↑ back to top</a></div>
-  </div>
-</footer>
-
-<div class="print-strip">
-  <span>End of Catalogue &middot; <span class="acc">Dispatches 01 — 23</span></span>
-  <span>U.S. Financial Services Regulation</span>
-  <span>Set in Fraunces, Archivo &amp; JetBrains Mono</span>
 </div>
 
 <script>
-// ============================================================
-// INTRO SPLASH (no login)
-// ------------------------------------------------------------
-// Opens the site on a click / Enter / Escape. No auth.
-// To re-add real access control later, put the deployed site
-// behind Cloudflare Access — this splash can stay in front.
-// ============================================================
 (function(){
-  const gate = document.getElementById('gate');
-  const enterBtn = document.getElementById('gate-enter');
-  const sessionEl = document.getElementById('masthead-session');
-  if(!gate) return;
+  "use strict";
 
-  function enter(){
-    if(document.body.classList.contains('unlocked')) return;
-    document.body.classList.add('unlocked');
-    if(sessionEl){
-      sessionEl.innerHTML = '<span class="session-chip"><span class="live-dot"></span> Preview edition</span>';
-    }
-    // move focus into the page for keyboard users
-    const skip = document.getElementById('top');
-    if(skip && skip.focus) setTimeout(()=>skip.focus({preventScroll:true}), 400);
+  /* ===== displacement map (red=X, green=Y, neutral center) ===== */
+  function channelSVG(axis){
+    var x2=axis==='x'?'1':'0', y2=axis==='x'?'0':'1';
+    var lo=axis==='x'?'rgb(28,0,0)':'rgb(0,28,0)', mid=axis==='x'?'rgb(128,0,0)':'rgb(0,128,0)', hi=axis==='x'?'rgb(228,0,0)':'rgb(0,228,0)';
+    return "<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' preserveAspectRatio='none' viewBox='0 0 100 100'>"
+      +"<defs><linearGradient id='g' x1='0' y1='0' x2='"+x2+"' y2='"+y2+"'>"
+      +"<stop offset='0' stop-color='"+lo+"'/><stop offset='0.18' stop-color='"+mid+"'/>"
+      +"<stop offset='0.82' stop-color='"+mid+"'/><stop offset='1' stop-color='"+hi+"'/>"
+      +"</linearGradient></defs><rect width='100' height='100' fill='black'/><rect width='100' height='100' fill='url(#g)'/></svg>";
   }
+  function dataURL(s){ return "data:image/svg+xml,"+encodeURIComponent(s); }
+  var XLINK="http://www.w3.org/1999/xlink";
+  function setHref(el,u){ el.setAttribute('href',u); el.setAttributeNS(XLINK,'xlink:href',u); }
+  setHref(document.getElementById('mapX'),dataURL(channelSVG('x')));
+  setHref(document.getElementById('mapY'),dataURL(channelSVG('y')));
 
-  if(enterBtn) enterBtn.addEventListener('click', enter);
-  // click anywhere on the splash backdrop also enters
-  gate.addEventListener('click', function(e){ if(e.target === gate) enter(); });
-  // Enter or Escape opens it
+  /* ===== refraction feature-detect ===== */
+  function supported(){ try{ return !!(window.CSS&&CSS.supports&&(CSS.supports('backdrop-filter','url(#brw-glass)')||CSS.supports('-webkit-backdrop-filter','url(#brw-glass)'))); }catch(e){ return false; } }
+  if(supported()) document.body.classList.add('refract');
+
+  /* ===== pointer specular on glass ===== */
+  document.querySelectorAll('.glass').forEach(function(card){
+    card.addEventListener('pointermove',function(e){
+      var r=card.getBoundingClientRect();
+      card.style.setProperty('--mx',(e.clientX-r.left)+'px');
+      card.style.setProperty('--my',(e.clientY-r.top)+'px');
+    });
+  });
+
+  /* ===== ENTRY NOTICE (dismissible pop-up — no gate, no validation) ===== */
+  var entry=document.getElementById('entry'), entryBtn=document.getElementById('entryBtn'), entryCard=document.getElementById('entryCard');
+  function dismissEntry(){ document.body.classList.add('unlocked'); }
+  entryBtn.addEventListener('click', dismissEntry);
+  entry.addEventListener('click', function(e){ if(!entryCard.contains(e.target)) dismissEntry(); }); // click outside the card
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && !document.body.classList.contains('unlocked')) dismissEntry(); });
+  setTimeout(function(){ try{ entryBtn.focus(); }catch(_){}}, 400);
+
+  /* ===== search + desk filter ===== */
+  var search=document.getElementById('search'), plates=Array.from(document.querySelectorAll('.plate')),
+      pills=Array.from(document.querySelectorAll('.pill')), empty=document.getElementById('empty'), desk='all';
+  function apply(){
+    var q=(search.value||'').trim().toLowerCase(); var shown=0;
+    plates.forEach(function(p){
+      var okDesk = desk==='all' || p.dataset.desk===desk;
+      var hay = (p.dataset.tags+' '+p.textContent).toLowerCase();
+      var okQ = !q || hay.indexOf(q)>-1;
+      var show = okDesk && okQ; p.classList.toggle('is-hidden', !show); if(show) shown++;
+    });
+    document.querySelectorAll('.section').forEach(function(sec){ sec.classList.toggle('is-hidden', sec.querySelectorAll('.plate:not(.is-hidden)').length===0); });
+    empty.classList.toggle('show', shown===0);
+  }
+  search.addEventListener('input', apply);
+  pills.forEach(function(pill){ pill.addEventListener('click', function(){
+    pills.forEach(function(x){ x.classList.remove('is-active'); }); pill.classList.add('is-active');
+    desk=pill.dataset.desk; apply();
+  }); });
   document.addEventListener('keydown', function(e){
-    if(!document.body.classList.contains('unlocked') && (e.key === 'Enter' || e.key === 'Escape')){
-      e.preventDefault();
-      enter();
-    }
+    if(e.key==='/' && document.activeElement && document.activeElement.tagName!=='INPUT'){ e.preventDefault(); search.focus(); }
   });
 
-  setTimeout(()=>{ if(enterBtn) enterBtn.focus(); }, 300);
+  /* ===================================================================
+     PAGE-WIDE SUBSTRATE — currency motif ($, EUR, BTC lead), intaglio,
+     rising + wrap, parallax, cursor repulsion, guilloche, docket tape.
+     One fixed canvas behind the entire page.
+     =================================================================== */
+  var canvas=document.getElementById('field'), ctx;
+  try{ ctx=canvas.getContext('2d'); }catch(e){ return; }
+  if(!ctx) return;
+  var reduced=!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  var small=!!(window.matchMedia&&window.matchMedia('(max-width:760px)').matches);
+
+  var PRIMARY=['$','\u20AC','\u20BF'];
+  var SECONDARY=['\u00A3','\u00A5','\u20B9','\u20A9','\u20BD','\u00A2','\u0E3F','\u20AA'];
+  function pickGlyph(){ if(Math.random()<0.72) return {g:PRIMARY[(Math.random()*PRIMARY.length)|0],primary:true}; return {g:SECONDARY[(Math.random()*SECONDARY.length)|0],primary:false}; }
+  var GLYPH_FONT='Fraunces, "Segoe UI Symbol", "Noto Sans Symbols2", "Apple Symbols", Georgia, serif';
+
+  var CFG={count: small?26:42, rise:0.5, force:0.9, radiusFrac:0.22, accent:0.70};
+  var COL={paper:'241,237,226',shadow:'0,0,0',copper:'207,119,20'};
+  var TICKS=['\u00A7 1026','12 CFR 3','FILED','\u00A7 1071','EFF. 7/1','GENIUS','\u00A7 1033','BASEL'];
+  var DPR=Math.min(window.devicePixelRatio||1,2);
+  var W=0,H=0,R=0,R2=0,marks=[],ticks=[],raf=0,running=true,motionOn=!reduced,tapeOff=0,guillo=0;
+  var pointer={x:-9999,y:-9999,active:false};
+  function rand(a,b){ return a+Math.random()*(b-a); }
+  function size(){ W=Math.max(1,window.innerWidth); H=Math.max(1,window.innerHeight);
+    canvas.width=Math.round(W*DPR); canvas.height=Math.round(H*DPR); ctx.setTransform(DPR,0,0,DPR,0,0);
+    R=Math.min(W,H)*CFG.radiusFrac; R2=R*R; }
+  function makeMark(){ var d=Math.random(), pick=pickGlyph(); return {bx:rand(0,W),by:rand(0,H),depth:d,
+    size: pick.primary ? (16+d*46) : (12+d*24), speed:(0.25+d*0.85)*CFG.rise,
+    alpha: pick.primary ? (0.07+d*0.20) : (0.045+d*0.10), ox:0,oy:0,bloom:0,glyph:pick.g}; }
+  function makeTick(){ return {x:rand(0,W),y:rand(H*0.2,H),speed:rand(0.18,0.4),life:0,max:rand(180,320),text:TICKS[(Math.random()*TICKS.length)|0]}; }
+  function build(){ marks=[]; for(var i=0;i<CFG.count;i++) marks.push(makeMark()); marks.sort(function(a,b){return a.depth-b.depth;});
+    ticks=[]; for(var j=0;j<4;j++){ var t=makeTick(); t.life=rand(0,t.max); ticks.push(t); } }
+  function glyph(m){ var x=m.bx+m.ox,y=m.by+m.oy,off=m.size*0.05,hl=m.size*0.04,a=m.alpha+m.bloom;
+    ctx.font='300 '+m.size+'px '+GLYPH_FONT; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillStyle='rgba('+COL.shadow+','+(a*0.6)+')'; ctx.fillText(m.glyph,x+off,y+off);
+    ctx.fillStyle='rgba('+COL.copper+','+(a*CFG.accent+a*0.25)+')'; ctx.fillText(m.glyph,x,y);
+    ctx.fillStyle='rgba('+COL.paper+','+(a*0.4)+')'; ctx.fillText(m.glyph,x-hl,y-hl); }
+  function guilloche(){ var cx=W*0.5,cy=H*0.42,k=6,amp=Math.min(W,H)*0.32;
+    ctx.save(); ctx.strokeStyle='rgba('+COL.copper+','+(0.045*CFG.accent)+')'; ctx.lineWidth=1; ctx.beginPath();
+    for(var i=0;i<=360;i++){ var th=i*Math.PI/180,r=amp*(0.6+0.4*Math.cos(k*th+guillo)),px=cx+r*Math.cos(th),py=cy+r*Math.sin(th)*0.7;
+      if(i===0)ctx.moveTo(px,py); else ctx.lineTo(px,py); } ctx.stroke(); ctx.restore(); }
+  function tY(fx,b,s){ return b+(-fx*s*0.9)+Math.sin(fx*9+tapeOff)*s*0.16+Math.sin(fx*22-tapeOff*1.7)*s*0.07; }
+  function tape(){ var b=H*0.92,s=H*0.08,pts=44,i; ctx.beginPath(); ctx.moveTo(0,b);
+    for(i=0;i<=pts;i++){ var fx=i/pts; ctx.lineTo(fx*W,tY(fx,b,s)); } ctx.lineTo(W,H); ctx.lineTo(0,H); ctx.closePath();
+    ctx.fillStyle='rgba('+COL.copper+','+(0.045*CFG.accent)+')'; ctx.fill();
+    ctx.beginPath(); for(i=0;i<=pts;i++){ var fx2=i/pts; if(i===0)ctx.moveTo(0,tY(0,b,s)); else ctx.lineTo(fx2*W,tY(fx2,b,s)); }
+    ctx.strokeStyle='rgba('+COL.copper+','+(0.16*CFG.accent)+')'; ctx.lineWidth=1; ctx.stroke(); }
+  function tickmarks(){ ctx.font='500 11px "JetBrains Mono", monospace'; ctx.textAlign='left'; ctx.textBaseline='middle';
+    for(var i=0;i<ticks.length;i++){ var tk=ticks[i],p=tk.life/tk.max,fade=Math.sin(p*Math.PI);
+      ctx.fillStyle='rgba('+COL.copper+','+(fade*0.26*CFG.accent)+')'; ctx.fillText(tk.text,tk.x,tk.y); } }
+  function update(){ var step=motionOn?1:0; tapeOff+=0.006*step; guillo+=0.0016*step;
+    for(var i=0;i<marks.length;i++){ var m=marks[i]; m.by-=m.speed*step; if(m.by<-m.size){ m.by=H+m.size; m.bx=rand(0,W); }
+      var tox=0,toy=0; m.bloom=0;
+      if(pointer.active){ var dx=m.bx-pointer.x,dy=m.by-pointer.y,d2=dx*dx+dy*dy;
+        if(d2<R2&&d2>0.0001){ var d=Math.sqrt(d2),f=1-d/R,push=f*f*R*0.42*CFG.force*(0.4+m.depth*0.6);
+          tox=(dx/d)*push; toy=(dy/d)*push; m.bloom=f*f*0.22; } }
+      m.ox+=(tox-m.ox)*0.12; m.oy+=(toy-m.oy)*0.12; }
+    for(var k=0;k<ticks.length;k++){ var tk=ticks[k]; tk.y-=tk.speed*step; tk.life+=step; if(tk.life>=tk.max||tk.y<-10) ticks[k]=makeTick(); } }
+  function frame(){ if(!running) return; ctx.clearRect(0,0,W,H);
+    guilloche(); for(var i=0;i<marks.length;i++) glyph(marks[i]); tape(); tickmarks();
+    if(motionOn) update(); else for(var j=0;j<marks.length;j++){ var m=marks[j]; m.ox+=(0-m.ox)*0.12; m.oy+=(0-m.oy)*0.12; m.bloom=0; }
+    raf=requestAnimationFrame(frame); }
+
+  window.addEventListener('pointermove',function(e){ pointer.x=e.clientX; pointer.y=e.clientY; pointer.active=true; });
+  window.addEventListener('pointerleave',function(){ pointer.active=false; pointer.x=pointer.y=-9999; });
+  document.addEventListener('visibilitychange',function(){ if(document.hidden){ running=false; if(raf) cancelAnimationFrame(raf); } else if(!running){ running=true; raf=requestAnimationFrame(frame); } });
+  var rt; window.addEventListener('resize',function(){ clearTimeout(rt); rt=setTimeout(function(){ size(); build(); }, 150); });
+
+  function boot(){ size(); build(); raf=requestAnimationFrame(frame); }
+  if(document.fonts&&document.fonts.ready){ var b=false; document.fonts.ready.then(function(){ if(!b){ b=true; boot(); } }); setTimeout(function(){ if(!b){ b=true; boot(); } },600); } else boot();
 })();
-
-// ============================================================
-// TICKER — duplicate content so the loop is seamless
-// ============================================================
-(function(){
-  const track = document.getElementById('ticker-track');
-  if(!track) return;
-  track.innerHTML += track.innerHTML; // 2x for -50% translate loop
-})();
-
-// ============================================================
-// ============================================================
-// COLLAPSE — featured cards & sections
-// ============================================================
-(function(){
-  // Featured cards: toggle button lives inside the <a>, so block navigation
-  document.querySelectorAll('.featured-toggle').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault(); e.stopPropagation();
-      const card = btn.closest('.featured-card');
-      if(!card) return;
-      const collapsed = card.classList.toggle('is-collapsed');
-      btn.setAttribute('aria-expanded', String(!collapsed));
-      btn.setAttribute('aria-label', (collapsed ? 'Expand' : 'Collapse') + ' this featured dispatch');
-    });
-  });
-
-  // Sections
-  function setSection(section, collapse){
-    const btn = section.querySelector('.section-toggle');
-    section.classList.toggle('is-collapsed', collapse);
-    if(btn){
-      btn.setAttribute('aria-expanded', String(!collapse));
-      const lbl = btn.querySelector('.sct-label');
-      if(lbl) lbl.textContent = collapse ? 'Expand' : 'Collapse';
-    }
-  }
-  document.querySelectorAll('.section-toggle').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const section = btn.closest('section.section');
-      if(section) setSection(section, !section.classList.contains('is-collapsed'));
-    });
-  });
-
-  // Expose an expander so search / filter / index can reveal collapsed desks
-  window.__rwExpandSection = (section) => { if(section) setSection(section, false); };
-  window.__rwExpandAll = () => document.querySelectorAll('section.section').forEach(s => setSection(s, false));
-})();
-
-// ============================================================
-// SEARCH + DESK FILTER (coordinated)
-// ============================================================
-(function(){
-  const input = document.getElementById('catalogue-search');
-  const countEl = document.getElementById('search-visible');
-  const clearBtn = document.querySelector('.search-clear');
-  const emptyClearBtn = document.querySelector('.search-empty .clear-cta');
-  const plates = Array.from(document.querySelectorAll('.section .plate'));
-  const sections = Array.from(document.querySelectorAll('section.section'));
-  const pills = Array.from(document.querySelectorAll('.desk-pill'));
-  if (!input || plates.length === 0) return;
-
-  const norm = s => s.toLowerCase().replace(/\s+/g, ' ').trim();
-  const index = plates.map(p => norm(p.textContent));
-  const deskOf = plates.map(p => { const s = p.closest('section.section'); return s ? s.id : ''; });
-  let activeDesk = 'all';
-
-  function run(){
-    const q = norm(input.value);
-    const terms = q ? q.split(' ').filter(Boolean) : [];
-    // A search term should reveal results even inside collapsed desks
-    if(terms.length && window.__rwExpandAll) window.__rwExpandAll();
-    let visible = 0;
-    plates.forEach((plate, i) => {
-      const textMatch = terms.length === 0 || terms.every(t => index[i].includes(t));
-      const deskMatch = activeDesk === 'all' || deskOf[i] === activeDesk;
-      const match = textMatch && deskMatch;
-      plate.classList.toggle('plate--hidden', !match);
-      if (match) visible++;
-    });
-    sections.forEach(s => {
-      const all = s.querySelectorAll('.plate');
-      const hidden = s.querySelectorAll('.plate.plate--hidden');
-      s.classList.toggle('section--empty', all.length > 0 && all.length === hidden.length);
-    });
-    countEl.textContent = visible;
-    const filtering = terms.length > 0 || activeDesk !== 'all';
-    document.body.classList.toggle('has-search', filtering);
-    document.body.classList.toggle('no-results', visible === 0 && filtering);
-  }
-  function clear(refocus){ input.value = ''; run(); if (refocus) input.focus(); }
-
-  // Desk pills
-  pills.forEach(pill => {
-    pill.addEventListener('click', () => {
-      activeDesk = pill.dataset.desk;
-      pills.forEach(p => p.classList.toggle('is-active', p === pill));
-      // make sure the relevant desk(s) are expanded so the filter is visible
-      if(activeDesk === 'all'){ if(window.__rwExpandAll) window.__rwExpandAll(); }
-      else { const t = document.getElementById(activeDesk); if(t && window.__rwExpandSection) window.__rwExpandSection(t); }
-      run();
-      if(activeDesk !== 'all'){
-        const target = document.getElementById(activeDesk);
-        if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
-      }
-    });
-  });
-
-  input.addEventListener('input', run);
-  clearBtn.addEventListener('click', () => clear(true));
-  emptyClearBtn.addEventListener('click', () => {
-    activeDesk = 'all';
-    pills.forEach(p => p.classList.toggle('is-active', p.dataset.desk === 'all'));
-    clear(true);
-  });
-  document.addEventListener('keydown', (e) => {
-    const tag = e.target.tagName;
-    const editable = e.target.isContentEditable;
-    if (e.key === '/' && tag !== 'INPUT' && tag !== 'TEXTAREA' && !editable) {
-      e.preventDefault(); input.focus(); input.select();
-    } else if (e.key === 'Escape' && document.activeElement === input) {
-      if (input.value) clear(true); else input.blur();
-    }
-  });
-})();
-
-// ============================================================
-// PLATE RECENCY — render "updated N ago" from data-updated
-// ============================================================
-(function(){
-  const plates = Array.from(document.querySelectorAll('.plate[data-updated]'));
-  if(!plates.length) return;
-  const now = new Date();
-  const MS = 86400000;
-  const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-
-  function label(d){
-    const days = Math.max(0, Math.round((now - d) / MS));
-    if(days <= 0) return {txt:'Filed today', fresh:true};
-    if(days === 1) return {txt:'Upd. 1d ago', fresh:true};
-    if(days < 14) return {txt:'Upd. ' + days + 'd ago', fresh:true};
-    if(days < 56) return {txt:'Upd. ' + Math.round(days/7) + 'w ago', fresh:false};
-    return {txt:'Rev. ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear(), fresh:false};
-  }
-
-  plates.forEach(p => {
-    const meta = p.querySelector('.plate-meta');
-    if(!meta) return;
-    const d = new Date(p.dataset.updated + 'T00:00:00');
-    if(isNaN(d)) return;
-    const info = label(d);
-    const el = document.createElement('span');
-    el.className = 'plate-recency' + (info.fresh ? ' is-fresh' : '');
-    el.innerHTML = (info.fresh ? '<span class="live-dot"></span>' : '') + '<span>' + info.txt + '</span>';
-    meta.appendChild(el);
-  });
-})();
-
-// ============================================================
-// POINTER-TILT on symbol frames (skipped under reduced motion / touch)
-// ============================================================
-(function(){
-  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const fine = window.matchMedia && window.matchMedia('(pointer: fine)').matches;
-  if(reduce || !fine) return;
-  const MAX = 7; // degrees
-  document.querySelectorAll('.plate').forEach(plate => {
-    const frame = plate.querySelector('.symbol-frame');
-    if(!frame) return;
-    plate.addEventListener('pointermove', (e) => {
-      const r = frame.getBoundingClientRect();
-      const cx = r.left + r.width/2, cy = r.top + r.height/2;
-      const dx = (e.clientX - cx) / (r.width/2);
-      const dy = (e.clientY - cy) / (r.height/2);
-      const rx = Math.max(-1, Math.min(1, -dy)) * MAX;
-      const ry = Math.max(-1, Math.min(1, dx)) * MAX;
-      frame.style.transform = 'perspective(520px) rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg)';
-    });
-    plate.addEventListener('pointerleave', () => {
-      frame.style.transform = 'perspective(520px) rotateX(0deg) rotateY(0deg)';
-    });
-  });
-})();
-
-// ============================================================
-// URL SEARCH STATE + CLICKABLE TAGS
-// ============================================================
-(function(){
-  const input = document.getElementById('catalogue-search');
-  if(!input) return;
-  const params = new URLSearchParams(location.search);
-  const q0 = params.get('q');
-  if(q0){ input.value = q0; input.dispatchEvent(new Event('input', {bubbles:true})); }
-  function syncUrl(){
-    const u = new URL(location.href);
-    if(input.value) u.searchParams.set('q', input.value); else u.searchParams.delete('q');
-    history.replaceState(null, '', u);
-  }
-  input.addEventListener('input', syncUrl);
-  document.querySelectorAll('.plate-tags span').forEach(tag => {
-    tag.setAttribute('role','button');
-    tag.setAttribute('tabindex','0');
-    const fire = (e) => {
-      e.preventDefault(); e.stopPropagation();
-      // reset any active desk filter so a tag search spans all desks
-      const allPill = document.querySelector('.desk-pill[data-desk="all"]');
-      if(allPill && !allPill.classList.contains('is-active')) allPill.click();
-      input.value = tag.textContent.trim();
-      input.dispatchEvent(new Event('input', {bubbles:true}));
-      syncUrl();
-      document.getElementById('search').scrollIntoView({behavior:'smooth', block:'start'});
-    };
-    tag.addEventListener('click', fire);
-    tag.addEventListener('keydown', (e) => { if(e.key === 'Enter' || e.key === ' ') fire(e); });
-  });
-})();
-
-// ============================================================
-// INDEX DRAWER
-// ============================================================
-(function(){
-  const tab = document.getElementById('index-tab');
-  const panel = document.getElementById('index-panel');
-  const scrim = document.getElementById('index-scrim');
-  const closeBtn = document.getElementById('index-close');
-  const topBtn = document.getElementById('index-top');
-  const items = Array.from(document.querySelectorAll('.index-item'));
-  if(!tab || !panel) return;
-
-  function open(){ document.body.classList.add('index-open'); tab.setAttribute('aria-expanded','true'); panel.setAttribute('aria-hidden','false'); }
-  function close(){ document.body.classList.remove('index-open'); tab.setAttribute('aria-expanded','false'); panel.setAttribute('aria-hidden','true'); }
-  function toggle(){ document.body.classList.contains('index-open') ? close() : open(); }
-
-  tab.addEventListener('click', toggle);
-  scrim.addEventListener('click', close);
-  closeBtn.addEventListener('click', close);
-  document.addEventListener('keydown', (e) => { if(e.key === 'Escape' && document.body.classList.contains('index-open')) close(); });
-
-  items.forEach(item => {
-    item.addEventListener('click', () => {
-      const target = document.getElementById(item.dataset.target);
-      if(target){
-        // if the target sits inside a collapsed section, expand it first
-        const sec = target.closest('section.section');
-        if(sec && sec.classList.contains('is-collapsed') && window.__rwExpandSection) window.__rwExpandSection(sec);
-        // if it's a collapsed featured card, expand it too
-        if(target.classList.contains('featured-card') && target.classList.contains('is-collapsed')){
-          const t = target.querySelector('.featured-toggle'); if(t) t.click();
-        }
-        close();
-        setTimeout(() => target.scrollIntoView({behavior:'smooth', block:'start'}), 120);
-      }
-    });
-  });
-  if(topBtn){ topBtn.addEventListener('click', () => { close(); setTimeout(() => window.scrollTo({top:0, behavior:'smooth'}), 120); }); }
-
-  const inView = new Set();
-  let activeId = null;
-  function refreshActive(){
-    let topId = null, topY = Infinity;
-    inView.forEach(id => {
-      const el = document.getElementById(id);
-      if(el){ const y = el.getBoundingClientRect().top; if(y < topY){ topY = y; topId = id; } }
-    });
-    if(topId === activeId) return;
-    activeId = topId;
-    items.forEach(i => i.classList.toggle('is-active', i.dataset.target === topId));
-  }
-  const spy = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if(e.isIntersecting) inView.add(e.target.id); else inView.delete(e.target.id); });
-    refreshActive();
-  }, {rootMargin:'-20% 0px -55% 0px', threshold:0});
-  items.map(i => document.getElementById(i.dataset.target)).filter(Boolean).forEach(t => spy.observe(t));
-})();
-
-// Re-trigger reveal animations per section when entering viewport
-const io = new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      e.target.querySelectorAll('.plate').forEach((p,i)=>{ p.style.animationDelay = (0.05 + i*0.07) + 's'; });
-      io.unobserve(e.target);
-    }
-  });
-},{threshold:0.05});
-document.querySelectorAll('.section .plates').forEach(el=>io.observe(el));
 </script>
 </body>
 </html>
