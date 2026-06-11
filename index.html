@@ -99,29 +99,8 @@ h1.mh-title .pdot{color:var(--wire);font-style:normal}
 @media(max-width:760px){.mh-meta{text-align:left}}
 .mh-meta div{margin-bottom:6px}.mh-meta b{color:var(--paper);font-weight:600}
 
-/* ============================================================
-   RAIL (sticky glass ticker)
-   ============================================================ */
-.rail{position:sticky;top:0;z-index:40;display:flex;align-items:stretch;overflow:hidden;border-radius:0;
-  border-top:1px solid var(--hairline);border-bottom:1px solid var(--rim);
-  background:var(--rail-bg);
-  -webkit-backdrop-filter:blur(var(--rail-blur)) saturate(1.3);
-  backdrop-filter:blur(var(--rail-blur)) saturate(1.3)}
-body.refract .rail{backdrop-filter:blur(var(--rail-blur)) saturate(1.3) url(#brw-glass)}
-.rail::after{content:"";position:absolute;left:-120px;bottom:-1px;width:120px;height:1px;
-  background:linear-gradient(to right,transparent,var(--wire-bright),transparent);box-shadow:0 0 8px var(--wire);
-  animation:travel 6s linear infinite;pointer-events:none}
+/* copper pulse (used by the entry-popup rule) */
 @keyframes travel{to{left:100%}}
-.rail-label{flex-shrink:0;display:flex;align-items:center;gap:9px;background:var(--wire);color:var(--ink);
-  font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
-  padding:0 16px;white-space:nowrap;z-index:2}
-.rail-label i{width:6px;height:6px;border-radius:50%;background:var(--ink)}
-.rail-vp{overflow:hidden;flex:1;position:relative}
-.rail-track{display:inline-flex;align-items:center;white-space:nowrap;padding:11px 0;animation:scroll 44s linear infinite}
-.rail:hover .rail-track{animation-play-state:paused}
-.rail-track span{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;padding:0 26px;color:var(--paper-soft)}
-.rail-track span b{color:var(--wire);font-weight:700}
-@keyframes scroll{to{transform:translateX(-50%)}}
 
 /* ============================================================
    CONTROLS (search + desk filter) — glass
@@ -336,6 +315,18 @@ body.light .plate:hover{box-shadow:inset 0 1px 1px rgba(255,255,255,.6), 0 26px 
   body.light .glass.hero,body.light .gate-card{background:rgba(252,249,242,.92)}
   body.light .rail{background:rgba(247,243,234,.96)}
 }
+
+/* ===== collapsible featured dispatches ===== */
+.featured{margin:clamp(14px,2vw,22px) 0 clamp(40px,6vw,70px)}
+.featured-head{display:flex;align-items:center;justify-content:space-between;padding:0 2px 12px;margin-bottom:6px;border-bottom:1px solid var(--hairline)}
+.featured-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--paper-soft)}
+.featured-toggle{display:inline-flex;align-items:center;gap:8px;cursor:pointer;background:none;border:none;color:var(--paper-soft);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;transition:color .2s ease}
+.featured-toggle:hover{color:var(--wire)}
+.featured-toggle .ft-chev{transition:transform .35s ease;font-size:12px;line-height:1}
+.featured-body{display:flex;flex-direction:column;gap:clamp(18px,2.6vw,28px);overflow:hidden;max-height:3000px;opacity:1;transition:max-height .45s cubic-bezier(.2,.8,.2,1),opacity .3s ease}
+.featured-body .hero{margin:0}
+.featured.is-collapsed .featured-body{max-height:0;opacity:0;pointer-events:none}
+.featured.is-collapsed .featured-toggle .ft-chev{transform:rotate(-180deg)}
 </style>
 </head>
 <body>
@@ -375,22 +366,6 @@ body.light .plate:hover{box-shadow:inset 0 1px 1px rgba(255,255,255,.6), 0 26px 
   </div>
 </header>
 
-<div class="rail">
-  <div class="rail-label"><i></i> On the wire</div>
-  <div class="rail-vp"><div class="rail-track">
-    <span><b>FILED TODAY</b> · FDIC brokered deposits reproposal</span>
-    <span>BASEL ENDGAME · output floor recalibrated</span>
-    <span>FIL-15-2026 · model risk vs SR 11-7</span>
-    <span>GENIUS ACT · stablecoin implementation, two tracks</span>
-    <span>§ 1033 · open banking compliance dates</span>
-    <span><b>FILED TODAY</b> · FDIC brokered deposits reproposal</span>
-    <span>BASEL ENDGAME · output floor recalibrated</span>
-    <span>FIL-15-2026 · model risk vs SR 11-7</span>
-    <span>GENIUS ACT · stablecoin implementation, two tracks</span>
-    <span>§ 1033 · open banking compliance dates</span>
-  </div></div>
-</div>
-
 <div class="wrap">
   <!-- controls -->
   <div class="controls glass read">
@@ -407,7 +382,13 @@ body.light .plate:hover{box-shadow:inset 0 1px 1px rgba(255,255,255,.6), 0 26px 
     </div>
   </div>
 
-  <!-- featured hero (the one refracting card) -->
+  <!-- featured dispatches (collapsible) -->
+  <section class="featured" id="featured" aria-label="Featured dispatches">
+    <div class="featured-head">
+      <span class="featured-label">Featured dispatches</span>
+      <button class="featured-toggle" id="featuredToggle" type="button" aria-expanded="true" aria-controls="featuredBody"><span class="ft-text">Hide</span><span class="ft-chev">▾</span></button>
+    </div>
+    <div class="featured-body" id="featuredBody">
   <article class="hero glass hero" id="hero">
     <div class="h-body">
       <div class="h-kicker"><i></i> Featured dispatch</div>
@@ -431,6 +412,8 @@ body.light .plate:hover{box-shadow:inset 0 1px 1px rgba(255,255,255,.6), 0 26px 
       <span class="h-cta">Open <span class="arrow">→</span></span>
     </div>
   </a>
+    </div>
+  </section>
 
   <section class="section" data-desk="rules">
     <div class="sec-head">
@@ -1025,7 +1008,7 @@ body.light .plate:hover{box-shadow:inset 0 1px 1px rgba(255,255,255,.6), 0 26px 
 <!-- left section navigator -->
 <nav class="snav" id="snav" aria-label="Section navigation">
   <a class="snav-item" data-target="__top" href="#"><span class="snav-tick"></span><span class="snav-label">Top</span></a>
-  <a class="snav-item" data-target="#hero" href="#hero"><span class="snav-tick"></span><span class="snav-label">Featured</span></a>
+  <a class="snav-item" data-target="#featured" href="#featured"><span class="snav-tick"></span><span class="snav-label">Featured</span></a>
   <a class="snav-item" data-target="rules" href="#"><span class="snav-mark">I</span><span class="snav-label">Rules &amp; Guidance</span></a>
   <a class="snav-item" data-target="reform" href="#"><span class="snav-mark">II</span><span class="snav-label">Reform Trackers</span></a>
   <a class="snav-item" data-target="structural" href="#"><span class="snav-mark">III</span><span class="snav-label">Structural Frameworks</span></a>
@@ -1216,6 +1199,21 @@ body.light .plate:hover{box-shadow:inset 0 1px 1px rgba(255,255,255,.6), 0 26px 
     try{ localStorage.setItem("brw-theme", light?"light":"dark"); }catch(e){}
     document.dispatchEvent(new CustomEvent("themechange",{detail:{light:light}})); }
   t.addEventListener("click", function(){ set(!document.body.classList.contains("light")); });
+})();
+</script>
+<script>
+(function(){
+  var fe=document.getElementById('featured'), btn=document.getElementById('featuredToggle');
+  if(!fe||!btn) return;
+  var txt=btn.querySelector('.ft-text');
+  function set(collapsed){
+    fe.classList.toggle('is-collapsed', collapsed);
+    btn.setAttribute('aria-expanded', String(!collapsed));
+    if(txt) txt.textContent = collapsed ? 'Show' : 'Hide';
+    try{ localStorage.setItem('brw-featured', collapsed?'1':'0'); }catch(e){}
+  }
+  btn.addEventListener('click', function(){ set(!fe.classList.contains('is-collapsed')); });
+  try{ if(localStorage.getItem('brw-featured')==='1') set(true); }catch(e){}
 })();
 </script>
 </body>
