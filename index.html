@@ -203,63 +203,38 @@ h1.mh-title .pdot{color:var(--wire);font-style:normal}
 .colophon p{font-family:'Fraunces',serif;font-style:italic;font-size:14px;line-height:1.6;color:var(--paper-soft);max-width:60ch;margin-bottom:10px}
 .colophon .c-meta{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--paper-soft);margin-top:22px;padding-top:16px;border-top:1px solid var(--hairline)}
 
-/* ============================================================
-   GATE (baked in; refracts the same substrate)
-   ============================================================ */
-.gate{position:fixed;inset:0;z-index:1000;overflow-y:auto;-webkit-overflow-scrolling:touch;
-  transition:opacity .5s ease, visibility .5s ease}
-.gate-inner{min-height:100%;display:flex;align-items:center;justify-content:center;padding:clamp(20px,5vw,60px)}
-body.unlocked .gate{opacity:0;visibility:hidden;pointer-events:none}
-.gate-card{width:min(560px,100%);padding:clamp(28px,5vw,46px)}
-.gate-eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--paper);display:flex;align-items:center;gap:10px;margin-bottom:18px}
-.gate-eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--wire);box-shadow:0 0 8px var(--wire);animation:pulse 2.4s ease-out infinite}
-.gate-mark{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(34px,6.5vw,50px);line-height:.92;letter-spacing:-.02em;margin-bottom:8px;overflow-wrap:break-word}
-.gate-mark em{font-style:italic;font-weight:400;color:var(--wire)}.gate-mark .pdot{color:var(--wire)}
-.gate-rule{height:1px;background:var(--hairline);margin:18px 0 24px;position:relative;overflow:visible}
-.gate-rule::after{content:"";position:absolute;top:0;left:-70px;width:70px;height:1px;background:linear-gradient(to right,transparent,var(--wire-bright),transparent);box-shadow:0 0 8px var(--wire);animation:travel 5s linear infinite}
-.gate-lede{font-family:'Fraunces',serif;font-size:15px;line-height:1.6;color:var(--paper-soft);max-width:50ch;margin-bottom:24px}
-.gate-field label{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--paper-soft);margin-bottom:8px}
-.gate-field input{width:100%;background:transparent;border:none;border-bottom:1px solid var(--hairline);color:var(--paper);font-family:'Fraunces',serif;font-size:20px;font-weight:300;padding:6px 0 10px;outline:none;-webkit-appearance:none;transition:border-color .25s}
-.gate-field input::placeholder{color:var(--fg-dim);font-style:italic}
-.gate-field input:focus{border-bottom-color:var(--wire)}
-.gate-btn{width:100%;margin-top:18px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;background:var(--wire);color:var(--ink);border:none;padding:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:10px;transition:background .2s}
-.gate-btn:hover{background:var(--wire-bright)}.gate-btn .arrow{transition:transform .2s}.gate-btn:hover .arrow{transform:translateX(5px)}
-.gate-err{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--wire-bright);margin-top:12px;min-height:13px;opacity:0;transition:opacity .2s}
-.gate-err.show{opacity:1}
-.gate-foot{margin-top:22px;font-family:'Fraunces',serif;font-style:italic;font-size:12.5px;line-height:1.5;color:var(--fg-dim)}
-.gate-foot code{font-family:'JetBrains Mono',monospace;font-style:normal;color:var(--wire);font-size:11px}
+
 
 /* ============================================================
    FALLBACKS / A11Y / PERFORMANCE
    ============================================================ */
 /* drop the costly refraction on small screens (perf) */
 @media (max-width:760px){
-  body.refract .glass.hero,body.refract .rail,body.refract .gate-card{
+  body.refract .glass.hero,body.refract .rail{
     -webkit-backdrop-filter:blur(var(--hero-blur)) saturate(1.4)!important;
     backdrop-filter:blur(var(--hero-blur)) saturate(1.4)!important}
 }
 @supports not ((backdrop-filter:blur(2px)) or (-webkit-backdrop-filter:blur(2px))){
   .glass.read{background:rgba(20,19,13,.93)}
-  .glass.hero,.gate-card{background:rgba(20,19,13,.9)}
+  .glass.hero{background:rgba(20,19,13,.9)}
   .rail{background:rgba(20,19,13,.95)}
 }
 @media (prefers-reduced-transparency: reduce){
-  .glass,.glass.read,.glass.hero,.rail,.gate-card,body.refract .glass.hero,body.refract .rail{
+  .glass,.glass.read,.glass.hero,.rail,body.refract .glass.hero,body.refract .rail{
     -webkit-backdrop-filter:none!important;backdrop-filter:none!important}
   .glass.read{background:rgba(19,18,12,.97)!important}
-  .glass.hero,.gate-card{background:rgba(17,16,11,.97)!important}
+  .glass.hero{background:rgba(17,16,11,.97)!important}
   .rail{background:rgba(17,16,11,.98)!important}
   .glass::after{display:none}
 }
 @media (prefers-reduced-motion: reduce){
-  .rail::after,.gate-rule::after,.mh-kicker .live i,.h-kicker i,.gate-eyebrow i{animation:none}
+  .rail::after,.mh-kicker .live i,.h-kicker i{animation:none}
   .rail-track{animation:none}
 }
 /* ============================================================
    LEFT SECTION NAVIGATOR (seamless; markers expand on hover)
    ============================================================ */
 .snav{position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:35;display:flex;flex-direction:column;gap:2px;padding:14px 12px 14px 10px;transition:opacity .4s ease}
-body:not(.unlocked) .snav{opacity:0;pointer-events:none}
 .snav::before{content:"";position:absolute;inset:0;border-radius:0 14px 14px 0;background:var(--snav-bg);-webkit-backdrop-filter:blur(8px) saturate(1.2);backdrop-filter:blur(8px) saturate(1.2);border:1px solid var(--rim);border-left:none;opacity:0;transition:opacity .3s ease;z-index:-1}
 .snav:hover::before,.snav:focus-within::before{opacity:1}
 .snav-item{display:flex;align-items:center;height:30px;color:var(--paper-soft);text-decoration:none;cursor:pointer}
@@ -281,7 +256,6 @@ body:not(.unlocked) .snav{opacity:0;pointer-events:none}
    ============================================================ */
 .theme-toggle{position:fixed;right:16px;bottom:16px;z-index:36;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--wire);background:var(--rail-bg);border:1px solid var(--rim);-webkit-backdrop-filter:blur(8px) saturate(1.2);backdrop-filter:blur(8px) saturate(1.2);box-shadow:0 10px 26px -12px rgba(0,0,0,.5);transition:opacity .4s ease,color .25s ease,transform .25s ease}
 .theme-toggle:hover{color:var(--wire-bright);transform:translateY(-2px)}
-body:not(.unlocked) .theme-toggle{opacity:0;pointer-events:none}
 .theme-toggle .ic{width:20px;height:20px}
 .theme-toggle .ic-sun{display:none}
 body.light .theme-toggle .ic-moon{display:none}
@@ -308,13 +282,13 @@ body.light .glass::after{background:radial-gradient(240px 240px at var(--mx,50%)
 body.light .plate:hover{box-shadow:inset 0 1px 1px rgba(255,255,255,.6), 0 26px 58px -24px rgba(22,21,15,.3)}
 @media (prefers-reduced-transparency: reduce){
   body.light .glass.read{background:rgba(248,245,238,.97)!important}
-  body.light .glass.hero,body.light .gate-card{background:rgba(252,249,242,.97)!important}
+  body.light .glass.hero{background:rgba(252,249,242,.97)!important}
   body.light .rail{background:rgba(245,241,231,.97)!important}
   body.light .snav::before{background:rgba(245,241,231,.97)}
 }
 @supports not ((backdrop-filter:blur(2px)) or (-webkit-backdrop-filter:blur(2px))){
   body.light .glass.read{background:rgba(250,247,240,.94)}
-  body.light .glass.hero,body.light .gate-card{background:rgba(252,249,242,.92)}
+  body.light .glass.hero{background:rgba(252,249,242,.92)}
   body.light .rail{background:rgba(247,243,234,.96)}
 }
 
@@ -1012,19 +986,7 @@ body.light .plate:hover{box-shadow:inset 0 1px 1px rgba(255,255,255,.6), 0 26px 
   <a class="snav-item" data-target="structural" href="#"><span class="snav-mark">III</span><span class="snav-label">Structural Frameworks</span></a>
 </nav>
 
-<!-- ============ ENTRY NOTICE (dismissible pop-up) ============ -->
-<div class="gate" id="entry">
-  <div class="gate-inner">
-    <div class="gate-card glass hero" id="entryCard" role="dialog" aria-modal="true" aria-labelledby="entryTitle">
-      <div class="gate-eyebrow"><i></i> Institutional preview</div>
-      <div class="gate-mark serif" id="entryTitle">Bank<em>Reg</em>Wire<span class="pdot">.</span></div>
-      <div class="gate-rule"></div>
-      <p class="gate-lede">A working catalogue of U.S. financial services regulation, <em>filed from the primary source</em>. Conclusions are front-loaded and the rule text is read closely. This is a working reference, not legal advice.</p>
-      <p class="gate-foot">Press <code>Esc</code> or click outside to continue.</p>
-      <button class="gate-btn" type="button" id="entryBtn">Enter <span class="arrow">→</span></button>
-    </div>
-  </div>
-</div>
+
 
 <script>
 (function(){
@@ -1059,13 +1021,6 @@ body.light .plate:hover{box-shadow:inset 0 1px 1px rgba(255,255,255,.6), 0 26px 
     });
   });
 
-  /* ===== ENTRY NOTICE (dismissible pop-up — no gate, no validation) ===== */
-  var entry=document.getElementById('entry'), entryBtn=document.getElementById('entryBtn'), entryCard=document.getElementById('entryCard');
-  function dismissEntry(){ document.body.classList.add('unlocked'); }
-  entryBtn.addEventListener('click', dismissEntry);
-  entry.addEventListener('click', function(e){ if(!entryCard.contains(e.target)) dismissEntry(); }); // click outside the card
-  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && !document.body.classList.contains('unlocked')) dismissEntry(); });
-  setTimeout(function(){ try{ entryBtn.focus(); }catch(_){}}, 400);
 
   /* ===== search + desk filter ===== */
   var search=document.getElementById('search'), plates=Array.from(document.querySelectorAll('.plate')),
