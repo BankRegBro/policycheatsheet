@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2316150f'/%3E%3Cline x1='5' y1='16' x2='27' y2='16' stroke='%23cf7714' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='3.5' fill='%23cf7714'/%3E%3Ccircle cx='16' cy='16' r='1.4' fill='%2316150f'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,400..700&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,400..500&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
    BANKREGWIRE — production index on the engraved-glass system
@@ -26,7 +26,8 @@
   --glass-hero:rgba(29,27,19,.34);   /* lighter, refracting */
   --rim:rgba(240,165,70,.32);
   --hairline:rgba(241,237,226,.14);
-  --read-blur:13px; --hero-blur:10px; --rail-blur:9px;
+  --read-blur:8px; --hero-blur:8px; --rail-blur:9px;
+  --card-solid:rgba(32,30,21,.965);
   --bg:#16150f; --fg-dim:rgba(241,237,226,.5); --faint:rgba(241,237,226,.05);
   --rail-bg:rgba(22,21,15,.42); --snav-bg:rgba(22,21,15,.5);
 }
@@ -298,6 +299,7 @@ body.light{
   --glass-hero:rgba(255,252,245,.46);
   --rail-bg:rgba(244,240,230,.62);
   --snav-bg:rgba(245,241,231,.66);
+  --card-solid:rgba(252,249,242,.95);
 }
 body.light .ground{background:radial-gradient(70% 60% at 50% 26%, rgba(207,119,20,.05) 0%, transparent 60%),radial-gradient(120% 120% at 50% 50%, #f4efe3 0%, #ece5d4 56%, #e2d9c4 100%)}
 body.light .grain{mix-blend-mode:multiply;opacity:.5}
@@ -316,15 +318,18 @@ body.light .plate:hover{box-shadow:inset 0 1px 1px rgba(255,255,255,.6), 0 26px 
   body.light .rail{background:rgba(247,243,234,.96)}
 }
 
-/* ===== collapsible featured dispatches ===== */
-.featured{margin:clamp(14px,2vw,22px) 0 clamp(40px,6vw,70px)}
-.featured-head{display:flex;align-items:center;justify-content:space-between;padding:0 2px 12px;margin-bottom:6px;border-bottom:1px solid var(--hairline)}
-.featured-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--paper-soft)}
-.featured-toggle{display:inline-flex;align-items:center;gap:8px;cursor:pointer;background:none;border:none;color:var(--paper-soft);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;transition:color .2s ease}
+/* ===== PERF: catalogue + featured cards are solid panels (no per-frame backdrop blur) ===== */
+.plate.glass.read{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--card-solid)}
+/* ===== featured section (normal cards, collapsible) ===== */
+.featured{margin:clamp(18px,2.6vw,28px) 0 clamp(40px,6vw,70px)}
+.featured-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;padding-bottom:14px;margin-bottom:clamp(16px,2.2vw,22px);border-bottom:1px solid var(--hairline)}
+.featured-heading .sec-kicker{margin-bottom:8px}
+.featured-name{font-family:'Fraunces',serif;font-weight:400;font-size:clamp(23px,3.2vw,38px);line-height:1;letter-spacing:-.015em}
+.featured-name em{font-style:italic;color:var(--wire)}
+.featured-toggle{flex:none;display:inline-flex;align-items:center;gap:8px;cursor:pointer;background:none;border:none;color:var(--paper-soft);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;transition:color .2s ease}
 .featured-toggle:hover{color:var(--wire)}
 .featured-toggle .ft-chev{transition:transform .35s ease;font-size:12px;line-height:1}
-.featured-body{display:flex;flex-direction:column;gap:clamp(18px,2.6vw,28px);overflow:hidden;max-height:3000px;opacity:1;transition:max-height .45s cubic-bezier(.2,.8,.2,1),opacity .3s ease}
-.featured-body .hero{margin:0}
+.featured-body{overflow:hidden;max-height:1400px;opacity:1;transition:max-height .45s cubic-bezier(.2,.8,.2,1),opacity .3s ease}
 .featured.is-collapsed .featured-body{max-height:0;opacity:0;pointer-events:none}
 .featured.is-collapsed .featured-toggle .ft-chev{transform:rotate(-180deg)}
 </style>
@@ -382,36 +387,36 @@ body.light .plate:hover{box-shadow:inset 0 1px 1px rgba(255,255,255,.6), 0 26px 
     </div>
   </div>
 
-  <!-- featured dispatches (collapsible) -->
+  <!-- featured dispatches (collapsible section, normal cards) -->
   <section class="featured" id="featured" aria-label="Featured dispatches">
     <div class="featured-head">
-      <span class="featured-label">Featured dispatches</span>
+      <div class="featured-heading">
+        <div class="sec-kicker">Editor's desk</div>
+        <h2 class="featured-name">Featured <em>dispatches</em></h2>
+      </div>
       <button class="featured-toggle" id="featuredToggle" type="button" aria-expanded="true" aria-controls="featuredBody"><span class="ft-text">Hide</span><span class="ft-chev">▾</span></button>
     </div>
-    <div class="featured-body" id="featuredBody">
-  <article class="hero glass hero" id="hero">
-    <div class="h-body">
-      <div class="h-kicker"><i></i> Featured dispatch</div>
-      <h2>BaaS &amp; Fintech-Forward Enforcement Actions</h2>
-      <p class="h-desc">An interactive matrix of the consent orders reshaping the bank–fintech relationship — mapping each action across sponsor banks, middleware providers, and programs by theme: AML/BSA, third-party risk, ledger reconciliation, and capital. The single clearest read on where supervisors are actually drawing the line.</p>
-    </div>
-    <div class="h-side">
-      <div class="h-src"><div class="s-label">Filed</div><div class="s-name">Primary source · BankRegWire desk</div></div>
-      <a class="h-cta" href="consent-order-matrix.html">Read the dispatch <span class="arrow">→</span></a>
-    </div>
-  </article>
-
-  <a class="hero glass read" id="feature2" href="federal-reserve-interactive-reference.html">
-    <div class="h-body">
-      <div class="h-kicker"><i></i> Also featured</div>
-      <h2>An In-Depth Look at the Fed and Its Functions</h2>
-      <p class="h-desc">An interactive reference to the Federal Reserve System — the dual mandate and the FOMC, the supervisory role, the payments and discount-window functions, and the structure of the Board of Governors and the twelve district Reserve Banks. The foundation under every monetary and supervisory dispatch on the wire.</p>
-    </div>
-    <div class="h-side">
-      <div class="h-src"><div class="s-label">Reference</div><div class="s-name">Interactive · primary source</div></div>
-      <span class="h-cta">Open <span class="arrow">→</span></span>
-    </div>
-  </a>
+    <div class="plates featured-body" id="featuredBody">
+      <a class="plate glass read" href="consent-order-matrix.html" data-desk="enforcement" data-tags="baas fintech enforcement consent order matrix sponsor middleware">
+        <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16"/><path d="M7.5 20.5h9"/><path d="M4.5 7h15"/><path d="M4.5 7l-2.3 4.8h4.6z"/><path d="M19.5 7l-2.3 4.8h4.6z"/></svg></div>
+        <div class="plate-body">
+          <div class="plate-num"><span class="desk">Featured</span> · Enforcement</div>
+          <h3>BaaS &amp; Fintech-Forward Enforcement Actions</h3>
+          <p>An interactive matrix of the consent orders reshaping the bank–fintech relationship, mapped by sponsor bank, middleware provider, and theme.</p>
+          <div class="plate-tags"><span>Enforcement</span><span>BaaS</span></div>
+          <div class="plate-link">Open the file →</div>
+        </div>
+      </a>
+      <a class="plate glass read" href="federal-reserve-interactive-reference.html" data-desk="structural" data-tags="federal reserve fomc supervision payments fed reference dual mandate">
+        <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5l9-5.5 9 5.5"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8"/><path d="M3.5 21h17"/></svg></div>
+        <div class="plate-body">
+          <div class="plate-num"><span class="desk">Featured</span> · Reference</div>
+          <h3>An In-Depth Look at the Fed and Its Functions</h3>
+          <p>An interactive reference to the Federal Reserve System: the dual mandate, the FOMC, supervision, payments, and the twelve district banks.</p>
+          <div class="plate-tags"><span>Federal Reserve</span><span>Reference</span></div>
+          <div class="plate-link">Open the file →</div>
+        </div>
+      </a>
     </div>
   </section>
 
@@ -1075,6 +1080,7 @@ body.light .plate:hover{box-shadow:inset 0 1px 1px rgba(255,255,255,.6), 0 26px 
   function apply(){
     var q=(search.value||'').trim().toLowerCase(); var shown=0;
     plates.forEach(function(p){
+      if(p.closest('.featured')){ p.classList.remove('is-hidden'); return; }
       var okDesk = desk==='all' || p.dataset.desk===desk;
       var hay = (p.dataset.tags+' '+p.textContent).toLowerCase();
       var okQ = !q || hay.indexOf(q)>-1;
@@ -1108,14 +1114,14 @@ body.light .plate:hover{box-shadow:inset 0 1px 1px rgba(255,255,255,.6), 0 26px 
   function pickGlyph(){ if(Math.random()<0.72) return {g:PRIMARY[(Math.random()*PRIMARY.length)|0],primary:true}; return {g:SECONDARY[(Math.random()*SECONDARY.length)|0],primary:false}; }
   var GLYPH_FONT='Fraunces, "Segoe UI Symbol", "Noto Sans Symbols2", "Apple Symbols", Georgia, serif';
 
-  var CFG={count: small?26:42, rise:0.5, force:0.9, radiusFrac:0.22, accent:0.70};
+  var CFG={count: small?18:30, rise:0.5, force:0.9, radiusFrac:0.22, accent:0.70};
   var COL={paper:'241,237,226',shadow:'0,0,0',copper:'207,119,20'};
   var PAL={ dark:{under:'0,0,0',face:'207,119,20',hi:'241,237,226',uA:0.6,faceA:null,line:'207,119,20',boost:1},
             light:{under:'207,119,20',face:'22,21,15',hi:'255,250,242',uA:0.45,faceA:0.9,line:'150,98,30',boost:1.7} };
   var THEME = document.body.classList.contains('light') ? 'light' : 'dark';
   document.addEventListener('themechange', function(e){ THEME = (e.detail && e.detail.light) ? 'light' : 'dark'; });
   var TICKS=['\u00A7 1026','12 CFR 3','FILED','\u00A7 1071','EFF. 7/1','GENIUS','\u00A7 1033','BASEL'];
-  var DPR=Math.min(window.devicePixelRatio||1,2);
+  var DPR=Math.min(window.devicePixelRatio||1,1.5);
   var W=0,H=0,R=0,R2=0,marks=[],ticks=[],raf=0,running=true,motionOn=!reduced,tapeOff=0,guillo=0;
   var pointer={x:-9999,y:-9999,active:false};
   function rand(a,b){ return a+Math.random()*(b-a); }
@@ -1154,10 +1160,12 @@ body.light .plate:hover{box-shadow:inset 0 1px 1px rgba(255,255,255,.6), 0 26px 
           tox=(dx/d)*push; toy=(dy/d)*push; m.bloom=f*f*0.22; } }
       m.ox+=(tox-m.ox)*0.12; m.oy+=(toy-m.oy)*0.12; }
     for(var k=0;k<ticks.length;k++){ var tk=ticks[k]; tk.y-=tk.speed*step; tk.life+=step; if(tk.life>=tk.max||tk.y<-10) ticks[k]=makeTick(); } }
-  function frame(){ if(!running) return; ctx.clearRect(0,0,W,H);
+  var _last=0, FRAME_MS=1000/30;
+  function frame(ts){ if(!running) return; raf=requestAnimationFrame(frame);
+    if(ts && (ts-_last) < FRAME_MS) return; _last=ts||0;
+    ctx.clearRect(0,0,W,H);
     guilloche(); for(var i=0;i<marks.length;i++) glyph(marks[i]); tape(); tickmarks();
-    if(motionOn) update(); else for(var j=0;j<marks.length;j++){ var m=marks[j]; m.ox+=(0-m.ox)*0.12; m.oy+=(0-m.oy)*0.12; m.bloom=0; }
-    raf=requestAnimationFrame(frame); }
+    if(motionOn) update(); else for(var j=0;j<marks.length;j++){ var m=marks[j]; m.ox+=(0-m.ox)*0.12; m.oy+=(0-m.oy)*0.12; m.bloom=0; } }
 
   window.addEventListener('pointermove',function(e){ pointer.x=e.clientX; pointer.y=e.clientY; pointer.active=true; });
   window.addEventListener('pointerleave',function(){ pointer.active=false; pointer.x=pointer.y=-9999; });
