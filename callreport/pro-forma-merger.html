@@ -446,7 +446,7 @@ function engine(A,T,P){
 /* ============================ assumptions config ============================ */
 const ASSUM=[
   {grp:"Consideration",items:[
-    {k:"ptbv",lab:"Price to tangible book",sub:"deal value = multiple \u00d7 target TCE",min:0.8,max:3,step:0.05,val:1.55,u:"\u00d7",
+    {k:"ptbv",lab:"Price to tangible book",sub:"deal value = multiple \u00d7 target TCE",min:0.8,max:3,step:0.01,val:1.55,u:"\u00d7",
       benchLab:"Typical deal multiples \u00b7 tap to apply",
       bench:[
         {v:1.10,t:"Distressed"},
@@ -615,9 +615,8 @@ function buildModel(){
   });
   // wire industry benchmark quick-sets
   m.querySelectorAll(".bchip").forEach(c=>c.onclick=()=>{
-    const k=c.dataset.bk, v=num(c.dataset.bv); if(v==null)return;
-    const r=$("r_"+k),t=$("a_"+k);
-    t.value=v; if(r)r.value=v;
+    const v=num(c.dataset.bv); if(v==null)return;
+    setLever(c.dataset.bk,v);
     markBench(); recompute();
   });
   $("igToggle").onclick=()=>{const b=$("igBody"),c=$("igToggle").querySelector(".car");const open=b.classList.toggle("show");c.textContent=open?"\u25be":"\u25b8";};
@@ -660,9 +659,16 @@ const PRESETS={
   cash:{ptbv:1.55,stock:0,cashsrc:0,subrate:7.5,creditmark:1.5,ratemark:2.0,secmark:3.0,cdi:1.25,cdiyrs:10,accyrs:5,pcd:25,costsave:30,revsynM:0,onetime:4,tax:21},
   subd:{ptbv:1.55,stock:50,cashsrc:1,subrate:7.5,creditmark:1.5,ratemark:2.0,secmark:3.0,cdi:1.25,cdiyrs:10,accyrs:5,pcd:25,costsave:30,revsynM:0,onetime:4,tax:21}
 };
+// set a lever's text box and slider together, so presets, benchmark chips,
+// and any other quick-set behave identically. The slider is clamped to its range.
+function setLever(k,v){
+  const t=$("a_"+k), r=$("r_"+k);
+  if(t)t.value=v;
+  if(r){const mn=parseFloat(r.min),mx=parseFloat(r.max);r.value=Math.min(mx,Math.max(mn,v));}
+}
 function applyPreset(name){
   const p=PRESETS[name];if(!p)return;
-  Object.entries(p).forEach(([k,v])=>{const r=$("r_"+k),t=$("a_"+k);if(t)t.value=v;if(r)r.value=v;});
+  Object.entries(p).forEach(([k,v])=>setLever(k,v));
   // refresh segmented controls to match
   document.querySelectorAll(".seg").forEach(seg=>{const k=seg.dataset.seg,cur=num($("a_"+k)?$("a_"+k).value:null);seg.querySelectorAll(".segbtn").forEach(b=>b.classList.toggle("on",+b.dataset.segi===cur));});
   markBench();
