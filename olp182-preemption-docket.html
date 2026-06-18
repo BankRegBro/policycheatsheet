@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Preemption Docket — OLP182 Financial-Sector Comments</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#e7dcc3;
+    --paper-card:#f2ecdc;
+    --paper-deep:#dccfb1;
+    --ink:#23211b;
+    --ink-soft:#5f5949;
+    --ink-faint:#8a836f;
+    --rule:#c5b794;
+    --rule-soft:#d4c8a8;
+    --stamp:#9c3b2c;
+    --stamp-deep:#7c2e22;
+    --stamp-bg:rgba(156,59,44,0.08);
+    --neutral-stamp:#4a4636;
+    --shadow:rgba(40,33,18,0.10);
+    --maxw:1180px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Public Sans",system-ui,sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(150,135,95,0.06) 27px, rgba(150,135,95,0.06) 28px);
+  }
+  a{color:var(--stamp-deep);text-underline-offset:2px;text-decoration-thickness:1px;}
+  a:hover{color:var(--stamp);}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+
+  /* ---------- Masthead ---------- */
+  header.masthead{
+    border-bottom:2px solid var(--ink);
+    padding-top:18px;
+    margin-bottom:0;
+  }
+  .foldertab{
+    display:inline-block;
+    font-family:"JetBrains Mono",monospace;
+    font-size:11.5px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    background:var(--paper-deep);
+    color:var(--ink);
+    border:1.5px solid var(--rule);
+    border-bottom:none;
+    padding:7px 16px 6px;
+    border-radius:9px 9px 0 0;
+    transform:translateY(2px);
+  }
+  .mast-body{
+    border:1.5px solid var(--rule);
+    background:var(--paper-card);
+    padding:30px 30px 26px;
+    border-radius:0 9px 0 0;
+    box-shadow:0 1px 0 var(--shadow);
+  }
+  .kicker{
+    font-family:"JetBrains Mono",monospace;
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--stamp);
+    margin:0 0 10px;
+  }
+  h1{
+    font-family:"Spectral",Georgia,serif;
+    font-weight:600;
+    font-size:clamp(32px,5.4vw,54px);
+    line-height:1.02;
+    letter-spacing:-0.01em;
+    margin:0 0 14px;
+  }
+  h1 em{font-style:italic;color:var(--stamp-deep);}
+  .dek{
+    font-size:clamp(16px,2vw,18.5px);
+    color:var(--ink-soft);
+    max-width:62ch;
+    margin:0 0 20px;
+  }
+  .docketline{
+    font-family:"JetBrains Mono",monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    border-top:1px dashed var(--rule);
+    padding-top:14px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 22px;
+  }
+  .docketline b{color:var(--ink);font-weight:700;}
+
+  /* ---------- Section frame ---------- */
+  section{padding:40px 0;}
+  .sec-label{
+    font-family:"JetBrains Mono",monospace;
+    font-size:11.5px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    display:flex;align-items:center;gap:12px;
+    margin:0 0 6px;
+  }
+  .sec-label::after{content:"";flex:1;height:1px;background:var(--rule);}
+  h2{
+    font-family:"Spectral",Georgia,serif;
+    font-weight:600;
+    font-size:clamp(22px,3vw,30px);
+    margin:0 0 6px;
+  }
+  .sec-sub{color:var(--ink-soft);margin:0 0 22px;max-width:70ch;font-size:15px;}
+
+  /* ---------- Legend / commenters ---------- */
+  .commenters{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+  }
+  .commenter{
+    border:1.5px solid var(--rule);
+    background:var(--paper-card);
+    padding:16px 16px 14px;
+    border-radius:7px;
+  }
+  .mono-mark{
+    font-family:"JetBrains Mono",monospace;
+    font-weight:700;
+    font-size:20px;
+    letter-spacing:0.04em;
+    color:var(--stamp-deep);
+    display:block;
+    margin-bottom:4px;
+  }
+  .commenter .full{font-weight:600;font-size:14px;line-height:1.25;display:block;margin-bottom:8px;}
+  .commenter .meta{font-size:12px;color:var(--ink-soft);line-height:1.4;}
+
+  /* ---------- Matrix ---------- */
+  .matrix-scroll{overflow-x:auto;border:1.5px solid var(--rule);border-radius:8px;background:var(--paper-card);}
+  table.matrix{border-collapse:collapse;width:100%;min-width:680px;font-size:13.5px;}
+  table.matrix th,table.matrix td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--rule-soft);}
+  table.matrix thead th{
+    background:var(--paper-deep);
+    font-family:"JetBrains Mono",monospace;
+    font-size:11px;letter-spacing:0.08em;text-transform:uppercase;
+    color:var(--ink);font-weight:700;
+    position:sticky;top:0;
+  }
+  table.matrix thead th.orgcol{text-align:center;width:74px;}
+  table.matrix tbody tr{cursor:pointer;transition:background .12s;}
+  table.matrix tbody tr:hover{background:var(--stamp-bg);}
+  table.matrix td.issuecell{font-weight:600;}
+  table.matrix td.catcell{color:var(--ink-soft);font-size:12px;white-space:nowrap;}
+  td.orgcell{text-align:center;}
+  .dot{
+    display:inline-block;width:13px;height:13px;border-radius:50%;
+    background:var(--stamp);border:1px solid var(--stamp-deep);
+  }
+  .dot.empty{background:transparent;border:1px dashed var(--rule);}
+  .upd-flag{
+    font-family:"JetBrains Mono",monospace;
+    font-size:9.5px;letter-spacing:.05em;
+    color:var(--stamp);border:1px solid var(--stamp);border-radius:3px;
+    padding:1px 5px;white-space:nowrap;
+  }
+  .upd-flag.none{color:var(--ink-faint);border-color:var(--rule);}
+
+  /* ---------- Controls ---------- */
+  .controls{
+    position:sticky;top:0;z-index:20;
+    background:var(--paper);
+    border-top:1px solid var(--rule);
+    border-bottom:1px solid var(--rule);
+    padding:12px 0;margin-bottom:26px;
+    background-image:none;
+  }
+  .controls-inner{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center;}
+  .chipset{display:flex;flex-wrap:wrap;gap:7px;align-items:center;}
+  .chipset .lbl{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin-right:2px;}
+  .chip{
+    font-family:"JetBrains Mono",monospace;
+    font-size:12px;font-weight:500;
+    background:var(--paper-card);
+    border:1.5px solid var(--rule);
+    color:var(--ink-soft);
+    padding:6px 12px;border-radius:20px;cursor:pointer;
+    transition:all .13s;
+  }
+  .chip:hover{border-color:var(--ink-soft);color:var(--ink);}
+  .chip[aria-pressed="true"]{
+    background:var(--stamp);border-color:var(--stamp-deep);color:#f6efe2;
+  }
+  .toggle{
+    font-family:"JetBrains Mono",monospace;font-size:12px;
+    display:inline-flex;align-items:center;gap:7px;cursor:pointer;color:var(--ink-soft);
+    user-select:none;
+  }
+  .toggle input{width:15px;height:15px;accent-color:var(--stamp);cursor:pointer;}
+  .search{
+    flex:1;min-width:160px;
+    font-family:"Public Sans",sans-serif;font-size:14px;
+    background:var(--paper-card);border:1.5px solid var(--rule);border-radius:6px;
+    padding:8px 12px;color:var(--ink);
+  }
+  .search:focus{outline:2px solid var(--stamp);outline-offset:1px;}
+  .count{font-family:"JetBrains Mono",monospace;font-size:11.5px;color:var(--ink-faint);white-space:nowrap;}
+
+  /* ---------- Issue cards ---------- */
+  .cards{display:grid;gap:22px;}
+  .card{
+    border:1.5px solid var(--rule);
+    background:var(--paper-card);
+    border-radius:9px;
+    padding:24px 26px 22px;
+    position:relative;
+    box-shadow:0 1px 0 var(--shadow);
+  }
+  .card-head{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;}
+  .casenum{
+    font-family:"JetBrains Mono",monospace;font-weight:700;font-size:13px;
+    color:var(--stamp);border:1.5px solid var(--stamp);border-radius:5px;
+    padding:4px 8px;flex-shrink:0;letter-spacing:.03em;
+  }
+  .card-titlewrap{flex:1;min-width:200px;}
+  .card-cat{
+    font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.13em;
+    text-transform:uppercase;color:var(--ink-faint);margin-bottom:3px;
+  }
+  h3.card-title{
+    font-family:"Spectral",Georgia,serif;font-weight:600;font-size:23px;line-height:1.12;margin:0;
+  }
+  .orgtags{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+  .orgtag{
+    font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;
+    background:var(--paper-deep);border:1px solid var(--rule);color:var(--stamp-deep);
+    padding:3px 9px;border-radius:4px;letter-spacing:.04em;
+  }
+  .positions{margin:20px 0 4px;display:grid;gap:14px;}
+  .position{display:grid;grid-template-columns:64px 1fr;gap:14px;align-items:start;}
+  .position .who{
+    font-family:"JetBrains Mono",monospace;font-weight:700;font-size:12.5px;
+    color:var(--stamp-deep);padding-top:1px;
+  }
+  .position .what{font-size:14.5px;color:var(--ink);line-height:1.5;}
+  .hook{
+    margin-top:16px;border-top:1px dashed var(--rule);padding-top:13px;
+    font-size:13px;color:var(--ink-soft);
+  }
+  .hook b{
+    font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--ink-faint);font-weight:700;display:block;margin-bottom:3px;
+  }
+
+  /* ---------- Update / stamp panel ---------- */
+  .update{
+    margin-top:18px;
+    border:1.5px solid var(--rule);
+    border-left:4px solid var(--stamp);
+    background:linear-gradient(0deg,rgba(156,59,44,0.04),rgba(156,59,44,0.04));
+    border-radius:0 7px 7px 0;
+    padding:16px 18px 14px;
+    position:relative;
+  }
+  .update.asfiled{border-left-color:var(--neutral-stamp);}
+  .stamp{
+    display:inline-block;
+    font-family:"JetBrains Mono",monospace;font-weight:700;font-size:12px;
+    letter-spacing:.06em;text-transform:uppercase;
+    color:var(--stamp);
+    border:2px solid var(--stamp);border-radius:5px;
+    padding:5px 11px;margin-bottom:11px;
+    transform:rotate(-1.4deg);
+    box-shadow:inset 0 0 0 1px rgba(156,59,44,0.25);
+    background:rgba(156,59,44,0.05);
+  }
+  .update.asfiled .stamp{
+    color:var(--neutral-stamp);border-color:var(--neutral-stamp);
+    background:rgba(74,70,54,0.04);box-shadow:inset 0 0 0 1px rgba(74,70,54,0.2);
+  }
+  .update .ubody{font-size:14px;line-height:1.55;color:var(--ink);}
+  .update .ubody .sub{display:block;margin-top:9px;color:var(--ink-soft);font-size:13px;}
+  .update .ubody .sub b{color:var(--stamp-deep);font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;}
+  .sources{
+    margin-top:12px;display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;
+    border-top:1px dotted var(--rule);padding-top:10px;
+  }
+  .sources .slbl{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);}
+  .sources a{
+    font-family:"JetBrains Mono",monospace;font-size:11px;
+    background:var(--paper-deep);border:1px solid var(--rule);border-radius:4px;
+    padding:3px 8px;text-decoration:none;color:var(--stamp-deep);
+  }
+  .sources a:hover{background:var(--stamp);color:#f6efe2;border-color:var(--stamp-deep);}
+  .asof{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-faint);margin-left:auto;}
+
+  .nohits{
+    display:none;text-align:center;padding:50px 20px;color:var(--ink-soft);
+    border:1.5px dashed var(--rule);border-radius:9px;font-size:15px;
+  }
+  .nohits.show{display:block;}
+
+  /* ---------- RFI questions strip ---------- */
+  .rfi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .rfi-q{
+    border:1.5px solid var(--rule);background:var(--paper-card);border-radius:7px;padding:15px 16px;
+  }
+  .rfi-q .qn{font-family:"JetBrains Mono",monospace;font-weight:700;color:var(--stamp);font-size:13px;margin-bottom:6px;}
+  .rfi-q p{margin:0;font-size:13px;color:var(--ink-soft);line-height:1.45;}
+
+  /* ---------- Footer ---------- */
+  footer{border-top:2px solid var(--ink);margin-top:30px;padding:30px 0 60px;}
+  footer .fnote{font-size:12.5px;color:var(--ink-soft);max-width:80ch;line-height:1.55;}
+  footer .fnote b{color:var(--ink);}
+  footer .ftag{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;}
+
+  :focus-visible{outline:2px solid var(--stamp);outline-offset:2px;}
+
+  @media (max-width:880px){
+    .commenters,.rfi{grid-template-columns:repeat(2,1fr);}
+  }
+  @media (max-width:600px){
+    .wrap{padding:0 16px;}
+    .mast-body{padding:22px 18px;}
+    .commenters,.rfi{grid-template-columns:1fr;}
+    .position{grid-template-columns:1fr;gap:3px;}
+    .position .who{padding-top:0;}
+    .card{padding:20px 17px;}
+    .asof{margin-left:0;width:100%;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto;}
+    *{transition:none!important;}
+    .stamp{transform:none;}
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <span class="foldertab">Docket No. DOJ-OLP-2025-0169 &nbsp;//&nbsp; OLP182</span>
+    <div class="mast-body">
+      <p class="kicker">DOJ &times; National Economic Council &middot; Request for Information</p>
+      <h1>The Preemption <em>Docket</em></h1>
+      <p class="dek">Four financial-sector trade groups answered the Justice Department's call to name state laws that burden interstate commerce. This is a field guide to what each argued, who raised what, and how the underlying fights have moved since the comment deadline.</p>
+      <div class="docketline">
+        <span><b>RFI:</b> 90 FR 39427 (Aug. 15, 2025)</span>
+        <span><b>Comments due:</b> Sept. 15, 2025</span>
+        <span><b>Commenters analyzed:</b> 4</span>
+        <span><b>Issues mapped:</b> 15</span>
+        <span><b>Updated through:</b> June 18, 2026</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Commenters -->
+<section>
+  <div class="wrap">
+    <p class="sec-label">The file &middot; who filed</p>
+    <h2>The four commenters</h2>
+    <p class="sec-sub">All four filed on the deadline, September 15, 2025. Their common spine is national-bank preemption under the National Bank Act and the <em>Barnett Bank</em> / <em>Cantero</em> "significant interference" standard, plus interest-rate exportation for state-chartered banks. The fintech and consumer-credit filers reach further into bank-fintech lending and product-specific fights.</p>
+    <div class="commenters" id="commenters"></div>
+  </div>
+</section>
+
+<!-- RFI questions -->
+<section>
+  <div class="wrap">
+    <p class="sec-label">The prompt</p>
+    <h2>What DOJ asked</h2>
+    <p class="sec-sub">The RFI posed four questions. BPI tracked them literally; the others organized by issue.</p>
+    <div class="rfi">
+      <div class="rfi-q"><div class="qn">Q1</div><p>Which state laws significantly burden commerce in or between states, raising costs and harming markets nationwide?</p></div>
+      <div class="rfi-q"><div class="qn">Q2</div><p>May the laws identified be preempted by existing federal authority, and if so, which authority?</p></div>
+      <div class="rfi-q"><div class="qn">Q3</div><p>Are there federal legislative or regulatory means for addressing those laws or the burdens they cause?</p></div>
+      <div class="rfi-q"><div class="qn">Q4</div><p>Which federal agency has the subject-matter expertise to address concerns within federal authority?</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Matrix -->
+<section>
+  <div class="wrap">
+    <p class="sec-label">Coverage map</p>
+    <h2>Who raised what</h2>
+    <p class="sec-sub">A filled marker means the organization raised the issue in its letter. Click any row to filter the detail cards below to that issue.</p>
+    <div class="matrix-scroll">
+      <table class="matrix" id="matrix">
+        <thead>
+          <tr>
+            <th>Issue</th>
+            <th>Category</th>
+            <th class="orgcol">BPI</th>
+            <th class="orgcol">ABA</th>
+            <th class="orgcol">FTA</th>
+            <th class="orgcol">AFSA</th>
+            <th>Since filing</th>
+          </tr>
+        </thead>
+        <tbody id="matrixBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- Controls + Cards -->
+<section style="padding-top:18px;">
+  <div class="controls">
+    <div class="wrap controls-inner">
+      <div class="chipset" id="orgChips">
+        <span class="lbl">Filter</span>
+        <button class="chip" data-org="ALL" aria-pressed="true">All</button>
+        <button class="chip" data-org="BPI" aria-pressed="false">BPI</button>
+        <button class="chip" data-org="ABA" aria-pressed="false">ABA</button>
+        <button class="chip" data-org="FTA" aria-pressed="false">FTA</button>
+        <button class="chip" data-org="AFSA" aria-pressed="false">AFSA</button>
+      </div>
+      <label class="toggle"><input type="checkbox" id="updOnly"> Only with post-filing developments</label>
+      <input class="search" id="search" type="search" placeholder="Search issues, laws, cases (e.g. escrow, IFPA, DIDMCA)" aria-label="Search issues">
+      <span class="count" id="count"></span>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="cards" id="cards"></div>
+    <div class="nohits" id="nohits">No issues match those filters. Clear the search or reset the filter chips.</div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="ftag">Method &amp; caveats</p>
+    <p class="fnote">
+      <b>Source.</b> Issue content is drawn directly from the four comment letters as filed in Docket OLP182 (BPI, ABA, FTA, AFSA), each dated September 15, 2025. Organization positions are paraphrased.
+      <br><br>
+      <b>Updates.</b> The "Docket update" panels reflect public developments located through June 18, 2026 and link to the underlying reporting or primary documents. Panels marked "As filed" were not independently updated beyond the letters; treat their status as the letters described it. Litigation posture changes fast, several of these matters were moving week to week as this was assembled.
+      <br><br>
+      <b>Not legal advice.</b> This is a reference map of advocacy positions and case status, not legal analysis or a prediction of outcomes. Verify any citation against the primary source before relying on it.
+    </p>
+  </div>
+</footer>
+
+<script>
+const ORGS = {
+  BPI:{full:"Bank Policy Institute",meta:"Universal, regional &amp; major foreign banks. Signed: Tabitha Edgens, EVP &amp; Co-Head of Regulatory Affairs."},
+  ABA:{full:"American Bankers Association",meta:"The $25T banking industry, banks of all sizes. Signed: Anthony Pardal, VP, Advocacy &amp; State Policy."},
+  FTA:{full:"Financial Technology Association",meta:"Technology-centered financial services (fintech) firms. Signed: Penny Lee, President &amp; CEO."},
+  AFSA:{full:"American Financial Services Association",meta:"Consumer-credit industry, founded 1916. Signed: Philip Bohi, General Counsel."}
+};
+
+const ISSUES = [
+  {
+    id:"interchange", num:"01", title:"Interchange-fee restrictions", cat:"Payments",
+    orgs:["BPI","ABA"],
+    positions:[
+      {org:"BPI",what:"Cites Illinois's Interchange Fee Prohibition Act as a first-of-its-kind attempt to regulate the price of bank payment services by barring interchange on a portion of card transactions, a direct intrusion that would disrupt interstate commerce and the card-payment system."},
+      {org:"ABA",what:"Argues the IFPA's fee and data-usage limits conflict with the Durbin Amendment and Regulation II and with NBA preemption, and warns that the 24-plus states that introduced copycat bills in 2025 would fracture a uniform national payments network."}
+    ],
+    hook:"National Bank Act preemption (Barnett Bank / Cantero); Durbin Amendment and Regulation II; OCC visitorial authority.",
+    update:{
+      disposition:"Prelim. injunction entered \u2014 June 2026",
+      body:"On Feb. 10, 2026 the Northern District of Illinois granted partial summary judgment: it declined to enjoin the interchange-fee ban (reasoning that card networks, not banks, set interchange) but permanently enjoined the data-usage limitation as applied to federally protected institutions. Both sides cross-appealed to the Seventh Circuit.",
+      sub:"Then the OCC intervened. On April 24, 2026 it issued an interim final rule amending 12 CFR 7.4002 (clarifying that a bank's non-interest compensation includes interchange even when set through a third party) plus an interim final order preempting the IFPA, both effective June 30, 2026. The Seventh Circuit vacated and remanded on May 8, 2026; on June 1, 2026 Chief Judge Kendall, crediting the new rule, entered a permanent injunction against enforcing the interchange-fee limitation on national banks, federal savings associations, Riegle-Neal out-of-state banks, and the card networks. IFPA effective date: July 1, 2026.",
+      asOf:"June 2026",
+      sources:[
+        {label:"Consumer Finance Monitor",url:"https://www.consumerfinancemonitor.com/2026/06/04/illinois-interchange-fee-litigation-takes-important-turn-occ-rule-leads-court-to-enjoin-core-ifpa-interchange-fee-restrictions/"},
+        {label:"Moore & Van Allen (OCC IFR)",url:"https://www.mvalaw.com/investigations-and-regulatory-advice/occ-responds-to-the-district-courts-decision-in-illinois-bankers-association-v-raoul-by-issuing-interim-final-actions-addressing-state-interchange-fee-laws-and-federal-preemption"},
+        {label:"7th Cir. remand",url:"https://www.consumerfinancemonitor.com/2026/05/12/seventh-circuit-hits-reset-button-in-illinois-interchange-fee-litigation-after-occ-doubles-down-on-federal-preemption-under-the-national-bank-act/"}
+      ]
+    }
+  },
+  {
+    id:"escrow", num:"02", title:"Mortgage-escrow interest mandates", cat:"Mortgage / lending",
+    orgs:["BPI","ABA"],
+    positions:[
+      {org:"BPI",what:"Frames state escrow-interest rules in California, New York, and Rhode Island as impermissible price controls on a core bank function, invoking Justice Kavanaugh's Cantero-argument analogy to a tax on selling the product."},
+      {org:"ABA",what:"Lists New York (2%), Rhode Island, and California escrow-interest statutes as direct price controls that block uniform loan administration and create a patchwork of flat-rate, floating-rate, and no-requirement regimes across states."}
+    ],
+    hook:"NBA preemption under the Barnett Bank / Cantero significant-interference standard; OCC discretion over the terms of credit.",
+    update:{
+      disposition:"Circuit split \u2014 Cantero back at SCOTUS",
+      body:"On remand from the 2024 Supreme Court decision, the Second Circuit held on May 5, 2026 (2-1, Judge P\u00e9rez dissenting) that New York's GOL \u00a7 5-601 is preempted as applied to national banks, applying the nuanced comparative analysis the Court prescribed.",
+      sub:"That collides with the First Circuit's 2025 ruling in Conti (Rhode Island law not preempted; cert denied April 29, 2026) and the Ninth Circuit's October 2025 ruling in Kivett (California law not preempted, decided on pre-Cantero circuit precedent). A fresh cert petition followed on May 22, 2026. Separately, the OCC proposed an Escrow Powers Rule and a preemption determination in December 2025 and finalized both on May 15, 2026, treating escrow terms (including whether to pay interest) as a national-bank business decision and naming roughly a dozen state laws.",
+      asOf:"May 2026",
+      sources:[
+        {label:"Sullivan & Cromwell",url:"https://www.sullcrom.com/insights/memo/2026/May/Second-Circuit-Holds-Mortgage-Escrow-Interest-Laws-Preempted"},
+        {label:"New cert petition",url:"https://www.consumerfinancemonitor.com/2026/05/27/round-two-in-cantero-new-cert-petition-seeks-supreme-court-resolution-of-mortgage-escrow-interest-circuit-split-regarding-national-bank-act-preemption/"},
+        {label:"OCC final rules",url:"https://www.hinshawlaw.com/en/insights/blogs/consumer-crossroads-where-financial-services-and-litigation-intersect/occs-final-escrow-interest-preemption-rules-bolster-the-second-circuits-cantero-decision"}
+      ]
+    }
+  },
+  {
+    id:"supervision", num:"03", title:"State supervision of national banks", cat:"Bank powers & supervision",
+    orgs:["ABA","FTA"],
+    positions:[
+      {org:"ABA",what:"Targets Idaho's 2025 Transparency in Financial Services Act, like Florida and Tennessee laws from 2024, for extending state oversight and enforcement to national banks, redefining unsafe-or-unsound practice, and colliding with the OCC's exclusive visitorial authority."},
+      {org:"FTA",what:"Flags New York's 2025 buy-now-pay-later law for exempting only national banks, a departure from charter parity that subjects state banks and their partners to unequal treatment."}
+    ],
+    hook:"OCC exclusive visitorial authority (12 U.S.C. 484); NBA preemption; charter parity between state and national banks.",
+    update:{
+      disposition:"Fair-banking EO implementation underway",
+      body:"No published decision resolving the Idaho, Florida, or Tennessee supervision statutes surfaced as of this analysis. The surrounding federal posture moved sharply, though.",
+      sub:"The Aug. 7, 2025 executive order Guaranteeing Fair Banking for All Americans directs the banking agencies to strip reputation risk from guidance and exams, review and remediate past debanking, and produce a Treasury anti-debanking strategy. The OCC (March 2025) and Federal Reserve (June 2025) had already removed reputation risk from their frameworks; the FDIC signaled a parallel rulemaking. ABA's point was that state supervision statutes complicate that federal effort by letting states substitute their own safety-and-soundness judgment for the federal regulator's.",
+      asOf:"2025\u201326",
+      sources:[
+        {label:"Latham (Fair Banking EO)",url:"https://www.lw.com/en/insights/president-trump-issues-executive-order-on-fair-banking"},
+        {label:"Sidley (EO + agency actions)",url:"https://www.sidley.com/en/insights/newsupdates/2025/08/president-trump-signs-fair-banking-executive-order-directing-financial-regulators-to-remedy"}
+      ]
+    }
+  },
+  {
+    id:"debtcollection", num:"04", title:"Debt-collection regimes (NYC, Massachusetts)", cat:"Debt collection",
+    orgs:["ABA","AFSA"],
+    positions:[
+      {org:"ABA",what:"Singles out New York City's 2024 rule (permanent collection bar if verification deadlines lapse) and Massachusetts's two-contacts-per-seven-days cap as obstructing routine risk management and federally mandated communications, and flags subsidiary-licensing laws (RI, CA, AR) reaching first-party bank affiliates."},
+      {org:"AFSA",what:"Argues the Massachusetts cap and validation duties, and NYC's proposed amendments (including a medical-debt loophole and a 14-day furnishing restriction), wrongly treat first-party creditors like third-party collectors and are preempted by the FDCPA and the NBA."}
+    ],
+    hook:"NBA preemption; FDCPA scope (first-party creditor exclusion); FCBA and RESPA communication duties; City APA.",
+    update:{
+      disposition:"NYC 'SHIELD Rule' finalized \u2014 eff. 9/1/26",
+      body:"After repeated postponements and an indefinite hold in summer 2025, NYC DCWP adopted a comprehensive replacement, the SHIELD Rule, published Feb. 26, 2026 and effective Sept. 1, 2026.",
+      sub:"It extends coverage to original creditors (including banks) once they begin defined debt-collection procedures, caps contact at three attempts per seven days, lets consumers dispute at any time, and adds medical and time-barred-debt protections. Notably it carves out day-to-day customer servicing and exempts institutions subject to the Fair Credit Billing Act from the validation/verification requirements, partly answering the first-party-creditor objection. A penalty-schedule amendment went to hearing June 1, 2026. The Massachusetts cap (940 CMR 7.04) remains in force; no preemption ruling on it surfaced.",
+      asOf:"Feb\u2013June 2026",
+      sources:[
+        {label:"Troutman (SHIELD Rule)",url:"https://www.consumerfinancialserviceslawmonitor.com/2026/03/new-york-city-finalizes-expanded-debt-collection-rules-covering-original-creditors-and-third-party-collectors/"},
+        {label:"NYC DCWP announcement",url:"https://www.nyc.gov/site/dca/news/022-26/dcwp-the-nation-s-strongest-consumer-protection-rules-against-predatory-debt-collection"},
+        {label:"Mayer Brown (indefinite hold)",url:"https://www.mayerbrown.com/en/insights/publications/2025/10/controversial-nyc-debt-collector-rules-on-hold-indefinitely-while-new-rules-loom"}
+      ]
+    }
+  },
+  {
+    id:"privacy", num:"05", title:"Consumer-privacy & cybersecurity mandates", cat:"Privacy & cybersecurity",
+    orgs:["BPI","ABA","FTA"],
+    positions:[
+      {org:"BPI",what:"Objects to state laws purporting to regulate national banks' technology, cybersecurity, and risk-management practices, citing the California Privacy Protection Agency's proposed cyber, risk, and ADMT rules as going well beyond consumer privacy."},
+      {org:"ABA",what:"Notes most state privacy laws carry GLBA exemptions but the CCPA exempts only GLBA-covered data, and estimates the CCPA raised California banks' costs by roughly $471 per $1M of assets, with CPPA cyber-audit rules duplicating NIST-based audits banks already run."},
+      {org:"FTA",what:"Supports a uniform federal privacy standard that preempts the state patchwork, arguing disparate state privacy laws confuse consumers and burden digital commerce that crosses state lines seamlessly."}
+    ],
+    hook:"Gramm-Leach-Bliley Act; sought federal privacy preemption; GLBA and prudential cybersecurity obligations.",
+    update:{
+      asfiled:true,
+      disposition:"As filed \u2014 CPPA rules finalized 2025",
+      body:"Per the letters, the CCPA's cybersecurity-audit, risk-assessment, and automated-decision-making regulations were finalized by the CPPA in 2025 with phased compliance dates running into 2027 and beyond.",
+      sub:"No federal consumer-financial-privacy preemption statute has been enacted; the House Financial Services Committee data-privacy effort FTA cited remained at the request-for-feedback stage. Not independently updated for this analysis beyond the letters.",
+      asOf:"per letters",
+      sources:[
+        {label:"IAPP state privacy tracker",url:"https://iapp.org/resources/article/us-state-privacy-legislation-tracker/"}
+      ]
+    }
+  },
+  {
+    id:"ai", num:"06", title:"State AI regulation", cat:"Artificial intelligence",
+    orgs:["ABA","FTA"],
+    positions:[
+      {org:"ABA",what:"Notes financial institutions are already supervised and examined on AI use (fair lending, cybersecurity), and warns that the Colorado AI Act and similar laws would stack a duplicative patchwork on top of that framework and burden interstate commerce."},
+      {org:"FTA",what:"Argues a single fraud-detection or underwriting model cannot feasibly comply with 50 differing state AI laws, would balkanize the market, and contradicts the White House America's AI Action Plan; calls for a unified national approach leveraging existing financial-services regulation."}
+    ],
+    hook:"Sought federal preemption / unified national AI standard; existing entity-and-activity financial-services supervision; America's AI Action Plan EO.",
+    update:{
+      disposition:"CAIA repealed & replaced (CADMA)",
+      body:"The law both letters targeted no longer exists in the form they described. A special session pushed the Colorado AI Act's effective date from Feb. 1 to June 30, 2026 (SB 25B-004, Aug. 2025); then Governor Polis signed SB 26-189 on May 14, 2026, repealing and replacing CAIA outright.",
+      sub:"Its successor, the Colorado Automated Decision-Making Technology Act (CADMA), takes effect Jan. 1, 2027 and is far narrower: it drops CAIA's duty of care against algorithmic discrimination, the deployer risk-management-program and impact-assessment mandates, and AG reporting, focusing instead on disclosure and transparency for covered ADMT in defined domains (financial services included). At the federal level, a proposed AI-regulation moratorium was stripped from the 2025 reconciliation bill, and the NCSL asked DOJ to withdraw this RFI on Tenth Amendment grounds.",
+      asOf:"May 2026",
+      sources:[
+        {label:"Byte Back (CADMA)",url:"https://www.bytebacklaw.com/2026/05/colorado-repeals-replaces-its-ai-act-what-the-new-law-means/"},
+        {label:"Hunton (delay + replace)",url:"https://www.hunton.com/privacy-and-cybersecurity-law-blog/colorado-ai-act-amended-and-effective-date-delayed"},
+        {label:"EBG (RFI / NCSL)",url:"https://www.ebglaw.com/insights/publications/algorithmic-supremacy-constitutional-limits-on-preemption-in-the-age-of-executive-ai-policy"}
+      ]
+    }
+  },
+  {
+    id:"didmca", num:"07", title:"DIDMCA opt-out & rate exportation", cat:"Interest-rate exportation",
+    orgs:["FTA","AFSA"],
+    positions:[
+      {org:"FTA",what:"Treats out-of-state rate exportation as a fundamental feature of the dual banking system and argues state DIDMCA opt-outs and true-lender theories that subject bank partners to state lending caps should be nullified; calls predominant-economic-interest a red herring given valid-when-made rules."},
+      {org:"AFSA",what:"Walks through DIDMCA sections 521 and 525, Marquette, and the FDIA preemption clause, and faults Colorado's novel reading that would let it cap rates on banks chartered in other states; urges Congress to confirm the intended effect of opting in or out."}
+    ],
+    hook:"DIDMCA \u00a7\u00a7 521, 525; FDIA \u00a7 1831d preemption; Marquette interest-rate exportation; parity with NBA \u00a7 85.",
+    update:{
+      disposition:"10th Cir. \u2014 rehearing en banc, panel vacated",
+      body:"Colorado's HB 23-1229 opt-out, the flashpoint both letters named, swung twice. A Nov. 10, 2025 Tenth Circuit panel (2-1) read loans made in such State to reach loans where the borrower sits, letting Colorado apply its caps to out-of-state state-chartered banks.",
+      sub:"Trade groups (ABA, BPI, 52 state bankers associations), the FDIC, the OCC, and 20-plus states sought rehearing. On April 2, 2026 the Tenth Circuit granted rehearing en banc and vacated the panel decision, reopening the question; supplemental briefs were filed in June 2026. Oregon advanced its own opt-out (HB 4116) in 2026, and the proposed federal American Lending Fairness Act of 2026 (Moreno / Davidson) would reverse the panel and end future opt-outs. Iowa, Puerto Rico, and Colorado remain the only opt-out jurisdictions.",
+      asOf:"April\u2013June 2026",
+      sources:[
+        {label:"Troutman (en banc vacatur)",url:"https://www.consumerfinancialserviceslawmonitor.com/2026/04/tenth-circuit-grants-en-banc-rehearing-in-colorado-didmca-opt-out-case-vacating-prior-panel-decision/"},
+        {label:"Cooley (panel decision)",url:"https://finsights.cooley.com/10th-circuit-upholds-colorados-didmca-opt-out-deepening-states-power-over-bank-fintech-partnership-lending-but-not-without-dissent/"},
+        {label:"Ballard (Oregon / fed. bill)",url:"https://www.consumerfinancemonitor.com/2026/02/25/oregon-legislature-reintroduces-didmca-opt-out-legislation-h-b-4116/"}
+      ]
+    }
+  },
+  {
+    id:"truelender", num:"08", title:"\u201cTrue lender\u201d laws", cat:"Bank-fintech",
+    orgs:["FTA","AFSA"],
+    positions:[
+      {org:"FTA",what:"Calls true-lender laws ill-founded efforts to recharacterize a nonbank platform as the lender of loans originated by an insured bank, undermining the valid-when-made doctrine the OCC and FDIC codified in 2020."},
+      {org:"AFSA",what:"Counts six states with codified true-lender tests (Illinois 2021, Maine 2021, New Mexico 2022, Minnesota 2023, Connecticut 2023, Washington 2024) plus MD/FL/DC bills, and warns their void-the-loan remedies threaten secondary-market investors and assignee collection rights."}
+    ],
+    hook:"Valid-when-made (2020 OCC/FDIC rules); FDIA \u00a7 1831d; predominant-economic-interest and totality tests.",
+    update:{
+      disposition:"OppFi \u2014 summary judgment for the bank model",
+      body:"California's marquee true-lender test broke the industry's way. In Opportunity Financial v. Hewlett the Los Angeles Superior Court granted OppFi summary judgment, tentatively on Feb. 24, 2026 and by final Statement of Decision on May 19, 2026, rejecting DFPI's claim that OppFi (not its Utah partner FinWise) was the true lender.",
+      sub:"The court found FinWise was not a dummy lender (it underwrote, funded, held title, and kept at least a 5% receivable interest) and that usury is judged at a loan's inception, so OppFi's later purchase of most receivables did not taint it. The court did not reach the broader predominant-economic-interest or APA underground-regulation theories, and DFPI is expected to appeal. The six codified state true-lender tests AFSA listed remain on the books.",
+      asOf:"Feb\u2013May 2026",
+      sources:[
+        {label:"Consumer Finance Monitor (final SJ)",url:"https://www.consumerfinancemonitor.com/2026/05/29/california-court-issues-final-statement-of-decision-rejecting-dfpi-true-lender-theory-against-oppfi/"},
+        {label:"Womble Bond Dickinson",url:"https://www.womblebonddickinson.com/us/insights/alerts/california-superior-court-finalizes-summary-judgment-favor-oppfi-rejecting-dfpis"},
+        {label:"PYMNTS (appeal outlook)",url:"https://www.pymnts.com/news/banking/2026/oppfi-ruling-gives-bank-fintech-partnerships-a-win-but-not-final-clarity"}
+      ]
+    }
+  },
+  {
+    id:"ewa", num:"09", title:"Earned wage access (EWA)", cat:"Consumer credit",
+    orgs:["FTA"],
+    positions:[
+      {org:"FTA",what:"Urges the CFPB to formally rescind its 2024 proposed interpretive rule, which would have reclassified EWA as credit under TILA, and argues the resulting state patchwork plus litigation that leaned on the proposed rule jeopardizes access; any federal effort should recognize EWA as non-credit and include preemption."}
+    ],
+    hook:"TILA / Regulation Z definition of credit; sought CFPB rescission and federal preemption.",
+    update:{
+      disposition:"CFPB withdrew the proposed rule",
+      body:"FTA got the outcome it asked for. On Dec. 23, 2025 the CFPB issued an advisory opinion concluding that Covered EWA programs are not credit under TILA and Regulation Z, and that optional expedited-delivery fees and tips are not finance charges; it formally withdrew the July 2024 proposed interpretive rule.",
+      sub:"That followed the agency's May 2025 reversal of its own January 2025 rescission. FTA's Penny Lee publicly welcomed the action. State EWA licensing regimes continue to proliferate, so the patchwork concern is not resolved at the state level.",
+      asOf:"Dec. 2025",
+      sources:[
+        {label:"Federal Register (advisory opinion)",url:"https://www.federalregister.gov/documents/2025/12/23/2025-23735/truth-in-lending-regulation-z-non-application-to-earned-wage-access-products"},
+        {label:"American Banker",url:"https://www.americanbanker.com/payments/news/cfpb-earned-wage-access-is-not-credit"},
+        {label:"Payments Dive",url:"https://www.paymentsdive.com/news/some-ewa-products-arent-loans-cfpb-consumer-protection-paycheck/808587/"}
+      ]
+    }
+  },
+  {
+    id:"medicaldebt", num:"10", title:"Medical-debt reporting restrictions", cat:"Credit reporting",
+    orgs:["ABA","AFSA"],
+    positions:[
+      {org:"ABA",what:"Argues California and New York medical-debt suppression laws hide repayment-relevant information and are preempted by the FCRA, which expressly bars state laws relating to information contained in consumer reports."},
+      {org:"AFSA",what:"Faults vague or unworkable medical-debt definitions that could sweep ordinary credit-card purchases of medications into the bar, reducing the accuracy of credit reports and scores."}
+    ],
+    hook:"FCRA express preemption (15 U.S.C. 1681t(b)(1)(E)); Cornerstone v. CFPB vacatur of the federal medical-debt rule.",
+    update:{
+      asfiled:true,
+      disposition:"As filed \u2014 federal rule vacated",
+      body:"Per the ABA letter, the CFPB's national medical-debt reporting rule was vacated in Cornerstone v. CFPB (E.D. Tex., July 2025) at the Bureau's request, and ABA reads FCRA preemption to reach state medical-debt suppression laws as well.",
+      sub:"Roughly fifteen states restrict medical-debt furnishing or reporting; no decision squarely striking those state laws on FCRA-preemption grounds was located for this analysis, so the question the letters raise remains live and untested.",
+      asOf:"per letters",
+      sources:[]
+    }
+  },
+  {
+    id:"subordinate", num:"11", title:"Subordinate liens / \u201czombie mortgage\u201d servicing", cat:"Mortgage / lending",
+    orgs:["ABA"],
+    positions:[
+      {org:"ABA",what:"Argues California's AB 130 (Cal. Civ. Code 2924.13) reaches far beyond abandoned debts, letting borrowers raise prior servicers' compliance failures as affirmative defenses and permanently void liens, in irreconcilable conflict with TILA, RESPA, and Regulation Z and X servicing rules."}
+    ],
+    hook:"Conflict / obstacle preemption (Supremacy Clause); TILA, RESPA, Regulation Z and X servicing rules.",
+    update:{
+      asfiled:true,
+      disposition:"As filed",
+      body:"AB 130 was enacted in 2025; the letter argues conflict preemption under TILA / RESPA and Regulation Z/X.",
+      sub:"No decision testing AB 130's enforceability against national banks was located for this analysis. The obstacle-preemption theory tracks the same significant-interference framework being litigated in the escrow and interchange matters above.",
+      asOf:"per letter",
+      sources:[]
+    }
+  },
+  {
+    id:"righttocure", num:"12", title:"Right-to-cure expansion to unsecured debt", cat:"Consumer credit",
+    orgs:["AFSA"],
+    positions:[
+      {org:"AFSA",what:"Argues recent Wisconsin and South Carolina decisions extended right-to-cure notice requirements (traditionally for secured debt) to unsecured credit-card debt, forcing banks to reopen accounts and re-extend credit and undermining prudent lending."}
+    ],
+    hook:"NBA powers over core lending; conflict with prudent credit-risk management.",
+    update:{
+      asfiled:true,
+      disposition:"As filed",
+      body:"AFSA points to Wisconsin and South Carolina court decisions extending right-to-cure requirements to unsecured card debt.",
+      sub:"Not independently updated for this analysis.",
+      asOf:"per letter",
+      sources:[]
+    }
+  },
+  {
+    id:"coerceddebt", num:"13", title:"Coerced-debt statutes", cat:"Consumer credit",
+    orgs:["AFSA"],
+    positions:[
+      {org:"AFSA",what:"Notes California, Minnesota, and Connecticut enacted coerced-debt laws with differing frameworks, and that New York and Massachusetts proposals would extend them to secured and (in Massachusetts) commercial debt with minimal proof, conflicting with federal unauthorized-transaction rules."}
+    ],
+    hook:"Conflict with federal unauthorized-transaction / fraud rules; secured-debt repossession and foreclosure distinctions.",
+    update:{
+      asfiled:true,
+      disposition:"As filed",
+      body:"Per AFSA, California, Minnesota, and Connecticut have enacted coerced-debt laws; New York and Massachusetts have proposals.",
+      sub:"Not independently updated for this analysis.",
+      asOf:"per letter",
+      sources:[]
+    }
+  },
+  {
+    id:"commercialfdcpa", num:"14", title:"Consumer rules applied to commercial credit", cat:"Consumer credit",
+    orgs:["AFSA"],
+    positions:[
+      {org:"AFSA",what:"Faults California's extension of its state FDCPA analog to commercial-purpose debts under $500,000 made to an individual or personally guaranteed, arguing least-sophisticated-consumer protections are a poor fit for sophisticated business borrowers."}
+    ],
+    hook:"Mismatch between consumer-protection design and commercial-credit underwriting.",
+    update:{
+      asfiled:true,
+      disposition:"As filed",
+      body:"AFSA flags California's extension of consumer-style collection rules to commercial-purpose debts under $500,000.",
+      sub:"Not independently updated for this analysis.",
+      asOf:"per letter",
+      sources:[]
+    }
+  },
+  {
+    id:"conveniencefees", num:"15", title:"Convenience-fee prohibitions", cat:"Consumer credit",
+    orgs:["AFSA"],
+    positions:[
+      {org:"AFSA",what:"Notes some states bar creditors from charging convenience fees (including for expedited payments to avoid delinquency) and have treated third-party expedited-payment fees not shared with the creditor as impermissible creditor fees."}
+    ],
+    hook:"State fee prohibitions vs. bank pricing discretion over services.",
+    update:{
+      asfiled:true,
+      disposition:"As filed",
+      body:"AFSA flags state convenience-fee prohibitions that can sweep in third-party expedited-payment fees not shared with the creditor.",
+      sub:"Not independently updated for this analysis.",
+      asOf:"per letter",
+      sources:[]
+    }
+  }
+];
+
+/* ---------- Render commenters ---------- */
+const cm = document.getElementById('commenters');
+Object.keys(ORGS).forEach(k=>{
+  const o=ORGS[k];
+  const d=document.createElement('div');
+  d.className='commenter';
+  d.innerHTML=`<span class="mono-mark">${k}</span><span class="full">${o.full}</span><span class="meta">${o.meta}</span>`;
+  cm.appendChild(d);
+});
+
+/* ---------- Render matrix ---------- */
+const mb=document.getElementById('matrixBody');
+const ORDER=["BPI","ABA","FTA","AFSA"];
+ISSUES.forEach(it=>{
+  const tr=document.createElement('tr');
+  tr.dataset.id=it.id;
+  const isUpd = it.update && !it.update.asfiled;
+  let cells=`<td class="issuecell">${it.title}</td><td class="catcell">${it.cat}</td>`;
+  ORDER.forEach(org=>{
+    const has=it.orgs.includes(org);
+    cells+=`<td class="orgcell"><span class="dot ${has?'':'empty'}" title="${has?org+' raised this':'not raised by '+org}"></span></td>`;
+  });
+  cells+=`<td>${isUpd?'<span class="upd-flag">Development</span>':'<span class="upd-flag none">As filed</span>'}</td>`;
+  tr.innerHTML=cells;
+  tr.addEventListener('click',()=>{ focusIssue(it.id); });
+  mb.appendChild(tr);
+});
+
+/* ---------- Render cards ---------- */
+const cardWrap=document.getElementById('cards');
+function orgTagsHTML(orgs){return orgs.map(o=>`<span class="orgtag">${o}</span>`).join('');}
+function positionsHTML(pos){
+  return pos.map(p=>`<div class="position"><div class="who">${p.org}</div><div class="what">${p.what}</div></div>`).join('');
+}
+function sourcesHTML(u){
+  if(!u.sources||!u.sources.length) return '';
+  return `<div class="sources"><span class="slbl">Sources</span>${u.sources.map(s=>`<a href="${s.url}" target="_blank" rel="noopener">${s.label}\u2197</a>`).join('')}<span class="asof">as of ${u.asOf}</span></div>`;
+}
+function updateHTML(u){
+  if(!u) return '';
+  const cls = u.asfiled ? 'update asfiled' : 'update';
+  const sub = u.sub ? `<span class="sub">${u.sub}</span>` : '';
+  return `<div class="${cls}"><span class="stamp">${u.disposition}</span><div class="ubody">${u.body}${sub}</div>${sourcesHTML(u)}</div>`;
+}
+ISSUES.forEach(it=>{
+  const c=document.createElement('article');
+  c.className='card';
+  c.id='issue-'+it.id;
+  c.dataset.id=it.id;
+  c.dataset.orgs=it.orgs.join(',');
+  c.dataset.upd=(it.update && !it.update.asfiled)?'1':'0';
+  c.dataset.text=(it.title+' '+it.cat+' '+it.hook+' '+it.positions.map(p=>p.what).join(' ')+' '+(it.update?it.update.disposition+' '+it.update.body+' '+(it.update.sub||''):'')).toLowerCase();
+  c.innerHTML=`
+    <div class="card-head">
+      <span class="casenum">No. ${it.num}</span>
+      <div class="card-titlewrap">
+        <div class="card-cat">${it.cat}</div>
+        <h3 class="card-title">${it.title}</h3>
+      </div>
+      <div class="orgtags">${orgTagsHTML(it.orgs)}</div>
+    </div>
+    <div class="positions">${positionsHTML(it.positions)}</div>
+    <div class="hook"><b>Preemption hook</b>${it.hook}</div>
+    ${updateHTML(it.update)}
+  `;
+  cardWrap.appendChild(c);
+});
+
+/* ---------- Filtering ---------- */
+const state={org:'ALL',updOnly:false,q:''};
+const chips=[...document.querySelectorAll('#orgChips .chip')];
+const updBox=document.getElementById('updOnly');
+const searchBox=document.getElementById('search');
+const countEl=document.getElementById('count');
+const nohits=document.getElementById('nohits');
+
+function apply(){
+  let shown=0;
+  ISSUES.forEach(it=>{
+    const card=document.getElementById('issue-'+it.id);
+    let ok=true;
+    if(state.org!=='ALL' && !it.orgs.includes(state.org)) ok=false;
+    if(state.updOnly && card.dataset.upd!=='1') ok=false;
+    if(state.q){
+      if(!card.dataset.text.includes(state.q)) ok=false;
+    }
+    card.style.display = ok?'block':'none';
+    // dim matrix row
+    const row=document.querySelector(`#matrixBody tr[data-id="${it.id}"]`);
+    if(row) row.style.opacity = ok?'1':'0.32';
+    if(ok) shown++;
+  });
+  countEl.textContent = shown+' of '+ISSUES.length+' issues';
+  nohits.classList.toggle('show',shown===0);
+}
+chips.forEach(ch=>ch.addEventListener('click',()=>{
+  chips.forEach(c=>c.setAttribute('aria-pressed','false'));
+  ch.setAttribute('aria-pressed','true');
+  state.org=ch.dataset.org;
+  apply();
+}));
+updBox.addEventListener('change',()=>{state.updOnly=updBox.checked;apply();});
+searchBox.addEventListener('input',()=>{state.q=searchBox.value.trim().toLowerCase();apply();});
+
+function focusIssue(id){
+  // reset filters so the card is visible, then scroll
+  state.org='ALL';state.updOnly=false;state.q='';
+  chips.forEach(c=>c.setAttribute('aria-pressed', c.dataset.org==='ALL'?'true':'false'));
+  updBox.checked=false;searchBox.value='';
+  apply();
+  const el=document.getElementById('issue-'+id);
+  if(el){
+    el.scrollIntoView({behavior:(window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'),block:'center'});
+    el.animate?el.animate([{boxShadow:'0 0 0 3px var(--stamp)'},{boxShadow:'0 1px 0 var(--shadow)'}],{duration:1100,easing:'ease-out'}):null;
+  }
+}
+apply();
+</script>
+</body>
+</html>
