@@ -1,0 +1,2071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Architecture of American Finance — An Interactive Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Treasury palette */
+    --ink: #14213d;
+    --ink-dark: #0a1428;
+    --ink-soft: #2a3a5a;
+    --paper: #f5ecd6;
+    --paper-soft: #faf3e1;
+    --paper-deep: #ebe0c4;
+    --gold: #b08a3e;
+    --gold-soft: #c9a961;
+    --gold-pale: #e8d9a8;
+    --oxblood: #6b1a1a;
+    --rule: #8b7340;
+    --text: #1a1a1a;
+    --text-muted: #5a4f3a;
+    --text-faint: #8b7d5e;
+
+    /* Category accents */
+    --c-depository: #1e3a5f;
+    --c-securities: #a06a1a;
+    --c-gse: #2d5a3d;
+    --c-consumer: #5a2d57;
+    --c-treasury: #7a2929;
+    --c-insurance: #1e5a5a;
+    --c-coord: #3d3d3d;
+    --c-ghost: #6b6356;
+
+    /* Era colors for timeline */
+    --era-founding: #6b4226;
+    --era-free: #8b6332;
+    --era-national: #b08a3e;
+    --era-modern: #1e5a5a;
+    --era-newdeal: #2d5a3d;
+    --era-deregulation: #a06a1a;
+    --era-postcrisis: #5a2d57;
+    --era-current: #6b1a1a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--paper);
+    background-image:
+      radial-gradient(ellipse at top, rgba(176,138,62,0.05) 0%, transparent 50%),
+      radial-gradient(ellipse at bottom, rgba(20,33,61,0.04) 0%, transparent 50%);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 16px;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Paper texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.4;
+    background-image:
+      repeating-linear-gradient(45deg, transparent 0, transparent 2px, rgba(139,115,64,0.015) 2px, rgba(139,115,64,0.015) 4px),
+      repeating-linear-gradient(-45deg, transparent 0, transparent 2px, rgba(20,33,61,0.01) 2px, rgba(20,33,61,0.01) 4px);
+  }
+
+  /* === HEADER === */
+  .masthead {
+    position: relative;
+    padding: 3rem 2rem 2rem;
+    border-bottom: 1px double var(--rule);
+    text-align: center;
+    background: linear-gradient(180deg, var(--paper-soft) 0%, var(--paper) 100%);
+    z-index: 2;
+  }
+
+  .masthead::before, .masthead::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    max-width: 600px;
+    height: 1px;
+    background: var(--rule);
+  }
+  .masthead::before { top: 1.5rem; }
+  .masthead::after { bottom: 0.75rem; }
+
+  .ornament-top {
+    font-family: 'Fraunces', serif;
+    color: var(--gold);
+    font-size: 1.5rem;
+    letter-spacing: 1rem;
+    margin-bottom: 0.5rem;
+    user-select: none;
+  }
+
+  .masthead h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    line-height: 1.1;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin: 0.5rem 0;
+    font-variation-settings: "opsz" 144, "SOFT" 30, "WONK" 1;
+  }
+
+  .masthead h1 em {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-variation-settings: "opsz" 144, "SOFT" 30, "WONK" 1;
+  }
+
+  .masthead .subtitle {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-top: 1rem;
+  }
+
+  .masthead .dateline {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-top: 0.5rem;
+  }
+
+  /* === NAV === */
+  .navigation {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+    box-shadow: 0 4px 12px rgba(20,33,61,0.06);
+  }
+
+  .nav-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .nav-btn {
+    padding: 1rem 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+
+  .nav-btn .roman {
+    font-family: 'Fraunces', serif;
+    font-size: 0.9rem;
+    margin-right: 0.5rem;
+    color: var(--gold);
+    font-variation-settings: "opsz" 144;
+  }
+
+  .nav-btn:hover {
+    color: var(--ink);
+  }
+
+  .nav-btn.active {
+    color: var(--ink);
+    border-bottom-color: var(--gold);
+  }
+
+  .nav-btn.active .roman {
+    color: var(--oxblood);
+  }
+
+  /* === MAIN === */
+  main {
+    position: relative;
+    z-index: 2;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  .section { display: none; animation: fadeIn 0.4s ease; }
+  .section.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+  }
+
+  .section-num {
+    font-family: 'Fraunces', serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    font-variation-settings: "opsz" 144;
+  }
+
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    color: var(--ink);
+    line-height: 1.1;
+    font-variation-settings: "opsz" 144, "SOFT" 50;
+  }
+
+  .section-title em {
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+
+  .section-rule {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1.5rem auto;
+    max-width: 400px;
+    color: var(--gold);
+  }
+  .section-rule::before, .section-rule::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+  .section-rule span {
+    padding: 0 1rem;
+    font-family: 'Fraunces', serif;
+    font-size: 1rem;
+  }
+
+  .section-tagline {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 1rem auto 0;
+    font-variation-settings: "opsz" 14;
+  }
+
+  /* === I. FOUNDATIONS === */
+  .lede {
+    max-width: 720px;
+    margin: 0 auto 3rem;
+    font-family: 'Fraunces', serif;
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: var(--ink);
+    font-variation-settings: "opsz" 14;
+  }
+
+  .lede::first-letter {
+    font-family: 'Fraunces', serif;
+    font-size: 4.5rem;
+    float: left;
+    line-height: 0.85;
+    padding-right: 0.5rem;
+    padding-top: 0.5rem;
+    color: var(--oxblood);
+    font-weight: 400;
+    font-variation-settings: "opsz" 144, "WONK" 1;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    max-width: 1100px;
+    margin: 0 auto 3rem;
+  }
+
+  .stat-card {
+    background: var(--paper-soft);
+    border: 1px solid var(--rule);
+    border-top: 3px double var(--gold);
+    padding: 1.5rem;
+    text-align: center;
+    position: relative;
+  }
+
+  .stat-num {
+    font-family: 'Fraunces', serif;
+    font-size: 2.25rem;
+    color: var(--ink);
+    line-height: 1;
+    font-weight: 400;
+    font-variation-settings: "opsz" 144, "WONK" 1;
+  }
+
+  .stat-num .unit {
+    font-size: 1.25rem;
+    color: var(--gold);
+    margin-left: 0.25rem;
+  }
+
+  .stat-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 0.75rem;
+  }
+
+  .stat-detail {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+    line-height: 1.4;
+  }
+
+  .framework-box {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: var(--paper-soft);
+    border: 1px solid var(--rule);
+    position: relative;
+  }
+
+  .framework-box::before {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border: 1px solid var(--gold-pale);
+    pointer-events: none;
+  }
+
+  .framework-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.25rem;
+    color: var(--ink);
+    text-align: center;
+    margin-bottom: 1rem;
+    font-style: italic;
+  }
+
+  .framework-buckets {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+  }
+
+  .bucket {
+    background: var(--paper);
+    padding: 0.75rem;
+    border-left: 3px solid var(--ink);
+    font-size: 0.85rem;
+  }
+
+  .bucket.depository { border-color: var(--c-depository); }
+  .bucket.securities { border-color: var(--c-securities); }
+  .bucket.gse { border-color: var(--c-gse); }
+  .bucket.consumer { border-color: var(--c-consumer); }
+  .bucket.insurance { border-color: var(--c-insurance); }
+
+  .bucket-name {
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.25rem;
+  }
+
+  .bucket-list {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  /* === II. CHRONICLE (TIMELINE) === */
+  .timeline-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: var(--paper-soft);
+    border: 1px solid var(--rule);
+  }
+
+  .filter-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    align-items: center;
+  }
+
+  .filter-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-right: 0.5rem;
+  }
+
+  .filter-btn {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 0.3rem 0.7rem;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.02em;
+  }
+  .filter-btn:hover { background: var(--paper-deep); color: var(--ink); }
+  .filter-btn.active {
+    background: var(--ink);
+    color: var(--paper-soft);
+    border-color: var(--ink);
+  }
+
+  /* Era density bar */
+  .era-bar {
+    max-width: 1100px;
+    margin: 0 auto 2rem;
+    height: 36px;
+    display: flex;
+    border: 1px solid var(--rule);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    overflow: hidden;
+  }
+
+  .era-segment {
+    color: var(--paper-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.5rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: flex 0.2s ease;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  /* Timeline list */
+  .timeline {
+    position: relative;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: linear-gradient(180deg, transparent, var(--rule) 5%, var(--rule) 95%, transparent);
+    transform: translateX(-50%);
+  }
+
+  .event {
+    position: relative;
+    width: 50%;
+    padding: 1rem 2.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .event.left { left: 0; text-align: right; }
+  .event.right { left: 50%; }
+
+  .event-marker {
+    position: absolute;
+    top: 1.5rem;
+    width: 11px;
+    height: 11px;
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+    z-index: 2;
+    transition: all 0.2s;
+  }
+  .event.left .event-marker { right: -6px; }
+  .event.right .event-marker { left: -6px; }
+
+  .event:hover .event-marker {
+    background: var(--gold);
+    border-color: var(--oxblood);
+    transform: scale(1.4);
+  }
+
+  .event-date {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .event-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.15rem;
+    color: var(--ink);
+    margin: 0.25rem 0 0.5rem;
+    line-height: 1.25;
+    font-variation-settings: "opsz" 14;
+  }
+
+  .event-summary {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .event-detail {
+    display: none;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px dashed var(--rule);
+    font-size: 0.8rem;
+    color: var(--text);
+    line-height: 1.6;
+    text-align: left;
+  }
+
+  .event.expanded .event-detail { display: block; }
+
+  .event-card {
+    background: var(--paper-soft);
+    border: 1px solid var(--rule);
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .event-card:hover {
+    background: var(--paper);
+    border-color: var(--gold);
+    box-shadow: 0 3px 10px rgba(20,33,61,0.06);
+  }
+
+  .event-card.expanded {
+    background: var(--paper);
+    border-color: var(--oxblood);
+    border-left-width: 3px;
+  }
+
+  .event-tag {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    background: var(--ink);
+    color: var(--paper-soft);
+    margin-bottom: 0.5rem;
+  }
+
+  .event-tag.crisis { background: var(--oxblood); }
+  .event-tag.statute { background: var(--c-depository); }
+  .event-tag.agency { background: var(--c-gse); }
+  .event-tag.deregulation { background: var(--c-securities); }
+  .event-tag.leadership { background: var(--c-coord); }
+
+  /* === III. ARCHITECTURE (REGULATORS) === */
+  .reg-toolbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .search-input {
+    background: var(--paper-soft);
+    border: 1px solid var(--rule);
+    padding: 0.5rem 1rem;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.85rem;
+    color: var(--ink);
+    width: 280px;
+    transition: all 0.2s;
+  }
+  .search-input:focus {
+    outline: none;
+    border-color: var(--gold);
+    background: var(--paper);
+  }
+
+  .reg-category {
+    margin-bottom: 2.5rem;
+  }
+
+  .reg-category-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .reg-category-bar {
+    width: 30px;
+    height: 12px;
+    flex-shrink: 0;
+  }
+
+  .reg-category-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.5rem;
+    color: var(--ink);
+    font-variation-settings: "opsz" 144, "SOFT" 30;
+  }
+
+  .reg-category-count {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--text-faint);
+    margin-left: auto;
+  }
+
+  .reg-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+
+  .reg-card {
+    background: var(--paper-soft);
+    border: 1px solid var(--rule);
+    padding: 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .reg-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--c-depository);
+  }
+
+  .reg-card.depository::before { background: var(--c-depository); }
+  .reg-card.securities::before { background: var(--c-securities); }
+  .reg-card.gse::before { background: var(--c-gse); }
+  .reg-card.consumer::before { background: var(--c-consumer); }
+  .reg-card.treasury::before { background: var(--c-treasury); }
+  .reg-card.insurance::before { background: var(--c-insurance); }
+  .reg-card.coord::before { background: var(--c-coord); }
+  .reg-card.ghost::before { background: var(--c-ghost); }
+  .reg-card.ghost { opacity: 0.85; background: var(--paper-deep); }
+
+  .reg-card:hover {
+    background: var(--paper);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(20,33,61,0.08);
+  }
+
+  .reg-acronym {
+    font-family: 'Fraunces', serif;
+    font-size: 1.5rem;
+    color: var(--ink);
+    margin-bottom: 0.25rem;
+    line-height: 1;
+    font-variation-settings: "opsz" 144, "WONK" 1;
+  }
+
+  .reg-name {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+  }
+
+  .reg-meta {
+    display: flex;
+    gap: 1rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    padding-top: 0.5rem;
+    border-top: 1px dashed var(--rule);
+  }
+
+  .reg-meta-item span {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  /* Modal */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 20, 40, 0.7);
+    backdrop-filter: blur(3px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    padding: 2rem;
+  }
+
+  .modal-overlay.active { display: flex; }
+
+  .modal {
+    background: var(--paper);
+    max-width: 720px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    border: 1px solid var(--ink);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    position: relative;
+  }
+
+  .modal::before {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border: 1px solid var(--gold);
+    pointer-events: none;
+  }
+
+  .modal-inner { padding: 2.5rem; position: relative; }
+
+  .modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: 1px solid var(--rule);
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    font-family: 'Fraunces', serif;
+    font-size: 1.25rem;
+    color: var(--ink);
+    transition: all 0.15s;
+  }
+  .modal-close:hover { background: var(--oxblood); color: var(--paper); border-color: var(--oxblood); }
+
+  .modal-cat {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+
+  .modal-acronym {
+    font-family: 'Fraunces', serif;
+    font-size: 2.5rem;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    font-variation-settings: "opsz" 144, "WONK" 1;
+  }
+
+  .modal-name {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .modal-rule {
+    height: 1px;
+    background: var(--rule);
+    margin: 1.5rem 0;
+    position: relative;
+  }
+  .modal-rule::after {
+    content: '◆';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--paper);
+    padding: 0 0.5rem;
+    color: var(--gold);
+    font-size: 0.7rem;
+  }
+
+  .modal-grid {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 0.6rem 1.25rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .modal-key {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    padding-top: 0.2rem;
+  }
+
+  .modal-val { color: var(--ink); line-height: 1.5; }
+  .modal-val strong { color: var(--ink); font-weight: 600; }
+
+  .modal-section-title {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--ink-soft);
+    margin: 1.25rem 0 0.5rem;
+  }
+
+  .modal-body {
+    font-family: 'Fraunces', serif;
+    font-size: 0.95rem;
+    color: var(--text);
+    line-height: 1.65;
+    font-variation-settings: "opsz" 14;
+  }
+
+  /* === IV. GEOGRAPHY (MAP) === */
+  .map-controls {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .map-toggle {
+    background: var(--paper-soft);
+    border: 1px solid var(--rule);
+    padding: 0.6rem 1.25rem;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .map-toggle:hover { color: var(--ink); }
+  .map-toggle.active {
+    background: var(--ink);
+    color: var(--paper-soft);
+    border-color: var(--ink);
+  }
+
+  .map-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 2rem;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 900px) {
+    .map-wrapper { grid-template-columns: 1fr; }
+  }
+
+  .cartogram {
+    background: var(--paper-soft);
+    border: 1px solid var(--rule);
+    padding: 1.5rem;
+    position: relative;
+  }
+
+  .cartogram-grid {
+    display: grid;
+    grid-template-columns: repeat(13, 1fr);
+    gap: 3px;
+    aspect-ratio: 13 / 9;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .state {
+    background: var(--paper-deep);
+    border: 1px solid var(--rule);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+    transition: all 0.15s;
+    aspect-ratio: 1;
+    position: relative;
+    user-select: none;
+  }
+
+  /* States split across two Fed districts: diagonal-split tiles get a light label with shadow for legibility */
+  .state.split {
+    color: #f5ecd6;
+    text-shadow: 0 1px 2px rgba(10,20,40,0.7), 0 0 3px rgba(10,20,40,0.5);
+  }
+
+  .state.split::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 5px 5px 0;
+    border-color: transparent rgba(245,236,214,0.6) transparent transparent;
+    pointer-events: none;
+  }
+
+  .state:hover {
+    transform: scale(1.15);
+    z-index: 5;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    border-color: var(--ink);
+    border-width: 2px;
+  }
+
+  .state.highlighted {
+    box-shadow: 0 0 0 2px var(--oxblood) inset;
+    z-index: 4;
+  }
+
+  .map-legend {
+    background: var(--paper-soft);
+    border: 1px solid var(--rule);
+    padding: 1.25rem;
+    max-height: 600px;
+    overflow-y: auto;
+  }
+
+  .legend-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+    font-style: italic;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding: 0.4rem 0.4rem;
+    cursor: pointer;
+    transition: background 0.15s;
+    border-radius: 2px;
+  }
+  .legend-item:hover { background: var(--paper-deep); }
+  .legend-item.active { background: var(--paper-deep); }
+
+  .legend-swatch {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    border: 1px solid rgba(0,0,0,0.2);
+  }
+
+  .legend-content { flex: 1; }
+
+  .legend-city {
+    font-family: 'Fraunces', serif;
+    font-size: 0.95rem;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+
+  .legend-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 0.15rem;
+  }
+
+  .state-tooltip {
+    position: fixed;
+    background: var(--ink);
+    color: var(--paper-soft);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+    pointer-events: none;
+    z-index: 50;
+    border: 1px solid var(--gold);
+    opacity: 0;
+    transition: opacity 0.15s;
+    max-width: 220px;
+  }
+
+  .state-tooltip.show { opacity: 1; }
+
+  .state-tooltip .tt-state {
+    font-family: 'Fraunces', serif;
+    font-size: 0.9rem;
+    color: var(--gold);
+  }
+
+  .state-tooltip .tt-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    margin-top: 0.25rem;
+    color: var(--paper);
+  }
+
+  /* === V. CURRENTS (THEMES) === */
+  .themes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .theme-card {
+    background: var(--paper-soft);
+    border: 1px solid var(--rule);
+    padding: 2rem;
+    position: relative;
+    transition: all 0.3s;
+  }
+
+  .theme-card::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: -1px; right: -1px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--gold), var(--oxblood), var(--gold));
+  }
+
+  .theme-card:hover {
+    background: var(--paper);
+    box-shadow: 0 8px 24px rgba(20,33,61,0.08);
+  }
+
+  .theme-num {
+    font-family: 'Fraunces', serif;
+    font-size: 3rem;
+    color: var(--gold-pale);
+    line-height: 1;
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-style: italic;
+    font-variation-settings: "opsz" 144;
+  }
+
+  .theme-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+
+  .theme-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.4rem;
+    color: var(--ink);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    padding-right: 3rem;
+    font-variation-settings: "opsz" 144, "SOFT" 30;
+  }
+
+  .theme-text {
+    font-family: 'Fraunces', serif;
+    color: var(--text);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    font-variation-settings: "opsz" 14;
+  }
+
+  .theme-text p { margin-bottom: 0.75rem; }
+  .theme-text strong { color: var(--ink); font-weight: 600; }
+
+  /* Footer */
+  footer {
+    margin-top: 5rem;
+    padding: 3rem 2rem 2rem;
+    border-top: 1px double var(--rule);
+    background: var(--paper-soft);
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .footer-ornament {
+    font-family: 'Fraunces', serif;
+    color: var(--gold);
+    font-size: 1.25rem;
+    letter-spacing: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .footer-text {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.8;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .event { width: 100%; padding-left: 2.5rem; padding-right: 0; text-align: left; left: 0 !important; }
+    .event.left { text-align: left; }
+    .event-marker { left: -6px !important; right: auto !important; }
+    .timeline::before { left: 0; }
+    .modal-grid { grid-template-columns: 1fr; gap: 0.25rem; }
+    .modal-key { margin-top: 0.75rem; }
+    main { padding: 1rem; }
+    .nav-btn { padding: 0.75rem 0.75rem; font-size: 0.65rem; }
+    .nav-btn .roman { font-size: 0.75rem; margin-right: 0.25rem; }
+  }
+</style>
+</head>
+<body>
+<a class="brw-backhome" href="wire.html" aria-label="Back to BankRegWire">← BankRegWire</a>
+<style>
+.brw-backhome{position:fixed;top:14px;left:14px;z-index:9999;display:inline-flex;align-items:center;gap:6px;
+  font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+  text-decoration:none;color:#f1ede2;background:rgba(22,21,15,.72);
+  -webkit-backdrop-filter:blur(8px) saturate(1.2);backdrop-filter:blur(8px) saturate(1.2);
+  border:1px solid rgba(240,165,70,.4);border-radius:30px;padding:8px 14px;box-shadow:0 8px 22px -10px rgba(0,0,0,.5);
+  transition:color .2s,border-color .2s,background .2s}
+.brw-backhome:hover{color:#f0a546;border-color:#f0a546;background:rgba(22,21,15,.85)}
+.brw-backhome:focus-visible{outline:2px solid #f0a546;outline-offset:3px}
+@media print{.brw-backhome{display:none}}
+</style>
+
+<header class="masthead">
+  <div class="ornament-top">❦ ❦ ❦</div>
+  <h1>The Architecture of <em>American Finance</em></h1>
+  <div class="subtitle">An Interactive Reference · 1781–2026</div>
+  <div class="dateline">History · Regulators · Geography · Themes</div>
+</header>
+
+<nav class="navigation">
+  <div class="nav-inner">
+    <button class="nav-btn active" data-section="foundations"><span class="roman">I.</span>Foundations</button>
+    <button class="nav-btn" data-section="chronicle"><span class="roman">II.</span>Chronicle</button>
+    <button class="nav-btn" data-section="architecture"><span class="roman">III.</span>Architecture</button>
+    <button class="nav-btn" data-section="geography"><span class="roman">IV.</span>Geography</button>
+    <button class="nav-btn" data-section="currents"><span class="roman">V.</span>Currents</button>
+  </div>
+</nav>
+
+<main>
+
+  <!-- =================== I. FOUNDATIONS =================== -->
+  <section id="foundations" class="section active">
+    <div class="section-header">
+      <div class="section-num">§ I</div>
+      <h2 class="section-title">Foundations</h2>
+      <div class="section-rule"><span>◆</span></div>
+      <p class="section-tagline">The American financial system is built upon a fragmented, charter-based, dual state–federal architecture — assembled piecemeal across two and a half centuries.</p>
+    </div>
+
+    <p class="lede">
+      Two hundred and forty-five years separate Robert Morris's Bank of North America from the GENIUS Act of 2025. In between sits no master plan: a sequence of crises, statutes, and reorganizations that produced a system of overlapping regulators governing thousands of institutions. Unlike the unitary supervisory architectures of the United Kingdom, France, or Japan, the United States retains a dual banking system — banks may hold a state or federal charter — and apportions oversight by charter type more than by activity. To understand who regulates whom, one must first understand which paper a firm holds.
+    </p>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-num">4,336</div>
+        <div class="stat-label">FDIC-Insured Banks</div>
+        <div class="stat-detail">Q4 2025 — down from a 1984 peak of 14,496</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">4,287</div>
+        <div class="stat-label">Federally Insured Credit Unions</div>
+        <div class="stat-detail">144.7M members · $2.43T assets</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">~$19<span class="unit">T</span></div>
+        <div class="stat-label">Depository Assets</div>
+        <div class="stat-detail">Banks + credit unions combined</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">$153.9<span class="unit">B</span></div>
+        <div class="stat-label">Deposit Insurance Fund</div>
+        <div class="stat-detail">Dec 31, 2025 · 1.42% reserve ratio</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">12 / 11</div>
+        <div class="stat-label">Fed / FHLB Districts</div>
+        <div class="stat-detail">Regional banking architecture</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">~25</div>
+        <div class="stat-label">Federal Regulators</div>
+        <div class="stat-detail">Plus 50 state systems + DC + territories</div>
+      </div>
+    </div>
+
+    <div class="framework-box">
+      <div class="framework-title">The Five-Bucket Federal Taxonomy</div>
+      <p style="text-align: center; color: var(--text-muted); font-size: 0.9rem;">After the Congressional Research Service's classification framework (R44918, IF11065), federal financial regulators sort into five functional buckets, plus interagency coordination bodies.</p>
+      <div class="framework-buckets">
+        <div class="bucket depository">
+          <div class="bucket-name">Depository</div>
+          <div class="bucket-list">Fed · OCC · FDIC · NCUA</div>
+        </div>
+        <div class="bucket securities">
+          <div class="bucket-name">Securities / Derivatives</div>
+          <div class="bucket-list">SEC · CFTC · PCAOB · FINRA · MSRB</div>
+        </div>
+        <div class="bucket gse">
+          <div class="bucket-name">GSE Regulators</div>
+          <div class="bucket-list">FHFA · FCA</div>
+        </div>
+        <div class="bucket consumer">
+          <div class="bucket-name">Consumer Protection</div>
+          <div class="bucket-list">CFPB</div>
+        </div>
+        <div class="bucket insurance">
+          <div class="bucket-name">Insurance</div>
+          <div class="bucket-list">FIO (federal) · State commissioners · NAIC</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== II. CHRONICLE (TIMELINE) =================== -->
+  <section id="chronicle" class="section">
+    <div class="section-header">
+      <div class="section-num">§ II</div>
+      <h2 class="section-title">Chronicle</h2>
+      <div class="section-rule"><span>◆</span></div>
+      <p class="section-tagline">Forty-nine anchor events tracing the United States financial system from the founding-era debate over central banking to the stablecoin frameworks of 2025–26.</p>
+    </div>
+
+    <div class="era-bar" id="era-bar"></div>
+
+    <div class="timeline-controls">
+      <div class="filter-group">
+        <span class="filter-label">Era</span>
+        <button class="filter-btn era-filter active" data-era="all">All</button>
+        <button class="filter-btn era-filter" data-era="founding">Founding</button>
+        <button class="filter-btn era-filter" data-era="free">Free Banking</button>
+        <button class="filter-btn era-filter" data-era="national">National</button>
+        <button class="filter-btn era-filter" data-era="modern">Modern</button>
+        <button class="filter-btn era-filter" data-era="newdeal">New Deal</button>
+        <button class="filter-btn era-filter" data-era="deregulation">Deregulation</button>
+        <button class="filter-btn era-filter" data-era="postcrisis">Post-Crisis</button>
+        <button class="filter-btn era-filter" data-era="current">Current</button>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Type</span>
+        <button class="filter-btn type-filter active" data-type="all">All</button>
+        <button class="filter-btn type-filter" data-type="crisis">Crisis</button>
+        <button class="filter-btn type-filter" data-type="statute">Statute</button>
+        <button class="filter-btn type-filter" data-type="agency">Agency</button>
+        <button class="filter-btn type-filter" data-type="leadership">Leadership</button>
+      </div>
+    </div>
+
+    <div class="timeline" id="timeline"></div>
+  </section>
+
+  <!-- =================== III. ARCHITECTURE (REGULATORS) =================== -->
+  <section id="architecture" class="section">
+    <div class="section-header">
+      <div class="section-num">§ III</div>
+      <h2 class="section-title">Architecture</h2>
+      <div class="section-rule"><span>◆</span></div>
+      <p class="section-tagline">The current federal and quasi-federal regulators — twenty-five entities organized by function. Click any card for full profile.</p>
+    </div>
+
+    <div class="reg-toolbar">
+      <input type="text" class="search-input" id="reg-search" placeholder="Search regulators by name or acronym…" />
+    </div>
+
+    <div id="reg-container"></div>
+  </section>
+
+  <!-- =================== IV. GEOGRAPHY (MAP) =================== -->
+  <section id="geography" class="section">
+    <div class="section-header">
+      <div class="section-num">§ IV</div>
+      <h2 class="section-title">Geography</h2>
+      <div class="section-rule"><span>◆</span></div>
+      <p class="section-tagline">Three regional architectures: twelve Federal Reserve districts, eleven Federal Home Loan Bank districts, and six FDIC supervisory regions. Hover any state to see all three placements.</p>
+    </div>
+
+    <div class="map-controls">
+      <button class="map-toggle active" data-map="fed">Federal Reserve Districts</button>
+      <button class="map-toggle" data-map="fhlb">Federal Home Loan Bank Districts</button>
+      <button class="map-toggle" data-map="fdic">FDIC Supervisory Regions</button>
+    </div>
+
+    <div class="map-wrapper">
+      <div class="cartogram">
+        <div class="cartogram-grid" id="cartogram"></div>
+        <p style="text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; letter-spacing: 0.15em; color: var(--text-faint); margin-top: 1rem; text-transform: uppercase;" id="cartogram-caption">Tile cartogram — diagonally split tiles mark states divided between two Federal Reserve districts</p>
+      </div>
+      <div class="map-legend">
+        <div class="legend-title" id="legend-title">12 Federal Reserve Districts</div>
+        <div id="legend-list"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== V. CURRENTS (THEMES) =================== -->
+  <section id="currents" class="section">
+    <div class="section-header">
+      <div class="section-num">§ V</div>
+      <h2 class="section-title">Currents</h2>
+      <div class="section-rule"><span>◆</span></div>
+      <p class="section-tagline">Six recurring patterns that explain why the U.S. financial system looks the way it does — and where it is heading.</p>
+    </div>
+
+    <div class="themes-grid" id="themes-grid"></div>
+  </section>
+
+</main>
+
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-inner" id="modal-content"></div>
+  </div>
+</div>
+
+<div class="state-tooltip" id="state-tooltip"></div>
+
+<footer>
+  <div class="footer-ornament">❦ ❦ ❦</div>
+  <div class="footer-text">
+    Compiled from Congressional Research Service reports IF11065, IF10035, IF10054, R44918, R46499 ·<br>
+    FDIC Quarterly Banking Profile · NCUA Performance Data · Federal Reserve History · OCC Records<br><br>
+    Reference data current as of May 2026 · Field of U.S. Financial Services Policy
+  </div>
+</footer>
+
+<script>
+// ============================================================
+// DATA: TIMELINE EVENTS
+// ============================================================
+const events = [
+  { year: 1781, date: 'Dec 31, 1781', title: 'Bank of North America Chartered', era: 'founding', type: 'agency', summary: 'Continental Congress charters the first commercial bank in the United States.', detail: 'Robert Morris, the Superintendent of Finance, organized the bank in Philadelphia to assist in financing the Revolutionary War. It opened January 7, 1782 — making it the oldest financial institution still operating in the U.S. (now part of Wells Fargo).' },
+  { year: 1791, date: 'Feb 25, 1791', title: 'First Bank of the United States', era: 'founding', type: 'agency', summary: "Hamilton's central institution chartered by Washington; 20-year term.", detail: 'The First Bank held federal deposits, issued banknotes, and served as fiscal agent for the Treasury. Jeffersonian opposition argued the federal government lacked constitutional authority to charter a corporation — a debate that shaped American constitutional law (eventually resolved in McCulloch v. Maryland, 1819).' },
+  { year: 1811, date: 'Mar 3, 1811', title: 'First Bank Charter Expires', era: 'founding', type: 'crisis', summary: 'Congress refuses renewal by a single vote in each chamber.', detail: 'The Bank closed; financing the War of 1812 without it proved disastrous, helping motivate the Second Bank.' },
+  { year: 1816, date: 'Apr 10, 1816', title: 'Second Bank of the United States', era: 'founding', type: 'agency', summary: 'Madison signs after post-war financial chaos demonstrates the cost of operating without a central bank.', detail: 'Twenty-year charter. Nicholas Biddle assumed the presidency in 1823 and built a sophisticated central-banking apparatus that nonetheless drew populist opposition.' },
+  { year: 1832, date: 'Jul 10, 1832', title: "Jackson's Bank Veto", era: 'founding', type: 'crisis', summary: 'President Jackson vetoes the Second Bank re-charter; the Bank War begins.', detail: "Jackson's veto message is among the most consequential political documents in American financial history. He framed the Bank as an instrument of concentrated wealth hostile to ordinary citizens — a frame that has recurred in U.S. central-banking politics ever since." },
+  { year: 1837, date: '1837–1862', title: 'Free Banking Era', era: 'free', type: 'agency', summary: 'State-only chartering produces "wildcat" banks with private notes of varying soundness.', detail: 'In the absence of a central bank or uniform federal supervision, states adopted highly variable chartering regimes. Some, like New York\'s 1838 Free Banking Act, were models of prudence; others produced spectacular failures. The era ended only when the Civil War forced a federal response.' },
+  { year: 1863, date: 'Feb 25, 1863', title: 'National Currency Act', era: 'national', type: 'statute', summary: 'Lincoln signs the act creating the OCC and a uniform national currency.', detail: 'Hugh McCulloch was the first Comptroller of the Currency. The OCC is the oldest federal financial regulator and remains, 163 years later, the chartering authority for national banks.' },
+  { year: 1864, date: 'Jun 3, 1864', title: 'National Bank Act', era: 'national', type: 'statute', summary: 'Expanded version of the 1863 act establishes the modern national-bank charter.', detail: 'McCulloch redrafted and expanded the original statute. Congress then taxed state banknotes out of existence (1865) — but state banks survived by switching to deposits, preserving the dual banking system that persists today.' },
+  { year: 1873, date: 'Sep 18, 1873', title: 'Panic of 1873', era: 'national', type: 'crisis', summary: 'Failure of Jay Cooke & Co. triggers the Long Depression; NYSE closes for ten days.', detail: 'Cooke had overextended financing the Northern Pacific Railway. The ensuing depression lasted into the 1880s and helped seed populist political movements demanding monetary reform.' },
+  { year: 1893, date: 'May 1893', title: 'Panic of 1893', era: 'national', type: 'crisis', summary: 'Roughly 500 banks fail; severe depression follows.', detail: 'Triggered by the collapse of the Philadelphia & Reading Railroad and the National Cordage Co. Treasury gold reserves fell to near-default levels, ultimately requiring an emergency loan syndicated by J.P. Morgan.' },
+  { year: 1907, date: 'Oct 1907', title: 'Panic of 1907 — The Knickerbocker Crisis', era: 'national', type: 'crisis', summary: 'J.P. Morgan organizes a private rescue; spurs creation of the Federal Reserve.', detail: 'The realization that the United States had relied on one banker to prevent collapse drove the National Monetary Commission (Aldrich Commission) and ultimately the Federal Reserve Act.' },
+  { year: 1913, date: 'Dec 23, 1913', title: 'Federal Reserve Act', era: 'modern', type: 'agency', summary: 'Wilson signs the Federal Reserve Act, creating the Board + 12 regional Reserve Banks.', detail: 'The compromise structure — a federal board with regional Reserve Banks — reflected both progressive economic thought and Jeffersonian distrust of concentrated financial power. The Fed opened for business November 16, 1914.' },
+  { year: 1927, date: 'Feb 25, 1927', title: 'McFadden Act', era: 'modern', type: 'statute', summary: 'Limits national-bank branching to what state law permits; effectively bans interstate branch banking.', detail: 'Codified unit banking. Repealed in functional terms only by Riegle-Neal (1994).' },
+  { year: 1929, date: 'Oct 24–29, 1929', title: 'Wall Street Crash', era: 'modern', type: 'crisis', summary: 'Black Thursday through Black Tuesday; the modern era of financial regulation begins.', detail: 'The Crash itself was not the cause of the Great Depression, but the subsequent waves of bank failures (1930–33) destroyed roughly one-third of all U.S. banks and motivated the New Deal regulatory framework.' },
+  { year: 1932, date: 'Jan 22, 1932', title: 'Reconstruction Finance Corporation', era: 'modern', type: 'agency', summary: 'Hoover establishes the RFC for emergency lending to banks, railroads, and businesses.', detail: 'Greatly expanded under FDR. The RFC was the largest single source of federal credit during the Depression and WWII. Dissolved 1957 — its functions migrated to multiple modern agencies.' },
+  { year: 1932, date: 'Jul 22, 1932', title: 'Federal Home Loan Bank Act', era: 'modern', type: 'agency', summary: 'Creates the FHLB System and the Federal Home Loan Bank Board to address mortgage liquidity collapse.', detail: 'Hoover-era response to the housing crisis. Originally 12 regional banks; today 11 after the 2015 Seattle-Des Moines merger.' },
+  { year: 1933, date: 'May 27, 1933', title: 'Securities Act of 1933', era: 'newdeal', type: 'statute', summary: '"Truth in securities" — required registration of public offerings.', detail: 'The first federal securities statute. Operated under FTC authority until the SEC was created in 1934.' },
+  { year: 1933, date: 'Jun 16, 1933', title: 'Banking Act of 1933 (Glass-Steagall)', era: 'newdeal', type: 'statute', summary: 'Creates FDIC; separates commercial from investment banking.', detail: 'Senator Carter Glass and Representative Henry Steagall. The Act created federal deposit insurance, restricted bank securities activities, and established Regulation Q interest-rate ceilings — the architecture of American banking for sixty-six years.' },
+  { year: 1934, date: 'Jun 6, 1934', title: 'Securities Exchange Act', era: 'newdeal', type: 'agency', summary: 'Creates the Securities and Exchange Commission.', detail: 'Joseph P. Kennedy became the first SEC Chair. The Act regulated secondary trading, exchanges, and broker-dealers, and granted the SEC broad rulemaking authority.' },
+  { year: 1934, date: 'Jun 26, 1934', title: 'Federal Credit Union Act', era: 'newdeal', type: 'statute', summary: 'Authorizes federal credit-union charters.', detail: 'Initially administered by the Farm Credit Administration; eventually became the basis for NCUA (1970).' },
+  { year: 1936, date: 'Jun 15, 1936', title: 'Commodity Exchange Act', era: 'newdeal', type: 'statute', summary: 'Expands the 1922 Grain Futures Act; creates the Commodity Exchange Authority.', detail: 'Ancestor of the CFTC. The 1936 Act extended federal jurisdiction beyond grain to most agricultural futures.' },
+  { year: 1950, date: 'Sep 21, 1950', title: 'Federal Deposit Insurance Act', era: 'newdeal', type: 'statute', summary: 'FDIC provisions consolidated into a standalone statute; insurance raised to $10,000.', detail: 'Until 1950, FDIC operated under sections of the Federal Reserve Act. The 1950 Act is the modern statutory foundation for federal deposit insurance.' },
+  { year: 1956, date: 'May 9, 1956', title: 'Bank Holding Company Act', era: 'newdeal', type: 'statute', summary: 'Gives the Fed authority over BHCs; requires divestiture of most nonbank affiliates.', detail: 'Closed loopholes that had allowed bank-affiliated companies to evade the McFadden Act and Glass-Steagall.' },
+  { year: 1970, date: 'Mar 10, 1970', title: 'NCUA Established', era: 'newdeal', type: 'agency', summary: 'Credit-union supervision removed from HEW and constituted as an independent agency.', detail: 'The NCUSIF was established in 1970 as well; insured shares became functionally equivalent to FDIC deposits.' },
+  { year: 1970, date: 'Oct 26, 1970', title: 'Bank Secrecy Act', era: 'newdeal', type: 'statute', summary: 'Establishes currency-transaction reporting; the foundation of modern U.S. AML/CFT.', detail: 'The Currency and Foreign Transactions Reporting Act required reporting of cash transactions over $10,000. Greatly expanded by the USA PATRIOT Act (2001).' },
+  { year: 1974, date: 'Oct 23, 1974', title: 'CFTC Act', era: 'newdeal', type: 'agency', summary: 'Creates the Commodity Futures Trading Commission as an independent agency.', detail: 'CFTC began operations April 21, 1975. Its jurisdiction expanded dramatically post-Dodd-Frank to cover swaps.' },
+  { year: 1975, date: 'Dec 31, 1975', title: 'Home Mortgage Disclosure Act', era: 'newdeal', type: 'statute', summary: 'Mortgage data reporting to detect redlining and serve fair-lending enforcement.', detail: 'Reauthorized and expanded several times since. The HMDA dataset is now the principal public-data source on U.S. mortgage origination.' },
+  { year: 1977, date: 'Oct 12, 1977', title: 'Community Reinvestment Act', era: 'newdeal', type: 'statute', summary: 'Requires regulators to evaluate banks\' service to low- and moderate-income neighborhoods.', detail: 'Signed by Carter. The CRA framework was substantially modernized by interagency rulemaking in 2023; the rule remained in litigation through 2025.' },
+  { year: 1980, date: 'Mar 31, 1980', title: 'DIDMCA', era: 'deregulation', type: 'deregulation', summary: 'Phases out Regulation Q ceilings; raises FDIC insurance to $100,000.', detail: 'The Depository Institutions Deregulation and Monetary Control Act inaugurated the modern deregulatory era. It also extended reserve requirements to all depository institutions, regardless of Fed membership.' },
+  { year: 1982, date: 'Oct 15, 1982', title: 'Garn-St. Germain Act', era: 'deregulation', type: 'deregulation', summary: 'Deregulates S&Ls; authorizes money-market deposit accounts.', detail: 'Permitted thrifts to invest in non-mortgage assets — a permissive change that, combined with state thrift charter shopping, helped seed the S&L crisis of the late 1980s.' },
+  { year: 1989, date: 'Aug 9, 1989', title: 'FIRREA', era: 'deregulation', type: 'statute', summary: 'Abolishes FHLBB and FSLIC; creates OTS, RTC, and BIF/SAIF.', detail: 'The Financial Institutions Reform, Recovery, and Enforcement Act was the largest U.S. financial-regulator reorganization since 1934. The Resolution Trust Corporation, created to resolve failed thrifts, completed its work in 1995.' },
+  { year: 1991, date: 'Dec 19, 1991', title: 'FDICIA', era: 'deregulation', type: 'statute', summary: 'Prompt corrective action; least-cost resolution; risk-based deposit-insurance premiums.', detail: 'The Federal Deposit Insurance Corporation Improvement Act introduced the "five capital tiers" framework still used today (well-capitalized through critically undercapitalized).' },
+  { year: 1994, date: 'Sep 29, 1994', title: 'Riegle-Neal Interstate Banking Act', era: 'deregulation', type: 'statute', summary: 'Effectively repeals the McFadden Act; interstate branching from June 1, 1997.', detail: 'Together with subsequent state opt-in laws, Riegle-Neal made nationwide bank branching possible for the first time since the 19th century. Industry consolidation accelerated sharply thereafter.' },
+  { year: 1999, date: 'Nov 12, 1999', title: 'Gramm-Leach-Bliley Act', era: 'deregulation', type: 'deregulation', summary: 'Repeals Glass-Steagall §20/§32; creates financial holding companies.', detail: 'Permitted commercial banks, investment banks, and insurance companies to affiliate under a single holding company. The Citigroup-Travelers merger, completed in 1998 in anticipation of the legislation, was the proximate driver.' },
+  { year: 2001, date: 'Oct 26, 2001', title: 'USA PATRIOT Act', era: 'postcrisis', type: 'statute', summary: 'Title III greatly expands the Bank Secrecy Act; introduces Customer Identification Programs.', detail: 'The modern AML compliance regime — CIP, enhanced due diligence, information-sharing under §314(a)/(b) — dates from PATRIOT Act Title III. FinCEN gained substantial new authorities.' },
+  { year: 2002, date: 'Jul 30, 2002', title: 'Sarbanes-Oxley Act', era: 'postcrisis', type: 'statute', summary: 'Creates the PCAOB; internal-controls reporting (§404); CEO/CFO certifications.', detail: 'Enacted in response to Enron, WorldCom, and Tyco accounting scandals. PCAOB ended nearly seventy years of self-regulation by the auditing profession.' },
+  { year: 2008, date: 'Jul 30, 2008', title: 'Housing and Economic Recovery Act', era: 'postcrisis', type: 'statute', summary: 'Creates FHFA by merging OFHEO, FHFB, and HUD GSE oversight.', detail: 'HERA was the legislative platform that allowed Treasury to place Fannie and Freddie into conservatorship six weeks later.' },
+  { year: 2008, date: 'Sep 7, 2008', title: 'Fannie Mae & Freddie Mac in Conservatorship', era: 'postcrisis', type: 'crisis', summary: 'Treasury Secretary Paulson and FHFA Director Lockhart place both GSEs in FHFA conservatorship.', detail: 'The conservatorships remain in place in 2026, more than seventeen years later — among the longest-running federal conservatorships in U.S. history.' },
+  { year: 2008, date: 'Oct 3, 2008', title: 'EESA / TARP', era: 'postcrisis', type: 'crisis', summary: '$700B Troubled Asset Relief Program; FDIC insurance temporarily raised to $250,000.', detail: 'The temporary $250,000 deposit-insurance coverage was made permanent by Dodd-Frank in 2010 and remains the standard today.' },
+  { year: 2010, date: 'Jul 21, 2010', title: 'Dodd-Frank Wall Street Reform Act', era: 'postcrisis', type: 'statute', summary: 'Creates CFPB, FSOC, OFR, FIO; abolishes OTS effective Jul 21, 2011.', detail: 'The most comprehensive financial-regulatory reorganization since 1934. OTS functions split: national thrifts to OCC, state thrifts to FDIC, thrift holding companies to the Federal Reserve. The Volcker Rule (§619) restricted bank proprietary trading.' },
+  { year: 2012, date: 'Apr 5, 2012', title: 'JOBS Act', era: 'postcrisis', type: 'statute', summary: 'Eases securities rules for emerging growth companies; legalizes equity crowdfunding.', detail: 'Created the "emerging growth company" status (Title I) with reduced disclosure requirements for up to five years post-IPO. Title III made Regulation Crowdfunding possible.' },
+  { year: 2015, date: 'May 31, 2015', title: 'FHLB Seattle Merges into FHLB Des Moines', era: 'postcrisis', type: 'agency', summary: 'First voluntary FHLB merger; system reduced from 12 to 11 banks.', detail: 'Member institutions approved the merger in late 2014. The combined district now covers Alaska, Hawaii, Idaho, Iowa, Minnesota, Missouri, Montana, North Dakota, Oregon, South Dakota, Utah, Washington, Wyoming — and the U.S. Pacific territories.' },
+  { year: 2018, date: 'May 24, 2018', title: 'EGRRCPA (Crapo Bill / S.2155)', era: 'postcrisis', type: 'deregulation', summary: 'Raises SIFI enhanced-prudential-standards threshold from $50B to $250B.', detail: 'The most consequential rollback of Dodd-Frank. Combined with discretionary tailoring, it effectively removed enhanced standards from most regional banks — a decision that received renewed scrutiny after the 2023 regional-bank failures.' },
+  { year: 2023, date: 'Mar 10–12, 2023', title: 'SVB & Signature Bank Failures', era: 'postcrisis', type: 'crisis', summary: 'Silicon Valley Bank and Signature Bank fail; FDIC invokes systemic-risk exception.', detail: 'First Republic followed in May 2023. The failures drove ongoing supervisory and resolution reform. FDIC Chair Travis Hill\'s 2026 proposals to revise CAMELS and remove reputational risk from supervision are direct legacies.' },
+  { year: 2023, date: 'Jul 2023', title: 'FedNow Launches', era: 'postcrisis', type: 'agency', summary: 'Real-time interbank payment settlement operated by the Federal Reserve.', detail: 'The first new payment rail operated by the Fed since the FedWire era. Competes (and interoperates) with the private-sector RTP network.' },
+  { year: 2024, date: 'Jan 1, 2024', title: 'CTA Beneficial Ownership Reporting', era: 'postcrisis', type: 'statute', summary: 'Corporate Transparency Act reporting to FinCEN begins.', detail: 'Subject to substantial legal challenges in 2024–25; reporting requirements for U.S. companies were ultimately rolled back, leaving only foreign reporting companies covered as of 2026.' },
+  { year: 2025, date: 'Jul 18, 2025', title: 'GENIUS Act Signed', era: 'current', type: 'statute', summary: 'First federal framework for payment stablecoins; OCC charters federal nonbank issuers.', detail: 'The Guiding and Establishing National Innovation for U.S. Stablecoins Act. Effective earlier of January 18, 2027 or 120 days after final regulations. Payment stablecoins are explicitly excluded from the definitions of "security" and "commodity."' },
+  { year: 2026, date: 'Jan 13, 2026', title: 'Travis Hill Sworn in as 23rd FDIC Chairman', era: 'current', type: 'leadership', summary: 'Hill confirmed for a five-year term beginning January 2, 2026.', detail: 'Previously served as Acting Chair from January 20, 2025. Under his tenure: removal of reputational risk from supervision (April 2026), proposed CAMELS revision (May 2026), and active engagement with stablecoin chartering questions under GENIUS.' },
+  { year: 2026, date: 'May 22, 2026', title: 'Kevin Warsh Becomes 17th Fed Chair', era: 'current', type: 'leadership', summary: 'Warsh succeeds Jerome Powell, who remains as governor through January 2028.', detail: 'The transition followed a politically contested period including a Justice Department investigation of Chair Powell (closed April 2026). Powell\'s decision to remain on the Board as governor is consistent with the precedent set by Marriner Eccles in 1948.' }
+];
+
+const eras = {
+  founding: { label: 'Founding (1781–1836)', color: 'var(--era-founding)' },
+  free: { label: 'Free Banking (1837–1862)', color: 'var(--era-free)' },
+  national: { label: 'National Banking (1863–1912)', color: 'var(--era-national)' },
+  modern: { label: 'Modern (1913–1932)', color: 'var(--era-modern)' },
+  newdeal: { label: 'New Deal & Postwar (1933–1979)', color: 'var(--era-newdeal)' },
+  deregulation: { label: 'Deregulation (1980–2007)', color: 'var(--era-deregulation)' },
+  postcrisis: { label: 'Post-Crisis (2008–2024)', color: 'var(--era-postcrisis)' },
+  current: { label: 'Current (2025–)', color: 'var(--era-current)' }
+};
+
+// ============================================================
+// DATA: REGULATORS
+// ============================================================
+const regulators = [
+  // DEPOSITORY
+  { acr: 'Fed', name: 'Federal Reserve System', cat: 'depository', catLabel: 'Depository · Central Bank', founded: 1913, statute: 'Federal Reserve Act', hq: 'Washington, D.C.', leader: 'Kevin Warsh (Chair, since May 22, 2026)', status: 'Independent within the government', funding: 'Self-funded from securities interest; remits surplus to Treasury', mission: 'Monetary policy, lender of last resort, bank regulation, and payment-system oversight.', regulates: 'Bank holding companies (incl. the largest banks), state-chartered member banks, foreign banks, savings & loan holding companies, designated financial-market utilities.', distinctive: 'The only U.S. financial regulator with independent monetary-policy authority. Decentralized regional structure: 12 Reserve Banks plus the Board of Governors. FOMC sets the federal funds rate target. Launched FedNow real-time payments in July 2023.' },
+  { acr: 'OCC', name: 'Office of the Comptroller of the Currency', cat: 'depository', catLabel: 'Depository', founded: 1863, statute: 'National Currency Act of 1863', hq: 'Washington, D.C.', leader: 'Jonathan V. Gould (Comptroller, since Jul 15, 2025)', status: 'Independent bureau of the Treasury', funding: 'Assessment fees on regulated banks; no congressional appropriations', mission: 'Charter, regulate, and supervise national banks, federal savings associations, and federal branches/agencies of foreign banks.', regulates: '~1,000 national banks and federal savings associations holding the majority of U.S. banking assets.', distinctive: 'Oldest federal financial regulator (Hugh McCulloch, first Comptroller). Under the GENIUS Act (2025), OCC also charters and supervises "Federal qualified nonbank payment stablecoin issuers." Comptroller serves ex officio on the FDIC Board and on FSOC.' },
+  { acr: 'FDIC', name: 'Federal Deposit Insurance Corporation', cat: 'depository', catLabel: 'Depository', founded: 1933, statute: 'Banking Act of 1933 (Glass-Steagall)', hq: 'Washington, D.C.', leader: 'Travis Hill (23rd Chairman, since Jan 13, 2026)', status: 'Independent agency', funding: 'Industry-paid assessments into the Deposit Insurance Fund', mission: 'Insure deposits up to $250,000; supervise insured state nonmember banks; resolve failed banks.', regulates: '4,336 FDIC-insured institutions (Q4 2025); primary federal supervisor for state-chartered non-member banks.', distinctive: 'Deposit Insurance Fund balance $153.9 billion (Dec 31, 2025); reserve ratio 1.42%. Under Hill, the CAMELS rating system is being substantially revised (NPR May 19, 2026) and reputational risk was removed from supervision (April 7, 2026). Began insuring deposits January 1, 1934.' },
+  { acr: 'NCUA', name: 'National Credit Union Administration', cat: 'depository', catLabel: 'Depository', founded: 1970, statute: 'Federal Credit Union Act amendments, 1970', hq: 'Alexandria, VA', leader: 'Kyle S. Hauptman (13th Chair, since Jan 20, 2025)', status: 'Independent agency', funding: 'Operating fees on federal credit unions; insurance premiums', mission: 'Charter, regulate, and supervise federal credit unions; insure shares through the NCUSIF up to $250,000.', regulates: '4,287 federally insured credit unions (2,686 federal + 1,601 federally insured state-chartered); 144.7 million members; $2.43 trillion in assets.', distinctive: 'As of Q4 2025, Hauptman is the only sitting Board member after the April 2025 removal of two other members (case ongoing). Concurrently appointed to the PCAOB in January 2026. Predecessor authority dates to 1934 Federal Credit Union Act, administered by the Bureau of Federal Credit Unions in HEW.' },
+
+  // SECURITIES
+  { acr: 'SEC', name: 'Securities and Exchange Commission', cat: 'securities', catLabel: 'Securities', founded: 1934, statute: 'Securities Exchange Act of 1934', hq: 'Washington, D.C.', leader: 'Paul S. Atkins (34th Chair, since Apr 21, 2025)', status: 'Independent agency; 5 commissioners (no more than 3 from one party)', funding: 'Industry fees (deficit-neutral by statute)', mission: 'Protect investors; maintain fair, orderly, and efficient markets; facilitate capital formation.', regulates: 'Registered exchanges, broker-dealers, investment advisers, mutual funds, public-company disclosure.', distinctive: 'Joseph P. Kennedy was the first Chair. Under Atkins, the SEC has launched "Project Crypto" and is reframing payment-stablecoin treatment in light of the GENIUS Act, which excludes payment stablecoins from "security" and "commodity" definitions.' },
+  { acr: 'CFTC', name: 'Commodity Futures Trading Commission', cat: 'securities', catLabel: 'Derivatives', founded: 1974, statute: 'Commodity Futures Trading Commission Act, 1974', hq: 'Washington, D.C.', leader: 'Michael Selig (Chair, nominated Oct 25, 2025)', status: 'Independent agency', funding: 'Annual congressional appropriations', mission: 'Regulate U.S. derivatives markets — futures, options, and swaps.', regulates: 'Designated contract markets (CME Group, ICE Futures U.S.), derivatives clearing organizations, swap execution facilities, swap dealers.', distinctive: 'Post-Dodd-Frank, jurisdiction extended over the swaps market — global OTC derivatives notional ~$699T at year-end 2024. Under "Crypto Sprint," authorized 24/7 spot crypto trading on registered futures exchanges from April 2026.' },
+  { acr: 'PCAOB', name: 'Public Company Accounting Oversight Board', cat: 'securities', catLabel: 'Securities · Audit Oversight', founded: 2002, statute: 'Sarbanes-Oxley Act, 2002', hq: 'Washington, D.C.', leader: 'Members appointed by the SEC Chair', status: 'Nonprofit corporation overseen by the SEC; 5-member board', funding: 'Accounting support fees on public companies and broker-dealers', mission: 'Oversee audits of public companies and broker-dealers.', regulates: 'Registered public accounting firms that audit U.S.-listed issuers and broker-dealers.', distinctive: 'Ended nearly seventy years of self-regulation by the auditing profession. NCUA Chair Kyle Hauptman was appointed to the PCAOB in January 2026, an unusual cross-agency appointment.' },
+  { acr: 'FINRA', name: 'Financial Industry Regulatory Authority', cat: 'securities', catLabel: 'Securities · SRO', founded: 2007, statute: 'Consolidation of NASD and NYSE member regulation', hq: 'Washington, D.C.', leader: 'Robert W. Cook (President & CEO)', status: 'Private self-regulatory organization overseen by the SEC', funding: 'Member firm fees', mission: 'Regulate broker-dealers and registered representatives; operate BrokerCheck.', regulates: '3,249 FINRA-registered broker-dealer firms; 723,731 registered individuals (end-2024).', distinctive: 'Operates the Central Registration Depository (Web CRD) and the largest securities-industry arbitration system in the world. Not a government agency despite quasi-regulatory authority.' },
+  { acr: 'MSRB', name: 'Municipal Securities Rulemaking Board', cat: 'securities', catLabel: 'Securities · SRO', founded: 1975, statute: 'Securities Acts Amendments of 1975', hq: 'Washington, D.C.', leader: 'Board of Directors', status: 'Self-regulatory organization overseen by the SEC', funding: 'Assessment fees on municipal securities dealers', mission: 'Write rules for municipal securities dealers and municipal advisors; operate the EMMA disclosure system.', regulates: 'Municipal securities dealers, brokers, and municipal advisors.', distinctive: 'EMMA (Electronic Municipal Market Access) is the principal public disclosure system for the ~$4 trillion U.S. municipal securities market.' },
+
+  // GSE
+  { acr: 'FHFA', name: 'Federal Housing Finance Agency', cat: 'gse', catLabel: 'GSE Regulator', founded: 2008, statute: 'Housing and Economic Recovery Act (HERA), 2008', hq: 'Washington, D.C.', leader: 'William J. (Bill) Pulte (5th Director, since Mar 14, 2025)', status: 'Independent agency', funding: 'Assessments on regulated entities', mission: 'Regulate and supervise Fannie Mae, Freddie Mac, and the 11 Federal Home Loan Banks. Conservator of Fannie and Freddie since September 7, 2008.', regulates: 'Fannie Mae, Freddie Mac, and 11 FHLBs — combined ~$8.5+ trillion in U.S. housing finance.', distinctive: 'Absorbed OFHEO and the Federal Housing Finance Board. Under Pulte, FHFA proposed 50-year mortgages (Nov 2025) and approved VantageScore as a FICO alternative. Pulte appointed himself Chairman of both Fannie Mae and Freddie Mac boards in 2025.' },
+  { acr: 'FCA', name: 'Farm Credit Administration', cat: 'gse', catLabel: 'GSE Regulator · Agriculture', founded: 1933, statute: 'Farm Credit Act of 1933', hq: 'McLean, VA', leader: 'Vincent Logan (Chair & CEO)', status: 'Independent federal agency', funding: 'Assessments on regulated institutions', mission: 'Regulate the Farm Credit System (cooperative agricultural lenders) and Farmer Mac.', regulates: 'Farm Credit System (cooperative network) and the Federal Agricultural Mortgage Corporation (Farmer Mac).', distinctive: 'Origins date to the 1916 Federal Farm Loan Act. The Farm Credit System is the only GSE network specifically chartered for agriculture and rural America.' },
+
+  // CONSUMER
+  { acr: 'CFPB', name: 'Consumer Financial Protection Bureau', cat: 'consumer', catLabel: 'Consumer Protection', founded: 2010, statute: 'Dodd-Frank Act, Title X, 2010', hq: 'Washington, D.C.', leader: 'Russell Vought (Acting Director, since 2025); Stuart Levenbach nominated', status: 'Independent agency within the Federal Reserve System', funding: 'Direct Fed funding (capped); upheld constitutional in CFPB v. CFSA (2024)', mission: 'Consolidated consumer-protection authority over banking and nonbank consumer credit; lead supervisor for consumer compliance at banks >$10B.', regulates: 'Banks and nonbank consumer financial firms under 19+ consumer financial laws (TILA, RESPA, EFTA, FDCPA, ECOA, etc.).', distinctive: 'Elizabeth Warren\'s intellectual architecture; Richard Cordray first director. The most politically contested federal financial regulator. Acting Director Vought has publicly stated his goal is to close the agency; mass layoffs and a freeze on most supervisory and rulemaking activity began February 2025.' },
+
+  // TREASURY / FINANCIAL INTELLIGENCE
+  { acr: 'Treasury', name: 'Department of the Treasury', cat: 'treasury', catLabel: 'Treasury', founded: 1789, statute: 'Act of Sep 2, 1789', hq: 'Washington, D.C.', leader: 'Scott Bessent (Secretary, since 2025)', status: 'Cabinet department', funding: 'Congressional appropriations', mission: 'Manages federal finances; issues debt; supervises OCC, FinCEN, OFAC, IRS, Bureau of the Fiscal Service.', regulates: 'Via subordinate bureaus; chairs FSOC.', distinctive: 'Originally led by Alexander Hamilton (first Secretary). Chairs the Financial Stability Oversight Council. Designs and implements U.S. economic sanctions through OFAC.' },
+  { acr: 'FinCEN', name: 'Financial Crimes Enforcement Network', cat: 'treasury', catLabel: 'Treasury · Financial Intelligence', founded: 1990, statute: 'Treasury Order 105-08 (Apr 25, 1990); USA PATRIOT Act expansions', hq: 'Vienna, VA', leader: 'Andrea Gacki (Director)', status: 'Bureau of Treasury', funding: 'Congressional appropriations', mission: 'Administer the Bank Secrecy Act; act as the U.S. Financial Intelligence Unit; collect and analyze SARs/CTRs.', regulates: 'Banks, credit unions, MSBs, broker-dealers, casinos, and many other "financial institutions" under the BSA. Under GENIUS, payment-stablecoin issuers are BSA-covered.', distinctive: '4.7 million Suspicious Activity Reports filed in FY2024 — an average of 12,870 per day. Administers beneficial ownership reporting under the Corporate Transparency Act (currently limited to foreign reporting companies after legal challenges).' },
+  { acr: 'OFAC', name: 'Office of Foreign Assets Control', cat: 'treasury', catLabel: 'Treasury · Sanctions', founded: 1950, statute: 'Trading with the Enemy Act; IEEPA', hq: 'Washington, D.C.', leader: 'Bradley Smith (Director)', status: 'Office within Treasury', funding: 'Congressional appropriations', mission: 'Administer and enforce U.S. economic sanctions.', regulates: 'All U.S. persons and U.S.-touching transactions; maintains the SDN list.', distinctive: 'Sanctions authorities have expanded dramatically since 2001 — secondary sanctions, cyber-enabled activity sanctions (since 2015), and corruption-targeted Global Magnitsky designations (since 2017).' },
+  { acr: 'Fiscal', name: 'Bureau of the Fiscal Service', cat: 'treasury', catLabel: 'Treasury · Federal Payments', founded: 2012, statute: 'Consolidation of Bureau of Public Debt and Financial Management Service', hq: 'Parkersburg, WV & Washington, D.C.', leader: 'Tim Gribben (Commissioner)', status: 'Bureau of Treasury', funding: 'Congressional appropriations', mission: 'Federal payments, collections, debt issuance, and central accounting.', regulates: 'Issues all U.S. Treasury securities; processes most federal payments and collections.', distinctive: 'Created Oct 7, 2012 by merging the Bureau of the Public Debt (debt issuance) and Financial Management Service (payments).' },
+  { acr: 'IRS', name: 'Internal Revenue Service', cat: 'treasury', catLabel: 'Treasury · Tax Administration', founded: 1862, statute: 'Revenue Act of 1862', hq: 'Washington, D.C.', leader: 'Various (acting leadership 2025–26)', status: 'Bureau of Treasury', funding: 'Congressional appropriations', mission: 'Administer the Internal Revenue Code.', regulates: 'Financial-sector aspects: FATCA implementation, Form 8300 cash-transaction reporting, tax treatment of financial products including digital assets.', distinctive: 'Among the largest single-employer organizations in the U.S. federal government. Digital-asset tax reporting (Form 1099-DA) became effective for 2025 tax year transactions.' },
+
+  // INSURANCE
+  { acr: 'FIO', name: 'Federal Insurance Office', cat: 'insurance', catLabel: 'Insurance · Federal Coordination', founded: 2010, statute: 'Dodd-Frank Act, Title V', hq: 'Washington, D.C.', leader: 'Director (within Treasury)', status: 'Office within Treasury; non-voting FSOC member', funding: 'Congressional appropriations', mission: 'Monitor U.S. insurance markets; coordinate international insurance matters; identify regulatory gaps.', regulates: 'Does not directly supervise insurers — insurance remains primarily state-regulated under McCarran-Ferguson.', distinctive: 'Created because Dodd-Frank gave Treasury a "federal voice" on insurance for the first time in U.S. history. The McCarran-Ferguson Act of 1945 reserved insurance regulation to the states.' },
+  { acr: 'NAIC', name: 'National Association of Insurance Commissioners', cat: 'insurance', catLabel: 'Insurance · State Coordination', founded: 1871, statute: 'Voluntary association', hq: 'Kansas City, MO', leader: 'Rotating presidency among state commissioners', status: 'Voluntary 501(c)(3) association — not a federal agency', funding: 'Database fees and member contributions', mission: 'Coordinate model laws across states; accredit state insurance regulators; operate SERFF (rate and form filing).', regulates: 'No direct regulatory authority — coordinates state insurance regulators.', distinctive: 'Founded 1871 as the National Insurance Convention. Combined U.S. insurance industry assets ~$10.1 trillion; life/A&H alone $9.3 trillion (NAIC, year-end 2024).' },
+  { acr: 'States', name: 'State Insurance Commissioners (50 + DC + Territories)', cat: 'insurance', catLabel: 'Insurance · State Primary Regulators', founded: 1851, statute: 'McCarran-Ferguson Act of 1945 confirms state primacy', hq: '50 state capitals + Washington, D.C.', leader: 'Each state has its own commissioner', status: 'State agencies, varying by jurisdiction', funding: 'Premium taxes, assessments, fees', mission: 'License, regulate, and supervise insurers operating in each state.', regulates: 'All insurance companies, agents, and brokers within each state.', distinctive: 'Insurance is the only major U.S. financial sector where state regulators have unambiguous primacy. New Hampshire created the first U.S. insurance commissioner office in 1851.' },
+
+  // COORDINATION
+  { acr: 'FSOC', name: 'Financial Stability Oversight Council', cat: 'coord', catLabel: 'Interagency · Systemic Risk', founded: 2010, statute: 'Dodd-Frank Act, Title I', hq: 'Treasury Department, Washington, D.C.', leader: 'Scott Bessent (Treasury Secretary, ex officio Chair)', status: 'Interagency council chaired by Treasury', funding: 'Through Treasury budget', mission: 'Identify and address risks to U.S. financial stability; designate nonbank SIFIs and financial-market utilities.', regulates: '10 voting members (Treasury Chair, Fed, OCC, CFPB, SEC, FDIC, CFTC, FHFA, NCUA, independent insurance member); 5 non-voting (OFR, FIO, state insurance, state banking, state securities).', distinctive: 'The principal U.S. forum for interagency coordination on systemic risk. Has used its nonbank SIFI designation authority sparingly and inconsistently across administrations.' },
+  { acr: 'OFR', name: 'Office of Financial Research', cat: 'coord', catLabel: 'Interagency · Data', founded: 2010, statute: 'Dodd-Frank Act, Title I', hq: 'Washington, D.C.', leader: 'Director (within Treasury)', status: 'Office within Treasury supporting FSOC', funding: 'Through Treasury budget', mission: 'Data collection and analysis for systemic-risk monitoring.', regulates: 'No direct regulatory authority — serves FSOC.', distinctive: 'Maintains the OFR Financial Stress Index and other systemic-risk data products. Provides FSOC with independent staff support distinct from member-agency staff.' },
+  { acr: 'FFIEC', name: 'Federal Financial Institutions Examination Council', cat: 'coord', catLabel: 'Interagency · Bank Examination', founded: 1979, statute: 'Financial Institutions Regulatory and Interest Rate Control Act of 1978', hq: 'Arlington, VA', leader: 'Rotating chair among member agencies', status: 'Interagency council', funding: 'Through member agencies', mission: 'Coordinate examination standards and practices among federal banking regulators.', regulates: 'Member agencies: Fed, FDIC, NCUA, OCC, CFPB, plus the State Liaison Committee (since 2006).', distinctive: 'Publishes Uniform Bank Performance Reports (UBPRs) and the Call Report. The State Liaison Committee gives state banking, credit union, and securities regulators a coordinated voice.' },
+  { acr: 'PWG', name: "President's Working Group on Financial Markets", cat: 'coord', catLabel: 'Interagency · Markets', founded: 1988, statute: 'Executive Order 12631 (Mar 18, 1988)', hq: 'Treasury, Washington, D.C.', leader: 'Treasury Secretary (ex officio Chair)', status: 'Executive-branch working group', funding: 'Through member agencies', mission: 'Coordinate executive-branch policy on financial markets.', regulates: 'Members: Treasury Secretary (Chair), Fed Chair, SEC Chair, CFTC Chair.', distinctive: 'Created by President Reagan after the 1987 stock-market crash. In 2025, a parallel PWG on Digital Asset Markets was constituted by executive order; its July 2025 report is being implemented through the CFTC "Crypto Sprint" and SEC "Project Crypto."' },
+
+  // GHOST REGULATORS
+  { acr: 'OTS', name: 'Office of Thrift Supervision', cat: 'ghost', catLabel: 'Abolished · 2011', founded: 1989, statute: 'FIRREA (1989); abolished by Dodd-Frank effective Jul 21, 2011', hq: 'Was: Washington, D.C.', leader: '—', status: 'Abolished July 21, 2011', funding: '—', mission: 'Regulated federal savings associations and savings & loan holding companies.', regulates: '—', distinctive: 'Functions distributed by Dodd-Frank: national thrifts → OCC; state thrifts → FDIC; thrift holding companies → Federal Reserve. The OTS\'s lighter-touch supervision was a recurring theme in 2008-crisis post-mortems.' },
+  { acr: 'FHLBB', name: 'Federal Home Loan Bank Board', cat: 'ghost', catLabel: 'Abolished · 1989', founded: 1932, statute: 'FHLB Act of 1932; abolished by FIRREA', hq: 'Was: Washington, D.C.', leader: '—', status: 'Abolished August 9, 1989', funding: '—', mission: 'Regulated S&Ls and the FHLB System.', regulates: '—', distinctive: 'Replaced by OTS (thrift supervision) and the Federal Housing Finance Board (FHLB oversight). The FHLBB\'s collapse defined the S&L crisis.' },
+  { acr: 'FSLIC', name: 'Federal Savings and Loan Insurance Corporation', cat: 'ghost', catLabel: 'Abolished · 1989', founded: 1934, statute: 'National Housing Act of 1934; abolished by FIRREA', hq: 'Was: Washington, D.C.', leader: '—', status: 'Abolished August 9, 1989', funding: '—', mission: 'Insured deposits at S&Ls.', regulates: '—', distinctive: 'Insolvent by 1986. Its functions transferred to a new FDIC fund (the Savings Association Insurance Fund, SAIF, later merged into the Deposit Insurance Fund in 2006).' },
+  { acr: 'RFC', name: 'Reconstruction Finance Corporation', cat: 'ghost', catLabel: 'Abolished · 1957', founded: 1932, statute: 'Reconstruction Finance Corporation Act, 1932', hq: 'Was: Washington, D.C.', leader: '—', status: 'Dissolved 1957', funding: '—', mission: 'Emergency lending to banks, railroads, businesses; later wartime financing.', regulates: '—', distinctive: 'The largest single source of federal credit during the Depression and WWII. Ancestor of multiple modern programs and agencies, including elements of the SBA and Fannie Mae.' },
+  { acr: 'OFHEO', name: 'Office of Federal Housing Enterprise Oversight', cat: 'ghost', catLabel: 'Absorbed · 2008', founded: 1992, statute: 'Federal Housing Enterprises Financial Safety and Soundness Act, 1992', hq: 'Was: Washington, D.C.', leader: '—', status: 'Absorbed into FHFA, July 30, 2008', funding: '—', mission: 'Supervised Fannie Mae and Freddie Mac.', regulates: '—', distinctive: 'OFHEO\'s perceived weakness as a GSE regulator was a primary motivation for creating FHFA — a stronger, consolidated successor agency.' },
+  { acr: 'FHFB', name: 'Federal Housing Finance Board', cat: 'ghost', catLabel: 'Absorbed · 2008', founded: 1989, statute: 'FIRREA (1989); absorbed by HERA', hq: 'Was: Washington, D.C.', leader: '—', status: 'Absorbed into FHFA, July 30, 2008', funding: '—', mission: 'Regulated the 12 Federal Home Loan Banks.', regulates: '—', distinctive: 'Created when FIRREA abolished the FHLBB. Existed for only nineteen years before HERA folded it into the FHFA.' }
+];
+
+const categoryColors = {
+  depository: 'var(--c-depository)',
+  securities: 'var(--c-securities)',
+  gse: 'var(--c-gse)',
+  consumer: 'var(--c-consumer)',
+  treasury: 'var(--c-treasury)',
+  insurance: 'var(--c-insurance)',
+  coord: 'var(--c-coord)',
+  ghost: 'var(--c-ghost)'
+};
+
+const categoryLabels = {
+  depository: 'Depository Regulators',
+  securities: 'Securities & Markets',
+  gse: 'GSE Regulators',
+  consumer: 'Consumer Protection',
+  treasury: 'Treasury & Financial Intelligence',
+  insurance: 'Insurance',
+  coord: 'Coordination & Stability',
+  ghost: 'Ghosts of Regulators Past'
+};
+
+// ============================================================
+// DATA: FED & FHLB DISTRICTS
+// ============================================================
+const fedDistricts = {
+  '1': { num: '1', letter: 'A', city: 'Boston', color: '#1e3a5f', states: 'CT (most), ME, MA, NH, RI, VT' },
+  '2': { num: '2', letter: 'B', city: 'New York', color: '#2c5b8a', states: 'NY, northern NJ, Fairfield Co. CT, Puerto Rico, USVI' },
+  '3': { num: '3', letter: 'C', city: 'Philadelphia', color: '#4a7ba8', states: 'DE, southern NJ, eastern PA' },
+  '4': { num: '4', letter: 'D', city: 'Cleveland', color: '#6b1a1a', states: 'OH, western PA, eastern KY, northern WV' },
+  '5': { num: '5', letter: 'E', city: 'Richmond', color: '#8a3030', states: 'DC, MD, NC, SC, VA, most of WV' },
+  '6': { num: '6', letter: 'F', city: 'Atlanta', color: '#a85050', states: 'AL, FL, GA, portions of LA, MS, TN' },
+  '7': { num: '7', letter: 'G', city: 'Chicago', color: '#2d5a3d', states: 'northern IL, northern IN, IA, MI (Lower), southern WI' },
+  '8': { num: '8', letter: 'H', city: 'St. Louis', color: '#4a7a52', states: 'AR, southern IL, southern IN, western KY, northern MS, eastern MO, western TN' },
+  '9': { num: '9', letter: 'I', city: 'Minneapolis', color: '#6b9072', states: 'MI (UP), MN, MT, ND, SD, northern WI' },
+  '10': { num: '10', letter: 'J', city: 'Kansas City', color: '#a06a1a', states: 'CO, KS, western MO, NE, northern NM, OK, WY' },
+  '11': { num: '11', letter: 'K', city: 'Dallas', color: '#b8924a', states: 'northern LA, southern NM, TX' },
+  '12': { num: '12', letter: 'L', city: 'San Francisco', color: '#5a2d57', states: 'AK, AZ, CA, HI, ID, NV, OR, UT, WA + American Samoa, Guam, CNMI' }
+};
+
+const fhlbDistricts = {
+  '1': { num: '1', city: 'Boston', color: '#1e3a5f', states: 'CT, ME, MA, NH, RI, VT' },
+  '2': { num: '2', city: 'New York', color: '#2c5b8a', states: 'NJ, NY, PR, USVI' },
+  '3': { num: '3', city: 'Pittsburgh', color: '#4a7ba8', states: 'DE, PA, WV' },
+  '4': { num: '4', city: 'Atlanta', color: '#a85050', states: 'AL, DC, FL, GA, MD, NC, SC, VA' },
+  '5': { num: '5', city: 'Cincinnati', color: '#6b1a1a', states: 'KY, OH, TN' },
+  '6': { num: '6', city: 'Indianapolis', color: '#8a3030', states: 'IN, MI' },
+  '7': { num: '7', city: 'Chicago', color: '#2d5a3d', states: 'IL, WI' },
+  '8': { num: '8', city: 'Des Moines', color: '#4a7a52', states: 'AK, HI, IA, ID, MN, MO, MT, ND, OR, SD, UT, WA, WY + Pacific territories' },
+  '9': { num: '9', city: 'Dallas', color: '#a06a1a', states: 'AR, LA, MS, NM, TX' },
+  '10': { num: '10', city: 'Topeka', color: '#b8924a', states: 'CO, KS, NE, OK' },
+  '11': { num: '11', city: 'San Francisco', color: '#5a2d57', states: 'AZ, CA, NV' }
+};
+
+// FDIC supervisory regions — CURRENT 6-region structure (as of 2026).
+// Note: consolidated from the 8-region 1998 layout — Boston folded into New York;
+// Memphis split between Dallas (AR, LA, MS, TN) and Chicago (KY).
+const fdicRegions = {
+  'ny':  { key: 'ny',  city: 'New York', color: '#2c5b8a', states: 'CT, DE, DC, ME, MD, MA, NH, NJ, NY, PA, PR, RI, VT, VI' },
+  'atl': { key: 'atl', city: 'Atlanta', color: '#a85050', states: 'AL, FL, GA, NC, SC, VA, WV' },
+  'chi': { key: 'chi', city: 'Chicago', color: '#2d5a3d', states: 'IL, IN, KY, MI, OH, WI' },
+  'kc':  { key: 'kc',  city: 'Kansas City', color: '#4a7a52', states: 'IA, KS, MN, MO, NE, ND, SD' },
+  'dal': { key: 'dal', city: 'Dallas', color: '#a06a1a', states: 'AR, CO, LA, MS, NM, OK, TN, TX' },
+  'sf':  { key: 'sf',  city: 'San Francisco', color: '#5a2d57', states: 'AK, AZ, CA, GU, HI, ID, MT, NV, OR, UT, WA, WY' }
+};
+
+// State cartogram positions [col, row] in a 13x9 grid.
+// fed = array of Federal Reserve districts (2 entries = state split between districts, primary first).
+// fhlb = single FHLB district. fdic = single FDIC supervisory region.
+const states = {
+  'AK': { col: 0, row: 7, fed: ['12'], fhlb: '8', fdic: 'sf', name: 'Alaska' },
+  'HI': { col: 1, row: 8, fed: ['12'], fhlb: '8', fdic: 'sf', name: 'Hawaii' },
+  'WA': { col: 1, row: 2, fed: ['12'], fhlb: '8', fdic: 'sf', name: 'Washington' },
+  'OR': { col: 1, row: 3, fed: ['12'], fhlb: '8', fdic: 'sf', name: 'Oregon' },
+  'CA': { col: 1, row: 4, fed: ['12'], fhlb: '11', fdic: 'sf', name: 'California' },
+  'ID': { col: 2, row: 2, fed: ['12'], fhlb: '8', fdic: 'sf', name: 'Idaho' },
+  'NV': { col: 2, row: 3, fed: ['12'], fhlb: '11', fdic: 'sf', name: 'Nevada' },
+  'UT': { col: 2, row: 4, fed: ['12'], fhlb: '8', fdic: 'sf', name: 'Utah' },
+  'AZ': { col: 2, row: 5, fed: ['12'], fhlb: '11', fdic: 'sf', name: 'Arizona' },
+  'MT': { col: 3, row: 2, fed: ['9'], fhlb: '8', fdic: 'sf', name: 'Montana' },
+  'WY': { col: 3, row: 3, fed: ['10'], fhlb: '8', fdic: 'sf', name: 'Wyoming' },
+  'CO': { col: 3, row: 4, fed: ['10'], fhlb: '10', fdic: 'dal', name: 'Colorado' },
+  'NM': { col: 3, row: 5, fed: ['11','10'], fhlb: '9', fdic: 'dal', name: 'New Mexico' },
+  'ND': { col: 4, row: 2, fed: ['9'], fhlb: '8', fdic: 'kc', name: 'North Dakota' },
+  'SD': { col: 4, row: 3, fed: ['9'], fhlb: '8', fdic: 'kc', name: 'South Dakota' },
+  'NE': { col: 4, row: 4, fed: ['10'], fhlb: '10', fdic: 'kc', name: 'Nebraska' },
+  'OK': { col: 4, row: 5, fed: ['10'], fhlb: '10', fdic: 'dal', name: 'Oklahoma' },
+  'TX': { col: 4, row: 6, fed: ['11'], fhlb: '9', fdic: 'dal', name: 'Texas' },
+  'MN': { col: 5, row: 2, fed: ['9'], fhlb: '8', fdic: 'kc', name: 'Minnesota' },
+  'IA': { col: 5, row: 3, fed: ['7'], fhlb: '8', fdic: 'kc', name: 'Iowa' },
+  'KS': { col: 5, row: 4, fed: ['10'], fhlb: '10', fdic: 'kc', name: 'Kansas' },
+  'AR': { col: 5, row: 5, fed: ['8'], fhlb: '9', fdic: 'dal', name: 'Arkansas' },
+  'LA': { col: 5, row: 6, fed: ['6','11'], fhlb: '9', fdic: 'dal', name: 'Louisiana' },
+  'WI': { col: 6, row: 2, fed: ['7','9'], fhlb: '7', fdic: 'chi', name: 'Wisconsin' },
+  'IL': { col: 6, row: 3, fed: ['7','8'], fhlb: '7', fdic: 'chi', name: 'Illinois' },
+  'MO': { col: 6, row: 4, fed: ['8','10'], fhlb: '8', fdic: 'kc', name: 'Missouri' },
+  'MS': { col: 6, row: 5, fed: ['6','8'], fhlb: '9', fdic: 'dal', name: 'Mississippi' },
+  'MI': { col: 7, row: 2, fed: ['7','9'], fhlb: '6', fdic: 'chi', name: 'Michigan' },
+  'IN': { col: 7, row: 3, fed: ['7','8'], fhlb: '6', fdic: 'chi', name: 'Indiana' },
+  'KY': { col: 7, row: 4, fed: ['8','4'], fhlb: '5', fdic: 'chi', name: 'Kentucky' },
+  'TN': { col: 7, row: 5, fed: ['6','8'], fhlb: '5', fdic: 'dal', name: 'Tennessee' },
+  'AL': { col: 7, row: 6, fed: ['6'], fhlb: '4', fdic: 'atl', name: 'Alabama' },
+  'OH': { col: 8, row: 3, fed: ['4'], fhlb: '5', fdic: 'chi', name: 'Ohio' },
+  'WV': { col: 8, row: 4, fed: ['5','4'], fhlb: '3', fdic: 'atl', name: 'West Virginia' },
+  'NC': { col: 8, row: 5, fed: ['5'], fhlb: '4', fdic: 'atl', name: 'North Carolina' },
+  'GA': { col: 8, row: 6, fed: ['6'], fhlb: '4', fdic: 'atl', name: 'Georgia' },
+  'FL': { col: 8, row: 7, fed: ['6'], fhlb: '4', fdic: 'atl', name: 'Florida' },
+  'PA': { col: 9, row: 3, fed: ['3','4'], fhlb: '3', fdic: 'ny', name: 'Pennsylvania' },
+  'VA': { col: 9, row: 4, fed: ['5'], fhlb: '4', fdic: 'atl', name: 'Virginia' },
+  'SC': { col: 9, row: 5, fed: ['5'], fhlb: '4', fdic: 'atl', name: 'South Carolina' },
+  'NY': { col: 9, row: 2, fed: ['2'], fhlb: '2', fdic: 'ny', name: 'New York' },
+  'NJ': { col: 10, row: 3, fed: ['2','3'], fhlb: '2', fdic: 'ny', name: 'New Jersey' },
+  'MD': { col: 10, row: 4, fed: ['5'], fhlb: '4', fdic: 'ny', name: 'Maryland' },
+  'DC': { col: 10, row: 5, fed: ['5'], fhlb: '4', fdic: 'ny', name: 'District of Columbia' },
+  'VT': { col: 10, row: 1, fed: ['1'], fhlb: '1', fdic: 'ny', name: 'Vermont' },
+  'NH': { col: 11, row: 1, fed: ['1'], fhlb: '1', fdic: 'ny', name: 'New Hampshire' },
+  'MA': { col: 11, row: 2, fed: ['1'], fhlb: '1', fdic: 'ny', name: 'Massachusetts' },
+  'CT': { col: 11, row: 3, fed: ['1','2'], fhlb: '1', fdic: 'ny', name: 'Connecticut' },
+  'DE': { col: 11, row: 4, fed: ['3'], fhlb: '3', fdic: 'ny', name: 'Delaware' },
+  'ME': { col: 12, row: 0, fed: ['1'], fhlb: '1', fdic: 'ny', name: 'Maine' },
+  'RI': { col: 12, row: 2, fed: ['1'], fhlb: '1', fdic: 'ny', name: 'Rhode Island' },
+  'PR': { col: 12, row: 7, fed: ['2'], fhlb: '2', fdic: 'ny', name: 'Puerto Rico' }
+};
+
+// ============================================================
+// DATA: THEMES (CURRENTS)
+// ============================================================
+const themes = [
+  {
+    num: 'I',
+    eyebrow: 'Federalism',
+    title: 'The Dual Banking System',
+    text: `<p>Since the National Currency Act of 1863, the United States has maintained two parallel chartering systems: federal (now under the OCC) and state (under fifty separate state banking departments). Lincoln's Treasury Secretary, Salmon Chase, thought the federal charter would eventually drive out the state alternative. He was wrong.</p>
+    <p>State banks survived by switching from banknotes to deposits, and the Federal Reserve Act of 1913 cemented the dual structure by allowing state banks to be Fed members. Today, <strong>roughly 75% of U.S. banks hold a state charter</strong> — and a state bank can choose between the Fed (member) or the FDIC (non-member) as its primary federal regulator. This federalism is the single most distinctive feature of U.S. financial supervision.</p>`
+  },
+  {
+    num: 'II',
+    eyebrow: 'Pattern',
+    title: 'Regulation Follows Crisis',
+    text: `<p>Every major U.S. financial regulator traces its origin to a crisis. The OCC followed Civil War financing in 1863. The Federal Reserve followed the Panic of 1907. The FDIC, SEC, and Glass-Steagall followed 1929–33. The OTS and Resolution Trust Corporation followed the S&L collapse. The CFPB, FSOC, OFR, and FHFA followed 2008. The GENIUS Act payment-stablecoin framework followed the 2022 collapse of Terra and FTX.</p>
+    <p>The corollary: <strong>periods of stability produce deregulation</strong>, and deregulation supplies the kindling for the next crisis. DIDMCA (1980), Garn-St. Germain (1982), and GLB (1999) all represent the deregulatory turn that preceded the Crises of the 1980s and 2008.</p>`
+  },
+  {
+    num: 'III',
+    eyebrow: 'Arc',
+    title: 'The Glass-Steagall Cycle',
+    text: `<p>Few American statutes have inspired more debate than the Banking Act of 1933. Glass-Steagall's separation of commercial from investment banking was the architecture of the financial system for sixty-six years.</p>
+    <p>It eroded gradually — Section 20 affiliate exceptions in 1987, the Fed's "less than 25%" interpretation of "engaged principally" in 1996 — and then collapsed entirely with Gramm-Leach-Bliley in November 1999. Eleven years later, the <strong>Volcker Rule</strong> (Dodd-Frank §619) restored a partial firewall by restricting bank proprietary trading. The full cycle — strict separation, gradual erosion, repeal, partial restoration — is the cleanest example of a U.S. financial-regulatory pendulum.</p>`
+  },
+  {
+    num: 'IV',
+    eyebrow: 'Contestation',
+    title: 'The CFPB Question',
+    text: `<p>No federal financial regulator has been more politically contested than the Consumer Financial Protection Bureau. Elizabeth Warren's intellectual architecture, embedded in Dodd-Frank Title X, gave a single agency consolidated authority over nineteen consumer financial laws.</p>
+    <p>Three of its core design choices — funding through the Federal Reserve rather than appropriations, a single-director structure, and broad UDAAP authority — have all been challenged in court. The Supreme Court upheld CFPB's funding in <em>CFPB v. CFSA</em> (2024), but Acting Director Russell Vought\'s 2025 program <strong>has effectively halted the agency's supervisory and rulemaking work</strong>, with the stated objective of closing it entirely. The Bureau\'s long-term future remains the most uncertain of any federal financial regulator.</p>`
+  },
+  {
+    num: 'V',
+    eyebrow: 'Geography',
+    title: 'The Rise & Fall of Unit Banking',
+    text: `<p>From 1927 (McFadden Act) until 1994 (Riegle-Neal), the United States effectively prohibited interstate branch banking. The result was the world's most numerous banking system — <strong>14,496 FDIC-insured commercial banks at the 1984 peak</strong>.</p>
+    <p>Riegle-Neal changed everything. Combined with state opt-in legislation, it produced nationwide branching for the first time since the 19th century. The number of FDIC-insured institutions has since fallen to roughly 4,336, even as total banking assets grew dramatically. The world's most fragmented banking system became one of the world's most concentrated — a transformation accomplished without a single major statute changing antitrust law.</p>`
+  },
+  {
+    num: 'VI',
+    eyebrow: 'Live Frontier',
+    title: '2025–26 — The Crypto Pivot',
+    text: `<p>The GENIUS Act of July 18, 2025, was the first comprehensive U.S. federal framework for payment stablecoins. Under it, the OCC charters and supervises federal nonbank payment-stablecoin issuers; payment stablecoins are explicitly excluded from "security" and "commodity" definitions.</p>
+    <p>The Act fits within a broader 2025 realignment: the SEC\'s "Project Crypto," the CFTC's "Crypto Sprint" enabling 24/7 spot trading on registered futures exchanges (April 2026), and a parallel President\'s Working Group on Digital Asset Markets. <strong>Implementation extends through January 2027</strong>. Whether this becomes the durable architecture of U.S. crypto regulation or merely an interim step depends on the rulemakings now underway across multiple agencies.</p>`
+  }
+];
+
+// ============================================================
+// RENDER: NAV
+// ============================================================
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = btn.dataset.section;
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(target).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+// ============================================================
+// RENDER: TIMELINE
+// ============================================================
+function renderTimeline() {
+  const sortedEvents = [...events].sort((a, b) => a.year - b.year);
+  const html = sortedEvents.map((e, i) => {
+    const side = i % 2 === 0 ? 'left' : 'right';
+    return `
+      <div class="event ${side}" data-era="${e.era}" data-type="${e.type}">
+        <span class="event-marker"></span>
+        <div class="event-card">
+          <span class="event-tag ${e.type}">${e.type}</span>
+          <div class="event-date">${e.date}</div>
+          <div class="event-title">${e.title}</div>
+          <div class="event-summary">${e.summary}</div>
+          <div class="event-detail">${e.detail}</div>
+        </div>
+      </div>`;
+  }).join('');
+  document.getElementById('timeline').innerHTML = html;
+
+  document.querySelectorAll('.event-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const ev = card.closest('.event');
+      ev.classList.toggle('expanded');
+      card.classList.toggle('expanded');
+    });
+  });
+}
+
+function renderEraBar() {
+  const html = Object.entries(eras).map(([key, era]) => {
+    const count = events.filter(e => e.era === key).length;
+    return `<div class="era-segment" data-era="${key}" style="background: ${era.color}; flex: ${count};">
+      ${era.label.split(' (')[0]} · ${count}
+    </div>`;
+  }).join('');
+  document.getElementById('era-bar').innerHTML = html;
+
+  document.querySelectorAll('.era-segment').forEach(seg => {
+    seg.style.cursor = 'pointer';
+    seg.addEventListener('click', () => {
+      const era = seg.dataset.era;
+      document.querySelectorAll('.era-filter').forEach(b => b.classList.remove('active'));
+      document.querySelector(`.era-filter[data-era="${era}"]`).classList.add('active');
+      applyTimelineFilters();
+    });
+  });
+}
+
+function applyTimelineFilters() {
+  const era = document.querySelector('.era-filter.active').dataset.era;
+  const type = document.querySelector('.type-filter.active').dataset.type;
+  document.querySelectorAll('.event').forEach(ev => {
+    const eMatch = era === 'all' || ev.dataset.era === era;
+    const tMatch = type === 'all' || ev.dataset.type === type;
+    ev.style.display = (eMatch && tMatch) ? '' : 'none';
+  });
+}
+
+document.querySelectorAll('.era-filter').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.era-filter').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyTimelineFilters();
+  });
+});
+document.querySelectorAll('.type-filter').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.type-filter').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyTimelineFilters();
+  });
+});
+
+// ============================================================
+// RENDER: REGULATORS
+// ============================================================
+function renderRegulators(filter = '') {
+  const f = filter.toLowerCase().trim();
+  const cats = ['depository', 'securities', 'gse', 'consumer', 'treasury', 'insurance', 'coord', 'ghost'];
+  const html = cats.map(cat => {
+    const list = regulators.filter(r => r.cat === cat && (
+      !f ||
+      r.acr.toLowerCase().includes(f) ||
+      r.name.toLowerCase().includes(f) ||
+      r.catLabel.toLowerCase().includes(f) ||
+      (r.distinctive && r.distinctive.toLowerCase().includes(f))
+    ));
+    if (list.length === 0) return '';
+    return `
+      <div class="reg-category">
+        <div class="reg-category-header">
+          <div class="reg-category-bar" style="background: ${categoryColors[cat]}"></div>
+          <div class="reg-category-title">${categoryLabels[cat]}</div>
+          <div class="reg-category-count">${String(list.length).padStart(2, '0')} ENTITIES</div>
+        </div>
+        <div class="reg-grid">
+          ${list.map(r => `
+            <div class="reg-card ${r.cat}" data-acr="${r.acr}">
+              <div class="reg-acronym">${r.acr}</div>
+              <div class="reg-name">${r.name}</div>
+              <div class="reg-meta">
+                <div class="reg-meta-item">Est. <span>${r.founded}</span></div>
+                <div class="reg-meta-item">HQ <span>${r.hq.split(',')[0]}</span></div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>`;
+  }).join('');
+  document.getElementById('reg-container').innerHTML = html || `<p style="text-align:center;color:var(--text-muted);font-style:italic;">No regulators match "${filter}".</p>`;
+
+  document.querySelectorAll('.reg-card').forEach(card => {
+    card.addEventListener('click', () => showModal(card.dataset.acr));
+  });
+}
+
+function showModal(acr) {
+  const r = regulators.find(x => x.acr === acr);
+  if (!r) return;
+  const content = `
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div class="modal-cat">${r.catLabel}</div>
+    <div class="modal-acronym">${r.acr}</div>
+    <div class="modal-name">${r.name}</div>
+    <div class="modal-rule"></div>
+    <div class="modal-grid">
+      <div class="modal-key">Founded</div><div class="modal-val">${r.founded}</div>
+      <div class="modal-key">Statute</div><div class="modal-val">${r.statute}</div>
+      <div class="modal-key">Status</div><div class="modal-val">${r.status}</div>
+      <div class="modal-key">Headquarters</div><div class="modal-val">${r.hq}</div>
+      <div class="modal-key">Leadership</div><div class="modal-val"><strong>${r.leader}</strong></div>
+      <div class="modal-key">Funding</div><div class="modal-val">${r.funding}</div>
+    </div>
+    <div class="modal-section-title">Mission</div>
+    <div class="modal-body">${r.mission}</div>
+    <div class="modal-section-title">Regulates</div>
+    <div class="modal-body">${r.regulates}</div>
+    <div class="modal-section-title">Distinctive</div>
+    <div class="modal-body">${r.distinctive}</div>
+  `;
+  document.getElementById('modal-content').innerHTML = content;
+  document.getElementById('modal-overlay').classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('active');
+}
+
+document.getElementById('modal-overlay').addEventListener('click', (e) => {
+  if (e.target.id === 'modal-overlay') closeModal();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});
+
+document.getElementById('reg-search').addEventListener('input', (e) => {
+  renderRegulators(e.target.value);
+});
+
+// ============================================================
+// RENDER: MAP / CARTOGRAM
+// ============================================================
+let currentMap = 'fed';
+
+function renderMap() {
+  const cols = 13, rows = 9;
+  const grid = Array(rows).fill(null).map(() => Array(cols).fill(null));
+
+  Object.entries(states).forEach(([abbr, s]) => {
+    grid[s.row][s.col] = { abbr, ...s };
+  });
+
+  let html = '';
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const state = grid[r][c];
+      if (state) {
+        const dataAttrs = `data-abbr="${state.abbr}" data-fed="${state.fed.join(',')}" data-fhlb="${state.fhlb}" data-fdic="${state.fdic}"`;
+        let bg, isSplit = false, textColor;
+
+        if (currentMap === 'fed') {
+          if (state.fed.length === 2) {
+            isSplit = true;
+            const cA = fedDistricts[state.fed[0]].color;
+            const cB = fedDistricts[state.fed[1]].color;
+            bg = `linear-gradient(135deg, ${cA} 0%, ${cA} 49.5%, ${darken(cA,25)} 49.5%, ${darken(cA,25)} 50.5%, ${cB} 50.5%, ${cB} 100%)`;
+          } else {
+            bg = fedDistricts[state.fed[0]].color;
+            textColor = getContrastColor(bg);
+          }
+        } else if (currentMap === 'fhlb') {
+          bg = fhlbDistricts[state.fhlb].color;
+          textColor = getContrastColor(bg);
+        } else { // fdic
+          bg = fdicRegions[state.fdic].color;
+          textColor = getContrastColor(bg);
+        }
+
+        const cls = 'state' + (isSplit ? ' split' : '');
+        const styleColor = isSplit ? '' : `color:${textColor};`;
+        const borderC = isSplit ? darken(fedDistricts[state.fed[0]].color, 15) : darken(bg, 10);
+        html += `<div class="${cls}" ${dataAttrs} style="background:${bg};${styleColor}border-color:${borderC};">${state.abbr}</div>`;
+      } else {
+        html += `<div></div>`;
+      }
+    }
+  }
+  document.getElementById('cartogram').innerHTML = html;
+
+  // Caption changes per map
+  const caption = document.getElementById('cartogram-caption');
+  if (currentMap === 'fed') {
+    caption.textContent = 'Tile cartogram — diagonally split tiles mark the 14 states divided between two Federal Reserve districts';
+  } else if (currentMap === 'fhlb') {
+    caption.textContent = 'Tile cartogram — each state falls wholly within one Federal Home Loan Bank district';
+  } else {
+    caption.textContent = 'Tile cartogram — current 6-region FDIC structure (consolidated from the 1998 8-region layout)';
+  }
+
+  document.querySelectorAll('.state').forEach(el => {
+    el.addEventListener('mouseenter', (e) => showTooltip(e, el));
+    el.addEventListener('mousemove', (e) => positionTooltip(e));
+    el.addEventListener('mouseleave', hideTooltip);
+  });
+
+  renderLegend();
+}
+
+function showTooltip(e, el) {
+  const abbr = el.dataset.abbr;
+  const s = states[abbr];
+  const fedList = s.fed.map(k => {
+    const d = fedDistricts[k];
+    return `${d.num}${d.letter || ''} ${d.city}`;
+  }).join('  +  ');
+  const fhlb = fhlbDistricts[s.fhlb];
+  const fdic = fdicRegions[s.fdic];
+  const splitNote = s.fed.length === 2 ? ' <span style="color:#c9a961;">(split)</span>' : '';
+  const tt = document.getElementById('state-tooltip');
+  tt.innerHTML = `
+    <div class="tt-state">${s.name}</div>
+    <div class="tt-meta">FED · ${fedList}${splitNote}</div>
+    <div class="tt-meta">FHLB · District ${fhlb.num} · ${fhlb.city}</div>
+    <div class="tt-meta">FDIC · ${fdic.city} Region</div>
+  `;
+  tt.classList.add('show');
+  positionTooltip(e);
+  highlightDistrictOfState(s);
+}
+
+function stateKeysFor(st) {
+  // returns the set of district keys this state DOM element belongs to for the current map
+  if (currentMap === 'fed') return st.dataset.fed.split(',');
+  if (currentMap === 'fhlb') return [st.dataset.fhlb];
+  return [st.dataset.fdic];
+}
+
+function highlightDistrictOfState(s) {
+  const keys = currentMap === 'fed' ? s.fed : (currentMap === 'fhlb' ? [s.fhlb] : [s.fdic]);
+  document.querySelectorAll('.state').forEach(st => {
+    const stKeys = stateKeysFor(st);
+    if (stKeys.some(k => keys.includes(k))) st.classList.add('highlighted');
+  });
+}
+
+function positionTooltip(e) {
+  const tt = document.getElementById('state-tooltip');
+  tt.style.left = (e.clientX + 14) + 'px';
+  tt.style.top = (e.clientY + 14) + 'px';
+}
+
+function hideTooltip() {
+  document.getElementById('state-tooltip').classList.remove('show');
+  document.querySelectorAll('.state.highlighted').forEach(s => s.classList.remove('highlighted'));
+}
+
+function renderLegend() {
+  let districts, title;
+  if (currentMap === 'fed') { districts = fedDistricts; title = '12 Federal Reserve Districts'; }
+  else if (currentMap === 'fhlb') { districts = fhlbDistricts; title = '11 Federal Home Loan Banks'; }
+  else { districts = fdicRegions; title = '6 FDIC Supervisory Regions'; }
+
+  document.getElementById('legend-title').textContent = title;
+
+  let html = Object.entries(districts).map(([key, d]) => {
+    const label = currentMap === 'fed'
+      ? `${d.num} / ${d.letter} · ${d.city}`
+      : (currentMap === 'fhlb' ? `${d.num} · ${d.city}` : `${d.city} Region`);
+    return `
+    <div class="legend-item" data-district="${key}">
+      <div class="legend-swatch" style="background:${d.color}"></div>
+      <div class="legend-content">
+        <div class="legend-city">${label}</div>
+        <div class="legend-meta">${d.states}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Add an explanatory footnote for FDIC consolidation
+  if (currentMap === 'fdic') {
+    html += `<div style="margin-top:1rem;padding-top:0.75rem;border-top:1px dashed var(--rule);font-size:0.7rem;line-height:1.5;color:var(--text-muted);font-style:italic;font-family:'Fraunces',serif;">The FDIC consolidated its 1998 eight-region structure (which had separate Boston and Memphis offices) into today's six regions: Boston was folded into New York, and Memphis was divided between the Dallas and Chicago regions.</div>`;
+  } else if (currentMap === 'fed') {
+    html += `<div style="margin-top:1rem;padding-top:0.75rem;border-top:1px dashed var(--rule);font-size:0.7rem;line-height:1.5;color:var(--text-muted);font-style:italic;font-family:'Fraunces',serif;">Fourteen states are divided between two Federal Reserve districts (shown as diagonally split tiles). Missouri is the only state served by two Reserve Bank head offices — St. Louis and Kansas City. Boundaries last revised February 1996.</div>`;
+  }
+
+  document.getElementById('legend-list').innerHTML = html;
+
+  document.querySelectorAll('.legend-item').forEach(item => {
+    item.addEventListener('mouseenter', () => {
+      const dKey = item.dataset.district;
+      document.querySelectorAll('.state').forEach(st => {
+        if (stateKeysFor(st).includes(dKey)) st.classList.add('highlighted');
+      });
+    });
+    item.addEventListener('mouseleave', () => {
+      document.querySelectorAll('.state.highlighted').forEach(s => s.classList.remove('highlighted'));
+    });
+  });
+}
+
+document.querySelectorAll('.map-toggle').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.map-toggle').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentMap = btn.dataset.map;
+    renderMap();
+  });
+});
+
+function getContrastColor(hex) {
+  if (hex.startsWith('var(')) return '#fff';
+  const c = hex.replace('#', '');
+  const r = parseInt(c.substr(0, 2), 16);
+  const g = parseInt(c.substr(2, 2), 16);
+  const b = parseInt(c.substr(4, 2), 16);
+  const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+  return brightness > 145 ? '#1a1a1a' : '#f5ecd6';
+}
+
+function darken(hex, pct) {
+  if (hex.startsWith('var(')) return '#5a4f3a';
+  const c = hex.replace('#', '');
+  const r = Math.max(0, parseInt(c.substr(0, 2), 16) - pct);
+  const g = Math.max(0, parseInt(c.substr(2, 2), 16) - pct);
+  const b = Math.max(0, parseInt(c.substr(4, 2), 16) - pct);
+  return `rgb(${r},${g},${b})`;
+}
+
+// ============================================================
+// RENDER: THEMES
+// ============================================================
+function renderThemes() {
+  const html = themes.map(t => `
+    <div class="theme-card">
+      <div class="theme-num">${t.num}</div>
+      <div class="theme-eyebrow">${t.eyebrow}</div>
+      <div class="theme-title">${t.title}</div>
+      <div class="theme-text">${t.text}</div>
+    </div>
+  `).join('');
+  document.getElementById('themes-grid').innerHTML = html;
+}
+
+// ============================================================
+// INITIALIZE
+// ============================================================
+renderEraBar();
+renderTimeline();
+renderRegulators();
+renderMap();
+renderThemes();
+</script>
+
+</body>
+</html>

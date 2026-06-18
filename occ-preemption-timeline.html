@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Federal Preemption in the Dual Banking System — OCC Timeline</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
+    background: #f8f7f2;
+    color: #1c1917;
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: linear-gradient(135deg, #1c1917 0%, #292524 60%, #1c3a5e 100%);
+    padding: 36px 32px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: repeating-linear-gradient(
+      0deg, transparent, transparent 31px,
+      rgba(255,255,255,0.03) 31px, rgba(255,255,255,0.03) 32px
+    );
+    pointer-events: none;
+  }
+  .header-inner { position: relative; }
+  .header-eyebrow {
+    font-size: 10px; letter-spacing: 0.2em;
+    font-family: 'Courier New', monospace;
+    color: #d4b896; text-transform: uppercase; font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .header h1 {
+    font-size: clamp(20px, 3vw, 30px); font-weight: 700;
+    color: #f5f0e8; letter-spacing: -0.01em; line-height: 1.2;
+  }
+  .header-sub {
+    margin-top: 8px; color: #a8a29e; font-size: 13px;
+    font-family: 'Courier New', monospace;
+    max-width: 580px; line-height: 1.5;
+  }
+  .tab-bar { display: flex; gap: 4px; margin-top: 24px; }
+  .tab-btn {
+    padding: 7px 18px; border-radius: 6px 6px 0 0;
+    border: none; cursor: pointer; font-size: 13px;
+    font-family: 'Courier New', monospace; font-weight: 600;
+    background: rgba(255,255,255,0.1); color: #d4d0cc;
+    transition: all 0.15s;
+  }
+  .tab-btn.active { background: #f8f7f2; color: #1c1917; }
+
+  /* ── Layout ── */
+  .page { padding: 24px 16px; max-width: 1100px; margin: 0 auto; }
+  .page-standard { padding: 28px 24px; max-width: 860px; margin: 0 auto; }
+
+  /* ── Filter bar ── */
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+  .filter-btn {
+    padding: 6px 16px; border-radius: 20px; border: 2px solid #d4cfc9;
+    background: white; color: #44403c; cursor: pointer;
+    font-size: 12px; font-family: 'Courier New', monospace;
+    font-weight: 600; transition: all 0.15s;
+  }
+
+  /* ── Timeline grid ── */
+  .timeline-grid { display: flex; gap: 24px; align-items: flex-start; }
+  .timeline-list { flex: 1; min-width: 0; position: relative; }
+  .timeline-spine {
+    position: absolute; left: 72px; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, #1c3a5e, #d4cfc9 80%);
+    z-index: 0;
+  }
+  .timeline-row { display: flex; gap: 0; margin-bottom: 6px; }
+  .year-col {
+    width: 70px; flex-shrink: 0; padding-top: 16px;
+    text-align: right; padding-right: 12px;
+  }
+  .year-label {
+    font-size: 11px; font-family: 'Courier New', monospace;
+    color: #78716c; font-weight: 600; line-height: 1.2; display: block;
+  }
+  .dot-col {
+    flex-shrink: 0; width: 14px;
+    display: flex; flex-direction: column;
+    align-items: center; padding-top: 18px; z-index: 1;
+  }
+  .dot {
+    border-radius: 50%; background: white;
+    transition: all 0.15s;
+  }
+  .dot.selected { box-shadow: 0 0 0 3px rgba(0,0,0,0.15); }
+
+  /* ── Event card ── */
+  .card {
+    flex: 1; margin-left: 14px; margin-bottom: 4px;
+    background: #fdfcf9; border: 1.5px solid #e4e0db;
+    border-radius: 10px; padding: 12px 16px;
+    cursor: pointer; transition: all 0.15s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+  .card.selected { background: white; box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+  .card-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+  .badge {
+    display: inline-block; padding: 2px 8px; border-radius: 12px;
+    font-size: 11px; font-weight: 700;
+    font-family: 'Courier New', monospace;
+  }
+  .card h3 { font-size: 15px; font-weight: 700; color: #1c1917; line-height: 1.3; margin-bottom: 4px; }
+  .card-summary { font-size: 13px; color: #57534e; line-height: 1.55; }
+  .card-detail { margin-top: 14px; padding-top: 14px; }
+  .card-detail p { font-size: 13.5px; line-height: 1.7; color: #292524; margin-bottom: 10px; }
+  .card-detail p:last-of-type { margin-bottom: 0; }
+  .card-citation {
+    margin-top: 12px; padding: 8px 12px;
+    background: #f5f0e8; border-radius: 6px;
+    font-size: 11px; font-family: 'Courier New', monospace;
+    color: #78716c; font-style: italic;
+  }
+
+  /* ── Sidebar legend ── */
+  .sidebar { width: 200px; flex-shrink: 0; position: sticky; top: 16px; }
+  .legend-box {
+    background: white; border: 1.5px solid #e4e0db;
+    border-radius: 10px; padding: 16px; margin-bottom: 12px;
+  }
+  .legend-title {
+    font-size: 12px; font-weight: 700;
+    font-family: 'Courier New', monospace; color: #78716c;
+    text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px;
+  }
+  .legend-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .legend-dot { border-radius: 50%; flex-shrink: 0; }
+  .legend-text { font-size: 12px; color: #44403c; }
+
+  /* ── Standard evolution tab ── */
+  .std-h2 { font-size: 22px; color: #1c1917; font-weight: 700; margin-bottom: 6px; }
+  .std-sub { font-size: 14px; color: #57534e; line-height: 1.6; margin-bottom: 28px; }
+
+  .spectrum-box {
+    background: white; border: 1.5px solid #e4e0db;
+    border-radius: 12px; padding: 20px; margin-bottom: 28px;
+  }
+  .spectrum-label {
+    font-size: 12px; font-family: 'Courier New', monospace;
+    color: #78716c; margin-bottom: 8px;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .spectrum-bar {
+    position: relative; height: 36px; border-radius: 8px;
+    background: linear-gradient(to right, #1d4ed8, #b45309, #15803d);
+    overflow: visible;
+  }
+  .spectrum-marker {
+    position: absolute; top: 0; bottom: 0; width: 2px;
+    background: rgba(255,255,255,0.7);
+  }
+  .spectrum-marker-label {
+    position: absolute; top: calc(100% + 6px);
+    left: 50%; transform: translateX(-50%);
+    font-size: 10px; font-family: 'Courier New', monospace;
+    color: #44403c; text-align: center; white-space: nowrap;
+  }
+  .spectrum-marker-label strong { display: block; font-weight: 700; }
+  .spectrum-footer {
+    display: flex; justify-content: space-between;
+    margin-top: 56px; font-size: 11px;
+    font-family: 'Courier New', monospace; color: #a8a29e;
+  }
+
+  .std-cards { display: flex; flex-direction: column; gap: 14px; }
+  .std-card {
+    background: white; border: 1.5px solid #e4e0db;
+    border-radius: 10px; overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    transition: all 0.15s;
+  }
+  .std-card-btn {
+    width: 100%; text-align: left; padding: 14px 18px;
+    background: none; border: none; cursor: pointer;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .std-year-box {
+    flex-shrink: 0; width: 52px; height: 52px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .std-year-text {
+    font-size: 12px; font-weight: 800;
+    font-family: 'Courier New', monospace;
+  }
+  .std-card-title { font-size: 15px; font-weight: 700; color: #1c1917; flex: 1; text-align: left; }
+  .std-chevron { font-size: 18px; transition: transform 0.15s; display: inline-block; }
+  .std-chevron.open { transform: rotate(180deg); }
+  .std-card-body { padding: 14px 18px 16px; }
+  .std-card-body p { font-size: 14px; line-height: 1.7; color: #292524; }
+
+  /* ── Tensions box ── */
+  .tensions {
+    margin-top: 32px; background: #1c1917;
+    border-radius: 12px; padding: 24px; color: #f5f0e8;
+  }
+  .tensions h3 { font-size: 16px; font-weight: 700; color: #d4b896; margin-bottom: 16px; }
+  .tension-item { margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .tension-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .tension-q {
+    font-size: 13px; font-weight: 700; color: #d4b896;
+    margin-bottom: 6px; font-family: 'Courier New', monospace;
+  }
+  .tension-a { font-size: 13px; color: #a8a29e; line-height: 1.65; }
+
+  /* ── Footer ── */
+  footer {
+    border-top: 1px solid #e4e0db; padding: 16px 24px;
+    background: #f8f7f2; text-align: center;
+    font-size: 11px; color: #a8a29e;
+    font-family: 'Courier New', monospace;
+  }
+
+  .hidden { display: none !important; }
+
+  /* ── Controls (search + filters + utilities) ── */
+  .controls { margin-bottom: 24px; }
+  .search-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+  .search-box {
+    flex: 1; min-width: 220px; padding: 9px 14px;
+    border: 2px solid #d4cfc9; border-radius: 8px;
+    background: white; color: #1c1917;
+    font-family: 'Courier New', monospace; font-size: 13px;
+  }
+  .search-box:focus { outline: none; border-color: #1c3a5e; box-shadow: 0 0 0 3px rgba(28,58,94,0.12); }
+  .result-count {
+    font-size: 11px; font-family: 'Courier New', monospace;
+    color: #78716c; white-space: nowrap;
+  }
+  .ctrl-spacer { flex: 1; }
+  .util-btn {
+    padding: 7px 14px; border-radius: 8px; border: 2px solid #d4cfc9;
+    background: white; color: #44403c; cursor: pointer;
+    font-size: 12px; font-family: 'Courier New', monospace; font-weight: 600;
+    transition: all 0.15s;
+  }
+  .util-btn:hover { border-color: #1c3a5e; }
+  .util-btn[aria-pressed="true"] { background: #1c3a5e; color: white; border-color: #1c3a5e; }
+  .filter-group { display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+  .filter-group-label {
+    font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+    font-family: 'Courier New', monospace; font-weight: 700;
+    color: #a8a29e; min-width: 64px;
+  }
+  .filters { margin-bottom: 0; }
+
+  /* ── Focus visibility (accessibility) ── */
+  .card:focus-visible,
+  .filter-btn:focus-visible,
+  .util-btn:focus-visible,
+  .tab-btn:focus-visible,
+  .std-card-btn:focus-visible,
+  .spectrum-marker.clickable:focus-visible {
+    outline: 3px solid #1c3a5e; outline-offset: 2px;
+  }
+  .spectrum-marker.clickable { cursor: pointer; }
+  .spectrum-marker.clickable:hover .spectrum-marker-label strong { text-decoration: underline; }
+  .no-results {
+    padding: 32px 16px; text-align: center; color: #78716c;
+    font-family: 'Courier New', monospace; font-size: 13px;
+  }
+  mark { background: #fde68a; color: inherit; padding: 0 1px; border-radius: 2px; }
+
+  @media (max-width: 640px) {
+    .timeline-grid { flex-direction: column; }
+    .sidebar { width: 100%; position: static; }
+    .header { padding: 24px 16px 0; }
+    .page { padding: 16px 10px; }
+    .filter-group-label { min-width: 0; width: 100%; }
+  }
+
+  /* ── Print / PDF ── */
+  @media print {
+    body { background: white; }
+    .header { background: #1c1917 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .tab-bar, .controls, .sidebar { display: none !important; }
+    #pane-standard { display: none !important; }
+    #pane-timeline { display: block !important; }
+    .timeline-grid { display: block; }
+    .timeline-spine { display: none; }
+    .card { box-shadow: none !important; cursor: default; break-inside: avoid; page-break-inside: avoid; }
+    .card-detail { display: block !important; }
+  }
+</style>
+</head>
+<body>
+<a class="brw-backhome" href="wire.html" aria-label="Back to BankRegWire">← BankRegWire</a>
+<style>
+.brw-backhome{position:fixed;top:14px;left:14px;z-index:9999;display:inline-flex;align-items:center;gap:6px;
+  font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+  text-decoration:none;color:#f1ede2;background:rgba(22,21,15,.72);
+  -webkit-backdrop-filter:blur(8px) saturate(1.2);backdrop-filter:blur(8px) saturate(1.2);
+  border:1px solid rgba(240,165,70,.4);border-radius:30px;padding:8px 14px;box-shadow:0 8px 22px -10px rgba(0,0,0,.5);
+  transition:color .2s,border-color .2s,background .2s}
+.brw-backhome:hover{color:#f0a546;border-color:#f0a546;background:rgba(22,21,15,.85)}
+.brw-backhome:focus-visible{outline:2px solid #f0a546;outline-offset:3px}
+@media print{.brw-backhome{display:none}}
+</style>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="header-eyebrow">Office of the Comptroller of the Currency</div>
+    <h1>Federal Preemption in the Dual Banking System</h1>
+    <p class="header-sub">An interactive examination of OCC preemption authority, landmark case law,
+    and the evolving standard from 1863 to 2026</p>
+    <div class="tab-bar">
+      <button class="tab-btn active" id="tab-timeline" onclick="switchTab('timeline')">Timeline</button>
+      <button class="tab-btn" id="tab-standard" onclick="switchTab('standard')">Standard Evolution</button>
+    </div>
+  </div>
+</div>
+
+<!-- TIMELINE TAB -->
+<div id="pane-timeline" class="page">
+  <div class="controls">
+    <div class="search-row">
+      <input id="search-box" class="search-box" type="search"
+             placeholder="Search events, holdings, citations\u2026"
+             aria-label="Search timeline events" oninput="onSearch(this.value)">
+      <span id="result-count" class="result-count" aria-live="polite"></span>
+      <span class="ctrl-spacer"></span>
+      <button id="expand-all-btn" class="util-btn" onclick="toggleExpandAll()" aria-pressed="false">Expand all</button>
+      <button class="util-btn" onclick="printTimeline()">Print / PDF</button>
+    </div>
+    <div class="filter-group">
+      <span class="filter-group-label">Category</span>
+      <div class="filters" id="filter-bar"></div>
+    </div>
+    <div class="filter-group">
+      <span class="filter-group-label">Outcome</span>
+      <div class="filters" id="outcome-bar"></div>
+    </div>
+  </div>
+  <div class="timeline-grid">
+    <div class="timeline-list" id="timeline-list">
+      <div class="timeline-spine"></div>
+    </div>
+    <div class="sidebar">
+      <div class="legend-box">
+        <div class="legend-title">Categories</div>
+        <div id="legend-categories"></div>
+      </div>
+      <div class="legend-box">
+        <div class="legend-title">Outcome</div>
+        <div id="legend-outcomes"></div>
+      </div>
+      <div class="legend-box">
+        <div class="legend-title">Dot Size</div>
+        <div class="legend-row"><div class="legend-dot" style="width:15px;height:15px;background:#1c3a5e;"></div><span class="legend-text">Foundational</span></div>
+        <div class="legend-row"><div class="legend-dot" style="width:12px;height:12px;background:#1c3a5e;"></div><span class="legend-text">Major</span></div>
+        <div class="legend-row"><div class="legend-dot" style="width:9px;height:9px;background:#1c3a5e;"></div><span class="legend-text">Moderate</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STANDARD EVOLUTION TAB -->
+<div id="pane-standard" class="page-standard hidden">
+  <h2 class="std-h2">Evolution of the Preemption Standard</h2>
+  <p class="std-sub">How courts and regulators have defined when federal law displaces state bank regulation —
+  from initial conflict preemption through Barnett Bank, the OCC's 2004 expansion, Dodd-Frank's codification,
+  and the Supreme Court's 2024 "nuanced comparative analysis" requirement.</p>
+
+  <div class="spectrum-box">
+    <div class="spectrum-label">Preemption Standard Stringency (More Pro-Bank &rarr; Less Pro-Bank) &middot; <span style="opacity:.7">positions are qualitative; click a marker to open its timeline entry</span></div>
+    <div class="spectrum-bar">
+      <div class="spectrum-marker clickable" style="left:15%" role="button" tabindex="0" title="Open OCC 2004 rules in timeline" onclick="openEvent(8)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openEvent(8);}">
+        <div class="spectrum-marker-label"><strong>OCC 2004</strong>'Obstruct, impair'</div>
+      </div>
+      <div class="spectrum-marker clickable" style="left:38%" role="button" tabindex="0" title="Open Barnett Bank in timeline" onclick="openEvent(6)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openEvent(6);}">
+        <div class="spectrum-marker-label"><strong>Barnett Bank</strong>'Significantly interfere'</div>
+      </div>
+      <div class="spectrum-marker clickable" style="left:60%" role="button" tabindex="0" title="Open Dodd-Frank \u00a71044 in timeline" onclick="openEvent(11)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openEvent(11);}">
+        <div class="spectrum-marker-label"><strong>Dodd-Frank</strong>Codified + Skidmore</div>
+      </div>
+      <div class="spectrum-marker clickable" style="left:80%" role="button" tabindex="0" title="Open Cantero (2024) in timeline" onclick="openEvent(15)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openEvent(15);}">
+        <div class="spectrum-marker-label"><strong>Cantero 2024</strong>No bright line; case-by-case</div>
+      </div>
+    </div>
+    <div class="spectrum-footer">
+      <span>&larr; Maximum preemption (most state law displaced)</span>
+      <span>Minimum preemption &rarr;</span>
+    </div>
+  </div>
+
+  <div class="std-cards" id="std-cards"></div>
+
+  <div class="tensions">
+    <h3>Persistent Tensions in OCC Preemption</h3>
+    <div id="tensions-list"></div>
+  </div>
+</div>
+
+<footer>
+  Sources: CRS Report R45726 (May 2019) &middot; Cantero v. Bank of America, 602 U.S. 205 (2024) &middot;
+  2d Cir. on remand (May 5, 2026) &middot; OCC Bulletin 2025-50 &amp; 90 Fed. Reg. 61093 (Dec. 30, 2025) &middot;
+  OCC final escrow rules (May 15, 2026, eff. June 18, 2026) &middot;
+  OCC Bulletin 2026-17 (Apr. 24, 2026) &amp; 7th Cir. remand (May 8, 2026). For informational purposes only.
+</footer>
+
+<script>
+/* ── DATA ────────────────────────────────────── */
+const CATEGORIES = {
+  legislation:       { label: "Legislation",         color: "#2563eb", bg: "#dbeafe" },
+  scotus:            { label: "Supreme Court",       color: "#7c3aed", bg: "#ede9fe" },
+  lower_court:       { label: "Lower Court",         color: "#0891b2", bg: "#cffafe" },
+  occ_rule:          { label: "OCC Rule",            color: "#b45309", bg: "#fef3c7" },
+  occ_determination: { label: "OCC Determination",   color: "#dc2626", bg: "#fee2e2" },
+};
+
+const SIG = {
+  "pro-bank":  { label: "Pro-National Bank",   color: "#1d4ed8", bg: "#dbeafe" },
+  "pro-state": { label: "Pro-State Authority", color: "#15803d", bg: "#dcfce7" },
+  "neutral":   { label: "Mixed / Procedural",  color: "#78716c", bg: "#f5f5f4" },
+};
+
+const DOT_SZ = { foundational: 15, major: 12, moderate: 9 };
+const DOT_BW = { foundational: 4,  major: 3,  moderate: 2 };
+
+const STANDARDS = [
+  { year: 1864, label: "Pre-Barnett: Conflict Only",
+    summary: "State laws invalid only if they 'expressly conflict' with federal law, 'frustrate the purpose' of national banks, or impair banks' ability to discharge federal duties. (McClellan v. Chipman, 1896)" },
+  { year: 1996, label: "Barnett Bank: 'Significantly Interfere'",
+    summary: "NBA impliedly preempts state laws that 'significantly interfere' with national bank powers. Court infers Congress would not want states to forbid or significantly impair a power it explicitly granted." },
+  { year: 2004, label: "OCC 2004: 'Obstruct, Impair, or Condition'",
+    summary: "OCC expands Barnett Bank. State laws that 'obstruct, impair, or condition' a national bank's ability to 'fully exercise' its powers are not applicable. Critics called this broader than Barnett Bank." },
+  { year: 2010, label: "Dodd-Frank §1044: Barnett Bank Codified",
+    summary: "Congress codifies Barnett Bank's 'prevents or significantly interferes' standard. Requires substantial evidence, Skidmore (not Chevron) deference, case-by-case determinations, periodic review." },
+  { year: 2011, label: "OCC 2011: Barnett Bank Reaffirmed",
+    summary: "OCC removes 'obstruct, impair, or condition' language; reaffirms all prior specific determinations as consistent with Barnett Bank. Future determinations on case-by-case basis." },
+  { year: 2024, label: "Cantero: 'Nuanced Comparative Analysis'",
+    summary: "Supreme Court unanimously holds courts must make a 'practical assessment of the nature and degree of the interference' and compare to prior cases — neither a categorical pro-bank test nor a nearly-no-preemption test." },
+];
+
+const STD_COLORS = [
+  ["#1d4ed8","#dbeafe"],["#7c3aed","#ede9fe"],["#b45309","#fef3c7"],
+  ["#15803d","#dcfce7"],["#0e7490","#cffafe"],["#1c3a5e","#e0e7ff"],
+];
+
+const TENSIONS = [
+  { q: "How 'significant' is 'significant interference'?",
+    a: "Barnett Bank's test sounds specific but courts have applied it very differently. Cantero (2024) required a 'nuanced comparative analysis' without supplying a bright line — and the results speak for themselves: on remand in May 2026, the Second Circuit found NY's 2% escrow interest mandate IS preempted, while the First Circuit (Conti, Sept. 29, 2025) and Ninth Circuit (Kivett, Oct. 2, 2025) found substantively identical laws are NOT preempted. The split isn't even symmetrical: the 1st and 2nd Circuits each ran the Cantero comparative analysis and split on the merits, while the 9th Circuit majority leaned on pre-Cantero precedent — arguably making the conflict more cert-worthy, not less. A fresh Cantero cert petition was filed May 22, 2026; cert was denied in Conti on April 29 (rehearing now sought). A second Supreme Court look has moved from likely to live." },
+  { q: "Can the OCC expand the Barnett Bank test by rule?",
+    a: "The OCC tried in 2004 with 'obstruct, impair, or condition.' Treasury and Congress said no — Dodd-Frank §1044 re-anchored preemption to Barnett Bank's actual language and stripped the OCC of Chevron deference. The 2025–2026 escrow and interchange determinations will test whether today's OCC can engineer new 'bank powers' as a pretext for preemption." },
+  { q: "Does preemption transfer to non-bank assignees?",
+    a: "The Second Circuit said no in Madden v. Midland Funding (2015) — at least for debt collectors not acting 'on behalf of' a bank. The 'true lender' doctrine further limits rent-a-charter schemes. Congress has not legislatively resolved these questions despite multiple attempts." },
+  { q: "Does preemption cover bank subsidiaries and affiliates?",
+    a: "Watters (2007) extended preemption to operating subsidiaries. Dodd-Frank §1044 reversed Watters — state consumer financial laws now apply to subsidiaries and affiliates to the same extent as any other entity subject to such state law." },
+];
+
+const EVENTS = [
+  { id:1, year:1863, displayYear:"1863\u201364", title:"National Currency Act & National Bank Act",
+    category:"legislation", importance:"foundational", significance:"pro-state",
+    summary:"Congress creates the OCC and a dual banking system during the Civil War. National bank charters available from OCC; state charters remain.",
+    detail:"The National Currency Act (1863) and National Bank Act (1864) created the modern dual banking system. Banks could apply for a national charter from the newly created OCC or retain state charters. National banks had to purchase U.S. government bonds and could issue national banknotes \u2014 creating a uniform national currency and a new war revenue source.\n\nThe NBA granted national banks express powers: discounting notes, receiving deposits, buying/selling exchange and bullion, loaning money on personal security, and \u201call such incidental powers as shall be necessary to carry on the business of banking.\u201d This final clause \u2014 incidental powers \u2014 would become the primary vehicle for OCC preemption authority for the next 160 years.\n\nThe architects of the NBA assumed all state banks would convert to national charters. A 10% federal tax on state banknotes in 1865 was meant to force conversion \u2014 but state banks skirted it by issuing paper checks. State-chartered banks have outnumbered national banks since 1895.",
+    citation:"National Bank Act, 12 U.S.C. \u00a7\u00a7 21, 24 (1864)" },
+
+  { id:2, year:1913, displayYear:"1913", title:"Federal Reserve Act \u2014 Federal Reserve Created",
+    category:"legislation", importance:"major", significance:"neutral",
+    summary:"Congress creates the Federal Reserve. All national banks must join the FRS; state banks may opt in. The Fed becomes primary federal regulator of member state banks.",
+    detail:"Congress created the Federal Reserve in 1913 in response to the 1907 banking panic, which highlighted the need for a lender of last resort. The Federal Reserve Act required all national banks to join the Federal Reserve System (FRS) and gave state banks the option of joining.\n\nThe Federal Reserve accordingly became the principal federal regulator of state-chartered banks that chose FRS membership \u2014 adding a federal supervisory layer on top of state regulation. This introduced the layered federal-state regulatory architecture that complicates preemption analysis today.\n\nFRS membership arguably confers reputational benefits on state-chartered banks, associated with the public trust the Fed enjoys as the nation\u2019s central bank.",
+    citation:"Federal Reserve Act, 12 U.S.C. \u00a7 221 et seq. (1913)" },
+
+  { id:3, year:1933, displayYear:"1933", title:"Banking Act of 1933 \u2014 FDIC Created",
+    category:"legislation", importance:"major", significance:"neutral",
+    summary:"Congress creates the FDIC to prevent bank runs. FDIC becomes primary federal regulator of state-chartered non-member banks. Federal deposit insurance required for national banks and, by state law, all state banks.",
+    detail:"Congress created the FDIC after a wave of bank failures in the early 1930s generated a self-reinforcing cycle of contagion, leading depositors to run from other banks. The FDIC insures deposits up to specified limits and regulates institutions to ensure safety and soundness.\n\nThe regulatory significance is architectural: federal law requires national banks to obtain FDIC insurance, and all states impose that same requirement on state-chartered banks. This universal FDIC insurance requirement means all banks \u2014 state and national \u2014 are subject to a common floor of federal prudential regulation, significantly narrowing the practical differences between the two charter types.\n\nThe FDIC became the primary federal supervisor for state-chartered banks that do not join the FRS, completing the multi-regulator structure that defines the modern dual banking system.",
+    citation:"Banking Act of 1933, Pub. L. 73-66 (1933)" },
+
+  { id:4, year:1978, displayYear:"1978", title:"Marquette National Bank \u2014 Interest Rate Exportation",
+    category:"scotus", importance:"major", significance:"pro-bank",
+    summary:"SCOTUS holds national banks can \u2018export\u2019 home-state maximum interest rates to borrowers in other states \u2014 even states with stricter usury limits.",
+    detail:"In Marquette National Bank of Minneapolis v. First of Omaha Services Corp., the Supreme Court interpreted the NBA to allow a Nebraska-based national bank to charge its Minnesota customers up to 18% interest \u2014 even though Minnesota\u2019s usury law capped rates at 12%.\n\nThe Court held the NBA provision allowing national banks to charge interest rates allowed by states \u201cwhere the bank is located\u201d applies even when national banks lend to customers in other states with stricter usury laws. This \u201cinterest rate exportation\u201d power became enormously consequential: it incentivized national banks to charter in low-usury states (like Delaware and South Dakota, which later repealed interest rate caps), allowing them to charge market rates nationwide.\n\nCongress extended equivalent exportation power to federally insured state banks two years later through DIDMCA \u00a7521, preempting contrary state law and equalizing treatment. This 1978\u20131980 sequence became the template for today\u2019s \u201cvalid when made\u201d and \u201ctrue lender\u201d preemption debates.",
+    citation:"Marquette Nat\u2019l Bank v. First of Omaha Serv. Corp., 439 U.S. 299 (1978)" },
+
+  { id:5, year:1980, displayYear:"1980", title:"DIDMCA \u00a7521 \u2014 State Bank Interest Exportation",
+    category:"legislation", importance:"moderate", significance:"pro-bank",
+    summary:"Congress extends Marquette\u2019s interest rate exportation power to federally insured state banks, preempting contrary state usury laws and equalizing competitive treatment.",
+    detail:"Section 521 of the Depository Institutions Deregulation and Monetary Control Act (DIDMCA) expressly grants federally insured state banks the same interest rate exportation power recognized for national banks in Marquette. The provision expressly preempts state constitutions or statutes to the contrary.\n\nThis is significant as an example of Congress using express preemption to eliminate a competitive disparity between national and state banks \u2014 preempting stricter state usury laws that would have disadvantaged state-chartered institutions. It established the principle that parity (not disadvantage) for state banks is itself a federal interest.\n\nToday, the scope of this provision \u2014 and who can benefit from it when loans are assigned to non-banks \u2014 is at the center of the Madden v. Midland Funding debate and the \u201cvalid when made\u201d doctrine.",
+    citation:"12 U.S.C. \u00a7 1831d(a) (DIDMCA \u00a7521, 1980)" },
+
+  { id:6, year:1996, displayYear:"1996", title:"Barnett Bank v. Nelson \u2014 The \u2018Significantly Interfere\u2019 Standard",
+    category:"scotus", importance:"foundational", significance:"pro-bank",
+    summary:"SCOTUS establishes the core NBA preemption test: federal law preempts state laws that \u2018significantly interfere\u2019 with national bank powers. Congress is presumed not to want states to impair powers it explicitly granted.",
+    detail:"In Barnett Bank of Marion County, N.A. v. Nelson, the Supreme Court held that a federal law granting national banks the authority to sell insurance impliedly preempted a Florida law prohibiting banks in small towns from selling insurance.\n\nKey holding: The NBA preempts state laws that \u201csignificantly interfere\u201d with a national bank\u2019s federally authorized powers. The Court explained: \u201cNormally Congress would not want States to forbid, or to impair significantly, the exercise of a power that Congress explicitly granted.\u201d\n\nBarnett Bank established the baseline conflict preemption framework for all subsequent banking preemption litigation. It remains the governing standard today \u2014 codified by Dodd-Frank in 2010 and reaffirmed by the unanimous Supreme Court in Cantero (2024). Lower courts applying Barnett Bank have generally found the threshold for \u201csignificant interference\u201d to be \u201cnot very high\u201d (Sixth Circuit, Monroe Retail).",
+    citation:"Barnett Bank of Marion County, N.A. v. Nelson, 517 U.S. 25 (1996)" },
+
+  { id:7, year:2001, displayYear:"1990s\u20132002", title:"OCC Interpretive Letters \u2014 Broad Preemption Opinions",
+    category:"occ_rule", importance:"moderate", significance:"pro-bank",
+    summary:"OCC issues a series of letters concluding federal law preempts state laws on advertising, ATM operation, annuity sales, automobile financing, fiduciary activities, and more.",
+    detail:"Beginning in the 1990s and accelerating into the early 2000s, the OCC exercised its preemption authority through interpretive letters and legal opinions. The OCC determined federal law preempted state laws limiting national banks\u2019 ability to:\n\n\u2022 Advertise (Interp. Ltr. No. 804, 1997)\n\u2022 Operate offices near state-chartered bank home offices (Interp. Ltr. No. 590, 1992)\n\u2022 Operate ATMs (Interp. Ltr. Nos. 939 & 789, 2001/1997)\n\u2022 Engage in fiduciary activities (Corp. Decision 97-33, 1997)\n\u2022 Finance automobile purchases (Preemption Determination, 2001)\n\u2022 Sell annuities (Interp. Ltr. No. 749, 1996)\n\u2022 Sell repossessed autos without an auto dealer license (Preemption Opinion, 2001)\n\u2022 Conduct internet auctions of certificates of deposit (Preemption Determination, 2000)\n\nThese opinions collectively demonstrated the OCC\u2019s expansive view of NBA incidental powers and set the stage for the sweeping 2004 rulemaking.",
+    citation:"Various OCC Interpretive Letters, 1992\u20132002" },
+
+  { id:8, year:2004, displayYear:"2004", title:"OCC \u2018Sweeping\u2019 2004 Preemption Rules",
+    category:"occ_rule", importance:"foundational", significance:"pro-bank",
+    summary:"OCC issues broad preemption regulations adopting an \u2018obstruct, impair, or condition\u2019 standard \u2014 expanding Barnett Bank. Preempts state laws across real estate lending, non-real estate lending, and deposit-taking.",
+    detail:"The OCC\u2019s 2004 preemption rules were described by commentators as \u201csweeping\u201d and \u201cbroadly construing the preemptive effects of federal banking laws.\u201d They contained two major innovations:\n\n1. NEW GENERAL STANDARD: State laws that \u201cobstruct, impair, or condition a national bank\u2019s ability to fully exercise\u201d its federally authorized powers \u201care not applicable.\u201d Critics argued this omitted Barnett Bank\u2019s intensifying word \u201csignificantly\u201d and added a requirement that banks be able to \u201cfully\u201d exercise powers.\n\n2. CATEGORICAL PREEMPTION LISTS: Specific categories of state laws preempted for:\n\u2022 Real estate lending (loan-to-value ratios, interest rates, escrow accounts, disclosure, processing/origination/servicing, due-on-sale clauses, and more)\n\u2022 Non-real estate lending (similar categories)\n\u2022 Deposit-taking (abandoned accounts, checking accounts, disclosure, funds availability, licensing)\n\nSurviving state laws: Contracts, torts, criminal law, debt collection, property, taxation, zoning \u2014 so long as they \u201cdo not regulate the manner, content or extent\u201d of authorized national bank activities.\n\nThe OCC maintained the \u201cobstruct, impair, or condition\u201d standard was merely a \u201cdistillation\u201d of Barnett Bank and Hines v. Davidowitz, not a new standard. Congress and Treasury ultimately disagreed.",
+    citation:"12 C.F.R. \u00a7\u00a7 34.4(a); 7.4007(b)(1); 7.4008(d)(1); 7.4009(b) (2005); 69 Fed. Reg. 1904 (Jan. 13, 2004)" },
+
+  { id:9, year:2007, displayYear:"2007", title:"Watters v. Wachovia \u2014 Preemption Extended to Operating Subsidiaries",
+    category:"scotus", importance:"major", significance:"pro-bank",
+    summary:"SCOTUS holds NBA preemption extends to operating subsidiaries of national banks. The inquiry focuses on the exercise of national bank powers, not corporate structure. Abrogated by Dodd-Frank \u00a71044 (2010).",
+    detail:"In Watters v. Wachovia Bank, N.A., the Supreme Court (5-3) held that an NBA visitorial powers provision \u2014 together with an OCC regulation \u2014 preempted Michigan\u2019s licensing, reporting, and visitation requirements for a national bank\u2019s mortgage-lending operating subsidiary.\n\nKey reasoning: The proper inquiry for state law interference with federally permitted bank activities \u201cfocuses on the exercise of a national bank\u2019s powers, not on its corporate structure.\u201d Operating subsidiaries should be treated \u201cas equivalent to national banks with respect to powers exercised under federal law.\u201d\n\nThe Court concluded that \u201cduplicative state examination, supervision, and regulation would significantly burden\u201d national banks\u2019 authorized activities \u2014 and that burden equally applies to operating subsidiaries conducting those activities.\n\nDodd-Frank (2010) subsequently abrogated Watters\u2019s subsidiaries holding. Section 1044 of Dodd-Frank expressly provides that state consumer financial laws apply to national bank subsidiaries and affiliates \u201cto the same extent\u201d they apply to any other entity subject to such state law.",
+    citation:"Watters v. Wachovia Bank, N.A., 550 U.S. 1 (2007); abrogated by Dodd-Frank \u00a71044 (2010)" },
+
+  { id:10, year:2009, displayYear:"2009", title:"Cuomo v. Clearing House \u2014 Law Enforcement vs. Supervision",
+    category:"scotus", importance:"major", significance:"pro-state",
+    summary:"SCOTUS limits visitorial powers preemption: while states cannot supervise national banks (preempted), state AGs can bring judicial enforcement actions against national banks under state law.",
+    detail:"In Cuomo v. Clearing House Association, LLC, the Supreme Court (5-4 in part) drew a key distinction in how far the NBA\u2019s visitorial powers provision extends.\n\nThe New York Attorney General had sent information request letters to national banks seeking data on lending practices to investigate fair lending violations. The OCC argued its regulation \u2014 providing that state officials may not \u201cprosecute enforcement actions\u201d against national banks except in limited federally authorized circumstances \u2014 preempted the requests.\n\nThe Court distinguished between: (1) \u201cSupervision\u201d or \u201cthe right to oversee corporate affairs\u201d \u2192 qualifies as visitorial power \u2192 preempted; and (2) \u201cLaw enforcement\u201d \u2192 not visitorial power \u2192 not preempted.\n\nBecause the NYAG issued the requests in his law enforcement capacity (not as a sovereign-supervisor), the NBA did not preempt the requests. The Court upheld the injunction only as applied to threatened executive subpoenas \u2014 which all parties agreed qualified as an exercise of supervisory power.\n\nCuomo represented a significant state win, confirming that state AGs retain authority to bring judicial enforcement actions against national banks under applicable state consumer protection laws.",
+    citation:"Cuomo v. Clearing House Ass\u2019n, LLC, 557 U.S. 519 (2009)" },
+
+  { id:11, year:2010, displayYear:"2010", title:"Dodd-Frank Act \u00a71044 \u2014 Congress Codifies Barnett Bank",
+    category:"legislation", importance:"foundational", significance:"pro-state",
+    summary:"Congress codifies Barnett Bank \u2018prevents or significantly interferes\u2019 standard; requires substantial evidence for OCC preemption determinations; mandates Skidmore (not Chevron) deference; abrogates Watters; requires case-by-case review.",
+    detail:"Section 1044 of the Dodd-Frank Wall Street Reform and Consumer Protection Act (2010) was Congress\u2019s major legislative intervention in banking preemption doctrine. It made five key changes:\n\n1. CODIFIED BARNETT BANK: Federal law preempts state consumer financial laws only if: (A) discriminatory effect on national banks vs. state banks; (B) prevents or significantly interferes with national bank powers \u201cin accordance with the legal standard in [Barnett Bank]\u201d; or (C) preempted by a federal law other than the NBA.\n\n2. SUBSTANTIAL EVIDENCE REQUIREMENT: OCC preemption determinations must be supported by substantial evidence made on the record.\n\n3. SKIDMORE DEFERENCE ONLY: Courts must assess OCC preemption determinations under Skidmore deference \u2014 not the more permissive Chevron deference. Studies show agency interpretations succeed ~77% under Chevron but only ~56% under Skidmore. (Note: this was a carve-down from the prevailing Chevron baseline in 2010. After Loper Bright Enterprises v. Raimondo (2024) overruled Chevron across the board, \u00a71044\u2019s Skidmore instruction is now broadly consistent with the general regime rather than an exception \u2014 and Loper Bright is itself in play in the 2026 interchange litigation.)\n\n4. ABROGATED WATTERS: State consumer financial laws apply to national bank subsidiaries and affiliates to the same extent as other persons \u2014 overturning Watters.\n\n5. PERIODIC REVIEW REQUIRED: OCC must review each preemption determination within 5 years and at least every 5 years thereafter, publishing a notice in the Federal Register on whether to continue, rescind, or amend.",
+    citation:"Dodd-Frank Wall Street Reform and Consumer Protection Act, Pub. L. No. 111-203, \u00a71044 (2010); 12 U.S.C. \u00a7 25b" },
+
+  { id:12, year:2011, displayYear:"2011", title:"OCC 2011 Revised Preemption Rules",
+    category:"occ_rule", importance:"major", significance:"neutral",
+    summary:"OCC removes \u2018obstruct, impair, or condition\u2019 language following Dodd-Frank; reaffirms all prior specific preemption determinations as consistent with Barnett Bank; commits to case-by-case determinations going forward.",
+    detail:"After Dodd-Frank\u2019s enactment, debate erupted over whether \u00a71044 codified or cut back the OCC\u2019s 2004 preemption rules. The OCC proposed a notice of proposed rulemaking that reaffirmed its prior preemption decisions while deleting the \u201cobstruct, impair, or condition\u201d language.\n\nTreasury\u2019s General Counsel wrote to the Acting Comptroller arguing the proposed rule was \u201cinconsistent with the plain language\u201d of Dodd-Frank and \u201cbasic canons of statutory construction.\u201d Senator Levin argued that if Congress had wanted to leave OCC powers unchanged, it \u201ccould have engaged in a very simple exercise \u2014 do nothing.\u201d\n\nBy contrast, Senators Carper and Warner argued Treasury ignored legislative history showing \u00a71044 was intended to codify Barnett Bank, and that removing the \u201cobstruct, impair, or condition\u201d language effectuated the contemplated revision.\n\nThe OCC agreed with Senators Carper and Warner. The July 2011 final rule concluded that Dodd-Frank \u201cdoes not create a new, stand-alone \u2018prevents or significantly interferes\u2019 preemption standard, but, rather, incorporates the conflict preemption legal standard\u201d of Barnett Bank. The OCC removed the \u201cobstruct, impair, or condition\u201d language but maintained all prior specific preemption determinations \u2014 finding none had relied exclusively on that language.\n\nSince 2011, courts have generally interpreted \u00a71044 as codifying Barnett Bank. In 2018, the Ninth Circuit in Lusnak held OCC 2011 preemption determinations are entitled to \u201clittle, if any\u201d Skidmore deference.",
+    citation:"76 Fed. Reg. 43,549 (July 21, 2011); OCC/Treasury letter exchange (June\u2013July 2011)" },
+
+  { id:13, year:2015, displayYear:"2015", title:"Madden v. Midland Funding \u2014 \u2018Valid When Made\u2019 Rejected for Non-Banks",
+    category:"lower_court", importance:"major", significance:"pro-state",
+    summary:"Second Circuit holds that non-bank debt collectors that purchased credit card debt from a national bank cannot benefit from the bank\u2019s interest rate exportation power. NBA preemption does not transfer to non-bank assignees not acting \u2018on behalf of\u2019 a national bank.",
+    detail:"In Madden v. Midland Funding, the Second Circuit rejected the \u201cvalid when made\u201d doctrine in a case where non-bank debt collectors had purchased credit card debt from a Delaware-based national bank and attempted to collect at a rate permissible under Delaware law but above New York\u2019s usury cap.\n\nKey holding: The NBA\u2019s preemption of New York usury law \u201csignificantly interferes\u201d only when the burden falls on a national bank or an entity acting on its behalf. Because the debt collectors were neither national banks nor acting on behalf of a national bank, New York usury law was not preempted.\n\nThis decision generated significant debate:\n\u2022 Industry groups argued it would \u201csignificantly impair\u201d banks\u2019 ability to manage risk by selling loans in secondary markets.\n\u2022 OCC and the Solicitor General filed amicus briefs calling the decision \u201cincorrect\u201d \u2014 while ultimately recommending certiorari be denied as a poor vehicle.\n\u2022 Proponents argued it stops non-banks from evading state consumer protection laws through \u201crent-a-charter\u201d arrangements.\n\nThe Supreme Court denied certiorari (2016). Congress considered but did not pass legislation codifying the \u201cvalid when made\u201d doctrine in the 115th Congress.",
+    citation:"Madden v. Midland Funding, LLC, 786 F.3d 246 (2d Cir. 2015); cert. denied, 136 S. Ct. 2505 (2016)" },
+
+  { id:14, year:2018, displayYear:"2018", title:"OCC FinTech Special Purpose National Bank Charter Policy",
+    category:"occ_determination", importance:"major", significance:"pro-bank",
+    summary:"OCC announces it will accept applications for \u2018special purpose national bank charters\u2019 from FinTech companies engaged in the business of banking but not taking deposits. CSBS and NYDFS file lawsuits challenging OCC authority.",
+    detail:"In July 2018, the OCC issued a Policy Statement announcing it would begin accepting applications for special purpose national bank (SPNB) charters from FinTech companies that engaged in the \u201cbusiness of banking\u201d \u2014 specifically paying checks or lending money \u2014 without taking deposits.\n\nOCC rationale: The NBA grants \u201cbroad authority\u201d to charter institutions engaged in the business of banking. FinTech charters would foster responsible innovation and promote regulatory consistency. Chartered FinTech companies would be supervised like similarly situated national banks \u2014 with capital, liquidity, and risk management requirements.\n\nPreemption significance: While the OCC did not explicitly emphasize federal preemption, commentators noted that preemption represented \u201cthe central benefit\u201d of such charters \u2014 allowing FinTech companies to operate under a uniform federal regulatory framework in lieu of a 50-state patchwork of state laws.\n\nLitigation: Both CSBS (D.D.C.) and NYDFS (S.D.N.Y.) filed new suits after the 2018 Policy Statement, arguing: (1) the NBA does not authorize charters for non-depository institutions; (2) the APA requires notice-and-comment rulemaking; (3) the decision was arbitrary and capricious; (4) it violated the Tenth Amendment. Both cases remained pending, with earlier suits dismissed on ripeness grounds.",
+    citation:"OCC Policy Statement on Financial Technology Companies\u2019 Eligibility to Apply for National Bank Charters (July 2018); CSBS v. OCC, No. 1:18-cv-02449 (D.D.C. 2018)" },
+
+  { id:15, year:2024, displayYear:"May 2024", title:"Cantero v. Bank of America \u2014 Unanimous SCOTUS on Escrow Preemption",
+    category:"scotus", importance:"foundational", significance:"neutral",
+    summary:"A unanimous Supreme Court vacates the Second Circuit and holds courts must conduct a \u2018nuanced comparative analysis\u2019 of the \u2018nature and degree of interference\u2019 \u2014 neither a categorical pro-bank test nor a near-zero preemption standard. On remand in May 2026, the Second Circuit again finds preemption, creating a three-way circuit split.",
+    detail:"In Cantero v. Bank of America, N.A. (May 30, 2024), a unanimous Supreme Court (Justice Kavanaugh) vacated and remanded a Second Circuit decision holding that the National Bank Act preempted New York\u2019s interest-on-escrow law (requiring banks to pay at least 2% annual interest on mortgage escrow account balances).\n\nThe Second Circuit had used a \u201ccontrol\u201d test \u2014 asking whether the state law \u201cwould exert control over a banking power\u201d \u2014 and held the New York law was preempted. The Supreme Court found this test was \u201ca categorical test that would preempt virtually all state laws that regulate national banks.\u201d\n\nCantero\u2019s key contributions:\n1. REAFFIRMS BARNETT BANK + DODD-FRANK: The governing standard is \u201cprevents or significantly interferes,\u201d as incorporated in Dodd-Frank. Field preemption is ruled out.\n2. \u201cNUANCED COMPARATIVE ANALYSIS\u201d REQUIRED: Courts must make \u201ca practical assessment of the nature and degree of the interference\u201d caused by a state law, then compare that interference to the interference in Barnett Bank and prior Supreme Court decisions \u2014 both those that found preemption and those that did not.\n3. NO BRIGHT LINE: The Court declined to adopt either party\u2019s proposed bright-line test.\n4. CASE REMANDED: The actual question of whether New York\u2019s escrow interest law is preempted was sent back to the Second Circuit for fresh analysis under the correct standard.\n\nOn remand, the Second Circuit again found preemption (May 5, 2026) \u2014 this time purportedly under the Cantero framework \u2014 creating a direct circuit conflict with the First and Ninth Circuits. See the May 2026 entry for full details on the remand decision and three-way circuit split.",
+    citation:"Cantero v. Bank of America, N.A., 602 U.S. 205 (2024) (Kavanaugh, J., for a unanimous Court); on remand, 2d Cir. (May 5, 2026)" },
+
+  { id:16, year:2025, displayYear:"Dec 2025", title:"OCC Proposed Preemption Determination \u2014 State Interest-on-Escrow Laws",
+    category:"occ_determination", importance:"major", significance:"pro-bank",
+    summary:"OCC proposes to determine that the NBA preempts New York\u2019s interest-on-escrow law and 11 substantively equivalent state laws \u2014 eliminating national banks\u2019 obligation to pay mandatory interest on real estate escrow accounts in 12 states.",
+    detail:"In December 2025 (published in the Federal Register December 30, 2025), the OCC issued a proposed preemption determination concluding that federal law preempts state laws that eliminate national banks\u2019 and federal savings associations\u2019 \u201cflexibility to decide whether and to what extent to\u201d (1) pay interest on funds in real estate escrow accounts or (2) assess fees in connection with such accounts.\n\nScope: The proposed determination would preempt New York\u2019s Gen. Oblig. Law \u00a75-601 \u2014 the specific law at issue in Cantero \u2014 and 11 other state laws with \u201csubstantively equivalent terms.\u201d The OCC proposed to exclude Iowa\u2019s law (permissive, not mandatory) and New Hampshire\u2019s law (only applies to state-chartered banks).\n\nOCC\u2019s preemption rationale: The OCC argued the New York law\u2019s interference is \u201cmore akin\u201d to the interference found to be preempted in Barnett Bank, Franklin, and Fidelity Federal Savings \u2014 in particular citing Fidelity, where a federal regulation gave each savings association the option to exercise due-on-sale clauses and a California state law deprived the lender of that \u201cflexibility.\u201d\n\nCompanion rulemaking: The OCC simultaneously issued a proposed rule to codify national banks\u2019 longstanding escrow accounts power \u2014 apparently to create the federal \u201cbank power\u201d that the preemption determination would then protect.\n\nCSBS/AARMR opposition: CSBS and AARMR submitted a comment letter arguing the escrow rule \u201cmanufactures a \u2018new\u2019 national bank power solely as a pretext for the corresponding preemption determination,\u201d and urged both proposals be withdrawn.\n\nStatus: Comment period closed January 29, 2026. The OCC finalized both rules on May 15, 2026 \u2014 not materially changed from the proposals \u2014 effective June 18, 2026. See the May 2026 entry on the final rules for details.",
+    citation:"OCC Bulletin 2025-50; 90 Fed. Reg. 61093 (Dec. 30, 2025) [Docket OCC-2025-0735]; finalized May 15, 2026" },
+
+  { id:17, year:2026, displayYear:"Apr 2026", title:"OCC Interim Final Order \u2014 Illinois Interchange Fee Prohibition Act",
+    category:"occ_determination", importance:"major", significance:"pro-bank",
+    summary:"OCC issues an interim final order preempting Illinois\u2019s Interchange Fee Prohibition Act (effective July 1, 2026), which would bar collecting interchange fees on tax and gratuity portions of card transactions. CSBS argues the OCC failed to conduct the Cantero-required nuanced analysis.",
+    detail:"On April 24, 2026, the OCC issued an interim final rule and interim final order concluding that federal law preempts the Illinois Interchange Fee Prohibition Act (IFPA), signed into law by Governor Pritzker in 2024 and scheduled to take effect July 1, 2026. The OCC actions take effect June 30, 2026 \u2014 one day before the IFPA \u2014 and ground preemption in both the NBA and HOLA; the companion interim final rule amends 12 C.F.R. \u00a77.4002.\n\nWhat the IFPA does: The IFPA (1) prohibits charging or receiving interchange fees on the tax and gratuity portions of payment card transactions in Illinois; and (2) contained a data use limitation (later partially struck down by a federal district court).\n\nBackground litigation: Four trade associations sued Illinois in August 2024. The U.S. District Court for the Northern District of Illinois (Judge Virginia Kendall) denied an injunction on February 10, 2026, largely upholding the interchange fee restriction \u2014 finding no federal preemption for financial institutions because they \u201cdo not set the interchange fees.\u201d The court struck down the data use limitation. The plaintiffs appealed to the Seventh Circuit.\n\nOCC preemption rationale: National banks have express statutory authority to issue payment cards, collect fees, and engage in activities incidental to banking. The OCC argued the IFPA \u201cprevents or significantly interferes\u201d with these powers by eliminating banks\u2019 flexibility to receive the full interchange fee they would otherwise collect.\n\nEstimated savings: OCC estimated $37 million in annualized cost savings for OCC-supervised institutions at a 7% discount rate.\n\nCSBS criticism: CSBS argued the OCC\u2019s preemption determination lacked the \u201cnuanced analysis\u201d required by Cantero \u2014 that the OCC must examine \u201cthe practical implications stemming from the application of state law to national bank activities\u201d and that the mere \u201cexistence of direct interference with OCC regulations is not dispositive.\u201d\n\nStatus: On May 8, 2026, the Seventh Circuit vacated the district court\u2019s judgment and remanded for further proceedings in light of the OCC\u2019s interim final rule and order \u2014 likely on an expedited basis given the July 1 IFPA effective date. The OCC actions remain in effect pending that resolution.",
+    citation:"OCC Bulletin 2026-17; 91 Fed. Reg. (Apr. 29, 2026); Illinois Interchange Fee Prohibition Act (2024); 7th Cir. remand (May 8, 2026)" },
+
+  { id:18, year:2026, displayYear:"May 2026", title:"Cantero on Remand \u2014 Second Circuit Again Finds Preemption; Three-Way Circuit Split",
+    category:"lower_court", importance:"major", significance:"pro-bank",
+    summary:"On remand from SCOTUS, the Second Circuit (2-1) again holds that New York\u2019s 2% interest-on-escrow law is preempted \u2014 this time under the Cantero \u2018nuanced comparative analysis\u2019 framework. The ruling directly conflicts with the First and Ninth Circuits, creating a three-way circuit split likely to force a second Supreme Court review.",
+    detail:"On May 5, 2026, the Second Circuit issued its long-awaited decision on remand in Cantero v. Bank of America, again holding (2-1) that New York\u2019s interest-on-escrow statute (Gen. Oblig. Law \u00a75-601) is preempted by the National Bank Act.\n\nMAJORITY REASONING: The panel held that New York\u2019s escrow-interest requirement \u201caffects a broad federal grant of power to set the terms of mortgage-escrow accounts and it impedes national banks\u2019 ability to offer those accounts efficiently.\u201d Conducting the required comparative analysis, the majority analogized the New York statute to an OCC advertising preemption ruling previously found to constitute significant interference. The majority emphasized the role of RESPA and TILA in defining the scope of national banks\u2019 escrow account powers \u2014 and the material operational impact of mandating an interest rate on escrow balances.\n\nTHE DISSENT (Judge P\u00e9rez): Judge P\u00e9rez filed a lengthy dissent arguing the majority effectively resurrected the \u201ccontrol\u201d test the Supreme Court rejected in Cantero. By framing the federal power broadly as \u201cflexibility\u201d to set all escrow terms, the majority treated almost any state limitation on that flexibility as preempted. In her view, the correct Barnett Bank inquiry asks whether the law materially changes banks\u2019 and consumers\u2019 incentives to enter into mortgage and escrow transactions.\n\nTHE THREE-WAY CIRCUIT SPLIT:\n\u2022 2nd Circuit (NY, CT, VT): NY escrow interest law IS preempted [Cantero on remand, May 5, 2026 (2-1)]\n\u2022 1st Circuit (New England): RI escrow interest law is NOT preempted [Conti v. Citizens Bank, Sept. 29, 2025 (unanimous)]\n\u2022 9th Circuit (West): CA escrow interest law is NOT preempted [Kivett v. Flagstar Bank, Oct. 2, 2025 (2-1)]\n\nNote on methodology: The split is not symmetrical. The First and Second Circuits each conducted Cantero\u2019s \u201cnuanced comparative analysis\u201d and reached opposite conclusions \u2014 the sharpest form of conflict. The Ninth Circuit majority in Kivett, by contrast, rested largely on pre-Cantero binding circuit precedent (Lusnak); its dissent applied the Cantero comparative analysis. That methodological divergence arguably makes the split more cert-worthy, not less.\n\nThe Second Circuit expressly disagreed with the First Circuit\u2019s reasoning in Conti on two grounds: (1) failure to give appropriate weight to RESPA and TILA when assessing the scope of federal banking power; and (2) underestimating the material operational impact of a state pricing mandate on bank operations.\n\nCONSEQUENCES: The split means that in the Second Circuit, national banks may treat interest-on-escrow statutes as preempted \u2014 while in the First and Ninth Circuits, they may not. This geographic inconsistency significantly increases the probability of a second Supreme Court review. It is also directly reinforced by the OCC, which finalized its escrow preemption determination targeting 12 state interest-on-escrow laws on May 15, 2026 (effective June 18) \u2014 just 10 days after this decision, and which the Second Circuit had relied upon in its (then-proposed) form.\n\nCERT POSTURE (as of late May 2026): The probability of a second SCOTUS look has moved from likely to live. On April 29, 2026, the Supreme Court denied cert in Conti; Citizens Bank then filed a petition for rehearing arguing the new split justifies reconsideration. On May 22, 2026, a fresh cert petition was filed in Cantero itself, contending the Second Circuit effectively reinstated the expansive approach the Court rejected in 2024. No cert petition has yet been filed in Kivett.",
+    citation:"Cantero v. Bank of America, N.A., 2d Cir. (May 5, 2026) (2-1); Conti v. Citizens Bank, N.A., 1st Cir. (Sept. 29, 2025); Kivett v. Flagstar Bank, FSB, 9th Cir. (Oct. 2, 2025); cert. pet. filed May 22, 2026" },
+
+  { id:19, year:2026, displayYear:"May 2026", title:"OCC Finalizes Escrow Preemption Rules \u2014 Determination Made Final",
+    category:"occ_determination", importance:"major", significance:"pro-bank",
+    summary:"Ten days after the Second Circuit\u2019s Cantero remand, the OCC finalizes both the escrow-power rule and the interest-on-escrow preemption determination \u2014 not materially changed from the December 2025 proposals \u2014 converting the contested \u2018pending\u2019 action into final agency action national banks can rely on.",
+    detail:"On May 15, 2026, the OCC issued two final rules on national banks\u2019 and federal savings associations\u2019 real estate lending powers relating to mortgage escrow accounts. The first codifies, as a matter of longstanding OCC precedent, banks\u2019 power to make their own business decisions about escrow account terms \u2014 including whether to pay interest. The second finalizes the preemption determination that state interest-on-escrow mandates are preempted as applied to those lenders. Both are effective June 18, 2026.\n\nKEY POINTS:\n\u2022 The final rules were not materially changed from the December 2025 proposals \u2014 sharpening the CSBS/AARMR objection that the escrow \u201cpower\u201d rule and the preemption determination are two halves of the same engineered result.\n\u2022 Timing: the finalization came just 10 days after the Second Circuit\u2019s May 5 remand decision, which had itself relied on the then-proposed determination. The OCC expressly commended that decision \u2014 a notable feedback loop in which agency and court each lean on the other.\n\u2022 Litigation exposure: because Dodd-Frank \u00a71044 subjects OCC preemption determinations to Skidmore (not Chevron) deference and a substantial-evidence requirement, the final determination remains vulnerable to challenge \u2014 particularly on the \u201cmanufactured power\u201d theory and the adequacy of the comparative analysis Cantero requires.\n\nThis is the agency-side counterpart to the judicial circuit split: the OCC has now committed to a nationwide preemption position even as the courts remain divided three ways.",
+    citation:"OCC final rules (May 15, 2026), effective June 18, 2026; cf. 90 Fed. Reg. 61093 (Dec. 30, 2025) [proposals]" },
+];
+
+/* ── STATE ── */
+let activeFilter  = "all";
+let activeOutcome = "all";
+let searchQuery   = "";
+let selectedId    = null;
+let openStdIdx    = null;
+let expandAll     = false;
+
+/* ── UTILITIES ── */
+function esc(s) {
+  return String(s)
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+// Highlight search matches in already-escaped text
+function hl(escaped, q) {
+  if (!q) return escaped;
+  const safe = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return escaped.replace(new RegExp("(" + safe + ")", "gi"), "<mark>$1</mark>");
+}
+
+// Does an event match the current search query?
+function matchesSearch(ev) {
+  if (!searchQuery) return true;
+  const q = searchQuery.toLowerCase();
+  return [ev.title, ev.summary, ev.detail, ev.citation, ev.displayYear]
+    .some(f => String(f).toLowerCase().includes(q));
+}
+
+/* ── TAB SWITCHING ── */
+function switchTab(tab) {
+  document.getElementById("pane-timeline").classList.toggle("hidden", tab !== "timeline");
+  document.getElementById("pane-standard").classList.toggle("hidden", tab === "timeline");
+  document.getElementById("tab-timeline").classList.toggle("active", tab === "timeline");
+  document.getElementById("tab-standard").classList.toggle("active", tab !== "timeline");
+}
+
+/* ── SEARCH + UTILITIES ── */
+function onSearch(val) {
+  searchQuery = val.trim();
+  buildTimeline();
+}
+
+function toggleExpandAll() {
+  expandAll = !expandAll;
+  const btn = document.getElementById("expand-all-btn");
+  btn.textContent = expandAll ? "Collapse all" : "Expand all";
+  btn.setAttribute("aria-pressed", expandAll ? "true" : "false");
+  buildTimeline();
+}
+
+function printTimeline() {
+  switchTab("timeline");
+  const prev = expandAll;
+  expandAll = true;
+  buildTimeline();
+  setTimeout(() => { window.print(); expandAll = prev; buildTimeline(); }, 150);
+}
+
+// Open a specific event from anywhere (e.g., spectrum markers): clear filters,
+// switch to the timeline, select it, scroll it into view, and update the URL.
+function openEvent(id) {
+  activeFilter = "all"; activeOutcome = "all"; searchQuery = "";
+  const sb = document.getElementById("search-box"); if (sb) sb.value = "";
+  selectedId = id;
+  switchTab("timeline");
+  buildFilters(); buildOutcomeFilters(); buildTimeline();
+  history.replaceState(null, "", "#event-" + id);
+  setTimeout(() => {
+    const el = document.getElementById("event-" + id);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, 60);
+}
+
+/* ── FILTER BAR ── */
+function buildFilters() {
+  const bar = document.getElementById("filter-bar");
+  bar.innerHTML = "";
+  const allBtn = document.createElement("button");
+  allBtn.className = "filter-btn";
+  allBtn.textContent = "All Events";
+  allBtn.style.borderColor = activeFilter === "all" ? "#1c3a5e" : "#d4cfc9";
+  allBtn.style.background  = activeFilter === "all" ? "#1c3a5e" : "white";
+  allBtn.style.color       = activeFilter === "all" ? "white"   : "#44403c";
+  allBtn.onclick = () => { activeFilter = "all"; buildFilters(); buildTimeline(); };
+  bar.appendChild(allBtn);
+
+  Object.entries(CATEGORIES).forEach(([key, val]) => {
+    const btn = document.createElement("button");
+    btn.className = "filter-btn";
+    btn.textContent = val.label;
+    const isActive = activeFilter === key;
+    btn.style.borderColor = isActive ? val.color : "#d4cfc9";
+    btn.style.background  = isActive ? val.color : "white";
+    btn.style.color       = isActive ? "white"   : "#44403c";
+    btn.onclick = () => { activeFilter = key; buildFilters(); buildTimeline(); };
+    bar.appendChild(btn);
+  });
+}
+
+/* ── OUTCOME FILTER BAR ── */
+function buildOutcomeFilters() {
+  const bar = document.getElementById("outcome-bar");
+  bar.innerHTML = "";
+  const allBtn = document.createElement("button");
+  allBtn.className = "filter-btn";
+  allBtn.textContent = "All Outcomes";
+  allBtn.style.borderColor = activeOutcome === "all" ? "#1c3a5e" : "#d4cfc9";
+  allBtn.style.background  = activeOutcome === "all" ? "#1c3a5e" : "white";
+  allBtn.style.color       = activeOutcome === "all" ? "white"   : "#44403c";
+  allBtn.onclick = () => { activeOutcome = "all"; buildOutcomeFilters(); buildTimeline(); };
+  bar.appendChild(allBtn);
+
+  Object.entries(SIG).forEach(([key, val]) => {
+    const btn = document.createElement("button");
+    btn.className = "filter-btn";
+    btn.textContent = val.label;
+    const isActive = activeOutcome === key;
+    btn.style.borderColor = isActive ? val.color : "#d4cfc9";
+    btn.style.background  = isActive ? val.color : "white";
+    btn.style.color       = isActive ? "white"   : "#44403c";
+    btn.onclick = () => { activeOutcome = key; buildOutcomeFilters(); buildTimeline(); };
+    bar.appendChild(btn);
+  });
+}
+
+/* ── LEGEND ── */
+function buildLegend() {
+  document.getElementById("legend-categories").innerHTML =
+    Object.values(CATEGORIES).map(v =>
+      `<div class="legend-row">
+        <div class="legend-dot" style="width:10px;height:10px;background:${v.color};"></div>
+        <span class="legend-text">${esc(v.label)}</span>
+      </div>`
+    ).join("");
+
+  document.getElementById("legend-outcomes").innerHTML =
+    Object.values(SIG).map(v =>
+      `<div style="margin-bottom:7px;">
+        <span class="badge" style="color:${v.color};background:${v.bg};">${esc(v.label)}</span>
+      </div>`
+    ).join("");
+}
+
+/* ── TIMELINE ── */
+function buildTimeline() {
+  const list = document.getElementById("timeline-list");
+  list.innerHTML = '<div class="timeline-spine"></div>';
+
+  const filtered = EVENTS.filter(e =>
+    (activeFilter  === "all" || e.category === activeFilter) &&
+    (activeOutcome === "all" || e.significance === activeOutcome) &&
+    matchesSearch(e)
+  );
+
+  // Result count
+  const rc = document.getElementById("result-count");
+  if (rc) {
+    const total = EVENTS.length;
+    rc.textContent = (filtered.length === total)
+      ? `${total} events`
+      : `${filtered.length} of ${total} events`;
+  }
+
+  if (filtered.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "no-results";
+    empty.textContent = "No events match these filters.";
+    list.appendChild(empty);
+    return;
+  }
+
+  filtered.forEach(ev => {
+    const cat  = CATEGORIES[ev.category];
+    const sig  = SIG[ev.significance] || SIG.neutral;
+    const isSel = ev.id === selectedId;
+    const isOpen = isSel || expandAll;
+    const sz   = DOT_SZ[ev.importance];
+    const bw   = DOT_BW[ev.importance];
+
+    const row = document.createElement("div");
+    row.className = "timeline-row";
+
+    // Year
+    const yearDiv = document.createElement("div");
+    yearDiv.className = "year-col";
+    yearDiv.innerHTML = `<span class="year-label">${esc(ev.displayYear)}</span>`;
+    row.appendChild(yearDiv);
+
+    // Dot
+    const dotCol = document.createElement("div");
+    dotCol.className = "dot-col";
+    const dot = document.createElement("div");
+    dot.className = "dot" + (isSel ? " selected" : "");
+    dot.style.cssText = `width:${sz}px;height:${sz}px;border:${bw}px solid ${cat.color};` +
+      (isSel ? `background:${cat.color};` : "");
+    dotCol.appendChild(dot);
+    row.appendChild(dotCol);
+
+    // Card
+    const card = document.createElement("div");
+    card.className = "card" + (isSel ? " selected" : "");
+    card.id = "event-" + ev.id;
+    card.style.borderColor = isSel ? cat.color : "#e4e0db";
+    card.setAttribute("role", "button");
+    card.setAttribute("tabindex", "0");
+    card.setAttribute("aria-expanded", isOpen ? "true" : "false");
+
+    let detailHtml = "";
+    if (isOpen) {
+      const paras = ev.detail.split("\n\n")
+        .map(p => `<p>${hl(esc(p), searchQuery).replace(/\n/g,"<br>")}</p>`).join("");
+      detailHtml = `<div class="card-detail" style="border-top:1px solid ${cat.color}30;">
+        ${paras}
+        <div class="card-citation" style="border-left:3px solid ${cat.color};">&#128206; ${hl(esc(ev.citation), searchQuery)}</div>
+      </div>`;
+    }
+
+    card.innerHTML = `
+      <div class="card-badges">
+        <span class="badge" style="color:${cat.color};background:${cat.bg};">${esc(cat.label)}</span>
+        <span class="badge" style="color:${sig.color};background:${sig.bg};">${esc(sig.label)}</span>
+      </div>
+      <h3>${hl(esc(ev.title), searchQuery)}</h3>
+      <p class="card-summary">${hl(esc(ev.summary), searchQuery)}</p>
+      ${detailHtml}`;
+
+    const toggle = () => {
+      selectedId = selectedId === ev.id ? null : ev.id;
+      if (selectedId) history.replaceState(null, "", "#event-" + ev.id);
+      else history.replaceState(null, "", location.pathname + location.search);
+      buildTimeline();
+    };
+    card.onclick = toggle;
+    card.onkeydown = (e) => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); }
+    };
+    row.appendChild(card);
+    list.appendChild(row);
+  });
+}
+
+/* ── STANDARD CARDS ── */
+function buildStandards() {
+  const container = document.getElementById("std-cards");
+  container.innerHTML = "";
+  STANDARDS.forEach((std, idx) => {
+    const [col, bg] = STD_COLORS[idx % STD_COLORS.length];
+    const isOpen = openStdIdx === idx;
+    const card = document.createElement("div");
+    card.className = "std-card";
+    card.style.borderColor = isOpen ? col : "#e4e0db";
+    card.style.boxShadow = isOpen ? "0 4px 16px rgba(0,0,0,0.12)" : "";
+    card.innerHTML = `
+      <button class="std-card-btn" onclick="toggleStd(${idx})">
+        <div class="std-year-box" style="background:${bg};">
+          <span class="std-year-text" style="color:${col};">${std.year}</span>
+        </div>
+        <span class="std-card-title">${esc(std.label)}</span>
+        <span class="std-chevron${isOpen?" open":""}" style="color:${col};">&#9662;</span>
+      </button>
+      ${isOpen ? `<div class="std-card-body" style="border-top:1px solid ${col}20;"><p>${esc(std.summary)}</p></div>` : ""}`;
+    container.appendChild(card);
+  });
+}
+
+function toggleStd(idx) {
+  openStdIdx = openStdIdx === idx ? null : idx;
+  buildStandards();
+}
+
+/* ── TENSIONS ── */
+function buildTensions() {
+  document.getElementById("tensions-list").innerHTML =
+    TENSIONS.map(t => `
+      <div class="tension-item">
+        <div class="tension-q">Q: ${esc(t.q)}</div>
+        <div class="tension-a">${esc(t.a)}</div>
+      </div>`
+    ).join("");
+}
+
+/* ── INIT ── */
+// Open a deep-linked event if the URL has a #event-<id> hash
+(function applyInitialHash() {
+  const m = (location.hash || "").match(/^#event-(\d+)$/);
+  if (m) {
+    const id = parseInt(m[1], 10);
+    if (EVENTS.some(e => e.id === id)) selectedId = id;
+  }
+})();
+
+buildFilters();
+buildOutcomeFilters();
+buildLegend();
+buildTimeline();
+buildStandards();
+buildTensions();
+
+// Scroll a deep-linked event into view on load
+if (selectedId != null) {
+  setTimeout(() => {
+    const el = document.getElementById("event-" + selectedId);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, 80);
+}
+
+// Support back/forward navigation between deep-linked events
+window.addEventListener("hashchange", () => {
+  const m = (location.hash || "").match(/^#event-(\d+)$/);
+  if (m) { openEvent(parseInt(m[1], 10)); }
+});
+</script>
+</body>
+</html>

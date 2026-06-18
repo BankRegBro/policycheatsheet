@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Gould Comptrollership — OCC Reform Tracker · BankRegWire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    /* ── BankRegWire paper/ink system ── */
+    --paper:        #f1ede2;
+    --paper-card:   #f7f3ea;
+    --paper-sunk:   #e9e3d4;
+    --ink:          #16150f;
+    --ink-2:        #46433a;
+    --ink-3:        #6c6859;
+    --oxblood:      #7a1f2b;
+    --oxblood-tx:   #6a1a25;
+    --copper:       #cf7714;
+    --copper-deep:  #a85c08;
+    --rule:         rgba(22,21,15,.14);
+    --rule-2:       rgba(22,21,15,.24);
+    --rule-3:       rgba(22,21,15,.40);
+    --copper-soft:  rgba(207,119,20,.20);
+    --oxblood-soft: rgba(122,31,43,.09);
+    --focus:        #1f6aa8;
+    --radius:       4px;
+
+    /* status pills (filled, warm) */
+    --st-final-bg:#dfe9d0;  --st-final-tx:#33500f;
+    --st-prop-bg:#f6e6c7;   --st-prop-tx:#7a4a06;
+    --st-guid-bg:#dde7f2;   --st-guid-tx:#1d4a78;
+    --st-rev-bg:#e6e1d4;    --st-rev-tx:#4c483c;
+    --st-sig-bg:#efddd9;    --st-sig-tx:#7a1f2b;
+    --st-act-bg:#e1e4e6;    --st-act-tx:#34424c;
+    --st-lit-bg:#eedbe5;    --st-lit-tx:#6e2049;
+    --st-hist-bg:#ece2cb;   --st-hist-tx:#6a4a16;
+
+    /* category dots */
+    --cat-supervision:#3b6ea5;
+    --cat-preemption:#a14a76;
+    --cat-charter:#2f7d5b;
+    --cat-debanking:#b07a1f;
+    --cat-stablecoin:#9a5a2c;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper:#16150f; --paper-card:#201e16; --paper-sunk:#12110b;
+      --ink:#f1ede2; --ink-2:#c2bdac; --ink-3:#928d7d;
+      --oxblood:#d27d88; --oxblood-tx:#dc8c96;
+      --copper:#e6973c; --copper-deep:#f0a64f;
+      --rule:rgba(241,237,226,.15); --rule-2:rgba(241,237,226,.26); --rule-3:rgba(241,237,226,.42);
+      --copper-soft:rgba(230,151,60,.26); --oxblood-soft:rgba(210,125,136,.12);
+      --focus:#6fb2ec;
+
+      --st-final-bg:#22340c; --st-final-tx:#bcdd95;
+      --st-prop-bg:#3c2706; --st-prop-tx:#f0c882;
+      --st-guid-bg:#102c47; --st-guid-tx:#a9cdef;
+      --st-rev-bg:#2e2b22; --st-rev-tx:#d2cdbd;
+      --st-sig-bg:#3a1820; --st-sig-tx:#eaaeb6;
+      --st-act-bg:#222a30; --st-act-tx:#bccdd8;
+      --st-lit-bg:#341728; --st-lit-tx:#edb4d2;
+      --st-hist-bg:#2c2310; --st-hist-tx:#e6c885;
+
+      --cat-supervision:#7eaedd; --cat-preemption:#d68bb0; --cat-charter:#7ec4a1;
+      --cat-debanking:#d7a655; --cat-stablecoin:#cf9263;
+    }
+  }
+
+  body {
+    font-family:'Archivo', system-ui, sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    min-height:100vh;
+    padding:2.25rem 1rem 3rem;
+    line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(rgba(22,21,15,.022) 1px, transparent 1px);
+    background-size:3px 3px;
+  }
+  @media (prefers-color-scheme: dark){ body{ background-image:radial-gradient(rgba(241,237,226,.025) 1px, transparent 1px);} }
+
+  .shell { max-width:900px; margin:0 auto; }
+
+  a { color:var(--oxblood-tx); }
+  :focus-visible { outline:2px solid var(--focus); outline-offset:2px; border-radius:3px; }
+  .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); border:0; }
+
+  /* ── Animated copper wire ── */
+  .wire { position:relative; height:2px; background:var(--rule-2); overflow:visible; }
+  .wire::after {
+    content:""; position:absolute; top:50%; left:0;
+    width:7px; height:7px; border-radius:50%;
+    background:var(--copper);
+    box-shadow:0 0 10px 2px var(--copper-soft);
+    transform:translateY(-50%);
+    animation:wire-run 7.5s linear 1 forwards;
+  }
+  @keyframes wire-run {
+    0%{ left:-1%; opacity:0; } 5%{ opacity:1; }
+    93%{ opacity:1; } 100%{ left:101%; opacity:0; }
+  }
+  @media (prefers-reduced-motion: reduce){ .wire::after{ animation:none; left:0; opacity:1; } }
+
+  /* ── Masthead ── */
+  .masthead { background:var(--paper-card); border:1px solid var(--rule-2); border-radius:var(--radius); padding:1.6rem 1.9rem 0; margin-bottom:1.1rem; }
+  .brandbar { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; padding-bottom:1rem; border-bottom:1px solid var(--rule); margin-bottom:1.15rem; }
+  .brand { display:flex; align-items:center; gap:10px; }
+  .brand-mark { font-family:'JetBrains Mono', monospace; font-size:10px; font-weight:600; letter-spacing:.22em; text-transform:uppercase; color:var(--ink); }
+  .brand-mark b { color:var(--oxblood); }
+  .node { width:8px; height:8px; border-radius:50%; background:var(--copper); box-shadow:0 0 0 3px var(--copper-soft); flex-shrink:0; }
+  .desk-tag { font-family:'JetBrains Mono', monospace; font-size:9.5px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3); border:1px solid var(--rule-2); border-radius:20px; padding:3px 10px; }
+
+  .kicker { font-family:'JetBrains Mono', monospace; font-size:10.5px; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:var(--copper-deep); margin-bottom:.5rem; }
+  .masthead h1 { font-family:'Fraunces', Georgia, serif; font-optical-sizing:auto; font-size:clamp(28px, 5vw, 40px); font-weight:600; letter-spacing:-0.015em; line-height:1.04; color:var(--ink); }
+  .masthead h1 em { font-style:italic; color:var(--oxblood); }
+  .masthead-sub { font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--ink-3); margin-top:.65rem; letter-spacing:.01em; line-height:1.6; }
+  .masthead-lede { font-size:15px; color:var(--ink-2); margin:1.05rem 0 .2rem; line-height:1.66; max-width:64ch; }
+  .masthead-lede b { color:var(--ink); font-weight:600; }
+  .masthead .wire { margin:1.25rem -1.9rem 0; }
+
+  /* ── Metrics ── */
+  .metrics { display:grid; grid-template-columns:repeat(4,1fr); gap:9px; margin-bottom:1.1rem; }
+  @media (max-width:620px){ .metrics{ grid-template-columns:repeat(2,1fr);} }
+  .metric { background:var(--paper-card); border:1px solid var(--rule-2); border-radius:var(--radius); padding:.85rem .95rem; text-align:left; font:inherit; cursor:pointer; transition:border-color .15s, transform .1s; position:relative; overflow:hidden; }
+  .metric::before { content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--copper); transform:scaleY(0); transform-origin:top; transition:transform .2s; }
+  .metric:hover { border-color:var(--rule-3); }
+  .metric:hover::before { transform:scaleY(1); }
+  .metric:active { transform:translateY(1px); }
+  .metric-val { font-family:'Fraunces', Georgia, serif; font-size:26px; font-weight:600; color:var(--ink); letter-spacing:-0.01em; }
+  .metric-lbl { font-family:'JetBrains Mono', monospace; font-size:10px; color:var(--ink-3); margin-top:5px; text-transform:uppercase; letter-spacing:.05em; line-height:1.45; }
+
+  /* ── Tabs ── */
+  .tabs-wrapper { background:var(--paper-card); border:1px solid var(--rule-2); border-radius:var(--radius); overflow:hidden; }
+  .tab-nav { display:flex; border-bottom:1px solid var(--rule-2); overflow-x:auto; background:var(--paper-sunk); }
+  .tab-btn { font-family:'JetBrains Mono', monospace; font-size:11px; font-weight:500; letter-spacing:.04em; padding:13px 17px; border:none; background:none; cursor:pointer; color:var(--ink-3); border-bottom:2px solid transparent; white-space:nowrap; transition:color .15s, border-color .15s, background .15s; text-transform:uppercase; }
+  .tab-btn:hover { color:var(--ink); background:var(--paper-card); }
+  .tab-btn[aria-selected="true"] { color:var(--ink); font-weight:600; border-bottom-color:var(--copper); background:var(--paper-card); }
+
+  .tab-panel { display:none; padding:1.5rem 1.9rem 1.9rem; }
+  .tab-panel.active { display:block; }
+
+  .pillar-intro { font-size:14px; color:var(--ink-2); line-height:1.66; margin-bottom:1.15rem; padding:.9rem 1.1rem; background:var(--oxblood-soft); border-left:3px solid var(--oxblood); border-radius:0 var(--radius) var(--radius) 0; }
+  .pillar-intro em { font-style:italic; color:var(--ink); }
+
+  /* ── Filters ── */
+  .filter-row { display:flex; gap:6px; margin-bottom:1.15rem; flex-wrap:wrap; align-items:center; }
+  .filter-label { font-family:'JetBrains Mono', monospace; font-size:10px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-3); margin-right:4px; }
+  .filter-btn { font-family:'JetBrains Mono', monospace; font-size:11px; padding:4px 12px; border-radius:20px; border:1px solid var(--rule-2); background:none; cursor:pointer; color:var(--ink-2); transition:all .15s; }
+  .filter-btn:hover { background:var(--paper-sunk); color:var(--ink); }
+  .filter-btn[aria-pressed="true"] { background:var(--ink); color:var(--paper); border-color:var(--ink); font-weight:600; }
+  @media (prefers-color-scheme: dark){ .filter-btn[aria-pressed="true"]{ color:var(--paper-sunk);} }
+
+  /* ── Action cards ── */
+  .actions-list { display:flex; flex-direction:column; gap:9px; }
+  .empty-note { font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--ink-3); padding:1rem .2rem; }
+  .action-card { border:1px solid var(--rule-2); border-radius:var(--radius); overflow:hidden; transition:border-color .15s; background:var(--paper-card); position:relative; }
+  .action-card::before { content:""; position:absolute; left:0; right:0; top:0; height:2px; background:linear-gradient(90deg, var(--copper), transparent 60%); transform:scaleX(0); transform-origin:left; transition:transform .35s ease; }
+  .action-card:hover::before { transform:scaleX(1); }
+  .action-card:hover { border-color:var(--rule-3); }
+  .action-card.open { border-color:var(--rule-3); }
+  .action-card.open::before { transform:scaleX(1); }
+  .action-head { display:flex; align-items:center; gap:11px; padding:.9rem 1.1rem; cursor:pointer; background:none; width:100%; border:none; text-align:left; font:inherit; color:inherit; }
+  .action-date { font-family:'JetBrains Mono', monospace; font-size:10px; font-weight:500; color:var(--ink-3); white-space:nowrap; min-width:96px; text-transform:uppercase; letter-spacing:.03em; }
+  .action-title { font-family:'Fraunces', Georgia, serif; font-size:16px; font-weight:500; color:var(--ink); flex:1; line-height:1.32; letter-spacing:-0.005em; }
+  .pill { font-family:'JetBrains Mono', monospace; font-size:9.5px; padding:3px 9px; border-radius:20px; white-space:nowrap; letter-spacing:.03em; font-weight:600; text-transform:uppercase; }
+  .st-final{background:var(--st-final-bg);color:var(--st-final-tx);}
+  .st-proposed{background:var(--st-prop-bg);color:var(--st-prop-tx);}
+  .st-guidance{background:var(--st-guid-bg);color:var(--st-guid-tx);}
+  .st-review{background:var(--st-rev-bg);color:var(--st-rev-tx);}
+  .st-signal{background:var(--st-sig-bg);color:var(--st-sig-tx);}
+  .st-active{background:var(--st-act-bg);color:var(--st-act-tx);}
+  .st-litigation{background:var(--st-lit-bg);color:var(--st-lit-tx);}
+  .st-historical{background:var(--st-hist-bg);color:var(--st-hist-tx);}
+
+  .caret { font-size:9px; color:var(--ink-3); transition:transform .2s; flex-shrink:0; }
+  .action-card.open .caret { transform:rotate(180deg); }
+
+  .action-detail { display:none; padding:.95rem 1.1rem 1.1rem; border-top:1px solid var(--rule); font-size:13.5px; color:var(--ink-2); line-height:1.72; background:var(--paper-sunk); }
+  .action-card.open .action-detail { display:block; }
+  .action-detail b { color:var(--ink); font-weight:600; }
+  .action-detail em { font-style:italic; }
+
+  .keydates { display:flex; flex-wrap:wrap; gap:6px; margin-top:.75rem; }
+  .keydate { font-family:'JetBrains Mono', monospace; font-size:10px; font-weight:600; letter-spacing:.02em; padding:3px 9px; border-radius:var(--radius); background:var(--paper); color:var(--ink-2); border:1px solid var(--rule); }
+  .keydate.open { background:var(--st-prop-bg); color:var(--st-prop-tx); border-color:transparent; }
+
+  .impact-tag { display:inline-block; margin-top:.8rem; font-family:'JetBrains Mono', monospace; font-size:10.5px; color:var(--ink-2); padding:4px 10px; border-radius:20px; border:1px solid var(--rule-2); background:var(--paper); letter-spacing:.01em; }
+  .throughline { display:flex; gap:8px; margin-top:.85rem; font-size:12.5px; color:var(--ink-2); padding:.6rem .8rem; background:var(--copper-soft); border-radius:var(--radius); line-height:1.55; }
+  .throughline .arr { color:var(--copper-deep); font-weight:700; flex-shrink:0; }
+  .throughline b { color:var(--ink); }
+  .counterpoint { display:block; margin-top:.7rem; font-size:12.5px; color:var(--ink-3); border-left:2px solid var(--rule-2); padding-left:.8rem; line-height:1.58; }
+  .counterpoint b { color:var(--ink-2); font-weight:600; }
+
+  .source-row { margin-top:.9rem; font-family:'JetBrains Mono', monospace; font-size:10.5px; }
+  .source-row a { color:var(--oxblood-tx); text-decoration:none; border-bottom:1px solid var(--rule-2); }
+  .source-row a:hover { border-bottom-color:var(--oxblood); }
+  .source-row .arrow { font-size:9px; }
+
+  /* category chips */
+  .cat-chip { display:inline-flex; align-items:center; gap:5px; font-family:'JetBrains Mono', monospace; font-size:9.5px; padding:2px 8px 2px 6px; border-radius:20px; border:1px solid var(--rule-2); color:var(--ink-3); font-weight:600; text-transform:uppercase; letter-spacing:.03em; }
+  .cat-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+
+  /* ── Timeline ── */
+  .era-head { font-family:'JetBrains Mono', monospace; font-size:10.5px; font-weight:600; text-transform:uppercase; letter-spacing:.12em; color:var(--oxblood); margin:0 0 .9rem; padding-bottom:.4rem; border-bottom:1px solid var(--rule); display:flex; align-items:center; gap:8px; }
+  .era-head:not(:first-child){ margin-top:1.6rem; }
+  .tl-item { display:flex; gap:11px; margin-bottom:14px; }
+  .tl-spine { display:flex; flex-direction:column; align-items:center; width:14px; flex-shrink:0; }
+  .tl-dot { width:9px; height:9px; border-radius:50%; background:var(--copper); margin-top:5px; flex-shrink:0; box-shadow:0 0 0 3px var(--copper-soft); }
+  .tl-dot.first { background:var(--oxblood); box-shadow:0 0 0 3px var(--oxblood-soft); }
+  .tl-line { width:1.5px; background:var(--rule-2); flex:1; margin-top:4px; min-height:24px; }
+  .tl-date { font-family:'JetBrains Mono', monospace; font-size:10px; color:var(--ink-3); text-transform:uppercase; letter-spacing:.03em; min-width:104px; padding-top:4px; text-align:right; flex-shrink:0; }
+  .tl-body { flex:1; padding-bottom:8px; }
+  .tl-title { font-family:'Fraunces', Georgia, serif; font-size:15px; font-weight:500; color:var(--ink); line-height:1.32; display:flex; align-items:center; flex-wrap:wrap; gap:6px; }
+  .tl-desc { font-size:12.5px; color:var(--ink-2); margin-top:4px; line-height:1.58; }
+  @media (max-width:560px){ .tl-date{ min-width:78px; font-size:9px; } }
+
+  /* ── Colophon ── */
+  .colophon { margin-top:1.3rem; background:var(--paper-card); border:1px solid var(--rule); border-radius:var(--radius); padding:1.1rem 1.4rem; }
+  .colophon .wire { margin:0 -1.4rem .9rem; }
+  .colophon p { font-family:'JetBrains Mono', monospace; font-size:10.5px; color:var(--ink-3); line-height:1.7; }
+  .colophon p + p { margin-top:.55rem; }
+  .colophon b { color:var(--ink-2); }
+  .colophon a { color:var(--oxblood-tx); }
+
+  /* ── Print ── */
+  @media print {
+    body { background:#fff; color:#000; padding:0; background-image:none; }
+    .wire, .tab-nav, .filter-row, .caret, .metrics, .brand-mark, .desk-tag { display:none !important; }
+    .tabs-wrapper, .masthead, .action-card, .colophon { border-color:#999; }
+    .tab-panel { display:block !important; padding:0 0 1rem; break-inside:avoid; }
+    .tab-panel::before { content:attr(data-print-title); display:block; font-family:'Fraunces',serif; font-size:17px; font-weight:600; margin:1.3rem 0 .6rem; border-bottom:1px solid #000; }
+    .action-detail { display:block !important; }
+    .action-card { break-inside:avoid; }
+    .source-row a { color:#000; }
+    a[href]::after { content:" (" attr(href) ")"; font-size:8px; color:#444; word-break:break-all; }
+  }
+</style>
+</head>
+<body>
+<a class="brw-backhome" href="wire.html" aria-label="Back to BankRegWire">← BankRegWire</a>
+<style>
+.brw-backhome{position:fixed;top:14px;left:14px;z-index:9999;display:inline-flex;align-items:center;gap:6px;
+  font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+  text-decoration:none;color:#f1ede2;background:rgba(22,21,15,.72);
+  -webkit-backdrop-filter:blur(8px) saturate(1.2);backdrop-filter:blur(8px) saturate(1.2);
+  border:1px solid rgba(240,165,70,.4);border-radius:30px;padding:8px 14px;box-shadow:0 8px 22px -10px rgba(0,0,0,.5);
+  transition:color .2s,border-color .2s,background .2s}
+.brw-backhome:hover{color:#f0a546;border-color:#f0a546;background:rgba(22,21,15,.85)}
+.brw-backhome:focus-visible{outline:2px solid #f0a546;outline-offset:3px}
+@media print{.brw-backhome{display:none}}
+</style>
+<div class="shell">
+
+  <header class="masthead">
+    <div class="brandbar">
+      <div class="brand">
+        <span class="node" aria-hidden="true"></span>
+        <span class="brand-mark"><b>BANK</b>REG<b>WIRE</b></span>
+      </div>
+      <span class="desk-tag">Reform Tracker · OCC Desk</span>
+    </div>
+    <p class="kicker">The 32nd Comptroller of the Currency</p>
+    <h1>The Gould <em>Comptrollership</em></h1>
+    <p class="masthead-sub">Jonathan V. Gould &nbsp;·&nbsp; Chief Counsel 2018–2021 &nbsp;·&nbsp; Comptroller 2025– &nbsp;·&nbsp; Confirmed 50–45, Jul 10 2025 &nbsp;·&nbsp; Sworn in Jul 15 2025</p>
+    <p class="masthead-lede">Gould is the rare regulator running a second act in the same building. As <b>Chief Counsel from 2018 to 2021</b> he wrote the legal architecture for bank crypto custody, stablecoin reserves, and the first fintech and crypto charters. As <b>Comptroller since July 2025</b> he is cementing that architecture — resetting supervisory posture, defending and expanding National Bank Act preemption on two fronts, and standing up the OCC as the federal home for stablecoin issuers under the GENIUS Act. This tracker maps both tenures, with each first-term action linked to the present-day rule that now carries it.</p>
+    <p class="masthead-sub" id="asof-line"></p>
+    <div class="wire" aria-hidden="true"></div>
+  </header>
+
+  <div class="metrics" id="metrics"></div>
+
+  <div class="tabs-wrapper">
+    <div class="tab-nav" role="tablist" aria-label="Tracker sections">
+      <button class="tab-btn" role="tab" id="tab-supervision" aria-controls="panel-supervision" aria-selected="true" onclick="switchTab('supervision', this)">Supervision &amp; relief</button>
+      <button class="tab-btn" role="tab" id="tab-preemption" aria-controls="panel-preemption" aria-selected="false" tabindex="-1" onclick="switchTab('preemption', this)">Preemption</button>
+      <button class="tab-btn" role="tab" id="tab-charter" aria-controls="panel-charter" aria-selected="false" tabindex="-1" onclick="switchTab('charter', this)">Charters &amp; digital assets</button>
+      <button class="tab-btn" role="tab" id="tab-first" aria-controls="panel-first" aria-selected="false" tabindex="-1" onclick="switchTab('first', this)">First tenure · 2018–21</button>
+      <button class="tab-btn" role="tab" id="tab-timeline" aria-controls="panel-timeline" aria-selected="false" tabindex="-1" onclick="switchTab('timeline', this)">Full timeline</button>
+    </div>
+
+    <div style="padding:1.25rem 1.9rem 0;">
+      <div class="filter-row" role="group" aria-label="Filter by status">
+        <span class="filter-label">Status</span>
+        <button class="filter-btn" aria-pressed="true"  onclick="setStatus('all', this)">All</button>
+        <button class="filter-btn" aria-pressed="false" onclick="setStatus('open', this)">Open for comment</button>
+        <button class="filter-btn" aria-pressed="false" onclick="setStatus('final', this)">Final / in effect</button>
+        <button class="filter-btn" aria-pressed="false" onclick="setStatus('proposed', this)">Proposed</button>
+        <button class="filter-btn" aria-pressed="false" onclick="setStatus('other', this)">Statements / litigation</button>
+      </div>
+    </div>
+
+    <section id="panel-supervision" class="tab-panel active" role="tabpanel" aria-labelledby="tab-supervision" tabindex="0" data-print-title="Supervision & Relief">
+      <p class="pillar-intro">Gould's supervisory thesis is a deliberate reset: move examination away from process and discretion toward <em>material financial risk</em>. The agenda runs from community-bank exam tailoring and capital relief to the elimination of reputation risk, a CAMELS overhaul, and an open challenge to post-2008 resolution-planning orthodoxy.</p>
+      <div class="actions-list" id="list-supervision"></div>
+    </section>
+
+    <section id="panel-preemption" class="tab-panel" role="tabpanel" aria-labelledby="tab-preemption" tabindex="0" data-print-title="Preemption">
+      <p class="pillar-intro">A signature Gould priority is defending — and proactively expanding — National Bank Act preemption, now on <em>two</em> fronts. The escrow-interest fight produced finalized rules and a favorable Second Circuit ruling on remand from <em>Cantero</em>; a newer interchange-fee front targets state laws like Illinois' IFPA, with a Seventh Circuit remand pending. His approach pairs rulemaking with amicus engagement and coalition-building.</p>
+      <div class="actions-list" id="list-preemption"></div>
+    </section>
+
+    <section id="panel-charter" class="tab-panel" role="tabpanel" aria-labelledby="tab-charter" tabindex="0" data-print-title="Charters & Digital Assets">
+      <p class="pillar-intro">Gould has reopened the national charter to non-traditional applicants at a pace not seen in years — approving Erebor (the first de novo national bank of his tenure), weighing a politically charged stablecoin trust application, and positioning the OCC as the federal supervisor of stablecoin issuers under the GENIUS Act. The throughline runs straight back to the charters and legal opinions he set in motion in 2020–21.</p>
+      <div class="actions-list" id="list-charter"></div>
+    </section>
+
+    <section id="panel-first" class="tab-panel" role="tabpanel" aria-labelledby="tab-first" tabindex="0" data-print-title="First Tenure · 2018–2021">
+      <p class="pillar-intro">As Senior Deputy Comptroller and <b>Chief Counsel from December 2018 to 2021</b> — arriving from the Senate Banking Committee, where he was chief counsel under Chairman Crapo — Gould oversaw the OCC's legal, licensing, and enforcement functions and a staff of roughly 230. Under Comptrollers Otting and (acting) Brooks, his office authored the crypto and stablecoin interpretive letters and cleared the first fintech and crypto charters. Read this tab as the blueprint: <em>nearly every current action has a 2020–21 antecedent.</em></p>
+      <div class="actions-list" id="list-first"></div>
+    </section>
+
+    <section id="panel-timeline" class="tab-panel" role="tabpanel" aria-labelledby="tab-timeline" tabindex="0" data-print-title="Full Timeline">
+      <div class="filter-row" role="group" aria-label="Filter timeline by category">
+        <span class="filter-label">Category</span>
+        <button class="filter-btn" aria-pressed="true"  onclick="setTlCat('all', this)">All</button>
+        <button class="filter-btn" aria-pressed="false" onclick="setTlCat('supervision', this)">Supervision</button>
+        <button class="filter-btn" aria-pressed="false" onclick="setTlCat('preemption', this)">Preemption</button>
+        <button class="filter-btn" aria-pressed="false" onclick="setTlCat('charter', this)">Charters</button>
+        <button class="filter-btn" aria-pressed="false" onclick="setTlCat('stablecoin', this)">Stablecoin / crypto</button>
+        <button class="filter-btn" aria-pressed="false" onclick="setTlCat('debanking', this)">Debanking</button>
+      </div>
+      <div class="timeline" id="tl-container"></div>
+    </section>
+
+  </div>
+
+  <div class="colophon">
+    <div class="wire" aria-hidden="true"></div>
+    <p><b>Sources.</b> Linked entries cite OCC news releases, bulletins, and Federal Register notices, plus FSOC and FFIEC materials. Interpretive Letters 1170 / 1172 / 1174 link to OCC primary PDFs. Charter decisions (Varo, Anchorage) and the valid-when-made / true-lender rules are documented in the OCC's <i>Interpretations &amp; Actions</i> archive and the Federal Register; primary links are left for the editor to slot in.</p>
+    <p><b>Secondary synthesis</b> drawn from Consumer Finance Monitor, Davis Polk, King &amp; Spalding, Orrick InfoBytes, Latham, and Sheppard Mullin. Compiled for BankRegWire · informational tracker, not legal advice.</p>
+  </div>
+
+</div>
+
+<script>
+const AS_OF = new Date("2026-06-01");
+
+const CAT = {
+  supervision:{label:"Supervision", color:"var(--cat-supervision)"},
+  preemption:{label:"Preemption", color:"var(--cat-preemption)"},
+  charter:{label:"Charter", color:"var(--cat-charter)"},
+  stablecoin:{label:"Stablecoin", color:"var(--cat-stablecoin)"},
+  debanking:{label:"Debanking", color:"var(--cat-debanking)"}
+};
+
+/* Single source of truth.
+   bucket: 'final' | 'proposed' | 'other' | 'historical'
+   commentClose: ISO => surfaces an "Open for comment" badge while open.
+   era: 'first' marks 2018–2021 actions. */
+const actions = [
+  /* ════════ SUPERVISION & RELIEF ════════ */
+  {
+    id:"disparate", pillar:"supervision", date:"2025-07-14", dateLabel:"Jul 14, 2025",
+    title:"Disparate impact removed from Fair Lending handbook",
+    statusLabel:"Final", statusClass:"st-final", bucket:"final", cats:["supervision"],
+    detail:"Among Gould's earliest post-confirmation moves, the OCC struck disparate-impact references from the Fair Lending booklet of the Comptroller's Handbook and told examiners to stop examining for disparate-impact liability. The FDIC followed in August 2025 and the NCUA in September 2025. Fair-lending exams now turn on intentional discrimination.",
+    impact:"Narrows fair-lending examination to intentional discrimination.",
+    counterpoint:"<b>Opposing view:</b> fair-lending and civil-rights advocates argue dropping disparate-impact review weakens enforcement against facially neutral practices that fall hardest on protected groups."
+  },
+  {
+    id:"riskexam", pillar:"supervision", date:"2025-10-06", dateLabel:"Oct 6, 2025",
+    title:"Risk-based examination tailoring for community banks",
+    statusLabel:"Final", statusClass:"st-final", bucket:"final", cats:["supervision"],
+    detail:"The OCC removed fixed examination requirements in favor of risk-based scoping and frequency, shrinking the supervisory footprint for lower-risk community banks (generally those under $30 billion in assets). Gould framed it as preserving the value of the federal charter while cutting unproductive reporting.",
+    impact:"Exam frequency and scope now proportionate to each institution's risk profile."
+  },
+  {
+    id:"reprisk", pillar:"supervision", date:"2025-10-07", dateLabel:"Oct 7, 2025 → Apr 2026",
+    title:"Reputation risk eliminated from supervision",
+    statusLabel:"Final · eff. Jun 9, 2026", statusClass:"st-final", bucket:"final", cats:["supervision","debanking"],
+    detail:"A joint OCC–FDIC rule, proposed October 7 2025 and finalized April 7 2026 (OCC Bulletin 2026-12), bars the agencies from criticizing or taking adverse action against a bank based on \"reputation risk,\" and from pressuring banks to drop customers over political, social, cultural, or religious views or lawful activity. It implements Executive Order 14331 on fair banking access. The Federal Reserve floated a parallel proposal February 23 2026 that is not yet final.",
+    impact:"Removes a longstanding examination category critics say was used to pressure banks on disfavored customers.",
+    throughline:"This is the direct heir of Gould's 2021 Fair Access rule — the debanking idea, finally codified.",
+    keydates:[{label:"Finalized Apr 7, 2026"},{label:"Effective Jun 9, 2026"}],
+    source:{label:"OCC News Release 2026-26", url:"https://www.occ.gov/news-issuances/news-releases/2026/nr-ia-2026-26.html"}
+  },
+  {
+    id:"bsaaml", pillar:"supervision", date:"2025-11-24", dateLabel:"Nov 24, 2025",
+    title:"Tailored BSA/AML examination procedures",
+    statusLabel:"Guidance", statusClass:"st-guidance", bucket:"other", cats:["supervision"],
+    detail:"Supplementary guidance calibrated BSA/AML examination procedures to community banks' generally low money-laundering and terrorist-financing risk, and concurrently trimmed data-collection demands. Gould has flagged BSA/AML as an area where banks feel criticized whether or not they file suspicious-activity reports.",
+    impact:"Reduces BSA/AML compliance and data-reporting costs for lower-risk community banks."
+  },
+  {
+    id:"cra", pillar:"supervision", date:"2025-12-17", dateLabel:"Dec 17, 2025",
+    title:"Simplified CRA strategic plan for community banks",
+    statusLabel:"Proposed", statusClass:"st-proposed", bucket:"proposed", cats:["supervision"],
+    detail:"The OCC proposed a simplified Community Reinvestment Act strategic-plan option letting community banks tailor CRA examination to local credit needs, community capacity, products, and strategy, with clearer guidance on measurable goals.",
+    impact:"Lets community banks demonstrate CRA performance on their own terms rather than one-size-fits-all metrics."
+  },
+  {
+    id:"capital", pillar:"supervision", date:"2026-03-19", dateLabel:"Mar 19, 2026",
+    title:"Capital framework modernization proposals",
+    statusLabel:"Proposed", statusClass:"st-proposed", bucket:"proposed", cats:["supervision"], commentClose:"2026-06-18",
+    detail:"At the FDIC board meeting Gould backed two proposals (with the Federal Reserve and FDIC) to modernize the regulatory capital framework. The OCC estimates an aggregate <b>6.9% cut</b> in minimum binding capital under the standardized approach for OCC-supervised banks, and 3.4% for the largest institutions under the expanded risk-based approach, while eliminating parallel methodologies.",
+    impact:"Increases lending capacity; partial recalibration of post-2008 Basel III capital requirements.",
+    keydates:[{label:"Comments due Jun 18, 2026", open:true}],
+    source:{label:"Comptroller Gould statement (NR 2026-17)", url:"https://www.occ.treas.gov/news-issuances/news-releases/2026/nr-occ-2026-17.html"}
+  },
+  {
+    id:"cblr", pillar:"supervision", date:"2026-04-21", dateLabel:"Apr 21, 2026",
+    title:"Community bank leverage ratio lowered 9% → 8%",
+    statusLabel:"Final · eff. Jul 1, 2026", statusClass:"st-final", bucket:"final", cats:["supervision"],
+    detail:"An interagency final rule (Fed, OCC, FDIC) lowered the community bank leverage ratio from greater-than-9% to greater-than-8% and extended the grace period for temporary non-compliance from two quarters to four. Adopted without change from the November 2025 proposal; applies to qualifying banks under $10 billion that opt into the CBLR framework. Gould called it \"meaningful and necessary regulatory flexibility.\"",
+    impact:"Lets more community banks use a simpler capital measure and skip risk-based capital reporting.",
+    keydates:[{label:"Finalized Apr 2026"},{label:"Effective Jul 1, 2026"}],
+    source:{label:"Agencies finalize CBLR (NR-IA-2026-30)", url:"https://www.occ.treas.gov/news-issuances/news-releases/2026/nr-ia-2026-30.html"}
+  },
+  {
+    id:"camels", pillar:"supervision", date:"2026-05-19", dateLabel:"May 19, 2026",
+    title:"CAMELS / UFIRS modernization endorsed",
+    statusLabel:"Proposed · FFIEC", statusClass:"st-proposed", bucket:"proposed", cats:["supervision"], commentClose:"2026-07-20",
+    detail:"Gould issued a statement (NR 2026-39) backing the FFIEC's proposed revisions to the Uniform Financial Institutions Rating System — the CAMELS framework — describing them as a shift away from process-heavy oversight toward a sharper focus on material financial risk. He called modernizing CAMELS a critical step to keep supervisory tools relevant. The proposal carries Federal Register doc no. 2026-09944.",
+    impact:"Realigns the core supervisory rating system around financial risk rather than process and management discretion.",
+    keydates:[{label:"FR Doc 2026-09944"},{label:"Comment period open", open:true}],
+    source:{label:"Comptroller statement on UFIRS (NR 2026-39)", url:"https://www.occ.gov/news-issuances/news-releases/2026/nr-occ-2026-39.html"}
+  },
+  {
+    id:"resolution", pillar:"supervision", date:"2026-05-22", dateLabel:"Jan → May 2026",
+    title:"Resolution-planning reform; abstention on GSIB plan feedback",
+    statusLabel:"Position taken", statusClass:"st-signal", bucket:"other", cats:["supervision"],
+    detail:"Gould has opened a front against post-2008 resolution-planning orthodoxy. In January 16 2026 remarks to the ABA Banking Law Committee (NR 2026-4) he questioned the value of Dodd-Frank §165(d) living wills at both the bank and holding-company level and urged reform. On May 22 2026 (NR 2026-41) he abstained from the FDIC vote on staff feedback to the U.S. GSIBs' July 2025 resolution plans, citing fundamental, unaddressed problems with the process itself.",
+    impact:"Signals a coming push to scale back the largest banks' resolution-planning burden — a notable departure from the Hsu-era posture.",
+    source:{label:"Comptroller statement on abstention (NR 2026-41)", url:"https://www.occ.gov/news-issuances/news-releases/2026/nr-occ-2026-41.html"}
+  },
+
+  /* ════════ PREEMPTION ════════ */
+  {
+    id:"parity", pillar:"preemption", date:"2025-10-07", dateLabel:"Oct 7, 2025",
+    title:"Statement supporting state-bank preemption parity",
+    statusLabel:"Policy signal", statusClass:"st-signal", bucket:"other", cats:["preemption"],
+    detail:"In an unusual move, Gould issued a statement as an FDIC board member supporting state-chartered banks' preemption rights — noting that the 1997 Riegle-Neal amendments put state banks on parity with national banks for preemption of host-state laws, and that FDI Act §27 supplies interest-rate preemption. He urged the FDIC to take further steps to support these congressionally granted rights.",
+    impact:"Signals OCC support for state-bank preemption parity — directly relevant to CSBS and state supervisors."
+  },
+  {
+    id:"threepart", pillar:"preemption", date:"2025-11-13", dateLabel:"Nov 2025",
+    title:"Three-part preemption defense strategy",
+    statusLabel:"Policy signal", statusClass:"st-signal", bucket:"other", cats:["preemption"],
+    detail:"At The Clearing House annual conference Gould laid out a three-part answer to the adverse First Circuit (<em>Conti</em>) and Ninth Circuit (<em>Kivett</em>) escrow rulings: (1) proactively file amicus briefs defending preemption regulations; (2) work with Treasury to update preemption rules; and (3) mobilize industry and political allies to protect the national charter. He framed rebuilding preemption's <em>political legitimacy</em> as essential.",
+    impact:"First comprehensive OCC preemption-defense posture since the early 2000s.",
+    source:{label:"Bradley — Financial Services Perspectives", url:"https://www.financialservicesperspectives.com/2025/11/occs-gould-defends-the-national-bank-acts-preemption-authority-following-adverse-rulings-on-state-interest-on-escrow-laws/"}
+  },
+  {
+    id:"escrow", pillar:"preemption", date:"2026-05-15", dateLabel:"Dec 2025 → May 2026",
+    title:"Preemption determination: state escrow-interest laws",
+    statusLabel:"Final · eff. Jun 18, 2026", statusClass:"st-final", bucket:"final", cats:["preemption"],
+    detail:"The OCC published two NPRs on December 30 2025 (an escrow-powers rule plus a preemption determination), then finalized them May 15 2026 (OCC Bulletin 2026-21). The determination concludes the National Bank Act preempts New York's Gen. Oblig. Law §5-601 and substantively equivalent laws in <b>13 other states and territories</b> — the final added Guam and the U.S. Virgin Islands, with no other material change. Effective June 18 2026.",
+    impact:"Removes mandatory escrow interest for national banks across New York plus 13 other states and territories.",
+    counterpoint:"<b>Opposing view:</b> a coalition led by NY AG Letitia James — roughly 20 state attorneys general plus six state banking regulators — argued the rules strip states of consumer-protection authority Congress never displaced.",
+    keydates:[{label:"Finalized May 15, 2026"},{label:"Effective Jun 18, 2026"}],
+    source:{label:"OCC Bulletin 2026-21 (final)", url:"https://www.occ.gov/news-issuances/bulletins/2026/bulletin-2026-21.html"}
+  },
+  {
+    id:"interchange", pillar:"preemption", date:"2026-04-24", dateLabel:"Apr 24, 2026",
+    title:"Interchange-fee preemption: Illinois IFPA",
+    statusLabel:"Interim final · eff. Jun 30, 2026", statusClass:"st-final", bucket:"final", cats:["preemption"], commentClose:"2026-05-29",
+    detail:"A second, newer preemption front. On April 24 2026 the OCC issued two coordinated interim actions (NR 2026-32): an <b>interim final rule</b>, \"National Bank Non-Interest Charges and Fees\" (RIN 1557-AF54, revising 12 CFR §7.4002), clarifying that national banks have longstanding authority to charge non-interest fees — including interchange — whether set by the bank or a third party; and an <b>interim final order</b> (OCC Bulletin 2026-17) holding that federal law preempts the Illinois Interchange Fee Prohibition Act (IFPA), which bars interchange on the tax and gratuity portions of card transactions and restricts use of transaction data. Both published in the Federal Register April 29 2026, effective June 30 2026 — one day before the IFPA takes effect.",
+    impact:"Asserts NBA preemption over a new domain (payment-card fees) and over a wave of copycat state laws.",
+    counterpoint:"<b>Litigation watch:</b> in <em>Illinois Bankers Ass'n v. Raoul</em>, the Seventh Circuit vacated the district court's February 2026 ruling and remanded May 8 2026, directing the lower court to weigh the OCC's new actions. Post-<em>Loper Bright</em>, open questions include how much deference the order carries, APA compliance, and the rewritten §7.4002. Roughly a dozen states are weighing similar laws; Colorado's recent bill targets payment processors rather than banks — by design, harder to preempt.",
+    keydates:[{label:"FR April 29, 2026"},{label:"Comments due May 29, 2026"},{label:"Effective Jun 30, 2026"}],
+    source:{label:"OCC issues two interim final actions (NR 2026-32)", url:"https://www.occ.treas.gov/news-issuances/news-releases/2026/nr-occ-2026-32.html"}
+  },
+  {
+    id:"litigation", pillar:"preemption", date:"2026-05-05", dateLabel:"2024–26",
+    title:"Escrow preemption: a genuine circuit split",
+    statusLabel:"Litigation", statusClass:"st-litigation", bucket:"other", cats:["preemption"],
+    detail:"The escrow-interest question is split across circuits. The First Circuit (<em>Conti v. Citizens Bank</em>, RI, Sept 22 2025) and Ninth Circuit (<em>Kivett v. Flagstar</em>, CA, Oct 2 2025) held the NBA does not preempt state escrow laws, and the Supreme Court declined to review <em>Conti</em> in May 2026. But on remand from the 2024 <em>Cantero</em> decision, the Second Circuit held May 5 2026 that New York's law <em>is</em> preempted — applying <em>Barnett Bank</em>'s nuanced comparative test and citing the OCC's then-proposed rules. The split raises the odds of eventual Supreme Court review and strengthens the case that durable preemption runs through rulemaking, not litigation alone.",
+    impact:"Outcome no longer one-directional; the 2nd Circuit's pro-preemption ruling materially helps the OCC.",
+    source:{label:"Consumer Finance Monitor analysis", url:"https://www.consumerfinancemonitor.com/2026/05/19/occ-finalizes-rules-confirming-preemption-of-state-mortgage-interest-on-escrow-laws/"}
+  },
+  {
+    id:"trust", pillar:"preemption", date:"2026-02-27", dateLabel:"Jan → Feb 2026",
+    title:"Trust-bank non-fiduciary activity authority",
+    statusLabel:"Final · eff. Apr 1, 2026", statusClass:"st-final", bucket:"final", cats:["preemption","charter"],
+    detail:"Proposed January 12 2026 and finalized February 27 2026 (OCC Bulletin 2026-4) without change, this rule amends 12 CFR §5.20 — swapping \"fiduciary activities\" for \"the operations of a trust company and activities related thereto\" in §5.20(e)(1)(i) and (l) — confirming national trust banks may conduct non-fiduciary activities alongside fiduciary ones. Effective April 1 2026. The OCC declined to go further and say a trust bank need do no fiduciary activity at all, opting to assess applications case-by-case.",
+    impact:"Expands the functional scope of trust-bank charters; directly facilitates stablecoin and fintech charter strategies.",
+    keydates:[{label:"Finalized Feb 27, 2026"},{label:"Effective Apr 1, 2026"}],
+    source:{label:"OCC Bulletin 2026-4 (final)", url:"https://www.occ.treas.gov/news-issuances/bulletins/2026/bulletin-2026-4.html"}
+  },
+
+  /* ════════ CHARTERS & DIGITAL ASSETS ════════ */
+  {
+    id:"erebor", pillar:"charter", date:"2025-10-15", dateLabel:"Oct 15, 2025",
+    title:"Conditional charter approval: Erebor Bank, N.A.",
+    statusLabel:"Approved", statusClass:"st-final", bucket:"final", cats:["charter"],
+    detail:"The OCC conditionally approved the national bank charter of Erebor Bank, N.A. (Columbus, OH) — a fintech startup backed by Palmer Luckey, Founders Fund, and Joe Lonsdale and pitched as a tech-forward successor to Silicon Valley Bank — the first de novo national bank charter of Gould's tenure. The FDIC approved deposit insurance December 16 2025, and Erebor received its charter in February 2026.",
+    impact:"First fintech national bank charter under Gould; signals an open-door posture toward novel applicants.",
+    throughline:"Erebor is what Varo Bank made thinkable in 2020 — a full-service national charter for a technology-first company.",
+    counterpoint:"<b>Scrutiny:</b> Sen. Warren challenged the approval after an Erebor fundraising memo touted the founders' political network and a co-founder's \"unique connectivity to banking regulators,\" naming Gould; she also flagged that Erebor's application lawyer, Adam Cohen, later became Gould's chief counsel.",
+    source:{label:"Banking Dive coverage", url:"https://www.bankingdive.com/news/warren-gould-occ-world-liberty-charter-application/813335/"}
+  },
+  {
+    id:"wlf", pillar:"charter", date:"2026-01-07", dateLabel:"Jan 7, 2026",
+    title:"World Liberty Financial stablecoin trust-bank application",
+    statusLabel:"Under review", statusClass:"st-review", bucket:"other", cats:["charter","stablecoin"],
+    detail:"World Liberty Financial — co-founded by President Trump and his sons and issuer of the USD1 stablecoin — applied for a national trust bank \"purpose-built for stablecoin services.\" Under the GENIUS Act the OCC is the primary regulator of federally licensed stablecoin issuers. At the February 2026 Senate Banking hearing Sen. Warren urged Gould to reject the application and warned he could become \"an accomplice\" to corruption given the President's financial interest; Gould has declined to discuss the pending matter. It remains under review, alongside trust applications from Paxos, Fidelity Digital Assets, Ripple, and Circle.",
+    impact:"High-profile test of OCC stablecoin charter authority under the GENIUS Act.",
+    throughline:"The charter type at issue is the one Anchorage Digital pioneered in 2021 — a national trust bank for digital assets.",
+    source:{label:"Banking Dive coverage", url:"https://www.bankingdive.com/news/warren-gould-occ-world-liberty-charter-application/813335/"}
+  },
+  {
+    id:"genius", pillar:"charter", date:"2026-02-25", dateLabel:"2025 → 2026",
+    title:"GENIUS Act implementation; OCC stablecoin NPRM",
+    statusLabel:"Proposed", statusClass:"st-proposed", bucket:"proposed", cats:["charter","stablecoin"],
+    detail:"Congress passed the GENIUS Act in summer 2025, naming the OCC the primary federal regulator for federally licensed payment stablecoin issuers. On February 25 2026 the OCC issued its own NPRM (NR 2026-9) proposing a regulatory framework for permitted issuers; Gould said the agency had given thoughtful consideration to a framework in which the stablecoin industry can flourish safely and soundly. It sits alongside Treasury's parallel PPSI rulemaking.",
+    impact:"Builds the OCC's charter-and-supervise pipeline for both bank and non-bank stablecoin issuers; competes with state money-transmitter regimes.",
+    throughline:"Direct descendant of IL 1172 (stablecoin reserves) and IL 1174 (stablecoin payments) — the legal foundation Gould authored in 2020–21.",
+    source:{label:"OCC requests comment on GENIUS Act proposal (NR 2026-9)", url:"https://www.occ.treas.gov/news-issuances/news-releases/2026/nr-occ-2026-9.html"}
+  },
+  {
+    id:"debanking", pillar:"charter", date:"2025-09-08", dateLabel:"Sep 2025",
+    title:"Debanking enforcement targeting digital-asset firms",
+    statusLabel:"Active", statusClass:"st-active", bucket:"other", cats:["charter","debanking"],
+    detail:"Pursuant to Executive Order 14331 on fair banking access, Gould announced the OCC was investigating the largest national banks for potentially unlawful debanking of digital-asset companies and other lawful businesses — using the licensing process, CRA exams, consumer complaints, and third-party databases to surface it. As of May 2026 he reiterated the OCC would continue to \"shine a spotlight\" on agency and bank conduct.",
+    impact:"Positions the OCC as an ally of crypto and fintech firms seeking account access; ongoing investigation of large banks."
+  },
+  {
+    id:"fsoc", pillar:"charter", date:"2026-03-26", dateLabel:"Mar 26, 2026",
+    title:"FSOC nonbank designation: a constrained framework",
+    statusLabel:"Position taken", statusClass:"st-signal", bucket:"other", cats:["charter"],
+    detail:"At the March 25 2026 FSOC meeting (Gould's statement is dated March 26), the Council voted to propose guidance reverting to a more limited, activities-based approach to nonbank SIFI designation that restores cost-benefit analysis. Gould — who as a private-sector lawyer helped advise MetLife during FSOC's prior designation fight — called that earlier effort \"among the most egregious abuses of government power\" he had seen in his 25-year career.",
+    impact:"Reduces systemic-designation pressure on large fintechs and other nonbank financial companies.",
+    source:{label:"Comptroller Gould FSOC statement (NR 2026-19)", url:"https://www.occ.treas.gov/news-issuances/news-releases/2026/nr-occ-2026-19.html"}
+  },
+
+  /* ════════ FIRST TENURE · 2018–2021 ════════ */
+  {
+    id:"il1170", pillar:"first", date:"2020-07-22", dateLabel:"Jul 22, 2020", era:"first",
+    title:"IL 1170 — banks may custody crypto assets",
+    statusLabel:"Chief Counsel era", statusClass:"st-historical", bucket:"historical", cats:["stablecoin","charter"],
+    detail:"Issued under Acting Comptroller Brooks with Gould as Chief Counsel, Interpretive Letter 1170 affirmed that national banks may provide crypto-asset custody services — including key storage, exchange facilitation, settlement, recordkeeping, and related services. It was the OCC's foundational statement that digital-asset custody is a modern form of the traditional banking business.",
+    impact:"Opened the door for national banks to hold cryptocurrency for customers.",
+    throughline:"Reaffirmed in 2025 (IL 1183) and now baseline policy under Gould as Comptroller.",
+    source:{label:"OCC crypto issuances (Bulletin 2025-2)", url:"https://occ.gov/news-issuances/bulletins/2025/bulletin-2025-2.html"}
+  },
+  {
+    id:"il1172", pillar:"first", date:"2020-09-21", dateLabel:"Sep 21, 2020", era:"first",
+    title:"IL 1172 — banks may hold stablecoin reserves",
+    statusLabel:"Chief Counsel era", statusClass:"st-historical", bucket:"historical", cats:["stablecoin"],
+    detail:"Interpretive Letter 1172 affirmed that national banks may hold dollar deposits serving as reserves for stablecoins backed at least 1:1 by fiat in hosted-wallet arrangements. It was among the first federal regulatory recognitions that reserve-banking for stablecoin issuers is a permissible national-bank activity.",
+    impact:"Made national banks viable reserve custodians for fiat-backed stablecoins.",
+    throughline:"The conceptual seed of the GENIUS Act's reserve regime — now law, with the OCC as primary regulator.",
+    source:{label:"OCC Interpretive Letter 1172 (PDF)", url:"https://www.occ.gov/topics/charters-and-licensing/interpretations-and-actions/2020/int1172.pdf"}
+  },
+  {
+    id:"il1174", pillar:"first", date:"2021-01-11", dateLabel:"Jan 11, 2021", era:"first",
+    title:"IL 1174 — INVNs & stablecoins for payments",
+    statusLabel:"Authored by Gould", statusClass:"st-historical", bucket:"historical", cats:["stablecoin"],
+    detail:"Signed by <b>Jonathan V. Gould as Chief Counsel</b>, Interpretive Letter 1174 concluded that national banks may run nodes on independent node verification networks (i.e., distributed ledgers) to validate customer payments, and may use stablecoins to facilitate payment transactions. It is the most directly attributable of the three letters — Gould's own legal interpretation that public blockchains can be bank payment rails.",
+    impact:"Treated distributed ledgers and stablecoins as permissible payment infrastructure for national banks.",
+    throughline:"Gould literally wrote the opinion he is now operationalizing as Comptroller under the GENIUS Act.",
+    source:{label:"OCC Interpretive Letter 1174 (PDF)", url:"https://occ.gov/news-issuances/news-releases/2021/nr-occ-2021-2a.pdf"}
+  },
+  {
+    id:"varo", pillar:"first", date:"2020-07-31", dateLabel:"Jul 31, 2020", era:"first",
+    title:"Varo — first de novo fintech national bank",
+    statusLabel:"Chief Counsel era", statusClass:"st-historical", bucket:"historical", cats:["charter"],
+    detail:"During Gould's tenure the OCC granted Varo a full-service national bank charter — the first de novo national bank charter awarded to a fintech. It validated the idea that a technology-first company could obtain a federal charter and operate as a bank rather than partnering with one, modernizing the chartering process Gould has said he spearheaded.",
+    impact:"Proved a fintech could become a national bank outright, not just rent a charter.",
+    throughline:"The template for Erebor Bank's conditional approval in October 2025."
+  },
+  {
+    id:"anchorage", pillar:"first", date:"2021-01-13", dateLabel:"Jan 13, 2021", era:"first",
+    title:"Anchorage — first crypto national trust bank",
+    statusLabel:"Chief Counsel era", statusClass:"st-historical", bucket:"historical", cats:["charter","stablecoin"],
+    detail:"The OCC conditionally approved Anchorage Digital Bank as the first national trust charter granted to a crypto-native firm — the model now sought by World Liberty Financial, Paxos, Fidelity Digital Assets, Ripple, and Circle. (The OCC lifted Anchorage's 2022 BSA/AML consent order in 2025.)",
+    impact:"Established the national trust charter as the federal vehicle for digital-asset firms.",
+    throughline:"The exact charter type at the center of the 2026 stablecoin trust-bank applications."
+  },
+  {
+    id:"fairaccess", pillar:"first", date:"2021-01-14", dateLabel:"Jan 14, 2021", era:"first",
+    title:"Fair Access rule — finalized, then paused",
+    statusLabel:"Finalized · paused", statusClass:"st-historical", bucket:"historical", cats:["debanking"],
+    detail:"The OCC finalized a \"Fair Access to Financial Services\" rule (NR 2021-8) requiring large banks to make services available on impartial, risk-based terms — an early answer to claims that banks were dropping lawful but disfavored industries. The agency <b>paused publication</b> just two weeks later (NR 2021-14), and the rule was never published in the Federal Register or implemented.",
+    impact:"The first OCC attempt to codify anti-debanking principles — shelved before it took effect.",
+    throughline:"Revived and finally codified as the 2026 reputation-risk rule and EO 14331 enforcement.",
+    source:{label:"OCC finalizes Fair Access rule (NR 2021-8)", url:"https://www.occ.gov/news-issuances/news-releases/2021/nr-occ-2021-8.html"}
+  },
+  {
+    id:"lending", pillar:"first", date:"2020-10-27", dateLabel:"2020–21", era:"first",
+    title:"Valid-when-made & true-lender rules",
+    statusLabel:"One repealed", statusClass:"st-historical", bucket:"historical", cats:["preemption"],
+    detail:"Gould's office backed two lending-preemption rules: the June 2020 \"valid-when-made\" rule (interest permissible at origination stays permissible after a loan is sold) and the October 2020 \"true lender\" rule (the bank named as lender or funding the loan is the true lender). The true-lender rule was <b>repealed under the Congressional Review Act</b> (S.J.Res.15, signed June 30 2021), barring any OCC replacement absent new statutory authority.",
+    impact:"Sought legal certainty for bank–fintech lending partnerships; one rule survived, one was struck down.",
+    throughline:"A cautionary lesson Gould cites today — durable preemption needs political legitimacy, not just rulemaking."
+  },
+
+  /* ════════ TIMELINE-ONLY MILESTONES ════════ */
+  { timelineOnly:true, era:"first", date:"2018-12-26", dateLabel:"Dec 26, 2018", cats:[],
+    title:"Gould named Senior Deputy Comptroller & Chief Counsel",
+    tlDesc:"Joins from the Senate Banking Committee (chief counsel under Chairman Crapo) to lead the OCC's legal, licensing, and enforcement functions and a staff of ~230." },
+  { timelineOnly:true, era:"first", date:"2019-02-01", dateLabel:"2019–20", cats:["supervision"],
+    title:"Economic Growth Act (EGRRCPA) implementation",
+    tlDesc:"Gould's office helps implement S.2155, amending Dodd-Frank to ease burden on smaller banks — an early version of the tailoring philosophy he now runs as Comptroller." },
+  { timelineOnly:true, era:"first", date:"2021-09-01", dateLabel:"2021 → 2022",
+    title:"Departs OCC → Bitfury → Jones Day", cats:[],
+    tlDesc:"Leaves the OCC in 2021; becomes Chief Legal Officer at blockchain firm Bitfury (2022), then a partner at Jones Day in Washington — before returning as the 32nd Comptroller." },
+  { timelineOnly:true, date:"2025-07-10", dateLabel:"Jul 10, 2025", cats:[],
+    title:"Senate confirms Gould as 32nd Comptroller",
+    tlDesc:"Confirmed 50–45 on a party-line vote; sworn in July 15 2025 by Deputy Treasury Secretary Michael Faulkender, succeeding Acting Comptroller Rodney Hood." },
+  { timelineOnly:true, date:"2026-02-26", dateLabel:"Feb 26, 2026", cats:["supervision","charter"],
+    title:"Senate Banking Committee testimony",
+    tlDesc:"Gould testifies on OCC priorities — risk-tolerance reset, debanking, capital standards, GENIUS Act implementation — and is pressed by Sen. Warren on Erebor and World Liberty Financial." },
+  { timelineOnly:true, date:"2026-05-08", dateLabel:"May 8, 2026", cats:["preemption"],
+    title:"7th Circuit remands Illinois interchange case",
+    tlDesc:"In Illinois Bankers Ass'n v. Raoul, the Seventh Circuit vacates the district court's IFPA ruling and remands so the lower court can weigh the OCC's new interim final rule and order." }
+];
+
+let statusFilter = "all";
+let tlCat = "all";
+
+function isOpen(a){ return a.commentClose && new Date(a.commentClose) >= AS_OF; }
+function passesStatus(a){
+  if(statusFilter==="all") return true;
+  if(statusFilter==="open") return isOpen(a);
+  return a.bucket === statusFilter;
+}
+
+function catChip(c){
+  if(!CAT[c]) return "";
+  return `<span class="cat-chip"><span class="cat-dot" style="background:${CAT[c].color}"></span>${CAT[c].label}</span>`;
+}
+
+function cardHTML(a){
+  const kd = (a.keydates||[]).map(k=>`<span class="keydate ${k.open?'open':''}">${k.label}</span>`).join("");
+  const opn = isOpen(a) ? `<span class="keydate open">Open for comment</span>` : "";
+  const src = a.source ? `<div class="source-row"><a href="${a.source.url}" target="_blank" rel="noopener">${a.source.label} <span class="arrow">↗</span></a></div>` : "";
+  const cp  = a.counterpoint ? `<span class="counterpoint">${a.counterpoint}</span>` : "";
+  const tl  = a.throughline ? `<div class="throughline"><span class="arr">→</span><span><b>Now:</b> ${a.throughline}</span></div>` : "";
+  return `<div class="action-card" id="card-${a.id}">
+    <button class="action-head" aria-expanded="false" aria-controls="detail-${a.id}" onclick="toggleCard('${a.id}')">
+      <span class="action-date">${a.dateLabel}</span>
+      <span class="action-title">${a.title}</span>
+      <span class="pill ${a.statusClass}">${a.statusLabel}</span>
+      <span class="caret" aria-hidden="true">▼</span>
+    </button>
+    <div class="action-detail" id="detail-${a.id}" role="region" aria-label="${a.title} details">
+      ${a.detail}
+      ${(kd||opn) ? `<div class="keydates">${opn}${kd}</div>` : ""}
+      ${tl}
+      <br><span class="impact-tag">${a.impact}</span>
+      ${cp}
+      ${src}
+    </div>
+  </div>`;
+}
+
+function renderPillar(pillar){
+  const items = actions.filter(a=>a.pillar===pillar && !a.timelineOnly && passesStatus(a));
+  const el = document.getElementById("list-"+pillar);
+  el.innerHTML = items.length ? items.map(cardHTML).join("")
+    : `<p class="empty-note">No entries in this section match the current status filter.</p>`;
+}
+
+function renderTimeline(){
+  const items = actions
+    .filter(a => (tlCat==="all" || (a.cats||[]).includes(tlCat)) && (a.timelineOnly || passesStatus(a)))
+    .slice().sort((x,y)=> new Date(x.date) - new Date(y.date));
+  const c = document.getElementById("tl-container");
+  if(!items.length){ c.innerHTML = `<p class="empty-note">No timeline entries match the current filters.</p>`; return; }
+
+  let html = ""; let firstEraOpen=false, currentEraOpen=false;
+  items.forEach((item,i)=>{
+    const isFirst = item.era==="first";
+    if(isFirst && !firstEraOpen){ html += `<div class="era-head"><span class="tl-dot first" style="position:static;box-shadow:none"></span>First tenure · Chief Counsel, 2018–2021</div>`; firstEraOpen=true; }
+    if(!isFirst && !currentEraOpen){ html += `<div class="era-head"><span class="node" style="width:9px;height:9px"></span>Second tenure · 32nd Comptroller, 2025–</div>`; currentEraOpen=true; }
+    const isLast = i===items.length-1;
+    const mainCat = (item.cats||[]).find(x=>CAT[x]);
+    const chip = mainCat ? catChip(mainCat) : "";
+    const desc = item.tlDesc || item.detail;
+    html += `<div class="tl-item">
+      <div class="tl-date">${item.dateLabel}</div>
+      <div class="tl-spine"><div class="tl-dot ${isFirst?'first':''}"></div>${!isLast?'<div class="tl-line"></div>':''}</div>
+      <div class="tl-body">
+        <div class="tl-title">${item.title}${chip}</div>
+        <div class="tl-desc">${desc}</div>
+      </div>
+    </div>`;
+  });
+  c.innerHTML = html;
+}
+
+function renderAll(){
+  renderPillar("supervision"); renderPillar("preemption"); renderPillar("charter"); renderPillar("first"); renderTimeline();
+}
+
+function toggleCard(id){
+  const card = document.getElementById("card-"+id);
+  const btn = card.querySelector(".action-head");
+  const nowOpen = !card.classList.contains("open");
+  card.classList.toggle("open", nowOpen);
+  btn.setAttribute("aria-expanded", nowOpen ? "true" : "false");
+}
+
+function switchTab(id, btn){
+  document.querySelectorAll(".tab-btn").forEach(t=>{ t.setAttribute("aria-selected","false"); t.tabIndex=-1; });
+  document.querySelectorAll(".tab-panel").forEach(p=>p.classList.remove("active"));
+  btn.setAttribute("aria-selected","true"); btn.tabIndex=0;
+  document.getElementById("panel-"+id).classList.add("active");
+}
+
+function setStatus(s, btn){
+  statusFilter = s;
+  btn.parentElement.querySelectorAll(".filter-btn").forEach(b=>b.setAttribute("aria-pressed","false"));
+  btn.setAttribute("aria-pressed","true");
+  renderAll();
+}
+function setTlCat(c, btn){
+  tlCat = c;
+  btn.parentElement.querySelectorAll(".filter-btn").forEach(b=>b.setAttribute("aria-pressed","false"));
+  btn.setAttribute("aria-pressed","true");
+  renderTimeline();
+}
+
+/* roving-tabindex arrow-key navigation */
+(function(){
+  const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+  document.querySelector('[role="tablist"]').addEventListener("keydown", e=>{
+    const i = tabs.indexOf(document.activeElement);
+    if(i<0) return;
+    let n=null;
+    if(e.key==="ArrowRight"||e.key==="ArrowDown") n=(i+1)%tabs.length;
+    else if(e.key==="ArrowLeft"||e.key==="ArrowUp") n=(i-1+tabs.length)%tabs.length;
+    else if(e.key==="Home") n=0;
+    else if(e.key==="End") n=tabs.length-1;
+    if(n!==null){ e.preventDefault(); tabs[n].focus(); tabs[n].click(); }
+  });
+})();
+
+/* metrics (counts derived from the dataset) */
+(function(){
+  const count = actions.filter(a=>!a.timelineOnly).length;
+  const m = [
+    {val:count, lbl:"Actions tracked", tab:"supervision"},
+    {val:"2", lbl:"OCC tenures (2018–21 · 2025–)", tab:"first"},
+    {val:"14", lbl:"States &amp; territories under escrow preemption", tab:"preemption"},
+    {val:"6.9%", lbl:"Est. standardized-approach capital cut", tab:"supervision"}
+  ];
+  document.getElementById("metrics").innerHTML = m.map(x=>
+    `<button class="metric" onclick="document.getElementById('tab-${x.tab}').click()">
+       <div class="metric-val">${x.val}</div><div class="metric-lbl">${x.lbl}</div>
+     </button>`).join("");
+  document.getElementById("asof-line").textContent =
+    "Current through June 1, 2026 · status, dates, and citations verified against OCC and Federal Register primary sources.";
+})();
+
+renderAll();
+</script>
+</body>
+</html>

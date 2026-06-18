@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bank Health Scanner — Live Call Report Trends (FDIC)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070b08;--bg2:#0a110c;--panel:#0c1610;--panel2:#0f1d14;
+  --grid:rgba(95,232,138,0.06);
+  --phos:#5fe88a;--phos-dim:#3a7d54;--phos-faint:#27543a;
+  --ink:#cfeede;--ink-dim:#6f9683;
+  --amber:#ffb347;--alert:#ff6b6b;--gold:#ffd166;--watch:#ffb347;
+  --edge:rgba(95,232,138,0.16);--edge-soft:rgba(95,232,138,0.09);
+  --c-C:#6ba8ff;--c-A:#ffb347;--c-M:#c59bff;--c-E:#5fe88a;--c-L:#54d6d6;--c-S:#ff7a5c;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:'JetBrains Mono',ui-monospace,monospace;font-size:13.5px;line-height:1.5;min-height:100vh;
+  background-image:radial-gradient(120% 90% at 50% -10%,rgba(95,232,138,0.05),transparent 60%),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:auto,100% 28px,28px 100%}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;background:repeating-linear-gradient(0deg,rgba(0,0,0,0.16) 0,rgba(0,0,0,0.16) 1px,transparent 1px,transparent 3px);mix-blend-mode:multiply;opacity:0.5}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:9998;background:radial-gradient(130% 120% at 50% 50%,transparent 55%,rgba(0,0,0,0.5) 100%)}
+.wrap{max-width:1120px;margin:0 auto;padding:20px 16px 90px}
+header{border:1px solid var(--edge);background:linear-gradient(180deg,var(--panel),var(--bg2))}
+.titlebar{display:flex;align-items:center;gap:9px;padding:9px 13px;border-bottom:1px solid var(--edge-soft);background:rgba(95,232,138,0.04)}
+.dot{width:9px;height:9px;border-radius:50%;border:1px solid var(--phos-dim)}.dot.on{background:var(--phos);box-shadow:0 0 7px var(--phos)}
+.tb-label{margin-left:auto;color:var(--phos-dim);font-size:10.5px;letter-spacing:0.16em;text-transform:uppercase}
+.head-main{padding:18px 16px 16px}
+.eyebrow{color:var(--phos-dim);font-size:10.5px;letter-spacing:0.24em;text-transform:uppercase;margin-bottom:7px}
+h1{font-size:clamp(19px,4vw,28px);font-weight:800;letter-spacing:-0.01em;color:var(--phos);text-shadow:0 0 13px rgba(95,232,138,0.4);line-height:1.12}
+h1 .cur{display:inline-block;width:0.55ch;background:var(--phos);box-shadow:0 0 9px var(--phos);animation:blink 1.1s steps(1) infinite;color:transparent;margin-left:2px}
+@keyframes blink{50%{opacity:0}}
+.subhead{margin-top:9px;color:var(--ink-dim);max-width:82ch;font-size:12.5px;line-height:1.55}
+.subhead b{color:var(--ink)}
+.searchbar{margin-top:15px;border-top:1px solid var(--edge-soft);padding-top:14px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.sbox{flex:1;min-width:220px;display:flex;align-items:center;gap:8px;border:1px solid var(--edge);background:var(--panel);padding:9px 12px;border-radius:2px}
+.sbox input{flex:1;background:transparent;border:0;color:var(--ink);font-family:inherit;font-size:14px;outline:none}
+.sbox input::placeholder{color:var(--phos-faint)}
+.sbox .pr{color:var(--phos);font-weight:700}
+.btn{border:1px solid var(--edge);background:var(--panel);color:var(--ink-dim);padding:9px 13px;cursor:pointer;font-family:inherit;font-size:12px;border-radius:2px;transition:.12s}
+.btn:hover{color:var(--ink);border-color:var(--phos-dim)}
+.presets{margin-top:11px;display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+.presets .lab{font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--phos-dim);margin-right:3px}
+.chip{border:1px solid var(--edge);background:var(--panel);color:var(--phos);padding:6px 11px;cursor:pointer;font-family:inherit;font-size:11.5px;border-radius:2px;transition:.12s}
+.chip:hover{background:color-mix(in srgb,var(--phos) 11%,var(--panel));border-color:var(--phos-dim)}
+.chip.demo{color:var(--amber)}
+
+.results{margin-top:12px;display:none;border:1px solid var(--edge);background:var(--panel)}
+.results.show{display:block}
+.res-row{display:flex;align-items:baseline;gap:10px;padding:9px 13px;border-top:1px solid var(--edge-soft);cursor:pointer}
+.res-row:first-child{border-top:0}
+.res-row:hover{background:var(--panel2)}
+.res-row .nm{color:var(--ink);font-weight:500;flex:1}
+.res-row .meta{color:var(--ink-dim);font-size:11px}
+.res-row .cert{color:var(--phos-dim);font-size:11px}
+.res-row.inactive .nm{color:var(--ink-dim)}
+.res-row .badge{font-size:9px;color:var(--alert);border:1px solid var(--alert);border-radius:2px;padding:1px 5px}
+
+.status{margin-top:14px;padding:14px 16px;border:1px solid var(--edge);background:var(--panel);color:var(--ink-dim);font-size:12.5px;display:none}
+.status.show{display:block}
+.status.err{border-color:var(--alert);color:#ffc9c9}
+.status .hint{color:var(--phos-dim);font-size:11.5px;margin-top:7px;line-height:1.5}
+
+.dash{margin-top:16px;display:none}
+.dash.show{display:block}
+.bankhead{border:1px solid var(--edge);background:linear-gradient(180deg,var(--panel2),var(--panel));padding:16px}
+.bankhead .sample{display:inline-block;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#06140d;background:var(--amber);padding:3px 8px;border-radius:2px;margin-bottom:9px;font-weight:800}
+.bankhead h2{color:var(--phos);font-size:20px;font-weight:800;text-shadow:0 0 10px rgba(95,232,138,0.3)}
+.bankhead .sub{color:var(--ink-dim);font-size:12px;margin-top:5px}
+.bankhead .sub b{color:var(--ink)}
+
+.flags{margin-top:14px;border:1px solid var(--watch);background:linear-gradient(180deg,rgba(255,179,71,0.06),transparent);padding:13px 15px;border-radius:2px}
+.flags.clean{border-color:var(--phos-dim);background:rgba(95,232,138,0.04)}
+.flags h3{font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--watch);margin-bottom:9px}
+.flags.clean h3{color:var(--phos-dim)}
+.flag{display:flex;align-items:baseline;gap:9px;padding:4px 0;font-size:12.5px}
+.flag .sev{font-size:10px;font-weight:800;padding:1px 6px;border-radius:2px;flex:none;letter-spacing:0.04em}
+.flag .sev.alert{background:var(--alert);color:#1a0606}
+.flag .sev.watch{background:var(--watch);color:#1a1206}
+.flag .ftxt{color:var(--ink)}
+
+.camgroup{margin-top:16px;border:1px solid var(--edge);background:var(--bg2)}
+.cam-head{padding:11px 15px;border-bottom:1px solid var(--edge);display:flex;align-items:center;gap:10px;background:rgba(95,232,138,0.03)}
+.cam-head .badge{width:24px;height:24px;border-radius:3px;display:grid;place-items:center;font-weight:800;color:#06140d;font-size:13px;flex:none}
+.cam-head .cname{font-weight:700;color:var(--ink);letter-spacing:0.02em}
+.cam-head .cdesc{color:var(--ink-dim);font-size:11px;margin-left:auto}
+.metrics{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:1px;background:var(--edge-soft)}
+.metric{background:var(--bg2);padding:12px 14px}
+.metric .mlab{font-size:11px;color:var(--ink-dim);display:flex;align-items:baseline;gap:6px;margin-bottom:7px;min-height:30px}
+.metric .mval{font-size:21px;font-weight:800;color:var(--ink);line-height:1}
+.metric .mval.na{color:var(--phos-faint);font-size:14px;font-weight:500}
+.metric .mrow{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;margin-top:7px}
+.metric .deltas{font-size:10.5px;color:var(--ink-dim);text-align:right;line-height:1.5}
+.metric .d-up{color:var(--phos)}.metric .d-dn{color:var(--alert)}.metric .d-flat{color:var(--ink-dim)}
+.metric.flagwatch{box-shadow:inset 3px 0 0 var(--watch)}
+.metric.flagalert{box-shadow:inset 3px 0 0 var(--alert)}
+.spark{margin-top:9px}
+.metric .peerrow{margin-top:6px;font-size:10px;color:var(--ink-dim)}
+.metric .unit{font-size:11px;color:var(--ink-dim);font-weight:500;margin-left:2px}
+
+.qtable-wrap{margin-top:16px;border:1px solid var(--edge);background:var(--bg2);overflow-x:auto}
+.qtable{border-collapse:collapse;width:100%;font-size:11.5px;min-width:560px}
+.qtable th,.qtable td{padding:7px 10px;text-align:right;border-bottom:1px solid var(--edge-soft);white-space:nowrap}
+.qtable th:first-child,.qtable td:first-child{text-align:left;color:var(--ink-dim);position:sticky;left:0;background:var(--bg2)}
+.qtable thead th{color:var(--phos-dim);font-weight:700;border-bottom:1px solid var(--edge);font-size:10.5px;letter-spacing:0.02em}
+.qtable tbody td{color:var(--ink)}
+.qt-title{padding:11px 15px;border-bottom:1px solid var(--edge);font-size:10.5px;letter-spacing:0.18em;text-transform:uppercase;color:var(--phos-dim)}
+
+.gl{font:inherit;color:var(--phos);background:transparent;border:0;padding:0;cursor:pointer;border-bottom:1px dotted var(--phos-dim);line-height:inherit}
+.gl:hover,.gl:focus{color:#9af5c0;border-bottom-color:var(--phos);outline:none}
+#glpop{position:fixed;z-index:10001;max-width:300px;display:none;border:1px solid var(--phos-dim);background:linear-gradient(180deg,#0d1b12,#0a130d);box-shadow:0 8px 30px rgba(0,0,0,0.7);border-radius:3px;padding:11px 13px}
+#glpop .gl-t{color:var(--phos);font-weight:800;font-size:12.5px;margin-bottom:5px}
+#glpop .gl-d{color:var(--ink);font-size:12px;line-height:1.5}
+
+footer{margin-top:24px;border-top:1px solid var(--edge-soft);padding-top:13px;color:var(--ink-dim);font-size:11px;line-height:1.65}
+footer b{color:var(--ink-dim)}.src{color:var(--phos-dim)}.disc{color:var(--phos-faint)}
+@media(prefers-reduced-motion:reduce){h1 .cur{animation:none}}
+
+.toolnav{display:flex;flex-wrap:wrap;align-items:center;gap:3px;margin-bottom:14px;padding:7px 10px;border:1px solid var(--edge);background:linear-gradient(180deg,var(--panel),var(--bg2));border-radius:2px;font-size:11.5px}
+.toolnav a{color:var(--ink-dim);text-decoration:none;padding:6px 10px;border-radius:2px;transition:.12s;white-space:nowrap}
+.toolnav a:hover{color:var(--ink);background:var(--panel2)}
+.toolnav a.active{color:var(--phos);background:color-mix(in srgb,var(--phos) 12%,var(--panel));font-weight:700}
+.toolnav a.home{color:var(--amber)}
+.toolnav .navsep{width:1px;height:16px;background:var(--edge);margin:0 5px}
+.toolnav .navttl{color:var(--phos-dim);letter-spacing:0.12em;text-transform:uppercase;font-size:9.5px;margin-right:3px}
+@media(max-width:560px){.toolnav{font-size:10.5px}.toolnav .navttl{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="toolnav"><a class="home" href="https://bankregwire.com/wire.html">↩ BankRegWire</a><span class="navsep"></span><span class="navttl">Call Report Suite</span><a href="callreport-linemap.html">CAMELS Map</a><a href="callreport-literal.html">Literal Form</a><a href="bank-health-scanner.html" class="active">Health Scanner</a><a href="ma-partner-finder.html">M&amp;A Finder</a></nav>
+  <header>
+    <div class="titlebar">
+      <span class="dot on"></span><span class="dot"></span><span class="dot"></span>
+      <span class="tb-label">fdic bankfind suite · live call report financials</span>
+    </div>
+    <div class="head-main">
+      <div class="eyebrow">Bank health scanner</div>
+      <h1>Pull a bank, read the trend<span class="cur">_</span></h1>
+      <p class="subhead">Search any FDIC-insured bank and pull its last eight quarters of Call Report financials live, organized by <b>CAMELS</b> component with quarter-over-quarter and year-over-year deltas, sparklines, and threshold flags. Data comes from the FDIC's public API; figures are quarterly and post roughly 30 to 60 days after quarter-end.</p>
+      <div class="searchbar">
+        <div class="sbox"><span class="pr">&gt;</span><input id="q" type="text" placeholder="search a bank by name (e.g. Flagstar, First Republic)" autocomplete="off" spellcheck="false" aria-label="Search bank"></div>
+        <button class="btn" id="goBtn">Search</button>
+      </div>
+      <div class="presets">
+        <span class="lab">Recent stress cases</span>
+        <button class="chip" data-bank="Flagstar Bank">Flagstar / NYCB (2024 CRE)</button>
+        <button class="chip" data-bank="Silicon Valley Bank">Silicon Valley Bank (2023)</button>
+        <button class="chip" data-bank="First Republic Bank">First Republic (2023)</button>
+        <button class="chip demo" id="demoBtn">Load sample layout (synthetic)</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="results" id="results"></div>
+  <div class="status" id="status"></div>
+  <div class="dash" id="dash"></div>
+
+  <footer>
+    <b>Source:</b> FDIC BankFind Suite API (banks.data.fdic.gov), public, no key required. Dollar values reported in thousands; ratios are FDIC-computed annualized figures unless noted. Quarterly data; restatements are reflected as banks amend.<br>
+    <span class="src">Field mapping was built against the FDIC RISVIEW dictionary and may need a code adjusted on first run; the FIELD_MAP block at the top of the script is the single place to edit. If the browser blocks the request (CORS), route it through your Cloudflare Worker as a proxy. Sensitivity (S) is only partly covered by FDIC standardized fields; the HTM unrealized-loss tell needs the FFIEC CDR extract.</span><br>
+    <span class="disc">Teaching and screening reference. Not supervisory guidance, investment, legal, or accounting advice.</span>
+  </footer>
+</div>
+<div id="glpop" role="dialog"></div>
+
+<script>
+const GLOSSARY = {"defs":{"htm":{"t":"Held-to-maturity (HTM)","d":"Debt securities the bank intends and is able to hold to maturity, carried at amortized cost rather than fair value, so rate-driven price changes do not show on the balance sheet."},"afs":{"t":"Available-for-sale (AFS)","d":"Debt securities carried at fair value with unrealized gains and losses flowing through AOCI in equity rather than through earnings."},"aoci":{"t":"Accumulated other comprehensive income (AOCI)","d":"The equity bucket that holds unrealized items such as AFS securities marks and cash-flow-hedge gains and losses. Banks that did not opt out include it in regulatory capital."},"acl":{"t":"Allowance for credit losses (ACL)","d":"The contra-asset reserve held against expected credit losses under CECL. It reduces the carrying value of loans and is rebuilt through the income-statement provision."},"cecl":{"t":"Current expected credit losses (CECL)","d":"The accounting standard requiring banks to reserve for lifetime expected losses at origination, making the allowance forward-looking rather than incurred-loss based."},"cet1":{"t":"Common equity tier 1 (CET1)","d":"The highest-quality, most loss-absorbing regulatory capital: common stock, retained earnings, and qualifying AOCI, net of deductions like goodwill."},"tier1":{"t":"Tier 1 capital","d":"Going-concern capital: CET1 plus additional tier 1 instruments such as qualifying noncumulative perpetual preferred stock."},"tier2":{"t":"Tier 2 capital","d":"Gone-concern capital that absorbs losses in resolution: qualifying subordinated debt and a limited portion of the allowance."},"rwa":{"t":"Risk-weighted assets (RWA)","d":"Assets and off-balance-sheet exposures scaled by regulatory risk weights, forming the denominator of the risk-based capital ratios."},"levratio":{"t":"Leverage ratio","d":"Tier 1 capital divided by average total assets, a non-risk-weighted capital measure that backstops the risk-based ratios."},"cblr":{"t":"Community bank leverage ratio (CBLR)","d":"A simplified single-ratio capital regime for qualifying banks under about $10B. Electing it and staying above the threshold deems the bank well-capitalized."},"ccb":{"t":"Capital conservation buffer","d":"An additional layer of CET1 above the minimums; falling into it restricts dividends and discretionary bonus payments."},"nonaccrual":{"t":"Nonaccrual","d":"Status for a loan on which the bank stops recognizing interest income because full collection of principal or interest is in doubt. The core of nonperforming assets."},"pastdue":{"t":"Past due","d":"A loan on which a contractual payment is overdue, bucketed by 30-89 days and 90 or more days for reporting and early-warning purposes."},"chargeoff":{"t":"Charge-off","d":"The amount of a loan removed from the books as uncollectible, reducing the allowance. Net charge-offs subtract recoveries."},"recovery":{"t":"Recoveries","d":"Amounts collected on loans previously charged off, which replenish the allowance."},"provision":{"t":"Provision for credit losses","d":"The income-statement expense that builds or maintains the allowance to the level CECL requires."},"mbs":{"t":"Mortgage-backed securities (MBS)","d":"Securities backed by pools of mortgage loans, a large share of most banks' investment portfolios and a key source of rate and prepayment risk."},"brokered":{"t":"Brokered deposits","d":"Deposits placed through a third-party broker or deposit-listing arrangement. Cheap to raise at scale but rate-sensitive and run-prone."},"reciprocal":{"t":"Reciprocal deposits","d":"Deposits a bank receives through a network in exchange for placing a matching amount at other banks, used to keep large balances within insurance limits."},"sweep":{"t":"Sweep deposits","d":"Balances automatically moved (swept) into or out of deposit accounts, often from affiliated brokerage, with varying insurance and stability profiles."},"listing":{"t":"Deposit listing services","d":"Services that list a bank's rates to attract deposits without a broker. Not classified as brokered but still rate-sensitive funding."},"mmda":{"t":"Money market deposit accounts (MMDA)","d":"Savings accounts with limited transactions and tiered rates, a core nontransaction funding category."},"now":{"t":"NOW accounts","d":"Negotiable order of withdrawal accounts: interest-bearing transaction accounts for eligible customers."},"timedep":{"t":"Time deposits","d":"Deposits with a fixed maturity, such as CDs. Larger and longer maturities are more rate-sensitive and, above the insurance limit, more run-prone."},"transaction":{"t":"Transaction accounts","d":"Deposit accounts that permit unlimited transfers and payments to third parties, including demand deposits and NOW accounts."},"msa":{"t":"Mortgage servicing assets (MSAs)","d":"The capitalized right to service mortgages owned by others. Subject to regulatory capital deduction thresholds because their value is volatile."},"dta":{"t":"Deferred tax assets (DTAs)","d":"Future tax benefits from items like net operating loss carryforwards. Those reliant on future profitability are deducted from capital."},"dtl":{"t":"Deferred tax liabilities (DTLs)","d":"Future tax obligations that can offset certain capital deductions such as goodwill and intangibles."},"pcd":{"t":"Purchased credit-deteriorated (PCD)","d":"Acquired financial assets that had a more-than-insignificant credit deterioration since origination, with the allowance set up at acquisition rather than through provision."},"goodwill":{"t":"Goodwill","d":"The premium paid in an acquisition above the fair value of net assets. Deducted in full from CET1 capital."},"intangible":{"t":"Intangible assets","d":"Non-physical assets such as core deposit intangibles. Most are deducted from regulatory capital."},"fiduciary":{"t":"Fiduciary activities","d":"Trust and asset-management services in which the bank acts for the benefit of others, generating fee income reported in Schedule RI."},"trading":{"t":"Trading assets","d":"Positions held for short-term resale or to profit from price movements, carried at fair value with gains and losses in earnings."},"fedfunds":{"t":"Federal funds","d":"Overnight unsecured lending of reserve balances between banks. Sold = lent out; purchased = borrowed."},"repo":{"t":"Repurchase agreement","d":"Short-term secured borrowing (repo) or lending (reverse repo) collateralized by securities, used for funding and liquidity management."},"subdebt":{"t":"Subordinated notes and debentures","d":"Long-term debt that ranks below deposits and senior debt in resolution and can qualify as Tier 2 capital."},"surplus":{"t":"Surplus","d":"Paid-in capital in excess of the par value of stock issued, part of permanent equity."},"retearn":{"t":"Retained earnings","d":"Cumulative net income kept in the bank rather than paid out, a primary internal source of capital."},"nci":{"t":"Noncontrolling interests","d":"The portion of a consolidated subsidiary's equity owned by outside parties, also called minority interest."},"ibf":{"t":"International Banking Facility (IBF)","d":"A set of asset and liability accounts that lets a U.S. bank conduct international business with reduced reserve and regulatory burden."},"edge":{"t":"Edge and Agreement subsidiaries","d":"Specialized subsidiaries chartered to engage in international banking and investment activities."},"modification":{"t":"Loan modifications","d":"Concessions to borrowers in financial difficulty (the successor concept to troubled debt restructurings under ASU 2022-02)."},"oreo":{"t":"Other real estate owned (OREO)","d":"Property the bank holds after foreclosure or in satisfaction of debt, a lagging indicator of credit problems."},"nii":{"t":"Net interest income","d":"Interest earned on assets minus interest paid on funding. The dominant earnings driver for most banks."},"lease":{"t":"Lease financing receivables","d":"Amounts due under leases the bank originates as a form of secured financing, reported alongside loans."},"atrr":{"t":"Allocated transfer risk reserve","d":"A reserve regulators can require against the transfer risk on certain international assets."},"slr":{"t":"Supplementary leverage ratio (SLR)","d":"A leverage ratio capturing on- and off-balance-sheet exposure, applicable to the largest banking organizations."},"saccr":{"t":"SA-CCR","d":"The standardized approach for counterparty credit risk, a method for measuring derivative exposure in the capital rules."},"advapproaches":{"t":"Advanced approaches","d":"The capital framework for the largest, most complex banks that uses internal models for risk-weighted assets."},"rou":{"t":"Right-of-use assets","d":"The balance-sheet asset recognizing a lessee's right to use a leased item under current lease accounting."},"esop":{"t":"ESOP","d":"Employee stock ownership plan; unearned ESOP shares are netted against common stock plus surplus in capital."},"ipc":{"t":"Individuals, partnerships, and corporations","d":"The deposit-ownership category covering ordinary retail and business depositors, as opposed to governments and other banks."}},"surfaces":{"held-to-maturity":"htm","HTM":"htm","available-for-sale":"afs","AFS":"afs","accumulated other comprehensive income":"aoci","AOCI":"aoci","allowance for credit losses":"acl","allowances for credit losses":"acl","ACL":"acl","CECL":"cecl","common equity tier 1":"cet1","CET1":"cet1","tier 1 capital":"tier1","Tier 1 minority interest":"tier1","tier 2 capital":"tier2","risk-weighted assets":"rwa","risk-weighted asset":"rwa","RWA":"rwa","leverage ratio":"levratio","community bank leverage ratio":"cblr","CBLR":"cblr","capital conservation buffer":"ccb","nonaccrual":"nonaccrual","Nonaccrual":"nonaccrual","past due":"pastdue","Past Due":"pastdue","charge-off":"chargeoff","charge-offs":"chargeoff","Charge-Offs":"chargeoff","Charge-offs":"chargeoff","recoveries":"recovery","Recoveries":"recovery","provision for credit losses":"provision","provisions for credit losses":"provision","Provisions for credit losses":"provision","mortgage-backed securities":"mbs","MBS":"mbs","brokered deposits":"brokered","brokered deposit":"brokered","reciprocal deposits":"reciprocal","sweep deposits":"sweep","deposit listing services":"listing","listing services":"listing","money market deposit accounts":"mmda","MMDAs":"mmda","MMDA":"mmda","NOW accounts":"now","time deposits":"timedep","time deposit":"timedep","transaction accounts":"transaction","transaction account":"transaction","mortgage servicing assets":"msa","MSAs":"msa","deferred tax assets":"dta","DTAs":"dta","DTA":"dta","deferred tax liabilities":"dtl","DTLs":"dtl","DTL":"dtl","purchased credit-deteriorated":"pcd","PCD":"pcd","goodwill":"goodwill","Goodwill":"goodwill","intangible assets":"intangible","intangible":"intangible","fiduciary activities":"fiduciary","fiduciary":"fiduciary","trading assets":"trading","trading liabilities":"trading","federal funds sold":"fedfunds","federal funds purchased":"fedfunds","Federal funds":"fedfunds","securities sold under agreements to repurchase":"repo","securities purchased under agreements to resell":"repo","subordinated notes and debentures":"subdebt","surplus":"surplus","retained earnings":"retearn","noncontrolling (minority) interests":"nci","noncontrolling interest":"nci","minority interest":"nci","IBFs":"ibf","IBF":"ibf","Edge and Agreement subsidiaries":"edge","Edge and Agreement":"edge","loan modifications":"modification","Loan modifications":"modification","other real estate owned":"oreo","net interest income":"nii","lease financing receivables":"lease","Income from lease financing receivables":"lease","Allocated transfer risk reserve":"atrr","allocated transfer risk reserve":"atrr","supplementary leverage ratio":"slr","Supplementary leverage ratio":"slr","SA-CCR":"saccr","advanced approaches":"advapproaches","right-of-use assets":"rou","unearned ESOP shares":"esop","ESOP":"esop","individuals, partnerships, and corporations":"ipc","IPC":"ipc"}};
+// === API endpoint ===
+// Live Cloudflare Worker proxy (CORS + 1-hour cache); forwards /api/* to the FDIC API.
+// To bypass the proxy and hit FDIC directly: "https://banks.data.fdic.gov/api"
+const API="https://fdic-bankregwire.joeysamowitz.workers.dev/api";
+
+/* ===== FIELD MAP — single place to edit FDIC field codes ===== */
+const F={
+  repdte:["REPDTE"], asset:["ASSET"], dep:["DEP"], netinc:["NETINC"], eq:["EQ","EQTOT"],
+  roa:["ROA"], roe:["ROE"], nim:["NIMY"], eff:["EEFFR"],
+  loansNet:["LNLSNET"], loansGross:["LNLSGR","LNLSNET"], acl:["LNATRES"],
+  noncurLoans:["NCLNLS"], noncurRatio:["NCLNLSR"], ncoRatio:["NTLNLSR"],
+  t1lev:["RBC1AAJ"], t1rbc:["RBC1RWAJ"], totrbc:["RBCRWAJ"], cet1:["CET1R","RBCT1CER","IDT1CER"],
+  brokered:["BRO"], securities:["SC"], stalp:["STALP"]
+};
+function gf(o,cands){for(const c of cands){const v=o[c];if(v!=null&&v!=="")return (isNaN(+v)?v:+v);}return null;}
+const REQ_FIELDS=["CERT","NAME",...new Set([].concat(...Object.values(F)))];
+const HI=new Set(["t1lev","t1rbc","totrbc","cet1","roa","roe","nim","aclLoans","aclCov","eq","netinc"]);
+const LO=new Set(["noncurRatio","ncoRatio","eff","brodep","ltd"]);
+
+const CAM={C:{n:"Capital adequacy",c:"var(--c-C)"},A:{n:"Asset quality",c:"var(--c-A)"},E:{n:"Earnings",c:"var(--c-E)"},L:{n:"Liquidity & funding",c:"var(--c-L)"},S:{n:"Sensitivity",c:"var(--c-S)"}};
+
+/* metric definitions. get(q) -> number|null ; flag(latest,series)-> {sev,msg}|null */
+const pct=v=>v==null?null:+v, usd=v=>v==null?null:+v;
+function ratio(a,b){return (a==null||b==null||b==0)?null:a/b;}
+const M=[
+ {cam:"C",key:"t1lev",lab:"Tier 1 leverage ratio",gl:"leverage ratio",unit:"%",fmt:"pct",
+   get:q=>pct(gf(q,F.t1lev)),
+   flag:(v)=>v==null?null:v<5?{sev:"alert",msg:"Tier 1 leverage below 5%, undercapitalized PCA band"}:v<8?{sev:"watch",msg:"Tier 1 leverage thinning below 8%"}:null},
+ {cam:"C",key:"totrbc",lab:"Total risk-based capital ratio",gl:"risk-weighted assets",unit:"%",fmt:"pct",
+   get:q=>pct(gf(q,F.totrbc)),
+   flag:(v)=>v==null?null:v<8?{sev:"alert",msg:"Total capital ratio below 8%, undercapitalized"}:v<10.5?{sev:"watch",msg:"Total capital ratio below the 10% well-capitalized line plus buffer"}:null},
+ {cam:"C",key:"t1rbc",lab:"Tier 1 risk-based capital ratio",gl:"Tier 1 capital",unit:"%",fmt:"pct",get:q=>pct(gf(q,F.t1rbc)),flag:(v)=>v==null?null:v<8.5?{sev:"watch",msg:"Tier 1 risk-based ratio below 8.5%"}:null},
+ {cam:"C",key:"cet1",lab:"Common equity tier 1 ratio",gl:"common equity tier 1",unit:"%",fmt:"pct",get:q=>pct(gf(q,F.cet1)),flag:(v)=>v==null?null:v<7?{sev:"alert",msg:"CET1 ratio below 7%, into buffer or minimum"}:v<8.5?{sev:"watch",msg:"CET1 thinning"}:null},
+ {cam:"C",key:"eq",lab:"Total equity capital",unit:"",fmt:"usd",get:q=>usd(gf(q,F.eq)),flag:()=>null},
+
+ {cam:"A",key:"noncurRatio",lab:"Noncurrent loans / loans",gl:"nonaccrual",unit:"%",fmt:"pct",
+   get:q=>pct(gf(q,F.noncurRatio)),
+   flag:(v,series,i)=>{if(v==null)return null;const yoy=deltaSer(series,i,4);if(v>2)return{sev:"alert",msg:"Noncurrent loan ratio above 2%"};if(v>1||(yoy&&yoy>0.5))return{sev:"watch",msg:"Asset quality deteriorating, noncurrent ratio rising"};return null;}},
+ {cam:"A",key:"ncoRatio",lab:"Net charge-off rate",unit:"%",fmt:"pct",get:q=>pct(gf(q,F.ncoRatio)),flag:(v)=>v==null?null:v>1?{sev:"alert",msg:"Net charge-off rate above 1%"}:v>0.5?{sev:"watch",msg:"Net charge-offs elevated"}:null},
+ {cam:"A",key:"aclLoans",lab:"ACL / loans",gl:"allowance for credit losses",unit:"%",fmt:"pct",get:q=>{const r=ratio(usd(gf(q,F.acl)),usd(gf(q,F.loansGross)??gf(q,F.loansNet)));return r==null?null:r*100;},flag:()=>null},
+ {cam:"A",key:"aclCov",lab:"ACL coverage of noncurrent",unit:"x",fmt:"x",get:q=>ratio(usd(gf(q,F.acl)),usd(gf(q,F.noncurLoans))),flag:(v)=>v==null?null:v<1?{sev:"watch",msg:"Reserves below noncurrent loans, coverage under 1x"}:null},
+
+ {cam:"E",key:"roa",lab:"Return on assets (ROA)",unit:"%",fmt:"pct",get:q=>pct(gf(q,F.roa)),flag:(v)=>v==null?null:v<0?{sev:"alert",msg:"Negative ROA, operating at a loss"}:v<0.5?{sev:"watch",msg:"ROA below 0.5%"}:null},
+ {cam:"E",key:"roe",lab:"Return on equity (ROE)",unit:"%",fmt:"pct",get:q=>pct(gf(q,F.roe)),flag:(v)=>v==null?null:v<0?{sev:"alert",msg:"Negative ROE"}:null},
+ {cam:"E",key:"nim",lab:"Net interest margin",gl:"net interest income",unit:"%",fmt:"pct",get:q=>pct(gf(q,F.nim)),flag:(v,series,i)=>{const yoy=deltaSer(series,i,4);return yoy!=null&&yoy<-0.3?{sev:"watch",msg:"NIM compressing year over year"}:null;}},
+ {cam:"E",key:"eff",lab:"Efficiency ratio",unit:"%",fmt:"pct",get:q=>pct(gf(q,F.eff)),flag:(v)=>v==null?null:v>75?{sev:"watch",msg:"Efficiency ratio above 75%"}:null},
+ {cam:"E",key:"netinc",lab:"Net income (YTD)",unit:"",fmt:"usd",get:q=>usd(gf(q,F.netinc)),flag:(v)=>v==null?null:v<0?{sev:"alert",msg:"Net loss for the period"}:null},
+
+ {cam:"L",key:"ltd",lab:"Loan-to-deposit ratio",unit:"%",fmt:"pct",get:q=>{const r=ratio(usd(gf(q,F.loansNet)),usd(gf(q,F.dep)));return r==null?null:r*100;},flag:(v)=>v==null?null:v>100?{sev:"watch",msg:"Loans exceed deposits, loan-to-deposit over 100%"}:null},
+ {cam:"L",key:"depgr",lab:"Deposit growth (YoY)",unit:"%",fmt:"pctd",get:q=>usd(gf(q,F.dep)),seriesTransform:arr=>arr.map((v,i)=>(i>=4&&arr[i-4])?((v-arr[i-4])/Math.abs(arr[i-4])*100):null),flag:(v)=>v!=null&&v<-5?{sev:"alert",msg:"Deposits down more than 5% year over year, funding runoff"}:null},
+ {cam:"L",key:"brodep",lab:"Brokered / deposits",gl:"brokered deposits",unit:"%",fmt:"pct",get:q=>{const r=ratio(usd(gf(q,F.brokered)),usd(gf(q,F.dep)));return r==null?null:r*100;},flag:(v,series,i)=>{if(v==null)return null;const yoy=deltaSer(series,i,4);if(v>20)return{sev:"watch",msg:"Brokered deposits above 20% of funding"};if(yoy!=null&&yoy>5)return{sev:"watch",msg:"Brokered funding rising fast"};return null;}},
+
+ {cam:"S",key:"secast",lab:"Securities / assets",unit:"%",fmt:"pct",get:q=>{const r=ratio(usd(gf(q,F.securities)),usd(gf(q,F.asset)));return r==null?null:r*100;},flag:()=>null,note:"HTM unrealized-loss detail needs the CDR extract"}
+];
+
+/* ===== glossary linking + popover (shared layer) ===== */
+const _SURF=GLOSSARY.surfaces,_DEFS=GLOSSARY.defs;
+const _KEYS=Object.keys(_SURF).sort((a,b)=>b.length-a.length);
+const _GLRE=new RegExp("(?<![A-Za-z0-9])(?:"+_KEYS.map(s=>s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("|")+")(?![A-Za-z0-9])","g");
+const _SURFLC={};for(const k in _SURF)_SURFLC[k.toLowerCase()]=_SURF[k];
+function esc(s){return String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+function linkTerms(t){return t.replace(_GLRE,(m)=>{const key=_SURF[m]||_SURFLC[m.toLowerCase()];return key?`<button class="gl" data-k="${key}" tabindex="0">${m}</button>`:m;});}
+function glByKey(k){return _DEFS[k]?`<button class="gl" data-k="${k}" tabindex="0">${esc(_DEFS[k].t.replace(/\s*\(.*\)/,''))}</button>`:"";}
+const pop=document.getElementById("glpop");
+function showPop(b){const g=_DEFS[b.dataset.k];if(!g)return;pop.innerHTML=`<div class="gl-t">${esc(g.t)}</div><div class="gl-d">${esc(g.d)}</div>`;pop.style.display="block";const r=b.getBoundingClientRect(),pw=pop.offsetWidth,ph=pop.offsetHeight;let left=Math.min(Math.max(8,r.left),window.innerWidth-pw-8);let below=r.bottom+10+ph<window.innerHeight||r.top-ph-10<8;pop.style.left=left+"px";pop.style.top=(below?r.bottom+10:r.top-ph-10)+"px";}
+function hidePop(){pop.style.display="none";}
+document.addEventListener("click",e=>{const b=e.target.closest(".gl");if(b){e.stopPropagation();showPop(b);}else if(!e.target.closest("#glpop")&&!e.target.closest(".res-row"))hidePop();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")hidePop();});
+window.addEventListener("scroll",hidePop,true);
+
+/* ===== helpers ===== */
+function qlabel(repdte){const s=String(repdte);if(s.length<6)return s;const y=s.slice(0,4),m=s.slice(4,6);return ({"03":"Q1","06":"Q2","09":"Q3","12":"Q4"}[m]||m)+" "+y;}
+function delta(series,back){ // change in latest metric value vs `back` quarters ago, for a series of {v}
+  if(!series||series.length<back+1)return null;const a=series[series.length-1],b=series[series.length-1-back];
+  return (a==null||b==null)?null:a-b;}
+function deltaSer(arr,i,back){if(i-back<0)return null;const a=arr[i],b=arr[i-back];return(a==null||b==null)?null:a-b;}
+function growth(arr,i,back){if(i-back<0)return null;const a=arr[i],b=arr[i-back];return(a==null||b==null||b==0)?null:(a-b)/Math.abs(b)*100;}
+function fmtUSD(v){if(v==null)return "n/a";const a=Math.abs(v);if(a>=1e9)return (v/1e9).toFixed(2)+"B";if(a>=1e6)return (v/1e6).toFixed(2)+"M";if(a>=1e3)return (v/1e3).toFixed(1)+"K";return (+v).toFixed(0);}
+function fmtVal(v,fmt){if(v==null)return null;if(fmt==="pct")return (+v).toFixed(2);if(fmt==="x")return (+v).toFixed(2);if(fmt==="usd")return "$"+fmtUSD(v*1000);return (+v).toFixed(2);}
+function spark(vals,w,h,color){
+  const xs=vals.map((v,i)=>v);const clean=vals.filter(v=>v!=null);
+  if(clean.length<2)return `<svg width="${w}" height="${h}"></svg>`;
+  const mn=Math.min(...clean),mx=Math.max(...clean),rng=(mx-mn)||1;
+  const n=vals.length;const pts=[];
+  vals.forEach((v,i)=>{if(v==null)return;const x=(i/(n-1))*(w-4)+2;const y=h-2-((v-mn)/rng)*(h-4);pts.push(`${x.toFixed(1)},${y.toFixed(1)}`);});
+  const last=vals[vals.length-1];const lx=(w-4)+2-( (n-1-(n-1))/(n-1) );
+  return `<svg class="spark" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><polyline fill="none" stroke="${color}" stroke-width="1.6" points="${pts.join(" ")}" opacity="0.9"/><circle cx="${((n-1)/(n-1)*(w-4)+2).toFixed(1)}" cy="${(h-2-((last-mn)/rng)*(h-4)).toFixed(1)}" r="2.2" fill="${color}"/></svg>`;
+}
+function deltaHTML(cur,prev,yoy,fmt){
+  function one(d,label){if(d==null)return `<span class="d-flat">${label} —</span>`;const up=d>0;const arrow=up?"▲":d<0?"▼":"=";const cls=up?"d-up":d<0?"d-dn":"d-flat";const val=fmt==="usd"?fmtUSD(d*1000):(fmt==="pctd"?d.toFixed(1):Math.abs(d).toFixed(2));return `<span class="${cls}">${label} ${arrow}${val}</span>`;}
+  return `${one(prev,"QoQ")}<br>${one(yoy,"YoY")}`;
+}
+
+/* ===== render ===== */
+const elResults=document.getElementById("results"),elStatus=document.getElementById("status"),elDash=document.getElementById("dash");
+function setStatus(html,isErr){elStatus.className="status show"+(isErr?" err":"");elStatus.innerHTML=html;}
+function clearStatus(){elStatus.className="status";elStatus.innerHTML="";}
+
+async function searchBanks(q){
+  const fields="NAME,CERT,CITY,STALP,ACTIVE,ASSET";
+  const tokens=q.trim().split(/\s+/).filter(Boolean);
+  const longest=tokens.slice().sort((a,b)=>b.length-a.length)[0]||q;
+  const attempts=[
+    `search=${encodeURIComponent("NAME:"+q)}`,
+    `search=${encodeURIComponent(q)}`,
+    `search=${encodeURIComponent("NAME:"+longest)}`,
+    `filters=${encodeURIComponent('NAME:"'+q+'"')}`
+  ];
+  let lastErr=null,reached=false;
+  for(const a of attempts){
+    try{
+      const r=await fetch(`${API}/institutions?${a}&fields=${fields}&limit=12&format=json`);
+      if(!r.ok){lastErr=new Error("HTTP "+r.status);continue;}
+      reached=true;
+      const j=await r.json();
+      const list=(j.data||[]).map(d=>(d&&d.data)?d.data:d).filter(x=>x&&x.NAME);
+      if(list.length) return list;
+    }catch(e){lastErr=e;}
+  }
+  if(!reached&&lastErr) throw lastErr;
+  return [];
+}
+async function fetchFin(cert){
+  const url=`${API}/financials?filters=CERT:${cert}&fields=${REQ_FIELDS.join(",")}&sort_by=REPDTE&sort_order=DESC&limit=8&format=json`;
+  const r=await fetch(url);if(!r.ok)throw new Error("HTTP "+r.status);
+  const j=await r.json();return (j.data||[]).map(d=>(d&&d.data)?d.data:d).reverse();
+}
+let LAST=null;
+async function fetchInst(cert){
+  const url=`${API}/institutions?filters=CERT:${cert}&fields=${REQ_FIELDS.join(",")},STALP&limit=1&format=json`;
+  const r=await fetch(url);if(!r.ok)throw new Error("HTTP "+r.status);const j=await r.json();return (j.data||[]).map(d=>(d&&d.data)?d.data:d)[0];
+}
+async function fetchPeers(stalp,asset){
+  const filt=`ACTIVE:1 AND STALP:${stalp} AND ASSET:[${Math.round(asset*0.3)} TO ${Math.round(asset*3)}]`;
+  const url=`${API}/institutions?filters=${encodeURIComponent(filt)}&fields=${REQ_FIELDS.join(",")}&limit=400&format=json`;
+  const r=await fetch(url);if(!r.ok)throw new Error("HTTP "+r.status);const j=await r.json();return (j.data||[]).map(d=>(d&&d.data)?d.data:d);
+}
+function median(arr){const a=arr.filter(x=>x!=null&&!isNaN(x)).sort((x,y)=>x-y);if(!a.length)return null;const m=Math.floor(a.length/2);return a.length%2?a[m]:(a[m-1]+a[m])/2;}
+async function benchmarkPeers(){
+  if(!LAST)return;
+  setStatus("Pulling peer group (same state, 0.3x–3x assets)...",false);
+  try{
+    const inst=await fetchInst(LAST.cert); if(!inst){setStatus("No institution record for peers.",false);return;}
+    const peers=await fetchPeers(inst[F.stalp[0]],gf(inst,F.asset)).then(p=>p.filter(x=>x.CERT!=LAST.cert));
+    const med={};
+    M.filter(m=>m.fmt!=="pctd").forEach(m=>{med[m.key]=median(peers.map(p=>m.get(p)));});
+    clearStatus();renderDash(LAST.name,LAST.cert,LAST.quarters,LAST.sample,{med,n:peers.length,stalp:inst[F.stalp[0]]});
+  }catch(e){setStatus(`Peer benchmark failed. <span class="hint">${esc(e.message)}</span>`,true);}
+}
+
+function showResults(list){
+  if(!list.length){elResults.className="results";setStatus("No banks matched that name. Try a shorter or different spelling.",false);return;}
+  clearStatus();
+  elResults.className="results show";
+  elResults.innerHTML=list.map(b=>`<div class="res-row ${b.ACTIVE==1?"":"inactive"}" data-cert="${esc(b.CERT)}" data-name="${esc(b.NAME)}">
+    <span class="nm">${esc(b.NAME)}</span>
+    ${b.ACTIVE==1?"":'<span class="badge">inactive</span>'}
+    <span class="meta">${esc(b.CITY||"")}${b.STALP?", "+esc(b.STALP):""}</span>
+    <span class="cert">CERT ${esc(b.CERT)}</span></div>`).join("");
+  elResults.querySelectorAll(".res-row").forEach(r=>r.onclick=()=>{loadBank(r.dataset.cert,r.dataset.name);});
+}
+
+async function doSearch(q){
+  if(!q||!q.trim())return;
+  elResults.className="results";elDash.className="dash";hidePop();
+  setStatus("Searching FDIC institutions...",false);
+  try{ showResults(await searchBanks(q.trim())); }
+  catch(e){ setStatus(`Could not reach the FDIC API. <span class="hint">If your browser console shows a CORS error, route the request through your Cloudflare Worker proxy and point API at it. Raw error: ${esc(e.message)}</span>`,true); }
+}
+
+async function loadBank(cert,name){
+  elResults.className="results";hidePop();
+  setStatus(`Pulling last 8 quarters for ${esc(name)} (CERT ${esc(cert)})...`,false);
+  try{
+    const quarters=await fetchFin(cert);
+    if(!quarters.length){setStatus("No financial records returned for that institution.",false);return;}
+    LAST={name,cert,quarters,sample:false};clearStatus();renderDash(name,cert,quarters,false);
+  }catch(e){ setStatus(`Could not load financials. <span class="hint">Likely CORS from a static origin. Proxy via your Worker. Raw error: ${esc(e.message)}</span>`,true); }
+}
+
+function peerLine(cur,med,m){
+  if(cur==null||med==null)return `<div class="peerrow">peer median: ${fmtVal(med,m.fmt)||"n/a"}${m.unit||""}</div>`;
+  const d=cur-med; const better = HI.has(m.key)? d>0 : LO.has(m.key)? d<0 : null;
+  const cls = better===true?"d-up":better===false?"d-dn":"d-flat";
+  const sign=d>0?"+":""; const dv=m.fmt==="usd"?fmtUSD(d*1000):Math.abs(d).toFixed(2);
+  return `<div class="peerrow">peer median ${fmtVal(med,m.fmt)}${m.unit||""} · <span class="${cls}">${better===true?"▲":better===false?"▼":"="} ${sign}${m.fmt==="usd"?dv:Math.abs(d).toFixed(2)}</span></div>`;
+}
+function renderDash(name,cert,quarters,isSample,peer){
+  const labels=quarters.map(q=>qlabel(gf(q,F.repdte)));
+  const latest=quarters[quarters.length-1];
+  // build per-metric series
+  const flags=[];
+  let groups="";
+  for(const camKey of ["C","A","E","L","S"]){
+    const ms=M.filter(m=>m.cam===camKey);
+    let cards="";
+    ms.forEach(m=>{
+      let series=quarters.map(m.get);
+      if(m.seriesTransform)series=m.seriesTransform(series);
+      const cur=series[series.length-1];
+      const prev=delta(series,1), yoy=delta(series,4);
+      const i=series.length-1;
+      const fl=m.flag?m.flag(cur,series,i):null;
+      if(fl){flags.push({...fl,metric:m.lab});}
+      const valStr=fmtVal(cur,m.fmt);
+      const labelHTML=m.gl?`${esc(m.lab)} <span style="opacity:.5">·</span> ${glByKey(_SURF[m.gl]||_SURFLC[(m.gl||'').toLowerCase()]||'')}`:esc(m.lab);
+      cards+=`<div class="metric ${fl?("flag"+fl.sev):""}">
+        <div class="mlab">${labelHTML}</div>
+        <div class="mval ${valStr==null?"na":""}">${valStr==null?"n/a":valStr}${(valStr!=null&&m.unit)?`<span class="unit">${m.unit}</span>`:""}</div>
+        <div class="mrow"><div>${spark(series,90,26,CAM[camKey].c)}</div><div class="deltas">${deltaHTML(cur,prev,yoy,m.fmt)}</div></div>
+        ${peer&&peer.med&&peer.med[m.key]!=null?peerLine(cur,peer.med[m.key],m):""}
+        ${m.note?`<div style="font-size:9.5px;color:var(--phos-faint);margin-top:6px">${esc(m.note)}</div>`:""}
+      </div>`;
+    });
+    groups+=`<div class="camgroup"><div class="cam-head"><span class="badge" style="background:${CAM[camKey].c}">${camKey}</span><span class="cname">${CAM[camKey].n}</span><span class="cdesc">${labels[0]} → ${labels[labels.length-1]}</span></div><div class="metrics">${cards}</div></div>`;
+  }
+  // flags banner
+  const alerts=flags.filter(f=>f.sev==="alert"),watches=flags.filter(f=>f.sev==="watch");
+  let flagHTML;
+  if(flags.length===0){flagHTML=`<div class="flags clean"><h3>No threshold flags in the latest quarter</h3><div class="flag"><span class="ftxt">All screened metrics are within normal bands. Trends still worth reading below.</span></div></div>`;}
+  else{flagHTML=`<div class="flags"><h3>${alerts.length} alert${alerts.length!=1?"s":""} · ${watches.length} watch${watches.length!=1?"es":""} in latest quarter (${labels[labels.length-1]})</h3>`+
+    flags.sort((a,b)=>a.sev<b.sev?-1:1).map(f=>`<div class="flag"><span class="sev ${f.sev}">${f.sev.toUpperCase()}</span><span class="ftxt"><b style="color:var(--ink)">${esc(f.metric)}:</b> ${esc(f.msg)}</span></div>`).join("")+`</div>`;}
+  // quarter table
+  const rowsMeta=M.filter(m=>m.fmt!=="pctd");
+  let thead=`<tr><th>Metric</th>${labels.map(l=>`<th>${l}</th>`).join("")}</tr>`;
+  let tbody=rowsMeta.map(m=>{let series=quarters.map(m.get);if(m.seriesTransform)series=m.seriesTransform(series);return `<tr><td>${esc(m.lab)}</td>${series.map(v=>`<td>${v==null?"—":fmtVal(v,m.fmt)}${(v!=null&&m.unit==="%")?"":""}</td>`).join("")}</tr>`;}).join("");
+  const sample=isSample?`<span class="sample">Sample · synthetic data</span><br>`:"";
+  elDash.className="dash show";
+  elDash.innerHTML=`<div class="bankhead">${sample}<h2>${esc(name)}</h2>
+    <div class="sub">${peer?`<span style="color:var(--phos)">vs ${peer.n} ${esc(peer.stalp)} peers (0.3x–3x assets)</span> · `:`<button class="btn" id="benchBtn" style="margin-bottom:6px">Benchmark vs peers</button><br>`}CERT <b>${esc(cert)}</b> · latest report <b>${labels[labels.length-1]}</b> · total assets <b>$${fmtUSD((gf(latest,F.asset)||0)*1000)}</b> · ${labels.length} quarters</div></div>
+    ${flagHTML}${groups}
+    <div class="qtable-wrap"><div class="qt-title">Quarterly detail</div><table class="qtable"><thead>${thead}</thead><tbody>${tbody}</tbody></table></div>`;
+  const bb=document.getElementById("benchBtn");if(bb)bb.onclick=benchmarkPeers;
+  elDash.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+/* ===== synthetic sample (clearly labeled, for layout preview only) ===== */
+function sampleData(){
+  // a declining CRE-stress profile, illustrative only
+  const base=[
+    {q:"20230331",roa:0.95,roe:9.1,nim:2.9,eff:58,t1lev:9.8,t1rbc:10.6,totrbc:12.4,nc:0.35,nco:0.05,acl:0.95,asset:90e6,dep:60e6,loansNet:66e6,loansGr:67e6,aclAbs:636e3,ncAbs:235e3,eq:9.2e6,bro:5e6,sc:14e6,ni:210e3},
+    {q:"20230630",roa:0.9,roe:8.6,nim:2.85,eff:60,t1lev:9.6,t1rbc:10.4,totrbc:12.2,nc:0.45,nco:0.08,acl:1.0,asset:112e6,dep:80e6,loansNet:84e6,loansGr:85e6,aclAbs:850e3,ncAbs:382e3,eq:10.4e6,bro:9e6,sc:16e6,ni:430e3},
+    {q:"20230930",roa:0.82,roe:7.9,nim:2.78,eff:63,t1lev:9.4,t1rbc:10.1,totrbc:11.9,nc:0.6,nco:0.12,acl:1.05,asset:113e6,dep:82e6,loansNet:85e6,loansGr:86e6,aclAbs:903e3,ncAbs:516e3,eq:10.5e6,bro:10e6,sc:16e6,ni:640e3},
+    {q:"20231231",roa:-0.6,roe:-6.0,nim:2.7,eff:72,t1lev:9.1,t1rbc:9.6,totrbc:11.4,nc:0.85,nco:0.18,acl:1.25,asset:114e6,dep:81e6,loansNet:84e6,loansGr:85.5e6,aclAbs:1069e3,ncAbs:727e3,eq:10.1e6,bro:14e6,sc:16e6,ni:-185e3},
+    {q:"20240331",roa:-0.7,roe:-7.2,nim:2.6,eff:78,t1lev:8.6,t1rbc:9.2,totrbc:11.0,nc:1.4,nco:0.35,acl:1.55,asset:113e6,dep:75e6,loansNet:83e6,loansGr:84e6,aclAbs:1302e3,ncAbs:1176e3,eq:9.4e6,bro:16e6,sc:15e6,ni:-335e3},
+    {q:"20240630",roa:-0.5,roe:-5.1,nim:2.55,eff:80,t1lev:8.4,t1rbc:9.0,totrbc:10.8,nc:1.8,nco:0.5,acl:1.75,asset:110e6,dep:73e6,loansNet:80e6,loansGr:81e6,aclAbs:1418e3,ncAbs:1458e3,eq:8.6e6,bro:15e6,sc:15e6,ni:-275e3},
+    {q:"20240930",roa:-0.2,roe:-2.0,nim:2.6,eff:76,t1lev:8.6,t1rbc:9.3,totrbc:11.2,nc:1.7,nco:0.45,acl:1.8,asset:104e6,dep:72e6,loansNet:74e6,loansGr:75e6,aclAbs:1350e3,ncAbs:1275e3,eq:8.4e6,bro:12e6,sc:14e6,ni:-90e3},
+    {q:"20241231",roa:0.1,roe:1.0,nim:2.65,eff:71,t1lev:8.9,t1rbc:9.7,totrbc:11.6,nc:1.5,nco:0.4,acl:1.78,asset:100e6,dep:74e6,loansNet:70e6,loansGr:71e6,aclAbs:1264e3,ncAbs:1065e3,eq:8.6e6,bro:9e6,sc:14e6,ni:40e3}
+  ];
+  return base.map(b=>({[F.repdte[0]]:b.q,[F.asset[0]]:b.asset,[F.dep[0]]:b.dep,[F.netinc[0]]:b.ni,[F.eq[0]]:b.eq,[F.roa[0]]:b.roa,[F.roe[0]]:b.roe,[F.nim[0]]:b.nim,[F.eff[0]]:b.eff,[F.loansNet[0]]:b.loansNet,[F.loansGross[0]]:b.loansGr,[F.acl[0]]:b.aclAbs,[F.noncurLoans[0]]:b.ncAbs,[F.noncurRatio[0]]:b.nc,[F.ncoRatio[0]]:b.nco,[F.t1lev[0]]:b.t1lev,[F.t1rbc[0]]:b.t1rbc,[F.totrbc[0]]:b.totrbc,[F.brokered[0]]:b.bro,[F.securities[0]]:b.sc}));
+}
+
+/* ===== wire up ===== */
+const qEl=document.getElementById("q");
+document.getElementById("goBtn").onclick=()=>doSearch(qEl.value);
+qEl.addEventListener("keydown",e=>{if(e.key==="Enter")doSearch(qEl.value);});
+document.querySelectorAll(".chip[data-bank]").forEach(c=>c.onclick=()=>{qEl.value=c.dataset.bank;doSearch(c.dataset.bank);});
+document.getElementById("demoBtn").onclick=()=>{elResults.className="results";clearStatus();LAST={name:"Sample Community Bank, N.A.",cert:"00000",quarters:sampleData(),sample:true};renderDash("Sample Community Bank, N.A.","00000",sampleData(),true);};
+</script>
+</body>
+</html>

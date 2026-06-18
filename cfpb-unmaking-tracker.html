@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>Defanging the Bureau · The CFPB Under the Second Trump Administration — BankRegWire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,500;1,9..144,600&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ===== DESIGN TOKENS ===== */
+  :root{
+    --paper:#f1ede2; --paper-card:#f7f3ea; --paper-sunk:#e9e3d4;
+    --ink:#16150f; --ink-2:#46433a; --ink-3:#6c6859;
+    --oxblood:#7a1f2b; --oxblood-tx:#6a1a25;
+    --copper:#cf7714; --copper-deep:#a85c08;
+    --copper-soft:rgba(207,119,20,.20);
+    --rule:rgba(22,21,15,.14); --rule-2:rgba(22,21,15,.24); --rule-3:rgba(22,21,15,.40);
+    --header-bg:rgba(247,243,234,.96);
+    --ink-fixed:#1c1a17; --oxblood-fixed:#7a1f2b;
+    --dot:rgba(22,21,15,.022);
+    /* category accents (light) */
+    --c-leader:#7a1f2b; --c-work:#a85c08; --c-lit:#37576a; --c-enf:#586433; --c-rule:#6c4759; --c-fund:#8a6a2b;
+    /* remaps for names used throughout this file (token swap) */
+    --panel:var(--paper-card); --paper-2:var(--paper-card);
+    --ink-soft:var(--ink-2); --ink-mute:var(--ink-3);
+    --rule-soft:var(--rule); --oxblood-deep:var(--oxblood-tx);
+    --shadow:0 1px 0 rgba(22,21,15,.04), 0 18px 38px -28px rgba(22,21,15,.42);
+    --font-display:"Fraunces", serif;
+    --font-body:"Archivo", system-ui, sans-serif;
+    --font-mono:"JetBrains Mono", ui-monospace, monospace;
+  }
+  @media(prefers-color-scheme:dark){:root{
+    --paper:#16150f; --paper-card:#201e16; --paper-sunk:#12110b;
+    --ink:#f1ede2; --ink-2:#c2bdac; --ink-3:#928d7d;
+    --oxblood:#d27d88; --oxblood-tx:#dc8c96;
+    --copper:#e6973c; --copper-deep:#f0a64f; --copper-soft:rgba(230,151,60,.26);
+    --rule:rgba(241,237,226,.15); --rule-2:rgba(241,237,226,.26); --rule-3:rgba(241,237,226,.42);
+    --header-bg:rgba(30,28,21,.97);
+    --dot:rgba(241,237,226,.025);
+    /* category accents (dark — lifted for contrast) */
+    --c-leader:#d27d88; --c-work:#e6973c; --c-lit:#86abc2; --c-enf:#a7bd7d; --c-rule:#c79bb0; --c-fund:#d7b46d;
+    --shadow:0 1px 0 rgba(0,0,0,.2), 0 18px 38px -28px rgba(0,0,0,.7);
+  }}
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background-color:var(--paper);
+    background-image:radial-gradient(var(--dot) 1px,transparent 1px);
+    background-size:3px 3px;
+    color:var(--ink);font-family:var(--font-body);font-size:16.5px;line-height:1.62;
+    -webkit-font-smoothing:antialiased;font-feature-settings:"kern" 1;
+  }
+  .wrap{position:relative;z-index:1;max-width:1060px;margin:0 auto;padding:0 22px 80px}
+
+  /* ===== RUN-ONCE COPPER WIRE ===== */
+  .wire{position:relative;height:2px;background:var(--rule-2);overflow:visible;margin:24px 0}
+  .wire::after{
+    content:"";position:absolute;top:50%;left:0;width:9px;height:9px;border-radius:50%;
+    background:var(--copper);box-shadow:0 0 11px 2px var(--copper-soft);
+    transform:translate(-50%,-50%);
+    animation:wire-run 2.4s cubic-bezier(.45,0,.2,1) .25s forwards;
+  }
+  @keyframes wire-run{0%{left:0;opacity:0}6%{opacity:1}90%{opacity:1}100%{left:100%;opacity:0}}
+  @media(prefers-reduced-motion:reduce){.wire::after{animation:none;opacity:0}}
+
+  /* ===== MASTHEAD ===== */
+  header.mast{padding:26px 0 0}
+  .ear{
+    display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap;
+    font-family:var(--font-mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--ink-3);border-bottom:1px solid var(--ink);padding-bottom:8px;font-weight:500;
+  }
+  .ear .brand{color:var(--oxblood);font-weight:700;letter-spacing:.14em}
+  .ear .brand b{color:var(--ink)}
+  .rule-double{border-top:3px double var(--ink);margin-top:5px}
+  .dispatch-no{
+    display:flex;align-items:center;gap:12px;margin:24px 0 12px;
+    font-family:var(--font-mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;
+  }
+  .dispatch-no .num{color:var(--oxblood)}
+  .dispatch-no .desk{color:var(--copper-deep)}
+  .dispatch-no .ln{flex:1;height:1px;background:var(--rule-2)}
+  h1.title{font-family:var(--font-display);font-weight:900;font-size:clamp(42px,8.4vw,86px);line-height:.92;letter-spacing:-.02em;margin:0;color:var(--ink);font-optical-sizing:auto}
+  h1.title em{font-style:italic;color:var(--oxblood);font-weight:500}
+  .standfirst{font-family:var(--font-display);font-style:italic;font-weight:400;font-size:clamp(19px,2.5vw,25px);line-height:1.45;color:var(--ink-2);max-width:58ch;margin:20px 0 0}
+  .standfirst b{color:var(--ink);font-weight:600;font-style:normal}
+  .srcchips{display:flex;flex-wrap:wrap;gap:7px;margin:22px 0 0}
+  .srcchip{font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;font-weight:600;text-transform:uppercase;padding:4px 9px;border:1px solid var(--rule-2);background:var(--paper-card);color:var(--ink-2);border-radius:1px;white-space:nowrap}
+  .srcchip b{color:var(--oxblood)}
+  .filed{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:18px;padding-top:13px;border-top:1px solid var(--rule);font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+  .filed .dot{width:4px;height:4px;border-radius:50%;background:var(--copper);display:inline-block}
+  .filed strong{color:var(--ink)}
+
+  /* ===== ON THE WIRE (ticker) ===== */
+  .ticker{margin-top:0;border:1px solid var(--rule-2);background:var(--paper-card);box-shadow:var(--shadow);display:grid;grid-template-columns:auto 1fr;align-items:stretch}
+  .ticker .lab{background:var(--ink-fixed);color:#f1ede2;font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;padding:12px 14px;display:flex;align-items:center}
+  .ticker .lab .blink{width:7px;height:7px;border-radius:50%;background:var(--copper);margin-right:9px;animation:pulse 1.8s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+  .ticker ul{margin:0;padding:11px 16px;list-style:none;display:flex;flex-direction:column;gap:7px}
+  .ticker li{font-size:14px;color:var(--ink-2);line-height:1.4}
+  .ticker li b{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--oxblood);font-weight:700;margin-right:6px}
+  @media(max-width:560px){.ticker{grid-template-columns:1fr}.ticker .lab{justify-content:flex-start}}
+
+  /* ===== COLLAPSIBLE STATS ===== */
+  .glance{margin-top:14px;border:1px solid var(--rule-2);background:var(--paper-card);box-shadow:var(--shadow)}
+  .glance-head{appearance:none;width:100%;cursor:pointer;background:none;border:none;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 16px;font-family:var(--font-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);font-weight:600;border-bottom:1px solid var(--rule)}
+  .glance-head .left{display:flex;align-items:center;gap:11px}
+  .glance-head .ct{color:var(--copper-deep)}
+  .glance-head .toggle{color:var(--oxblood);font-weight:700;display:flex;align-items:center;gap:6px;letter-spacing:.12em}
+  .glance-head .chev{transition:transform .3s ease;display:inline-block}
+  .glance[data-open="false"] .glance-head{border-bottom-color:transparent}
+  .glance[data-open="false"] .chev{transform:rotate(180deg)}
+  .glance-body{display:grid;grid-template-columns:repeat(3,1fr);overflow:hidden;transition:max-height .4s ease,opacity .3s ease;max-height:600px;opacity:1}
+  .glance[data-open="false"] .glance-body{max-height:0;opacity:0}
+  .stat{padding:18px 18px 16px;border-right:1px solid var(--rule);border-top:1px solid var(--rule)}
+  .stat:nth-child(-n+3){border-top:none}
+  .stat:nth-child(3n){border-right:none}
+  .stat .num{font-family:var(--font-display);font-weight:700;font-size:clamp(28px,4.6vw,42px);line-height:1;color:var(--oxblood);letter-spacing:-.02em}
+  .stat .num small{font-size:.5em;color:var(--copper-deep);font-weight:600}
+  .stat .lab{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-top:9px;line-height:1.45;font-weight:500}
+  @media(max-width:680px){
+    .glance-body{grid-template-columns:repeat(2,1fr)}
+    .stat:nth-child(3n){border-right:1px solid var(--rule)}
+    .stat:nth-child(2n){border-right:none}
+    .stat:nth-child(-n+2){border-top:none}
+    .stat:nth-child(3),.stat:nth-child(4){border-top:1px solid var(--rule)}
+  }
+
+  /* ===== TABS ===== */
+  nav.tabs{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;gap:0;margin:30px 0 0;background:var(--header-bg);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);padding-top:10px;border-bottom:2px solid var(--ink)}
+  .tab{appearance:none;background:none;border:none;cursor:pointer;padding:11px 15px 13px;font-family:var(--font-mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:600;border-bottom:3px solid transparent;margin-bottom:-2px;transition:color .18s ease;white-space:nowrap}
+  .tab:hover{color:var(--ink)}
+  .tab.active{color:var(--oxblood);border-bottom-color:var(--copper)}
+  .tab .ct{font-size:10px;color:var(--copper-deep);margin-left:5px}
+  .panel{display:none;animation:fade .4s ease both}
+  .panel.show{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .section-intro{font-size:16px;color:var(--ink-2);max-width:68ch;margin:26px 0 4px;line-height:1.55}
+
+  /* ===== FILTER / CONTROL ROW ===== */
+  .filters{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 8px;align-items:center}
+  .filters .flab{font-family:var(--font-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-right:4px;font-weight:600}
+  .chip{appearance:none;cursor:pointer;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;padding:6px 11px 7px;border-radius:1px;border:1px solid var(--rule-2);background:var(--paper-card);color:var(--ink-2);display:inline-flex;align-items:center;gap:7px;transition:all .15s ease}
+  .chip .sw{width:9px;height:9px;border-radius:50%;background:var(--cc,#999)}
+  .chip[aria-pressed="false"]{opacity:.4;filter:grayscale(.5)}
+  .chip:hover{border-color:var(--ink-3)}
+  .minibtn{appearance:none;cursor:pointer;font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;padding:6px 10px 7px;border-radius:1px;border:1px solid var(--rule-2);background:none;color:var(--ink-3);transition:all .15s ease}
+  .minibtn:hover{color:var(--copper-deep);border-color:var(--copper-deep)}
+
+  /* ===== TIMELINE (collapsible months) ===== */
+  .timeline{position:relative;margin-top:18px}
+  .tl-month{appearance:none;width:100%;cursor:pointer;background:none;border:none;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--copper-deep);font-weight:700;margin:30px 0 0;padding:0 0 7px;border-bottom:1px solid var(--rule-2);transition:color .15s ease}
+  .tl-group:first-child .tl-month{margin-top:8px}
+  .tl-month:hover{color:var(--copper)}
+  .tl-month .m-meta{display:flex;align-items:center;gap:10px}
+  .tl-month .m-ct{color:var(--ink-3);font-weight:600}
+  .tl-month .m-chev{display:inline-block;transition:transform .28s ease;color:var(--oxblood);font-size:12px}
+  .tl-group[data-open="false"] .m-chev{transform:rotate(-90deg)}
+  .tl-group[data-open="false"] .tl-month{border-bottom-color:var(--rule)}
+  .tl-events{overflow:hidden;transition:max-height .38s ease,opacity .25s ease;max-height:2400px;opacity:1}
+  .tl-group[data-open="false"] .tl-events{max-height:0;opacity:0}
+  .event{position:relative;display:grid;grid-template-columns:92px 1fr;gap:16px;padding:13px 0 15px;border-bottom:1px dotted var(--rule-2)}
+  .event .when{font-family:var(--font-mono);font-size:11.5px;color:var(--ink-3);font-weight:600;padding-top:4px}
+  .event .body{position:relative;padding-left:20px;border-left:2px solid var(--cc,var(--rule))}
+  .event .body::before{content:"";position:absolute;left:-7px;top:7px;width:12px;height:12px;border-radius:50%;background:var(--cc,var(--ink));border:2px solid var(--paper)}
+  .event .tag{display:inline-block;font-family:var(--font-mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--cc,var(--ink));margin-bottom:5px}
+  .event h3{font-family:var(--font-display);font-weight:600;font-size:21px;line-height:1.2;margin:0 0 4px;color:var(--ink);letter-spacing:-.01em}
+  .event p{margin:0;font-size:15px;color:var(--ink-2);line-height:1.5}
+  .event.major .body{border-left-width:3px}
+  .event.major h3{font-size:22px}
+  @media(max-width:600px){.event{grid-template-columns:1fr;gap:4px}.event .when{padding-top:0}.event .body{padding-left:16px}}
+
+  /* ===== CARDS ===== */
+  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:24px}
+  @media(max-width:720px){.cards{grid-template-columns:1fr}}
+  .card{background:var(--paper-card);border:1px solid var(--rule-2);padding:22px 22px 20px;box-shadow:var(--shadow);position:relative;border-top:4px solid var(--accent,var(--ink))}
+  .card.feature{grid-column:1/-1;border-top-color:var(--oxblood)}
+  .card .role{font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:600;max-width:78%}
+  .card .status{position:absolute;top:18px;right:20px;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;padding:3px 9px;border-radius:1px;border:1px solid transparent}
+  .st-out{background:var(--copper-soft);color:var(--oxblood);border-color:var(--rule-2)}
+  .st-act{background:rgba(88,100,51,.16);color:var(--c-enf);border-color:var(--rule-2)}
+  .st-pend{background:rgba(168,92,8,.14);color:var(--c-fund);border-color:var(--rule-2)}
+  .st-gone{background:rgba(108,104,89,.16);color:var(--ink-3);border-color:var(--rule-2)}
+  .card h3{font-family:var(--font-display);font-weight:700;font-size:27px;line-height:1.04;margin:11px 0 2px;color:var(--ink);letter-spacing:-.01em}
+  .card .sub{font-family:var(--font-display);font-style:italic;font-size:15.5px;color:var(--copper-deep);margin-bottom:10px}
+  .card p{margin:8px 0 0;font-size:15px;color:var(--ink-2);line-height:1.52}
+  .card .meta{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-3);margin-top:14px;padding-top:10px;border-top:1px dotted var(--rule-2);letter-spacing:.04em;line-height:1.5}
+  .card .meta b{color:var(--oxblood)}
+  .lit-steps{margin:14px 0 0;padding:0;list-style:none;border-left:2px solid var(--rule-2);margin-left:4px}
+  .lit-steps li{position:relative;padding:0 0 12px 18px;font-size:14px;color:var(--ink-2);line-height:1.45}
+  .lit-steps li::before{content:"";position:absolute;left:-6px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--c-lit);border:2px solid var(--paper-card)}
+  .lit-steps li:last-child{padding-bottom:0}
+  .lit-steps b{color:var(--ink);font-family:var(--font-mono);font-size:11.5px;letter-spacing:.02em}
+
+  /* ===== TABLES ===== */
+  .tbl-wrap{margin-top:22px;border:1px solid var(--rule-2);box-shadow:var(--shadow);overflow:hidden;background:var(--paper-card)}
+  table{width:100%;border-collapse:collapse;font-size:14.5px}
+  thead th{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;text-align:left;color:#f1ede2;background:var(--ink-fixed);padding:11px 14px;font-weight:600}
+  tbody td{padding:13px 14px;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--ink-2)}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:nth-child(even){background:var(--paper-sunk)}
+  td .name{font-family:var(--font-display);font-weight:600;font-size:16px;color:var(--ink);display:block;line-height:1.2}
+  td .det{font-size:12.5px;color:var(--ink-3);margin-top:2px;display:block;font-family:var(--font-mono);letter-spacing:.02em}
+  td.dt{font-family:var(--font-mono);font-size:11.5px;color:var(--copper-deep);white-space:nowrap;font-weight:600}
+  .pill{display:inline-block;font-family:var(--font-mono);font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 7px;border-radius:1px;background:var(--copper-soft);color:var(--oxblood)}
+  .pill.cont{background:rgba(88,100,51,.18);color:var(--c-enf)}
+  @media(max-width:640px){thead{display:none}tbody td{display:block;border:none;padding:4px 16px}tbody tr{display:block;border-bottom:1px solid var(--rule-2);padding:12px 0}td.dt{padding-top:12px}}
+
+  /* ===== CALLOUT ===== */
+  .callout{margin-top:30px;background:var(--paper-card);border:1px solid var(--rule-2);border-left:5px solid var(--oxblood);padding:24px 26px;box-shadow:var(--shadow)}
+  .callout .ck{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--oxblood);font-weight:600;margin:0 0 9px}
+  .callout h2{font-family:var(--font-display);font-weight:700;font-size:26px;margin:0 0 11px;color:var(--ink);line-height:1.08;letter-spacing:-.01em}
+  .callout p{margin:0 0 10px;font-size:15.5px;color:var(--ink-2)}
+  .callout p:last-child{margin-bottom:0}
+  .callout b{color:var(--oxblood)}
+
+  /* ===== FOOTER ===== */
+  footer{margin-top:10px;padding-top:18px;border-top:3px double var(--ink)}
+  footer .fbrand{font-family:var(--font-display);font-weight:900;font-size:30px;color:var(--ink);letter-spacing:-.02em;line-height:1}
+  footer .fline{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--oxblood);font-weight:600;margin-top:8px}
+  footer p{margin:14px 0 0;font-size:13px;color:var(--ink-3);line-height:1.55;max-width:82ch}
+  footer .fmeta{display:flex;flex-wrap:wrap;gap:14px;margin-top:16px;font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+  footer .fmeta a{color:var(--oxblood);text-decoration:none}
+  footer .fmeta .dot{width:4px;height:4px;border-radius:50%;background:var(--copper);display:inline-block;align-self:center}
+  a{color:var(--oxblood)}
+  .reveal{opacity:0;transform:translateY(12px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.panel{animation:none}}
+</style>
+</head>
+<body>
+<a class="brw-backhome" href="wire.html" aria-label="Back to BankRegWire">← BankRegWire</a>
+<style>
+.brw-backhome{position:fixed;top:14px;left:14px;z-index:9999;display:inline-flex;align-items:center;gap:6px;
+  font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+  text-decoration:none;color:#f1ede2;background:rgba(22,21,15,.72);
+  -webkit-backdrop-filter:blur(8px) saturate(1.2);backdrop-filter:blur(8px) saturate(1.2);
+  border:1px solid rgba(240,165,70,.4);border-radius:30px;padding:8px 14px;box-shadow:0 8px 22px -10px rgba(0,0,0,.5);
+  transition:color .2s,border-color .2s,background .2s}
+.brw-backhome:hover{color:#f0a546;border-color:#f0a546;background:rgba(22,21,15,.85)}
+.brw-backhome:focus-visible{outline:2px solid #f0a546;outline-offset:3px}
+@media print{.brw-backhome{display:none}}
+</style>
+<div class="wrap" id="top">
+
+  <!-- MASTHEAD -->
+  <header class="mast">
+    <div class="ear">
+      <span class="brand">BANK<b>REG</b>WIRE.</span>
+      <span>The Wire Room · U.S. Financial Services · Primary Source</span>
+      <span>Vol.&nbsp;I · No.&nbsp;20</span>
+    </div>
+    <div class="rule-double"></div>
+    <div class="dispatch-no">
+      <span class="num">№ 20</span>
+      <span class="ln"></span>
+      <span class="desk">Desk Two · Reform Trackers</span>
+    </div>
+    <h1 class="title">Defanging the&nbsp;<em>Bureau</em></h1>
+    <p class="standfirst">How the Consumer Financial Protection Bureau was hollowed out in roughly sixteen months — through <b>leadership turnover, a near-total workforce reduction, a wave of dropped enforcement, rule rollbacks, and a fight over its very funding</b> — read from the docket and the Federal Register, with the status front-loaded.</p>
+    <div class="srcchips">
+      <span class="srcchip"><b>Dodd-Frank</b> · 12 USC § 5491</span>
+      <span class="srcchip"><b>FVRA</b> · 5 USC § 3345</span>
+      <span class="srcchip"><b>NTEU v. Vought</b> · No. 25-cv-00381 / 25-5091</span>
+      <span class="srcchip"><b>APA</b> · 5 USC § 706</span>
+      <span class="srcchip">Reg V · § 1033 · CRA</span>
+    </div>
+    <div class="filed">
+      <span>Filed from the primary source</span><span class="dot"></span>
+      <span>Updated <strong>June 2, 2026</strong></span><span class="dot"></span>
+      <span>Period: Jan 2025 – present</span><span class="dot"></span>
+      <span>Conclusions front-loaded</span>
+    </div>
+  </header>
+
+  <div class="wire" aria-hidden="true"></div>
+
+  <!-- ON THE WIRE -->
+  <div class="ticker reveal">
+    <div class="lab"><span class="blink"></span>On the wire</div>
+    <ul>
+      <li><b>Succession</b> Mark Paoletta named deputy director May 29 — positioned to take over as acting director after Vought exits Aug 1</li>
+      <li><b>En banc</b> D.C. Circuit decision in <i>NTEU v. Vought</i> (No. 25-5091) awaited — argued Feb 24, 2026</li>
+      <li><b>FVRA</b> Vought's acting tenure expires Aug 1, 2026; no further extension available</li>
+      <li><b>Funding</b> Bureau appeals the <i>Rise Economy</i> funding loss to the Ninth Circuit, May 11, 2026</li>
+      <li><b>Workforce</b> a fresh "streamlining" reduction-in-force floated to the en banc court, Apr 2026</li>
+    </ul>
+  </div>
+
+  <!-- COLLAPSIBLE STATS -->
+  <div class="glance reveal" id="glance" data-open="true">
+    <button class="glance-head" id="glanceToggle" aria-expanded="true" aria-controls="glanceBody">
+      <span class="left"><span>At a glance</span><span class="ct">6 figures</span></span>
+      <span class="toggle"><span id="glanceLabel">Collapse</span><span class="chev">▲</span></span>
+    </button>
+    <div class="glance-body" id="glanceBody">
+      <div class="stat"><div class="num">~1,700<small> → ~200</small></div><div class="lab">Workforce, before vs. target headcount</div></div>
+      <div class="stat"><div class="num">1,483</div><div class="lab">Staff hit by the April 2025 RIF notices, later blocked by court</div></div>
+      <div class="stat"><div class="num">40<small>+</small></div><div class="lab">Enforcement actions dismissed or rolled back</div></div>
+      <div class="stat"><div class="num">67</div><div class="lab">Guidance documents withdrawn in a single May 2025 action</div></div>
+      <div class="stat"><div class="num">$3B<small>+</small></div><div class="lab">Consumer relief estimated lost or at risk</div></div>
+      <div class="stat"><div class="num">5</div><div class="lab">Leaders named or nominated since Jan 2025</div></div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <nav class="tabs" id="tabs">
+    <button class="tab active" data-tab="timeline">Timeline</button>
+    <button class="tab" data-tab="leadership">Leadership</button>
+    <button class="tab" data-tab="litigation">Litigation</button>
+    <button class="tab" data-tab="enforcement">Enforcement Dropped<span class="ct">40+</span></button>
+    <button class="tab" data-tab="rules">Rules Rolled Back</button>
+  </nav>
+
+  <!-- TIMELINE -->
+  <section class="panel show" id="timeline">
+    <p class="section-intro">A running chronology of the Bureau's unwinding. Toggle the categories to isolate a single thread — the funding fight, the layoffs, the courtroom, the rulemaking pullback — and collapse any month to compress the record.</p>
+    <div class="filters" id="filters">
+      <span class="flab">Filter:</span>
+      <button class="chip" data-cat="leader" aria-pressed="true" style="--cc:var(--c-leader)"><span class="sw"></span>Leadership</button>
+      <button class="chip" data-cat="work" aria-pressed="true" style="--cc:var(--c-work)"><span class="sw"></span>Workforce</button>
+      <button class="chip" data-cat="lit" aria-pressed="true" style="--cc:var(--c-lit)"><span class="sw"></span>Litigation</button>
+      <button class="chip" data-cat="enf" aria-pressed="true" style="--cc:var(--c-enf)"><span class="sw"></span>Enforcement</button>
+      <button class="chip" data-cat="rule" aria-pressed="true" style="--cc:var(--c-rule)"><span class="sw"></span>Rulemaking</button>
+      <button class="chip" data-cat="fund" aria-pressed="true" style="--cc:var(--c-fund)"><span class="sw"></span>Funding</button>
+      <span class="flab" style="margin-left:auto">Months:</span>
+      <button class="minibtn" id="expandAll">Expand all</button>
+      <button class="minibtn" id="collapseAll">Collapse all</button>
+    </div>
+    <div class="timeline" id="tl"></div>
+  </section>
+
+  <!-- LEADERSHIP -->
+  <section class="panel" id="leadership">
+    <p class="section-intro">In sixteen months the CFPB cycled through a confirmed director, three acting directors, and two formal nominees — churn the administration has used, in part, to keep Russell Vought atop the agency while the Vacancies Act clock runs.</p>
+    <div class="cards" id="leaders"></div>
+  </section>
+
+  <!-- LITIGATION -->
+  <section class="panel" id="litigation">
+    <p class="section-intro">Two questions dominate the docket: whether the executive may dismantle a congressionally created agency through staffing and budget maneuvers, and whether the Bureau must keep drawing the funding Dodd-Frank provides. As of June 2026 the marquee case is still undecided.</p>
+    <div class="cards" id="lits"></div>
+  </section>
+
+  <!-- ENFORCEMENT -->
+  <section class="panel" id="enforcement">
+    <p class="section-intro">In its first fourteen years the Bureau dropped a pending enforcement action exactly once and had never undone a settlement. Within months of the transition it voluntarily dismissed dozens — many with prejudice — against repeat targets. A representative selection follows; the full tally exceeds forty.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th style="width:108px">Date</th><th>Defendant</th><th>What the case alleged</th><th style="width:96px">Disposition</th></tr></thead>
+        <tbody id="enfRows"></tbody>
+      </table>
+    </div>
+    <div class="callout" style="border-left-color:var(--c-enf)">
+      <p class="ck" style="color:var(--c-enf)">For scale</p>
+      <p>By August 2025 the Bureau had dropped at least <b style="color:var(--c-enf)">22</b> pending cases; by October, dismissals and rollbacks topped <b style="color:var(--c-enf)">42</b>. A Consumer Federation of America / Student Borrower Protection Center memo estimated roughly <b style="color:var(--c-enf)">$360 million</b> in settled consumer relief erased or jeopardized, with total foregone relief running into the billions. Several abandoned matters were revived by state attorneys general or private class actions.</p>
+    </div>
+  </section>
+
+  <!-- RULES -->
+  <section class="panel" id="rules">
+    <p class="section-intro">Alongside the dismissals, the Bureau and Congress unwound a slate of late-Biden-era rules and guidance — some by Congressional Review Act resolution, some by inviting courts to vacate the Bureau's own rules, and some by a sweeping withdrawal of sub-regulatory guidance.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th style="width:116px">Date</th><th>Rule or guidance</th><th>How it was undone</th></tr></thead>
+        <tbody id="ruleRows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- NEXT -->
+  <div class="callout reveal">
+    <p class="ck">The clock & the court</p>
+    <h2>Two deadlines that decide what's left</h2>
+    <p><b>August 1, 2026 — the Vacancies Act cliff.</b> Vought has served as acting director under the Federal Vacancies Reform Act since February 2025. After the Senate returned the Levenbach nomination on January 3, 2026, the statute lets him continue only through August 1. Because the FVRA permits the acting-service extension for only two nominations, observers note the administration cannot simply nominate again to reset the clock past that date. But the seat is unlikely to sit empty: on May 29, 2026 the Bureau named chief legal officer Mark Paoletta its deputy director — the official reporting indicates is teed up to step in as acting director when Vought departs, keeping a principal architect of the wind-down in charge.</p>
+    <p><b>The en banc D.C. Circuit — decision pending.</b> The full court heard argument in <i>NTEU v. Vought</i> (No. 25-5091) on February 24, 2026 on whether courts can review the effort to wind down the Bureau. Its August 2025 panel ruling — which had cleared the layoffs — was vacated, so the preliminary injunction keeping the CFPB staffed and funded remains in force. A ruling is still awaited; meanwhile the government has floated a fresh "streamlining" reduction-in-force, and the funding question has moved to a parallel track in the Ninth Circuit.</p>
+  </div>
+
+  <div class="wire" aria-hidden="true"></div>
+
+  <!-- FOOTER -->
+  <footer class="reveal">
+    <div class="fbrand">BankRegWire.</div>
+    <div class="fline">Desk Two · Reform Trackers · № 20 · Rev. June 2026</div>
+    <p>Compiled from primary materials and contemporaneous reporting: court filings and orders in <i>NTEU v. Vought</i> (D.D.C. No. 25-cv-00381 / D.C. Cir. No. 25-5091) and <i>Rise Economy v. CFPB</i> (N.D. Cal.); the Bureau's Federal Register notices and CRA joint resolutions; the DOJ Office of Legal Counsel funding opinion; and reporting from American Banker, Banking Dive, Reuters, NPR, and CNBC. Aggregate enforcement figures draw on the CFA / SBPC running memos. Status lines are current as of the update date and are necessarily provisional — the litigation and the agency's posture are moving. Figures such as the workforce target and dropped-case counts are best-available estimates that have shifted as orders have been issued and stayed.</p>
+    <div class="fmeta">
+      <span>Primary-source methodology</span><span class="dot"></span>
+      <span>Conclusions front-loaded</span><span class="dot"></span>
+      <span>Interactive reference · not legal or regulatory advice</span><span class="dot"></span>
+      <span>Set in Fraunces, Archivo &amp; JetBrains Mono</span><span class="dot"></span>
+      <a href="#top">↑ back to top</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+/* ============ DATA ============ */
+const CATS = {
+  leader:{name:"Leadership", color:"var(--c-leader)"},
+  work:{name:"Workforce", color:"var(--c-work)"},
+  lit:{name:"Litigation", color:"var(--c-lit)"},
+  enf:{name:"Enforcement", color:"var(--c-enf)"},
+  rule:{name:"Rulemaking", color:"var(--c-rule)"},
+  fund:{name:"Funding", color:"var(--c-fund)"}
+};
+
+const EVENTS = [
+  {m:"January 2025", d:"Jan 31", cat:"leader", major:true, t:"Trump fires Director Rohit Chopra",
+   x:"The Biden-appointed director — architect of the Bureau's 'junk fees' enforcement era — is removed. Chopra confirms his departure in a letter posted the next day."},
+  {m:"February 2025", d:"Feb 3", cat:"leader", t:"Treasury Secretary Bessent named acting director",
+   x:"Scott Bessent is designated acting director under the Vacancies Act and immediately orders a freeze on rulemaking, litigation, enforcement, supervision, and communications."},
+  {m:"February 2025", d:"Feb 3", cat:"leader", t:"Jonathan McKernan nominated as permanent director",
+   x:"The former FDIC board member is put forward to run the Bureau. The Senate Banking Committee advances him on March 6, but he is never brought to a floor vote."},
+  {m:"February 2025", d:"Feb 7–8", cat:"leader", major:true, t:"Russell Vought installed as acting director",
+   x:"One day after Senate confirmation as OMB director, Vought replaces Bessent, emails staff a stop-work directive, closes headquarters for a week, and signals no further funding draw. Elon Musk posts 'RIP CFPB.'"},
+  {m:"February 2025", d:"Feb 13", cat:"lit", major:true, t:"NTEU sues to stop the shutdown",
+   x:"The National Treasury Employees Union and co-plaintiffs sue Vought, arguing the stop-work order, funding cutoff, and planned firings amount to dismantling a congressionally created agency in violation of the APA and separation of powers."},
+  {m:"February 2025", d:"Feb (late)", cat:"work", t:"Probationary and term staff fired",
+   x:"Roughly 85 probationary and 130 term employees are terminated, including the student loan ombudsman. Enforcement director Eric Halperin resigns."},
+  {m:"February 2025", d:"Feb 27–28", cat:"enf", major:true, t:"Mass dismissal of enforcement cases begins",
+   x:"The Bureau voluntarily dismisses — many with prejudice — cases against Capital One, Vanderbilt Mortgage & Finance, Rocket Homes, PHEAA, TransUnion, and SoLo Funds, calling some 'weaponized.' Former staff call the wave unprecedented."},
+  {m:"March 2025", d:"Mar 28", cat:"lit", major:true, t:"District court enjoins the layoffs",
+   x:"Judge Amy Berman Jackson (D.D.C.) grants a preliminary injunction, finding the administration appeared to be executing a plan that would 'decimate the agency.' The CFPB appeals the next day."},
+  {m:"April 2025", d:"Apr 11", cat:"lit", t:"Appeals panel partially lifts the injunction",
+   x:"A D.C. Circuit panel narrows the order, allowing RIFs only after an 'individualized assessment' that an employee is unnecessary to the Bureau's statutory duties."},
+  {m:"April 2025", d:"Apr 17–18", cat:"work", major:true, t:"RIF notices to ~1,483 staff — then halted",
+   x:"Vought issues reduction-in-force notices to about 1,483 of ~1,700 employees and moves to cut system access. Berman Jackson holds an emergency hearing and again blocks the firings."},
+  {m:"April 2025", d:"Apr 28", cat:"lit", t:"Panel strips RIF authority",
+   x:"A divided (2–1) D.C. Circuit panel modifies its stay and eliminates the Bureau's authority to conduct any RIF while the case proceeds."},
+  {m:"May 2025", d:"May 9", cat:"rule", major:true, t:"Congress kills the Overdraft and Payment Apps rules",
+   x:"Trump signs CRA resolutions nullifying the $5 overdraft-fee cap (large institutions) and the larger-participant rule covering digital wallets and P2P payment apps. The CRA bars reissuing substantially similar rules."},
+  {m:"May 2025", d:"May 12", cat:"rule", major:true, t:"67 guidance documents withdrawn at once",
+   x:"In its largest single rollback, the Bureau rescinds 67 items — 8 policy statements, 7 interpretive rules, 13 advisory opinions, and 39 circulars, bulletins, and other guidance."},
+  {m:"May 2025", d:"May 12", cat:"leader", t:"McKernan nomination withdrawn",
+   x:"With McKernan headed to Treasury as Undersecretary of Domestic Finance, the White House withdraws his CFPB nomination — starting the Vacancies Act 210-day clock for Vought from this date."},
+  {m:"May 2025", d:"May 14", cat:"rule", t:"Move to rescind the Nonbank Registry rule",
+   x:"The Bureau proposes rescinding the rule requiring nonbanks to register certain agency and court orders."},
+  {m:"May 2025", d:"May 23–28", cat:"rule", t:"Bureau asks courts to vacate the 1033 Open Banking rule",
+   x:"In the Kentucky litigation the CFPB tells the court its own personal-financial-data-rights rule is unlawful and should be set aside — later pivoting (July) to a new rulemaking instead of outright vacatur."},
+  {m:"July 2025", d:"Jul 11", cat:"rule", major:true, t:"Medical-debt rule vacated",
+   x:"On a joint request from the Bureau and industry plaintiffs, the E.D. Texas vacates the Regulation V rule that would have stripped medical debt from credit reports, finding it exceeded the Bureau's authority under the FCRA."},
+  {m:"August 2025", d:"Aug 15", cat:"lit", major:true, t:"Appeals panel clears the mass layoffs",
+   x:"A divided (2–1) D.C. Circuit panel vacates the preliminary injunction, holding most claims belong before civil-service bodies and that the staffing directives weren't reviewable 'final agency action.' RIF notices go to 80%+ of staff."},
+  {m:"September 2025", d:"Sep", cat:"lit", t:"NTEU seeks full-court rehearing",
+   x:"The union petitions the D.C. Circuit to rehear the case en banc."},
+  {m:"October 2025", d:"Oct 20", cat:"rule", t:"FCRA-preemption interpretive rule",
+   x:"The Bureau issues an interpretive rule asserting the FCRA preempts state laws restricting medical-debt reporting — reversing a 2022 Biden-era position and putting 16 state bans in legal jeopardy."},
+  {m:"October 2025", d:"Oct", cat:"fund", t:"22 state AGs sue over funding",
+   x:"Twenty-two Democratic attorneys general sue Vought in Oregon federal court to force the Bureau to draw the funding the statute provides."},
+  {m:"November 2025", d:"Nov 11", cat:"fund", major:true, t:"DOJ declares the funding structure 'unconstitutional'",
+   x:"Citing a new OLC opinion, DOJ tells the D.C. Circuit the Fed lacks 'combined earnings' (profits) — having run a loss since 2022 — so the Bureau cannot lawfully draw funds, anticipates exhausting cash in early 2026, and would shift enforcement to DOJ."},
+  {m:"November 2025", d:"Nov 18", cat:"leader", t:"Stuart Levenbach nominated as director",
+   x:"Trump nominates the OMB energy-and-natural-resources official — with no consumer-finance background — for a five-year term. The Bureau calls it a 'technical' step to extend Vought's tenure under the Vacancies Act."},
+  {m:"December 2025", d:"Dec 17–18", cat:"lit", major:true, t:"En banc rehearing granted; layoffs stayed again",
+   x:"The full D.C. Circuit vacates the August panel decision and sets argument for February 24, 2026 — reinstating the injunction and freezing the early-2026 layoffs."},
+  {m:"December 2025", d:"Dec 30", cat:"fund", major:true, t:"Court: the Bureau must stay funded",
+   x:"Berman Jackson clarifies the injunction, ordering continued funding and calling the looming 'lapse' a problem 'manufactured by the defendants' and a 'transparent attempt' to shut the agency."},
+  {m:"January 2026", d:"Jan 3", cat:"leader", t:"Senate returns the Levenbach nomination",
+   x:"The procedural return resets the Vacancies Act clock, letting Vought serve as acting director through August 1, 2026 — but, observers note, no further extension is available after that."},
+  {m:"January 2026", d:"Jan 9", cat:"fund", t:"Vought draws $145M — under protest",
+   x:"To comply with the court order, Vought requests $145 million from the Fed for Q2 FY2026 while stating his disagreement with the funding ruling. The draw keeps the Bureau open into the spring."},
+  {m:"February 2026", d:"Feb 24", cat:"lit", major:true, t:"En banc argument heard",
+   x:"In a roughly three-hour argument before 11 judges, DOJ frames the case as ordinary managerial discretion; NTEU argues the executive cannot neutralize a statutory agency without Congress. A decision is awaited."},
+  {m:"March 2026", d:"Mar 13", cat:"fund", major:true, t:"Second court: refusing funding was unlawful",
+   x:"In Rise Economy v. CFPB, Judge Edward Davila (N.D. Cal.) grants summary judgment against the Bureau, calling Vought's refusal to request funds a 'transparent display of partisanship' and rejecting the 'combined earnings' theory."},
+  {m:"April 2026", d:"Apr", cat:"work", t:"A new 'streamlining' RIF surfaces",
+   x:"The government asks the en banc court to clear a freshly unveiled reduction-in-force; plaintiffs oppose fast-tracking but back sending the question to the district court first."},
+  {m:"May 2026", d:"May 11", cat:"fund", t:"Bureau appeals funding loss to the Ninth Circuit",
+   x:"Despite having drawn funds under protest, the CFPB appeals Judge Davila's funding decision — reviving the question of whether it can decline to draw from the Fed."},
+  {m:"May 2026", d:"May 29", cat:"leader", major:true, t:"Paoletta named deputy director — a successor teed up",
+   x:"A staff email reveals chief legal officer Mark Paoletta has been named deputy director while keeping his top-lawyer and OMB general-counsel roles. The move positions him to become acting director under the Vacancies Act once Vought's tenure ends — which legal experts expect Aug 1 — keeping a principal architect of the overhaul atop the Bureau. Geoffrey Gradler shifts to chief of staff."},
+  {m:"June 2026", d:"Jun 2", cat:"work", t:"Telework ended for remaining staff",
+   x:"The Bureau moves to end employee telework as the en banc decision and the August Vacancies Act deadline loom over what remains of the agency."}
+];
+
+const LEADERS = [
+  {feature:true, accent:"var(--oxblood)", role:"Acting Director · since Feb 2025 (also OMB Director)", status:"Acting", st:"st-act",
+   name:"Russell Vought", sub:"The architect of the wind-down",
+   p:"Russell Thurlow Vought (b. March 26, 1976) is the central figure. A former Heritage Action vice president, he served as OMB deputy director (2018–19) and director (2020–21), then founded the Center for Renewing America in 2021 and became a chief architect of Project 2025. Confirmed as OMB director on February 6, 2025, he took the CFPB's acting reins a day later. He has publicly stated his goal is to wind the Bureau down, telling a podcast in October 2025 he expected to close it 'probably within the next two or three months.' Courts — and the Vacancies Act clock — have repeatedly slowed that ambition.",
+   meta:"Dual-hatted: OMB Director + Acting CFPB Director · <b>FVRA service expires Aug 1, 2026</b>"},
+  {accent:"var(--copper-deep)", role:"Deputy Director & Chief Legal Officer · in line to lead the Bureau (also OMB General Counsel)", status:"Incoming director", st:"st-pend",
+   name:"Mark Paoletta", sub:"The successor-in-waiting",
+   p:"A longtime Vought ally and former Center for Renewing America senior fellow, Paoletta has been the operational engine of the overhaul — authoring the memos behind the stop-work order and the mass RIFs while serving as chief legal officer and as OMB general counsel. On May 29, 2026 he was named deputy director, and reporting indicates he is positioned to succeed Vought as acting director once Vought's FVRA tenure ends — which legal experts expect on August 1, 2026 — under the provision letting a senior official serve until a full-time head is Senate-confirmed. The effect would keep a principal architect of the wind-down atop the Bureau. Geoffrey Gradler, the prior deputy director, moved to chief of staff.",
+   meta:"Named Deputy Director May 29, 2026 · <b>set to take over as Acting Director after Aug 1</b>"},
+  {accent:"var(--ink-3)", role:"Director · 2021–2025", status:"Removed", st:"st-out",
+   name:"Rohit Chopra", sub:"The director who was fired",
+   p:"The Biden-appointed director led an aggressive enforcement and 'junk fees' agenda — overdraft, late fees, medical debt, open banking. Trump removed him on January 31, 2025; he confirmed his exit in a public letter. Much of the 2025–26 rollback consists of undoing rules and cases launched under him.",
+   meta:"Removed Jan 31, 2025 · most rolled-back rules originate from his tenure"},
+  {accent:"var(--c-fund)", role:"Acting Director · Feb 3–7, 2025 (Treasury Secretary)", status:"Stepped aside", st:"st-gone",
+   name:"Scott Bessent", sub:"The 96-hour caretaker",
+   p:"The Treasury Secretary and former hedge-fund manager was the first acting director, named under the Vacancies Act on the strength of his Senate-confirmed Treasury post. Within an hour of the announcement he ordered a freeze on essentially all Bureau activity. He was replaced by Vought four days later.",
+   meta:"Issued the first stop-work order · replaced after ~4 days"},
+  {accent:"var(--c-lit)", role:"Director nominee · Feb–May 2025", status:"Withdrawn", st:"st-gone",
+   name:"Jonathan McKernan", sub:"The nominee who never got a vote",
+   p:"A former FDIC board member, McKernan was nominated as permanent director and cleared the Senate Banking Committee on March 6, 2025 — but was never confirmed as the administration prioritized shrinking the Bureau. On May 12, 2025 his nomination was withdrawn and he moved to Treasury as Undersecretary of Domestic Finance.",
+   meta:"Committee-approved Mar 6, 2025 · withdrawal started Vought's FVRA clock"},
+  {accent:"var(--c-rule)", role:"Director nominee · since Nov 2025", status:"Pending", st:"st-pend",
+   name:"Stuart Levenbach", sub:"The placeholder nominee",
+   p:"An OMB associate director for natural resources and energy — and former NOAA chief of staff — Levenbach has no consumer-finance background. The Bureau itself described his November 2025 nomination as a 'technical' maneuver to extend Vought's acting tenure. The Senate returned the nomination on January 3, 2026.",
+   meta:"Nominated Nov 18, 2025 · returned by Senate Jan 3, 2026"}
+];
+
+const LITS = [
+  {feature:true, accent:"var(--c-lit)", status:"Pending (en banc)", st:"st-pend",
+   role:"D.D.C. No. 25-cv-00381 · D.C. Cir. No. 25-5091",
+   name:"NTEU v. Vought", sub:"The case that decides whether the Bureau survives",
+   p:"The union's suit asks whether the executive may neutralize a congressionally created agency through stop-work orders, defunding, and mass firings. It has swung repeatedly between injunction and reversal:",
+   steps:[
+     ["Mar 28, 2025","District court enjoins the layoffs."],
+     ["Apr 11 & 28, 2025","Panel narrows, then strips, RIF authority."],
+     ["Aug 15, 2025","Divided panel vacates the injunction — layoffs cleared."],
+     ["Dec 17, 2025","Full court grants en banc rehearing; panel ruling vacated; injunction back in force."],
+     ["Feb 24, 2026","En banc argument heard before 11 judges — decision awaited."]
+   ]},
+  {accent:"var(--c-fund)", status:"On appeal (9th Cir.)", st:"st-pend", role:"N.D. California",
+   name:"Rise Economy v. CFPB", sub:"The funding-refusal case",
+   p:"Judge Edward Davila ruled on March 13, 2026 that Vought's refusal to request Federal Reserve funding was unlawful under the APA — a 'transparent display of partisanship' — rejecting the theory that the Fed's post-2022 losses leave no 'combined earnings' to draw on. The Bureau appealed to the Ninth Circuit on May 11, 2026.",
+   meta:"Summary judgment for plaintiffs · CFPB appealed May 11, 2026"},
+  {accent:"var(--c-fund)", status:"Pending", st:"st-pend", role:"D. Oregon · 22 state attorneys general",
+   name:"State AGs v. Vought", sub:"States move to force the funding draw",
+   p:"Twenty-two Democratic attorneys general sued in October 2025 to compel the Bureau to accept money from the Federal Reserve, arguing the Dodd-Frank Act gives the director no discretion to defund the agency by declining to draw.",
+   meta:"Parallel pressure on the funding question"},
+  {accent:"var(--oxblood)", status:"Rules vacated", st:"st-out", role:"E.D. Texas / E.D. Kentucky",
+   name:"The rule-challenge cases", sub:"Where the Bureau invited defeat",
+   p:"In suits brought by industry, the Bureau changed sides — joining requests to vacate its own medical-debt rule (Cornerstone Credit Union League, E.D. Tex., July 2025) and conceding the 1033 Open Banking rule was unlawful before pivoting to a new rulemaking (Forcht Bank / KBA / BPI, E.D. Ky.). The credit-card late-fee rule fell to a Texas consent judgment.",
+   meta:"Litigation used as a rollback tool, not a defense"}
+];
+
+const ENF = [
+  {d:"Feb 2025", n:"SoLo Funds", det:"Fintech lender", al:"Alleged deceptive practices that pushed borrowers into higher loan costs; Vought called the action 'weaponized.'", x:"Dismissed"},
+  {d:"Feb 27, 2025", n:"Capital One", det:"National bank", al:"Alleged the bank misled depositors about savings-account interest rates.", x:"Dismissed w/ prejudice"},
+  {d:"Feb 27, 2025", n:"Vanderbilt Mortgage & Finance", det:"Berkshire Hathaway unit", al:"Alleged unaffordable manufactured-home loans made without proper ability-to-repay analysis.", x:"Dismissed w/ prejudice"},
+  {d:"Feb 27, 2025", n:"Rocket Homes Real Estate", det:"Rocket Cos. unit", al:"Alleged improper referral incentives to steer homebuyers.", x:"Dismissed w/ prejudice"},
+  {d:"Feb 27, 2025", n:"PHEAA", det:"Student-loan servicer", al:"Alleged unlawful student-loan servicing and collection conduct.", x:"Dismissed w/ prejudice"},
+  {d:"Feb 28, 2025", n:"TransUnion (+ exec J. Danaher)", det:"Credit bureau", al:"Alleged violation of a 2017 order over deceptive marketing of credit products.", x:"Dismissed"},
+  {d:"Mar 2025", n:"Major retailer + fintech (D. Minn.)", det:"Earned-wage / pay accounts", al:"One of the last cases filed under the prior director (Dec 2024), alleging CFPA violations.", x:"Dismissed w/ prejudice"},
+  {d:"—", n:"MoneyLion Technologies", det:"Fintech lender", al:"Alleged illegally high rates to servicemembers and high-cost memberships — the Bureau chose to CONTINUE this one.", x:"Continued"}
+];
+
+const RULES = [
+  {d:"Mar–May 2025", n:"Overdraft Rule", det:"$5 fee cap · $10B+ institutions", how:"Overturned by Congressional Review Act resolution; signed May 9, 2025. CRA bars a substantially similar rule without new authorization."},
+  {d:"Mar–May 2025", n:"Payment Apps (larger-participant) Rule", det:"Supervision of digital wallets & P2P apps", how:"Senate voted 51–47 to overturn (Mar 5); nullified by CRA resolution signed May 9, 2025."},
+  {d:"May 12, 2025", n:"67 guidance documents", det:"Policy statements · interpretive rules · advisory opinions · circulars", how:"Withdrawn in a single Federal Register action — the largest single rollback."},
+  {d:"May 14, 2025", n:"Nonbank Registry (NBR) Rule", det:"Registration of agency / court orders", how:"Bureau proposed rescission."},
+  {d:"2025 (ongoing)", n:"§ 1033 Open Banking Rule", det:"Personal financial data rights", how:"Bureau first urged courts to vacate it as unlawful, then pivoted to a new rulemaking; case stayed in E.D. Ky."},
+  {d:"Jul 11, 2025", n:"Medical Debt Rule (Reg V)", det:"Bar on medical debt in credit reports", how:"Vacated by E.D. Texas on a joint Bureau–industry request; Bureau will not reissue."},
+  {d:"2025", n:"Credit Card Late Fee Rule", det:"$32 → $8 late-fee cap", how:"Vacated via a Texas consent judgment (CARD Act / APA grounds)."},
+  {d:"Oct 20, 2025", n:"FCRA preemption (interpretive rule)", det:"Reverses 2022 Biden position", how:"New interpretive rule asserts the FCRA preempts state medical-debt-reporting bans — affecting ~16 state laws."}
+];
+
+/* ============ TIMELINE (collapsible months) ============ */
+const ALL_MONTHS = [...new Set(EVENTS.map(e=>e.m))];
+const monthState = {}; /* month -> open boolean; absent = open */
+
+function renderTimeline(){
+  const active = new Set([...document.querySelectorAll('.chip[aria-pressed="true"]')].map(c=>c.dataset.cat));
+  const tl = document.getElementById('tl'); tl.innerHTML='';
+  const filtered = EVENTS.filter(e=>active.has(e.cat));
+  if(!filtered.length){
+    tl.innerHTML='<p style="color:var(--ink-3);font-style:italic;padding:30px 0">No events for the selected categories — toggle a filter back on.</p>';
+    return;
+  }
+  const groups=[]; const idx={};
+  filtered.forEach(e=>{ if(!(e.m in idx)){idx[e.m]=groups.length;groups.push({m:e.m,items:[]});} groups[idx[e.m]].items.push(e); });
+
+  groups.forEach((g,gi)=>{
+    const open = monthState[g.m]!==false;
+    const group=document.createElement('div'); group.className='tl-group'; group.dataset.open=open?'true':'false';
+    const evId='tlm-'+gi;
+
+    const btn=document.createElement('button');
+    btn.type='button'; btn.className='tl-month';
+    btn.setAttribute('aria-expanded', open?'true':'false');
+    btn.setAttribute('aria-controls', evId);
+    btn.innerHTML=`<span class="m-name">${g.m}</span><span class="m-meta"><span class="m-ct">${g.items.length} ${g.items.length===1?'entry':'entries'}</span><span class="m-chev">▾</span></span>`;
+    btn.addEventListener('click',()=>{
+      const nowOpen = group.dataset.open!=='true';
+      group.dataset.open = nowOpen?'true':'false';
+      btn.setAttribute('aria-expanded', nowOpen?'true':'false');
+      monthState[g.m] = nowOpen;
+    });
+
+    const ev=document.createElement('div'); ev.className='tl-events'; ev.id=evId; ev.setAttribute('role','region');
+    g.items.forEach(e=>{
+      const div=document.createElement('div');
+      div.className='event'+(e.major?' major':'');
+      div.style.setProperty('--cc', CATS[e.cat].color);
+      div.innerHTML=`<div class="when">${e.d}</div><div class="body"><span class="tag">${CATS[e.cat].name}</span><h3>${e.t}</h3><p>${e.x}</p></div>`;
+      ev.appendChild(div);
+    });
+
+    group.appendChild(btn); group.appendChild(ev); tl.appendChild(group);
+  });
+}
+function setAllMonths(open){ ALL_MONTHS.forEach(m=>monthState[m]=open); renderTimeline(); }
+
+function renderLeaders(){
+  document.getElementById('leaders').innerHTML = LEADERS.map(l=>`
+    <article class="card${l.feature?' feature':''}" style="--accent:${l.accent}">
+      <span class="status ${l.st}">${l.status}</span>
+      <div class="role">${l.role}</div>
+      <h3>${l.name}</h3><div class="sub">${l.sub}</div><p>${l.p}</p>
+      <div class="meta">${l.meta}</div>
+    </article>`).join('');
+}
+function renderLits(){
+  document.getElementById('lits').innerHTML = LITS.map(l=>`
+    <article class="card${l.feature?' feature':''}" style="--accent:${l.accent}">
+      <span class="status ${l.st}">${l.status}</span>
+      <div class="role">${l.role}</div>
+      <h3>${l.name}</h3><div class="sub">${l.sub}</div><p>${l.p}</p>
+      ${l.steps?`<ul class="lit-steps">${l.steps.map(s=>`<li><b>${s[0]}</b> — ${s[1]}</li>`).join('')}</ul>`:''}
+      ${l.meta?`<div class="meta">${l.meta}</div>`:''}
+    </article>`).join('');
+}
+function renderEnf(){
+  document.getElementById('enfRows').innerHTML = ENF.map(e=>`
+    <tr><td class="dt">${e.d}</td>
+      <td><span class="name">${e.n}</span><span class="det">${e.det}</span></td>
+      <td>${e.al}</td>
+      <td><span class="pill${e.x==='Continued'?' cont':''}">${e.x}</span></td></tr>`).join('');
+}
+function renderRules(){
+  document.getElementById('ruleRows').innerHTML = RULES.map(r=>`
+    <tr><td class="dt">${r.d}</td>
+      <td><span class="name">${r.n}</span><span class="det">${r.det}</span></td>
+      <td>${r.how}</td></tr>`).join('');
+}
+
+/* ============ INTERACTION ============ */
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('show'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab).classList.add('show');
+    window.scrollTo({top:document.querySelector('nav.tabs').offsetTop-60,behavior:'smooth'});
+  });
+});
+document.querySelectorAll('.chip').forEach(chip=>{
+  chip.addEventListener('click',()=>{
+    chip.setAttribute('aria-pressed', chip.getAttribute('aria-pressed')==='true'?'false':'true');
+    renderTimeline();
+  });
+});
+document.getElementById('expandAll').addEventListener('click',()=>setAllMonths(true));
+document.getElementById('collapseAll').addEventListener('click',()=>setAllMonths(false));
+
+/* collapsible stats */
+const glance=document.getElementById('glance');
+document.getElementById('glanceToggle').addEventListener('click',()=>{
+  const open = glance.dataset.open==='true';
+  glance.dataset.open = open?'false':'true';
+  document.getElementById('glanceToggle').setAttribute('aria-expanded', open?'false':'true');
+  document.getElementById('glanceLabel').textContent = open?'Expand':'Collapse';
+});
+
+/* reveal on scroll */
+const io=new IntersectionObserver((es)=>{es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+renderTimeline(); renderLeaders(); renderLits(); renderEnf(); renderRules();
+</script>
+</body>
+</html>

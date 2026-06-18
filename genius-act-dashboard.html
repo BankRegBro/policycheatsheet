@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GENIUS Act Implementation Dashboard · BankRegWire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* ── BankRegWire paper/ink system ── */
+  --paper:#f1ede2; --paper-card:#f7f3ea; --paper-sunk:#e9e3d4;
+  --ink:#16150f; --ink-2:#46433a; --ink-3:#6c6859;
+  --oxblood:#7a1f2b; --oxblood-tx:#6a1a25;
+  --copper:#cf7714; --copper-deep:#a85c08;
+  --rule:rgba(22,21,15,.14); --rule-2:rgba(22,21,15,.24); --rule-3:rgba(22,21,15,.40);
+  --copper-soft:rgba(207,119,20,.20); --oxblood-soft:rgba(122,31,43,.09);
+  --focus:#1f6aa8; --radius:4px;
+
+  /* pathway / accent colors (warmed for paper) */
+  --blue:#27567f;   --blue-bg:#e0ebf4;
+  --teal:#0f6e56;   --teal-bg:#dcefe7;
+  --purple:#473f7a; --purple-bg:#e6e2f0;
+  --coral:#9a4422;  --coral-bg:#f4e2d8;
+
+  /* semantic tags */
+  --green-bg:#dfe9d0; --green-tx:#33500f;
+  --amber-bg:#f6e6c7; --amber-tx:#7a4a06;
+  --red-bg:#f4dad7;   --red-tx:#933030;
+  --gray-bg:#e6e1d4;  --gray-tx:#4c483c;
+
+  /* open-question rails */
+  --rail-tension:var(--coral); --rail-watch:var(--ncua,#a85c08); --rail-noted:#3c6a2c; --rail-state:#473f7a;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --paper:#16150f; --paper-card:#201e16; --paper-sunk:#12110b;
+    --ink:#f1ede2; --ink-2:#c2bdac; --ink-3:#928d7d;
+    --oxblood:#d27d88; --oxblood-tx:#dc8c96;
+    --copper:#e6973c; --copper-deep:#f0a64f;
+    --rule:rgba(241,237,226,.15); --rule-2:rgba(241,237,226,.26); --rule-3:rgba(241,237,226,.42);
+    --copper-soft:rgba(230,151,60,.26); --oxblood-soft:rgba(210,125,136,.12);
+    --focus:#6fb2ec;
+
+    --blue:#84b3df;   --blue-bg:#0c2c4b;
+    --teal:#7fcdba;   --teal-bg:#06342b;
+    --purple:#c6c2ee; --purple-bg:#26224a;
+    --coral:#e8a07f;  --coral-bg:#3f1c0e;
+
+    --green-bg:#22340c; --green-tx:#bcdd95;
+    --amber-bg:#3c2706; --amber-tx:#f0c882;
+    --red-bg:#3a1614;   --red-tx:#eaa6a6;
+    --gray-bg:#2e2b22;  --gray-tx:#d2cdbd;
+
+    --rail-tension:#e8a07f; --rail-noted:#9cca74; --rail-state:#c6c2ee;
+  }
+}
+body{font-family:'Archivo',system-ui,sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;padding:2.25rem 1rem 3rem;line-height:1.62;-webkit-font-smoothing:antialiased;background-image:radial-gradient(rgba(22,21,15,.022) 1px,transparent 1px);background-size:3px 3px}
+@media(prefers-color-scheme:dark){body{background-image:radial-gradient(rgba(241,237,226,.025) 1px,transparent 1px)}}
+.shell{max-width:900px;margin:0 auto}
+a{color:var(--oxblood-tx)}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:3px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);border:0}
+
+/* animated copper wire */
+.wire{position:relative;height:2px;background:var(--rule-2);overflow:visible}
+.wire::after{content:"";position:absolute;top:50%;left:0;width:7px;height:7px;border-radius:50%;background:var(--copper);box-shadow:0 0 10px 2px var(--copper-soft);transform:translateY(-50%);animation:wire-run 7.5s linear 1 forwards}
+@keyframes wire-run{0%{left:-1%;opacity:0}5%{opacity:1}93%{opacity:1}100%{left:101%;opacity:0}}
+@media(prefers-reduced-motion:reduce){.wire::after{animation:none;left:0;opacity:1}}
+
+/* masthead */
+.masthead{background:var(--paper-card);border:1px solid var(--rule-2);border-radius:var(--radius);padding:1.6rem 1.9rem 0;margin-bottom:1.1rem}
+.brandbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-bottom:1rem;border-bottom:1px solid var(--rule);margin-bottom:1.15rem}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-mark{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--ink)}
+.brand-mark b{color:var(--oxblood)}
+.node{width:8px;height:8px;border-radius:50%;background:var(--copper);box-shadow:0 0 0 3px var(--copper-soft);flex-shrink:0}
+.desk-tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);border:1px solid var(--rule-2);border-radius:20px;padding:3px 10px}
+.kicker{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--copper-deep);margin-bottom:.5rem}
+.masthead h1{font-family:'Fraunces',Georgia,serif;font-optical-sizing:auto;font-size:clamp(27px,4.8vw,38px);font-weight:600;letter-spacing:-.015em;line-height:1.05;color:var(--ink)}
+.masthead h1 em{font-style:italic;color:var(--oxblood)}
+.mh-sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-3);margin-top:.65rem;letter-spacing:.01em;line-height:1.6}
+.mh-lede{font-size:15px;color:var(--ink-2);margin:1.05rem 0 .2rem;line-height:1.66;max-width:66ch}
+.mh-lede b{color:var(--ink);font-weight:600}
+.mh-votes{display:flex;gap:8px;margin-top:.85rem;flex-wrap:wrap}
+.vote-pill{font-family:'JetBrains Mono',monospace;font-size:10px;padding:4px 10px;border-radius:20px;border:1px solid var(--rule-2);color:var(--ink-3);letter-spacing:.02em}
+.vote-pill strong{color:var(--ink);font-weight:600}
+.masthead .wire{margin:1.2rem -1.9rem 0}
+
+/* deadline strip */
+.deadlines-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:1.1rem}
+@media(max-width:580px){.deadlines-strip{grid-template-columns:1fr}}
+.deadline-card{background:var(--paper-card);border:1px solid var(--rule-2);border-radius:var(--radius);padding:.8rem 1rem;position:relative;overflow:hidden}
+.deadline-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px}
+.dl-label{font-family:'JetBrains Mono',monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.07em;font-weight:600;margin-bottom:.25rem}
+.dl-date{font-family:'Fraunces',Georgia,serif;font-size:18px;font-weight:600;color:var(--ink);margin-bottom:.2rem;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.dl-count{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:600;letter-spacing:.03em;color:var(--ink-3);border:1px solid var(--rule-2);border-radius:20px;padding:2px 8px}
+.dl-desc{font-size:11.5px;color:var(--ink-2);line-height:1.45}
+.dl-hot::before{background:var(--red-tx)} .dl-hot .dl-label{color:var(--red-tx)}
+.dl-warn::before{background:var(--copper)} .dl-warn .dl-label{color:var(--copper-deep)}
+.dl-ok::before{background:var(--teal)} .dl-ok .dl-label{color:var(--teal)}
+
+/* metrics */
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:1.1rem}
+@media(max-width:580px){.metrics{grid-template-columns:repeat(2,1fr)}}
+.metric{background:var(--paper-card);border:1px solid var(--rule-2);border-radius:var(--radius);padding:.85rem .95rem;position:relative;overflow:hidden}
+.metric::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--copper);transform:scaleY(0);transform-origin:top;transition:transform .2s}
+.metric:hover::before{transform:scaleY(1)}
+.metric-val{font-family:'Fraunces',Georgia,serif;font-size:23px;font-weight:600;color:var(--ink);letter-spacing:-.01em;line-height:1.05}
+.metric-lbl{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--ink-3);margin-top:5px;text-transform:uppercase;letter-spacing:.045em;line-height:1.45}
+
+/* tabs */
+.tabs-wrap{background:var(--paper-card);border:1px solid var(--rule-2);border-radius:var(--radius);overflow:hidden}
+.tab-nav{display:flex;border-bottom:1px solid var(--rule-2);overflow-x:auto;background:var(--paper-sunk);position:sticky;top:0;z-index:5}
+.tab-btn{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:.04em;padding:13px 15px;border:none;background:none;cursor:pointer;color:var(--ink-3);border-bottom:2px solid transparent;white-space:nowrap;transition:color .15s,border-color .15s,background .15s;text-transform:uppercase}
+.tab-btn:hover{color:var(--ink);background:var(--paper-card)}
+.tab-btn.active{color:var(--ink);font-weight:600;border-bottom-color:var(--copper);background:var(--paper-card)}
+.tab-panel{display:none;padding:1.5rem 1.9rem 1.9rem}
+.tab-panel.active{display:block}
+
+.pillar-intro{font-size:14px;color:var(--ink-2);line-height:1.66;margin-bottom:1.2rem;padding:.9rem 1.1rem;background:var(--oxblood-soft);border-left:3px solid var(--oxblood);border-radius:0 var(--radius) var(--radius) 0}
+.pillar-intro em{font-style:italic;color:var(--ink)}
+
+.slabel{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin-bottom:.8rem;display:flex;align-items:center;gap:8px}
+.slabel::after{content:"";flex:1;height:1px;background:var(--rule)}
+
+/* status tags */
+.stag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9.5px;padding:3px 9px;border-radius:20px;font-weight:600;letter-spacing:.03em;text-transform:uppercase}
+.tag-blue{background:var(--blue-bg);color:var(--blue)}
+.tag-green{background:var(--green-bg);color:var(--green-tx)}
+.tag-amber{background:var(--amber-bg);color:var(--amber-tx)}
+.tag-red{background:var(--red-bg);color:var(--red-tx)}
+.tag-gray{background:var(--gray-bg);color:var(--gray-tx)}
+.tag-purple{background:var(--purple-bg);color:var(--purple)}
+.tag-teal{background:var(--teal-bg);color:var(--teal)}
+.tag-coral{background:var(--coral-bg);color:var(--coral)}
+
+/* pathway cards */
+.pathway-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.5rem}
+@media(max-width:640px){.pathway-grid{grid-template-columns:1fr}}
+.pathway-card{border:1px solid var(--rule-2);border-radius:var(--radius);overflow:hidden;background:var(--paper-card)}
+.pw-header{padding:.6rem .9rem;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:.03em;border-bottom:2px solid currentColor}
+.pw-a{background:var(--blue-bg);color:var(--blue)}
+.pw-b{background:var(--teal-bg);color:var(--teal)}
+.pw-c{background:var(--purple-bg);color:var(--purple)}
+.pw-d{background:var(--coral-bg);color:var(--coral)}
+.pw-body{padding:.75rem .9rem}
+.pw-body p{font-size:12.5px;color:var(--ink-2);line-height:1.55;margin-bottom:.4rem}
+.pw-body p:last-child{margin-bottom:0}
+.pw-body em{font-style:italic;color:var(--ink)}
+.pw-reg{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-3);font-style:normal!important;letter-spacing:.01em}
+
+/* implementation tracker */
+.impl-list{display:flex;flex-direction:column;gap:9px;margin-bottom:1.25rem}
+.impl-item{border:1px solid var(--rule-2);border-radius:var(--radius);overflow:hidden;background:var(--paper-card);position:relative}
+.impl-item::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,var(--copper),transparent 60%);transform:scaleX(0);transform-origin:left;transition:transform .35s ease;z-index:1}
+.impl-item:hover::before,.impl-item.open::before{transform:scaleX(1)}
+.impl-head{display:flex;align-items:center;gap:10px;padding:.85rem 1.1rem;cursor:pointer}
+.impl-agency{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;min-width:56px;color:var(--copper-deep);line-height:1.2}
+.impl-title{font-family:'Fraunces',Georgia,serif;font-size:14.5px;font-weight:500;color:var(--ink);flex:1;line-height:1.3}
+.impl-date{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-3);white-space:nowrap}
+.caret{font-size:9px;color:var(--ink-3);transition:transform .2s;flex-shrink:0}
+.impl-item.open .caret{transform:rotate(180deg)}
+.impl-detail{display:none;padding:.9rem 1.1rem 1rem;border-top:1px solid var(--rule);font-size:13px;color:var(--ink-2);line-height:1.68;background:var(--paper-sunk)}
+.impl-item.open .impl-detail{display:block}
+.impl-detail em{font-style:italic;color:var(--ink)}
+.impl-item.absent{border-left:3px solid var(--red-tx)}
+.impl-item.absent .impl-agency{color:var(--red-tx)}
+
+/* timeline */
+.tl-item{display:flex;gap:11px;margin-bottom:13px}
+.tl-spine{display:flex;flex-direction:column;align-items:center;width:14px;flex-shrink:0}
+.tl-dot{width:9px;height:9px;border-radius:50%;background:var(--copper);margin-top:5px;flex-shrink:0;box-shadow:0 0 0 3px var(--copper-soft)}
+.tl-dot.future{background:transparent;border:1.5px solid var(--ink-3);box-shadow:none}
+.tl-dot.urgent{background:var(--oxblood);box-shadow:0 0 0 3px var(--oxblood-soft)}
+.tl-dot.warning{background:var(--red-tx);box-shadow:0 0 0 3px var(--red-bg)}
+.tl-line{width:1.5px;background:var(--rule-2);flex:1;margin-top:4px;min-height:22px}
+.tl-date{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.03em;min-width:104px;padding-top:3px;text-align:right;flex-shrink:0}
+.tl-body{flex:1;padding-bottom:9px}
+.tl-title{font-family:'Fraunces',Georgia,serif;font-size:14.5px;font-weight:500;color:var(--ink);line-height:1.32}
+.tl-desc{font-size:12.5px;color:var(--ink-2);margin-top:3px;line-height:1.55}
+@media(max-width:560px){.tl-date{min-width:78px;font-size:9px}}
+
+/* prudential grid */
+.prud-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-bottom:1.25rem}
+@media(max-width:560px){.prud-grid{grid-template-columns:1fr}}
+.prud-card{border:1px solid var(--rule-2);border-radius:var(--radius);padding:.9rem 1rem;background:var(--paper-card);cursor:pointer;transition:border-color .15s;position:relative;overflow:hidden}
+.prud-card::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,var(--copper),transparent 60%);transform:scaleX(0);transform-origin:left;transition:transform .35s ease}
+.prud-card:hover::before,.prud-card.open::before{transform:scaleX(1)}
+.prud-card:hover{border-color:var(--rule-3)}
+.prud-card.open{border-color:var(--rule-3)}
+.prud-head{display:flex;align-items:flex-start;gap:9px}
+.prud-icon{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--copper-deep);flex-shrink:0;margin-top:1px;min-width:16px}
+.prud-title{font-family:'Fraunces',Georgia,serif;font-size:14px;font-weight:500;color:var(--ink);flex:1;line-height:1.3}
+.prud-detail{display:none;margin-top:.7rem;padding-top:.7rem;border-top:1px solid var(--rule);font-size:12.5px;color:var(--ink-2);line-height:1.62}
+.prud-card.open .prud-detail{display:block}
+.prud-detail em{font-style:italic;color:var(--ink)}
+
+/* open questions / notes */
+.q-list{display:flex;flex-direction:column;gap:8px}
+.q-item{border:1px solid var(--rule-2);border-radius:var(--radius);padding:.9rem 1rem;border-left:3px solid var(--rule-3);background:var(--paper-card)}
+.q-item.tension{border-left-color:var(--rail-tension)}
+.q-item.watch{border-left-color:var(--copper-deep)}
+.q-item.noted{border-left-color:var(--rail-noted)}
+.q-item.state{border-left-color:var(--rail-state)}
+.ql{font-family:'JetBrains Mono',monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:.35rem;color:var(--ink-3)}
+.ql.tension{color:var(--rail-tension)}.ql.watch{color:var(--copper-deep)}.ql.noted{color:var(--rail-noted)}.ql.state{color:var(--rail-state)}
+.qt{font-family:'Fraunces',Georgia,serif;font-size:14.5px;font-weight:500;color:var(--ink);line-height:1.38;margin-bottom:.4rem}
+.qs{font-size:12.5px;color:var(--ink-2);line-height:1.6}
+.qs em{font-style:italic;color:var(--ink)}.qs b{color:var(--ink);font-weight:600}
+
+/* colophon */
+.colophon{margin-top:1.3rem;background:var(--paper-card);border:1px solid var(--rule);border-radius:var(--radius);padding:1.1rem 1.4rem}
+.colophon .wire{margin:0 -1.4rem .9rem}
+.colophon p{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--ink-3);line-height:1.7}
+.colophon p+p{margin-top:.55rem}
+.colophon b{color:var(--ink-2)}
+.colophon a{color:var(--oxblood-tx)}
+
+/* print */
+@media print{
+  body{background:#fff;color:#000;padding:0;background-image:none}
+  .wire,.tab-nav,.caret,.metrics,.brand-mark,.desk-tag,.dl-count{display:none!important}
+  .tabs-wrap,.masthead,.impl-item,.prud-card,.q-item,.colophon,.deadline-card,.metric,.pathway-card{border-color:#999}
+  .tab-panel{display:block!important;padding:1rem 0;break-inside:avoid}
+  .tab-panel::before{content:attr(data-print-label);display:block;font-family:'Fraunces',serif;font-size:17px;font-weight:600;margin:1.3rem 0 .6rem;border-bottom:1px solid #000}
+  .impl-detail,.prud-detail{display:block!important}
+  .impl-item,.prud-card,.q-item,.deadline-card,.metric,.pathway-card,.masthead,.tabs-wrap{break-inside:avoid}
+  a[href]::after{content:" (" attr(href) ")";font-size:8px;color:#444;word-break:break-all}
+}
+</style>
+</head>
+<body>
+<a class="brw-backhome" href="wire.html" aria-label="Back to BankRegWire">← BankRegWire</a>
+<style>
+.brw-backhome{position:fixed;top:14px;left:14px;z-index:9999;display:inline-flex;align-items:center;gap:6px;
+  font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+  text-decoration:none;color:#f1ede2;background:rgba(22,21,15,.72);
+  -webkit-backdrop-filter:blur(8px) saturate(1.2);backdrop-filter:blur(8px) saturate(1.2);
+  border:1px solid rgba(240,165,70,.4);border-radius:30px;padding:8px 14px;box-shadow:0 8px 22px -10px rgba(0,0,0,.5);
+  transition:color .2s,border-color .2s,background .2s}
+.brw-backhome:hover{color:#f0a546;border-color:#f0a546;background:rgba(22,21,15,.85)}
+.brw-backhome:focus-visible{outline:2px solid #f0a546;outline-offset:3px}
+@media print{.brw-backhome{display:none}}
+</style>
+<div class="shell">
+
+<header class="masthead">
+  <div class="brandbar">
+    <div class="brand"><span class="node" aria-hidden="true"></span><span class="brand-mark"><b>BANK</b>REG<b>WIRE</b></span></div>
+    <span class="desk-tag">Implementation Dashboard · Stablecoin Desk</span>
+  </div>
+  <p class="kicker">Guiding &amp; Establishing National Innovation for U.S. Stablecoins</p>
+  <h1>The GENIUS Act <em>Dashboard</em></h1>
+  <p class="mh-sub">Pub. L. 119-27 (S. 1582, 119th Cong.) &nbsp;·&nbsp; Signed Jul 18 2025 &nbsp;·&nbsp; Rules due Jul 18 2026 &nbsp;·&nbsp; Effective ≤ Jan 18 2027 &nbsp;·&nbsp; Current as of Jun 1 2026</p>
+  <p class="mh-lede">The GENIUS Act is the first major federal digital-asset statute, building a licensing and supervisory framework for payment stablecoins. Implementing rules must be final by <b>July 18, 2026</b>, and the Act takes effect 120 days after all primary regulators finalize — or by January 18, 2027, whichever is earlier. Proposed rules have now issued from the OCC, FDIC, NCUA, Treasury, and jointly from FinCEN and OFAC. The <b>Federal Reserve — a primary regulator for state-member-bank and holding-company issuers — has not</b>, the single largest gap in the current picture.</p>
+  <div class="mh-votes">
+    <span class="vote-pill">Senate <strong>68–30</strong> · Jun 17 2025</span>
+    <span class="vote-pill">House <strong>308–122</strong> · Jul 17 2025</span>
+    <span class="vote-pill">Sponsors <strong>Hagerty · Scott · Gillibrand · Lummis</strong></span>
+  </div>
+  <p class="mh-sub" id="asof-line">Verified against OCC, FDIC, NCUA, Treasury, FinCEN/OFAC releases and the Federal Register. Verify each item before relying on it.</p>
+  <div class="wire" aria-hidden="true"></div>
+</header>
+
+<div class="deadlines-strip">
+  <div class="deadline-card dl-hot">
+    <div class="dl-label">Rulemaking deadline</div>
+    <div class="dl-date">Jul 18, 2026 <span class="dl-count" id="count-rules">—</span></div>
+    <div class="dl-desc">Agencies must issue final rules within 1 year of enactment. The Federal Reserve has not yet published an NPRM.</div>
+  </div>
+  <div class="deadline-card dl-warn">
+    <div class="dl-label">Effective date (backstop)</div>
+    <div class="dl-date">Jan 18, 2027 <span class="dl-count" id="count-eff">—</span></div>
+    <div class="dl-desc">18 months after enactment, OR 120 days after all primary regulators finalize — whichever is earlier. Fed delay pushes toward the backstop.</div>
+  </div>
+  <div class="deadline-card dl-ok">
+    <div class="dl-label">Lead rule — OCC NPRM</div>
+    <div class="dl-date">Feb 25, 2026</div>
+    <div class="dl-desc">376-page implementing rule (new 12 CFR Part 15): licensing, reserves, prudential standards, custody, capital, enforcement. Comments closed May 1.</div>
+  </div>
+</div>
+
+<div class="metrics">
+  <div class="metric"><div class="metric-val">3 of 4</div><div class="metric-lbl">Banking agencies with NPRMs (Fed absent)</div></div>
+  <div class="metric"><div class="metric-val">$10B</div><div class="metric-lbl">Threshold for state vs. federal supervision</div></div>
+  <div class="metric"><div class="metric-val">1:1</div><div class="metric-lbl">Reserve backing required (cash / low-risk assets)</div></div>
+  <div class="metric"><div class="metric-val">Monthly</div><div class="metric-lbl">CEO/CFO-certified reserve reports required</div></div>
+</div>
+
+<div class="tabs-wrap">
+  <div class="tab-nav" role="tablist" aria-label="Dashboard sections">
+    <button class="tab-btn active" role="tab" id="tab-pathways" aria-selected="true" onclick="sw('pathways',this)">Issuer pathways</button>
+    <button class="tab-btn" role="tab" id="tab-implementation" aria-selected="false" tabindex="-1" onclick="sw('implementation',this)">Implementation tracker</button>
+    <button class="tab-btn" role="tab" id="tab-timeline" aria-selected="false" tabindex="-1" onclick="sw('timeline',this)">Timeline</button>
+    <button class="tab-btn" role="tab" id="tab-prudential" aria-selected="false" tabindex="-1" onclick="sw('prudential',this)">Prudential standards</button>
+    <button class="tab-btn" role="tab" id="tab-state" aria-selected="false" tabindex="-1" onclick="sw('state',this)">State-federal framework</button>
+    <button class="tab-btn" role="tab" id="tab-questions" aria-selected="false" tabindex="-1" onclick="sw('questions',this)">Open questions</button>
+  </div>
+
+  <!-- Pathways -->
+  <div id="panel-pathways" class="tab-panel active" role="tabpanel" aria-labelledby="tab-pathways" data-print-label="Issuer Pathways">
+    <p class="pillar-intro">The GENIUS Act creates three pathways to become a "permitted payment stablecoin issuer" (PPSI) — plus a registration pathway for qualifying foreign issuers. Each determines the primary regulator and applicable prudential standards.</p>
+    <div class="slabel">The three issuer pathways</div>
+    <div class="pathway-grid">
+      <div class="pathway-card">
+        <div class="pw-header pw-a">Pathway A — IDI subsidiary</div>
+        <div class="pw-body">
+          <div class="stag tag-blue" style="margin-bottom:.5rem">Insured depository institution subsidiary</div>
+          <p>A subsidiary of an insured depository institution (national bank, state member bank, state nonmember bank, savings association, or credit union) authorized by its parent's federal regulator to issue payment stablecoins.</p>
+          <p>The parent's <em>primary federal banking agency</em> — Fed, OCC, FDIC, or NCUA depending on charter — supervises the issuing subsidiary. Capital double-counting rules prevent punitive treatment.</p>
+          <p class="pw-reg">Regulator: parent's primary federal regulator</p>
+        </div>
+      </div>
+      <div class="pathway-card">
+        <div class="pw-header pw-b">Pathway B — Federal nonbank (OCC)</div>
+        <div class="pw-body">
+          <div class="stag tag-teal" style="margin-bottom:.5rem">Federal qualified issuer (FQPSI)</div>
+          <p>A nonbank that obtains an OCC charter/license under the GENIUS Act — including uninsured national banks, federal branches of foreign banks, and newly chartered nonbank issuers.</p>
+          <p>The OCC is primary regulator for all FQPSIs. This is the pathway for fintech entrants such as Erebor and the World Liberty Financial application. The OCC's Feb 2026 376-page NPRM governs it comprehensively.</p>
+          <p class="pw-reg">Regulator: OCC</p>
+        </div>
+      </div>
+      <div class="pathway-card">
+        <div class="pw-header pw-c">Pathway C — State qualified (≤$10B)</div>
+        <div class="pw-body">
+          <div class="stag tag-purple" style="margin-bottom:.5rem">State qualified issuer (SQPSI)</div>
+          <p>A state-chartered entity under a state framework Treasury certifies as "substantially similar" to the federal regime. Available only to issuers with <em>$10 billion or less</em> outstanding.</p>
+          <p>Issuers above $10B must move to OCC supervision within 360 days or cease net new issuance (subject to a waiver pathway). The Stablecoin Certification Review Committee (SCRC) approves certifications; Treasury's Apr 2026 NPRM proposes the standard.</p>
+          <p class="pw-reg">Regulator: state regulator (federal floor)</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="slabel">Foreign issuers — registration pathway</div>
+    <div class="pathway-card" style="margin-bottom:1.25rem">
+      <div class="pw-header pw-d">Pathway D — Foreign payment stablecoin issuer (FPSI)</div>
+      <div class="pw-body">
+        <p>Foreign issuers may distribute to U.S. persons through digital-asset service providers, subject to: (1) a Treasury determination that the home jurisdiction has a comparable framework; (2) OCC registration; (3) reserves held in U.S. financial institutions sufficient for U.S. customer liquidity; and (4) ability to comply with U.S. lawful orders including asset freezes and AML/sanctions directives. Issuers from OFAC-sanctioned jurisdictions or those designated as primary money-laundering concerns are categorically barred.</p>
+        <p class="pw-reg">Regulator: OCC (registration/oversight) · Treasury (comparability determination)</p>
+      </div>
+    </div>
+
+    <div class="slabel">Who is excluded</div>
+    <div class="q-item tension">
+      <div class="ql tension">Notable restriction</div>
+      <div class="qt">Large public companies and big tech face significant barriers to issuance</div>
+      <div class="qs">A U.S. public company (and any non-U.S. company not predominantly engaged in financial activities) may not issue payment stablecoins absent a <em>unanimous vote</em> of the SCRC finding no material risk to safety and soundness, U.S. financial stability, or national security. That very high bar is widely read as targeting large technology companies (Apple, Google, Meta, Amazon) and other major non-financial corporations — not a categorical prohibition, but a politically demanding approval process.</div>
+    </div>
+  </div>
+
+  <!-- Implementation tracker -->
+  <div id="panel-implementation" class="tab-panel" role="tabpanel" aria-labelledby="tab-implementation" data-print-label="Implementation Tracker">
+    <p class="pillar-intro">Each primary federal stablecoin regulator must finalize implementing rules by July 18, 2026. The OCC, FDIC, and NCUA have issued NPRMs; Treasury and FinCEN/OFAC have issued theirs. The Federal Reserve has not — and its absence could delay the effective date or fragment the supervisory landscape.</p>
+    <div class="slabel">Agency rulemaking status</div>
+    <div class="impl-list">
+
+      <div class="impl-item" onclick="tog(this)">
+        <div class="impl-head">
+          <span class="impl-agency">OCC</span>
+          <span class="impl-title">Comprehensive GENIUS Act implementing rule — 376-page NPRM</span>
+          <span class="stag tag-green">NPRM issued</span>
+          <span class="impl-date">Feb 25, 2026</span>
+          <span class="caret">▼</span>
+        </div>
+        <div class="impl-detail">The OCC's 376-page NPRM is by far the most comprehensive implementing rulemaking to date, establishing new 12 CFR Part 15 and amending Parts 3, 6, 8, and 19. It covers every phase of the OCC-supervised stablecoin lifecycle: FQPSI licensing; core and prohibited activities; reserves and redemption; risk management; custody; capital adequacy; supervisory fees and enforcement; and the transition framework for large state-qualified issuers ($10B+) migrating to OCC supervision. The OCC separately finalized its national trust bank (NTB) non-fiduciary activities rule on February 26, 2026 — directly relevant to entities structuring stablecoin operations under a trust charter. Published in the Federal Register March 2, 2026; the 60-day comment period closed <b>May 1, 2026</b>, with 200+ specific questions posed. Final rule due July 18, 2026.</div>
+      </div>
+
+      <div class="impl-item" onclick="tog(this)">
+        <div class="impl-head">
+          <span class="impl-agency">FDIC</span>
+          <span class="impl-title">Application-procedures NPRM + prudential-framework NPRM for FDIC-supervised issuers</span>
+          <span class="stag tag-green">2 NPRMs issued</span>
+          <span class="impl-date">Dec 2025 / Apr 2026</span>
+          <span class="caret">▼</span>
+        </div>
+        <div class="impl-detail">Two GENIUS Act NPRMs. First, December 19, 2025 — application procedures for FDIC-supervised issuers (mainly subsidiaries of FDIC-supervised state nonmember banks and savings associations; comment period extended into May 2026). Second, April 7, 2026 — the prudential framework (reserves, redemption, capital, risk management), which also addresses custody/safekeeping, the applicability of pass-through deposit insurance to reserves backing stablecoins, and the treatment of tokenized deposits that meet the statutory "deposit" definition. The FDIC is considering the President's Working Group recommendations (July 2025). Final rules due July 18, 2026.</div>
+      </div>
+
+      <div class="impl-item" onclick="tog(this)">
+        <div class="impl-head">
+          <span class="impl-agency">NCUA</span>
+          <span class="impl-title">GENIUS Act implementing rule for credit-union subsidiaries</span>
+          <span class="stag tag-green">NPRM issued</span>
+          <span class="impl-date">Feb 11, 2026</span>
+          <span class="caret">▼</span>
+        </div>
+        <div class="impl-detail">Issued February 11, 2026, covering credit-union subsidiaries issuing under the IDI-subsidiary pathway (Pathway A); comments due April 13, 2026. It addresses the credit-union-specific application of GENIUS Act standards — how reserve, capital, and supervision requirements interact with the existing NCUA framework for federally insured credit unions and their subsidiaries.</div>
+      </div>
+
+      <div class="impl-item absent" onclick="tog(this)">
+        <div class="impl-head">
+          <span class="impl-agency">FED</span>
+          <span class="impl-title">Federal Reserve — no NPRM issued; no proposal announced</span>
+          <span class="stag tag-red">Absent</span>
+          <span class="impl-date">As of Jun 2026</span>
+          <span class="caret">▼</span>
+        </div>
+        <div class="impl-detail">The Fed has issued no NPRM or announced proposal to implement the GENIUS Act. This matters on three fronts. First, the Fed is a primary stablecoin regulator for subsidiaries of state member banks and bank holding companies — a large segment of potential Pathway A issuers. Second, the Act takes effect 120 days after <em>all</em> primary regulators finalize, so Fed delay directly delays the effective date for the entire framework (pushing toward or past the January 18, 2027 backstop). Third, the absence creates a potential supervisory vacuum for Fed-supervised issuers during any gap. <b>A structural wrinkle sharpens the stakes:</b> because uninsured national trust banks generally are not "banks" under the Bank Holding Company Act, the Fed typically lacks authority to supervise their parent companies — so the OCC's trust-charter route to stablecoin issuance can sit largely outside Fed reach, which critics argue is precisely the design. The Fed's parallel non-participation in the AML/CFT program rule NPRM suggests a broader reticence toward ceding supervisory authority under coordinated Treasury-driven frameworks. No formal explanation has been provided.</div>
+      </div>
+
+      <div class="impl-item" onclick="tog(this)">
+        <div class="impl-head">
+          <span class="impl-agency">Treasury</span>
+          <span class="impl-title">State framework "substantially similar" standard NPRM</span>
+          <span class="stag tag-amber">NPRM issued</span>
+          <span class="impl-date">Apr 7, 2026</span>
+          <span class="caret">▼</span>
+        </div>
+        <div class="impl-detail">Issued April 7, 2026 (FR April 3 publication; comments due <b>June 2, 2026</b>), proposing principles under §4(c) for when a state regime is "substantially similar" to the federal framework — the gateway for Pathway C. The standard uses the OCC's NPRM as reference point for prudential requirements. On reserves, states may allow assets beyond those in §4(a)(1)(A) only where the OCC has approved them as "similarly liquid Federal Government-issued assets"; states may be more conservative but not more permissive. Notably, Treasury defines the "Federal regulatory framework" to include implementing rules and interpretations, not just statutory text — and disclaims any attempt to federalize state chartering, requiring only a "fair, transparent, and viable" application framework. Treasury's separate September 2025 ANPRM on the §3 licensing prohibition has not yet produced an NPRM.</div>
+      </div>
+
+      <div class="impl-item" onclick="tog(this)">
+        <div class="impl-head">
+          <span class="impl-agency">Treasury</span>
+          <span class="impl-title">ANPRM — §3 licensing prohibition, safe harbors, nonbank BSA/AML</span>
+          <span class="stag tag-amber">ANPRM only</span>
+          <span class="impl-date">Sep 2025</span>
+          <span class="caret">▼</span>
+        </div>
+        <div class="impl-detail">A September 2025 Advance NPRM sought input on two topics within Treasury's exclusive mandate: (1) §3 implementation — the prohibition on issuing without a license, and certain safe harbors; and (2) BSA/AML rules for nonbank PPSIs. The second has advanced — the FinCEN/OFAC joint PPSI NPRM issued April 8, 2026 (row below). The §3 licensing-prohibition and safe-harbor piece has not advanced to an NPRM as of June 2026. Keep two April actions distinct: the April 7 FinCEN AML/CFT <em>reform</em> NPRM for financial institutions generally (supersedes the withdrawn July 2024 NPRM) and the April 8 FinCEN/OFAC NPRM specific to PPSIs.</div>
+      </div>
+
+      <div class="impl-item" onclick="tog(this)">
+        <div class="impl-head">
+          <span class="impl-agency">FinCEN OFAC</span>
+          <span class="impl-title">Joint NPRM — AML/CFT and sanctions-compliance requirements for PPSIs</span>
+          <span class="stag tag-green">NPRM issued</span>
+          <span class="impl-date">Apr 8, 2026</span>
+          <span class="caret">▼</span>
+        </div>
+        <div class="impl-detail">On April 8, 2026 (FR April 10; Docket FINCEN-2026-0100), FinCEN and OFAC issued a joint NPRM implementing the GENIUS Act directive to treat PPSIs as "financial institutions" under the BSA. FinCEN proposes a stand-alone framework in a new Part 1033 of 31 CFR chapter X and expressly carves PPSIs out of the MSB definition, while OFAC proposes a new part of chapter V requiring effective sanctions-compliance programs. It reaches nonbank issuers, OCC-licensed uninsured national banks and federal branches, and state-qualified issuers; program requirements are risk-based and broadly align with FinCEN's parallel AML/CFT reform proposal. A PPSI's primary regulator would notify and consult FinCEN before significant AML/CFT supervisory action. Comments due <b>June 9, 2026</b>; final rule effective 12 months after issuance. This fills what had been the most significant nonbank-PPSI AML gap.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Timeline -->
+  <div id="panel-timeline" class="tab-panel" role="tabpanel" aria-labelledby="tab-timeline" data-print-label="Timeline">
+    <p class="pillar-intro">The Act runs on two clocks — a rulemaking deadline of July 18, 2026, and an effective date that is the earlier of 120 days after all agencies finalize or January 18, 2027. The Fed's absence creates a real risk of the backstop controlling.</p>
+    <div id="tl-container"></div>
+  </div>
+
+  <!-- Prudential Standards -->
+  <div id="panel-prudential" class="tab-panel" role="tabpanel" aria-labelledby="tab-prudential" data-print-label="Prudential Standards">
+    <p class="pillar-intro">The Act imposes a comprehensive prudential framework on all permitted issuers regardless of pathway. These are the federal floor; state-qualified issuers must meet substantially similar standards under their state regime.</p>
+    <div class="slabel">Select any requirement to expand</div>
+    <div class="prud-grid">
+
+      <div class="prud-card" onclick="ptog(this)">
+        <div class="prud-head"><span class="prud-icon">$</span><span class="prud-title">1:1 reserve backing — full asset backing at all times</span></div>
+        <div class="prud-detail">All outstanding stablecoins must be backed at least 1:1 by permissible reserve assets at all times — U.S. dollars, Treasury bills, overnight repo collateralized by Treasuries, central bank reserve deposits, and other similarly liquid federal-government-issued assets approved by the OCC. Reserves may not fund high-risk activities (proprietary trading, lending) and must be segregated from operational funds — no commingling.</div>
+      </div>
+
+      <div class="prud-card" onclick="ptog(this)">
+        <div class="prud-head"><span class="prud-icon">✕</span><span class="prud-title">No rehypothecation of reserve assets</span></div>
+        <div class="prud-detail">Issuers may not rehypothecate reserves — no pledging, lending, or use as collateral for other transactions — keeping reserves fully available for redemption and unencumbered by other obligations. More restrictive than typical bank capital/liquidity rules, it targets a core vulnerability of prior failures (e.g., TerraUSD/LUNA, which held no equivalent asset reserves).</div>
+      </div>
+
+      <div class="prud-card" onclick="ptog(this)">
+        <div class="prud-head"><span class="prud-icon">▦</span><span class="prud-title">Monthly reserve reports — CEO/CFO certified under penalty of law</span></div>
+        <div class="prud-detail">Issuers must publish monthly reserve-composition reports on their websites, certified by the CEO and CFO (or equivalents) under penalty of law. This turns what were voluntary disclosures by some issuers (e.g., Circle's USDC attestations) into a legal obligation with personal officer accountability. Annual audits by registered public accounting firms are also required.</div>
+      </div>
+
+      <div class="prud-card" onclick="ptog(this)">
+        <div class="prud-head"><span class="prud-icon">✕</span><span class="prud-title">No interest or yield to stablecoin holders</span></div>
+        <div class="prud-detail">Issuers may not pay interest or yield on payment stablecoins. The OCC NPRM implements this via a rebuttable presumption targeting arrangements with affiliates and related third parties, including white-label issuance. It preserves the line between payment stablecoins and deposit-like instruments — but creates tension with DeFi yield products and may push holders to secondary yield arrangements. The ban remains contested: an April 8, 2026 White House CEA report estimated that removing it would raise bank lending by only ~$2.1 billion (~0.02%), read as putting the administration mildly on the side of permitting yield — so it may resurface in rulemaking and the market-structure legislation now in the Senate.</div>
+      </div>
+
+      <div class="prud-card" onclick="ptog(this)">
+        <div class="prud-head"><span class="prud-icon">§</span><span class="prud-title">Bankruptcy protections — reserves excluded from estate; holder priority</span></div>
+        <div class="prud-detail">Section 11 (12 U.S.C. §5910), "Treatment of Payment Stablecoin Issuers in Insolvency Proceedings," gives holders a priority claim to required reserves in any insolvency. The mechanics run through Bankruptcy Code amendments: §507 (via §11(d)) elevates holders' claims above other claims — even ahead of administrative-expense claims; §541 excludes the stablecoins from the estate; §362 applies the automatic stay to redemption with a relief path. Two caveats: whether the <em>reserves</em> are categorically excluded from the estate or treated as estate property with elevated priority is unsettled and will be tested in case law; and commentators flag practical concerns (e.g., funding estate administration when reserves cannot be borrowed against). Redemption cannot be unilaterally suspended absent regulatory agreement on exceptional circumstances.</div>
+      </div>
+
+      <div class="prud-card" onclick="ptog(this)">
+        <div class="prud-head"><span class="prud-icon">⚑</span><span class="prud-title">AML/CFT, sanctions, and lawful-order compliance required</span></div>
+        <div class="prud-detail">All PPSIs — including foreign issuers in the U.S. — must comply with applicable AML/CFT requirements, OFAC sanctions, and U.S. lawful orders including asset freezes, seizures, and blocks. Issuers from OFAC-sanctioned jurisdictions or designated as primary money-laundering concerns are categorically barred. The April 8, 2026 FinCEN/OFAC NPRM implements this — PPSIs as BSA "financial institutions" via a stand-alone Part 1033, carved out of the MSB definition, reaching nonbank, OCC-licensed, and state-qualified issuers alike. Comments due June 9, 2026. What remains genuinely outstanding is the separate §3 licensing-prohibition/safe-harbor rulemaking.</div>
+      </div>
+
+      <div class="prud-card" onclick="ptog(this)">
+        <div class="prud-head"><span class="prud-icon">⚡</span><span class="prud-title">Preemption of state money-transmission licensing</span></div>
+        <div class="prud-detail">Federal-pathway issuers (IDI subsidiaries and OCC-licensed nonbanks) are exempt from state licensing including money-transmission laws — a major commercial advantage, letting a nationally licensed PPSI operate across all 50 states without individual state MTLs. The Act does not preempt state consumer-protection laws. State-qualified issuers (Pathway C) remain under their home-state framework by definition and must separately assess MTL exposure in other states.</div>
+      </div>
+
+      <div class="prud-card" onclick="ptog(this)">
+        <div class="prud-head"><span class="prud-icon">◷</span><span class="prud-title">Not a security, not a commodity — jurisdictional carve-out</span></div>
+        <div class="prud-detail">Compliant payment stablecoins are excluded from the federal definitions of "security" and "commodity," carving them out of SEC and CFTC oversight — governed instead by the GENIUS Act framework and the applicable banking/financial regulator. The SEC Chair acknowledged this and asked staff to consider whether guidance is needed for SEC registrants using stablecoins for settlement and margining. Stablecoins remain distinct from deposits — not FDIC-insured, no direct Fed access — a novel category between capital-markets instruments and bank products.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- State-Federal Framework -->
+  <div id="panel-state" class="tab-panel" role="tabpanel" aria-labelledby="tab-state" data-print-label="State-Federal Framework">
+    <p class="pillar-intro">The state-federal framework is among the most consequential aspects of the law for state bank supervisors. It creates a tiered system: states can supervise issuers up to a $10 billion threshold, under a federally certified "substantially similar" standard. Above that, federal supervision is mandatory.</p>
+    <div class="slabel">The state qualification framework</div>
+    <div class="q-list">
+
+      <div class="q-item noted">
+        <div class="ql noted">State authority preserved (below $10B)</div>
+        <div class="qt">States can supervise issuers — with federal floor standards and a certification process</div>
+        <div class="qs">The Act preserves a meaningful role for state regulation of issuers with $10 billion or less outstanding. State-qualified issuers (SQPSIs) operate under their home-state framework — provided it is certified by the SCRC as "substantially similar" to the federal regime. This preserves the dual banking system's state-charter function in the stablecoin context, at least for smaller issuers. Most issuers other than USDC (Circle) and USDT (Tether) fall below $10B.</div>
+      </div>
+
+      <div class="q-item watch">
+        <div class="ql watch">Key mechanism</div>
+        <div class="qt">The Stablecoin Certification Review Committee (SCRC) certifies state frameworks</div>
+        <div class="qs">The SCRC approves certification of state frameworks as "substantially similar" before SQPSIs can operate under state oversight. Treasury's April 2026 NPRM proposes the standards, using the OCC's February 2026 NPRM as the reference point for reserves, capital, liquidity, and prudential requirements. States may be more conservative than the OCC but not more permissive. The SCRC introduces a new federal review over state frameworks — raising questions about how that interacts with state sovereignty and state-federal coordination.</div>
+      </div>
+
+      <div class="q-item tension">
+        <div class="ql tension">Critical threshold</div>
+        <div class="qt">Issuers above $10B must transition to OCC supervision — or stop net new issuance</div>
+        <div class="qs">If a state-qualified issuer exceeds $10 billion outstanding, it must — within 360 days — transition to OCC supervision or cease net new issuance, <em>unless</em> it obtains a waiver to remain solely under its state regulator. The statute thus contemplates a waiver pathway (turning on §4(c) and forthcoming rules), so the threshold is a rebuttable ceiling rather than an automatic federal takeover. It is denominated in outstanding issuance (tokens in circulation), not assets or revenue; in a fast-growing market an issuer could cross it quickly. The OCC NPRM provides an orderly transition under proposed §15.15. For state regulators, this — and the scope of any waiver — defines the practical ceiling of their jurisdiction.</div>
+      </div>
+
+      <div class="q-item state">
+        <div class="ql state">State-federal coordination</div>
+        <div class="qt">"Substantially similar" — meet the federal floor, but retain chartering authority</div>
+        <div class="qs">Treasury's NPRM proposes that the standard does not require states to replicate the federal regime, only to achieve comparable outcomes in key prudential areas (reserves, redemption, AML/CFT, consumer protection). Treasury explicitly disclaims trying to "federalize state chartering" — states may structure licensing differently if the framework is fair, transparent, and viable. A meaningful preservation of state discretion. But states wanting full-market SQPSI access without preemption friction must still align to the OCC NPRM reference point — a de facto OCC standard-setting role even for state-supervised entities.</div>
+      </div>
+
+      <div class="q-item watch">
+        <div class="ql watch">Notable</div>
+        <div class="qt">MTL preemption favors federal-pathway issuers over state-qualified issuers</div>
+        <div class="qs">Federal-pathway issuers (OCC-licensed nonbanks, IDI subsidiaries) get preemption of state money-transmission licensing — national operation without a state-by-state MTL patchwork. State-qualified issuers do not, remaining subject to MTL requirements outside their home state. This is a structural competitive disadvantage for SQPSIs that may push growth-oriented issuers toward the OCC pathway as they scale — potentially shrinking the effective reach of the $10B state regime over time.</div>
+      </div>
+
+      <div class="q-item noted">
+        <div class="ql noted">Preserved</div>
+        <div class="qt">State consumer-protection laws are not preempted</div>
+        <div class="qs">The Act explicitly does not preempt state consumer-protection laws. State AGs and financial regulators retain enforcement authority over issuer conduct violating state consumer-protection statutes — even for federally chartered issuers — consistent with the NBA framework where state consumer-protection laws that don't significantly interfere with federal banking powers survive. For state regulators, this preserves an ongoing role in stablecoin oversight even where federal supervision controls the prudential framework.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Open Questions -->
+  <div id="panel-questions" class="tab-panel" role="tabpanel" aria-labelledby="tab-questions" data-print-label="Open Questions">
+    <p class="pillar-intro">Passage resolved the fundamental question — whether the U.S. would create a federal stablecoin framework. Significant implementation and policy questions remain, many shaped by the ongoing rulemakings and the charter pipeline.</p>
+    <div class="q-list">
+
+      <div class="q-item tension">
+        <div class="ql tension">Critical unresolved</div>
+        <div class="qt">Will the Federal Reserve issue an NPRM before July 18, 2026?</div>
+        <div class="qs">The Fed's absence is the largest near-term structural risk to the timeline. If it does not finalize implementing rules by July 18, 2026, it directly delays the effective date — the 120-day clock cannot start until all primary regulators finalize — and the January 18, 2027 backstop would control. Its non-participation mirrors its absence from the AML/CFT program rule NPRM and may reflect broader reticence toward FinCEN- or OCC-driven frameworks that expand other agencies' roles in Fed-supervised institutions. No formal explanation has been provided.</div>
+      </div>
+
+      <div class="q-item watch">
+        <div class="ql watch">Largely addressed — detail pending</div>
+        <div class="qt">Nonbank PPSI BSA/AML is proposed — what remains is the §3 rule and final specifics</div>
+        <div class="qs">Once a critical gap, now substantially addressed: the FinCEN/OFAC joint NPRM (April 8, 2026) treats PPSIs (nonbank, OCC-licensed, and state-qualified) as BSA "financial institutions," with a stand-alone Part 1033 carving them out of the MSB definition. Still genuinely unresolved: (1) the separate §3 licensing-prohibition/safe-harbor rule from the September 2025 ANPRM hasn't advanced to an NPRM; (2) the PPSI rule is a proposal with comments due June 9, 2026, so final requirements and the FinCEN/primary-regulator enforcement split aren't locked; (3) the interaction between the PPSI framework and FinCEN's parallel general AML/CFT reform needs reconciling. OCC applicants have a far clearer picture than a few months ago but should track the comment process.</div>
+      </div>
+
+      <div class="q-item watch">
+        <div class="ql watch">High-profile test case</div>
+        <div class="qt">World Liberty Financial (USD1) — stablecoin trust-bank application under OCC review</div>
+        <div class="qs">A WLF subsidiary (WLTC Holdings / World Liberty Trust Company, N.A.), affiliated with a venture co-founded by President Trump and his sons, applied January 7, 2026 for a national trust bank to issue and custody USD1. It sits in a fast-growing wave: the OCC conditionally approved national trust charters for Circle, Ripple, Paxos, BitGo, and Fidelity Digital Assets (Dec 2025), with Crypto.com, Protego, Zerohash, and others — and applications from Morgan Stanley, Stripe's Bridge, Payoneer, and Coinbase — filing in roughly the same window (about eleven firms in eighty-three days). WLF is the highest-profile test, watched both for conflict-of-interest concerns (Sen. Warren, in a May 19 2026 push, has pressed Comptroller Gould for the unredacted application and to reject it) and for a novel legal question: whether the OCC's NBA authority extends to chartering "trust" banks that perform no fiduciary activities and exist to issue and custody stablecoins. The OCC's February 2026 NTB non-fiduciary rule speaks directly to that and will shape the evaluation. The OCC is targeting 120-day decisions for preliminary conditional approval.</div>
+      </div>
+
+      <div class="q-item tension">
+        <div class="ql tension">Litigation watch</div>
+        <div class="qt">The trust-charter route itself is drawing a legal challenge</div>
+        <div class="qs">The OCC's strategy of chartering uninsured national trust banks for stablecoin issuance is contested on the merits. Because such trust banks generally are not "banks" under the Bank Holding Company Act, their parents escape Federal Reserve supervision — which critics argue is the point, and which connects directly to the Fed-absence story. The Bank Policy Institute was reported in March 2026 to be weighing litigation against the OCC over the trust-charter approvals; it has so far held off, likely to preserve leverage in the parallel Senate market-structure negotiations (notably the stablecoin "interest" loophole), but the threat remains live. A resolved legal challenge — or a White House push for these trust banks to obtain direct Federal Reserve payments-system access — would reshape the pathway map in this dashboard.</div>
+      </div>
+
+      <div class="q-item watch">
+        <div class="ql watch">Watch closely</div>
+        <div class="qt">Will the SCRC certification process work in practice for state-qualified issuers?</div>
+        <div class="qs">The SCRC has not certified any state framework as "substantially similar" — it cannot until Treasury's standard is final — so Pathway C is not yet operational. States wanting to participate must begin aligning statutes and rules to the forthcoming federal standard without knowing precisely what it will require. States with developed money-transmitter or virtual-currency regimes (e.g., New York's BitLicense, Wyoming's SPDI charter) are better positioned to seek early certification once the Treasury standard is finalized.</div>
+      </div>
+
+      <div class="q-item state">
+        <div class="ql state">State supervisors' interest</div>
+        <div class="qt">The $10B threshold — how will it interact with the scale of the market?</div>
+        <div class="qs">The stablecoin market exceeded $240 billion in total capitalization by May 2026. (The common claim that stablecoins surpass Visa and Mastercard combined reflects <em>raw</em> on-chain volume, heavily inflated by automated and exchange-internal transfers; adjusted, economically meaningful volume is dramatically lower.) Tether (USDT) holds roughly two-thirds (~$160B+) and Circle (USDC) roughly a quarter (~$65B); most others fall below $10B — but a successful new entrant under state supervision could cross the threshold faster than expected. The 360-day transition window (subject to the waiver pathway) gives state regulators a defined wind-down but no guaranteed ability to retain supervision over a successful issuer — a potential structural ceiling on state authority worth attention in the comment process.</div>
+      </div>
+
+      <div class="q-item noted">
+        <div class="ql noted">Resolved</div>
+        <div class="qt">Payment stablecoins are not securities — SEC/CFTC questions settled by statute</div>
+        <div class="qs">A practically significant clarification: compliant payment stablecoins are statutorily excluded from "security" and "commodity" definitions, resolving years of uncertainty over whether USDT/USDC were unregistered securities. The SEC's response — asking staff whether guidance is needed for registrants using stablecoins for settlement and margining — suggests focus on downstream use in securities markets rather than issuance itself, substantially reducing legal risk for entities using payment stablecoins in financial-services contexts.</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="colophon">
+  <div class="wire" aria-hidden="true"></div>
+  <p><b>Primary sources.</b> GENIUS Act (Pub. L. 119-27, S. 1582, signed Jul 18 2025) · <a href="https://www.federalregister.gov/documents/2026/04/03/2026-06489/genius-act-broad-based-principles-for-determining-whether-a-state-level-regulatory-regime-is">Treasury state-framework NPRM</a> (comments due Jun 2 2026) · <a href="https://www.federalregister.gov/documents/2026/04/10/2026-06963/permitted-payment-stablecoin-issuer-anti-money-launderingcountering-the-financing-of-terrorism">FinCEN/OFAC PPSI NPRM</a> (Docket FINCEN-2026-0100; comments due Jun 9 2026) · OCC NPRM (FR Mar 2 2026, new 12 CFR Part 15) · <a href="https://www.fdic.gov/news/financial-institution-letters/2026/notice-proposed-rulemaking-establish-genius-act">FDIC prudential NPRM</a> · NCUA NPRM (Feb 11 2026) · Treasury ANPRM (Sep 2025).</p>
+  <p><b>Secondary synthesis</b> from Sullivan &amp; Cromwell, Davis Polk, Troutman Pepper, Consumer Finance Monitor, Duke FinReg Blog, and others. Compiled for BankRegWire · informational tracker, not legal advice.</p>
+</div>
+
+</div>
+
+<script>
+var TABS=['pathways','implementation','timeline','prudential','state','questions'];
+
+var tlData=[
+  {date:"Jan 23, 2025",title:"Executive Order on digital assets",desc:"President Trump signs EO declaring intent to make the U.S. the 'crypto capital of the world'; establishes the President's Working Group on Digital Asset Markets.",dot:"done"},
+  {date:"Feb 4, 2025",title:"GENIUS Act introduced in Senate",desc:"Sen. Bill Hagerty (R-TN) introduces S. 1582 with co-sponsors Scott, Gillibrand, and Lummis.",dot:"done"},
+  {date:"Apr 24, 2025",title:"Banking agencies withdraw crypto joint statements",desc:"FDIC, OCC, and Fed withdraw prior joint guidance discouraging bank crypto activities; signal openness to bank crypto engagement.",dot:"done"},
+  {date:"Jun 17, 2025",title:"Senate passes GENIUS Act, 68–30",desc:"Bipartisan passage after procedural hurdles; Hagerty substitute amendment incorporated.",dot:"done"},
+  {date:"Jul 17, 2025",title:"House passes GENIUS Act, 308–122",desc:"House passes the Senate version without amendment. Broad bipartisan support.",dot:"done"},
+  {date:"Jul 18, 2025",title:"President signs the GENIUS Act into law",desc:"Pub. L. 119-27. 18-month effective-date clock begins (backstop Jan 18, 2027). Agencies have one year — to Jul 18, 2026 — to issue final rules.",dot:"done"},
+  {date:"Jul 2025",title:"President's Working Group digital-assets report",desc:"PWG recommends clarifying permissible bank digital-asset activities, including tokenization of assets and liabilities.",dot:"done"},
+  {date:"Sep 2025",title:"Treasury ANPRM: §3 licensing + nonbank BSA/AML",desc:"Treasury seeks advance comment on the §3 licensing prohibition and AML/CFT rules for nonbank issuers. The AML piece later advanced via the Apr 8, 2026 FinCEN/OFAC NPRM; the §3 rule remains pending.",dot:"done"},
+  {date:"Oct 15, 2025",title:"OCC conditionally approves Erebor Bank, N.A.",desc:"First de novo national bank charter of Comptroller Gould's tenure — a full-service bank serving tech and digital-asset clients, not a stablecoin-only entity. Final approval Feb 2026.",dot:"done"},
+  {date:"Dec 2025",title:"OCC conditionally approves digital-asset trust charters",desc:"Circle, Ripple, Paxos, BitGo, and Fidelity Digital Assets receive conditional national trust bank approvals — the leading edge of a broad pipeline (Crypto.com, Protego, Zerohash, and others follow; Morgan Stanley, Stripe's Bridge, Payoneer, and Coinbase among later applicants).",dot:"done"},
+  {date:"Dec 19, 2025",title:"FDIC NPRM (1 of 2): application procedures",desc:"Application procedures for FDIC-supervised stablecoin issuers (Pathway A). Comment period extended into May 2026.",dot:"done"},
+  {date:"Jan 7, 2026",title:"World Liberty Financial files OCC trust-bank application",desc:"Trump-family crypto venture (WLTC Holdings) applies for a national trust bank to issue and custody USD1. Under review.",dot:"urgent"},
+  {date:"Feb 11, 2026",title:"NCUA NPRM: credit-union subsidiary issuers",desc:"Comments due April 13, 2026. Covers federally insured credit-union subsidiaries under Pathway A.",dot:"done"},
+  {date:"Feb 25–26, 2026",title:"OCC issues 376-page GENIUS Act NPRM",desc:"Comprehensive proposed rule across all phases of OCC-supervised issuance. OCC also finalizes the NTB non-fiduciary activities rule. Published in the Federal Register Mar 2, 2026; comments closed May 1.",dot:"done"},
+  {date:"Apr 7, 2026",title:"FDIC NPRM (2 of 2): prudential framework",desc:"Board approves the prudential-standards NPRM (reserves, redemption, capital, risk management); addresses pass-through deposit insurance and tokenized-deposit treatment.",dot:"done"},
+  {date:"Apr 7, 2026",title:"Treasury NPRM: state 'substantially similar' standard",desc:"Proposes the §4(c) standard for SCRC certification of state regimes, using the OCC NPRM as reference. Comments due June 2, 2026.",dot:"done"},
+  {date:"Apr 8, 2026",title:"FinCEN/OFAC joint NPRM: AML/CFT + sanctions for PPSIs",desc:"Treats PPSIs as BSA 'financial institutions' via new 31 CFR Part 1033; carves PPSIs out of the MSB definition; reaches nonbank, OCC-licensed, and state-qualified issuers. Comments due June 9, 2026.",dot:"done"},
+  {date:"May 1, 2026",title:"OCC NPRM comment period closes",desc:"60-day window on the lead implementing rule ends, with 200+ questions posed for comment. Agencies now move toward final rules ahead of the July deadline.",dot:"done"},
+  {date:"Jun 2 / Jun 9, 2026",title:"Treasury and FinCEN/OFAC comment deadlines",desc:"Comments close on the Treasury state-framework NPRM (Jun 2) and the FinCEN/OFAC PPSI NPRM (Jun 9).",dot:"urgent"},
+  {date:"Jul 18, 2026",title:"Deadline: all agencies must finalize rules",desc:"One year after enactment. The Federal Reserve has not yet issued an NPRM. If the Fed misses, the effective date reverts to the Jan 18, 2027 statutory backstop.",dot:"warning"},
+  {date:"Jan 18, 2027",title:"Statutory backstop: GENIUS Act takes effect",desc:"18 months after enactment. Effective date is the EARLIER of this date or 120 days after all primary regulators finalize. No PPSI may issue without a license after this date.",dot:"future"}
+];
+
+function buildTl(){
+  var c=document.getElementById('tl-container');if(!c)return;
+  var html='';
+  tlData.forEach(function(item,i){
+    var isLast=i===tlData.length-1;
+    var dotClass=item.dot==='future'?'tl-dot future':item.dot==='urgent'?'tl-dot urgent':item.dot==='warning'?'tl-dot warning':'tl-dot';
+    html+='<div class="tl-item"><div class="tl-date">'+item.date+'</div>'+
+      '<div class="tl-spine"><div class="'+dotClass+'"></div>'+(!isLast?'<div class="tl-line"></div>':'')+'</div>'+
+      '<div class="tl-body"><div class="tl-title">'+item.title+'</div><div class="tl-desc">'+item.desc+'</div></div></div>';
+  });
+  c.innerHTML=html;
+}
+buildTl();
+
+function sw(id,btn){
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');b.setAttribute('aria-selected','false');b.tabIndex=-1;});
+  document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
+  btn.classList.add('active');btn.setAttribute('aria-selected','true');btn.tabIndex=0;
+  document.getElementById('panel-'+id).classList.add('active');
+  // shareable deep-link; guarded because a sandboxed about:srcdoc preview blocks replaceState with a URL
+  try{ if(history.replaceState) history.replaceState(null,'','#'+id); }catch(e){}
+}
+function tog(el){
+  var was=el.classList.contains('open');
+  document.querySelectorAll('.impl-item.open').forEach(function(c){c.classList.remove('open');c.setAttribute('aria-expanded','false');});
+  if(!was){el.classList.add('open');el.setAttribute('aria-expanded','true');}
+}
+function ptog(el){
+  var was=el.classList.contains('open');
+  document.querySelectorAll('.prud-card.open').forEach(function(c){c.classList.remove('open');c.setAttribute('aria-expanded','false');});
+  if(!was){el.classList.add('open');el.setAttribute('aria-expanded','true');}
+}
+
+/* deadline countdowns */
+(function(){
+  function setCount(elId,dateStr){
+    var el=document.getElementById(elId);if(!el)return;
+    var ms=new Date(dateStr)-new Date();
+    if(ms<=0){el.textContent='passed';el.style.opacity='.6';return;}
+    var days=Math.ceil(ms/86400000);
+    el.textContent=days>60?(Math.round(days/30)+' mo'):(days+'d');
+  }
+  setCount('count-rules','2026-07-18T23:59:59-04:00');
+  setCount('count-eff','2027-01-18T23:59:59-05:00');
+})();
+
+document.addEventListener('DOMContentLoaded',function(){
+  // make accordions keyboard-operable
+  document.querySelectorAll('.impl-item').forEach(function(el){
+    var h=el.querySelector('.impl-head');if(!h)return;
+    h.setAttribute('role','button');h.setAttribute('tabindex','0');h.setAttribute('aria-expanded','false');
+    h.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){e.preventDefault();tog(el);} });
+  });
+  document.querySelectorAll('.prud-card').forEach(function(el){
+    el.setAttribute('role','button');el.setAttribute('tabindex','0');el.setAttribute('aria-expanded','false');
+    el.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){e.preventDefault();ptog(el);} });
+  });
+  document.querySelectorAll('.caret').forEach(function(c){c.setAttribute('aria-hidden','true');});
+
+  // roving-tabindex arrow-key tab nav
+  var tabs=Array.prototype.slice.call(document.querySelectorAll('.tab-btn'));
+  tabs.forEach(function(tab,i){
+    tab.addEventListener('keydown',function(e){
+      var n=null;
+      if(e.key==='ArrowRight'||e.key==='ArrowDown')n=(i+1)%tabs.length;
+      else if(e.key==='ArrowLeft'||e.key==='ArrowUp')n=(i-1+tabs.length)%tabs.length;
+      else if(e.key==='Home')n=0; else if(e.key==='End')n=tabs.length-1;
+      if(n!==null){e.preventDefault();tabs[n].focus();tabs[n].click();}
+    });
+  });
+
+  // deep-link from hash
+  var h='';try{h=(location.hash||'').replace('#','');}catch(e){h='';}
+  if(TABS.indexOf(h)!==-1){var b=document.getElementById('tab-'+h);if(b)sw(h,b);}
+});
+</script>
+</body>
+</html>

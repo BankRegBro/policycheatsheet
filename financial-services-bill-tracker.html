@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BankRegWire · The Docket — 119th Congress Legislation Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,500&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4efe3;
+    --paper-2:#fbf8f0;
+    --paper-3:#efe8d8;
+    --ink:#17160f;
+    --ink-soft:#4f4b3c;
+    --ink-faint:#7b7660;
+    --rule:#d6cdb6;
+    --rule-strong:#c2b794;
+    --accent:#8c2018;
+    --accent-deep:#6d160f;
+    --copper:#cf7714;
+    --green:#3a6f49;
+    --blue:#2c5f93;
+    --ochre:#a9742a;
+    --stone:#85806b;
+    --shadow:0 1px 0 rgba(23,22,15,.04), 0 14px 34px -22px rgba(23,22,15,.45);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Archivo','Helvetica Neue',Arial,sans-serif;
+    font-size:17px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(circle at 12% 18%, rgba(140,32,24,.04), transparent 40%),
+      radial-gradient(circle at 88% 6%, rgba(58,111,73,.05), transparent 42%);
+  }
+  /* subtle paper grain */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+  }
+  .wrap{position:relative;z-index:1;max-width:1140px;margin:0 auto;padding:0 22px 90px;}
+
+  /* ---------- Masthead ---------- */
+  header.masthead{padding:34px 0 0;}
+  .kicker{
+    font-family:'JetBrains Mono', monospace;font-size:11px;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--accent);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;
+    border-bottom:1px solid var(--ink);padding-bottom:9px;
+  }
+  .kicker .edition{color:var(--ink-soft);}
+  h1.title{
+    font-family:'Fraunces', serif;font-weight:900;font-optical-sizing:auto;
+    font-size:clamp(40px,7.4vw,84px);line-height:.95;letter-spacing:-.02em;
+    margin:18px 0 6px;
+  }
+  .title .amp{color:var(--accent);font-style:italic;font-weight:500;}
+  .deck{
+    font-family:'Fraunces', serif;font-style:italic;font-size:clamp(18px,2.4vw,23px);
+    color:var(--ink-soft);max-width:740px;line-height:1.4;margin:0 0 4px;font-weight:400;
+  }
+  .byline{
+    font-family:'JetBrains Mono', monospace;font-size:11.5px;letter-spacing:.06em;color:var(--ink-faint);
+    margin-top:14px;display:flex;gap:18px;flex-wrap:wrap;align-items:center;
+    border-top:1px solid var(--rule);border-bottom:3px double var(--ink);padding:11px 0;
+  }
+  .byline b{color:var(--accent);font-weight:600;}
+
+  /* ---------- Summary ledger ---------- */
+  .ledger{
+    display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin:26px 0 8px;
+    border:1px solid var(--rule-strong);background:var(--paper-2);box-shadow:var(--shadow);
+  }
+  .ledger .cell{padding:16px 16px 14px;border-right:1px solid var(--rule);position:relative;}
+  .ledger .cell:last-child{border-right:none;}
+  .ledger .num{font-family:'Fraunces',serif;font-weight:700;font-size:34px;line-height:1;letter-spacing:-.02em;}
+  .ledger .num small{font-size:15px;color:var(--ink-faint);font-weight:500;}
+  .ledger .lab{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);margin-top:7px;}
+  .ledger .cell .bar{height:3px;margin-top:10px;background:var(--rule);}
+  .ledger .cell .bar i{display:block;height:100%;}
+
+  /* ---------- Controls ---------- */
+  .controls{margin:30px 0 6px;}
+  .searchrow{display:flex;gap:12px;align-items:stretch;flex-wrap:wrap;margin-bottom:16px;}
+  .search{flex:1;min-width:240px;position:relative;}
+  .search input{
+    width:100%;font-family:'Archivo',sans-serif;font-size:16px;color:var(--ink);
+    background:var(--paper-2);border:1px solid var(--rule-strong);padding:13px 14px 13px 40px;outline:none;
+  }
+  .search input:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(140,32,24,.12);}
+  .search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);opacity:.5;}
+  .sortsel{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+    background:var(--paper-2);border:1px solid var(--rule-strong);color:var(--ink-soft);padding:0 14px;cursor:pointer;}
+  .filterlab{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 9px;}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px;}
+  .chip{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.05em;
+    border:1px solid var(--rule-strong);background:var(--paper-2);color:var(--ink-soft);
+    padding:6px 12px;cursor:pointer;transition:all .15s ease;white-space:nowrap;
+  }
+  .chip:hover{border-color:var(--ink-soft);color:var(--ink);}
+  .chip.on{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .chip .ct{opacity:.55;margin-left:5px;}
+  .chip.theme.on{background:var(--accent);border-color:var(--accent);}
+
+  .resultline{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);
+    border-top:1px solid var(--rule);padding-top:12px;margin-top:4px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
+  .resultline a{color:var(--accent);text-decoration:none;cursor:pointer;border-bottom:1px solid transparent;}
+  .resultline a:hover{border-color:var(--accent);}
+
+  /* ---------- Bill cards ---------- */
+  .bills{margin-top:8px;}
+  .bill{
+    position:relative;overflow:hidden;
+    background:var(--paper-2);border:1px solid var(--rule-strong);border-left:4px solid var(--stone);
+    margin-bottom:14px;box-shadow:var(--shadow);opacity:0;transform:translateY(10px);
+    animation:rise .5s cubic-bezier(.2,.7,.2,1) forwards;
+  }
+  @keyframes rise{to{opacity:1;transform:none;}}
+  /* BankRegWire card-hover motif — a copper wire sweeps the top edge left→right on hover, and stays lit while the card is open */
+  .bill::before{
+    content:"";
+    position:absolute;
+    left:0;right:0;top:0;
+    height:2px;
+    background:linear-gradient(90deg, var(--copper), transparent 60%);
+    transform:scaleX(0);
+    transform-origin:left;
+    transition:transform .35s ease;
+    z-index:5;
+    pointer-events:none;
+  }
+  .bill:hover::before,
+  .bill.open::before{ transform:scaleX(1); }
+  .bhead:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;}
+  @media (prefers-reduced-motion: reduce){ .bill::before{ transition:none; } }
+  .bill.s-introduced{border-left-color:var(--stone);}
+  .bill.s-committee{border-left-color:var(--ochre);}
+  .bill.s-passed{border-left-color:var(--blue);}
+  .bill.s-cross{border-left-color:var(--green);}
+  .bill.vehicle{border-left-color:var(--accent);border-left-width:5px;background:var(--paper-3);}
+
+  .bhead{display:grid;grid-template-columns:1fr auto;gap:14px 20px;padding:18px 20px;cursor:pointer;align-items:start;}
+  .bhead:hover .stitle{text-decoration-color:var(--accent);}
+  .billno{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;color:var(--accent);font-weight:600;
+    display:flex;align-items:center;gap:9px;flex-wrap:wrap;}
+  .billno .vehbadge{color:var(--paper);background:var(--accent);padding:1px 7px;font-size:9px;letter-spacing:.14em;text-transform:uppercase;}
+  .stitle{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(20px,2.6vw,26px);line-height:1.12;letter-spacing:-.01em;
+    margin:7px 0 6px;text-decoration:underline;text-decoration-color:transparent;text-underline-offset:4px;transition:text-decoration-color .2s;}
+  .summ{color:var(--ink-soft);font-size:16.5px;line-height:1.42;max-width:680px;}
+  .meta{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.04em;color:var(--ink-faint);margin-top:11px;display:flex;gap:7px;flex-wrap:wrap;align-items:center;}
+  .meta .dot{opacity:.4;}
+  .party{font-weight:600;}
+  .party.R{color:#9c2b1f;}
+  .party.D{color:#2c5f93;}
+  .party.BI{color:var(--green);}
+
+  .bside{display:flex;flex-direction:column;align-items:flex-end;gap:10px;min-width:178px;}
+  .status{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+    padding:5px 10px;border:1px solid;white-space:nowrap;text-align:right;font-weight:500;}
+  .status.introduced{color:var(--stone);border-color:var(--stone);background:rgba(133,128,107,.07);}
+  .status.committee{color:var(--ochre);border-color:var(--ochre);background:rgba(169,116,42,.08);}
+  .status.passed{color:var(--blue);border-color:var(--blue);background:rgba(44,95,147,.07);}
+  .status.cross{color:var(--green);border-color:var(--green);background:rgba(58,111,73,.08);}
+
+  /* progress track */
+  .track{display:flex;align-items:center;gap:0;width:178px;}
+  .track .node{width:11px;height:11px;border-radius:50%;border:1.5px solid var(--rule-strong);background:var(--paper-2);flex:none;position:relative;z-index:1;}
+  .track .seg{height:2px;flex:1;background:var(--rule);}
+  .bill.s-introduced .track .node.fill{background:var(--stone);border-color:var(--stone);}
+  .bill.s-committee .track .node.fill{background:var(--ochre);border-color:var(--ochre);}
+  .bill.s-committee .track .seg.fill{background:var(--ochre);}
+  .bill.s-passed .track .node.fill{background:var(--blue);border-color:var(--blue);}
+  .bill.s-passed .track .seg.fill{background:var(--blue);}
+  .bill.s-cross .track .node.fill{background:var(--green);border-color:var(--green);}
+  .bill.s-cross .track .seg.fill{background:var(--green);}
+  .tracklabs{display:flex;justify-content:space-between;width:178px;margin-top:5px;}
+  .tracklabs span{font-family:'JetBrains Mono',monospace;font-size:7.5px;letter-spacing:.04em;color:var(--ink-faint);text-transform:uppercase;}
+
+  /* ---------- Detail (expand) ---------- */
+  .detail{overflow:hidden;max-height:0;transition:max-height .4s ease;border-top:1px solid transparent;}
+  .bill.open .detail{max-height:2400px;border-top:1px solid var(--rule);}
+  .detailpad{padding:6px 20px 22px;}
+  .dgrid{display:grid;grid-template-columns:1.55fr 1fr;gap:26px;}
+  .dsec h4{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);
+    margin:18px 0 9px;border-bottom:1px solid var(--rule);padding-bottom:5px;}
+  .dsec p{margin:0 0 10px;font-size:16px;line-height:1.5;color:var(--ink);}
+  ul.prov{list-style:none;margin:0;padding:0;}
+  ul.prov li{position:relative;padding-left:20px;margin-bottom:9px;font-size:15.5px;line-height:1.42;color:var(--ink);}
+  ul.prov li::before{content:"§";position:absolute;left:0;top:1px;color:var(--accent);font-family:'Fraunces',serif;font-style:italic;}
+  .factbox{background:var(--paper-3);border:1px solid var(--rule);padding:15px 16px;}
+  .factbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:7px 12px;}
+  .factbox dt{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);padding-top:2px;}
+  .factbox dd{margin:0;font-size:14.5px;line-height:1.35;color:var(--ink);}
+  .relbox{margin-top:14px;}
+  .relbox .rel{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.03em;
+    background:var(--paper-2);border:1px solid var(--rule-strong);color:var(--ink-soft);padding:4px 9px;margin:0 5px 5px 0;cursor:pointer;transition:all .15s;}
+  .relbox .rel:hover{border-color:var(--accent);color:var(--accent);}
+  .srclink{display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;
+    color:var(--accent);text-decoration:none;margin-top:16px;border:1px solid var(--accent);padding:8px 13px;transition:all .15s;}
+  .srclink:hover{background:var(--accent);color:var(--paper);}
+  .angle{border-left:3px solid var(--accent);background:rgba(140,32,24,.045);padding:12px 14px;margin-top:6px;}
+  .angle .at{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+  .angle p{font-size:15px;font-style:italic;color:var(--ink-soft);margin:0;line-height:1.45;}
+
+  .empty{text-align:center;padding:60px 20px;color:var(--ink-faint);font-style:italic;font-size:19px;}
+
+  footer{margin-top:50px;border-top:3px double var(--ink);padding-top:18px;
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.05em;color:var(--ink-faint);line-height:1.7;}
+  footer b{color:var(--ink-soft);}
+  footer a{color:var(--accent);text-decoration:none;}
+
+  @media(max-width:760px){
+    .ledger{grid-template-columns:repeat(2,1fr);}
+    .ledger .cell:nth-child(2){border-right:none;}
+    .ledger .cell:nth-child(5){grid-column:1/-1;border-right:none;border-top:1px solid var(--rule);}
+    .bhead{grid-template-columns:1fr;}
+    .bside{align-items:flex-start;flex-direction:row;flex-wrap:wrap;gap:14px;}
+    .track,.tracklabs{width:160px;}
+    .dgrid{grid-template-columns:1fr;gap:0;}
+  }
+  /* ---------- BankRegWire brand components ---------- */
+  .volbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--ink-faint);border-bottom:1px solid var(--ink);padding-bottom:8px;}
+  .volbar .home{color:var(--accent);text-decoration:none;font-weight:600;}
+  .volbar .home:hover{text-decoration:underline;text-underline-offset:3px;}
+  .volbar .vol{color:var(--ink-soft);}
+  .volbar .deskline{color:var(--accent);}
+  .wordmark{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(19px,2.6vw,25px);
+    letter-spacing:-.02em;line-height:1;margin-top:18px;}
+  .dotmark{color:var(--accent);}
+  .dispatchtag{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--ink-faint);margin-top:8px;}
+  .deck em{font-style:normal;font-weight:500;color:var(--ink);}
+  .onwire{display:flex;align-items:stretch;border:1px solid var(--rule-strong);background:var(--paper-2);margin-top:20px;}
+  .wirelab{flex:none;background:var(--accent);color:var(--paper);font-family:'JetBrains Mono',monospace;
+    font-size:9px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;display:flex;align-items:center;
+    padding:0 13px;text-align:center;line-height:1.25;}
+  .wirefeed{padding:9px 14px;font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.8;
+    color:var(--ink-soft);display:flex;flex-wrap:wrap;gap:7px;align-items:baseline;}
+  .wirefeed b{color:var(--accent);font-weight:600;}
+  .wirefeed .ws{color:var(--rule-strong);}
+
+  .cardtags{display:flex;flex-wrap:wrap;gap:5px;margin-top:11px;}
+  .cardtags .tg{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--ink-faint);border:1px solid var(--rule);background:var(--paper);padding:3px 7px;}
+
+  /* footer / colophon */
+  .colophon{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--rule);}
+  .cmark{font-family:'Fraunces',serif;font-weight:900;font-size:23px;letter-spacing:-.02em;color:var(--ink);}
+  .cmeta{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.05em;color:var(--ink-faint);line-height:1.7;}
+  .fnotes{font-family:'Archivo',sans-serif;font-size:13px;line-height:1.65;color:var(--ink-faint);letter-spacing:0;}
+  .fnotes b{color:var(--ink-soft);}
+  .setin{margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="volbar">
+      <a class="home" href="https://bankregwire.com/wire.html" target="_blank" rel="noopener">← BankRegWire</a>
+      <span class="vol">Vol. I · No. 20</span>
+      <span class="deskline">II · Reform Trackers</span>
+    </div>
+
+    <div class="wordmark">BankRegWire<span class="dotmark">.</span></div>
+    <div class="dispatchtag">Dispatch № 20 · Reform Trackers · The Wire Room</div>
+
+    <h1 class="title">The Legislative <span class="amp">Docket</span></h1>
+    <p class="deck">A working catalogue of the bank, payments, data, digital-asset &amp; housing bills moving through the 119th Congress — <em>read from the primary source, with conclusions front-loaded</em> and filed through the lens of the dual banking system.</p>
+
+    <div class="byline">
+      <span><b id="billcount">0</b> measures</span>
+      <span>·</span>
+      <span><b>9</b> subjects · <b>3</b> stages live</span>
+      <span>·</span>
+      <span>Rev. <b>June 2026</b></span>
+      <span>·</span>
+      <span>Primary source: Congress.gov &amp; committee records</span>
+    </div>
+  </header>
+
+  <!-- Controls -->
+  <section class="controls">
+    <div class="searchrow">
+      <label class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="search" placeholder="Search by name, bill number, sponsor, or topic…" autocomplete="off">
+      </label>
+      <select class="sortsel" id="sort">
+        <option value="stage">Sort · Furthest along</option>
+        <option value="recent">Sort · Most recent action</option>
+        <option value="theme">Sort · By subject</option>
+        <option value="number">Sort · Bill number</option>
+      </select>
+    </div>
+
+    <p class="filterlab">Filter by subject</p>
+    <div class="chips" id="themechips"></div>
+
+    <p class="filterlab">Filter by stage &amp; chamber</p>
+    <div class="chips" id="metachips"></div>
+
+    <div class="resultline">
+      <span id="resultcount"></span>
+      <a id="clearbtn" style="display:none;">↺ Clear all filters</a>
+    </div>
+  </section>
+
+  <section class="bills" id="bills"></section>
+
+  <footer>
+    <div class="colophon">
+      <div class="cmark">BankRegWire<span class="dotmark">.</span></div>
+      <div class="cmeta">
+        <b>Vol. I · No. 20</b> · Rev. June 2026 · Dispatch № 20 · Desk II, Reform Trackers<br>
+        Primary-source methodology · Conclusions front-loaded · Preview edition
+      </div>
+    </div>
+    <div class="fnotes">
+      <b>About this dispatch.</b> A working catalogue of financial-services legislation in the 119th Congress, maintained by a practitioner across state and federal supervision. Each entry is keyed to its primary source on Congress.gov; status reflects the most recent recorded action as of the revision date. Omnibus vehicles — chiefly the Main&nbsp;Street Capital Access Act — are flagged because several stand-alone bills here also travel inside them.<br>
+      <b>Read with care.</b> Legislative posture changes on the wire; verify against the live Congress.gov record before relying on any item. Companion measures, substitute amendments, and committee-reported variants may differ materially from introduced text. Not legal advice.<br><br>
+      <b>Stage legend —</b> ① Introduced / referred · ② Reported or advanced from committee · ③ Passed chamber of origin · ④ Acting in the second chamber · ⑤ Enacted.
+    </div>
+    <div class="setin">Filed from the wire room · <a href="#top">↑ back to top</a> · Set in Fraunces, Archivo &amp; JetBrains Mono</div>
+  </footer>
+
+</div>
+
+<script>
+/* ============================================================
+   DATA — 119th Congress financial-services measures
+   stage: 1=introduced 2=committee 3=passed-origin 4=cross-chamber 5=enacted
+   ============================================================ */
+const BILLS = [
+  {
+    id:"clarity", no:"H.R. 3633", title:"Digital Asset Market CLARITY Act of 2025",
+    theme:"Digital Assets", chamber:"House", party:"R", bipartisan:true, stage:4,
+    sponsor:"Rep. French Hill (R-AR) & Rep. G.T. Thompson (R-PA)",
+    committee:"Financial Services / Agriculture",
+    introduced:"May 29, 2025", lastDate:"2026-05-14",
+    status:"Passed House 294–134; advancing in Senate",
+    summary:"Establishes the framework dividing digital-asset oversight between the SEC and CFTC, with the CFTC taking the lead on 'digital commodities'; folds in the Anti-CBDC Surveillance State Act.",
+    provisions:[
+      "Defines a 'digital commodity' as an asset whose value is intrinsically linked to use of a blockchain; excludes securities, derivatives, and stablecoins.",
+      "Gives the CFTC central authority over digital-commodity spot markets and intermediaries; preserves limited SEC authority over primary-market fundraising via a tailored registration exemption.",
+      "Creates expedited / provisional registration pathways for brokers, dealers, and exchanges.",
+      "Bars Federal Reserve banks from offering products directly to individuals and prohibits a CBDC for monetary policy (Anti-CBDC title)."
+    ],
+    significance:"The House-passed vehicle that both Senate committees are now building on. Passage requires reconciling two Senate drafts (Banking and Agriculture) and then a House–Senate conference — a heavy lift before the November 2026 midterms.",
+    angle:"State money-transmitter and trust regimes sit in the background of any market-structure deal: how 'digital commodity' intermediaries are licensed federally will shape what's left for state supervision.",
+    related:["S. 3755 (Senate Ag companion)","Senate Banking CLARITY draft (Scott/Lummis)"],
+    src:"https://www.congress.gov/bill/119th-congress/house-bill/3633"
+  },
+  {
+    id:"dcia", no:"S. 3755", title:"Digital Commodity Intermediaries Act",
+    theme:"Digital Assets", chamber:"Senate", party:"R", bipartisan:false, stage:2,
+    sponsor:"Sen. John Boozman (R-AR), Chairman, Senate Agriculture",
+    committee:"Agriculture, Nutrition & Forestry",
+    introduced:"Jan 21, 2026 (text)", lastDate:"2026-02-02",
+    status:"Reported by Senate Ag (party-line); on calendar",
+    summary:"The Senate Agriculture Committee's CFTC-side companion to the CLARITY Act, focused on who must register as a digital-commodity intermediary and how spot-market trading is supervised.",
+    provisions:[
+      "Provides a statutory definition of 'digital commodities' and a CFTC spot-market intermediary regime.",
+      "Customer-fund segregation, conflict-of-interest safeguards, and customer-disclosure requirements.",
+      "A trading-registration regime intended to onshore liquid, regulated markets while protecting retail participants.",
+      "Directs CFTC–SEC coordination on interagency rulemakings; carve-outs for software developers."
+    ],
+    significance:"Advanced on a party-line vote Jan 29, 2026 and reported Feb 2. Must be reconciled with the separate Senate Banking (SEC-side) draft, then with the House CLARITY Act — the bottleneck in the crypto market-structure effort.",
+    angle:"By design it leaves DeFi-protocol treatment open and works the CFTC side; the SEC/securities boundary is being fought out in Banking.",
+    related:["H.R. 3633 (House CLARITY Act)","Senate Banking CLARITY draft"],
+    src:"https://www.congress.gov/bill/119th-congress/senate-bill/3755"
+  },
+  {
+    id:"road", no:"H.R. 6644 / S. 2651", title:"21st Century ROAD to Housing Act",
+    theme:"Housing", chamber:"Both", party:"R", bipartisan:true, stage:4,
+    sponsor:"Sen. Tim Scott (R-SC) & Sen. Elizabeth Warren (D-MA)",
+    committee:"Senate Banking / House Financial Services",
+    introduced:"S. 2651 reported Aug 1, 2025", lastDate:"2026-05-20",
+    status:"Passed both chambers (differing texts); reconciliation pending",
+    summary:"The marquee bipartisan housing package — combining the Senate's ROAD to Housing Act (S. 2651) and the House's Housing for the 21st Century Act — to boost supply, modernize HUD/FHA programs, and curb institutional ownership of single-family homes.",
+    provisions:[
+      "Increases FHA multifamily loan limits and modernizes HOME, CDBG, and related HUD programs.",
+      "Includes a community-banking title strengthening banks' role in the housing market.",
+      "Restricts large institutional investors from amassing single-family homes (responding to E.O. 14376).",
+      "Streamlines environmental review and rethinks rules that hamper small-dollar mortgage lending."
+    ],
+    significance:"The furthest-along bill on this docket. The Senate passed H.R. 6644 with substitute amendment (89–10) on Mar 12, 2026; the House passed an amended version in May. The two chambers are reconciling — the White House has signaled it would sign.",
+    angle:"The community-bank housing title and small-dollar-mortgage provisions are where this otherwise housing-focused package intersects with bank supervision.",
+    related:["S. 2296 (FY26 NDAA vehicle, earlier)","Build Now Act (Sec. 205)"],
+    src:"https://www.congress.gov/bill/119th-congress/house-bill/6644"
+  },
+  {
+    id:"smart", no:"H.R. 4437", title:"SMART Act of 2025",
+    theme:"Supervisory Relief", chamber:"House", party:"R", bipartisan:true, stage:3,
+    sponsor:"Rep. William Timmons (R-SC)",
+    committee:"Financial Services",
+    introduced:"Jul 16, 2025", lastDate:"2026-05-13",
+    status:"Passed House; in Senate Banking",
+    summary:"Supervisory Modifications for Appropriate Risk-based Testing — alternating limited-scope exams for well-managed, well-capitalized institutions of $6 billion or less.",
+    provisions:[
+      "Amends FDI Act §10(d): after a full-scope, on-site exam, the next exam of a qualifying IDI is a limited-scope exam.",
+      "Applies to well-managed, well-capitalized IDIs and credit unions with ≤$6B in consolidated assets.",
+      "Lets institutions request consolidation of separate safety-and-soundness, consumer-compliance, and IT/cyber exams.",
+      "Directs regulators to issue implementing rules within 12 months; preserves authority for targeted reviews."
+    ],
+    significance:"Passed the House and was received in the Senate (read twice, referred to Banking) on May 13, 2026 — one of the more advanced supervisory-relief measures.",
+    angle:"Exam-cycle relief shapes state-federal alternating exam programs; the NCUA already holds comparable authority, a point the credit-union trades press.",
+    related:["H.R. 4478 (TRUST Act)","Sec. 303 of H.R. 6955 (Main Street omnibus)"],
+    src:"https://www.congress.gov/bill/119th-congress/house-bill/4437"
+  },
+  {
+    id:"trust", no:"H.R. 4478", title:"TRUST Act of 2025",
+    theme:"Supervisory Relief", chamber:"House", party:"R", bipartisan:true, stage:2,
+    sponsor:"Rep. Tim Moore (R-NC) & Rep. Ritchie Torres (D-NY)",
+    committee:"Financial Services",
+    introduced:"Jul 17, 2025", lastDate:"2025-09-08",
+    status:"Reported by Committee; on Union Calendar No. 209",
+    summary:"Tailored Regulatory Updates for Supervisory Testing — lengthens the exam cycle by raising the asset threshold for the 18-month examination schedule.",
+    provisions:[
+      "Raises the consolidated-asset threshold to qualify for an 18-month exam cycle from $3 billion to $6 billion.",
+      "Applies to insured depository institutions that are well-capitalized and well-managed at their most recent exam.",
+      "Frames the change as completing the tailoring intended (but, sponsors argue, under-implemented) since 2018."
+    ],
+    significance:"Reported favorably (H. Rept. 119-252) after a 48–0 markup and placed on the Union Calendar; a Senate companion (S. 3830) has been referred to Banking.",
+    angle:"Longer cycles for healthy community banks free supervisory resources but raise the perennial state-federal question of who carries the alternating exam.",
+    related:["H.R. 4437 (SMART Act)","S. 3830 (Senate companion)","Sec. 304 of H.R. 6955"],
+    src:"https://www.congress.gov/bill/119th-congress/house-bill/4478"
+  },
+  {
+    id:"cbrt", no:"H.R. 7056", title:"Community Bank Regulatory Tailoring Act",
+    theme:"Supervisory Relief", chamber:"House", party:"R", bipartisan:true, stage:2,
+    sponsor:"Rep. Andy Barr (R-KY) & Rep. Josh Gottheimer (D-NJ)",
+    committee:"Financial Services",
+    introduced:"Jan 14, 2026", lastDate:"2026-03-24",
+    status:"Reported by Committee; on Union Calendar No. 480",
+    summary:"Indexes a slate of asset-based statutory thresholds for bank regulation to nominal GDP, so community-bank trigger points keep pace with economic growth.",
+    provisions:[
+      "Indexes asset-based regulatory thresholds for community banks and small credit unions to nominal GDP.",
+      "Raises Bank Holding Company Act thresholds (e.g., $1M→$3M; $10B→$15B for certain provisions).",
+      "Raises a Community Reinvestment Act threshold (e.g., $250M→$800M)."
+    ],
+    significance:"Reported (H. Rept. 119-558) after a 33–21 markup. A non-germane Waters amendment to add a 10% credit-card rate cap was withdrawn.",
+    angle:"GDP-indexing is the structural cousin of the Main Street omnibus's 'Tailoring and Indexing' title — it ends the slow drift of fixed-dollar thresholds into ever-smaller banks.",
+    related:["Sec. 204 of H.R. 6955","H.R. 478 (Promoting New Bank Formation)"],
+    src:"https://www.congress.gov/bill/119th-congress/house-bill/7056"
+  },
+  {
+    id:"pnbf", no:"H.R. 478", title:"Promoting New Bank Formation Act",
+    theme:"Charters & Resolution", chamber:"House", party:"R", bipartisan:false, stage:2,
+    sponsor:"Rep. Andy Barr (R-KY)",
+    committee:"Financial Services",
+    introduced:"Jan 16, 2025", lastDate:"2025-04-02",
+    status:"Reported by Committee; on Union Calendar No. 64",
+    summary:"Eases the path for de novo banks — a 3-year capital phase-in, relief for rural de novos, and faster review of business-plan changes — to reverse the collapse in new-bank charters.",
+    provisions:[
+      "Directs the banking agencies to establish a 3-year phase-in for de novo institutions to meet federal capital standards.",
+      "Provides targeted relief for de novo rural community banks.",
+      "Sets a 30-day clock on business-plan-change requests during the phase-in, with automatic approval if the agency misses it.",
+      "Requires a joint agency study on the causes of low de novo formation."
+    ],
+    significance:"Reported (H. Rept. 119-90, 28–21) and also carried as Section 101 of the Main Street Capital Access Act. A Senate companion (S. 113, Hyde-Smith) sits in Banking.",
+    angle:"De novo formation is a structural concern for state regulators: most new charters historically begin as state banks, so a federal capital on-ramp directly affects the state pipeline.",
+    related:["Sec. 101 of H.R. 6955","S. 113 (Senate companion)"],
+    src:"https://www.congress.gov/bill/119th-congress/house-bill/478"
+  },
+  {
+    id:"lce", no:"H.R. 6547", title:"Least Cost Exception Act",
+    theme:"Charters & Resolution", chamber:"House", party:"R", bipartisan:true, stage:2,
+    sponsor:"Rep. Mike Flood (R-NE) & Rep. Bill Foster (D-IL)",
+    committee:"Financial Services",
+    introduced:"Dec 10, 2025", lastDate:"2026-02-02",
+    status:"Reported by Committee; on Union Calendar No. 405",
+    summary:"Lets the FDIC waive the least-cost-resolution mandate to pursue alternative resolutions of failed banks — specifically to avoid pushing failed banks into the largest G-SIBs.",
+    provisions:[
+      "Amends the FDI Act to create an exception to the least-cost-resolution (LCR) requirement.",
+      "Favors resolution alternatives that do not further concentrate assets in global systemically important banks (G-SIBs).",
+      "Aims to give the FDIC flexibility to weigh competitive and economic effects beyond the narrow cost to the Deposit Insurance Fund."
+    ],
+    significance:"Reported (H. Rept. 119-474) after a 50–0 markup and carried as Section 701 of the Main Street omnibus.",
+    angle:"A direct answer to the 2023 regional-bank failures: a rigid LCR mandate can entrench concentration. State regulators care because their mid-size charters are the most likely 'alternative' acquirers.",
+    related:["Sec. 701 of H.R. 6955","H.R. 6556 (Failing Bank Acquisition Fairness)"],
+    src:"https://www.congress.gov/bill/119th-congress/house-bill/6547"
+  },
+  {
+    id:"fbaf", no:"H.R. 6556", title:"Failing Bank Acquisition Fairness Act",
+    theme:"Charters & Resolution", chamber:"House", party:"D", bipartisan:false, stage:2,
+    sponsor:"Rep. Stephen Lynch (D-MA)",
+    committee:"Financial Services",
+    introduced:"Dec 10, 2025", lastDate:"2026-02-02",
+    status:"Reported by Committee; on Union Calendar No. 406",
+    summary:"The transparency counterpart to merger-relief bills: conditions any waiver of merger concentration limits in failing-bank deals and forces detailed reporting to Congress.",
+    provisions:[
+      "Permits an exception to deposit-concentration limits only where a bank is in default or in danger of default and non-approval would cause significant disruption or harm financial stability.",
+      "Requires a detailed report to Congress justifying any waiver of the limits.",
+      "Requires disclosure of alternative bids considered and the reasons each was rejected."
+    ],
+    significance:"Reported (H. Rept. 119-475) — the Democratic-led accountability bookend to the FDIC-flexibility push in the Least Cost Exception Act.",
+    angle:"Pairs naturally with the Least Cost Exception Act: one widens FDIC discretion in failures, the other demands transparency about how that discretion (and concentration waivers) is used.",
+    related:["H.R. 6547 (Least Cost Exception)"],
+    src:"https://www.congress.gov/bill/119th-congress/house-bill/6556"
+  },
+  {
+    id:"kdl", no:"H.R. 3234", title:"Keeping Deposits Local Act",
+    theme:"Deposits", chamber:"House", party:"R", bipartisan:true, stage:3,
+    sponsor:"Rep. Tom Emmer (R-MN) & Rep. Joyce Beatty (D-OH)",
+    committee:"Financial Services",
+    introduced:"May 7, 2025", lastDate:"2026-05-20",
+    status:"Passed House 405–0; in Senate Banking",
+    summary:"Expands how much in reciprocal deposits a bank can hold before they count as 'brokered,' replacing the flat cap with a tiered, liability-based schedule.",
+    provisions:[
+      "Amends FDI Act §29(i): replaces the lesser-of-20%-or-$5B reciprocal-deposit cap with tiers scaled to total liabilities.",
+      "Lets institutions rated CAMELS 1, 2, or 3 qualify (vs. the current 'outstanding or good' composite standard).",
+      "Builds on Emmer's 2018 reciprocal-deposit reform."
+    ],
+    significance:"Passed the House 405–0 on May 20, 2026 and was referred to Senate Banking — among the broadest bipartisan margins on the docket. Reciprocal balances have grown from ~$156B (2022) to >$422B (2025).",
+    angle:"Brokered-deposit classification drives capital and rate restrictions; expanding the reciprocal carve-out keeps large municipal and corporate relationships at community banks rather than the megabanks.",
+    related:["H.R. 5317 (Community Bank Deposit Access)","Main Street Depositor Protection Act (S.)"],
+    src:"https://www.congress.gov/bill/119th-congress/house-bill/3234"
+  },
+  {
+    id:"cbda", no:"H.R. 5317", title:"Community Bank Deposit Access Act",
+    theme:"Deposits", chamber:"House", party:"R", bipartisan:true, stage:3,
+    sponsor:"House Financial Services",
+    committee:"Financial Services",
+    introduced:"2025", lastDate:"2026-05-20",
+    status:"Passed House 393–16; to Senate",
+    summary:"The custodial-deposit companion to Keeping Deposits Local — lets community banks hold custodial deposits without the brokered label, subject to a liability-based cap.",
+    provisions:[
+      "Reclassifies qualifying custodial deposits so they are not treated as brokered deposits.",
+      "Caps the carve-out at custodial deposits not exceeding 20% of a bank's total liabilities.",
+      "Targets the same goal as the reciprocal-deposit reform: stable funding for local lending."
+    ],
+    significance:"Passed the House 393–16 alongside the housing package in May 2026; now before the Senate. Together with H.R. 3234 it forms the House's two-part rewrite of brokered-deposit treatment.",
+    angle:"The brokered-deposit framework is a recurring flashpoint between the FDIC's funding-stability concerns and community-bank liquidity needs — squarely a safety-and-soundness question state examiners share.",
+    related:["H.R. 3234 (Keeping Deposits Local)"],
+    src:"https://www.congress.gov/bill/119th-congress/house-bill/5317"
+  },
+  {
+    id:"smalllender", no:"H.R. 941", title:"Small LENDER Act",
+    theme:"Lending Data (1071)", chamber:"House", party:"R", bipartisan:false, stage:2,
+    sponsor:"Rep. French Hill (R-AR)",
+    committee:"Financial Services",
+    introduced:"Feb 4, 2025", lastDate:"2026-04-21",
+    status:"Reported by Committee (26–22)",
+    summary:"Narrows the reach of the CFPB's §1071 small-business-lending data rule — Small Lenders Exempt from New Data and Excessive Reporting — via exemptions, a safe harbor, and a later effective date.",
+    provisions:[
+      "Amends ECOA §704B (15 U.S.C. 1691c-2) to exempt lenders below a high origination threshold (reported at fewer than 2,500 small-business loans).",
+      "Limits 'small business' to those with $1M or less in annual revenue.",
+      "Deletes certain data points (e.g., pricing, denial reasons) and adds a temporary compliance safe harbor and delayed effective date."
+    ],
+    significance:"Reported out of committee 26–22 in April 2026. It is the 'mitigate' option alongside the more aggressive H.R. 976 (full §1071 repeal); the CFPB's May 2026 final rule already pushed compliance to Jan 1, 2028.",
+    angle:"A core dual-banking asymmetry: §1071 reaches bank and non-bank lenders unevenly. Defining who reports — and on what — reshapes the fair-lending data picture state regulators rely on.",
+    related:["H.R. 976 (1071 Repeal Act)","PROTECTED Act (S. 2352)","CFPB 2026 Final 1071 Rule"],
+    src:"https://www.congress.gov/bill/119th-congress/house-bill/941"
+  },
+  {
+    id:"repeal1071", no:"H.R. 976", title:"1071 Repeal to Protect Small Business Lending Act",
+    theme:"Lending Data (1071)", chamber:"House", party:"R", bipartisan:false, stage:2,
+    sponsor:"Rep. Roger Williams (R-TX)",
+    committee:"Financial Services",
+    introduced:"Feb 4, 2025", lastDate:"2025-04-02",
+    status:"Reported by Committee",
+    summary:"The maximalist counterpart to the Small LENDER Act — repeals the §1071 small-business-lending data-collection statute outright.",
+    provisions:[
+      "Repeals the small-business-loan data-collection requirements added to ECOA by Dodd-Frank §1071.",
+      "Eliminates mandatory collection/reporting of application disposition, loan type/amount, and applicant census tract, revenue, race, sex, and ethnicity."
+    ],
+    significance:"Reported by the House Financial Services Committee in April 2025. Where the Small LENDER Act narrows §1071, this bill removes its statutory foundation.",
+    angle:"Repealing the statute (rather than trimming the rule) would moot the entire CFPB rulemaking cycle — a cleaner outcome for lenders but a loss of the fair-lending dataset advocates defend.",
+    related:["H.R. 941 (Small LENDER Act)"],
+    src:"https://www.congress.gov/bill/119th-congress/house-bill/976"
+  },
+  {
+    id:"alfa", no:"S. 3889", title:"American Lending Fairness Act of 2026",
+    theme:"State Authority & Preemption", chamber:"Senate", party:"R", bipartisan:false, stage:1,
+    sponsor:"Sen. Bernie Moreno (R-OH); House companion Rep. Warren Davidson (R-OH)",
+    committee:"Banking, Housing & Urban Affairs",
+    introduced:"Feb 12, 2026", lastDate:"2026-02-12",
+    status:"Introduced; referred to Senate Banking",
+    summary:"Restores nationwide interest-rate exportation parity for state-chartered banks by limiting a state's DIDMCA opt-out to loans made by its own chartered institutions.",
+    provisions:[
+      "Amends FDI Act §27 (12 U.S.C. 1831d) and the Federal Credit Union Act on rate exportation.",
+      "Provides that a state's opt-out from federal rate preemption applies only to loans made by institutions that state chartered — not to out-of-state state banks/credit unions.",
+      "Repeals §525 of DIDMCA (1980) and addresses the legal effect of prior state opt-outs."
+    ],
+    significance:"A direct response to the Tenth Circuit's 2025 decision in National Association of Industrial Bankers v. Weiser, which let Colorado apply its caps to out-of-state lenders. Backed by bank trades as preserving dual-banking 'competitive parity.'",
+    angle:"This is the preemption-restoring pole of the rate debate — and the one most explicitly framed around the dual banking system. It is the mirror image of S. 3721.",
+    related:["S. 3721 (Empowering States' Rights — opposite approach)","NAIB v. Weiser (10th Cir. 2025)"],
+    src:"https://www.congress.gov/bill/119th-congress/senate-bill/3889"
+  },
+  {
+    id:"esrpc", no:"S. 3721", title:"Empowering States' Rights To Protect Consumers Act of 2026",
+    theme:"State Authority & Preemption", chamber:"Senate", party:"D", bipartisan:false, stage:1,
+    sponsor:"Sen. Sheldon Whitehouse (D-RI), with Warren, Reed & Merkley",
+    committee:"Banking, Housing & Urban Affairs",
+    introduced:"Jan 29, 2026", lastDate:"2026-01-29",
+    status:"Introduced; referred to Senate Banking",
+    summary:"The consumer-side pole of the rate-preemption fight: amends the Truth in Lending Act to let states set the maximum APR on consumer-credit transactions in their borders.",
+    provisions:[
+      "Amends TILA to empower states to set maximum annual percentage rates on consumer credit transactions.",
+      "Aims to close the 'bank exemption' that lets out-of-state state banks export rates above local caps.",
+      "Targets so-called rent-a-bank arrangements used to exceed state usury limits."
+    ],
+    significance:"Reintroduces a Whitehouse proposal from prior Congresses. Consumer groups support it and oppose S. 3889; industry takes the reverse view — the two bills define the poles of the 2026 rate-exportation debate.",
+    angle:"Where S. 3889 restores federal preemption parity, S. 3721 expands state authority. For a state-regulator audience, the pair is the cleanest live illustration of the federalism tension in consumer credit.",
+    related:["S. 3889 (American Lending Fairness — opposite approach)","DIDMCA opt-outs (CO, IA, OR)"],
+    src:"https://www.congress.gov/bill/119th-congress/senate-bill/3721"
+  },
+  {
+    id:"pace", no:"H.R. 8395", title:"PACE Act of 2026",
+    theme:"Payments", chamber:"House", party:"R", bipartisan:true, stage:1,
+    sponsor:"Rep. Young Kim (R-CA) & Rep. Sam Liccardo (D-CA)",
+    committee:"Financial Services",
+    introduced:"Apr 21, 2026", lastDate:"2026-04-21",
+    status:"Introduced; referred to committee",
+    summary:"Payments Access and Consumer Efficiency Act — creates an optional federal 'registered covered provider' status at the OCC for nonbank payment firms, with a pathway to direct Federal Reserve payment-rail access.",
+    provisions:[
+      "Establishes an optional OCC-administered federal supervisory framework for qualifying nonbank payment providers.",
+      "Lets a registered provider holding 40+ state money-transmitter licenses operate nationwide; provides a pathway to apply for a Fed payments reserve account (Fedwire, FedNow, FedACH).",
+      "Requires 1:1 reserves, risk-management, recordkeeping, and consumer-protection standards.",
+      "Adds an insolvency framework prioritizing customer payment obligations over general creditors."
+    ],
+    significance:"Backed by major fintech and digital-asset trades. Notably, the draft contains no express preemption clause — leaving the relationship between 'nationwide operation' and the state money-transmitter regime unresolved. No Senate companion yet.",
+    angle:"This is the bill on the docket most directly in tension with state authority: an OCC federal registration that confers nationwide reach would sit atop — and arguably around — the state MTL system that currently licenses these firms.",
+    related:["GENIUS Act (stablecoin framework)","OCC federal payments-charter history"],
+    src:"https://www.congress.gov/bill/119th-congress/house-bill/8395"
+  },
+  {
+    id:"secure", no:"H.R. 8413", title:"SECURE Data Act",
+    theme:"Data Privacy", chamber:"House", party:"R", bipartisan:false, stage:1,
+    sponsor:"Rep. John Joyce (R-PA), Vice Chair, Energy & Commerce",
+    committee:"Energy & Commerce / Judiciary",
+    introduced:"Apr 21, 2026", lastDate:"2026-04-21",
+    status:"Introduced; referred to E&C and Judiciary",
+    summary:"The first comprehensive national consumer-privacy framework of the 119th Congress — establishing data rights enforced by the FTC and state AGs, with federal preemption of state privacy law.",
+    provisions:[
+      "Creates consumer rights to access, correct, delete, and port personal data and to opt out of targeted advertising, sales, and consequential profiling.",
+      "FTC and state AGs share enforcement; a 45-day cure period precedes formal action; no private right of action.",
+      "Exempts financial institutions and data covered by the Gramm-Leach-Bliley Act — instead covered by the companion GUARD Act.",
+      "Exempts HIPAA-covered entities, nonprofits, and higher-education institutions to avoid duplicating sector rules."
+    ],
+    significance:"Product of the House E&C Data Privacy Working Group; supported by 50+ trade associations but given long odds in its current form. Its GLBA carve-out is the seam where it hands financial data to the GUARD Act.",
+    angle:"Preemption of state privacy law is the headline fight. The deliberate GLBA carve-out is why this and the GUARD Act must be read as a single, two-committee package.",
+    related:["H.R. 8398 (GUARD Financial Data Act — the GLBA half)"],
+    src:"https://www.congress.gov/bill/119th-congress/house-bill/8413"
+  },
+  {
+    id:"guard", no:"H.R. 8398", title:"GUARD Financial Data Act",
+    theme:"Data Privacy", chamber:"House", party:"R", bipartisan:false, stage:1,
+    sponsor:"Rep. Bill Huizenga (R-MI), with Hill & Steil",
+    committee:"Financial Services",
+    introduced:"Apr 21, 2026", lastDate:"2026-04-21",
+    status:"Introduced; referred to committee",
+    summary:"Guidelines for Use, Access, and Responsible Disclosure of Financial Data — modernizes Title V of the Gramm-Leach-Bliley Act as the financial-sector half of the privacy package.",
+    provisions:[
+      "Adds a data-minimization duty: collection/disclosure of nonpublic personal information limited to what is adequate, relevant, and reasonably necessary.",
+      "Provides a continuing consumer opt-out right and limits on use of consumer access credentials.",
+      "Requires affirmative opt-in consent before sensitive personal information is disclosed.",
+      "Preempts state laws in the financial-activity space; directs consideration of effects on small institutions (≈ ≤$15M)."
+    ],
+    significance:"Introduced in tandem with the SECURE Data Act so banks follow one national standard rather than a state-plus-federal patchwork. Observers call its preemption language about as strong as a federal privacy bill is likely to get.",
+    angle:"GLBA modernization plus broad financial-activity preemption directly touches state financial-privacy and data-security regimes — a coordination question for state regulators, not just a compliance update.",
+    related:["H.R. 8413 (SECURE Data Act — the non-GLBA half)","Dodd-Frank §1033 open-banking rule"],
+    src:"https://www.congress.gov/bill/119th-congress/house-bill/8398"
+  },
+  {
+    id:"mainstreet", no:"H.R. 6955", title:"Main Street Capital Access Act",
+    theme:"Supervisory Relief", chamber:"House", party:"R", bipartisan:false, stage:2, vehicle:true,
+    sponsor:"Rep. French Hill (R-AR) & Rep. Andy Barr (R-KY)",
+    committee:"Financial Services",
+    introduced:"Jan 7, 2026", lastDate:"2026-04-20",
+    status:"Reported; on Union Calendar No. 535",
+    summary:"The omnibus vehicle. It bundles many of the stand-alone community-bank bills on this docket into one eight-title package on de novo formation, tailoring, supervision, deposits, resolution, and fintech.",
+    provisions:[
+      "Title I — New bank formation & local access: Promoting New Bank Formation (§101), Bank Failure Prevention (§103).",
+      "Title II — Tailoring: TAILOR Act (§201), small-BHC relief (§202), CBLR flexibility (§203), Tailoring & Indexing (§204).",
+      "Title III — Supervision: HUMPS (§301), FAIR Exams (§302), SMART (§303), TRUST (§304), stress-test transparency (§305).",
+      "Title VII — Resolutions: Least Cost Exception (§701). Title VIII — Innovation: Merchant Banking Modernization (§801), Bank-Fintech Partnership (§802)."
+    ],
+    significance:"Because several bills here also ride inside this omnibus, the omnibus's fate can carry — or substitute for — its components. Watch whether leadership advances the package or the stand-alones.",
+    angle:"For tracking purposes: a stand-alone bill 'stalling' may simply mean it has migrated into this vehicle. Always check the omnibus before concluding a component is dead.",
+    related:["H.R. 478","H.R. 4437","H.R. 4478","H.R. 6547","H.R. 7056"],
+    src:"https://www.congress.gov/bill/119th-congress/house-bill/6955"
+  }
+];
+
+/* ---------- stage helpers ---------- */
+const STAGE_CLASS = {1:"introduced",2:"committee",3:"passed",4:"cross",5:"cross"};
+const STAGE_BILLCLASS = {1:"s-introduced",2:"s-committee",3:"s-passed",4:"s-cross",5:"s-cross"};
+const TRACK_LABELS = ["Intro","Cmte","Floor","2nd","Law"];
+
+const THEMES = [
+  "Supervisory Relief","Charters & Resolution","Deposits","Lending Data (1071)",
+  "State Authority & Preemption","Payments","Data Privacy","Digital Assets","Housing"
+];
+const META = [
+  {key:"stage4", label:"Acting in 2nd chamber", test:b=>b.stage>=4},
+  {key:"stage3", label:"Passed a chamber", test:b=>b.stage===3},
+  {key:"stage2", label:"In committee", test:b=>b.stage===2},
+  {key:"stage1", label:"Introduced", test:b=>b.stage===1},
+  {key:"house", label:"House", test:b=>b.chamber==="House"||b.chamber==="Both"},
+  {key:"senate", label:"Senate", test:b=>b.chamber==="Senate"||b.chamber==="Both"},
+  {key:"bipartisan", label:"Bipartisan", test:b=>b.bipartisan},
+  {key:"vehicle", label:"Omnibus vehicles", test:b=>b.vehicle}
+];
+
+/* ---------- state ---------- */
+let activeThemes = new Set();
+let activeMeta = new Set();
+let query = "";
+let sortMode = "stage";
+
+const $ = s => document.querySelector(s);
+const billsEl = $("#bills");
+
+/* ---------- chips ---------- */
+function buildChips(){
+  const tc = $("#themechips");
+  tc.innerHTML = THEMES.map(t=>{
+    const ct = BILLS.filter(b=>b.theme===t).length;
+    return `<button class="chip theme" data-theme="${t}">${t}<span class="ct">${ct}</span></button>`;
+  }).join("");
+  const mc = $("#metachips");
+  mc.innerHTML = META.map(m=>{
+    const ct = BILLS.filter(m.test).length;
+    return `<button class="chip meta" data-meta="${m.key}">${m.label}<span class="ct">${ct}</span></button>`;
+  }).join("");
+
+  tc.querySelectorAll(".chip").forEach(ch=>ch.addEventListener("click",()=>{
+    const t = ch.dataset.theme;
+    activeThemes.has(t)?activeThemes.delete(t):activeThemes.add(t);
+    ch.classList.toggle("on"); render();
+  }));
+  mc.querySelectorAll(".chip").forEach(ch=>ch.addEventListener("click",()=>{
+    const k = ch.dataset.meta;
+    activeMeta.has(k)?activeMeta.delete(k):activeMeta.add(k);
+    ch.classList.toggle("on"); render();
+  }));
+}
+
+/* ---------- filtering / sorting ---------- */
+function matches(b){
+  if(activeThemes.size && !activeThemes.has(b.theme)) return false;
+  for(const k of activeMeta){
+    const m = META.find(x=>x.key===k);
+    if(m && !m.test(b)) return false;
+  }
+  if(query){
+    const hay = (b.no+" "+b.title+" "+b.sponsor+" "+b.summary+" "+b.theme+" "+b.committee+" "+(b.provisions||[]).join(" ")+" "+(b.related||[]).join(" ")).toLowerCase();
+    if(!hay.includes(query)) return false;
+  }
+  return true;
+}
+function sortBills(list){
+  const arr = [...list];
+  if(sortMode==="stage") arr.sort((a,b)=> b.stage-a.stage || b.lastDate.localeCompare(a.lastDate));
+  else if(sortMode==="recent") arr.sort((a,b)=> b.lastDate.localeCompare(a.lastDate));
+  else if(sortMode==="theme") arr.sort((a,b)=> THEMES.indexOf(a.theme)-THEMES.indexOf(b.theme) || b.stage-a.stage);
+  else if(sortMode==="number") arr.sort((a,b)=> a.no.localeCompare(b.no, undefined, {numeric:true}));
+  return arr;
+}
+
+/* ---------- render ---------- */
+function trackHTML(stage){
+  let h="";
+  for(let i=1;i<=5;i++){
+    const nodeFill = i<=stage ? "fill":"";
+    h += `<div class="node ${nodeFill}"></div>`;
+    if(i<5){ const segFill = i<stage ? "fill":""; h += `<div class="seg ${segFill}"></div>`; }
+  }
+  return h;
+}
+function billHTML(b){
+  const sc = STAGE_CLASS[b.stage];
+  const bc = STAGE_BILLCLASS[b.stage];
+  const prov = (b.provisions||[]).map(p=>`<li>${p}</li>`).join("");
+  const rel = (b.related||[]).map(r=>`<span class="rel">${r}</span>`).join("");
+  return `
+  <article class="bill ${bc} ${b.vehicle?'vehicle':''}" data-id="${b.id}">
+    <div class="bhead" role="button" tabindex="0">
+      <div class="bmain">
+        <div class="billno">${b.no} ${b.vehicle?'<span class="vehbadge">Omnibus</span>':''} <span style="color:var(--ink-faint);font-weight:400;">· ${b.theme}</span></div>
+        <h3 class="stitle">${b.title}</h3>
+        <p class="summ">${b.summary}</p>
+        <div class="meta">
+          <span class="party ${b.bipartisan?'BI':b.party}">${b.bipartisan?'Bipartisan':(b.party==='R'?'Republican':'Democratic')}</span>
+          <span class="dot">●</span><span>${b.sponsor}</span>
+        </div>
+        <div class="cardtags">
+          <span class="tg">${b.chamber==='Both'?'House + Senate':b.chamber}</span>
+          <span class="tg">${b.committee}</span>
+          <span class="tg">Filed ${(String(b.introduced).match(/\d{4}/)||['—'])[0]}</span>
+          ${b.vehicle?'<span class="tg" style="color:var(--accent);border-color:var(--accent);">Omnibus vehicle</span>':''}
+        </div>
+      </div>
+      <div class="bside">
+        <div class="status ${sc}">${b.status}</div>
+        <div>
+          <div class="track">${trackHTML(b.stage)}</div>
+          <div class="tracklabs">${TRACK_LABELS.map((l,i)=>`<span style="${i+1<=b.stage?'color:var(--ink-soft);font-weight:600':''}">${l}</span>`).join("")}</div>
+        </div>
+      </div>
+    </div>
+    <div class="detail">
+      <div class="detailpad">
+        <div class="dgrid">
+          <div>
+            <div class="dsec"><h4>What it would do</h4><p>${b.summary}</p></div>
+            <div class="dsec"><h4>Key provisions</h4><ul class="prov">${prov}</ul></div>
+            <div class="dsec"><h4>Where it stands</h4><p>${b.significance}</p></div>
+          </div>
+          <div>
+            <div class="factbox">
+              <dl>
+                <dt>Bill</dt><dd>${b.no}</dd>
+                <dt>Subject</dt><dd>${b.theme}</dd>
+                <dt>Chamber</dt><dd>${b.chamber}</dd>
+                <dt>Committee</dt><dd>${b.committee}</dd>
+                <dt>Introduced</dt><dd>${b.introduced}</dd>
+                <dt>Latest</dt><dd>${b.status}</dd>
+              </dl>
+            </div>
+            <div class="angle">
+              <div class="at">◆ Dual-banking lens</div>
+              <p>${b.angle}</p>
+            </div>
+            ${rel?`<div class="relbox"><h4 class="dsec" style="margin:18px 0 9px;border-bottom:1px solid var(--rule);padding-bottom:5px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);">Related &amp; companion measures</h4>${rel}</div>`:''}
+            <a class="srclink" href="${b.src}" target="_blank" rel="noopener">↗ View on Congress.gov</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>`;
+}
+
+function render(){
+  const filtered = BILLS.filter(matches);
+  const sorted = sortBills(filtered);
+  if(sorted.length===0){
+    billsEl.innerHTML = `<div class="empty">No measures match these filters. Try clearing one.</div>`;
+  } else {
+    billsEl.innerHTML = sorted.map((b,i)=>billHTML(b)).join("");
+    billsEl.querySelectorAll(".bill").forEach((el,i)=>{ el.style.animationDelay = (i*45)+"ms"; });
+    attachHandlers();
+  }
+  const n = sorted.length;
+  $("#resultcount").textContent = `Showing ${n} of ${BILLS.length} measures`;
+  const anyFilter = activeThemes.size||activeMeta.size||query;
+  $("#clearbtn").style.display = anyFilter ? "inline":"none";
+}
+
+function attachHandlers(){
+  billsEl.querySelectorAll(".bhead").forEach(h=>{
+    const toggle = ()=>h.parentElement.classList.toggle("open");
+    h.addEventListener("click",toggle);
+    h.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle();} });
+  });
+  billsEl.querySelectorAll(".rel").forEach(r=>{
+    r.addEventListener("click",e=>{
+      e.stopPropagation();
+      const txt = r.textContent.trim();
+      const m = txt.match(/(H\.R\.|S\.)\s*\d+/i);
+      if(m){
+        $("#search").value = m[0];
+        query = m[0].toLowerCase();
+        render();
+        window.scrollTo({top: $("#bills").offsetTop-90, behavior:"smooth"});
+      }
+    });
+  });
+}
+
+/* ---------- wiring ---------- */
+$("#search").addEventListener("input", e=>{ query = e.target.value.trim().toLowerCase(); render(); });
+$("#sort").addEventListener("change", e=>{ sortMode = e.target.value; render(); });
+$("#clearbtn").addEventListener("click", ()=>{
+  activeThemes.clear(); activeMeta.clear(); query=""; sortMode="stage";
+  $("#search").value=""; $("#sort").value="stage";
+  document.querySelectorAll(".chip.on").forEach(c=>c.classList.remove("on"));
+  render();
+});
+
+$("#billcount").textContent = BILLS.length;
+buildChips();
+render();
+</script>
+</body>
+</html>

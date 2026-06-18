@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Federal Reserve System — An Interactive Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,900;1,9..144,400;1,9..144,500&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16150f;          /* deep ink */
+    --ink-2:#46433a;
+    --paper:#f1ede2;        /* canonical paper */
+    --paper-2:#e9e3d4;
+    --card:#f7f3ea;
+    --brass:#cf7714;        /* copper — the live-wire accent */
+    --brass-2:#a85c08;      /* copper-deep */
+    --copper:#cf7714;
+    --copper-deep:#a85c08;
+    --copper-soft:rgba(207,119,20,.20);
+    --oxblood:#7a1f2b;      /* the editorial accent */
+    --oxblood-tx:#6a1a25;
+    --rule:#cabf9f;
+    --muted:#6c6859;
+    --line:rgba(22,21,15,.16);
+    --header-bg:rgba(247,243,234,.93);
+    --ink-fixed:#1c1a17;
+    --oxblood-fixed:#7a1f2b;
+    --shadow:0 1px 2px rgba(22,21,15,.05),0 6px 22px rgba(22,21,15,.07);
+  }
+  @media(prefers-color-scheme:dark){
+    :root{
+      --ink:#f1ede2; --ink-2:#c2bdac;
+      --paper:#16150f; --paper-2:#221f17; --card:#201e16;
+      --brass:#e6973c; --brass-2:#f0a64f;
+      --copper:#e6973c; --copper-deep:#f0a64f; --copper-soft:rgba(230,151,60,.26);
+      --oxblood:#d27d88; --oxblood-tx:#dc8c96;
+      --rule:#3a352a; --muted:#928d7d; --line:rgba(241,237,226,.16);
+      --header-bg:rgba(30,28,21,.94);
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 22px rgba(0,0,0,.35);
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:"Archivo",system-ui,sans-serif;
+    font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(rgba(22,21,15,.022) 1px, transparent 1px);
+    background-size:3px 3px;
+  }
+  @media(prefers-color-scheme:dark){body{background-image:radial-gradient(rgba(241,237,226,.025) 1px, transparent 1px)}}
+
+  /* ── animated copper wire (runs once on load, then rests off-screen) ── */
+  .wire{position:relative;height:2px;background:var(--line);overflow:visible;max-width:1180px;margin:0 auto}
+  .wire::after{content:"";position:absolute;top:50%;left:0;width:7px;height:7px;border-radius:50%;background:var(--copper);box-shadow:0 0 10px 2px var(--copper-soft);transform:translateY(-50%);animation:wire-run 7.5s linear 1 forwards}
+  @keyframes wire-run{0%{left:-1%;opacity:0}5%{opacity:1}93%{opacity:1}100%{left:101%;opacity:0}}
+  @media(prefers-reduced-motion:reduce){.wire::after{animation:none;left:0;opacity:1}}
+  .mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+  .serif{font-family:"Fraunces","Spectral",Georgia,serif}
+
+  /* ---------- Masthead ---------- */
+  header.masthead{
+    border-bottom:3px double var(--ink);
+    padding:26px 20px 18px;max-width:1180px;margin:0 auto;
+  }
+  .kicker{
+    font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.32em;
+    text-transform:uppercase;color:var(--brass);font-weight:600;
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+    border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:14px;
+  }
+  h1.title{
+    font-family:"Fraunces",Georgia,serif;font-weight:900;
+    font-size:clamp(30px,6vw,58px);line-height:.98;letter-spacing:-.015em;
+    margin:.1em 0 .15em;color:var(--ink);
+  }
+  h1.title em{font-style:italic;font-weight:500;color:var(--oxblood)}
+  .dek{
+    font-size:clamp(14px,2.4vw,18px);color:var(--ink-2);max-width:62ch;
+    font-family:"Fraunces",Georgia,serif;font-weight:400;font-optical-sizing:auto;
+  }
+
+  /* ---------- Status banner ---------- */
+  .status{
+    max-width:1180px;margin:14px auto 0;padding:0 20px;
+  }
+  .status-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:1px;background:var(--line);border:1px solid var(--line);
+    border-radius:10px;overflow:hidden;box-shadow:var(--shadow);
+  }
+  .stat{background:var(--card);padding:11px 13px}
+  .stat .lab{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+  .stat .val{font-family:"Fraunces",serif;font-weight:600;font-size:18px;line-height:1.1;color:var(--ink)}
+  .stat .sub{font-size:11px;color:var(--muted);margin-top:1px}
+  .asof{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--muted);
+    margin:8px 2px 0;text-align:right}
+
+  /* ---------- BankRegWire masthead chrome ---------- */
+  .wordmark{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:2px}
+  .wordmark .brw{font-family:"Fraunces",Georgia,serif;font-weight:900;font-size:22px;
+    letter-spacing:-.02em;color:var(--ink)}
+  .wordmark .brw .dot{color:var(--oxblood)}
+  .wordmark .vol{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--muted)}
+  .diamond{color:var(--oxblood);font-size:9px;position:relative;top:-2px}
+  .summary-toggle{
+    display:inline-flex;align-items:center;gap:8px;cursor:pointer;border:none;background:none;
+    font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--oxblood);font-weight:600;padding:0;margin:0;
+  }
+  .summary-toggle .chev{display:inline-block;transition:transform .25s;font-size:13px}
+  .summary-toggle[aria-expanded="false"] .chev{transform:rotate(-90deg)}
+  .summary-wrap{display:grid;grid-template-rows:1fr;transition:grid-template-rows .3s ease}
+  .summary-wrap.collapsed{grid-template-rows:0fr}
+  .summary-inner{overflow:hidden}
+  .summary-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;
+    max-width:1180px;margin:0 auto;padding:10px 20px 0}
+  .summary-bar .lede-mini{font-family:"Fraunces",serif;font-style:italic;font-size:13px;color:var(--muted)}
+
+  /* ---------- Tabs ---------- */
+  nav.tabs{
+    position:sticky;top:0;z-index:30;background:var(--header-bg);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line);
+    margin-top:18px;
+  }
+  .tabs-inner{max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;gap:1px 2px;
+    padding:0 12px}
+  .tabs-inner::-webkit-scrollbar{display:none}
+  .tab{
+    flex:0 0 auto;background:none;border:none;cursor:pointer;
+    font-family:"Archivo",sans-serif;font-weight:600;font-size:13px;
+    color:var(--muted);padding:13px 12px 11px;border-bottom:2.5px solid transparent;
+    white-space:nowrap;letter-spacing:.01em;transition:color .15s;
+  }
+  .tab .n{font-family:"JetBrains Mono",monospace;color:var(--brass);font-size:11px;margin-right:5px}
+  .tab:hover{color:var(--ink)}
+  .tab.active{color:var(--ink);border-bottom-color:var(--oxblood)}
+  @media(max-width:820px){
+    .tabs-inner{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-right:30px}
+    nav.tabs::after{content:"";position:absolute;top:0;right:0;bottom:0;width:34px;
+      pointer-events:none;background:linear-gradient(90deg,transparent,var(--header-bg))}
+  }
+
+  /* ---------- Layout ---------- */
+  main{max-width:1180px;margin:0 auto;padding:30px 20px 80px}
+  .panel{display:none;animation:fade .35s ease}
+  .panel.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin:0 0 6px;flex-wrap:wrap}
+  .sec-head h2{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(24px,4.5vw,38px);
+    margin:0;letter-spacing:-.01em;line-height:1.02}
+  .sec-num{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--brass);font-weight:600;
+    border:1px solid var(--brass-2);border-radius:50%;width:30px;height:30px;
+    display:grid;place-items:center;flex:0 0 auto}
+  .lede{font-family:"Fraunces",serif;font-size:clamp(16px,2.6vw,20px);color:var(--ink-2);
+    max-width:74ch;margin:8px 0 26px;line-height:1.45}
+  .lede b{color:var(--oxblood);font-weight:600}
+
+  hr.rule{border:none;border-top:1px solid var(--line);margin:30px 0}
+
+  /* ---------- Cards ---------- */
+  .grid{display:grid;gap:16px}
+  .g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+  .g3{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+  .fcard{background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:18px 18px 16px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .fcard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--brass)}
+  .fcard.ox::before{background:var(--oxblood)}
+  .fcard.nv::before{background:var(--ink)}
+  .fcard h3{font-family:"Fraunces",serif;font-size:19px;font-weight:600;margin:0 0 4px;letter-spacing:-.01em}
+  .fcard .tagn{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--brass);font-weight:600;margin-bottom:8px;display:block}
+  .fcard p{margin:0 0 8px;font-size:14.5px;color:var(--ink-2)}
+  .fcard p:last-child{margin-bottom:0}
+  .pill{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:10.5px;
+    background:var(--paper-2);border:1px solid var(--line);color:var(--ink-2);
+    padding:2px 7px;border-radius:5px;margin:3px 4px 0 0}
+
+  /* ---------- Map ---------- */
+  .map-wrap{display:grid;grid-template-columns:1.45fr 1fr;gap:22px;align-items:start}
+  @media(max-width:880px){.map-wrap{grid-template-columns:1fr}}
+  .map-card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:10px;box-shadow:var(--shadow);position:relative}
+  svg.usmap{width:100%;height:auto;display:block;touch-action:manipulation}
+  .st{fill:var(--paper-2);stroke:#fff;stroke-width:.6;transition:fill .18s,opacity .18s}
+  .nation{fill:none;stroke:var(--ink);stroke-width:1;opacity:.5;stroke-linejoin:round}
+  .marker{cursor:pointer}
+  .marker circle.dot{stroke:#fff;stroke-width:1.5;transition:r .15s,stroke-width .15s}
+  .marker text{font-family:"JetBrains Mono",monospace;font-weight:600;fill:#fff;
+    text-anchor:middle;dominant-baseline:central;pointer-events:none}
+  .marker:hover circle.dot,.marker.sel circle.dot{stroke:var(--ink);stroke-width:2.5}
+  .marker.sel circle.halo{opacity:1}
+  .marker circle.halo{opacity:0;transition:opacity .15s}
+  .maplegend{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--muted);
+    padding:6px 8px 2px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
+
+  /* district detail panel */
+  .detail{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:0;box-shadow:var(--shadow);overflow:hidden;position:sticky;top:64px}
+  .detail .dhead{padding:16px 18px 13px;color:#fff;position:relative}
+  .detail .dnum{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.18em;opacity:.85}
+  .detail .dcity{font-family:"Fraunces",serif;font-weight:700;font-size:26px;line-height:1.05;margin:2px 0 0}
+  .detail .dbody{padding:14px 18px 18px}
+  .drow{display:flex;gap:10px;padding:9px 0;border-bottom:1px dotted var(--line);font-size:14px}
+  .drow:last-child{border-bottom:none}
+  .drow .k{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--muted);flex:0 0 92px;padding-top:2px}
+  .drow .v{color:var(--ink);flex:1}
+  .drow .v b{font-weight:600}
+  .vote-y{display:inline-block;background:var(--oxblood-fixed);color:#fff;font-family:"JetBrains Mono",monospace;
+    font-size:10px;padding:2px 7px;border-radius:4px;letter-spacing:.05em}
+  .vote-p{display:inline-block;background:var(--ink-fixed);color:#fff;font-family:"JetBrains Mono",monospace;
+    font-size:10px;padding:2px 7px;border-radius:4px;letter-spacing:.05em}
+  .vote-n{display:inline-block;background:var(--paper-2);color:var(--muted);border:1px solid var(--line);
+    font-family:"JetBrains Mono",monospace;font-size:10px;padding:2px 7px;border-radius:4px}
+  .vacant-tag{background:var(--copper-deep);color:#fff;font-family:"JetBrains Mono",monospace;font-size:10px;
+    padding:2px 7px;border-radius:4px;letter-spacing:.04em}
+
+  /* presidents list */
+  .prez-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px;margin-top:6px}
+  .prez{display:flex;align-items:center;gap:11px;background:var(--card);border:1px solid var(--line);
+    border-radius:10px;padding:9px 12px;cursor:pointer;text-align:left;width:100%;color:var(--ink);
+    font-family:inherit;transition:border-color .15s,transform .1s}
+  .prez:hover{border-color:var(--brass-2);transform:translateX(2px)}
+  .prez.sel{border-color:var(--oxblood);box-shadow:0 0 0 1px var(--oxblood)}
+  .prez .badge{width:30px;height:30px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center;
+    color:#fff;font-family:"JetBrains Mono",monospace;font-weight:600;font-size:13px}
+  .prez .who{line-height:1.15}
+  .prez .who .city{font-family:"Fraunces",serif;font-weight:600;font-size:14.5px;color:var(--ink)}
+  .prez .who .name{font-size:12.5px;color:var(--ink-2)}
+  /* president bio links */
+  a.biolink{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--copper-soft);transition:color .12s,border-color .12s}
+  a.biolink:hover{color:var(--oxblood-tx);border-bottom-color:var(--copper)}
+  .prez .who a.biolink{font-size:12.5px}
+  .biolink .ext{font-size:9px;opacity:.6;margin-left:2px;vertical-align:1px}
+
+  /* board leadership */
+  .board-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+  .gov{background:linear-gradient(180deg,#1f1d16,#2c2920);color:#f5f0e4;
+    border-radius:12px;padding:16px 16px 14px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .gov::after{content:"";position:absolute;right:-30px;top:-30px;width:90px;height:90px;
+    border-radius:50%;background:rgba(191,154,82,.16)}
+  .gov .role{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--brass-2);font-weight:600}
+  .gov .pname{font-family:"Fraunces",serif;font-weight:700;font-size:21px;margin:5px 0 3px}
+  .gov .meta{font-size:12.5px;color:#cdbf9e}
+  .gov.super{background:linear-gradient(180deg,#7a1f2b,#5a1f1f)}
+  .gov.super .role{color:#e6b98f}
+  .gov.super .meta{color:#e7cdb8}
+
+  /* ---------- Tables ---------- */
+  .tbl-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
+  table{border-collapse:collapse;width:100%;background:var(--card);font-size:13.5px;min-width:520px}
+  th{background:var(--ink-fixed);color:#f5f0e4;font-family:"Archivo",sans-serif;font-weight:600;
+    text-align:left;padding:11px 13px;font-size:12px;letter-spacing:.02em;position:sticky;top:0}
+  td{padding:10px 13px;border-bottom:1px solid var(--line);color:var(--ink-2);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  tr:nth-child(even) td{background:rgba(239,232,214,.4)}
+  td code,.codecite{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--oxblood);
+    background:var(--paper-2);padding:1px 5px;border-radius:4px;white-space:nowrap}
+  td b{color:var(--ink);font-weight:600}
+
+  /* ---------- Corridor diagram ---------- */
+  .corridor{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 20px;
+    box-shadow:var(--shadow);margin:8px 0}
+  .rate-row{display:flex;align-items:center;gap:14px;padding:11px 0;position:relative}
+  .rate-bar{flex:0 0 110px;text-align:right;font-family:"JetBrains Mono",monospace;font-weight:600;font-size:16px}
+  .rate-line{flex:1;height:0;border-top:2px dashed var(--line);position:relative}
+  .rate-line.solid{border-top:3px solid}
+  .rate-tag{font-size:13px}
+  .rate-tag b{font-family:"Fraunces",serif}
+  .ceil{color:var(--oxblood)} .floor{color:var(--ink)} .target{color:var(--brass)}
+
+  /* ---------- Timeline ---------- */
+  .tl{position:relative;margin:10px 0 0;padding-left:30px}
+  .tl::before{content:"";position:absolute;left:9px;top:6px;bottom:6px;width:2px;
+    background:linear-gradient(var(--brass-2),var(--line))}
+  .tl-item{position:relative;margin-bottom:20px}
+  .tl-item::before{content:"";position:absolute;left:-26px;top:5px;width:12px;height:12px;
+    border-radius:50%;background:var(--card);border:2.5px solid var(--brass)}
+  .tl-item.key::before{background:var(--oxblood);border-color:var(--oxblood)}
+  .tl-year{font-family:"JetBrains Mono",monospace;font-weight:600;font-size:13px;color:var(--oxblood)}
+  .tl-item h4{font-family:"Fraunces",serif;font-size:17px;font-weight:600;margin:1px 0 3px}
+  .tl-item p{margin:0;font-size:14px;color:var(--ink-2)}
+
+  /* misc */
+  .note{background:var(--paper-2);border-left:4px solid var(--brass);border-radius:0 8px 8px 0;
+    padding:12px 16px;font-size:13.5px;color:var(--ink-2);margin:16px 0}
+  .note b{color:var(--ink)}
+  .myth{background:var(--paper-2);border:1px solid var(--line);border-left:3px solid var(--oxblood);border-radius:10px;padding:14px 16px;margin:14px 0}
+  .myth .q{font-family:"Fraunces",serif;font-style:italic;font-weight:500;color:var(--oxblood);font-size:16px;margin:0 0 5px}
+  .myth .a{margin:0;font-size:14px;color:var(--ink-2)}
+  .myth .a b{color:var(--ink)}
+  h3.sub{font-family:"Fraunces",serif;font-size:21px;font-weight:600;margin:30px 0 4px;letter-spacing:-.01em}
+  .subnote{font-size:13px;color:var(--muted);margin:0 0 14px}
+  ul.clean{margin:8px 0;padding-left:20px}
+  ul.clean li{margin-bottom:7px;font-size:14.5px;color:var(--ink-2)}
+  ul.clean li b{color:var(--ink)}
+
+  /* ---------- Glossary ---------- */
+  .gloss-controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 6px}
+  .gloss-search{flex:1;min-width:220px;position:relative}
+  .gloss-search input{
+    width:100%;font-family:"Archivo",sans-serif;font-size:15px;color:var(--ink);
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:11px 13px 11px 36px;box-shadow:var(--shadow);outline:none;
+  }
+  .gloss-search input:focus{border-color:var(--brass-2)}
+  .gloss-search::before{content:"⌕";position:absolute;left:12px;top:50%;transform:translateY(-50%);
+    color:var(--muted);font-size:18px}
+  .gloss-filters{display:flex;gap:5px;flex-wrap:wrap}
+  .gfilter{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.06em;
+    text-transform:uppercase;cursor:pointer;background:var(--card);border:1px solid var(--line);
+    color:var(--muted);padding:7px 11px;border-radius:7px;transition:all .14s;font-weight:500}
+  .gfilter:hover{border-color:var(--brass-2);color:var(--ink)}
+  .gfilter.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .gloss-count{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--muted);margin:2px 2px 16px}
+  .gloss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:13px}
+  .gterm{background:var(--card);border:1px solid var(--line);border-radius:11px;
+    padding:14px 16px 13px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .gterm::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--brass)}
+  .gterm[data-cat="structure"]::before{background:var(--ink)}
+  .gterm[data-cat="policy"]::before{background:var(--brass)}
+  .gterm[data-cat="supervision"]::before{background:var(--oxblood)}
+  .gterm[data-cat="payments"]::before{background:#2f6f6a}
+  .gterm[data-cat="legal"]::before{background:#5a4b8c}
+  .gterm h4{font-family:"Fraunces",serif;font-weight:600;font-size:17px;margin:0 0 2px;
+    letter-spacing:-.01em;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+  .gterm .abbr{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--oxblood);font-weight:500}
+  .gterm .gcat{font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
+  .gterm p{margin:0;font-size:13.5px;color:var(--ink-2);line-height:1.5}
+  .gterm p .codecite{font-size:11px}
+  .gloss-empty{font-family:"Fraunces",serif;font-style:italic;color:var(--muted);
+    padding:30px 4px;font-size:16px;display:none}
+  mark{background:var(--copper-soft);color:inherit;border-radius:2px;padding:0 1px}
+
+  footer{max-width:1180px;margin:0 auto;padding:24px 20px 60px;border-top:1px solid var(--line)}
+  footer p{font-size:12px;color:var(--muted);max-width:90ch}
+  footer a{color:var(--oxblood)}
+  .src{font-family:"JetBrains Mono",monospace;font-size:11px}
+</style>
+</head>
+<body>
+<a class="brw-backhome" href="wire.html" aria-label="Back to BankRegWire">← BankRegWire</a>
+<style>
+.brw-backhome{position:fixed;top:14px;left:14px;z-index:9999;display:inline-flex;align-items:center;gap:6px;
+  font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+  text-decoration:none;color:#f1ede2;background:rgba(22,21,15,.72);
+  -webkit-backdrop-filter:blur(8px) saturate(1.2);backdrop-filter:blur(8px) saturate(1.2);
+  border:1px solid rgba(240,165,70,.4);border-radius:30px;padding:8px 14px;box-shadow:0 8px 22px -10px rgba(0,0,0,.5);
+  transition:color .2s,border-color .2s,background .2s}
+.brw-backhome:hover{color:#f0a546;border-color:#f0a546;background:rgba(22,21,15,.85)}
+.brw-backhome:focus-visible{outline:2px solid #f0a546;outline-offset:3px}
+@media print{.brw-backhome{display:none}}
+</style>
+
+<header class="masthead">
+  <div class="wordmark">
+    <span class="brw">BankRegWire<span class="dot">.</span></span>
+    <span class="vol">Vol. I · No. 1 &nbsp;<span class="diamond">◆</span>&nbsp; The Wire Room</span>
+  </div>
+  <div class="kicker">
+    <span>III · Structural Frameworks &nbsp;·&nbsp; Dispatch № 20</span>
+    <span>Filed from the primary source · Conclusions front-loaded</span>
+  </div>
+  <h1 class="title">The Federal Reserve <em>System</em></h1>
+  <p class="dek">What the central bank actually does — monetary policy, supervision, payments, financial stability — and the deliberately split structure of a federal-agency Board overseeing twelve quasi-private Reserve Banks, read from statute and the System's own org charts.</p>
+  <div class="wire" aria-hidden="true" style="margin-top:16px"></div>
+</header>
+
+<div class="summary-bar">
+  <span class="lede-mini">At a glance — the System's current operating state.</span>
+  <button class="summary-toggle" id="summaryToggle" aria-expanded="true" aria-controls="summaryRegion">
+    <span class="chev">▾</span><span id="summaryToggleLabel">Hide summary</span>
+  </button>
+</div>
+<div class="summary-wrap" id="summaryRegion">
+  <div class="summary-inner">
+    <div class="status">
+      <div class="status-grid" id="statusGrid"></div>
+      <div class="asof" id="asof"></div>
+    </div>
+  </div>
+</div>
+
+<nav class="tabs">
+  <div class="tabs-inner" id="tabBar"></div>
+</nav>
+
+<main id="main"></main>
+
+<footer>
+  <p><b>About this dispatch.</b> Built as a single self-contained HTML file (no build step, no server) for direct static deployment. The U.S. map is drawn from public-domain Census cartography (us-atlas), projected with d3-geo's Albers USA; markers sit at each Reserve Bank's actual head-office city. District tints map each state to its <em>primary</em> district — several states (Missouri, Tennessee, New Jersey, West Virginia, and others) are split between districts, so the shading is indicative, not survey-exact.</p>
+  <p class="src">Primary sources: Federal Reserve Board (federalreserve.gov) — FOMC, structure, payments, and the Dec. 11, 2025 president-reappointment release; the twelve Reserve Banks' own leadership pages (supervision heads); U.S. Code (Title 12) via the Office of the Law Revision Counsel &amp; Cornell LII; the Federal Register; CRS R48233. Personnel, rates, and balance-sheet figures are current as of the date stamped above and should be reverified before publication.</p>
+  <div style="border-top:1px solid var(--line);margin-top:18px;padding-top:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;align-items:baseline">
+    <span style="font-family:'Fraunces',serif;font-weight:900;font-size:18px">BankRegWire<span style="color:var(--oxblood)">.</span></span>
+    <span class="src">Vol. I · No. 1 · Dispatch № 20 · Rev. June 2026 &nbsp;◆&nbsp; Primary-source methodology · Conclusions front-loaded</span>
+  </div>
+  <p class="src" style="margin-top:10px;color:var(--muted)">Filed from the wire room · Set in Fraunces, Archivo &amp; JetBrains Mono</p>
+</footer>
+
+<script>
+/* ============ DATA ============ */
+const MAP = {"nation":"M-11,601L-11,601L-11,601ZM-15,601L-13,599L-11,601ZM-16,599L-16,599L-16,599ZM-18,600L-15,599L-16,601ZM-20,597L-20,597L-20,597ZM-23,599L-23,599L-23,599ZM-24,599L-24,599L-24,599ZM-23,597L-23,597L-23,597ZM-25,600L-25,600L-25,600ZM-26,600L-26,600L-26,600ZM813,596L813,596L813,596ZM807,599L807,599L807,599ZM794,604L800,598L805,600ZM790,605L790,605L790,605ZM786,605L786,605L786,605ZM777,558L777,558L777,558ZM721,223L721,223L721,223ZM719,222L719,222L719,222ZM770,606L770,606L770,606ZM677,131L677,131L677,131ZM720,495L720,495L720,495ZM666,133L666,133L666,133ZM663,133L663,133L663,133ZM662,139L662,139L662,139ZM661,136L661,136L661,136ZM659,143L659,143L659,143ZM657,150L657,150L657,150ZM655,153L655,153L655,153ZM646,140L646,140L646,140ZM642,146L642,146L642,146ZM636,150L636,150L636,150ZM648,492L648,492L648,492ZM644,493L644,493L644,493ZM639,493L639,493L639,493ZM638,497L638,497L638,497ZM635,494L635,494L635,494ZM632,494L632,494L632,494ZM601,92L601,92L601,92ZM628,498L628,498L628,498ZM624,510L624,510L624,510ZM610,521L610,521L610,521ZM584,113L584,113L584,113ZM583,116L583,116L583,116ZM606,521L606,521L606,521ZM581,115L581,115L581,115ZM580,117L580,117L580,117ZM602,522L602,522L602,522ZM580,114L580,114L580,114ZM579,113L579,113L579,113ZM579,118L579,118L579,118ZM576,114L576,114L576,114ZM577,511L577,511L577,511ZM77,374L77,374L77,374ZM75,384L75,384L75,384ZM69,372L69,372L69,372ZM65,358L65,358L65,358ZM58,374L58,374L58,374ZM57,355L57,355L57,355ZM50,355L50,355L50,355ZM47,353L47,353L47,353ZM93,51L93,51L93,51ZM99,25L99,25L99,25ZM99,20L99,20L99,20ZM98,23L98,23L98,23ZM95,31L95,31L95,31ZM96,18L96,18L96,18ZM94,20L94,20L94,20ZM95,13L95,13L95,13ZM91,21L98,22L96,27ZM91,19L91,19L91,19ZM66,24L69,19L77,27L90,33L95,33L96,43L91,54L96,52L98,42L102,38L102,21L100,14L115,19L214,29L313,42L412,55L511,71L511,62L516,64L519,76L531,79L532,81L544,79L563,87L566,91L576,86L578,89L596,90L582,98L559,119L561,122L576,115L585,123L600,116L619,101L626,101L618,106L619,112L628,114L633,120L645,121L652,115L670,111L670,118L682,115L685,124L693,124L694,128L674,131L663,127L661,130L640,135L627,162L627,166L641,152L635,165L635,174L631,196L634,217L642,231L655,224L660,211L659,198L652,184L652,175L655,168L655,160L664,148L665,157L667,146L674,142L670,138L675,133L697,140L701,147L702,162L694,177L699,180L705,171L710,168L715,172L721,191L721,200L716,200L712,215L708,220L726,227L738,223L748,213L759,207L776,192L780,186L775,176L784,172L809,169L819,161L819,152L815,146L821,141L828,129L834,123L886,111L887,105L893,102L900,86L899,68L906,48L912,52L921,46L930,50L939,80L945,80L946,87L952,88L957,95L950,106L937,114L937,120L931,110L928,125L918,131L913,138L909,154L914,158L909,166L920,177L931,177L908,191L885,200L874,208L891,204L895,200L900,202L883,214L866,222L872,223L873,237L871,246L863,259L863,254L850,250L855,258L861,263L864,271L858,288L856,302L853,301L856,284L841,274L846,271L839,266L840,255L836,259L838,274L841,282L835,282L846,287L845,299L849,305L846,310L855,308L859,323L847,333L863,329L865,337L860,344L843,343L854,347L850,356L859,354L856,362L847,363L838,370L833,384L820,388L814,396L811,408L801,419L792,424L783,442L780,465L787,486L795,500L805,511L807,522L820,544L823,554L824,574L820,586L807,590L801,578L792,575L786,564L778,557L766,542L771,533L762,534L764,521L762,510L746,498L740,491L727,487L714,501L695,488L681,486L658,492L653,482L652,490L637,490L619,499L626,498L626,513L632,514L634,522L620,515L613,521L608,515L601,523L590,517L584,508L579,506L571,513L554,508L535,511L522,518L524,509L518,511L523,519L510,530L489,541L482,540L469,564L469,583L474,595L470,598L461,593L453,592L434,583L428,570L428,559L412,541L405,522L390,506L374,502L367,505L357,522L337,511L331,505L328,491L323,480L316,475L296,452L264,448L263,458L208,450L142,412L145,407L100,402L97,382L81,362L70,357L65,349L49,344L46,340L50,329L42,314L35,292L40,286L31,274L33,261L39,270L36,257L33,260L26,253L29,248L20,229L24,209L18,197L31,173L34,147L33,140L44,124L57,92L65,71L63,68L70,59L66,57L67,32ZM198,576L198,576L198,576ZM197,577L197,577L197,577ZM197,578L197,578L197,578ZM196,577L196,577L196,577ZM195,575L195,575L195,575ZM189,567L189,567L189,567ZM189,568L189,568L189,568ZM189,568L189,568L189,568ZM191,579L191,579L191,579ZM188,570L188,570L188,570ZM187,569L187,569L187,569ZM188,576L188,576L188,576ZM189,581L189,581L189,581ZM186,575L186,575L186,575ZM186,575L186,575L186,575ZM186,577L186,577L186,577ZM185,573L185,570L187,570L193,575L191,574L195,576L196,580L190,578L193,581L190,580L189,576ZM181,563L181,563L181,563ZM184,574L184,574L184,574ZM183,574L183,574L183,574ZM180,567L183,566L182,565L185,564L189,567L184,569L184,572L183,572ZM175,556L178,557L181,562L180,566L179,563ZM174,555L174,555L174,555ZM172,552L172,552L172,552ZM174,565L175,563L177,563L180,568L181,573L177,569L176,569L176,565ZM172,557L172,557L172,557ZM173,566L173,566L173,566ZM169,556L169,556L169,556ZM170,558L170,558L170,558ZM169,561L169,560L172,558L175,559L177,563L174,562L174,565L171,564ZM129,549L129,549L129,549ZM128,549L128,549L128,549ZM122,546L122,546L122,546ZM122,548L122,548L122,548ZM122,551L122,551L122,551ZM121,555L124,550L124,551ZM120,551L122,549L121,552ZM120,548L120,548L120,548ZM111,545L111,545L111,545ZM110,559L110,559L110,559ZM107,561L107,561L107,561ZM106,561L106,561L106,561ZM105,561L105,561L105,561ZM105,569L105,569L105,569ZM105,563L105,563L105,563ZM104,552L104,552L104,552ZM103,563L103,563L103,563ZM102,553L102,553L102,553ZM99,570L100,570L102,566L105,567L105,569L103,569L101,570ZM98,559L98,559L98,559ZM96,581L96,581L96,581ZM95,582L95,582L95,582ZM93,575L97,573L99,571L103,571L104,575L102,574L97,580L98,577L95,580ZM93,583L93,583L93,583ZM89,588L89,588L89,588ZM305,584L309,573L322,578L332,589L309,600ZM292,558L306,561L297,565ZM292,567L292,567L292,567ZM84,586L84,586L84,586ZM84,584L84,584L84,584ZM284,558L284,558L284,558ZM279,554L279,554L279,554ZM82,582L82,582L82,582ZM80,583L80,583L80,583ZM258,543L265,540L271,549L262,549ZM75,587L75,587L75,587ZM74,586L74,586L74,586ZM72,594L72,594L72,594ZM73,587L73,587L73,587ZM72,594L72,594L72,594ZM71,595L71,595L71,595ZM71,592L71,592L71,592ZM226,533L237,531L230,536ZM70,595L70,595L70,595ZM70,593L70,593L70,593ZM69,590L69,590L69,590ZM216,537L216,537L216,537ZM68,593L68,593L68,593ZM71,564L71,564L71,564ZM68,590L68,590L68,590ZM70,564L70,564L70,564ZM66,590L66,590L66,590ZM68,564L68,564L68,564ZM63,591L63,591L63,591ZM62,591L62,591L62,591ZM61,591L61,591L61,591ZM58,592L58,592L58,592ZM66,524L66,524L66,524ZM56,596L56,596L56,596ZM55,588L55,588L55,588ZM46,596L46,596L46,596ZM45,597L45,597L45,597ZM43,597L43,597L43,597ZM43,597L43,597L43,597ZM43,595L43,595L43,595ZM41,596L41,596L41,596ZM40,597L40,597L40,597ZM44,547L46,548L50,547L51,548L51,551L48,552L44,549ZM31,601L34,600L36,599L35,597L38,596L40,598L37,601L32,602ZM51,505L57,502L61,500L64,500L66,500L65,504L69,504L71,505L73,503L74,504L72,501L70,498L71,498L71,500L73,502L72,500L72,497L70,497L67,496L66,492L63,488L59,485L61,483L62,481L64,481L67,481L70,479L72,475L74,472L75,471L78,471L82,468L86,468L87,468L89,465L93,466L91,468L92,469L94,466L95,469L99,468L101,469L101,470L103,471L102,472L104,472L109,471L114,473L119,473L122,474L126,472L132,474L133,474L147,547L151,547L152,546L155,545L155,547L162,552L164,555L167,552L166,548L169,546L172,547L176,552L181,554L182,556L190,562L192,566L200,567L201,569L203,573L201,578L198,575L194,574L189,570L190,568L188,565L186,564L183,563L181,559L178,557L176,557L173,553L171,550L175,558L173,557L170,557L168,559L163,557L160,554L153,552L153,549L151,551L149,551L146,550L140,550L135,552L135,550L132,550L132,548L131,550L129,549L125,551L126,549L128,548L126,547L123,544L122,546L119,547L120,544L119,545L118,547L120,550L120,552L121,553L119,554L115,554L111,559L111,557L109,560L106,561L105,559L108,557L105,556L107,553L107,549L111,546L112,547L113,546L112,544L109,544L106,546L103,550L104,551L100,557L99,557L96,560L96,561L99,563L99,564L97,566L96,569L93,570L86,576L86,578L82,579L77,583L79,584L77,586L71,586L67,589L66,588L63,589L63,588L61,591L56,592L53,594L50,594L47,595L47,593L49,591L57,590L60,587L62,585L67,585L69,583L75,579L76,579L78,576L81,573L82,566L84,563L80,565L78,563L77,566L76,566L73,562L72,563L71,561L65,564L65,561L64,558L66,557L64,551L63,552L58,553L57,553L57,551L52,546L54,545L55,543L51,538L53,536L54,534L57,530L59,527L61,526L64,528L67,525L71,525L73,523L73,519L72,517L73,517L74,516L73,514L68,517L61,515L59,516L55,514L55,510L56,508L53,507ZM25,603L29,599L31,600L28,602ZM24,604L24,604L24,604ZM22,601L22,601L22,601ZM28,573L28,573L28,573ZM22,601L22,601L22,601ZM20,602L20,602L20,602ZM20,602L20,602L20,602ZM19,603L19,603L19,603ZM27,568L27,568L27,568ZM16,603L16,603L16,603ZM15,603L15,603L15,603ZM14,603L14,603L14,603ZM34,518L36,517L38,518L39,518L42,521L45,522L42,523L41,524L39,521L37,519L35,520ZM7,603L7,603L7,603ZM23,540L23,540L23,540ZM24,538L24,538L24,538ZM0,602L5,604L2,604ZM-6,601L-1,601L-4,602ZM-7,601L-7,601L-7,601ZM-7,600L-7,600L-7,600ZM-8,601L-8,601L-8,601ZM-9,601L-9,601L-9,601ZM-10,599L-10,599L-10,599ZM-30,593L-30,593L-30,593ZM-35,593L-35,593L-35,593ZM-35,591L-35,591L-35,591ZM-36,591L-36,591L-36,591ZM-36,589L-36,589L-36,589ZM-41,589L-41,589L-41,589ZM-45,582L-45,582L-45,582ZM-52,576L-52,576L-52,576ZM-52,576L-52,576L-52,576ZM-52,575L-52,575L-52,575ZM-56,577L-56,577L-56,577ZM-58,571L-55,572L-54,574L-57,573ZM940,115L940,115L940,115ZM938,116L938,116L938,116ZM936,112L936,112L936,112ZM932,116L932,116L932,116ZM934,125L934,125L934,125ZM931,119L931,119L931,119ZM930,116L930,116L930,116ZM928,187L928,187L928,187ZM918,188L918,188L918,188ZM908,184L908,184L908,184ZM908,188L908,188L908,188ZM907,196L907,196L907,196ZM899,196L899,196L899,196ZM898,200L898,200L898,200ZM897,198L897,198L897,198ZM864,329L864,329L864,329ZM850,287L850,287L850,287ZM863,350L863,350L863,350ZM849,284L849,284L849,284ZM847,282L847,282L847,282ZM815,154L815,154L815,154ZM839,268L839,268L839,268ZM814,154L814,154L814,154ZM815,594L815,594L815,594Z","states":[{"name":"Alabama","d":"M648,492L648,492L648,492ZM642,384L689,380L702,427L710,440L706,450L711,469L661,474L666,486L664,490L659,491L653,482L652,490L646,489L642,455L644,386Z","district":6},{"name":"Alaska","d":"M111,545L111,545L111,545ZM110,559L110,559L110,559ZM107,561L107,561L107,561ZM106,561L106,561L106,561ZM105,561L105,561L105,561ZM105,569L105,569L105,569ZM105,563L105,563L105,563ZM104,552L104,552L104,552ZM103,563L103,563L103,563ZM102,553L102,553L102,553ZM99,570L100,570L102,566L105,567L105,569L103,569L101,570ZM98,559L98,559L98,559ZM96,581L96,581L96,581ZM95,582L95,582L95,582ZM93,575L97,573L99,571L103,571L104,575L102,574L97,580L98,577L95,580ZM93,583L93,583L93,583ZM89,588L89,588L89,588ZM84,586L84,586L84,586ZM84,584L84,584L84,584ZM82,582L82,582L82,582ZM80,583L80,583L80,583ZM75,587L75,587L75,587ZM74,586L74,586L74,586ZM72,594L72,594L72,594ZM73,587L73,587L73,587ZM72,594L72,594L72,594ZM71,595L71,595L71,595ZM71,592L71,592L71,592ZM70,595L70,595L70,595ZM70,593L70,593L70,593ZM69,590L69,590L69,590ZM68,593L68,593L68,593ZM71,564L71,564L71,564ZM68,590L68,590L68,590ZM70,564L70,564L70,564ZM66,590L66,590L66,590ZM68,564L68,564L68,564ZM63,591L63,591L63,591ZM62,591L62,591L62,591ZM61,591L61,591L61,591ZM58,592L58,592L58,592ZM66,524L66,524L66,524ZM56,596L56,596L56,596ZM55,588L55,588L55,588ZM46,596L46,596L46,596ZM45,597L45,597L45,597ZM43,597L43,597L43,597ZM43,597L43,597L43,597ZM43,595L43,595L43,595ZM41,596L41,596L41,596ZM40,597L40,597L40,597ZM44,547L46,548L50,547L51,548L51,551L48,552L44,549ZM31,601L34,600L36,599L35,597L38,596L40,598L37,601L32,602ZM51,505L57,502L61,500L64,500L66,500L65,504L69,504L71,505L73,503L74,504L72,501L70,498L71,498L71,500L73,502L72,500L72,497L70,497L67,496L66,492L63,488L59,485L61,483L62,481L64,481L67,481L70,479L72,475L74,472L75,471L78,471L82,468L86,468L87,468L89,465L93,466L91,468L92,469L94,466L95,469L99,468L101,469L101,470L103,471L102,472L104,472L109,471L114,473L119,473L122,474L126,472L132,474L133,474L147,547L151,547L152,546L155,545L155,547L162,552L164,555L167,552L166,548L169,546L172,547L176,552L181,554L182,556L190,562L192,566L200,567L201,569L203,573L201,578L198,575L194,574L189,570L190,568L188,565L186,564L183,563L181,559L178,557L176,557L173,553L171,550L175,558L173,557L170,557L168,559L163,557L160,554L153,552L153,549L151,551L149,551L146,550L140,550L135,552L135,550L132,550L132,548L131,550L129,549L125,551L126,549L128,548L126,547L123,544L122,546L119,547L120,544L119,545L118,547L120,550L120,552L121,553L119,554L115,554L111,559L111,557L109,560L106,561L105,559L108,557L105,556L107,553L107,549L111,546L112,547L113,546L112,544L109,544L106,546L103,550L104,551L100,557L99,557L96,560L96,561L99,563L99,564L97,566L96,569L93,570L86,576L86,578L82,579L77,583L79,584L77,586L71,586L67,589L66,588L63,589L63,588L61,591L56,592L53,594L50,594L47,595L47,593L49,591L57,590L60,587L62,585L67,585L69,583L75,579L76,579L78,576L81,573L82,566L84,563L80,565L78,563L77,566L76,566L73,562L72,563L71,561L65,564L65,561L64,558L66,557L64,551L63,552L58,553L57,553L57,551L52,546L54,545L55,543L51,538L53,536L54,534L57,530L59,527L61,526L64,528L67,525L71,525L73,523L73,519L72,517L73,517L74,516L73,514L68,517L61,515L59,516L55,514L55,510L56,508L53,507ZM25,603L29,599L31,600L28,602ZM24,604L24,604L24,604ZM22,601L22,601L22,601ZM28,573L28,573L28,573ZM22,601L22,601L22,601ZM20,602L20,602L20,602ZM20,602L20,602L20,602ZM19,603L19,603L19,603ZM27,568L27,568L27,568ZM16,603L16,603L16,603ZM15,603L15,603L15,603ZM14,603L14,603L14,603ZM34,518L36,517L38,518L39,518L42,521L45,522L42,523L41,524L39,521L37,519L35,520ZM7,603L7,603L7,603ZM23,540L23,540L23,540ZM24,538L24,538L24,538ZM0,602L5,604L2,604ZM-6,601L-1,601L-4,602ZM-7,601L-7,601L-7,601ZM-7,600L-7,600L-7,600ZM-8,601L-8,601L-8,601ZM-9,601L-9,601L-9,601ZM-10,599L-10,599L-10,599ZM-11,601L-11,601L-11,601ZM-15,601L-13,599L-11,601ZM-16,599L-16,599L-16,599ZM-18,600L-15,599L-16,601ZM-20,597L-20,597L-20,597ZM-23,599L-23,599L-23,599ZM-24,599L-24,599L-24,599ZM-23,597L-23,597L-23,597ZM-25,600L-25,600L-25,600ZM-26,600L-26,600L-26,600ZM-30,593L-30,593L-30,593ZM-35,593L-35,593L-35,593ZM-35,591L-35,591L-35,591ZM-36,591L-36,591L-36,591ZM-36,589L-36,589L-36,589ZM-41,589L-41,589L-41,589ZM-45,582L-45,582L-45,582ZM-52,576L-52,576L-52,576ZM-52,576L-52,576L-52,576ZM-52,575L-52,575L-52,575ZM-56,577L-56,577L-56,577ZM-58,571L-55,572L-54,574L-57,573ZM198,576L198,576L198,576ZM197,577L197,577L197,577ZM197,578L197,578L197,578ZM196,577L196,577L196,577ZM195,575L195,575L195,575ZM189,567L189,567L189,567ZM189,568L189,568L189,568ZM189,568L189,568L189,568ZM191,579L191,579L191,579ZM188,570L188,570L188,570ZM187,569L187,569L187,569ZM188,576L188,576L188,576ZM189,581L189,581L189,581ZM186,575L186,575L186,575ZM186,575L186,575L186,575ZM186,577L186,577L186,577ZM185,573L185,570L187,570L193,575L191,574L195,576L196,580L190,578L193,581L190,580L189,576ZM181,563L181,563L181,563ZM184,574L184,574L184,574ZM183,574L183,574L183,574ZM180,567L183,566L182,565L185,564L189,567L184,569L184,572L183,572ZM175,556L178,557L181,562L180,566L179,563ZM174,555L174,555L174,555ZM172,552L172,552L172,552ZM174,565L175,563L177,563L180,568L181,573L177,569L176,569L176,565ZM172,557L172,557L172,557ZM173,566L173,566L173,566ZM169,556L169,556L169,556ZM170,558L170,558L170,558ZM169,561L169,560L172,558L175,559L177,563L174,562L174,565L171,564ZM129,549L129,549L129,549ZM128,549L128,549L128,549ZM122,546L122,546L122,546ZM122,548L122,548L122,548ZM122,551L122,551L122,551ZM121,555L124,550L124,551ZM120,551L122,549L121,552ZM120,548L120,548L120,548Z","district":12},{"name":"Arizona","d":"M145,407L149,407L148,392L156,377L163,375L157,356L160,331L173,331L176,313L265,328L247,456L208,450L142,412Z","district":12},{"name":"Colorado","d":"M277,237L361,247L395,249L394,272L390,341L373,339L265,328Z","district":10},{"name":"Florida","d":"M815,594L815,594L815,594ZM813,596L813,596L813,596ZM807,599L807,599L807,599ZM794,604L800,598L805,600ZM790,605L790,605L790,605ZM786,605L786,605L786,605ZM777,558L777,558L777,558ZM770,606L770,606L770,606ZM720,495L720,495L720,495ZM711,469L714,475L766,471L770,475L770,465L780,466L787,486L795,500L805,511L807,522L820,544L823,554L824,574L820,586L807,590L801,578L792,575L786,564L778,557L766,542L771,533L762,534L764,521L762,510L746,498L740,491L727,487L714,501L695,488L681,486L664,490L666,486L661,474Z","district":6},{"name":"Georgia","d":"M689,380L713,377L735,374L732,381L741,385L748,396L771,414L782,433L786,435L783,442L780,466L770,465L770,475L766,471L714,475L711,469L706,450L710,440L702,427Z","district":6},{"name":"Indiana","d":"M640,230L652,228L686,224L686,225L693,284L694,291L683,295L684,298L676,311L661,313L655,319L647,315L639,320L638,318L647,297L645,284Z","district":7},{"name":"Kansas","d":"M394,272L510,275L517,279L514,286L522,295L523,344L390,341Z","district":10},{"name":"Maine","d":"M940,115L940,115L940,115ZM938,116L938,116L938,116ZM936,112L936,112L936,112ZM932,116L932,116L932,116ZM934,125L934,125L934,125ZM931,119L931,119L931,119ZM930,116L930,116L930,116ZM910,150L904,144L891,102L900,86L899,68L906,48L912,52L921,46L930,50L939,80L945,80L946,87L952,88L957,95L950,106L937,114L937,120L931,110L928,125L918,131L913,138Z","district":1},{"name":"Massachusetts","d":"M928,187L928,187L928,187ZM918,188L918,188L918,188ZM871,168L884,165L903,161L909,155L914,158L909,166L920,177L931,177L913,186L911,183L910,182L905,176L899,178L871,184Z","district":1},{"name":"Minnesota","d":"M480,71L511,71L511,62L516,64L519,76L531,79L532,81L544,79L563,87L566,91L576,86L578,89L596,90L582,98L559,119L560,121L556,122L556,136L550,140L547,147L549,166L564,175L575,186L576,193L491,195L491,154L484,147L489,140L486,123L485,102L481,90L481,78Z","district":9},{"name":"New Jersey","d":"M849,246L850,244L851,241L861,231L850,221L850,214L855,204L870,209L869,216L869,217L867,221L872,223L873,237L871,246L863,259L863,254L850,250L849,246Z","district":2},{"name":"North Carolina","d":"M864,329L864,329L864,329ZM863,350L863,350L863,350ZM756,334L780,331L859,316L859,323L847,333L863,329L865,337L860,344L843,343L854,347L850,356L859,354L856,362L847,363L838,370L833,384L823,386L798,368L778,371L772,365L749,367L735,374L713,377L713,371L721,363L726,362L747,345L751,345Z","district":5},{"name":"North Dakota","d":"M377,66L480,71L481,78L481,90L485,102L486,123L489,140L371,134Z","district":9},{"name":"Oklahoma","d":"M373,339L390,341L523,344L523,355L527,381L526,421L512,413L495,416L492,420L481,414L476,419L454,409L452,411L424,398L426,354L372,351Z","district":10},{"name":"Pennsylvania","d":"M756,209L767,200L769,206L841,192L855,204L850,214L850,221L861,231L851,241L845,245L782,257L764,260L761,239Z","district":3},{"name":"South Dakota","d":"M369,156L371,134L489,140L484,147L491,154L491,195L488,213L491,218L476,210L465,212L457,206L365,201Z","district":9},{"name":"Texas","d":"M372,351L426,354L424,398L452,411L454,409L476,419L481,414L492,420L495,416L512,413L526,421L535,423L535,423L535,435L536,458L546,476L542,496L541,510L522,518L524,509L518,511L523,519L510,530L489,541L482,540L469,564L469,583L474,595L470,598L461,593L453,592L434,583L428,570L428,559L412,541L405,522L390,506L374,502L367,505L357,522L337,511L331,505L328,491L323,480L316,475L296,452L295,447L363,453L371,351Z","district":11},{"name":"Wyoming","d":"M369,156L365,201L361,247L277,237L244,232L247,210L256,154L258,142Z","district":10},{"name":"Connecticut","d":"M871,184L899,178L902,194L885,200L874,208Z","district":1},{"name":"Missouri","d":"M502,262L522,262L571,260L576,265L578,279L590,290L591,297L601,298L598,313L613,324L614,333L621,340L617,351L616,351L615,352L612,363L600,364L605,357L604,352L523,355L523,344L522,295L514,286L517,279L510,275Z","district":8},{"name":"West Virginia","d":"M733,295L738,293L741,280L744,283L749,270L754,269L759,261L761,239L764,260L782,257L784,269L795,257L800,258L804,253L814,260L813,265L803,259L803,266L797,277L794,275L790,286L784,287L776,305L777,309L761,318L753,320L747,313L741,311L733,301Z","district":4},{"name":"Illinois","d":"M576,265L584,248L582,241L593,236L596,224L587,215L634,212L634,217L640,230L645,284L647,297L638,318L639,320L639,327L632,330L633,337L625,334L621,340L614,333L613,324L598,313L601,298L591,297L590,290L578,279Z","district":7},{"name":"New Mexico","d":"M265,328L373,339L372,351L371,351L363,453L295,447L296,452L264,448L263,458L247,456Z","district":10},{"name":"Arkansas","d":"M523,355L604,352L605,357L600,364L612,363L613,366L605,377L607,383L603,387L599,400L590,411L592,415L589,433L535,435L535,423L535,423L526,421L527,381Z","district":8},{"name":"California","d":"M77,374L77,374L77,374ZM75,384L75,384L75,384ZM69,372L69,372L69,372ZM65,358L65,358L65,358ZM58,374L58,374L58,374ZM57,355L57,355L57,355ZM50,355L50,355L50,355ZM47,353L47,353L47,353ZM33,160L100,179L100,179L83,246L112,289L134,322L157,356L163,375L156,377L148,392L149,407L145,407L100,402L97,382L81,362L70,357L65,349L49,344L46,340L50,329L42,314L35,292L40,286L31,274L33,261L39,270L36,257L33,260L26,253L29,248L20,229L24,209L18,197L31,173Z","district":12},{"name":"Delaware","d":"M849,246L849,246L849,246ZM845,245L851,241L850,244L850,250L861,263L864,270L853,273Z","district":3},{"name":"District of Columbia","d":"M826,267L828,270L826,267Z","district":5},{"name":"Hawaii","d":"M305,584L309,573L322,578L332,589L309,600ZM292,558L306,561L297,565ZM292,567L292,567L292,567ZM284,558L284,558L284,558ZM279,554L279,554L279,554ZM258,543L265,540L271,549L262,549ZM226,533L237,531L230,536ZM216,537L216,537L216,537Z","district":12},{"name":"Iowa","d":"M491,195L576,193L580,211L587,215L596,224L593,236L582,241L584,248L576,265L571,260L522,262L502,262L499,242L491,218L488,213Z","district":7},{"name":"Kentucky","d":"M621,340L625,334L633,337L632,330L639,327L639,320L647,315L655,319L661,313L676,311L684,298L683,295L694,291L693,284L699,283L704,290L720,292L727,288L733,295L733,301L741,311L747,313L735,325L729,334L720,339L667,344L645,346L641,350L617,351ZM616,351L615,352L616,351Z","district":8},{"name":"Maryland","d":"M850,285L849,285L850,285ZM847,282L847,282L847,282ZM839,268L839,268L839,268ZM782,257L845,245L853,273L864,270L863,280L856,284L841,274L846,271L839,266L840,255L836,259L838,274L841,282L835,282L827,274L828,270L826,267L814,260L804,253L800,258L795,257L784,269Z","district":5},{"name":"Michigan","d":"M677,131L677,131L677,131ZM666,134L666,134L666,134ZM663,133L663,133L663,133ZM662,139L662,139L662,139ZM661,136L661,136L661,136ZM659,143L659,143L659,143ZM657,150L657,150L657,150ZM655,153L655,153L655,153ZM646,140L646,140L646,140ZM652,228L660,211L659,198L652,184L652,175L655,168L655,160L664,148L665,157L667,146L674,142L670,138L675,133L697,140L701,147L702,162L694,177L699,180L705,171L710,168L715,172L721,191L721,200L716,200L708,222L686,225L686,224ZM601,92L601,92L601,92ZM585,123L600,116L619,101L626,101L618,106L619,112L628,114L633,120L645,121L652,115L670,111L670,118L682,115L685,124L693,124L694,128L674,131L663,127L661,130L640,135L632,153L628,148L628,148L628,140L623,135L590,128L586,124L586,124Z","district":7},{"name":"Mississippi","d":"M644,493L644,493L644,493ZM639,493L639,493L639,493ZM635,494L635,494L635,494ZM632,494L632,494L632,494ZM589,433L592,415L590,411L599,400L603,387L642,384L644,386L642,455L646,489L637,490L625,495L618,485L619,477L583,479L584,467L595,448L591,445Z","district":6},{"name":"Montana","d":"M198,39L377,66L371,134L369,156L258,142L256,154L252,147L250,151L237,148L225,149L224,142L215,118L208,123L206,115L213,97L205,90L201,80L196,75L197,69L193,62Z","district":9},{"name":"New Hampshire","d":"M886,111L891,102L904,144L910,150L909,155L903,161L884,165L881,146L882,128L888,122Z","district":1},{"name":"New York","d":"M899,196L899,196L899,196ZM898,200L898,200L898,200ZM897,198L897,198L897,198ZM869,217L867,221L869,217ZM815,154L815,154L815,154ZM814,154L814,154L814,154ZM767,200L780,186L775,176L784,172L809,169L819,161L819,152L815,146L821,141L828,129L834,123L858,118L861,130L861,140L867,150L871,168L871,184L874,208L891,204L895,200L900,202L883,214L872,219L869,216L870,209L855,204L841,192L769,206Z","district":2},{"name":"Ohio","d":"M721,223L721,223L721,223ZM719,222L719,222L719,222ZM686,225L708,222L726,227L738,223L748,213L756,209L761,239L759,261L754,269L749,270L744,283L741,280L738,293L733,295L727,288L720,292L704,290L699,283L693,284Z","district":4},{"name":"Oregon","d":"M71,70L80,80L79,87L86,91L98,91L103,95L136,96L139,95L171,102L176,113L157,139L162,143L158,150L149,191L100,179L100,179L100,179L33,160L33,140L44,124L57,92L65,71Z","district":12},{"name":"Tennessee","d":"M612,363L615,352L616,351L617,351L641,350L645,346L667,344L720,339L756,334L751,345L747,345L726,362L721,363L713,371L713,377L689,380L642,384L603,387L607,383L605,377L613,366Z","district":6},{"name":"Utah","d":"M198,201L247,210L244,232L277,237L265,328L176,313Z","district":12},{"name":"Virginia","d":"M850,287L850,287L850,287ZM856,284L863,280L858,288L856,302L853,301ZM850,285L849,285L850,285ZM747,313L753,320L761,318L777,309L776,305L784,287L790,286L794,275L797,277L803,266L803,259L813,265L814,260L826,267L828,270L827,274L826,281L838,283L846,287L845,299L849,305L846,310L855,308L859,316L780,331L756,334L720,339L729,334L735,325Z","district":5},{"name":"Washington","d":"M93,51L93,51L93,51ZM99,25L99,25L99,25ZM99,20L99,20L99,20ZM98,23L98,23L98,23ZM95,31L95,31L95,31ZM96,18L96,18L96,18ZM94,20L94,20L94,20ZM95,13L95,13L95,13ZM91,21L98,22L96,27ZM91,19L91,19L91,19ZM184,36L171,93L171,102L139,95L136,96L103,95L98,91L86,91L79,87L80,80L71,70L63,68L70,59L66,57L67,32L66,24L69,19L77,27L90,33L95,33L96,43L91,54L96,52L98,42L102,38L102,21L100,14Z","district":12},{"name":"Wisconsin","d":"M642,146L642,146L642,146ZM636,150L636,150L636,150ZM584,113L584,113L584,113ZM583,116L583,116L583,116ZM581,115L581,115L581,115ZM580,117L580,117L580,117ZM580,114L580,114L580,114ZM579,113L579,113L579,113ZM579,118L579,118L579,118ZM576,114L576,114L576,114ZM560,121L576,115L585,123L586,124L586,124L590,128L623,135L628,140L628,148L628,148L632,153L627,166L641,152L635,165L635,174L631,196L634,212L587,215L580,211L576,193L575,186L564,175L549,166L547,147L550,140L556,136L556,122Z","district":7},{"name":"Nebraska","d":"M365,201L457,206L465,212L476,210L491,218L499,242L502,262L510,275L394,272L395,249L361,247Z","district":10},{"name":"South Carolina","d":"M735,374L749,367L772,365L778,371L798,368L823,386L814,396L811,408L801,419L792,424L786,435L782,433L771,414L748,396L741,385L732,381Z","district":5},{"name":"Idaho","d":"M171,102L171,93L184,36L198,39L193,62L197,69L196,75L201,80L205,90L213,97L206,115L208,123L215,118L224,142L225,149L237,148L250,151L252,147L256,154L247,210L198,201L149,191L158,150L162,143L157,139L176,113Z","district":12},{"name":"Nevada","d":"M100,179L100,179L149,191L198,201L176,313L173,331L160,331L157,356L134,322L112,289L83,246Z","district":12},{"name":"Vermont","d":"M858,118L886,111L888,122L882,128L881,146L884,165L871,168L867,150L861,140L861,130Z","district":1},{"name":"Louisiana","d":"M638,497L638,497L638,497ZM628,498L628,498L628,498ZM624,510L624,510L624,510ZM610,521L610,521L610,521ZM606,521L606,521L606,521ZM602,522L602,522L602,522ZM577,511L577,511L577,511ZM535,435L589,433L591,445L595,448L584,467L583,479L619,477L618,485L625,495L626,513L632,514L634,522L620,515L613,521L608,515L601,523L590,517L584,508L579,506L571,513L554,508L541,510L542,496L546,476L536,458Z","district":6},{"name":"Rhode Island","d":"M911,183L913,186L911,183ZM908,184L908,184L908,184ZM908,188L908,188L908,188ZM907,196L907,196L907,196ZM902,194L899,178L905,176L910,182L908,191Z","district":1}],"cities":[{"n":"Boston","num":1,"x":909,"y":167},{"n":"New York","num":2,"x":870,"y":216},{"n":"Philadelphia","num":3,"x":854,"y":237},{"n":"Cleveland","num":4,"x":738,"y":223},{"n":"Richmond","num":5,"x":827,"y":299},{"n":"Atlanta","num":6,"x":715,"y":405},{"n":"Chicago","num":7,"x":638,"y":226},{"n":"St. Louis","num":8,"x":600,"y":304},{"n":"Minneapolis","num":9,"x":542,"y":161},{"n":"Kansas City","num":10,"x":523,"y":296},{"n":"Dallas","num":11,"x":483,"y":441},{"n":"San Francisco","num":12,"x":35,"y":261}]};
+
+const DISTRICT_COLORS = {
+ 1:"#2f6f6a",2:"#1f4e79",3:"#3f6cae",4:"#6a8d3a",5:"#4b8b8b",
+ 6:"#9a7634",7:"#b5772b",8:"#a8552b",9:"#5d6e8c",10:"#7a8b3f",
+ 11:"#a23b3b",12:"#5a4b8c"
+};
+
+const DISTRICTS = [
+ {n:1,L:"A",bio:"https://www.federalreserve.gov/aboutthefed/federal-reserve-system-boston.htm",city:"Boston",cover:"New England — CT, MA, ME, NH, RI, VT",
+  prez:"Susan M. Collins",fvp:"Karen A. Pennell",vote:"n",
+  branch:"No active branches",
+  note:"New England district; rotated <b>off</b> FOMC voting for 2026."},
+ {n:2,L:"B",bio:"https://www.federalreserve.gov/aboutthefed/federal-reserve-system-new-york.htm",city:"New York",cover:"New York, 12 NJ counties, Fairfield County CT",
+  prez:"John C. Williams",fvp:"Sushmita Shukla",vote:"p",
+  branch:"East Rutherford operations center",
+  note:"<b>First among equals.</b> Runs the Open Market Trading Desk and the System Open Market Account (SOMA), executes the ON RRP / Standing Repo Facility, conducts FX operations and Treasury auctions. Its president is the <b>permanent FOMC Vice Chair</b> and a permanent voter."},
+ {n:3,L:"C",bio:"https://www.federalreserve.gov/aboutthefed/federal-reserve-system-philadelphia.htm",city:"Philadelphia",cover:"Eastern PA, southern NJ, Delaware",
+  prez:"Anna Paulson",fvp:"Jeanne R. Rentezelas",vote:"y",
+  branch:"No active branches",
+  note:"Payments and consumer-finance research hub. <b>2026 FOMC voter.</b>"},
+ {n:4,L:"D",bio:"https://www.federalreserve.gov/aboutthefed/federal-reserve-system-cleveland.htm",city:"Cleveland",cover:"Ohio, western PA, eastern KY, the WV panhandle",
+  prez:"Beth M. Hammack",fvp:"Mark S. Meder",vote:"y",
+  branch:"Cincinnati · Pittsburgh",
+  note:"Inflation research and U.S. Treasury payment-systems work. <b>2026 FOMC voter.</b>"},
+ {n:5,L:"E",bio:"https://www.federalreserve.gov/aboutthefed/federal-reserve-system-richmond.htm",city:"Richmond",cover:"VA, MD, NC, SC, most of WV, DC",
+  prez:"Thomas I. Barkin",fvp:"Becky C. Bareford",vote:"n",
+  branch:"Baltimore · Charlotte",
+  note:"Houses key System IT and the Fed's national operations support."},
+ {n:6,L:"F",bio:"https://www.atlantafed.org/who-we-are/people/executive-leadership-committee/cheryl-venable",city:"Atlanta",cover:"AL, FL, GA, and parts of LA, MS, TN",
+  prez:"VACANT — interim leadership",fvp:"Cheryl L. Venable (First VP, acting)",vote:"n",
+  branch:"Birmingham · Jacksonville · Miami · Nashville · New Orleans",
+  note:"<b>Leadership transition.</b> Raphael W. Bostic retired Feb. 28, 2026; First Vice President Cheryl L. Venable is leading the Bank while the board of directors conducts a search for the next president.",vacant:true},
+ {n:7,L:"G",bio:"https://www.federalreserve.gov/aboutthefed/federal-reserve-system-chicago.htm",city:"Chicago",cover:"IA, most of IL & IN, southern WI, lower MI",
+  prez:"Austan D. Goolsbee",fvp:"Shonda S. Clay",vote:"n",
+  branch:"Detroit",
+  note:"Industrial Midwest and agriculture. Rotated <b>off</b> FOMC voting for 2026."},
+ {n:8,L:"H",bio:"https://www.federalreserve.gov/aboutthefed/federal-reserve-system-st-louis.htm",city:"St. Louis",cover:"AR and parts of IL, IN, KY, MS, MO, TN",
+  prez:"Alberto Musalem",fvp:"François G. Henriquez, II",vote:"n",
+  branch:"Little Rock · Louisville · Memphis",
+  note:"Home of <b>FRED</b> and an outsized research / economic-education footprint."},
+ {n:9,L:"I",bio:"https://www.federalreserve.gov/aboutthefed/federal-reserve-system-minneapolis.htm",city:"Minneapolis",cover:"MN, MT, ND, SD, northern WI, Upper Peninsula MI",
+  prez:"Neel T. Kashkari",fvp:"Ron J. Feldman",vote:"y",
+  branch:"Helena",
+  note:"Known for too-big-to-fail and banking-stability research. <b>2026 FOMC voter.</b>"},
+ {n:10,L:"J",bio:"https://www.federalreserve.gov/aboutthefed/federal-reserve-system-kansas-city.htm",city:"Kansas City",cover:"CO, KS, NE, OK, WY, northern NM, western MO",
+  prez:"Jeffrey R. Schmid",fvp:"Kimberly N. Robbins",vote:"n",
+  branch:"Denver · Oklahoma City · Omaha",
+  note:"Energy- and agriculture-weighted economy; hosts the annual <b>Jackson Hole</b> symposium. Rotated off voting for 2026."},
+ {n:11,L:"K",bio:"https://www.federalreserve.gov/aboutthefed/federal-reserve-system-dallas.htm",city:"Dallas",cover:"Texas, northern Louisiana, southern New Mexico",
+  prez:"Lorie K. Logan",fvp:"Robert L. Triplett, III",vote:"y",
+  branch:"El Paso · Houston · San Antonio",
+  note:"Energy-economy expertise; president formerly ran the NY Fed's Desk. <b>2026 FOMC voter.</b>"},
+ {n:12,L:"L",bio:"https://www.federalreserve.gov/aboutthefed/federal-reserve-system-san-francisco.htm",city:"San Francisco",cover:"9 western states + AK, HI, Guam, American Samoa, N. Marianas",
+  prez:"Mary C. Daly",fvp:"Sarah E. Devany",vote:"n",
+  branch:"Los Angeles · Portland · Salt Lake City · Seattle",
+  note:"<b>Largest district by geography and population</b> — covers roughly a fifth of the U.S. economy."}
+];
+
+const BOARD = [
+ {role:"Chair of the Board",name:"Kevin Warsh",meta:"Four-year term began May 22, 2026 · ends May 21, 2030. Chairs the FOMC by tradition.",cls:""},
+ {role:"Vice Chair of the Board",name:"Philip N. Jefferson",meta:"Term as Vice Chair ends Sept. 7, 2027.",cls:""},
+ {role:"Vice Chair for Supervision",name:"Michelle W. Bowman",meta:"The System's chief supervisory official (Dodd-Frank §1108). Term ends 2029. Also chairs the FFIEC.",cls:"super"}
+];
+
+/* Heads of bank supervision at each Reserve Bank (the senior officer who runs
+   examinations in the district under delegated Board authority). Titles vary by
+   Bank: EVP/SVP for "Supervision, Regulation & Credit" / "Supervision & Risk
+   Management"; at New York, head of the Supervision Group / FISG. */
+const SUPERVISORS = {
+ 1:{name:"James (Jim) Nolan",title:"EVP, Supervision, Regulation & Credit",flag:"Bank has posted to recruit a successor — role may be in transition."},
+ 2:{name:"Dianne Dobbeck",title:"EVP & Head of the Supervision Group (FISG)",flag:"Sits on the Board's LISCC overseeing the largest, most systemic firms."},
+ 3:{name:"William G. Spaniel",title:"EVP & Lending Officer, Supervision, Regulation & Credit"},
+ 4:{name:"Anulekha Mohanty",title:"SVP, Banking Supervision, Credit Risk Mgmt & Statistics"},
+ 5:{name:"Lisa A. White",title:"EVP, Supervision, Regulation & Credit"},
+ 6:{name:"Joseph (Joe) Davidson",title:"SVP, Supervision & Regulation"},
+ 7:{name:"Julie L. Williams",title:"EVP, Supervision & Regulation",flag:"Also serving an interim detail at the Board's Division of S&R."},
+ 8:{name:"Carl D. White II",title:"SVP, Supervision, Credit & Learning"},
+ 9:{name:"Ken Heinecke",title:"SVP, Supervision, Regulation & Credit"},
+ 10:{name:"Tara Humston",title:"EVP, Supervision & Risk Management"},
+ 11:{name:"Emily Greenwald",title:"SVP, Banking Supervision & Regulation"},
+ 12:{name:"Mongkha Pavlick",title:"EVP, Supervision + Credit"}
+};
+
+const STATUS = [
+ {lab:"Fed Funds Target",val:"3.50–3.75%",sub:"set Dec 10, 2025 · held Mar 2026"},
+ {lab:"IORB (the floor)",val:"3.65%",sub:"set by the Board"},
+ {lab:"Primary Credit",val:"3.75%",sub:"discount window"},
+ {lab:"Reserve Requirement",val:"0%",sub:"since Mar 26, 2020"},
+ {lab:"Balance Sheet",val:"~$6.65T",sub:"QT ended Dec 1, 2025"},
+ {lab:"Chair",val:"K. Warsh",sub:"since May 22, 2026"},
+ {lab:"Vice Chair / Supervision",val:"M. Bowman",sub:"chief bank supervisor"}
+];
+
+/* ============ TABS ============ */
+const TABS = [
+ {id:"overview",label:"Overview"},
+ {id:"map",label:"Map & Leaders"},
+ {id:"structure",label:"Board vs. Banks"},
+ {id:"policy",label:"Monetary Policy"},
+ {id:"supervision",label:"Supervision"},
+ {id:"payments",label:"Payments"},
+ {id:"masteraccounts",label:"Master Accounts"},
+ {id:"history",label:"History & Statute"},
+ {id:"glossary",label:"Glossary"}
+];
+
+/* ============ RENDER: status ============ */
+const sg=document.getElementById('statusGrid');
+STATUS.forEach(s=>{
+  const d=document.createElement('div');d.className='stat';
+  d.innerHTML=`<div class="lab">${s.lab}</div><div class="val">${s.val}</div><div class="sub">${s.sub}</div>`;
+  sg.appendChild(d);
+});
+document.getElementById('asof').textContent='▮ Snapshot current as of June 1, 2026 — figures and personnel change frequently.';
+
+/* ============ collapsible summary ============ */
+(function(){
+  const btn=document.getElementById('summaryToggle');
+  const region=document.getElementById('summaryRegion');
+  const label=document.getElementById('summaryToggleLabel');
+  btn.addEventListener('click',()=>{
+    const open=btn.getAttribute('aria-expanded')==='true';
+    btn.setAttribute('aria-expanded',String(!open));
+    region.classList.toggle('collapsed',open);
+    label.textContent=open?'Show summary':'Hide summary';
+  });
+})();
+
+/* ============ RENDER: tabs ============ */
+const tabBar=document.getElementById('tabBar');
+TABS.forEach((t,i)=>{
+  const b=document.createElement('button');b.className='tab'+(i===0?' active':'');
+  b.dataset.id=t.id;
+  b.innerHTML=`<span class="n">${String(i+1).padStart(2,'0')}</span>${t.label}`;
+  b.onclick=()=>activate(t.id);
+  tabBar.appendChild(b);
+});
+function activate(id){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.id===id));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id==='p-'+id));
+  window.scrollTo({top:0,behavior:'instant'});
+}
+
+/* ============ PANELS ============ */
+const main=document.getElementById('main');
+
+/* ---- Panel 1: Overview ---- */
+const functions=[
+ {t:"Monetary Policy",tag:"Function 01 · The dual mandate",cls:"ox",
+  b:["Steers the economy toward <b>maximum employment</b> and <b>stable prices</b> (a 2% PCE inflation target), the statutory mandate in <span class='codecite'>12 U.S.C. §225a</span>.",
+     "Decisions are made by the <b>FOMC</b>, not the Board alone — and in today's <em>ample-reserves</em> regime the Fed steers rates with administered tools (IORB, ON RRP, the Standing Repo Facility), not by rationing reserves."]},
+ {t:"Supervision & Regulation",tag:"Function 02",cls:"nv",
+  b:["Primary federal supervisor of <b>state member banks, all bank & savings-and-loan holding companies, foreign banking organizations</b>, FSOC-designated nonbank SIFIs, and designated financial-market utilities.",
+     "Distinct from the OCC (national banks) and FDIC (state non-member banks) — a multiplicity that reflects the <b>dual banking system</b>."]},
+ {t:"Financial Stability",tag:"Function 03 · Lender of last resort",cls:"ox",
+  b:["Monitors systemic risk, sits on the FSOC, and backstops liquidity through the <b>discount window</b> (<span class='codecite'>12 U.S.C. §347b</span>) and, in unusual and exigent circumstances, <b>§13(3) emergency lending</b> (<span class='codecite'>§343(3)</span>) — now requiring Treasury sign-off."]},
+ {t:"Payments & Settlement",tag:"Function 04",cls:"nv",
+  b:["<b>Operator and regulator.</b> Runs Fedwire, FedACH, the National Settlement Service, and — since July 2023 — <b>FedNow</b>, while also regulating systemically important FMUs under Dodd-Frank Title VIII.",
+     "Gatekeeper of <b>master accounts</b>, the contested doorway to the payment rails."]},
+ {t:"Consumer & Community",tag:"Function 05",cls:"ox",
+  b:["Most consumer-finance rulewriting moved to the <b>CFPB in 2011</b>. The Fed keeps consumer-compliance supervision of its own institutions, fair-lending enforcement, and CRA and community-development roles."]},
+];
+const supporting=[
+ {t:"Banker to the U.S. Government",b:"Reserve Banks hold the Treasury's operating account and process securities at ~325 auctions a year as fiscal agents. The Bureau of the Fiscal Service issues the debt; the Fed settles it."},
+ {t:"Currency Issuer",b:"Federal Reserve notes (<span class='codecite'>12 U.S.C. §411</span>) are liabilities of the Reserve Banks, printed by the Treasury's BEP and distributed through the twelve Banks. The letter on each note marks its issuing district."},
+ {t:"Economic Research",b:"Each Reserve Bank runs a research staff feeding regional intelligence into the FOMC — St. Louis hosts FRED; Kansas City hosts Jackson Hole."}
+];
+main.insertAdjacentHTML('beforeend',`
+<section class="panel active" id="p-overview">
+  <div class="sec-head"><span class="sec-num">1</span><h2>What the Fed actually does</h2></div>
+  <p class="lede">The "Fed" is not one institution but a <b>system</b> — deliberately split between a federal agency in Washington and twelve regional banks. It carries out <b>five core functions</b>, plus three supporting operational roles. Almost every recurring confusion about the Fed dissolves once you see the structure underneath.</p>
+  <div class="grid g2">${functions.map(f=>`
+    <div class="fcard ${f.cls}">
+      <span class="tagn">${f.tag}</span>
+      <h3>${f.t}</h3>
+      ${f.b.map(p=>`<p>${p}</p>`).join('')}
+    </div>`).join('')}</div>
+  <hr class="rule">
+  <h3 class="sub">Three supporting roles</h3>
+  <p class="subnote">Less headline-grabbing, but they are why the institution was created in the first place.</p>
+  <div class="grid g3">${supporting.map(s=>`
+    <div class="fcard">
+      <h3>${s.t}</h3><p>${s.b}</p>
+    </div>`).join('')}</div>
+  <div class="note"><b>The one thing to remember:</b> functions are carried out by different parts of the system. Monetary policy is the <em>FOMC's</em>; rulemaking is the <em>Board's</em>; examinations and the payment rails are run by the <em>Reserve Banks</em>. Keep reading for who sits where.</div>
+</section>`);
+
+/* ---- Panel 2: Map & Leaders ---- */
+main.insertAdjacentHTML('beforeend',`
+<section class="panel" id="p-map">
+  <div class="sec-head"><span class="sec-num">2</span><h2>The map &amp; its leaders</h2></div>
+  <p class="lede">Twelve districts, twelve head offices, twelve presidents — plus a seven-member Board in Washington. <b>Tap any city</b> (or a name in the roster) to see that Bank's president, FOMC voting status, branches, and role.</p>
+  <div class="map-wrap">
+    <div>
+      <div class="map-card">
+        <svg class="usmap" viewBox="0 0 975 610" id="usmap" role="img" aria-label="Map of the twelve Federal Reserve districts"></svg>
+        <div class="maplegend">
+          <span>● head office &nbsp; <span style="color:var(--oxblood)">■</span> 2026 FOMC voter &nbsp; <span style="color:var(--ink)">■</span> permanent voter</span>
+          <span>shading = primary district</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="detail" id="detail"></div>
+    </div>
+  </div>
+
+  <h3 class="sub">The twelve Reserve Bank presidents</h3>
+  <p class="subnote">Current five-year term began March 1, 2026 (Board reappointment announced Dec. 11, 2025).</p>
+  <div class="prez-list" id="prezList"></div>
+
+  <hr class="rule">
+  <h3 class="sub">The Board of Governors — Washington leadership</h3>
+  <p class="subnote">Seven Senate-confirmed governors. Three roles carry the institution: the Chair, the Vice Chair, and — the official the supervision question turns on — the <b>Vice Chair for Supervision</b>.</p>
+  <div class="board-grid">${BOARD.map(g=>`
+    <div class="gov ${g.cls}">
+      <div class="role">${g.role}</div>
+      <div class="pname">${g.name}</div>
+      <div class="meta">${g.meta}</div>
+    </div>`).join('')}</div>
+  <div class="note"><b>Where supervision actually happens.</b> The Vice Chair for Supervision sets supervisory policy and recommends rules; the Board's Division of Supervision &amp; Regulation runs it day-to-day; but the hands-on <b>examinations are delegated to the twelve Reserve Banks</b>, each with its own head of supervision overseeing the banks in its district. Supervision is thus a Board-set, Reserve-Bank-executed function — the clearest example of the System's split design.</div>
+
+  <h3 class="sub">Heads of bank supervision across the System</h3>
+  <p class="subnote">The senior officer who runs district examinations under delegated Board authority — collectively the Board's Supervision Committee; the big-bank-district heads also sit on the LISCC. Titles vary by Bank.</p>
+  <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>District</th><th>Reserve Bank</th><th>Head of Supervision</th><th>Title</th></tr></thead>
+      <tbody id="supTableBody"></tbody>
+    </table>
+  </div>
+  <div class="note"><b>A caveat worth keeping.</b> These officer rosters change and are not published in any single System-wide place — each is verified against the individual Reserve Bank's leadership pages and press releases. Boston's role appeared to be in active recruitment as of early 2026; reverify any name before relying on it.</div>
+
+  <h3 class="sub">FOMC voting in 2026</h3>
+  <p class="subnote">Twelve votes: seven governors + the New York president (permanent) + four rotating presidents.</p>
+  <div class="grid g2">
+    <div class="fcard nv"><span class="tagn">Permanent voters</span><h3>7 Governors + New York</h3>
+      <p>All seven Board governors vote, plus the New York Fed president as permanent FOMC Vice Chair.</p></div>
+    <div class="fcard ox"><span class="tagn">2026 rotating voters</span><h3>Philadelphia · Cleveland · Dallas · Minneapolis</h3>
+      <p>Paulson, Hammack, Logan, and Kashkari rotated <b>in</b> for 2026 — replacing Boston, Chicago, St. Louis, and Kansas City, who rotated out. All twelve presidents still attend and debate; only the voters cast ballots.</p></div>
+  </div>
+</section>`);
+
+/* ---- Panel 3: Structure ---- */
+main.insertAdjacentHTML('beforeend',`
+<section class="panel" id="p-structure">
+  <div class="sec-head"><span class="sec-num">3</span><h2>Board vs. Reserve Banks</h2></div>
+  <p class="lede">The single most useful distinction in the whole system. One half is unambiguously <b>government</b>; the other is a <b>federally chartered, bank-capitalized corporation</b>. The 1913 Congress built it this way on purpose.</p>
+  <div class="map-wrap" style="grid-template-columns:1fr 1fr">
+    <div class="fcard nv">
+      <span class="tagn">The federal half</span><h3>Board of Governors</h3>
+      <p>A <b>federal government agency</b> in Washington, D.C.</p>
+      <p>• 7 governors, Senate-confirmed, <b>14-year staggered terms</b> (<span class="codecite">§§241–242</span>)</p>
+      <p>• Removable by the President only <b>for cause</b></p>
+      <p>• Chair / Vice Chair / Vice Chair for Supervision serve 4-year terms</p>
+      <p>• Writes rules, oversees the Reserve Banks, sets reserve requirements &amp; IORB</p>
+      <p>• <b>Not</b> funded by Congress — funded by assessments on the Reserve Banks</p>
+    </div>
+    <div class="fcard ox">
+      <span class="tagn">The quasi-private half</span><h3>The 12 Reserve Banks</h3>
+      <p>Federally chartered <b>corporations</b> — the operating arms (<span class="codecite">§341</span>).</p>
+      <p>• Member banks hold <b>non-transferable stock</b> = 6% of capital &amp; surplus (<span class="codecite">§287</span>)</p>
+      <p>• Stock can't be sold or pledged; pays a capped statutory dividend (<span class="codecite">§289</span>); gives <b>no control</b></p>
+      <p>• 9 directors each: 3 Class A (banks), 3 Class B &amp; 3 Class C (public)</p>
+      <p>• Presidents appointed by Class B+C directors, <b>approved by the Board</b></p>
+      <p>• Run exams, the discount window, payments &amp; currency; hold reserves</p>
+    </div>
+  </div>
+
+  <div class="myth">
+    <p class="q">"So is the Fed public or private — and who owns it?"</p>
+    <p class="a">Both, by design. The Board is government. The Reserve Banks are described by the Fed as <b>not "owned" by anyone</b> in the ordinary sense — an "independent entity within the government, having both public purposes and private aspects." Member banks hold stock but get no profits and no control; residual earnings go to the <b>U.S. Treasury</b>.</p>
+  </div>
+
+  <h3 class="sub">The FOMC fuses the two halves</h3>
+  <p class="subnote">Monetary policy is set neither by the Board alone nor the Banks alone, but by a committee deliberately combining them (<span class="codecite">§263</span>).</p>
+  <ul class="clean">
+    <li><b>7 governors</b> (the federal half) + <b>New York's president</b> (permanent) + <b>4 rotating presidents</b> = 12 votes.</li>
+    <li>The rotation runs in fixed groups so every region cycles through: {Boston, Philadelphia, Richmond}; {Cleveland, Chicago}; {Atlanta, St. Louis, Dallas}; {Minneapolis, Kansas City, San Francisco}.</li>
+    <li><b>All twelve presidents attend and argue</b> every meeting — voting status changes who casts a ballot, not who is in the room.</li>
+  </ul>
+
+  <div class="myth">
+    <p class="q">"Are the Reserve Banks federal agencies?"</p>
+    <p class="a">For purposes like the APA, courts have repeatedly said <b>no — only the Board is the "agency."</b> That distinction is doing real work in the master-account litigation (see Payments): challenges to a Reserve Bank's decision can't simply proceed as suits against a federal agency.</p>
+  </div>
+</section>`);
+
+/* ---- Panel 4: Monetary Policy ---- */
+main.insertAdjacentHTML('beforeend',`
+<section class="panel" id="p-policy">
+  <div class="sec-head"><span class="sec-num">4</span><h2>Monetary policy mechanics</h2></div>
+  <p class="lede">The textbook picture — the Fed tweaks reserve scarcity through daily open-market operations — has been <b>obsolete since 2008</b>. Today the Fed sets a target <em>range</em> and pins the funds rate inside it with <b>administered rates</b>.</p>
+
+  <h3 class="sub">The current "ample reserves" corridor</h3>
+  <p class="subnote">Administered rates form a floor and ceiling around the FOMC's target range.</p>
+  <div class="corridor">
+    <div class="rate-row"><div class="rate-bar ceil">3.75%</div><div class="rate-line solid" style="border-color:var(--oxblood)"></div><div class="rate-tag ceil"><b>Standing Repo Facility</b> — the ceiling. Lends cash against Treasuries on demand. Daily cap removed Dec 2025.</div></div>
+    <div class="rate-row"><div class="rate-bar target">3.50–3.75%</div><div class="rate-line" style="border-color:var(--brass)"></div><div class="rate-tag target"><b>Target range</b> for the federal funds rate — what the FOMC actually sets.</div></div>
+    <div class="rate-row"><div class="rate-bar floor">3.65%</div><div class="rate-line solid" style="border-color:var(--ink)"></div><div class="rate-tag floor"><b>Interest on Reserve Balances (IORB)</b> — the primary tool and the floor. Banks won't lend reserves for less.</div></div>
+    <div class="rate-row"><div class="rate-bar floor" style="opacity:.7">~3.50%</div><div class="rate-line" style="border-color:var(--line)"></div><div class="rate-tag" style="color:var(--muted)"><b>Overnight Reverse Repo (ON RRP)</b> — a sub-floor for money funds &amp; GSEs that can't earn IORB. Usage now near zero.</div></div>
+  </div>
+
+  <div class="grid g2" style="margin-top:18px">
+    <div class="fcard nv"><span class="tagn">The dead tools</span><h3>Reserve requirements = 0%</h3>
+      <p>Set to <b>zero for all depository institutions on March 26, 2020</b> and treated as permanent. The classic "third lever" no longer operates. Daily fine-tuning of reserve scarcity is gone too.</p></div>
+    <div class="fcard ox"><span class="tagn">The balance sheet</span><h3>QE → QT, now paused</h3>
+      <p>Large-scale asset purchases (QE) peaked the balance sheet near <b>$8.5T in 2022</b>; passive runoff (QT) shrank it until the FOMC <b>ended runoff on Dec 1, 2025</b> at roughly $6.65T, as reserves fell from "abundant" toward merely "ample."</p></div>
+  </div>
+
+  <div class="note"><b>A governance nuance.</b> Different rates are set by different parts of the System: the <b>FOMC</b> sets the ON RRP and SRF rates; the <b>Board</b> sets IORB; and the <b>boards of the twelve Reserve Banks</b> "establish" the discount rate, subject to Board determination. Even setting interest rates is a split exercise.</div>
+</section>`);
+
+/* ---- Panel 5: Supervision ---- */
+main.insertAdjacentHTML('beforeend',`
+<section class="panel" id="p-supervision">
+  <div class="sec-head"><span class="sec-num">5</span><h2>Supervision &amp; regulation</h2></div>
+  <p class="lede">The Fed is <b>one of several</b> bank regulators. What sets its turf apart is the <em>type and structure</em> of the institution — and it is the only one with <b>umbrella authority over holding companies</b>.</p>
+
+  <h3 class="sub">Who supervises whom</h3>
+  <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>Institution type</th><th>Primary federal supervisor</th></tr></thead>
+      <tbody>
+        <tr><td><b>State member banks</b></td><td><b>Federal Reserve</b></td></tr>
+        <tr><td><b>All bank &amp; S&amp;L holding companies</b></td><td><b>Federal Reserve</b> (umbrella / consolidated)</td></tr>
+        <tr><td>Foreign banking organizations' U.S. operations</td><td><b>Federal Reserve</b></td></tr>
+        <tr><td>FSOC-designated nonbank SIFIs &amp; FMUs</td><td><b>Federal Reserve</b> (with SEC/CFTC for some FMUs)</td></tr>
+        <tr><td>National banks, federal thrifts, federal branches</td><td>OCC</td></tr>
+        <tr><td>State non-member banks (+ deposit insurer / receiver)</td><td>FDIC</td></tr>
+        <tr><td>Credit unions</td><td>NCUA</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sub">Rating frameworks — tiered by size &amp; complexity</h3>
+  <div class="grid g3">
+    <div class="fcard"><h3>CAMELS</h3><p>Banks, incl. state member banks. <b>C</b>apital, <b>A</b>sset quality, <b>M</b>anagement, <b>E</b>arnings, <b>L</b>iquidity, <b>S</b>ensitivity — each 1–5. <em>First major overhaul in decades is now out for comment (2026).</em></p></div>
+    <div class="fcard"><h3>RFI/C(D)</h3><p>Holding companies <b>&lt; $100B</b>. <b>R</b>isk management, <b>F</b>inancial condition, potential <b>I</b>mpact on the bank, a <b>C</b>omposite, and a depository <b>(D)</b> indicator.</p></div>
+    <div class="fcard"><h3>LFI rating</h3><p>Firms <b>≥ $100B</b>. Three areas — Capital, Liquidity, Governance &amp; Controls — each rated on a 4-point scale. <b>No composite.</b> A "well managed" recalibration was proposed in 2025.</p></div>
+  </div>
+  <div class="note"><b>Stress tests feed the ratings.</b> <b>DFAST</b> (supervisory &amp; company-run stress tests) and <b>CCAR</b> (capital-plan review) shape the Capital component of the LFI rating and, via the stress capital buffer, set firm-specific capital minimums. The largest, most systemic firms sit in the <b>LISCC</b> program.</div>
+</section>`);
+
+/* ---- Panel 6: Payments ---- */
+main.insertAdjacentHTML('beforeend',`
+<section class="panel" id="p-payments">
+  <div class="sec-head"><span class="sec-num">6</span><h2>The payments system</h2></div>
+  <p class="lede">Unusually for a central bank, the Fed is <b>both the operator and the regulator</b> of payment rails — and it competes head-to-head with private networks while also overseeing them.</p>
+
+  <h3 class="sub">The rails the Fed operates</h3>
+  <div class="grid g2">
+    <div class="fcard nv"><span class="tagn">Wholesale</span><h3>Fedwire Funds &amp; Securities</h3><p>Real-time gross settlement for large-value transfers — each settles individually, immediately, with finality. Fedwire Securities handles Treasury/agency book-entry.</p></div>
+    <div class="fcard"><span class="tagn">Retail batch</span><h3>FedACH</h3><p>The Fed's automated clearing house, settling on a deferred-net basis. Competes with The Clearing House's EPN — the two U.S. ACH operators.</p></div>
+    <div class="fcard"><span class="tagn">Net settlement</span><h3>National Settlement Service</h3><p>Lets private clearing arrangements settle multilaterally across Reserve Bank accounts.</p></div>
+    <div class="fcard ox"><span class="tagn">Instant · since Jul 2023</span><h3>FedNow</h3><p>24×7×365 instant credit-push payments with finality in seconds — the Fed's first new rail in ~50 years. Per-transaction limit raised to <b>$10M</b> in late 2025. Competes with TCH's RTP. <b>Not</b> a CBDC.</p></div>
+  </div>
+
+  <h3 class="sub">The regulator hat — Dodd-Frank Title VIII</h3>
+  <p class="subnote">FSOC <b>designates</b> systemically important financial-market utilities (<span class="codecite">§5463</span>); the Board sets risk-management standards via <b>Regulation HH</b> (<span class="codecite">§5464</span>).</p>
+  <p style="font-size:14.5px;color:var(--ink-2);max-width:80ch">Eight FMUs are designated — including DTCC's DTC, NSCC and FICC; CME Clearing and ICE Clear Credit; CLS Bank; and The Clearing House's CHIPS. Oversight is shared with the SEC and CFTC depending on the utility.</p>
+
+  <div class="myth">
+    <p class="q">Master accounts — the contested doorway to every rail above</p>
+    <p class="a">A <b>master account</b> is an institution's direct account at its Reserve Bank, and the entrance to Fedwire, FedACH, and the rest. Who gets one — and whether a Reserve Bank can refuse a state-chartered, legally eligible applicant — is now a live Supreme Court question and the subject of an active Fed rulemaking. → <b>See the Master Accounts tab</b> for the tiering framework, the Custodia litigation, and the new "Payment Account" proposal.</p>
+  </div>
+</section>`);
+
+/* ---- Panel 7: Master Accounts ---- */
+const TL_MA=[
+ {y:"Oct 2020",h:"Custodia applies",p:"Custodia Bank — a Wyoming Special Purpose Depository Institution (SPDI) chartered to serve digital-asset clients, uninsured and with no Fed-supervised holding company — applies to the Kansas City Fed for a master account."},
+ {y:"Aug 2022",key:true,h:"Account Access Guidelines finalized",p:"The Board publishes the tiered review framework, with Tier 3 — uninsured institutions lacking a federal prudential supervisor — drawing the strictest scrutiny."},
+ {y:"Jan 2023",h:"Custodia denied",p:"The Kansas City Fed denies the application, citing safety-and-soundness concerns tied to the crypto-focused business model. Custodia sues."},
+ {y:"2024",h:"District court for the Fed",p:"The U.S. District Court for Wyoming rules against Custodia on the merits — a Reserve Bank has discretion to grant or deny."},
+ {y:"Oct 31 2025",key:true,h:"Tenth Circuit affirms 2–1",p:"The panel reads FRA §13 (§342) as permitting, not compelling, a Reserve Bank to receive deposits, and the Monetary Control Act's 'shall be available' (§248a) as a pricing rule, not an access guarantee. Judge Tymkovich dissents — warning the ruling hands Reserve Banks a 'veto over states' chartering power.'"},
+ {y:"Mar 4 2026",h:"Kraken pilot account",p:"The Kansas City Fed approves a limited-purpose account for Kraken Financial (also a Wyoming SPDI). Vice Chair for Supervision Bowman calls it a 'pilot' for nonbank access — an emerging middle path short of full Tier 3 access."},
+ {y:"Mar 13 2026",key:true,h:"En banc rehearing denied 7–3",p:"The full Tenth Circuit declines to revisit the panel, without further opinion. Tymkovich dissents again. The decision confirms broad Reserve Bank discretion as the law of the circuit."},
+ {y:"May 2026",h:"Payment Account proposed + Tier 3 pause",p:"The Board publishes a formal 'Payment Account' framework for comment (6–1, Gov. Barr dissenting) and asks Reserve Banks to pause Tier 3 access decisions while it finishes the policy. A White House executive order (EO 14405) separately directs the Fed to review its access framework."},
+ {y:"Jul 11 2026",h:"Cert deadline",p:"After Justice Gorsuch granted a 30-day extension, Custodia's deadline to petition the Supreme Court (docket 25A1320) is July 11, 2026. As of early June it had not yet filed, and appeared to be weighing both tracks — cert and a limited-account application."}
+];
+
+main.insertAdjacentHTML('beforeend',`
+<section class="panel" id="p-masteraccounts">
+  <div class="sec-head"><span class="sec-num">7</span><h2>Master accounts &amp; access</h2></div>
+  <p class="lede">A master account is the <b>single doorway</b> to everything in the Payments tab — reserves, Fedwire, FedACH, settlement. Who is allowed through that door, and whether a Reserve Bank can refuse a <b>legally eligible, state-chartered</b> applicant, is the sharpest live fight in U.S. payments law — now pending before the Supreme Court and the subject of an active Fed rulemaking.</p>
+
+  <h3 class="sub">What a master account actually is</h3>
+  <div class="grid g2">
+    <div class="fcard nv"><span class="tagn">The bundle</span><h3>One account, the whole System</h3>
+      <p>An institution's <b>direct account at its district Reserve Bank</b>. It holds the institution's reserve balances and is the on-ramp to Fedwire Funds &amp; Securities, FedACH, and the National Settlement Service — without it, a firm must rent access through a correspondent bank, adding cost, delay, and dependency.</p></div>
+    <div class="fcard ox"><span class="tagn">The statutory fault line</span><h3>"May receive" vs. "shall be available"</h3>
+      <p>Two provisions are in tension. FRA §13 (<span class="codecite">12 U.S.C. §342</span>) says a Reserve Bank <em>may</em> receive deposits — permissive. The Monetary Control Act (<span class="codecite">12 U.S.C. §248a</span>) says services <em>"shall be available"</em> to nonmember depository institutions. The Fed reads that as a <b>pricing</b> mandate; applicants read it as an <b>access</b> entitlement. That single question drives the entire Custodia case.</p></div>
+  </div>
+
+  <h3 class="sub">The Account Access Guidelines (Aug 2022) — a tiered gate</h3>
+  <p class="subnote">The same legal standard applies to every request, but the depth of review scales with risk and oversight.</p>
+  <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>Tier</th><th>Who</th><th>Review</th></tr></thead>
+      <tbody>
+        <tr><td><b>Tier 1</b></td><td>Federally insured institutions</td><td>Streamlined — the baseline case.</td></tr>
+        <tr><td><b>Tier 2</b></td><td>Not federally insured, but subject to federal prudential supervision (directly or via a holding company)</td><td>Intermediate scrutiny.</td></tr>
+        <tr><td><b>Tier 3</b></td><td><b>Not federally insured <em>and</em> no federal prudential supervisor</b> — e.g. many state special-purpose charters</td><td><b>Strictest review.</b> This is where novel state charters (SPDIs, special trust charters) land.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="myth">
+    <p class="q">The reviewability wrinkle: are Reserve Banks even "agencies"?</p>
+    <p class="a">A denial is hard to challenge because courts have held that the <b>Reserve Banks are not federal "agencies"</b> for Administrative Procedure Act purposes — only the Board is. So an applicant can't simply sue a Reserve Bank as it would a federal agency, which is part of why Custodia's statutory-entitlement theory became the whole ballgame.</p>
+  </div>
+
+  <h3 class="sub">The litigation: <em>Custodia Bank v. Federal Reserve</em></h3>
+  <p class="subnote">The case that will likely settle whether eligibility means entitlement. The lineage before it: <b>The Narrow Bank (TNB)</b> and <b>Fourth Corner Credit Union</b> were earlier access denials; <b>Reserve Trust</b> held and then lost an account amid controversy.</p>
+  <div class="tl">${TL_MA.map(t=>`
+    <div class="tl-item ${t.key?'key':''}">
+      <div class="tl-year">${t.y}</div>
+      <h4>${t.h}</h4><p>${t.p}</p>
+    </div>`).join('')}</div>
+
+  <h3 class="sub">The middle path: the "Payment Account" (a/k/a "skinny" master account)</h3>
+  <p class="subnote">A lighter, lower-risk account the Fed is building as an alternative to full master-account status — Governor Waller's October 2025 framing, now a formal proposal.</p>
+  <div class="grid g2">
+    <div class="fcard"><span class="tagn">What it is</span><h3>A stripped-down on-ramp</h3>
+      <p>A special-purpose Reserve Bank account for payments-focused firms. Holders would clear and settle their own payments but get <b>no intraday credit, no discount window, and no interest</b> on balances, with automated controls to prevent overdrafts. An institution may hold a Payment Account <b>or</b> a master account — not both.</p></div>
+    <div class="fcard ox"><span class="tagn">Where it stands</span><h3>Proposed, comment open</h3>
+      <p>A December 2025 prototype RFI (Docket OP-1877) advanced to a <b>formal proposed framework in May 2026</b>, approved <b>6–1</b> with Governor Barr dissenting on oversight grounds, on a 60-day comment period. The Board asked Reserve Banks to <b>pause Tier 3 decisions</b> meanwhile; Waller is targeting a final rule by <b>year-end 2026</b>. A White House order (EO 14405, <span class="codecite">91 FR 30475</span>) separately directs a review of access policy.</p></div>
+  </div>
+
+  <div class="note"><b>Why this sits in your lane.</b> Master-account access is the precise seam where the <b>dual banking system</b> meets federal payment infrastructure: a state can charter an innovative institution, but a Reserve Bank's gate can render that charter commercially hollow. The unresolved questions — does statutory eligibility confer entitlement, and does a "skinny" account become the de facto answer for nonbanks — will shape charter strategy for stablecoin issuers, fintechs, and trust companies well beyond the crypto framing the headlines use.</div>
+</section>`);
+
+/* ---- Panel 8: History ---- */
+const TL=[
+ {y:"1913",key:true,h:"Federal Reserve Act",p:"Signed by Wilson. The Panic-of-1907 compromise: privately capitalized regional Banks under a public central Board — federalism baked into the architecture."},
+ {y:"1932",h:"Section 13(3) added",p:"Emergency lending authority for 'unusual and exigent circumstances' — later the basis for the 2008 and 2020 crisis facilities."},
+ {y:"1933 · 1935",key:true,h:"Banking Acts",p:"Created and then restructured the FOMC and Board into modern form — removed Treasury & the Comptroller from the Board, centralizing monetary-policy power."},
+ {y:"1977",h:"Federal Reserve Reform Act",p:"Wrote the explicit mandate now at §225a and required Senate confirmation of the Chair and Vice Chair."},
+ {y:"1978",h:"Audit Act + Humphrey-Hawkins",p:"GAO audit authority (31 U.S.C. §714) — but monetary-policy deliberations, FOMC transactions, and foreign-central-bank dealings are exempt. Semiannual testimony institutionalized."},
+ {y:"1980",key:true,h:"Monetary Control Act",p:"Extended reserve requirements to all depositories and required the Fed to price its services and make them 'available to nonmember depository institutions' (§248a) — the hook now litigated in master-account cases."},
+ {y:"2010",key:true,h:"Dodd-Frank",p:"Created the Vice Chair for Supervision, FSOC and nonbank-SIFI designation, Title VIII FMU oversight, DFAST/CCAR stress tests; restricted §13(3); and moved consumer rulewriting to the new CFPB (2011)."},
+ {y:"2020",h:"Reserve requirements → 0%",p:"Cemented the ample-reserves operating framework; the change is treated as permanent."},
+ {y:"2023",h:"FedNow goes live",p:"The Fed's first new payment rail in roughly half a century."},
+ {y:"2025–26",h:"QT ends · new Chair",p:"Balance-sheet runoff concluded Dec 1, 2025; Kevin Warsh became Chair May 22, 2026; the Custodia access doctrine settled at the Tenth Circuit."}
+];
+const CITES=[
+ ["Dual mandate","12 U.S.C. §225a","FRA §2A"],
+ ["Board: composition, terms, Chair","12 U.S.C. §§241, 242","FRA §10"],
+ ["Vice Chair for Supervision","amends §242","DFA §1108"],
+ ["FOMC — statutory basis","12 U.S.C. §263","FRA §12A"],
+ ["Open market operations","12 U.S.C. §355","FRA §14(b)"],
+ ["Reserve requirements","12 U.S.C. §461","FRA §19"],
+ ["Interest on reserve balances","12 U.S.C. §461(b)(12)","FRA §19"],
+ ["Discount window advances","12 U.S.C. §347b","FRA §10B"],
+ ["Emergency lending","12 U.S.C. §343(3)","FRA §13(3)"],
+ ["Reserve Bank powers (corporate)","12 U.S.C. §341","FRA §4"],
+ ["Authority to receive deposits","12 U.S.C. §342","FRA §13"],
+ ["Member-bank stock (6%)","12 U.S.C. §287","FRA §5"],
+ ["Reserve Bank dividend","12 U.S.C. §289","FRA §7"],
+ ["Federal Reserve notes","12 U.S.C. §411","FRA §16"],
+ ["Service pricing / nonmember access","12 U.S.C. §248a","FRA §11A"],
+ ["Title VIII — FMU designation","12 U.S.C. §5463","DFA §804"],
+ ["Title VIII — risk standards (Reg HH)","12 U.S.C. §5464","DFA §805"],
+ ["GAO audit + monetary-policy exemptions","31 U.S.C. §714","— 1978 Act"]
+];
+main.insertAdjacentHTML('beforeend',`
+<section class="panel" id="p-history">
+  <div class="sec-head"><span class="sec-num">8</span><h2>History &amp; statutory basis</h2></div>
+  <p class="lede">Every modern feature of the Fed is the residue of a specific statute. The structure that confuses people is just <b>layered compromises</b> — 1913, 1935, 1980, 2010 — each visible in the citation map below.</p>
+  <div class="map-wrap" style="grid-template-columns:1fr 1fr;align-items:start">
+    <div>
+      <h3 class="sub" style="margin-top:0">Legislative timeline</h3>
+      <div class="tl">${TL.map(t=>`
+        <div class="tl-item ${t.key?'key':''}">
+          <div class="tl-year">${t.y}</div>
+          <h4>${t.h}</h4><p>${t.p}</p>
+        </div>`).join('')}</div>
+    </div>
+    <div>
+      <h3 class="sub" style="margin-top:0">Statutory citation map</h3>
+      <p class="subnote">Verified against the U.S. Code (Title 12, Chapter 3) and the Federal Reserve Act.</p>
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr><th>Authority</th><th>U.S. Code</th><th>FRA / DFA §</th></tr></thead>
+          <tbody>${CITES.map(c=>`<tr><td><b>${c[0]}</b></td><td><code>${c[1]}</code></td><td>${c[2]}</td></tr>`).join('')}</tbody>
+        </table>
+      </div>
+      <div class="note" style="margin-top:16px"><b>Heads up for citation:</b> FRA §13 is fragmented across many Code sections (§§342, 343–347d, 361, 372…); §343(3) is the emergency-lending paragraph. The flat 6% dividend in §289 was modified by the 2015 FAST Act for stockholders above ~$10B in assets.</div>
+    </div>
+  </div>
+</section>`);
+
+/* ---- Panel 8: Glossary ---- */
+const GLOSSARY=[
+ // structure
+ {t:"Federal Reserve System",cat:"structure",d:"The U.S. central bank as a whole — the Board of Governors plus the twelve regional Reserve Banks plus the FOMC. Not a single institution but a deliberately federated one."},
+ {t:"Board of Governors",cat:"structure",d:"The federal-agency half of the System, in Washington, D.C. Seven Senate-confirmed governors on 14-year terms; writes rules and oversees the Reserve Banks. Funded by the Reserve Banks, not Congress."},
+ {t:"Federal Reserve Bank",cat:"structure",d:"One of twelve federally chartered, member-bank-capitalized corporations that operate the System day-to-day — running exams, the discount window, payments, and currency in their district."},
+ {t:"Federal Open Market Committee",abbr:"FOMC",cat:"structure",d:"The monetary-policy body: seven governors + the New York Fed president (permanent) + four rotating Reserve Bank presidents = twelve votes. Sets the federal funds target range."},
+ {t:"Member bank",cat:"structure",d:"A bank that holds stock in its Reserve Bank. National banks must be members; state banks may opt in. The stock is non-transferable, pays a capped dividend, and confers no control."},
+ {t:"Class A / B / C directors",cat:"structure",d:"The nine-member Reserve Bank board: three Class A (bankers, elected by member banks), three Class B (public, elected by member banks), three Class C (public, appointed by the Board of Governors)."},
+ {t:"System Open Market Account",abbr:"SOMA",cat:"structure",d:"The System-wide securities portfolio managed by the New York Fed's trading desk. Holds the Treasuries and agency MBS acquired through monetary policy and supplies essentially all of the Fed's income."},
+ {t:"Federal Reserve district",cat:"structure",d:"One of twelve geographic regions, each served by a Reserve Bank and identified by a number (1–12) and a letter (A–L). The letter appears on Federal Reserve notes."},
+ {t:"Dual banking system",cat:"structure",d:"The parallel federal and state systems for chartering and supervising banks — a deliberate U.S. federalism feature, and the reason multiple regulators share jurisdiction."},
+ {t:"Vice Chair for Supervision",cat:"structure",d:"The Board governor who serves as the System's chief supervisory official, setting supervisory policy and recommending rules. Created by Dodd-Frank §1108."},
+
+ // monetary policy
+ {t:"Dual mandate",cat:"policy",d:"The Fed's statutory goals of maximum employment and stable prices (a 2% PCE inflation target). Codified at <span class='codecite'>12 U.S.C. §225a</span>; a third goal, moderate long-term interest rates, is generally treated as a byproduct."},
+ {t:"Federal funds rate",cat:"policy",d:"The overnight, unsecured rate at which banks lend reserve balances to each other. The FOMC sets a 25-basis-point target range for it — currently 3.50–3.75%."},
+ {t:"Ample reserves regime",cat:"policy",d:"The post-2008/2020 operating framework in which the Fed steers rates with administered rates rather than by rationing reserve scarcity through daily open market operations."},
+ {t:"Interest on Reserve Balances",abbr:"IORB",cat:"policy",d:"The rate the Board pays banks on reserves held at the Fed — the primary monetary-policy tool and the floor under money-market rates, since banks won't lend reserves for less."},
+ {t:"Overnight Reverse Repo",abbr:"ON RRP",cat:"policy",d:"A facility offering money funds and GSEs (which can't earn IORB) a risk-free overnight investment, reinforcing the rate floor. Usage fell to near zero by late 2025."},
+ {t:"Standing Repo Facility",abbr:"SRF",cat:"policy",d:"A facility that lends cash against Treasuries and agency securities on demand, capping upward pressure on money-market rates — the ceiling. Its daily cap was removed in December 2025."},
+ {t:"Open market operations",abbr:"OMO",cat:"policy",d:"The New York Fed's purchases and sales of securities for the SOMA portfolio, executed under FOMC direction. Authority: FRA §§12A/14 (<span class='codecite'>12 U.S.C. §§263, 355</span>)."},
+ {t:"Quantitative easing / tightening",abbr:"QE / QT",cat:"policy",d:"Large-scale asset purchases that expand the balance sheet (QE) or passive runoff that shrinks it (QT). QT concluded December 1, 2025 at roughly $6.65 trillion."},
+ {t:"Reserve requirements",cat:"policy",d:"The fraction of deposits a bank must hold in reserve — the classic textbook tool, now set to <b>zero</b> for all depository institutions since March 26, 2020 and treated as permanent."},
+ {t:"Discount window",cat:"policy",d:"The Fed's standing facility for lending to depository institutions — primary, secondary, and seasonal credit. The lender-of-last-resort backstop (<span class='codecite'>12 U.S.C. §347b</span>)."},
+ {t:"Summary of Economic Projections",abbr:"SEP / 'dot plot'",cat:"policy",d:"The quarterly release of FOMC participants' rate and economic forecasts. The 'dots' are individual rate projections — conditional expectations, not commitments."},
+
+ // supervision
+ {t:"State member bank",cat:"supervision",d:"A state-chartered bank that has elected Fed membership — one of the institution types the Federal Reserve directly supervises (as opposed to OCC- or FDIC-supervised banks)."},
+ {t:"Bank holding company",abbr:"BHC",cat:"supervision",d:"A company that controls one or more banks. The Fed is the umbrella (consolidated) supervisor of all BHCs and savings-and-loan holding companies, regardless of where the subsidiary bank is chartered."},
+ {t:"CAMELS",cat:"supervision",d:"The Uniform Financial Institutions Rating System for banks: Capital, Asset quality, Management, Earnings, Liquidity, Sensitivity to market risk — each scored 1 (best) to 5 (worst), plus a composite."},
+ {t:"RFI/C(D)",cat:"supervision",d:"The rating framework for holding companies under $100 billion: Risk management, Financial condition, potential Impact on the bank, a Composite, and a Depository indicator."},
+ {t:"Large Financial Institution rating",abbr:"LFI",cat:"supervision",d:"The framework for firms ≥ $100 billion. Three components — Capital, Liquidity, Governance & Controls — on a four-point scale, with no composite. A 'well managed' recalibration was proposed in 2025."},
+ {t:"CCAR / DFAST",cat:"supervision",d:"The Fed's annual capital-plan review (CCAR) and Dodd-Frank stress tests (DFAST) of large banks against severe hypothetical scenarios. Results feed the LFI capital rating and set firm-specific buffers."},
+ {t:"LISCC",cat:"supervision",d:"The Large Institution Supervision Coordinating Committee — the Board program overseeing the largest, most systemically important firms. Big-district supervision heads sit on it."},
+ {t:"FSOC",cat:"supervision",d:"The Financial Stability Oversight Council, created by Dodd-Frank. Designates nonbank SIFIs and financial-market utilities for heightened oversight, including Fed supervision."},
+ {t:"OCC",cat:"supervision",d:"The Office of the Comptroller of the Currency — the Treasury bureau that charters and supervises national banks, federal savings associations, and federal branches of foreign banks."},
+ {t:"FDIC",cat:"supervision",d:"The Federal Deposit Insurance Corporation — primary supervisor of state non-member banks, the deposit insurer, and receiver for failed banks (e.g., SVB and Signature in March 2023)."},
+ {t:"FFIEC",cat:"supervision",d:"The Federal Financial Institutions Examination Council — the interagency body that coordinates exam standards across the Fed, OCC, FDIC, NCUA, and CFPB, plus a state liaison."},
+
+ // payments
+ {t:"Fedwire Funds Service",cat:"payments",d:"The Fed's real-time gross settlement system for large-value interbank transfers — each settles individually, immediately, and with finality across Reserve Bank accounts."},
+ {t:"FedACH",cat:"payments",d:"The Fed's automated clearing house service, settling on a deferred-net basis. Competes with The Clearing House's EPN — the two U.S. ACH operators."},
+ {t:"FedNow",cat:"payments",d:"The Fed's instant-payments rail, live since July 2023 — 24×7×365 credit-push settlement in seconds. The first new Fed rail in ~50 years. Per-transaction limit raised to $10M in late 2025. Not a CBDC."},
+ {t:"National Settlement Service",abbr:"NSS",cat:"payments",d:"A multilateral net settlement service that lets private clearing arrangements settle across Reserve Bank accounts."},
+ {t:"Financial Market Utility",abbr:"FMU",cat:"payments",d:"A system that clears, settles, or records financial transactions. FSOC can designate one as systemically important under Dodd-Frank Title VIII, triggering Fed risk-management standards (Regulation HH)."},
+ {t:"Master account",cat:"payments",d:"An institution's direct account at its Reserve Bank — the gateway to holding reserves and accessing Fedwire and the other rails. Access is graded under the 2022 Account Access Guidelines."},
+ {t:"Account Access Guidelines",cat:"payments",d:"The Fed's 2022 tiered framework for evaluating master-account requests, with the strictest review (Tier 3) for institutions that are uninsured and lack a federal prudential supervisor."},
+ {t:"Payment Account",abbr:"'skinny' master account",cat:"payments",d:"A proposed lighter Reserve Bank account for payments-focused firms — clearing and settlement only, with no intraday credit, discount window, or interest. Floated by Governor Waller (Oct 2025); a formal framework was proposed in May 2026 (6–1, Barr dissenting) on a 60-day comment period."},
+ {t:"Special Purpose Depository Institution",abbr:"SPDI",cat:"payments",d:"A Wyoming charter (also seen as special-purpose trust charters elsewhere) for institutions — often digital-asset firms — that take deposits but don't make conventional loans. Typically uninsured and without a federal prudential supervisor, placing them in Tier 3 for master-account review. Custodia and Kraken are SPDIs."},
+
+ // legal / historical
+ {t:"Federal Reserve Act",cat:"legal",d:"The 1913 statute (signed Dec. 23, 1913) creating the System as a compromise after the Panic of 1907 — regional banks under a central public board. The foundation for nearly all Fed authority."},
+ {t:"Section 13(3)",cat:"legal",d:"The emergency-lending authority (<span class='codecite'>12 U.S.C. §343(3)</span>) used in 'unusual and exigent circumstances.' Basis for the 2008 and 2020 crisis facilities; Dodd-Frank now requires broad-based programs and Treasury approval."},
+ {t:"Dodd-Frank Act",cat:"legal",d:"The 2010 reform law: created the Vice Chair for Supervision, FSOC, Title VIII FMU oversight, and DFAST/CCAR; restricted §13(3); and moved most consumer rulewriting to the new CFPB."},
+ {t:"Monetary Control Act of 1980",cat:"legal",d:"Extended reserve requirements to all depositories and required the Fed to price its services and make them 'available to nonmember depository institutions' (<span class='codecite'>12 U.S.C. §248a</span>) — the hook now litigated in master-account cases."},
+ {t:"Regulation HH",cat:"legal",d:"The Board rule setting risk-management standards for designated financial-market utilities under Dodd-Frank Title VIII (<span class='codecite'>12 U.S.C. §5464</span>)."},
+ {t:"CFPB",cat:"legal",d:"The Consumer Financial Protection Bureau, created by Dodd-Frank (effective July 21, 2011). Took over most consumer-finance rulewriting; the Fed retains consumer-compliance supervision of its own smaller institutions."},
+ {t:"Federal Reserve note",cat:"legal",d:"U.S. paper currency (<span class='codecite'>12 U.S.C. §411</span>) — a liability of the Reserve Banks, printed by the Treasury's Bureau of Engraving and Printing and distributed through the twelve Banks."}
+];
+
+const GCATS=[
+ {id:"all",label:"All"},
+ {id:"structure",label:"Structure"},
+ {id:"policy",label:"Monetary Policy"},
+ {id:"supervision",label:"Supervision"},
+ {id:"payments",label:"Payments"},
+ {id:"legal",label:"Legal / Historical"}
+];
+const GCAT_LABEL={structure:"Structure",policy:"Monetary Policy",supervision:"Supervision",payments:"Payments",legal:"Legal / Historical"};
+
+main.insertAdjacentHTML('beforeend',`
+<section class="panel" id="p-glossary">
+  <div class="sec-head"><span class="sec-num">9</span><h2>Glossary of terms</h2></div>
+  <p class="lede">The working vocabulary of the System — the acronyms, rating frameworks, payment rails, and statutory hooks used across the other tabs. <b>Search</b> or <b>filter by category</b>.</p>
+  <div class="gloss-controls">
+    <div class="gloss-search"><input type="text" id="glossSearch" placeholder="Search terms, acronyms, definitions…" aria-label="Search glossary"></div>
+    <div class="gloss-filters" id="glossFilters"></div>
+  </div>
+  <div class="gloss-count" id="glossCount"></div>
+  <div class="gloss-grid" id="glossGrid"></div>
+  <div class="gloss-empty" id="glossEmpty">No terms match — try a broader word.</div>
+</section>`);
+
+/* glossary interactivity */
+(function(){
+  const grid=document.getElementById('glossGrid');
+  const filtersEl=document.getElementById('glossFilters');
+  const countEl=document.getElementById('glossCount');
+  const emptyEl=document.getElementById('glossEmpty');
+  const searchEl=document.getElementById('glossSearch');
+  let activeCat="all", query="";
+
+  const sorted=[...GLOSSARY].sort((a,b)=>a.t.localeCompare(b.t));
+
+  GCATS.forEach((c,i)=>{
+    const b=document.createElement('button');
+    b.className='gfilter'+(i===0?' active':'');
+    b.textContent=c.label;b.dataset.cat=c.id;
+    b.onclick=()=>{activeCat=c.id;
+      filtersEl.querySelectorAll('.gfilter').forEach(f=>f.classList.toggle('active',f.dataset.cat===c.id));
+      render();};
+    filtersEl.appendChild(b);
+  });
+
+  function esc(s){return s.replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));}
+  function hl(text,q){
+    if(!q)return text;
+    // highlight only outside HTML tags
+    return text.replace(/(<[^>]+>)|([^<]+)/g,(m,tag,txt)=>{
+      if(tag)return tag;
+      const re=new RegExp('('+q.replace(/[.*+?^${}()|[\\]\\\\]/g,'\\\\$&')+')','ig');
+      return txt.replace(re,'<mark>$1</mark>');
+    });
+  }
+  function render(){
+    const q=query.trim().toLowerCase();
+    let shown=0;
+    grid.innerHTML='';
+    sorted.forEach(g=>{
+      const inCat = activeCat==="all"||g.cat===activeCat;
+      const hay=(g.t+' '+(g.abbr||'')+' '+g.d).toLowerCase();
+      const inQ = !q||hay.includes(q);
+      if(inCat&&inQ){
+        shown++;
+        const card=document.createElement('div');
+        card.className='gterm';card.dataset.cat=g.cat;
+        card.innerHTML=`<h4>${hl(esc(g.t),q)}${g.abbr?`<span class="abbr">${hl(esc(g.abbr),q)}</span>`:''}</h4>
+          <span class="gcat">${GCAT_LABEL[g.cat]}</span>
+          <p>${hl(g.d,q)}</p>`;
+        grid.appendChild(card);
+      }
+    });
+    emptyEl.style.display=shown?'none':'block';
+    countEl.textContent=shown+' of '+GLOSSARY.length+' terms'+(activeCat!=="all"?' · '+GCAT_LABEL[activeCat]:'')+(q?' · "'+query.trim()+'"':'');
+  }
+  searchEl.addEventListener('input',e=>{query=e.target.value;render();});
+  render();
+})();
+
+/* ============ MAP RENDERING ============ */
+const svg=document.getElementById('usmap');
+const SVGNS="http://www.w3.org/2000/svg";
+function el(tag,attrs){const e=document.createElementNS(SVGNS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);return e;}
+
+// states
+MAP.states.forEach(s=>{
+  const p=el('path',{d:s.d,class:'st'});
+  if(s.district){p.style.fill=DISTRICT_COLORS[s.district];p.style.opacity='.20';}
+  p.dataset.district=s.district||0;
+  svg.appendChild(p);
+});
+// nation outline
+svg.appendChild(el('path',{d:MAP.nation,class:'nation'}));
+
+// markers
+const byNum={};DISTRICTS.forEach(d=>byNum[d.n]=d);
+MAP.cities.forEach(c=>{
+  const d=byNum[c.num];
+  const g=el('g',{class:'marker','data-num':c.num,tabindex:"0",role:"button",
+    'aria-label':`District ${c.num}, ${c.n}`});
+  const col=DISTRICT_COLORS[c.num];
+  // ring color encodes voting status
+  let ring="#ffffff";
+  if(d.vote==='y')ring="#7a1f2b";else if(d.vote==='p')ring="#16150f";
+  g.appendChild(el('circle',{class:'halo',cx:c.x,cy:c.y,r:16,fill:"none",stroke:col,'stroke-width':2}));
+  const dot=el('circle',{class:'dot',cx:c.x,cy:c.y,r:11,fill:col});
+  if(d.vote==='y'||d.vote==='p'){dot.setAttribute('stroke',ring);dot.setAttribute('stroke-width',3);}
+  g.appendChild(dot);
+  const t=el('text',{x:c.x,y:c.y+0.5,'font-size':11});t.textContent=c.num;
+  g.appendChild(t);
+  g.addEventListener('click',()=>select(c.num));
+  g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();select(c.num);}});
+  svg.appendChild(g);
+});
+
+// presidents roster
+const prezList=document.getElementById('prezList');
+DISTRICTS.forEach(d=>{
+  const b=document.createElement('div');b.className='prez';b.dataset.num=d.n;
+  b.setAttribute('role','button');b.setAttribute('tabindex','0');
+  b.setAttribute('aria-label',`District ${d.n}, ${d.city}`);
+  const nameHtml=d.vacant
+    ? `<a class="biolink" href="${d.bio}" target="_blank" rel="noopener">Cheryl L. Venable (acting)<span class="ext">↗</span></a>`
+    : `<a class="biolink" href="${d.bio}" target="_blank" rel="noopener">${d.prez}<span class="ext">↗</span></a>`;
+  b.innerHTML=`<span class="badge" style="background:${DISTRICT_COLORS[d.n]}">${d.n}</span>
+    <span class="who"><span class="city">${d.city}</span><br><span class="name">${nameHtml}</span></span>`;
+  b.addEventListener('click',e=>{ if(e.target.closest('a.biolink'))return; select(d.n); });
+  b.addEventListener('keydown',e=>{ if((e.key==='Enter'||e.key===' ')&&!e.target.closest('a.biolink')){e.preventDefault();select(d.n);} });
+  prezList.appendChild(b);
+});
+
+function voteLabel(v){
+  if(v==='p')return '<span class="vote-p">PERMANENT VOTER</span>';
+  if(v==='y')return '<span class="vote-y">2026 VOTER</span>';
+  return '<span class="vote-n">non-voting in 2026</span>';
+}
+function select(num){
+  const d=byNum[num];
+  document.querySelectorAll('.marker').forEach(m=>m.classList.toggle('sel',m.dataset.num==num));
+  document.querySelectorAll('.prez').forEach(p=>p.classList.toggle('sel',p.dataset.num==num));
+  const col=DISTRICT_COLORS[num];
+  const det=document.getElementById('detail');
+  det.innerHTML=`
+    <div class="dhead" style="background:${col}">
+      <div class="dnum">DISTRICT ${num} · ${d.L} · ${voteLabel(d.vote)}</div>
+      <div class="dcity">${d.city}</div>
+    </div>
+    <div class="dbody">
+      <div class="drow"><div class="k">President</div><div class="v">${d.vacant?`<span class="vacant-tag">VACANT</span> &nbsp;<a class="biolink" href="${d.bio}" target="_blank" rel="noopener"><b>Cheryl L. Venable</b>, First VP (acting)<span class="ext">↗</span></a>`:`<a class="biolink" href="${d.bio}" target="_blank" rel="noopener"><b>${d.prez}</b><span class="ext">↗</span></a>`}</div></div>
+      <div class="drow"><div class="k">First VP</div><div class="v">${d.vacant?'(see above)':d.fvp}</div></div>
+      <div class="drow"><div class="k">Supervision</div><div class="v"><b>${SUPERVISORS[num].name}</b><br><span style="font-size:12px;color:var(--muted)">${SUPERVISORS[num].title}</span>${SUPERVISORS[num].flag?`<br><span style="font-size:11.5px;color:var(--oxblood)">${SUPERVISORS[num].flag}</span>`:''}</div></div>
+      <div class="drow"><div class="k">Coverage</div><div class="v">${d.cover}</div></div>
+      <div class="drow"><div class="k">Branches</div><div class="v">${d.branch}</div></div>
+      <div class="drow"><div class="k">Role</div><div class="v">${d.note}</div></div>
+    </div>`;
+  // emphasize selected district states
+  document.querySelectorAll('.st').forEach(s=>{
+    const on=s.dataset.district==num;
+    s.style.opacity = s.dataset.district==0 ? '1' : (on?'.62':'.14');
+  });
+}
+// supervision heads table
+const supBody=document.getElementById('supTableBody');
+if(supBody){
+  DISTRICTS.forEach(d=>{
+    const s=SUPERVISORS[d.n];
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td><b>${d.n}</b> · ${d.L}</td>
+      <td><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${DISTRICT_COLORS[d.n]};margin-right:6px"></span>${d.city}</td>
+      <td><b>${s.name}</b>${s.flag?`<br><span style="font-size:11.5px;color:var(--oxblood)">${s.flag}</span>`:''}</td>
+      <td>${s.title}</td>`;
+    supBody.appendChild(tr);
+  });
+}
+
+// default selection
+select(2);
+</script>
+</body>
+</html>

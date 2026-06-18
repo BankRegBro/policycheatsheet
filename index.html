@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>BankRegWire — A bank regulatory wire service</title>
+<link rel="canonical" href="https://bankregwire.com/wire.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="BankRegWire" />
+<meta property="og:title" content="BankRegWire — A bank regulatory wire service" />
+<meta property="og:description" content="A working catalogue of U.S. financial services regulation, filed from the primary source." />
+<meta property="og:url" content="https://bankregwire.com/wire.html" />
+<meta property="og:image" content="https://bankregwire.com/og-cover.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="description" content="BankRegWire — a working catalogue of U.S. financial services regulation, filed from the primary source." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Archivo:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  /* palette matched to the site (wire.html) so the splash flows straight into it */
+  :root{ --paper:#f1ede2; --ink:#16150f; --accent:#7a1f2b; --wire:#cf7714; --wire-bright:#f0a546; --line:rgba(241,237,226,.18); }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ background:var(--ink); color:var(--paper); font-family:'Archivo',system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+
+  .hero{ position:relative; width:100%; height:100vh; height:100dvh; overflow:hidden; background:var(--ink); }
+  video#clip{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transform:scale(1.02); filter:saturate(1.06) contrast(1.04) brightness(.95) sepia(.04); background:var(--ink); }
+  .grade{ position:absolute; inset:0; pointer-events:none; background:radial-gradient(130% 120% at 50% 42%, transparent 36%, rgba(16,18,12,.62) 100%), linear-gradient(180deg, rgba(207,119,20,.10), rgba(22,21,15,.12)); }
+  .grain{ position:absolute; inset:0; pointer-events:none; opacity:.035; mix-blend-mode:overlay; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+  .topbar{ position:absolute; inset:0 0 auto 0; z-index:4; display:flex; align-items:center; justify-content:space-between; padding:clamp(18px,2.4vw,30px) clamp(20px,4vw,56px); }
+  .wordmark{ font-family:'JetBrains Mono',monospace; font-weight:500; letter-spacing:.34em; text-transform:uppercase; font-size:clamp(11px,1.1vw,13px); text-shadow:0 1px 18px rgba(0,0,0,.6); }
+  .wordmark b{ color:var(--wire-bright); font-weight:500; }
+  .enter{ font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--paper); text-decoration:none; opacity:.9; display:inline-flex; align-items:center; gap:9px; text-shadow:0 1px 14px rgba(0,0,0,.6); padding:6px 2px; border-bottom:1px solid transparent; transition:opacity .2s,border-color .2s; }
+  .enter:hover{ opacity:1; border-color:var(--wire); }
+  .enter:focus-visible{ outline:2px solid var(--wire); outline-offset:4px; }
+  .enter .arrow{ transition:transform .25s; } .enter:hover .arrow{ transform:translateX(5px); }
+
+  .panel{ position:absolute; inset:0; z-index:3; display:flex; flex-direction:column; justify-content:center; padding:0 clamp(22px,8vw,140px); will-change:opacity,transform; opacity:0; pointer-events:none; }
+  .panel.right{ align-items:flex-end; text-align:right; }
+  .panel a,.panel button{ pointer-events:auto; }
+  .eyebrow{ font-family:'JetBrains Mono',monospace; font-size:clamp(11px,1.05vw,13px); letter-spacing:.32em; text-transform:uppercase; color:var(--wire); margin-bottom:clamp(14px,1.6vw,22px); display:flex; align-items:center; gap:12px; text-shadow:0 1px 16px rgba(0,0,0,.6); }
+  .eyebrow .tick{ width:34px; height:1px; background:var(--wire); display:inline-block; }
+  .panel.right .eyebrow{ flex-direction:row-reverse; }
+  h1,h2{ font-family:'Fraunces',Georgia,serif; font-weight:400; line-height:.96; letter-spacing:-.02em; text-shadow:0 2px 44px rgba(0,0,0,.6),0 1px 4px rgba(0,0,0,.5); }
+  h1{ font-size:clamp(52px,11vw,168px); font-weight:300; }
+  h2{ font-size:clamp(38px,6.4vw,96px); }
+  h1 em,h2 em{ font-style:italic; color:var(--wire-bright); }
+  .sub{ max-width:46ch; margin-top:clamp(18px,2vw,26px); font-family:'Fraunces',serif; font-style:italic; font-size:clamp(16px,1.5vw,21px); line-height:1.5; color:var(--paper); opacity:.95; text-shadow:0 1px 24px rgba(0,0,0,.75); }
+  .panel.right .sub{ margin-left:auto; }
+  .desks{ display:flex; gap:14px; margin-top:clamp(26px,3vw,40px); flex-wrap:wrap; }
+  .desk{ background:rgba(20,17,14,.5); backdrop-filter:blur(7px); -webkit-backdrop-filter:blur(7px); border:1px solid var(--line); border-top:2px solid var(--wire); padding:16px 18px; min-width:172px; flex:1 1 172px; max-width:230px; text-decoration:none; color:var(--paper); transition:transform .25s,border-color .25s,background .25s; }
+  .desk:hover{ transform:translateY(-4px); border-top-color:var(--paper); background:rgba(20,17,14,.7); }
+  .desk:focus-visible{ outline:2px solid var(--wire); outline-offset:3px; }
+  .desk .k{ font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:.22em; text-transform:uppercase; color:var(--wire); }
+  .desk .t{ font-family:'Fraunces',serif; font-size:21px; margin-top:8px; line-height:1.05; }
+  .desk .d{ font-size:12.5px; opacity:.78; margin-top:7px; line-height:1.4; }
+  .cta-row{ display:flex; gap:14px; align-items:center; margin-top:clamp(24px,2.6vw,34px); flex-wrap:wrap; }
+  .cta{ cursor:pointer; font-family:'JetBrains Mono',monospace; font-size:12.5px; letter-spacing:.16em; text-transform:uppercase; padding:15px 26px; border:none; text-decoration:none; background:var(--accent); color:var(--paper); display:inline-flex; align-items:center; gap:10px; transition:background .2s,transform .15s; }
+  .cta:hover{ background:#8a2632; transform:translateY(-2px); }
+  .cta:focus-visible{ outline:2px solid var(--wire); outline-offset:3px; }
+  .cta .arrow{ transition:transform .25s; } .cta:hover .arrow{ transform:translateX(5px); }
+  .cta.ghost{ background:transparent; border:1px solid var(--line); color:var(--paper); }
+  .cta.ghost:hover{ border-color:var(--wire); background:rgba(207,119,20,.12); }
+
+  .pbar{ position:absolute; left:0; right:0; bottom:0; height:2px; z-index:4; background:var(--line); }
+  .pbar .fill{ height:100%; width:0%; background:linear-gradient(90deg,var(--wire),var(--accent)); }
+  .replay{ position:absolute; right:clamp(20px,4vw,56px); bottom:24px; z-index:5; display:none; align-items:center; gap:9px; cursor:pointer; background:rgba(20,17,14,.5); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); border:1px solid var(--line); color:var(--paper); font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; padding:10px 16px; }
+  .replay:hover{ border-color:var(--wire); } .replay.show{ display:inline-flex; }
+  .startbtn{ position:absolute; left:50%; bottom:clamp(28px,7vh,70px); transform:translateX(-50%); z-index:5; display:none; cursor:pointer; background:var(--accent); color:var(--paper); border:none; font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.18em; text-transform:uppercase; padding:14px 26px; }
+  .startbtn.show{ display:inline-block; }
+  .credit{ position:absolute; left:clamp(20px,4vw,56px); bottom:18px; z-index:4; pointer-events:none; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.16em; text-transform:uppercase; opacity:.5; text-shadow:0 1px 10px rgba(0,0,0,.7); }
+  .loading{ position:absolute; inset:0; z-index:6; background:var(--ink); display:flex; align-items:center; justify-content:center; transition:opacity .6s; }
+  .loading .l{ font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--wire); opacity:.85; }
+</style>
+</head>
+<body>
+  <section class="hero">
+    <video id="clip" src="bankregwire-crossing.mp4" muted playsinline webkit-playsinline preload="auto" autoplay></video>
+    <div class="grade"></div>
+    <div class="grain"></div>
+
+    <header class="topbar">
+      <div class="wordmark">BANK<b>REG</b>WIRE</div>
+      <a class="enter" href="wire.html" data-enter>Enter the wire <span class="arrow">→</span></a>
+    </header>
+
+    <section class="panel" data-beat="0" aria-label="Intro">
+      <div class="eyebrow"><span class="tick"></span> A regulatory wire service</div>
+      <h1>Walk<br>the line.</h1>
+      <p class="sub">Primary sources first. No spin, no second-hand summaries — just the rule, the record, and what it actually changes.</p>
+    </section>
+    <section class="panel right" data-beat="1" aria-label="The crossing">
+      <div class="eyebrow">The crossing <span class="tick"></span></div>
+      <h2>Between <em>safety</em><br>and innovation.</h2>
+      <p class="sub">Stablecoins, payments rails, third-party risk. The balance every supervisor is actually walking, one footing at a time.</p>
+    </section>
+    <section class="panel" data-beat="2" aria-label="Arrive">
+      <div class="eyebrow"><span class="tick"></span> Solid ground</div>
+      <h2>Arrive at the <em>wire</em>.</h2>
+      <div class="desks">
+        <a class="desk" href="wire.html"><div class="k">Desk 01</div><div class="t">Rules &amp; Guidance</div><div class="d">NPRMs, final rules, and the comment record, walked to the citation.</div></a>
+        <a class="desk" href="wire.html"><div class="k">Desk 02</div><div class="t">Reform Trackers</div><div class="d">Live status on the reforms moving through Congress and the agencies.</div></a>
+        <a class="desk" href="wire.html"><div class="k">Desk 03</div><div class="t">Structural Frameworks</div><div class="d">The dual banking system, charters, and the architecture underneath.</div></a>
+      </div>
+      <div class="cta-row"><a class="cta" href="wire.html" data-enter>Enter the wire <span class="arrow">→</span></a><a class="cta ghost" href="wire.html" data-enter>Browse the catalogue</a></div>
+    </section>
+
+    <div class="pbar"><div class="fill" id="pfill"></div></div>
+    <button class="replay" id="replay" aria-label="Replay">↺ Replay</button>
+    <button class="startbtn" id="startbtn">▶ Play the crossing</button>
+    <div class="credit">Visuals · Gemini</div>
+    <div class="loading" id="loading"><div class="l">Loading the crossing…</div></div>
+    <noscript><a class="enter" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:7" href="wire.html">Enter BankRegWire →</a></noscript>
+  </section>
+
+<script>
+(function(){
+  /* ---- tweakables ---- */
+  var SITE = 'wire.html';     // where the splash leads
+  var AUTO_ENTER_MS = 2800;   // after the clip ends, glide into the site (0 = wait for a click)
+  var SKIP_IF_SEEN = false;   // true = returning visitors skip straight to the site
+  var PLAYBACK_RATE = 0.8;
+
+  // optional: send repeat visitors straight in
+  try{ if(SKIP_IF_SEEN && localStorage.getItem('brw-intro-seen')==='1'){ location.replace(SITE); return; } }catch(e){}
+  function markSeen(){ try{ localStorage.setItem('brw-intro-seen','1'); }catch(e){} }
+  function go(){ markSeen(); location.href=SITE; }
+
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var video=document.getElementById('clip'), loadingEl=document.getElementById('loading');
+  var pfill=document.getElementById('pfill'), replay=document.getElementById('replay'), startbtn=document.getElementById('startbtn');
+  var panels=[].slice.call(document.querySelectorAll('.panel'));
+  var cleared=false, dur=10, started=false, enterTimer=null;
+
+  function clearLoader(){ if(cleared)return; cleared=true; loadingEl.style.opacity='0'; setTimeout(function(){ if(loadingEl.parentNode) loadingEl.parentNode.removeChild(loadingEl); },650); }
+  function tryPlay(){ var p=video.play(); if(p&&p.catch) p.catch(function(){ if(!started){ startbtn.classList.add('show'); } }); }
+
+  video.muted=true; video.playsInline=true;
+  video.addEventListener('loadedmetadata', function(){ dur=video.duration||10; video.playbackRate=PLAYBACK_RATE; });
+  ['loadeddata','canplay','playing'].forEach(function(ev){ video.addEventListener(ev, clearLoader, false); });
+  setTimeout(clearLoader, 2500);
+
+  var BW=[ [0,0,0.20,0.30], [0.34,0.42,0.60,0.70], [0.74,0.85,1,1] ];
+  function op(p,w){ if(p<w[0]||p>w[3])return 0; if(p<w[1])return (p-w[0])/(w[1]-w[0]); if(p<=w[2])return 1; return 1-(p-w[2])/(w[3]-w[2]); }
+  function paint(p){ for(var i=0;i<panels.length;i++){ var o=op(p,BW[i]); if(i===2&&(video.ended||p>=0.999))o=1; panels[i].style.opacity=o.toFixed(3); panels[i].style.transform='translateY('+(reduced?0:(1-o)*22)+'px)'; } pfill.style.width=(p*100).toFixed(2)+'%'; }
+  function loop(){ var t=video.currentTime||0, p=dur?Math.min(1,Math.max(0,t/dur)):0; if(video.ended)p=1; paint(p); requestAnimationFrame(loop); }
+
+  video.addEventListener('ended', function(){
+    replay.classList.add('show');
+    if(AUTO_ENTER_MS>0){ enterTimer=setTimeout(go, AUTO_ENTER_MS); }   // glide into the site
+  });
+  replay.addEventListener('click', function(){ if(enterTimer){clearTimeout(enterTimer);enterTimer=null;} replay.classList.remove('show'); video.currentTime=0; tryPlay(); });
+  startbtn.addEventListener('click', function(){ startbtn.classList.remove('show'); started=true; tryPlay(); });
+  // any explicit "enter" click marks the intro as seen
+  document.querySelectorAll('[data-enter]').forEach(function(a){ a.addEventListener('click', markSeen); });
+
+  if(reduced){ startbtn.classList.add('show'); clearLoader(); } else { tryPlay(); started=true; }
+  loop();
+})();
+</script>
+</body>
+</html>
