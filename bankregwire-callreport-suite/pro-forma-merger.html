@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pro Forma Merger Model — FDIC Purchase Accounting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070b08;--bg2:#0a110c;--panel:#0c1610;--panel2:#0f1d14;--grid:rgba(95,232,138,0.06);
+--phos:#5fe88a;--phos-dim:#3a7d54;--phos-faint:#27543a;--ink:#cfeede;--ink-dim:#6f9683;
+--amber:#ffb347;--alert:#ff6b6b;--gold:#ffd166;
+--edge:rgba(95,232,138,0.16);--edge-soft:rgba(95,232,138,0.09);
+--c-C:#6ba8ff;--c-A:#ffb347;--c-E:#5fe88a;--c-L:#54d6d6;--c-S:#ff7a5c;}
+*{box-sizing:border-box;margin:0;padding:0}html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:'JetBrains Mono',ui-monospace,monospace;font-size:13.5px;line-height:1.5;min-height:100vh;
+background-image:radial-gradient(120% 90% at 50% -10%,rgba(95,232,138,0.05),transparent 60%),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:auto,100% 28px,28px 100%}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;background:repeating-linear-gradient(0deg,rgba(0,0,0,0.16) 0,rgba(0,0,0,0.16) 1px,transparent 1px,transparent 3px);mix-blend-mode:multiply;opacity:0.5}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:9998;background:radial-gradient(130% 120% at 50% 50%,transparent 55%,rgba(0,0,0,0.5) 100%)}
+.wrap{max-width:1120px;margin:0 auto;padding:20px 16px 90px}
+header{border:1px solid var(--edge);background:linear-gradient(180deg,var(--panel),var(--bg2))}
+.titlebar{display:flex;align-items:center;gap:9px;padding:9px 13px;border-bottom:1px solid var(--edge-soft);background:rgba(95,232,138,0.04)}
+.dot{width:9px;height:9px;border-radius:50%;border:1px solid var(--phos-dim)}.dot.on{background:var(--phos);box-shadow:0 0 7px var(--phos)}
+.tb-label{margin-left:auto;color:var(--phos-dim);font-size:10.5px;letter-spacing:0.16em;text-transform:uppercase}
+.head-main{padding:18px 16px 16px}
+.eyebrow{color:var(--phos-dim);font-size:10.5px;letter-spacing:0.24em;text-transform:uppercase;margin-bottom:7px}
+h1{font-size:clamp(19px,4vw,28px);font-weight:800;color:var(--phos);text-shadow:0 0 13px rgba(95,232,138,0.4);line-height:1.12}
+h1 .cur{display:inline-block;width:0.55ch;background:var(--phos);box-shadow:0 0 9px var(--phos);animation:blink 1.1s steps(1) infinite;color:transparent;margin-left:2px}
+@keyframes blink{50%{opacity:0}}
+.subhead{margin-top:9px;color:var(--ink-dim);max-width:84ch;font-size:12.5px;line-height:1.55}.subhead b{color:var(--ink)}
+.btn{border:1px solid var(--edge);background:var(--panel);color:var(--ink-dim);padding:9px 13px;cursor:pointer;font-family:inherit;font-size:12px;border-radius:2px;transition:.12s}
+.btn:hover{color:var(--ink);border-color:var(--phos-dim)}
+.toolnav{display:flex;flex-wrap:wrap;align-items:center;gap:3px;margin-bottom:14px;padding:7px 10px;border:1px solid var(--edge);background:linear-gradient(180deg,var(--panel),var(--bg2));border-radius:2px;font-size:11.5px}
+.toolnav a{color:var(--ink-dim);text-decoration:none;padding:6px 10px;border-radius:2px;transition:.12s;white-space:nowrap}
+.toolnav a:hover{color:var(--ink);background:var(--panel2)}
+.toolnav a.active{color:var(--phos);background:color-mix(in srgb,var(--phos) 12%,var(--panel));font-weight:700}
+.toolnav a.home{color:var(--amber)}
+.toolnav .navsep{width:1px;height:16px;background:var(--edge);margin:0 5px}
+.toolnav .navttl{color:var(--phos-dim);letter-spacing:0.12em;text-transform:uppercase;font-size:9.5px;margin-right:3px}
+@media(max-width:560px){.toolnav{font-size:10.5px}.toolnav .navttl{display:none}}
+
+/* two-bank picker */
+.picker{margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:640px){.picker{grid-template-columns:1fr}}
+.slot{border:1px solid var(--edge);background:var(--bg2)}
+.slot .sl-hd{padding:9px 13px;border-bottom:1px solid var(--edge-soft);display:flex;align-items:center;gap:8px;background:rgba(95,232,138,0.04)}
+.slot .sl-role{font-size:10px;letter-spacing:0.16em;text-transform:uppercase;font-weight:800;padding:3px 8px;border-radius:2px}
+.slot.acq .sl-role{color:#06140d;background:var(--phos)}
+.slot.tgt .sl-role{color:#06140d;background:var(--amber)}
+.slot .sl-hint{color:var(--ink-dim);font-size:10.5px;margin-left:auto}
+.slot .sl-body{padding:11px 13px}
+.sbox{display:flex;align-items:center;gap:8px;border:1px solid var(--edge);background:var(--panel);padding:8px 11px;border-radius:2px}
+.sbox input{flex:1;background:transparent;border:0;color:var(--ink);font-family:inherit;font-size:13.5px;outline:none;min-width:0}
+.sbox input::placeholder{color:var(--phos-faint)}.sbox .pr{color:var(--phos);font-weight:700}
+.slot.tgt .sbox .pr{color:var(--amber)}
+.sl-results{margin-top:9px;border:1px solid var(--edge-soft);display:none}.sl-results.show{display:block}
+.res-row{display:flex;align-items:baseline;gap:9px;padding:7px 11px;border-top:1px solid var(--edge-soft);cursor:pointer}.res-row:first-child{border-top:0}.res-row:hover{background:var(--panel2)}
+.res-row .nm{color:var(--ink);font-weight:500;flex:1}.res-row .cert{color:var(--phos-dim);font-size:10.5px}
+.sl-picked{margin-top:9px;display:none;border:1px solid var(--edge);background:var(--panel);padding:10px 12px;border-radius:2px}.sl-picked.show{display:block}
+.sl-picked .pn{color:var(--ink);font-weight:700;font-size:13px}.sl-picked .pm{color:var(--ink-dim);font-size:11px;margin-top:4px;line-height:1.5}.sl-picked .pm b{color:var(--ink)}
+.sl-picked .clr{margin-top:8px;font-size:10.5px;color:var(--phos-dim);cursor:pointer;border:0;background:transparent;font-family:inherit;padding:0;border-bottom:1px dotted var(--phos-dim)}
+.sl-msg{margin-top:8px;font-size:11px;color:var(--ink-dim)}.sl-msg.err{color:#ffc9c9}
+.demobar{margin-top:11px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.chip{border:1px solid var(--edge);background:var(--panel);color:var(--phos);padding:6px 11px;cursor:pointer;font-family:inherit;font-size:11.5px;border-radius:2px}
+.chip:hover{background:color-mix(in srgb,var(--phos) 11%,var(--panel));border-color:var(--phos-dim)}
+.chip.demo{color:var(--amber)}
+.chip .lab{font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--phos-dim);margin-right:3px}
+
+/* model shell */
+.model{margin-top:18px;display:none}.model.show{display:block}
+.sechd{display:flex;align-items:baseline;gap:10px;margin:22px 0 9px;padding-bottom:6px;border-bottom:1px solid var(--edge-soft)}
+.sechd .n{color:var(--phos-faint);font-size:11px;font-weight:800}
+.sechd h2{color:var(--phos);font-size:14px;font-weight:800;letter-spacing:0.02em;text-transform:uppercase}
+.sechd .note{margin-left:auto;color:var(--ink-dim);font-size:10.5px}
+
+/* headline cards */
+.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+@media(max-width:860px){.cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:420px){.cards{grid-template-columns:1fr}}
+.card{border:1px solid var(--edge);background:linear-gradient(180deg,var(--panel),var(--bg2));padding:13px 14px;border-radius:2px}
+.card .cl{font-size:9.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--phos-dim)}
+.card .cv{font-size:23px;font-weight:800;color:var(--phos);text-shadow:0 0 11px rgba(95,232,138,0.32);margin-top:6px;line-height:1}
+.card .cd{font-size:10.5px;color:var(--ink-dim);margin-top:6px;line-height:1.4}
+.card .cd .up{color:var(--phos)}.card .cd .dn{color:var(--alert)}
+.card.warn{border-color:color-mix(in srgb,var(--amber) 45%,transparent)}.card.warn .cv{color:var(--amber);text-shadow:0 0 11px rgba(255,179,71,0.28)}
+.card.bad{border-color:color-mix(in srgb,var(--alert) 50%,transparent)}.card.bad .cv{color:var(--alert);text-shadow:none}
+
+/* assumptions */
+.assum{border:1px solid var(--edge);background:var(--bg2)}
+.assum .agrp{padding:12px 14px;border-top:1px solid var(--edge-soft)}.assum .agrp:first-child{border-top:0}
+.assum .agl{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--phos-dim);margin-bottom:10px}
+.arow{display:grid;grid-template-columns:minmax(150px,1.3fr) 1fr 86px;gap:11px;align-items:center;margin-bottom:11px}
+.arow:last-child{margin-bottom:0}
+@media(max-width:560px){.arow{grid-template-columns:1fr 70px;gap:8px}.arow input[type=range]{grid-column:1 / -1;order:3}}
+.arow .alab{font-size:11.5px;color:var(--ink)}
+.arow .alab .sub{display:block;color:var(--phos-faint);font-size:9.5px;margin-top:2px;letter-spacing:0.02em}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;background:rgba(95,232,138,0.14);border-radius:3px;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:var(--phos);box-shadow:0 0 7px rgba(95,232,138,0.6);cursor:pointer;border:0}
+input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;background:var(--phos);box-shadow:0 0 7px rgba(95,232,138,0.6);cursor:pointer;border:0}
+.arow .aval{display:flex;align-items:center;gap:3px;border:1px solid var(--edge);background:var(--panel);border-radius:2px;padding:5px 7px}
+.arow .aval input{width:100%;background:transparent;border:0;color:var(--phos);font-family:inherit;font-size:12.5px;text-align:right;outline:none}
+.arow .aval .u{color:var(--phos-dim);font-size:10.5px}
+.resetbar{padding:10px 14px;border-top:1px solid var(--edge-soft);display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.resetbar .pre{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--phos-dim);margin-right:2px}
+.bench{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:6px;align-items:stretch;margin-top:3px;padding-top:9px;border-top:1px dashed var(--edge-soft)}
+.bench .blab{width:100%;font-size:9.5px;letter-spacing:0.13em;text-transform:uppercase;color:var(--phos-dim);margin-bottom:1px}
+.bchip{border:1px solid var(--edge);background:var(--panel);color:var(--ink-dim);padding:4px 9px;cursor:pointer;font-family:inherit;border-radius:2px;transition:.12s;display:flex;flex-direction:column;align-items:flex-start;line-height:1.2;text-align:left}
+.bchip b{color:var(--phos);font-size:11.5px;font-weight:700}
+.bchip span{color:var(--phos-faint);font-size:9px;letter-spacing:0.03em;margin-top:1px;white-space:nowrap}
+.bchip:hover{border-color:var(--phos-dim);background:color-mix(in srgb,var(--phos) 8%,var(--panel))}
+.bchip.on{border-color:var(--phos);background:color-mix(in srgb,var(--phos) 14%,var(--panel))}
+.bchip.on b{text-shadow:0 0 8px rgba(95,232,138,0.45)}
+.benchnote{grid-column:1 / -1;color:var(--phos-faint);font-size:9.5px;line-height:1.55;margin-top:8px}
+.benchnote b{color:var(--ink-dim)}
+.seg{grid-column:2 / -1;display:flex;border:1px solid var(--edge);border-radius:2px;overflow:hidden}
+.segbtn{flex:1;background:var(--panel);color:var(--ink-dim);border:0;border-left:1px solid var(--edge);padding:7px 6px;cursor:pointer;font-family:inherit;font-size:10.5px;transition:.12s;white-space:nowrap}
+.segbtn:first-child{border-left:0}
+.segbtn:hover{color:var(--ink);background:var(--panel2)}
+.segbtn.on{background:color-mix(in srgb,var(--phos) 16%,var(--panel));color:var(--phos);font-weight:700}
+@media(max-width:560px){.seg{grid-column:1 / -1}.segbtn{font-size:9.5px;padding:7px 3px}}
+.scl{color:var(--phos-dim);font-size:10.5px;margin:0 0 8px;line-height:1.5}
+.scl b{color:var(--ink)}
+.tbl tr.cur{background:color-mix(in srgb,var(--phos) 10%,transparent)}
+.tbl tr.cur td:first-child{box-shadow:inset 2px 0 0 var(--phos)}
+.tbl .mx{color:var(--ink)}
+.cv-good{color:var(--phos)}.cv-warn{color:var(--amber)}.cv-bad{color:var(--alert)}
+.scgap{height:14px}
+
+/* editable input grid */
+.inputs{border:1px solid var(--edge);background:var(--bg2)}
+.inputs .ih{padding:10px 14px;border-bottom:1px solid var(--edge-soft);display:flex;align-items:center;gap:9px;cursor:pointer;background:rgba(95,232,138,0.03)}
+.inputs .ih h3{font-size:11.5px;color:var(--ink);font-weight:700}
+.inputs .ih .car{color:var(--phos-dim);font-size:11px}
+.inputs .ih .ihn{margin-left:auto;color:var(--ink-dim);font-size:10px}
+.inputs .ib{padding:6px 4px 10px;overflow-x:auto;display:none}.inputs .ib.show{display:block}
+.igtab{width:100%;border-collapse:collapse;font-size:11.5px;min-width:520px}
+.igtab th,.igtab td{padding:5px 10px;border-bottom:1px solid var(--edge-soft);text-align:right;white-space:nowrap}
+.igtab th:first-child,.igtab td:first-child{text-align:left;color:var(--ink-dim);white-space:normal}
+.igtab thead th{color:var(--phos-dim);font-size:10px;letter-spacing:0.04em;text-transform:uppercase}
+.igtab thead th.acqc{color:var(--phos)}.igtab thead th.tgtc{color:var(--amber)}
+.igtab tbody tr.sec td{color:var(--phos-dim);font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;padding-top:9px;border-bottom:0}
+.igtab input{width:96px;background:var(--panel);border:1px solid var(--edge-soft);color:var(--ink);font-family:inherit;font-size:11.5px;text-align:right;padding:3px 6px;border-radius:2px;outline:none}
+.igtab input:focus{border-color:var(--phos-dim);color:var(--phos)}
+.igtab .est{color:var(--amber)}
+.ibnote{padding:4px 14px 0;color:var(--phos-faint);font-size:10px;line-height:1.5}
+
+/* tables */
+.tbl{width:100%;border-collapse:collapse;font-size:11.5px}
+.tblwrap{border:1px solid var(--edge);background:var(--bg2);overflow-x:auto}
+.tbl th,.tbl td{padding:7px 11px;border-bottom:1px solid var(--edge-soft);text-align:right;white-space:nowrap}
+.tbl th:first-child,.tbl td:first-child{text-align:left;color:var(--ink-dim);white-space:normal}
+.tbl thead th{color:var(--phos-dim);font-size:10px;letter-spacing:0.04em;text-transform:uppercase}
+.tbl thead th.pf{color:var(--phos)}
+.tbl td.pf{color:var(--phos);font-weight:700}
+.tbl td.delta .up{color:var(--phos)}.tbl td.delta .dn{color:var(--alert)}.tbl td.delta .fl{color:var(--ink-dim)}
+.tbl tr.tot td{border-top:1px solid var(--edge);font-weight:700;color:var(--ink)}
+.tbl tr.tot td.pf{color:var(--phos)}
+.tbl tr.sub td:first-child{padding-left:22px;color:var(--ink-dim)}
+.tbl .pos{color:var(--phos)}.tbl .neg{color:var(--alert)}
+.minw{min-width:560px}
+
+.bridge{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:760px){.bridge{grid-template-columns:1fr}}
+
+.narr{margin-top:12px;border-left:2px solid var(--phos-dim);padding:10px 0 10px 13px;font-size:12px;color:var(--ink);line-height:1.6}
+.narr b{color:var(--phos)}.narr .w{color:var(--amber)}
+.cross{margin-top:11px;border-left:2px solid var(--amber);padding-left:11px}
+.cross .x{display:block;font-size:11.5px;color:var(--amber);padding:2px 0;line-height:1.45}
+.flag{margin-top:11px;border:1px solid color-mix(in srgb,var(--amber) 40%,transparent);background:color-mix(in srgb,var(--amber) 7%,var(--bg2));padding:10px 13px;font-size:11.5px;color:var(--amber);line-height:1.5}
+.flag.bad{border-color:color-mix(in srgb,var(--alert) 45%,transparent);background:color-mix(in srgb,var(--alert) 8%,var(--bg2));color:#ffc9c9}
+
+.gl{font:inherit;color:var(--phos);background:transparent;border:0;padding:0;cursor:pointer;border-bottom:1px dotted var(--phos-dim)}
+.gl:hover,.gl:focus{color:#9af5c0;border-bottom-color:var(--phos);outline:none}
+#glpop{position:fixed;z-index:10001;max-width:300px;display:none;border:1px solid var(--phos-dim);background:linear-gradient(180deg,#0d1b12,#0a130d);box-shadow:0 8px 30px rgba(0,0,0,0.7);border-radius:3px;padding:11px 13px}
+#glpop .gl-t{color:var(--phos);font-weight:800;font-size:12.5px;margin-bottom:5px}#glpop .gl-d{color:var(--ink);font-size:12px;line-height:1.5}
+
+footer{margin-top:28px;border-top:1px solid var(--edge-soft);padding-top:13px;color:var(--ink-dim);font-size:11px;line-height:1.65}footer b{color:var(--ink-dim)}.src{color:var(--phos-dim)}.disc{color:var(--phos-faint)}
+@media(prefers-reduced-motion:reduce){h1 .cur{animation:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="toolnav"><a class="home" href="https://bankregwire.com/wire.html">↩ BankRegWire</a><span class="navsep"></span><span class="navttl">Call Report Suite</span><a href="callreport-linemap.html">CAMELS Map</a><a href="callreport-literal.html">Literal Form</a><a href="bank-health-scanner.html">Health Scanner</a><a href="ma-partner-finder.html">M&amp;A Finder</a><a href="pro-forma-merger.html" class="active">Merger Model</a></nav>
+  <header>
+    <div class="titlebar"><span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="tb-label">purchase accounting · pro forma engine</span></div>
+    <div class="head-main">
+      <div class="eyebrow">Pro forma merger model</div>
+      <h1>Combine two balance sheets<span class="cur">_</span></h1>
+      <p class="subhead">Pick an <b>acquirer</b> and a <b>target</b>, set the deal terms, and the model builds a real purchase-accounting combination: goodwill and core deposit intangible, fair-value marks on loans and securities, cost saves, the CECL day-two provision, and a recomputed capital stack. The output is the line that matters in a board memo, what the deal does to <b>ROA, ROE, ROTCE, the efficiency ratio, capital ratios, and tangible book value</b>. Everything recomputes as you move a lever. Seed values pull from FDIC data and every input is editable, so you can run a real bank or your own numbers.</p>
+    </div>
+  </header>
+
+  <div class="picker">
+    <div class="slot acq" id="slotAcq">
+      <div class="sl-hd"><span class="sl-role">Acquirer</span><span class="sl-hint">the buyer · survives the deal</span></div>
+      <div class="sl-body">
+        <div class="sbox"><span class="pr">&gt;</span><input id="qAcq" type="text" placeholder="search acquirer by name" autocomplete="off" spellcheck="false" aria-label="Search acquirer"></div>
+        <div class="sl-results" id="resAcq"></div>
+        <div class="sl-picked" id="pickAcq"></div>
+        <div class="sl-msg" id="msgAcq"></div>
+      </div>
+    </div>
+    <div class="slot tgt" id="slotTgt">
+      <div class="sl-hd"><span class="sl-role">Target</span><span class="sl-hint">the seller · priced and structured below</span></div>
+      <div class="sl-body">
+        <div class="sbox"><span class="pr">&gt;</span><input id="qTgt" type="text" placeholder="search target by name" autocomplete="off" spellcheck="false" aria-label="Search target"></div>
+        <div class="sl-results" id="resTgt"></div>
+        <div class="sl-picked" id="pickTgt"></div>
+        <div class="sl-msg" id="msgTgt"></div>
+      </div>
+    </div>
+  </div>
+  <div class="demobar"><span class="chip"><span class="lab">No live data?</span></span><button class="chip demo" id="demoBtn">Load a synthetic pair</button><span class="sl-msg" id="pairMsg" style="margin-top:0"></span></div>
+
+  <div class="model" id="model"></div>
+
+  <footer>
+    <b>Source:</b> FDIC BankFind Suite API via Cloudflare Worker proxy. Balances are period-end; income statement items are year-to-date and annualized using the report month. The provision line is seeded as a residual so each bank's reconstructed earnings tie to its reported return on assets. <span class="src">This is a screening and teaching model, not a fairness opinion. It applies the acquisition method (ASC 805) in a deliberately simplified form: deferred taxes are applied at a single entity rate, core deposit intangible amortizes straight-line, the CECL day-two provision is modeled as a one-time charge on the non-PCD share of the credit mark, rate and securities marks accrete back to interest income straight-line, and risk-weighted assets are scaled from reported capital ratios rather than rebuilt loan by loan. It assumes no preferred stock, an AOCI opt-out, and that cash consideration is funded as selected: from the balance sheet (giving up the acquirer's net earning-asset yield), from new subordinated debt counted as Tier 2, or from a new common equity raise added to CET1. An equity raise is modeled in aggregate, not per share. Real deals also turn on antitrust and deposit concentration, CRA and approval risk, customer attrition, contract and severance detail, and the rate environment at close.</span><br>
+    <span class="disc">Educational tool. Not investment-banking, accounting, legal, or fairness-opinion advice.</span>
+  </footer>
+</div>
+<div id="glpop" role="dialog"></div>
+<script>
+const GLOSSARY = {"defs":{"htm":{"t":"Held-to-maturity (HTM)","d":"Debt securities the bank intends and is able to hold to maturity, carried at amortized cost rather than fair value, so rate-driven price changes do not show on the balance sheet."},"afs":{"t":"Available-for-sale (AFS)","d":"Debt securities carried at fair value with unrealized gains and losses flowing through AOCI in equity rather than through earnings."},"aoci":{"t":"Accumulated other comprehensive income (AOCI)","d":"The equity bucket that holds unrealized items such as AFS securities marks and cash-flow-hedge gains and losses. Banks that did not opt out include it in regulatory capital."},"acl":{"t":"Allowance for credit losses (ACL)","d":"The contra-asset reserve held against expected credit losses under CECL. It reduces the carrying value of loans and is rebuilt through the income-statement provision."},"cecl":{"t":"Current expected credit losses (CECL)","d":"The accounting standard requiring banks to reserve for lifetime expected losses at origination, making the allowance forward-looking rather than incurred-loss based."},"cet1":{"t":"Common equity tier 1 (CET1)","d":"The highest-quality, most loss-absorbing regulatory capital: common stock, retained earnings, and qualifying AOCI, net of deductions like goodwill."},"tier1":{"t":"Tier 1 capital","d":"Going-concern capital: CET1 plus additional tier 1 instruments such as qualifying noncumulative perpetual preferred stock."},"tier2":{"t":"Tier 2 capital","d":"Gone-concern capital that absorbs losses in resolution: qualifying subordinated debt and a limited portion of the allowance."},"rwa":{"t":"Risk-weighted assets (RWA)","d":"Assets and off-balance-sheet exposures scaled by regulatory risk weights, forming the denominator of the risk-based capital ratios."},"levratio":{"t":"Leverage ratio","d":"Tier 1 capital divided by average total assets, a non-risk-weighted capital measure that backstops the risk-based ratios."},"cblr":{"t":"Community bank leverage ratio (CBLR)","d":"A simplified single-ratio capital regime for qualifying banks under about $10B. Electing it and staying above the threshold deems the bank well-capitalized."},"ccb":{"t":"Capital conservation buffer","d":"An additional layer of CET1 above the minimums; falling into it restricts dividends and discretionary bonus payments."},"nonaccrual":{"t":"Nonaccrual","d":"Status for a loan on which the bank stops recognizing interest income because full collection of principal or interest is in doubt. The core of nonperforming assets."},"pastdue":{"t":"Past due","d":"A loan on which a contractual payment is overdue, bucketed by 30-89 days and 90 or more days for reporting and early-warning purposes."},"chargeoff":{"t":"Charge-off","d":"The amount of a loan removed from the books as uncollectible, reducing the allowance. Net charge-offs subtract recoveries."},"recovery":{"t":"Recoveries","d":"Amounts collected on loans previously charged off, which replenish the allowance."},"provision":{"t":"Provision for credit losses","d":"The income-statement expense that builds or maintains the allowance to the level CECL requires."},"mbs":{"t":"Mortgage-backed securities (MBS)","d":"Securities backed by pools of mortgage loans, a large share of most banks' investment portfolios and a key source of rate and prepayment risk."},"brokered":{"t":"Brokered deposits","d":"Deposits placed through a third-party broker or deposit-listing arrangement. Cheap to raise at scale but rate-sensitive and run-prone."},"reciprocal":{"t":"Reciprocal deposits","d":"Deposits a bank receives through a network in exchange for placing a matching amount at other banks, used to keep large balances within insurance limits."},"sweep":{"t":"Sweep deposits","d":"Balances automatically moved (swept) into or out of deposit accounts, often from affiliated brokerage, with varying insurance and stability profiles."},"listing":{"t":"Deposit listing services","d":"Services that list a bank's rates to attract deposits without a broker. Not classified as brokered but still rate-sensitive funding."},"mmda":{"t":"Money market deposit accounts (MMDA)","d":"Savings accounts with limited transactions and tiered rates, a core nontransaction funding category."},"now":{"t":"NOW accounts","d":"Negotiable order of withdrawal accounts: interest-bearing transaction accounts for eligible customers."},"timedep":{"t":"Time deposits","d":"Deposits with a fixed maturity, such as CDs. Larger and longer maturities are more rate-sensitive and, above the insurance limit, more run-prone."},"transaction":{"t":"Transaction accounts","d":"Deposit accounts that permit unlimited transfers and payments to third parties, including demand deposits and NOW accounts."},"msa":{"t":"Mortgage servicing assets (MSAs)","d":"The capitalized right to service mortgages owned by others. Subject to regulatory capital deduction thresholds because their value is volatile."},"dta":{"t":"Deferred tax assets (DTAs)","d":"Future tax benefits from items like net operating loss carryforwards. Those reliant on future profitability are deducted from capital."},"dtl":{"t":"Deferred tax liabilities (DTLs)","d":"Future tax obligations that can offset certain capital deductions such as goodwill and intangibles."},"pcd":{"t":"Purchased credit-deteriorated (PCD)","d":"Acquired financial assets that had a more-than-insignificant credit deterioration since origination, with the allowance set up at acquisition rather than through provision."},"goodwill":{"t":"Goodwill","d":"The premium paid in an acquisition above the fair value of net assets. Deducted in full from CET1 capital."},"intangible":{"t":"Intangible assets","d":"Non-physical assets such as core deposit intangibles. Most are deducted from regulatory capital."},"fiduciary":{"t":"Fiduciary activities","d":"Trust and asset-management services in which the bank acts for the benefit of others, generating fee income reported in Schedule RI."},"trading":{"t":"Trading assets","d":"Positions held for short-term resale or to profit from price movements, carried at fair value with gains and losses in earnings."},"fedfunds":{"t":"Federal funds","d":"Overnight unsecured lending of reserve balances between banks. Sold = lent out; purchased = borrowed."},"repo":{"t":"Repurchase agreement","d":"Short-term secured borrowing (repo) or lending (reverse repo) collateralized by securities, used for funding and liquidity management."},"subdebt":{"t":"Subordinated notes and debentures","d":"Long-term debt that ranks below deposits and senior debt in resolution and can qualify as Tier 2 capital."},"surplus":{"t":"Surplus","d":"Paid-in capital in excess of the par value of stock issued, part of permanent equity."},"retearn":{"t":"Retained earnings","d":"Cumulative net income kept in the bank rather than paid out, a primary internal source of capital."},"nci":{"t":"Noncontrolling interests","d":"The portion of a consolidated subsidiary's equity owned by outside parties, also called minority interest."},"ibf":{"t":"International Banking Facility (IBF)","d":"A set of asset and liability accounts that lets a U.S. bank conduct international business with reduced reserve and regulatory burden."},"edge":{"t":"Edge and Agreement subsidiaries","d":"Specialized subsidiaries chartered to engage in international banking and investment activities."},"modification":{"t":"Loan modifications","d":"Concessions to borrowers in financial difficulty (the successor concept to troubled debt restructurings under ASU 2022-02)."},"oreo":{"t":"Other real estate owned (OREO)","d":"Property the bank holds after foreclosure or in satisfaction of debt, a lagging indicator of credit problems."},"nii":{"t":"Net interest income","d":"Interest earned on assets minus interest paid on funding. The dominant earnings driver for most banks."},"lease":{"t":"Lease financing receivables","d":"Amounts due under leases the bank originates as a form of secured financing, reported alongside loans."},"atrr":{"t":"Allocated transfer risk reserve","d":"A reserve regulators can require against the transfer risk on certain international assets."},"slr":{"t":"Supplementary leverage ratio (SLR)","d":"A leverage ratio capturing on- and off-balance-sheet exposure, applicable to the largest banking organizations."},"saccr":{"t":"SA-CCR","d":"The standardized approach for counterparty credit risk, a method for measuring derivative exposure in the capital rules."},"advapproaches":{"t":"Advanced approaches","d":"The capital framework for the largest, most complex banks that uses internal models for risk-weighted assets."},"rou":{"t":"Right-of-use assets","d":"The balance-sheet asset recognizing a lessee's right to use a leased item under current lease accounting."},"esop":{"t":"ESOP","d":"Employee stock ownership plan; unearned ESOP shares are netted against common stock plus surplus in capital."},"ipc":{"t":"Individuals, partnerships, and corporations","d":"The deposit-ownership category covering ordinary retail and business depositors, as opposed to governments and other banks."}},"surfaces":{"held-to-maturity":"htm","HTM":"htm","available-for-sale":"afs","AFS":"afs","accumulated other comprehensive income":"aoci","AOCI":"aoci","allowance for credit losses":"acl","allowances for credit losses":"acl","ACL":"acl","CECL":"cecl","common equity tier 1":"cet1","CET1":"cet1","tier 1 capital":"tier1","Tier 1 minority interest":"tier1","tier 2 capital":"tier2","risk-weighted assets":"rwa","risk-weighted asset":"rwa","RWA":"rwa","leverage ratio":"levratio","community bank leverage ratio":"cblr","CBLR":"cblr","capital conservation buffer":"ccb","nonaccrual":"nonaccrual","Nonaccrual":"nonaccrual","past due":"pastdue","Past Due":"pastdue","charge-off":"chargeoff","charge-offs":"chargeoff","Charge-Offs":"chargeoff","Charge-offs":"chargeoff","recoveries":"recovery","Recoveries":"recovery","provision for credit losses":"provision","provisions for credit losses":"provision","Provisions for credit losses":"provision","mortgage-backed securities":"mbs","MBS":"mbs","brokered deposits":"brokered","brokered deposit":"brokered","reciprocal deposits":"reciprocal","sweep deposits":"sweep","deposit listing services":"listing","listing services":"listing","money market deposit accounts":"mmda","MMDAs":"mmda","MMDA":"mmda","NOW accounts":"now","time deposits":"timedep","time deposit":"timedep","transaction accounts":"transaction","transaction account":"transaction","mortgage servicing assets":"msa","MSAs":"msa","deferred tax assets":"dta","DTAs":"dta","DTA":"dta","deferred tax liabilities":"dtl","DTLs":"dtl","DTL":"dtl","purchased credit-deteriorated":"pcd","PCD":"pcd","goodwill":"goodwill","Goodwill":"goodwill","intangible assets":"intangible","intangible":"intangible","fiduciary activities":"fiduciary","fiduciary":"fiduciary","trading assets":"trading","trading liabilities":"trading","federal funds sold":"fedfunds","federal funds purchased":"fedfunds","Federal funds":"fedfunds","securities sold under agreements to repurchase":"repo","securities purchased under agreements to resell":"repo","subordinated notes and debentures":"subdebt","surplus":"surplus","retained earnings":"retearn","noncontrolling (minority) interests":"nci","noncontrolling interest":"nci","minority interest":"nci","IBFs":"ibf","IBF":"ibf","Edge and Agreement subsidiaries":"edge","Edge and Agreement":"edge","loan modifications":"modification","Loan modifications":"modification","other real estate owned":"oreo","net interest income":"nii","lease financing receivables":"lease","Income from lease financing receivables":"lease","Allocated transfer risk reserve":"atrr","allocated transfer risk reserve":"atrr","supplementary leverage ratio":"slr","Supplementary leverage ratio":"slr","SA-CCR":"saccr","advanced approaches":"advapproaches","right-of-use assets":"rou","unearned ESOP shares":"esop","ESOP":"esop","individuals, partnerships, and corporations":"ipc","IPC":"ipc"}};
+</script>
+<script>
+/* ============================ glossary linking ============================ */
+const _SURF=GLOSSARY.surfaces,_DEFS=GLOSSARY.defs;
+const _KEYS=Object.keys(_SURF).sort((a,b)=>b.length-a.length);
+const _GLRE=new RegExp("(?<![A-Za-z0-9])(?:"+_KEYS.map(s=>s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("|")+")(?![A-Za-z0-9])","g");
+const _SURFLC={};for(const k in _SURF)_SURFLC[k.toLowerCase()]=_SURF[k];
+function esc(s){return String(s==null?"":s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+function linkTerms(t){return t.replace(_GLRE,(m)=>{const key=_SURF[m]||_SURFLC[m.toLowerCase()];return key?`<button class="gl" data-k="${key}" tabindex="0">${m}</button>`:m;});}
+const pop=document.getElementById("glpop");
+function showPop(b){const g=_DEFS[b.dataset.k];if(!g)return;pop.innerHTML=`<div class="gl-t">${esc(g.t)}</div><div class="gl-d">${esc(g.d)}</div>`;pop.style.display="block";const r=b.getBoundingClientRect(),pw=pop.offsetWidth,ph=pop.offsetHeight;let left=Math.min(Math.max(8,r.left),window.innerWidth-pw-8);let below=r.bottom+10+ph<window.innerHeight||r.top-ph-10<8;pop.style.left=left+"px";pop.style.top=(below?r.bottom+10:r.top-ph-10)+"px";}
+function hidePop(){pop.style.display="none";}
+document.addEventListener("click",e=>{const b=e.target.closest(".gl");if(b){e.stopPropagation();showPop(b);}else if(!e.target.closest("#glpop")&&!e.target.closest(".res-row"))hidePop();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")hidePop();});
+window.addEventListener("scroll",hidePop,true);
+
+/* ============================ formatting ============================ */
+// FDIC balances are in $thousands. fmtUSD takes dollars.
+function fmtUSD(v){if(v==null||isNaN(v))return "n/a";const a=Math.abs(v);let s=v<0?"-":"";if(a>=1e9)return s+"$"+(a/1e9).toFixed(2)+"B";if(a>=1e6)return s+"$"+(a/1e6).toFixed(0)+"M";if(a>=1e3)return s+"$"+(a/1e3).toFixed(0)+"K";return s+"$"+a.toFixed(0);}
+// k = value already in $thousands
+function fmtK(k){if(k==null||isNaN(k))return "n/a";return fmtUSD(k*1000);}
+function fmtPct(v,d){if(v==null||isNaN(v))return "n/a";return v.toFixed(d==null?2:d)+"%";}
+function fmtX(v,d){if(v==null||isNaN(v))return "n/a";return v.toFixed(d==null?2:d)+"\u00d7";}
+function num(v){const n=parseFloat(v);return isNaN(n)?null:n;}
+
+/* ============================ FDIC API ============================ */
+const API="https://fdic-bankregwire.joeysamowitz.workers.dev/api";
+const F={
+  asset:["ASSET"],dep:["DEP","DEPDOM"],eq:["EQ","EQTOT"],loansNet:["LNLSNET"],loansGr:["LNLSGR","LNLSNET"],
+  sc:["SC","SCHA","SCAF"],intan:["INTAN","GOODWILL"],ernast:["ERNAST"],
+  netinc:["NETINC"],intinc:["INTINC","ILNDOM"],intexp:["EINTEXP","EINTDOM"],nonii:["NONII"],nonix:["NONIX"],prov:["ELNATR","ELNANTR"],
+  roa:["ROA"],roaptx:["ROAPTX"],roe:["ROE"],nim:["NIMY"],eff:["EEFFR"],
+  t1lev:["RBC1AAJ"],t1rbc:["RBC1RWAJ"],totrbc:["RBCRWAJ"],cet1:["CET1R","RBCT1CER","IDT1CER"],
+  noncurR:["NCLNLSR"],repdte:["REPDTE","REPYEAR"]
+};
+const ALLF=[...new Set([].concat(...Object.values(F)))];
+const REQ=["NAME","CERT","CITY","STALP","ACTIVE",...ALLF];
+function gf(o,cands){for(const c of cands){const v=o[c];if(v!=null&&v!=="")return +v;}return null;}
+
+async function searchBanks(q){
+  const fields="NAME,CERT,CITY,STALP,ACTIVE,ASSET";
+  const longest=q.trim().split(/\s+/).filter(Boolean).sort((a,b)=>b.length-a.length)[0]||q;
+  const attempts=[`search=${encodeURIComponent("NAME:"+q)}`,`search=${encodeURIComponent(q)}`,`search=${encodeURIComponent("NAME:"+longest)}`,`filters=${encodeURIComponent('NAME:"'+q+'"')}`];
+  let lastErr=null,reached=false;
+  for(const a of attempts){
+    try{
+      const r=await fetch(`${API}/institutions?${a}&filters=${encodeURIComponent("ACTIVE:1")}&fields=${fields}&limit=12&format=json`);
+      if(!r.ok){lastErr=new Error("HTTP "+r.status);continue;}
+      reached=true;const j=await r.json();
+      const list=(j.data||[]).map(d=>(d&&d.data)?d.data:d).filter(x=>x&&x.NAME);
+      if(list.length)return list;
+    }catch(e){lastErr=e;}
+  }
+  if(!reached&&lastErr)throw lastErr;return [];
+}
+async function fetchOne(cert){
+  const url=`${API}/institutions?filters=CERT:${cert}&fields=${REQ.join(",")}&limit=1&format=json`;
+  const r=await fetch(url);if(!r.ok)throw new Error("HTTP "+r.status);const j=await r.json();
+  return (j.data||[]).map(d=>(d&&d.data)?d.data:d)[0];
+}
+
+/* ============================ seed a normalized bank from raw FDIC ============================ */
+// quarter-end YTD annualization factor
+function annFactor(o){const rd=gf(o,F.repdte);if(rd==null)return {f:1,q:null};const s=String(Math.round(rd));const mm=s.length>=6?+s.slice(4,6):12;
+  if(mm<=3)return {f:4,q:1};if(mm<=6)return {f:2,q:2};if(mm<=9)return {f:4/3,q:3};return {f:1,q:4};}
+
+const TAXDEF=21;
+// returns {raw fields..., est:{...flags}} normalized object in $thousands and %
+function seedBank(o,role){
+  const {f}=annFactor(o);
+  const est={};
+  const assets=gf(o,F.asset);
+  const deposits=gf(o,F.dep);
+  const loans=gf(o,F.loansGr)??gf(o,F.loansNet);
+  let sec=gf(o,F.sc); if(sec==null){sec=assets!=null?Math.round(assets*0.18):null;est.sec=1;}
+  const equity=gf(o,F.eq);
+  let intan=gf(o,F.intan); if(intan==null){intan=0;est.intan=1;}
+  let ea=gf(o,F.ernast); if(ea==null){ea=(loans||0)+(sec||0); if(!ea&&assets)ea=Math.round(assets*0.92); est.ea=1;}
+  const roa=gf(o,F.roa), roe=gf(o,F.roe), nim=gf(o,F.nim), eff=gf(o,F.eff);
+  const lev=gf(o,F.t1lev), t1rbc=gf(o,F.t1rbc), totrbc=gf(o,F.totrbc), cet1r=gf(o,F.cet1);
+  // income, annualized $000
+  let nii=null;const ii=gf(o,F.intinc),ie=gf(o,F.intexp);
+  if(ii!=null&&ie!=null)nii=Math.round((ii-ie)*f);
+  else if(nim!=null&&ea!=null){nii=Math.round(nim/100*ea);est.nii=1;}
+  let nonii=gf(o,F.nonii); if(nonii!=null)nonii=Math.round(nonii*f); else {nonii=assets!=null?Math.round(assets*0.006):0;est.nonii=1;}
+  let nie=gf(o,F.nonix); if(nie!=null)nie=Math.round(nie*f);
+  else if(eff!=null&&nii!=null){nie=Math.round(eff/100*(nii+nonii));est.nie=1;}
+  // tie provision so reconstructed pretax matches reported ROA / pretax ROA
+  const roaptx=gf(o,F.roaptx);
+  let pretaxRep=null;
+  if(roaptx!=null&&assets!=null)pretaxRep=roaptx/100*assets;
+  else if(roa!=null&&assets!=null)pretaxRep=(roa/100*assets)/(1-TAXDEF/100);
+  let prov=gf(o,F.prov); if(prov!=null)prov=Math.round(prov*f);
+  if(prov==null){const ppnr=(nii||0)+(nonii||0)-(nie||0);prov=pretaxRep!=null?Math.round(ppnr-pretaxRep):0;est.prov=1;}
+  return {role,NAME:o.NAME,CERT:o.CERT,CITY:o.CITY,STALP:o.STALP,
+    assets,loans,sec,deposits,equity,intan,ea,
+    nii,nonii,nie,prov,
+    roa,roe,nim,eff,lev,t1rbc,totrbc,cet1r,est,annf:f};
+}
+
+/* ============================ the model engine ============================ */
+// All $ values in $thousands. Returns a full result object.
+function engine(A,T,P){
+  const tax=P.tax/100;
+  // standalone tangible common equity
+  const A_tce=A.equity-A.intan, T_tce=T.equity-T.intan;
+  // standalone capital stack derived from reported ratios
+  function capStack(b){
+    const t1=b.lev!=null?b.lev/100*b.assets:null;
+    const rwa=(t1!=null&&b.t1rbc)?t1/(b.t1rbc/100):null;
+    const tot=(rwa!=null&&b.totrbc!=null)?b.totrbc/100*rwa:null;
+    const cet1=(rwa!=null&&b.cet1r!=null)?b.cet1r/100*rwa:t1; // fallback CET1=Tier1
+    return {t1,rwa,tot,cet1,at1:(t1!=null&&cet1!=null)?Math.max(0,t1-cet1):0,t2:(tot!=null&&t1!=null)?Math.max(0,tot-t1):0};
+  }
+  const Acap=capStack(A), Tcap=capStack(T);
+  // standalone run-rate net income (reconstructed, ties to ratios)
+  function ni(b){const ppnr=(b.nii||0)+(b.nonii||0)-(b.nie||0);const pre=ppnr-(b.prov||0);return {ppnr,pre,ni:pre*(1-tax)};}
+  const Ani=ni(A), Tni=ni(T);
+
+  // ---- consideration ----
+  const dealValue=P.ptbv*T_tce;            // price paid for target
+  const stockConsid=dealValue*P.stock/100;
+  const cashConsid=dealValue*(1-P.stock/100);
+  // ---- how the cash portion is funded ----
+  const cashsrc=Math.round(P.cashsrc||0);              // 0 balance-sheet cash, 1 new sub debt, 2 new common equity
+  const subRate=(P.subrate!=null?P.subrate:7.5)/100;
+  const newSubDebt = cashsrc===1?cashConsid:0;         // raised as Tier 2
+  const equityRaise= cashsrc===2?cashConsid:0;         // raised as new common (CET1)
+  const assetsDrain= cashsrc===0?cashConsid:0;         // cash pulled off the balance sheet
+  const acqYield   = A.ea?(A.nii||0)/A.ea:0;           // acquirer net earning-asset yield
+  const foregoneNII= assetsDrain*acqYield;             // net interest given up on liquidated assets
+  const subInterest= newSubDebt*subRate;               // pretax interest on new sub debt
+
+  // ---- fair value marks on the target (pretax $) ----
+  const creditMark=P.creditmark/100*(T.loans||0);   // markdown
+  const rateMark=P.ratemark/100*(T.loans||0);        // markdown (rates up)
+  const secMark=P.secmark/100*(T.sec||0);            // markdown
+  const cdi=P.cdi/100*(T.deposits||0);               // new intangible asset (+)
+  // after-tax net adjustment to identifiable equity
+  const netMarkAT=(cdi-creditMark-rateMark-secMark)*(1-tax);
+  const fvNetAssets=T_tce+netMarkAT;                 // fair value of identifiable net assets
+
+  // ---- goodwill / bargain purchase ----
+  let goodwill=dealValue-fvNetAssets, bargain=0;
+  if(goodwill<0){bargain=-goodwill;goodwill=0;}
+
+  // ---- one-time merger charges (after tax) ----
+  const onetime=P.onetime/100*dealValue;
+  const onetimeAT=onetime*(1-tax);
+
+  // ---- CECL day-two provision on non-PCD credit mark (one-time, after tax) ----
+  const day2=creditMark*(1-P.pcd/100);
+  const day2AT=day2*(1-tax);
+
+  // ---- pro forma balance sheet ----
+  const PF_loans=(A.loans||0)+(T.loans||0)-creditMark-rateMark;
+  const PF_sec=(A.sec||0)+(T.sec||0)-secMark;
+  const PF_dep=(A.deposits||0)+(T.deposits||0);
+  // target identifiable assets at fair value: book assets less old intangibles less markdowns
+  const T_idAssets=(T.assets||0)-(T.intan||0)-creditMark-rateMark-secMark;
+  const PF_assets=(A.assets||0)+T_idAssets+goodwill+cdi-assetsDrain;
+  const PF_intan=(A.intan||0)+goodwill+cdi; // acquirer keeps own intangibles; target's are replaced by new PPA
+  // equity: stock issued and any common raise add equity; cash does not; one-time charge reduces; bargain gain adds
+  const PF_equity=(A.equity||0)+stockConsid+equityRaise-onetimeAT+bargain*(1-tax);
+  const PF_tce=PF_equity-PF_intan;
+  const PF_ea=(A.ea||0)+(T.ea||0)-creditMark-rateMark-secMark-assetsDrain;
+
+  // ---- pro forma income (run-rate / steady state) ----
+  const costSaves=P.costsave/100*(T.nie||0);
+  const cdiAmort=P.cdiyrs>0?cdi/P.cdiyrs:0;
+  const accretion=P.accyrs>0?(rateMark+secMark)/P.accyrs:0; // rate+liquidity marks accrete to NII
+  const PF_nii=(A.nii||0)+(T.nii||0)+accretion-foregoneNII-subInterest;
+  const PF_nonii=(A.nonii||0)+(T.nonii||0)+(P.revsyn||0);
+  const PF_nie=(A.nie||0)+(T.nie||0)-costSaves+cdiAmort;
+  const PF_prov=(A.prov||0)+(T.prov||0);
+  const PF_ppnr=PF_nii+PF_nonii-PF_nie;
+  const PF_pre=PF_ppnr-PF_prov;
+  const PF_ni=PF_pre*(1-tax);
+
+  // ---- pro forma capital ----
+  const PF_rwa=(Acap.rwa||0)+(Tcap.rwa||0)-creditMark-rateMark; // marked-down loans carry less RWA
+  const PF_cet1=PF_tce;                          // common equity less goodwill+intangibles
+  const PF_t1=PF_cet1+(Acap.at1||0);
+  const PF_tot=PF_t1+(Acap.t2||0)+(Tcap.t2||0)+newSubDebt;
+  const PF_cet1r=PF_rwa?PF_cet1/PF_rwa*100:null;
+  const PF_t1rbc=PF_rwa?PF_t1/PF_rwa*100:null;
+  const PF_totrbc=PF_rwa?PF_tot/PF_rwa*100:null;
+  const PF_lev=PF_assets?PF_t1/PF_assets*100:null;
+
+  // ---- metrics ----
+  const M=(niv,assets,eq,tce,nii,nonii,nie,ea)=>({
+    roa:assets?niv/assets*100:null, roe:eq?niv/eq*100:null, rotce:tce?niv/tce*100:null,
+    nim:ea?nii/ea*100:null, eff:(nii+nonii)?nie/(nii+nonii)*100:null,
+    ppnra:assets?(nii+nonii-nie)/assets*100:null
+  });
+  const mA=M(Ani.ni,A.assets,A.equity,A_tce,A.nii,A.nonii,A.nie,A.ea);
+  const mT=M(Tni.ni,T.assets,T.equity,T_tce,T.nii,T.nonii,T.nie,T.ea);
+  const mSum=M(Ani.ni+Tni.ni,(A.assets||0)+(T.assets||0),(A.equity||0)+(T.equity||0),A_tce+T_tce,(A.nii||0)+(T.nii||0),(A.nonii||0)+(T.nonii||0),(A.nie||0)+(T.nie||0),(A.ea||0)+(T.ea||0));
+  const mPF=M(PF_ni,PF_assets,PF_equity,PF_tce,PF_nii,PF_nonii,PF_nie,PF_ea);
+
+  // ---- accretion / earnback ----
+  const standaloneNI=Ani.ni+Tni.ni;
+  const niAccr=PF_ni-standaloneNI;                 // run-rate net income accretion
+  const niAccrPct=standaloneNI?niAccr/standaloneNI*100:null;
+  const standaloneTCE=A_tce+T_tce;
+  const tbvErosion=standaloneTCE-PF_tce;           // positive = dilutive
+  const crossoverHole=tbvErosion+day2AT;           // include one-time CECL double count
+  const earnback=(niAccr>0)?crossoverHole/niAccr:null; // years
+
+  return {tax:P.tax,
+    A_tce,T_tce,Acap,Tcap,Ani,Tni,
+    dealValue,stockConsid,cashConsid,
+    cashsrc,newSubDebt,equityRaise,assetsDrain,foregoneNII,subInterest,
+    creditMark,rateMark,secMark,cdi,fvNetAssets,goodwill,bargain,onetime,onetimeAT,day2,day2AT,
+    PF_loans,PF_sec,PF_dep,T_idAssets,PF_assets,PF_intan,PF_equity,PF_tce,PF_ea,
+    costSaves,cdiAmort,accretion,PF_nii,PF_nonii,PF_nie,PF_prov,PF_ppnr,PF_pre,PF_ni,
+    PF_rwa,PF_cet1,PF_t1,PF_tot,PF_cet1r,PF_t1rbc,PF_totrbc,PF_lev,
+    mA,mT,mSum,mPF,
+    standaloneNI,niAccr,niAccrPct,standaloneTCE,tbvErosion,crossoverHole,earnback};
+}
+
+/* ============================ assumptions config ============================ */
+const ASSUM=[
+  {grp:"Consideration",items:[
+    {k:"ptbv",lab:"Price to tangible book",sub:"deal value = multiple \u00d7 target TCE",min:0.8,max:3,step:0.05,val:1.55,u:"\u00d7",
+      benchLab:"Typical deal multiples \u00b7 tap to apply",
+      bench:[
+        {v:1.10,t:"Distressed"},
+        {v:1.24,t:"2023 trough"},
+        {v:1.31,t:"2024 median"},
+        {v:1.47,t:"2025 median"},
+        {v:1.75,t:"Healthy community"},
+        {v:2.25,t:"Premium / strategic"}
+      ],
+      benchNote:"Whole-bank deal pricing, price to tangible book value. The all-deal median ran about <b>1.24\u00d7 in 2023</b> (regional-bank stress, 101 deals), <b>1.31\u00d7 in 2024</b>, and recovered to roughly <b>1.47\u00d7 in 2025</b> (176 deals, about $49B). Distressed and troubled sellers price near <b>1.0\u20131.3\u00d7</b>; healthy community and regional franchises in a favorable market run <b>1.5\u20132.5\u00d7</b>. Recent marquee marks: Fifth Third / Comerica 1.73\u00d7, PNC / FirstBank 2.34\u00d7. Sources: S&P Global Market Intelligence, Mercer Capital, Bank Director 2026 M&A Survey (late 2025 / early 2026). These are reference points, not a recommendation; set the multiple to your deal."
+    },
+    {k:"stock",lab:"Paid in stock",sub:"remainder paid in cash; funding source set below",min:0,max:100,step:5,val:100,u:"%"},
+    {k:"cashsrc",lab:"Cash funded by",sub:"how the cash portion is raised, changes the capital story",choices:["Balance-sheet cash","New sub debt","New common equity"],val:0},
+    {k:"subrate",lab:"New sub-debt coupon",sub:"pretax cost of new sub debt, applies only when cash is debt-funded",min:4,max:11,step:0.25,val:7.5,u:"%"}
+  ]},
+  {grp:"Fair-value marks on the target",items:[
+    {k:"creditmark",lab:"Loan credit mark",sub:"% of target loans, lifetime expected loss",min:0,max:8,step:0.1,val:1.5,u:"%"},
+    {k:"ratemark",lab:"Loan rate / liquidity mark",sub:"% of target loans, accretes to income",min:0,max:8,step:0.1,val:2.0,u:"%"},
+    {k:"secmark",lab:"Securities mark",sub:"% of target securities",min:0,max:15,step:0.25,val:3.0,u:"%"},
+    {k:"cdi",lab:"Core deposit intangible",sub:"% of target deposits, amortized",min:0,max:4,step:0.05,val:1.25,u:"%"},
+    {k:"cdiyrs",lab:"CDI amortization",sub:"straight-line life",min:4,max:15,step:1,val:10,u:"yr"},
+    {k:"accyrs",lab:"Mark accretion period",sub:"rate and securities marks back to income",min:2,max:10,step:1,val:5,u:"yr"},
+    {k:"pcd",lab:"Credit mark that is PCD",sub:"non-PCD share drives the day-two provision",min:0,max:100,step:5,val:25,u:"%"}
+  ]},
+  {grp:"Synergies and costs",items:[
+    {k:"costsave",lab:"Cost saves",sub:"% of target noninterest expense, run-rate",min:0,max:60,step:1,val:30,u:"%"},
+    {k:"revsynM",lab:"Revenue synergies",sub:"annual, $ millions (often held at zero)",min:0,max:200,step:1,val:0,u:"$M",scale:1000},
+    {k:"onetime",lab:"One-time merger charges",sub:"% of deal value, after-tax to equity",min:0,max:12,step:0.25,val:4,u:"%"},
+    {k:"tax",lab:"Tax rate",sub:"applied to marks and earnings",min:0,max:35,step:0.5,val:21,u:"%"}
+  ]}
+];
+function readP(){
+  const p={};
+  ASSUM.forEach(g=>g.items.forEach(it=>{const el=document.getElementById("a_"+it.k);let v=num(el?el.value:it.val);if(v==null)v=it.val;p[it.k]=v;}));
+  p.revsyn=(p.revsynM||0)*1000; // $M -> $thousands
+  return p;
+}
+
+/* ============================ picker (two slots) ============================ */
+let ACQ=null,TGT=null,SAMPLE=false;
+function $(id){return document.getElementById(id);}
+function slotMsg(role,h,err){const el=$("msg"+role);el.className="sl-msg"+(err?" err":"");el.innerHTML=h||"";}
+function showSlotResults(role,list){
+  const box=$("res"+role);
+  if(!list.length){box.className="sl-results";slotMsg(role,"No active banks matched.",false);return;}
+  slotMsg(role,"",false);box.className="sl-results show";
+  box.innerHTML=list.map(b=>`<div class="res-row" data-cert="${esc(b.CERT)}"><span class="nm">${esc(b.NAME)}</span><span class="cert">${esc(b.CITY||"")}${b.STALP?", "+esc(b.STALP):""} \u00b7 ${fmtK(b.ASSET||0)}</span></div>`).join("");
+  box.querySelectorAll(".res-row").forEach(r=>r.onclick=()=>pickBank(role,r.dataset.cert));
+}
+async function doSlotSearch(role,q){
+  if(!q.trim())return;$("res"+role).className="sl-results";slotMsg(role,"Searching\u2026",false);hidePop();
+  try{showSlotResults(role,await searchBanks(q.trim()));}
+  catch(e){slotMsg(role,`Could not reach the FDIC API. CORS likely from a static origin; the Worker proxy handles it in production. ${esc(e.message)}`,true);}
+}
+async function pickBank(role,cert){
+  $("res"+role).className="sl-results";slotMsg(role,"Loading\u2026",false);
+  try{
+    const raw=await fetchOne(cert);if(!raw){slotMsg(role,"No record returned.",false);return;}
+    const b=seedBank(raw,role==="Acq"?"acq":"tgt");SAMPLE=false;
+    if(role==="Acq")ACQ=b;else TGT=b;
+    slotMsg(role,"",false);renderPicked(role,b);maybeBuild();
+  }catch(e){slotMsg(role,`Could not load. ${esc(e.message)}`,true);}
+}
+function renderPicked(role,b){
+  const box=$("pick"+role);box.className="sl-picked show";
+  const tce=b.equity-b.intan, ltd=(b.loans&&b.deposits)?(b.loans/b.deposits*100):null;
+  box.innerHTML=`<div class="pn">${esc(b.NAME)}</div>
+    <div class="pm">${esc(b.CITY||"")}, ${esc(b.STALP||"")} \u00b7 CERT <b>${esc(b.CERT)}</b><br>
+    assets <b>${fmtK(b.assets)}</b> \u00b7 deposits <b>${fmtK(b.deposits)}</b> \u00b7 TCE <b>${fmtK(tce)}</b> \u00b7 ${b.roa==null?"":"ROA <b>"+fmtPct(b.roa)+"</b>"}</div>
+    <button class="clr" data-role="${role}">clear</button>`;
+  box.querySelector(".clr").onclick=()=>{if(role==="Acq")ACQ=null;else TGT=null;box.className="sl-picked";$("q"+role).value="";SAMPLE=false;maybeBuild();};
+}
+function maybeBuild(){
+  const m=$("model");
+  if(ACQ&&TGT){buildModel();m.className="model show";}
+  else{m.className="model";m.innerHTML="";}
+}
+$("qAcq").addEventListener("input",debounce(e=>doSlotSearch("Acq",e.target.value),300));
+$("qTgt").addEventListener("input",debounce(e=>doSlotSearch("Tgt",e.target.value),300));
+$("qAcq").addEventListener("keydown",e=>{if(e.key==="Enter")doSlotSearch("Acq",e.target.value);});
+$("qTgt").addEventListener("keydown",e=>{if(e.key==="Enter")doSlotSearch("Tgt",e.target.value);});
+function debounce(fn,ms){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms);};}
+
+/* ============================ synthetic pair ============================ */
+function synthBank(role,name,city,st,a,roa,nim,eff,lev,t1,tot,cet1,ltd,secR,intanR){
+  const dep=a*0.80, loans=dep*ltd, sec=a*secR, eq=a*(lev/100*1.06), intan=a*intanR;
+  const ea=loans+sec+a*0.05;
+  const nii=nim/100*ea, nonii=a*0.0065, nie=eff/100*(nii+nonii);
+  const pretax=(roa/100*a)/(1-TAXDEF/100), prov=(nii+nonii-nie)-pretax;
+  return {role,NAME:name,CERT:String(Math.floor(10000+Math.random()*89999)),CITY:city,STALP:st,
+    assets:Math.round(a),loans:Math.round(loans),sec:Math.round(sec),deposits:Math.round(dep),equity:Math.round(eq),intan:Math.round(intan),ea:Math.round(ea),
+    nii:Math.round(nii),nonii:Math.round(nonii),nie:Math.round(nie),prov:Math.round(prov),
+    roa,roe:roa/(lev/100*1.06)/1.06,nim,eff,lev,t1rbc:t1,totrbc:tot,cet1r:cet1,est:{},annf:1};
+}
+$("demoBtn").onclick=()=>{
+  ACQ=synthBank("acq","Meridian Commerce Bank, N.A.","Columbus","OH",18_500_000,1.08,3.25,58,9.6,11.4,13.1,11.0,0.66,0.20,0.012);
+  TGT=synthBank("tgt","Lakeside Community Bank","Toledo","OH",3_200_000,0.82,3.05,67,9.1,11.0,12.6,10.7,0.74,0.16,0.004);
+  SAMPLE=true;$("pairMsg").className="sl-msg";$("pairMsg").innerHTML="Synthetic pair loaded. Edit any input below.";
+  $("qAcq").value="";$("qTgt").value="";renderPicked("Acq",ACQ);renderPicked("Tgt",TGT);maybeBuild();
+};
+
+/* ============================ build the model shell ============================ */
+function buildModel(){
+  const m=$("model");
+  let h="";
+  // editable inputs
+  h+=`<div class="sechd"><span class="n">01</span><h2>Inputs</h2><span class="note">seeded from FDIC \u00b7 ${ACQ.est&&Object.keys(ACQ.est).length||TGT.est&&Object.keys(TGT.est).length?"some values estimated, shown in amber":"all values reported"}</span></div>
+    <div class="inputs"><div class="ih" id="igToggle"><span class="car">\u25be</span><h3>Bank balance sheet and income (editable)</h3><span class="ihn">$ thousands \u00b7 annualized</span></div>
+    <div class="ib show" id="igBody"></div>
+    <div class="ibnote">Provision is seeded as a residual so each bank's reconstructed pretax income matches its reported return on assets. Amber values were not returned by the API and are estimates. Change anything and the model recomputes.</div></div>`;
+  // assumptions
+  h+=`<div class="sechd"><span class="n">02</span><h2>Deal assumptions</h2><span class="note">move a lever, everything recomputes</span></div><div class="assum">`;
+  ASSUM.forEach(g=>{
+    h+=`<div class="agrp"><div class="agl">${esc(g.grp)}</div>`;
+    g.items.forEach(it=>{
+      if(it.choices){
+        let seg=`<div class="seg" data-seg="${it.k}">`;
+        it.choices.forEach((c,i)=>{seg+=`<button class="segbtn${i===(it.val||0)?" on":""}" data-segk="${it.k}" data-segi="${i}">${esc(c)}</button>`;});
+        seg+=`</div><input type="hidden" id="a_${it.k}" value="${it.val||0}">`;
+        h+=`<div class="arow seg-row"><div class="alab">${esc(it.lab)}<span class="sub">${esc(it.sub)}</span></div>${seg}</div>`;
+        return;
+      }
+      h+=`<div class="arow"><div class="alab">${esc(it.lab)}<span class="sub">${esc(it.sub)}</span></div>
+        <input type="range" id="r_${it.k}" min="${it.min}" max="${it.max}" step="${it.step}" value="${it.val}">
+        <div class="aval"><input type="text" id="a_${it.k}" value="${it.val}" inputmode="decimal"><span class="u">${esc(it.u)}</span></div>`;
+      if(it.bench){
+        h+=`<div class="bench"><span class="blab">${esc(it.benchLab||"Typical for the industry")}</span>`;
+        it.bench.forEach(b=>{h+=`<button class="bchip" data-bk="${it.k}" data-bv="${b.v}"><b>${fmtX(b.v)}</b><span>${esc(b.t)}</span></button>`;});
+        h+=`</div>`;
+        if(it.benchNote)h+=`<div class="benchnote">${it.benchNote}</div>`;
+      }
+      h+=`</div>`;
+    });
+    h+=`</div>`;
+  });
+  h+=`<div class="resetbar"><span class="pre">Presets</span>
+    <button class="chip" data-pre="base">Base case</button>
+    <button class="chip" data-pre="aggr">Aggressive synergies</button>
+    <button class="chip" data-pre="cons">Conservative marks</button>
+    <button class="chip" data-pre="cash">All cash</button>
+    <button class="chip" data-pre="subd">50/50, sub-debt funded</button></div></div>`;
+  // outputs
+  h+=`<div class="sechd"><span class="n">03</span><h2>What the deal does</h2><span class="note">acquirer standalone vs pro forma</span></div><div id="cards" class="cards"></div><div id="headflags"></div>`;
+  h+=`<div class="sechd"><span class="n">04</span><h2>Scenario comparison</h2><span class="note">same banks and marks, different structures</span></div><div id="scenarios"></div>`;
+  h+=`<div class="sechd"><span class="n">05</span><h2>Top-line metrics</h2></div><div id="metrics"></div>`;
+  h+=`<div class="sechd"><span class="n">06</span><h2>Purchase price and capital</h2></div><div id="ppa"></div>`;
+  h+=`<div class="sechd"><span class="n">07</span><h2>Pro forma balance sheet and earnings</h2></div><div id="statements"></div>`;
+  h+=`<div class="sechd"><span class="n">08</span><h2>Read</h2></div><div id="readout"></div>`;
+  m.innerHTML=h;
+
+  buildInputGrid();
+  // wire assumptions: range <-> text sync
+  ASSUM.forEach(g=>g.items.forEach(it=>{
+    if(it.choices)return; // segmented control, wired below
+    const r=$("r_"+it.k),t=$("a_"+it.k);
+    r.addEventListener("input",()=>{t.value=r.value;markBench();recompute();});
+    t.addEventListener("input",()=>{const v=num(t.value);if(v!=null){r.value=Math.min(it.max,Math.max(it.min,v));}markBench();recompute();});
+  }));
+  // wire segmented choice controls
+  m.querySelectorAll(".seg").forEach(seg=>{
+    seg.querySelectorAll(".segbtn").forEach(b=>b.onclick=()=>{
+      $("a_"+b.dataset.segk).value=b.dataset.segi;
+      seg.querySelectorAll(".segbtn").forEach(x=>x.classList.toggle("on",x===b));
+      recompute();
+    });
+  });
+  // wire industry benchmark quick-sets
+  m.querySelectorAll(".bchip").forEach(c=>c.onclick=()=>{
+    const k=c.dataset.bk, v=num(c.dataset.bv); if(v==null)return;
+    const r=$("r_"+k),t=$("a_"+k);
+    t.value=v; if(r)r.value=v;
+    markBench(); recompute();
+  });
+  $("igToggle").onclick=()=>{const b=$("igBody"),c=$("igToggle").querySelector(".car");const open=b.classList.toggle("show");c.textContent=open?"\u25be":"\u25b8";};
+  m.querySelectorAll(".chip[data-pre]").forEach(c=>c.onclick=()=>applyPreset(c.dataset.pre));
+  markBench();
+  recompute();
+}
+
+function igInput(role,key,val,est){
+  return `<input id="ig_${role}_${key}" data-role="${role}" data-key="${key}" value="${val==null?"":Math.round(val)}"${est?' class="est"':''}>`;
+}
+function buildInputGrid(){
+  const rows=[
+    ["sec","Balance sheet ($000)"],
+    ["assets","Total assets"],["loans","Gross loans & leases"],["sec_","Securities"],["deposits","Total deposits"],["equity","Total equity"],["intan","Goodwill & intangibles"],["ea","Earning assets"],
+    ["sec2","Income, annualized ($000)"],
+    ["nii","Net interest income"],["nonii","Noninterest income"],["nie","Noninterest expense"],["prov","Provision (implied)"],
+    ["sec3","Reported ratios (%)"],
+    ["roa","Return on assets"],["nim","Net interest margin"],["eff","Efficiency ratio"],["lev","Tier 1 leverage"],["t1rbc","Tier 1 risk-based"],["totrbc","Total risk-based"],["cet1r","CET1 ratio"]
+  ];
+  const keymap={assets:"assets",loans:"loans",sec_:"sec",deposits:"deposits",equity:"equity",intan:"intan",ea:"ea",nii:"nii",nonii:"nonii",nie:"nie",prov:"prov",roa:"roa",nim:"nim",eff:"eff",lev:"lev",t1rbc:"t1rbc",totrbc:"totrbc",cet1r:"cet1r"};
+  let h=`<table class="igtab"><thead><tr><th></th><th class="acqc">${esc((ACQ.NAME||"Acquirer").slice(0,20))}</th><th class="tgtc">${esc((TGT.NAME||"Target").slice(0,20))}</th></tr></thead><tbody>`;
+  rows.forEach(([rk,lab])=>{
+    if(rk==="sec"||rk==="sec2"||rk==="sec3"){h+=`<tr class="sec"><td colspan="3">${esc(lab)}</td></tr>`;return;}
+    const k=keymap[rk];
+    h+=`<tr><td>${esc(lab)}</td><td>${igInput("Acq",k,ACQ[k],ACQ.est&&ACQ.est[k])}</td><td>${igInput("Tgt",k,TGT[k],TGT.est&&TGT.est[k])}</td></tr>`;
+  });
+  h+=`</tbody></table>`;
+  $("igBody").innerHTML=h;
+  $("igBody").querySelectorAll("input").forEach(inp=>inp.addEventListener("input",()=>{
+    const b=inp.dataset.role==="Acq"?ACQ:TGT;const v=num(inp.value);b[inp.dataset.key]=v;recompute();
+  }));
+}
+
+/* ============================ presets ============================ */
+const PRESETS={
+  base:{ptbv:1.55,stock:100,cashsrc:0,subrate:7.5,creditmark:1.5,ratemark:2.0,secmark:3.0,cdi:1.25,cdiyrs:10,accyrs:5,pcd:25,costsave:30,revsynM:0,onetime:4,tax:21},
+  aggr:{ptbv:1.7,stock:100,cashsrc:0,subrate:7.5,creditmark:1.2,ratemark:1.5,secmark:2.0,cdi:1.5,cdiyrs:10,accyrs:5,pcd:30,costsave:45,revsynM:0,onetime:3,tax:21},
+  cons:{ptbv:1.4,stock:100,cashsrc:0,subrate:7.5,creditmark:3.0,ratemark:3.5,secmark:6.0,cdi:1.0,cdiyrs:8,accyrs:6,pcd:15,costsave:22,revsynM:0,onetime:5,tax:21},
+  cash:{ptbv:1.55,stock:0,cashsrc:0,subrate:7.5,creditmark:1.5,ratemark:2.0,secmark:3.0,cdi:1.25,cdiyrs:10,accyrs:5,pcd:25,costsave:30,revsynM:0,onetime:4,tax:21},
+  subd:{ptbv:1.55,stock:50,cashsrc:1,subrate:7.5,creditmark:1.5,ratemark:2.0,secmark:3.0,cdi:1.25,cdiyrs:10,accyrs:5,pcd:25,costsave:30,revsynM:0,onetime:4,tax:21}
+};
+function applyPreset(name){
+  const p=PRESETS[name];if(!p)return;
+  Object.entries(p).forEach(([k,v])=>{const r=$("r_"+k),t=$("a_"+k);if(t)t.value=v;if(r)r.value=v;});
+  // refresh segmented controls to match
+  document.querySelectorAll(".seg").forEach(seg=>{const k=seg.dataset.seg,cur=num($("a_"+k)?$("a_"+k).value:null);seg.querySelectorAll(".segbtn").forEach(b=>b.classList.toggle("on",+b.dataset.segi===cur));});
+  markBench();
+  recompute();
+}
+// highlight any benchmark chip whose value matches the current lever value
+function markBench(){
+  document.querySelectorAll(".bchip").forEach(c=>{
+    const t=$("a_"+c.dataset.bk),cur=t?num(t.value):null,bv=num(c.dataset.bv);
+    c.classList.toggle("on",cur!=null&&bv!=null&&Math.abs(cur-bv)<0.005);
+  });
+}
+
+/* ============================ delta helper ============================ */
+function deltaCell(pf,base,fmt,inv){
+  if(pf==null||base==null)return `<td class="delta"><span class="fl">n/a</span></td>`;
+  const d=pf-base;const good=inv?d<0:d>0;const cls=Math.abs(d)<1e-9?"fl":(good?"up":"dn");
+  const sign=d>0?"+":"";const txt=fmt==="pct"?sign+d.toFixed(2)+"pp":sign+fmt2(d,fmt);
+  return `<td class="delta"><span class="${cls}">${txt}</span></td>`;
+}
+function fmt2(v,fmt){if(fmt==="x")return v.toFixed(2)+"\u00d7";if(fmt==="usd")return fmtK(v);return v.toFixed(2);}
+
+/* ============================ recompute + render ============================ */
+function recompute(){
+  if(!ACQ||!TGT)return;
+  const P=readP();
+  const R=engine(ACQ,TGT,P);
+  renderCards(R,P);
+  renderScenarios(R,P);
+  renderMetrics(R);
+  renderPPA(R,P);
+  renderStatements(R);
+  renderReadout(R,P);
+}
+
+/* ============================ scenario comparison ============================ */
+function renderScenarios(R,P){
+  const SRC=["Balance-sheet cash","New sub debt","New common equity"];
+  // helper: run engine with overrides and pull the headline numbers
+  function run(over){
+    const r=engine(ACQ,TGT,Object.assign({},P,over));
+    return {rotce:r.mPF.rotce,roa:r.mPF.roa,accr:r.niAccrPct,cet1:r.PF_cet1r,lev:r.PF_lev,eb:r.earnback,cash:r.cashConsid};
+  }
+  function ebTxt(eb){return eb==null?"no accretion":(eb<0?"immediate":eb.toFixed(1)+" yrs");}
+  function ebCls(eb){return eb==null?"cv-bad":(eb<=3?"cv-good":(eb<=5?"cv-warn":"cv-bad"));}
+  function cetCls(c){return c==null?"":(c>=9?"cv-good":(c>=7?"cv-warn":"cv-bad"));}
+  function accCls(a){return a==null?"":(a>=0?"cv-good":"cv-warn");}
+  function row(label,d,isCur){
+    return `<tr class="${isCur?"cur":""}"><td class="mx">${esc(label)}</td>`+
+      `<td>${fmtPct(d.rotce,1)}</td>`+
+      `<td>${fmtPct(d.roa,2)}</td>`+
+      `<td class="${accCls(d.accr)}">${d.accr==null?"n/a":(d.accr>=0?"+":"")+d.accr.toFixed(1)+"%"}</td>`+
+      `<td class="${cetCls(d.cet1)}">${fmtPct(d.cet1,1)}</td>`+
+      `<td>${fmtPct(d.lev,1)}</td>`+
+      `<td class="${ebCls(d.eb)}">${ebTxt(d.eb)}</td></tr>`;
+  }
+  const head=`<thead><tr><th>Scenario</th><th>PF ROTCE</th><th>PF ROA</th><th>Earnings accr.</th><th>PF CET1</th><th>Tier 1 lev.</th><th>TBV earnback</th></tr></thead>`;
+
+  // table A: consideration mix, holding the funding source for the cash portion at the current setting
+  const mixes=[["All stock",100],["75% stock / 25% cash",75],["50 / 50",50],["25% stock / 75% cash",25],["All cash",0]];
+  const curStock=Math.round(P.stock/5)*5;
+  let aRows=mixes.map(([lab,s])=>row(lab,run({stock:s}),s===curStock)).join("");
+  let tableA=`<p class="scl">Consideration mix, with the cash portion funded by <b>${esc(SRC[Math.round(P.cashsrc||0)])}</b>. The highlighted row is the live structure. Everything else (price, marks, cost saves) is held constant.</p>
+    <div class="tblwrap"><table class="tbl minw">${head}<tbody>${aRows}</tbody></table></div>`;
+
+  // table B: funding source, holding the current mix
+  let tableB="";
+  if(R.cashConsid>0.5){
+    const cs=Math.round(P.cashsrc||0);
+    let bRows=[0,1,2].map(i=>row(SRC[i],run({cashsrc:i}),i===cs)).join("");
+    tableB=`<div class="scgap"></div><p class="scl">Cash funding source, holding the mix at <b>${P.stock}% stock / ${100-P.stock}% cash</b>. Balance-sheet cash spends tangible equity and gives up earning-asset income; sub debt protects CET1 but adds interest; a common raise rebuilds CET1 like a stock deal.</p>
+      <div class="tblwrap"><table class="tbl minw">${head}<tbody>${bRows}</tbody></table></div>`;
+  }else{
+    tableB=`<div class="scgap"></div><p class="scl">No cash component at an all-stock mix, so the funding source has no effect. Add cash above to compare balance-sheet, sub-debt, and equity-raise funding.</p>`;
+  }
+
+  $("scenarios").innerHTML=tableA+tableB;
+}
+
+function renderCards(R,P){
+  const m=R.mA, p=R.mPF;
+  function arrow(pf,base,inv,unit){
+    if(pf==null||base==null)return "";
+    const d=pf-base;const good=inv?d<0:d>0;const cls=Math.abs(d)<1e-9?"":(good?"up":"dn");
+    return ` <span class="${cls}">${d>0?"\u25b2":d<0?"\u25bc":""}${Math.abs(d).toFixed(2)}${unit||"pp"}</span>`;
+  }
+  const ebText=R.earnback==null?"no accretion":(R.earnback<0?"immediate":R.earnback.toFixed(1)+" yrs");
+  const ebClass=R.earnback==null?"bad":(R.earnback<=3?"":(R.earnback<=5?"warn":"bad"));
+  const cet1Class=R.PF_cet1r==null?"":(R.PF_cet1r>=9?"":(R.PF_cet1r>=7?"warn":"bad"));
+  const accrClass=R.niAccrPct==null?"":(R.niAccrPct>=0?"":"warn");
+  const cards=[
+    {cl:"PF return on tangible common equity",cv:fmtPct(p.rotce,1),cd:`acquirer ${fmtPct(m.rotce,1)}${arrow(p.rotce,m.rotce)}`},
+    {cl:"PF return on assets",cv:fmtPct(p.roa,2),cd:`acquirer ${fmtPct(m.roa,2)}${arrow(p.roa,m.roa)}`},
+    {cl:"Earnings accretion",cls:accrClass,cv:(R.niAccrPct==null?"n/a":(R.niAccrPct>=0?"+":"")+R.niAccrPct.toFixed(1)+"%"),cd:`vs both banks standalone`},
+    {cl:"TBV earnback",cls:ebClass,cv:ebText,cd:`dilution ${fmtK(R.crossoverHole)}`},
+    {cl:"PF CET1 ratio",cls:cet1Class,cv:fmtPct(R.PF_cet1r,1),cd:`acquirer ${fmtPct(ACQ.cet1r==null?(ACQ.lev==null?null:null):ACQ.cet1r,1)} \u00b7 goodwill ${fmtK(R.goodwill)}`}
+  ];
+  $("cards").innerHTML=cards.map(c=>`<div class="card ${c.cls||""}"><div class="cl">${c.cl}</div><div class="cv">${c.cv}</div><div class="cd">${c.cd}</div></div>`).join("");
+  // headline flags
+  let fl="";
+  if(R.bargain>0)fl+=`<div class="flag">Bargain purchase. At these terms the price is below the fair value of identifiable net assets, producing a one-time gain of about ${fmtK(R.bargain)} rather than goodwill. Below-book deals usually signal a distressed or assisted transaction.</div>`;
+  if(R.PF_cet1r!=null&&R.PF_cet1r<7)fl+=`<div class="flag bad">Pro forma CET1 of ${fmtPct(R.PF_cet1r,1)} is thin. A goodwill-heavy cash deal erodes tangible capital fast; the buyer would likely need to raise capital or shift the mix toward stock.</div>`;
+  $("headflags").innerHTML=fl;
+}
+
+function renderMetrics(R){
+  const a=R.mA,t=R.mT,s=R.mSum,p=R.mPF;
+  const rows=[
+    ["Return on assets","pct",a.roa,t.roa,s.roa,p.roa,false],
+    ["Return on equity","pct",a.roe,t.roe,s.roe,p.roe,false],
+    ["Return on tangible common equity","pct",a.rotce,t.rotce,s.rotce,p.rotce,false],
+    ["Net interest margin","pct",a.nim,t.nim,s.nim,p.nim,false],
+    ["Efficiency ratio","pct",a.eff,t.eff,s.eff,p.eff,true],
+    ["Pre-provision net revenue / assets","pct",a.ppnra,t.ppnra,s.ppnra,p.ppnra,false]
+  ];
+  let body=rows.map(r=>{
+    const [lab,fmt,av,tv,sv,pv,inv]=r;
+    return `<tr><td>${linkTerms(lab)}</td><td>${fmtPct(av)}</td><td>${fmtPct(tv)}</td><td>${fmtPct(sv)}</td><td class="pf">${fmtPct(pv)}</td>${deltaCell(pv,av,fmt,inv)}</tr>`;
+  }).join("");
+  $("metrics").innerHTML=`<div class="tblwrap"><table class="tbl minw"><thead><tr><th>Metric</th><th>Acquirer</th><th>Target</th><th>Simple sum</th><th class="pf">Pro forma</th><th>\u0394 vs acq.</th></tr></thead><tbody>${body}</tbody></table></div>
+    <div class="ibnote" style="padding:8px 2px 0">Simple sum just adds the two banks with no deal effects. The pro forma column applies purchase accounting, cost saves, and the new capital base. The delta compares pro forma to the acquirer on its own, which is the comparison a buyer's board actually weighs. For the efficiency ratio, lower is better.</div>`;
+}
+
+function renderPPA(R,P){
+  // purchase price allocation bridge
+  const ppa=[
+    ["Purchase price",R.dealValue,"",false],
+    ["Target tangible common equity",R.T_tce,"sub",false],
+    ["Loan credit mark",-R.creditMark,"sub",true],
+    ["Loan rate / liquidity mark",-R.rateMark,"sub",true],
+    ["Securities mark",-R.secMark,"sub",true],
+    ["Core deposit intangible created",R.cdi,"sub",false],
+    ["Deferred tax on marks",(R.creditMark+R.rateMark+R.secMark-R.cdi)*(P.tax/100),"sub",false],
+    ["Fair value of net identifiable assets",R.fvNetAssets,"tot",false],
+    [R.bargain>0?"Bargain purchase gain":"Goodwill created",R.bargain>0?R.bargain:R.goodwill,"tot2",R.bargain>0]
+  ];
+  let ppaBody=ppa.map(([lab,v,kind,neg])=>{
+    const cls=kind==="tot"?"tot":kind==="tot2"?"tot pf":kind==="sub"?"sub":"";
+    const vc=neg?"neg":(kind==="tot2"?"pos":"");
+    return `<tr class="${cls}"><td>${linkTerms(lab)}</td><td class="${vc}">${fmtK(v)}</td></tr>`;
+  }).join("");
+
+  // capital build
+  const cap=[
+    ["Acquirer CET1 capital",R.Acap.cet1,""],
+    ["Stock consideration issued",R.stockConsid,"sub"]
+  ];
+  if(R.equityRaise>0.5)cap.push(["New common equity raised to fund cash",R.equityRaise,"sub"]);
+  cap.push(
+    ["Less goodwill and new intangibles",-(R.goodwill+R.cdi),"sub"],
+    ["Less acquirer existing intangibles",-(ACQ.intan||0),"sub"],
+    ["Less after-tax one-time charges",-(R.onetimeAT),"sub"]
+  );
+  if(R.bargain>0)cap.push(["After-tax bargain purchase gain",R.bargain*(1-P.tax/100),"sub"]);
+  cap.push(["Pro forma CET1 capital",R.PF_cet1,"tot"]);
+  if(R.newSubDebt>0.5)cap.push(["Add new subordinated debt (Tier 2)",R.newSubDebt,"sub"]);
+  cap.push(
+    ["Pro forma risk-weighted assets",R.PF_rwa,""],
+    ["Pro forma total capital",R.PF_tot,""]
+  );
+  let capBody=cap.map(([lab,v,kind])=>`<tr class="${kind}"><td>${linkTerms(lab)}</td><td>${fmtK(v)}</td></tr>`).join("");
+
+  // capital ratios mini-table
+  const acet1=ACQ.cet1r, aLev=ACQ.lev, aTot=ACQ.totrbc;
+  const cr=[
+    ["CET1 ratio","pct",acet1,R.PF_cet1r],
+    ["Tier 1 leverage","pct",aLev,R.PF_lev],
+    ["Total risk-based capital","pct",aTot,R.PF_totrbc]
+  ];
+  let crBody=cr.map(([lab,fmt,av,pv])=>`<tr><td>${linkTerms(lab)}</td><td>${fmtPct(av,2)}</td><td class="pf">${fmtPct(pv,2)}</td>${deltaCell(pv,av,fmt,false)}</tr>`).join("");
+
+  const SRCN=["balance-sheet cash","new sub debt","a new equity raise"];
+  let consid=`Consideration ${fmtK(R.dealValue)} at ${fmtX(P.ptbv)} tangible book, ${P.stock}% stock / ${(100-P.stock)}% cash`+(R.cashConsid>0.5?`, with the cash funded by ${SRCN[R.cashsrc]}.`:`.`);
+  $("ppa").innerHTML=`<div class="bridge">
+    <div><div class="tblwrap"><table class="tbl"><thead><tr><th>Purchase price allocation</th><th>$000</th></tr></thead><tbody>${ppaBody}</tbody></table></div>
+      <div class="ibnote" style="padding:8px 2px 0">${consid} Goodwill is the premium over the fair value of what the buyer actually receives. It is deducted in full from CET1, which is why a rich price hits regulatory capital even when book equity rises.</div></div>
+    <div><div class="tblwrap"><table class="tbl"><thead><tr><th>Pro forma capital build</th><th>$000</th></tr></thead><tbody>${capBody}</tbody></table></div>
+      <div class="tblwrap" style="margin-top:10px"><table class="tbl"><thead><tr><th>Capital ratios</th><th>Acquirer</th><th class="pf">Pro forma</th><th>\u0394</th></tr></thead><tbody>${crBody}</tbody></table></div></div>
+  </div>`;
+}
+
+function renderStatements(R){
+  // balance sheet
+  const bs=[
+    ["Total assets",ACQ.assets,TGT.assets,R.PF_assets],
+    ["Gross loans & leases",ACQ.loans,TGT.loans,R.PF_loans],
+    ["Securities",ACQ.sec,TGT.sec,R.PF_sec],
+    ["Total deposits",ACQ.deposits,TGT.deposits,R.PF_dep],
+    ["Goodwill & intangibles",ACQ.intan,TGT.intan,R.PF_intan],
+    ["Total equity",ACQ.equity,TGT.equity,R.PF_equity],
+    ["Tangible common equity",R.A_tce,R.T_tce,R.PF_tce]
+  ];
+  let bsBody=bs.map(([lab,av,tv,pv],i)=>`<tr class="${i>=5?'tot':''}"><td>${linkTerms(lab)}</td><td>${fmtK(av)}</td><td>${fmtK(tv)}</td><td class="pf">${fmtK(pv)}</td></tr>`).join("");
+
+  // income walk to PF net income
+  const walk=[
+    ["Acquirer + target net interest income",(ACQ.nii||0)+(TGT.nii||0),""],
+    ["Purchase accounting accretion",R.accretion,"sub"],
+    ["Noninterest income + revenue synergies",R.PF_nonii,""],
+    ["Less combined noninterest expense",-((ACQ.nie||0)+(TGT.nie||0)),""],
+    ["Add back cost saves",R.costSaves,"sub"],
+    ["Less CDI amortization",-R.cdiAmort,"sub"],
+    ["Pre-provision net revenue",R.PF_ppnr,"tot"],
+    ["Less provision for credit losses",-R.PF_prov,""],
+    ["Pretax income",R.PF_pre,"tot"],
+    [`Less tax at ${R.tax}%`,-(R.PF_pre*R.tax/100),"sub"],
+    ["Pro forma net income (run-rate)",R.PF_ni,"tot pf"]
+  ];
+  let walkBody=walk.map(([lab,v,kind])=>{
+    const cls=kind.includes("tot")?(kind.includes("pf")?"tot":"tot"):kind==="sub"?"sub":"";
+    const tdcls=kind.includes("pf")?"pf":"";
+    return `<tr class="${cls}"><td>${linkTerms(lab)}</td><td class="${tdcls}">${fmtK(v)}</td></tr>`;
+  }).join("");
+
+  $("statements").innerHTML=`<div class="bridge">
+    <div><div class="tblwrap"><table class="tbl"><thead><tr><th>Pro forma balance sheet</th><th>Acq.</th><th>Tgt.</th><th class="pf">Pro forma</th></tr></thead><tbody>${bsBody}</tbody></table></div></div>
+    <div><div class="tblwrap"><table class="tbl"><thead><tr><th>Run-rate earnings walk</th><th>$000</th></tr></thead><tbody>${walkBody}</tbody></table></div>
+      <div class="ibnote" style="padding:8px 2px 0">Run-rate means fully phased synergies and steady-state provisioning. Year one is worse: cost saves arrive gradually and the CECL day-two provision of about ${fmtK(R.day2)} pretax lands up front.</div></div>
+  </div>`;
+}
+
+function renderReadout(R,P){
+  // regulatory threshold crossings (dollars)
+  const baseD=(ACQ.assets||0)*1000, combD=(R.PF_assets||0)*1000;
+  const T=[[10e9,"$10B: the Durbin interchange cap and direct CFPB supervision attach"],[50e9,"$50B: heightened resolution and supervisory expectations begin to layer in"],[100e9,"$100B: Category IV enhanced prudential standards and supervisory stress testing"],[250e9,"$250B: Category III standards, including the LCR and capital stress requirements"],[700e9,"$700B: Category II standards"]];
+  const cross=[];T.forEach(([thr,msg])=>{if(baseD<thr&&combD>=thr)cross.push(msg);});
+  let crossHTML=cross.length?`<div class="cross">${cross.map(x=>`<span class="x">\u26a0 Pro forma crosses ${esc(x)}.</span>`).join("")}</div>`:"";
+
+  const p=R.mPF,a=R.mA;
+  const rotceMove=(p.rotce!=null&&a.rotce!=null)?(p.rotce-a.rotce):null;
+  const effMove=(p.eff!=null&&a.eff!=null)?(p.eff-a.eff):null;
+  const accrWord=R.niAccrPct==null?"":(R.niAccrPct>=0?"accretive":"dilutive");
+  const ebWord=R.earnback==null?"never earns back at these terms because there is no run-rate accretion":(R.earnback<=3?"earns back inside three years, which the market generally rewards":R.earnback<=5?"earns back in three to five years, a middling result":"takes more than five years to earn back, which markets tend to punish");
+
+  let lead=`At ${fmtX(P.ptbv)} tangible book with ${P.costsave}% cost saves, the deal is <b>${accrWord} to run-rate earnings by ${R.niAccrPct==null?"n/a":(R.niAccrPct>=0?"+":"")+R.niAccrPct.toFixed(1)+"%"}</b> and `;
+  lead+=R.earnback==null?`<span class="w">${ebWord}</span>. `:`tangible book value <b>${ebWord}</b> (${R.earnback.toFixed(1)} years, ${fmtK(R.crossoverHole)} of dilution). `;
+  lead+=`Return on tangible common equity moves from ${fmtPct(a.rotce,1)} to <b>${fmtPct(p.rotce,1)}</b>${rotceMove!=null?` (${rotceMove>=0?"+":""}${rotceMove.toFixed(1)}pp)`:""}, and the efficiency ratio ${effMove!=null?(effMove<0?`improves to <b>${fmtPct(p.eff,1)}</b>`:`worsens to <b>${fmtPct(p.eff,1)}</b>`):`lands at <b>${fmtPct(p.eff,1)}</b>`}. `;
+
+  let body=`The math has two opposing engines. Goodwill of ${fmtK(R.goodwill)} comes straight out of CET1, taking the pro forma ratio to <b>${fmtPct(R.PF_cet1r,1)}</b> from the acquirer's standalone ${fmtPct(ACQ.cet1r,1)}; that is the cost of the premium. Working the other way, ${fmtK(R.costSaves)} of annual cost saves is what turns a diluted earnings stream into an accretive one. `;
+  body+=`The single biggest swing factor here is `+(P.costsave>=35?`the aggressive ${P.costsave}% cost-save assumption; haircut it and the accretion thins quickly`:`cost saves at ${P.costsave}%; few community-bank deals clear 40% without branch overlap, so test the downside`)+`. `;
+  if(R.cashConsid>0.5){
+    if(R.cashsrc===0)body+=`The ${(100-P.stock)}% cash portion is drawn from the balance sheet, which deepens the tangible-capital hole: the cash leaves without replacing equity, and the model also gives up the ${fmtK(R.foregoneNII)} of net interest those assets were earning. `;
+    else if(R.cashsrc===1)body+=`The ${(100-P.stock)}% cash portion is funded with new subordinated debt at ${fmtPct(P.subrate,2)}. That protects CET1 and adds Tier 2 capital, but the ${fmtK(R.subInterest)} of annual interest eats directly into the accretion. `;
+    else body+=`The ${(100-P.stock)}% cash portion is funded with a new common equity raise, so the capital ratios hold up much like a stock deal because the ${fmtK(R.equityRaise)} raised lands in CET1. The cost is dilution to existing holders that this share-count-free model does not capture per share. `;
+  }
+  body+=`The CECL day-two provision of ${fmtK(R.day2)} is the gap between accounting and economics that surprises first-time acquirers: you mark the loans down through purchase accounting and then reserve again against the non-PCD share through the income statement.`;
+
+  let read=`<div class="narr">${linkTerms(lead)}<br><br>${linkTerms(body)}</div>${crossHTML}`;
+  read+=`<div class="ibnote" style="padding:10px 2px 0">Sensitivities to pressure-test next: the credit mark in a downturn, customer and deposit attrition (not modeled here), the rate environment at close, and whether the cost saves survive contact with two real branch networks. Use the presets above to bracket the range.</div>`;
+  $("readout").innerHTML=read;
+}
+
+</script>
+</body>
+</html>
