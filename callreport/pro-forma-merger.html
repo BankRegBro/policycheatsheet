@@ -447,16 +447,16 @@ function engine(A,T,P){
 const ASSUM=[
   {grp:"Consideration",items:[
     {k:"ptbv",lab:"Price to tangible book",sub:"deal value = multiple \u00d7 target TCE",min:0.8,max:3,step:0.01,val:1.55,u:"\u00d7",
-      benchLab:"Typical deal multiples \u00b7 tap to apply",
+      benchLab:"Typical deal archetypes \u00b7 tap to set price, marks, and synergies",
       bench:[
-        {v:1.10,t:"Distressed"},
-        {v:1.24,t:"2023 trough"},
-        {v:1.31,t:"2024 median"},
-        {v:1.47,t:"2025 median"},
-        {v:1.75,t:"Healthy community"},
-        {v:2.25,t:"Premium / strategic"}
+        {v:1.10,t:"Distressed",      set:{creditmark:3.5,ratemark:4.0,secmark:7.0,cdi:0.75,cdiyrs:7,accyrs:7,pcd:45,costsave:35,revsynM:0,onetime:6}},
+        {v:1.24,t:"2023 trough",     set:{creditmark:2.5,ratemark:3.5,secmark:6.0,cdi:1.0,cdiyrs:8,accyrs:6,pcd:30,costsave:28,revsynM:0,onetime:5}},
+        {v:1.31,t:"2024 median",     set:{creditmark:2.0,ratemark:2.75,secmark:4.5,cdi:1.1,cdiyrs:9,accyrs:5,pcd:25,costsave:30,revsynM:0,onetime:4.5}},
+        {v:1.47,t:"2025 median",     set:{creditmark:1.5,ratemark:2.0,secmark:3.0,cdi:1.25,cdiyrs:10,accyrs:5,pcd:25,costsave:32,revsynM:0,onetime:4}},
+        {v:1.75,t:"Healthy community",set:{creditmark:1.0,ratemark:1.25,secmark:1.5,cdi:1.5,cdiyrs:10,accyrs:5,pcd:20,costsave:40,revsynM:0,onetime:3.5}},
+        {v:2.25,t:"Premium / strategic",set:{creditmark:0.75,ratemark:1.0,secmark:1.0,cdi:1.75,cdiyrs:10,accyrs:4,pcd:15,costsave:45,revsynM:0,onetime:3}}
       ],
-      benchNote:"Whole-bank deal pricing, price to tangible book value. The all-deal median ran about <b>1.24\u00d7 in 2023</b> (regional-bank stress, 101 deals), <b>1.31\u00d7 in 2024</b>, and recovered to roughly <b>1.47\u00d7 in 2025</b> (176 deals, about $49B). Distressed and troubled sellers price near <b>1.0\u20131.3\u00d7</b>; healthy community and regional franchises in a favorable market run <b>1.5\u20132.5\u00d7</b>. Recent marquee marks: Fifth Third / Comerica 1.73\u00d7, PNC / FirstBank 2.34\u00d7. Sources: S&P Global Market Intelligence, Mercer Capital, Bank Director 2026 M&A Survey (late 2025 / early 2026). These are reference points, not a recommendation; set the multiple to your deal."
+      benchNote:"Whole-bank deal pricing, price to tangible book value. Each chip applies a coherent archetype: the price plus the marks and synergies that typically travel with that kind of deal, leaving the consideration and funding structure to you. The all-deal median ran about <b>1.24\u00d7 in 2023</b> (regional-bank stress, 101 deals), <b>1.31\u00d7 in 2024</b>, and recovered to roughly <b>1.47\u00d7 in 2025</b> (176 deals, about $49B). Distressed and troubled sellers price near <b>1.0\u20131.3\u00d7</b> with heavier marks; healthy community and regional franchises in a favorable market run <b>1.5\u20132.5\u00d7</b> with cleaner books. Recent marks: Fifth Third / Comerica 1.73\u00d7, PNC / FirstBank 2.34\u00d7. Sources: S&P Global Market Intelligence, Mercer Capital, Bank Director 2026 M&A Survey. These are reference points, not a recommendation; tune every lever to your deal."
     },
     {k:"stock",lab:"Paid in stock",sub:"remainder paid in cash; funding source set below",min:0,max:100,step:5,val:100,u:"%"},
     {k:"cashsrc",lab:"Cash funded by",sub:"how the cash portion is raised, changes the capital story",choices:["Balance-sheet cash","New sub debt","New common equity"],val:0},
@@ -613,11 +613,10 @@ function buildModel(){
       recompute();
     });
   });
-  // wire industry benchmark quick-sets
+  // wire industry benchmark quick-sets (apply the full archetype bundle)
   m.querySelectorAll(".bchip").forEach(c=>c.onclick=()=>{
     const v=num(c.dataset.bv); if(v==null)return;
-    setLever(c.dataset.bk,v);
-    markBench(); recompute();
+    applyBench(c.dataset.bk,v);
   });
   $("igToggle").onclick=()=>{const b=$("igBody"),c=$("igToggle").querySelector(".car");const open=b.classList.toggle("show");c.textContent=open?"\u25be":"\u25b8";};
   m.querySelectorAll(".chip[data-pre]").forEach(c=>c.onclick=()=>applyPreset(c.dataset.pre));
@@ -665,6 +664,16 @@ function setLever(k,v){
   const t=$("a_"+k), r=$("r_"+k);
   if(t)t.value=v;
   if(r){const mn=parseFloat(r.min),mx=parseFloat(r.max);r.value=Math.min(mx,Math.max(mn,v));}
+}
+// apply a typical-multiple archetype: the price plus its bundled marks and synergies.
+// Consideration and funding structure are deliberately left untouched.
+function applyBench(k,v){
+  let entry=null;
+  ASSUM.forEach(g=>g.items.forEach(it=>{if(it.k===k&&it.bench){const e=it.bench.find(b=>Math.abs(b.v-v)<1e-9);if(e)entry=e;}}));
+  setLever(k,v);
+  if(entry&&entry.set)Object.entries(entry.set).forEach(([kk,vv])=>setLever(kk,vv));
+  markBench();
+  recompute();
 }
 function applyPreset(name){
   const p=PRESETS[name];if(!p)return;
