@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>M&A Partner Finder — FDIC Screening</title>
+<title>M&A Partner Finder · FDIC Screening</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet">
 <style>
@@ -108,7 +108,7 @@ footer{margin-top:24px;border-top:1px solid var(--edge-soft);padding-top:13px;co
 </head>
 <body>
 <div class="wrap">
-  <nav class="toolnav"><a class="home" href="https://bankregwire.com/wire.html">↩ BankRegWire</a><span class="navsep"></span><span class="navttl">Call Report Suite</span><a href="callreport-linemap.html">CAMELS Map</a><a href="callreport-literal.html">Literal Form</a><a href="bank-health-scanner.html">Health Scanner</a><a href="ma-partner-finder.html" class="active">M&amp;A Finder</a></nav>
+  <nav class="toolnav"><a class="home" href="https://bankregwire.com/wire.html">↩ BankRegWire</a><span class="navsep"></span><span class="navttl">Bank Workbench</span><a href="callreport-linemap.html">CAMELS Map</a><a href="callreport-literal.html">Literal Form</a><a href="bank-health-scanner.html">Health Scanner</a><a href="ma-partner-finder.html" class="active">M&amp;A Finder</a><a href="pro-forma-merger.html">Merger Model</a><a href="interest-rate-risk.html">Rate Risk</a><a href="charter-console.html">Charter Console</a></nav>
   <header>
     <div class="titlebar"><span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="tb-label">fdic screening · m&a fit model</span></div>
     <div class="head-main">
@@ -237,7 +237,7 @@ function renderConfig(){
     </div>
     <div class="runbar"><button class="run" id="runBtn">Run screen ▶</button><span class="weightnote" id="wnote"></span></div>`;
   let GEO="state";
-  const setW=()=>{const p=PRESETS[PRESET];document.getElementById("wnote").innerHTML=`Weights — size ${p.w.size}, geography ${p.w.geo}, deposit fit ${p.w.dep}, health ${p.w.health}${p.inv?" (rewards weaker targets)":""}`;};
+  const setW=()=>{const p=PRESETS[PRESET];document.getElementById("wnote").innerHTML=`Weights: size ${p.w.size}, geography ${p.w.geo}, deposit fit ${p.w.dep}, health ${p.w.health}${p.inv?" (rewards weaker targets)":""}`;};
   elConfig.querySelector("#roleSeg").querySelectorAll("button").forEach(x=>x.onclick=()=>{ROLE=x.dataset.r;elConfig.querySelector("#roleSeg").querySelectorAll("button").forEach(y=>y.classList.toggle("on",y===x));});
   elConfig.querySelector("#presetSeg").querySelectorAll("button").forEach(x=>x.onclick=()=>{PRESET=x.dataset.p;elConfig.querySelector("#presetSeg").querySelectorAll("button").forEach(y=>y.classList.toggle("on",y===x));setW();});
   elConfig.querySelector("#geoSeg").querySelectorAll("button").forEach(x=>x.onclick=()=>{GEO=x.dataset.g;elConfig.querySelector("#geoSeg").querySelectorAll("button").forEach(y=>y.classList.toggle("on",y===x));});
