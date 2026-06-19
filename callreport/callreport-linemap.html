@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Call Report Line-Map — FFIEC Supervisory Reference</title>
+<title>Call Report Line-Map · FFIEC Supervisory Reference</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet">
@@ -175,20 +175,20 @@ footer b{color:var(--ink-dim)}
 </head>
 <body>
 <div class="wrap">
-  <nav class="toolnav"><a class="home" href="https://bankregwire.com/wire.html">↩ BankRegWire</a><span class="navsep"></span><span class="navttl">Call Report Suite</span><a href="callreport-linemap.html" class="active">CAMELS Map</a><a href="callreport-literal.html">Literal Form</a><a href="bank-health-scanner.html">Health Scanner</a><a href="ma-partner-finder.html">M&amp;A Finder</a></nav>
+  <nav class="toolnav"><a class="home" href="https://bankregwire.com/wire.html">↩ BankRegWire</a><span class="navsep"></span><span class="navttl">Bank Workbench</span><a href="callreport-linemap.html" class="active">CAMELS Map</a><a href="callreport-literal.html">Literal Form</a><a href="bank-health-scanner.html">Health Scanner</a><a href="ma-partner-finder.html">M&amp;A Finder</a><a href="pro-forma-merger.html">Merger Model</a><a href="interest-rate-risk.html">Rate Risk</a><a href="charter-console.html">Charter Console</a></nav>
 
   <header>
     <div class="titlebar">
       <span class="dot on"></span><span class="dot"></span><span class="dot"></span>
-      <span class="tb-label">ffiec 031 / 041 / 051 — supervisory line map</span>
+      <span class="tb-label">ffiec 031 / 041 / 051 · supervisory line map</span>
     </div>
     <div class="head-main">
       <div class="eyebrow">Consolidated Reports of Condition and Income</div>
       <h1>The Call Report, line by line<span class="cursor">_</span></h1>
-      <p class="subhead">The lines an examiner actually reads first, what each one tells you, and the supervisory signal it feeds. Open any line for detail. Use the <b>CAMELS lens</b> to pull every line that informs a single component across all schedules — the way the story actually assembles on exam.</p>
+      <p class="subhead">The lines an examiner actually reads first, what each one tells you, and the supervisory signal it feeds. Open any line for detail. Use the <b>CAMELS lens</b> to pull every line that informs a single component across all schedules, the way the story actually assembles on exam.</p>
 
       <div class="legend">
-        <div class="legend-label">CAMELS lens — click a component to trace it across the report</div>
+        <div class="legend-label">CAMELS lens: click a component to trace it across the report</div>
         <div class="camels" id="camels"></div>
         <div class="filter-note" id="filterNote"></div>
       </div>
@@ -206,10 +206,10 @@ footer b{color:var(--ink-dim)}
   <div class="read">
     <h3>The one-screen supervisory read</h3>
     <div class="model">
-      <div class="step"><span class="q">CAN IT ABSORB LOSSES?</span><span class="a"><code>RC-R</code> — CET1, Tier 1 leverage, and total risk-based ratios against RWA tell you the cushion and the distance to PCA thresholds.</span></div>
-      <div class="step"><span class="q">ARE LOSSES COMING?</span><span class="a"><code>RC-N</code> and <code>RI-B</code> — past-due and nonaccrual balances show deterioration before it hits earnings; the ACL coverage ratio shows whether reserves keep pace.</span></div>
-      <div class="step"><span class="q">CAN IT EARN ITS WAY OUT?</span><span class="a"><code>RI</code> — net interest income, provision, and the efficiency ratio flow down to ROA and ROE.</span></div>
-      <div class="step"><span class="q">WILL LIQUIDITY FORCE THE ISSUE?</span><span class="a"><code>RC</code> securities and deposit lines — the gap between HTM carrying value and fair value, plus funding mix, decides whether a runoff turns unrealized losses into realized ones.</span></div>
+      <div class="step"><span class="q">CAN IT ABSORB LOSSES?</span><span class="a"><code>RC-R</code>: CET1, Tier 1 leverage, and total risk-based ratios against RWA tell you the cushion and the distance to PCA thresholds.</span></div>
+      <div class="step"><span class="q">ARE LOSSES COMING?</span><span class="a"><code>RC-N</code> and <code>RI-B</code>: past-due and nonaccrual balances show deterioration before it hits earnings; the ACL coverage ratio shows whether reserves keep pace.</span></div>
+      <div class="step"><span class="q">CAN IT EARN ITS WAY OUT?</span><span class="a"><code>RI</code>: net interest income, provision, and the efficiency ratio flow down to ROA and ROE.</span></div>
+      <div class="step"><span class="q">WILL LIQUIDITY FORCE THE ISSUE?</span><span class="a"><code>RC</code> securities and deposit lines: the gap between HTM carrying value and fair value, plus funding mix, decides whether a runoff turns unrealized losses into realized ones.</span></div>
     </div>
   </div>
 
@@ -248,14 +248,14 @@ const CAMELS = {
 const SCHEDULES = [
   {
     id:"RC", name:"Balance Sheet", cam:["C","A","L","S"],
-    blurb:"Condition at period-end. The shape of the balance sheet — how much earning credit risk, how it is funded, and where unrealized market losses sit — comes straight off these lines.",
+    blurb:"Condition at period-end. The shape of the balance sheet, how much earning credit risk, how it is funded, and where unrealized market losses sit, comes straight off these lines.",
     lines:[
       { code:"RC 1.a / 1.b", name:"Cash and balances due", cam:["L"],
         conveys:"Currency, vault cash, and balances at the Fed and other banks. 1.a is noninterest-bearing, 1.b interest-bearing. The most immediately available liquidity on the sheet.",
         signal:"First-line liquidity buffer; the numerator of primary-liquidity reads.",
         camNote:{L:"Most liquid asset; the cushion against deposit runoff."} },
       { code:"RC 2.a", name:"Held-to-maturity securities", cam:["S","L"],
-        conveys:"Carried at amortized cost, not fair value. Because the carrying value does not move with rates, the gap to fair value is invisible on the face of the balance sheet — disclosed in Schedule RC-B.",
+        conveys:"Carried at amortized cost, not fair value. Because the carrying value does not move with rates, the gap to fair value is invisible on the face of the balance sheet, disclosed in Schedule RC-B.",
         signal:"Hidden unrealized loss. The HTM/fair-value gap is the SVB risk: a forced sale crystallizes it.",
         camNote:{S:"Rate-driven unrealized loss that does not show in carrying value.", L:"Encumbered or loss-laden HTM is not freely saleable for liquidity."} },
       { code:"RC 2.b", name:"Available-for-sale securities", cam:["S","L","C"],
@@ -263,8 +263,8 @@ const SCHEDULES = [
         signal:"AOCI volatility hits equity directly; for banks that opted out, it stays out of regulatory capital.",
         camNote:{S:"Marks move with rates and feed AOCI.", L:"The genuinely saleable liquidity reserve.", C:"AOCI flows to equity; inclusion in capital depends on the bank's election."} },
       { code:"RC 4.b", name:"Loans and leases held for investment (gross)", cam:["A"],
-        conveys:"The core earning-asset book before reserves. Composition (C&I, CRE, residential, consumer) drives the credit-risk profile — detailed in Schedule RC-C.",
-        signal:"Loan-to-asset ratio (vs RC 12) — how much of the sheet carries credit risk.",
+        conveys:"The core earning-asset book before reserves. Composition (C&I, CRE, residential, consumer) drives the credit-risk profile, detailed in Schedule RC-C.",
+        signal:"Loan-to-asset ratio (vs RC 12): how much of the sheet carries credit risk.",
         camNote:{A:"The asset base whose quality the whole 'A' rating turns on."} },
       { code:"RC 4.c", name:"LESS: Allowance for credit losses", cam:["A"],
         conveys:"The contra-asset reserve held against expected credit losses (CECL). Detail and roll-forward live in Schedule RI-B Part II.",
@@ -283,13 +283,13 @@ const SCHEDULES = [
         signal:"Funding stability; deposit-to-asset ratio; cost-of-funds pressure.",
         camNote:{L:"Stable core funding lowers liquidity risk; a thin noninterest-bearing share signals rate sensitivity."} },
       { code:"RC 16", name:"Other borrowed money", cam:["L"],
-        conveys:"Wholesale funding — FHLB advances, Fed borrowings, and other non-deposit debt. Rises when deposits cannot fund asset growth or when liquidity tightens.",
+        conveys:"Wholesale funding: FHLB advances, Fed borrowings, and other non-deposit debt. Rises when deposits cannot fund asset growth or when liquidity tightens.",
         signal:"Wholesale-funding reliance; a climbing line is a liquidity-stress tell.",
         camNote:{L:"Non-core funding dependence; can reverse quickly and carries rollover risk."} },
       { code:"RC 27.a", name:"Total bank equity capital", cam:["C"],
-        conveys:"The loss-absorbing cushion — common and preferred stock, surplus, retained earnings, and AOCI. The book-equity figure everything else is measured against.",
+        conveys:"The loss-absorbing cushion: common and preferred stock, surplus, retained earnings, and AOCI. The book-equity figure everything else is measured against.",
         signal:"Equity-to-assets; the raw cushion before risk-weighting.",
-        camNote:{C:"Book capital — the starting point that RC-R refines into regulatory ratios."} }
+        camNote:{C:"Book capital: the starting point that RC-R refines into regulatory ratios."} }
     ]
   },
   {
@@ -297,11 +297,11 @@ const SCHEDULES = [
     blurb:"The single most decisive schedule for the 'C' rating. Translates book equity into regulatory capital and risk-weighted assets, then into the ratios that set the bank's PCA category.",
     lines:[
       { code:"RC-R Pt I", name:"Common equity tier 1 (CET1) capital", cam:["C"],
-        conveys:"The highest-quality, most loss-absorbing capital — common stock, retained earnings, and qualifying AOCI, net of regulatory deductions like goodwill.",
+        conveys:"The highest-quality, most loss-absorbing capital: common stock, retained earnings, and qualifying AOCI, net of regulatory deductions like goodwill.",
         signal:"CET1 ratio = CET1 / RWA. The first ratio supervisors look at.",
         camNote:{C:"Going-concern capital that absorbs losses first."} },
       { code:"RC-R Pt I", name:"Tier 1 leverage ratio", cam:["C"],
-        conveys:"Tier 1 capital divided by average total assets — a non-risk-weighted backstop that does not let low risk-weights flatter the picture.",
+        conveys:"Tier 1 capital divided by average total assets, a non-risk-weighted backstop that does not let low risk-weights flatter the picture.",
         signal:"Guards against gaming RWA; a hard floor under the risk-based ratios.",
         camNote:{C:"Catches thin capital even when RWA looks benign."} },
       { code:"RC-R Pt I", name:"Total risk-based capital ratio", cam:["C"],
@@ -320,7 +320,7 @@ const SCHEDULES = [
   },
   {
     id:"RI", name:"Income Statement", cam:["E","A","M"],
-    blurb:"Performance over the period. The earnings engine, the cost of credit, and operating efficiency flow down to ROA and ROE — the core of the 'E' rating.",
+    blurb:"Performance over the period. The earnings engine, the cost of credit, and operating efficiency flow down to ROA and ROE, the core of the 'E' rating.",
     lines:[
       { code:"RI 3", name:"Net interest income", cam:["E"],
         conveys:"Interest earned on loans and securities minus interest paid on deposits and borrowings. The primary profit engine for most banks.",
@@ -331,11 +331,11 @@ const SCHEDULES = [
         signal:"Links earnings to asset quality; spikes foreshadow credit stress.",
         camNote:{E:"A direct charge against earnings.", A:"The income-statement bridge to the RC-N / RI-B credit picture."} },
       { code:"RI 5", name:"Noninterest income", cam:["E"],
-        conveys:"Fee income — service charges, interchange, wealth, mortgage banking, and trading. Revenue diversification away from spread.",
+        conveys:"Fee income: service charges, interchange, wealth, mortgage banking, and trading. Revenue diversification away from spread.",
         signal:"Earnings resilience and diversification; cushions NIM compression.",
         camNote:{E:"Diversified revenue is more durable through rate cycles."} },
       { code:"RI 7", name:"Noninterest expense", cam:["E","M"],
-        conveys:"Operating costs — salaries, occupancy, technology. Paired with revenue it yields the efficiency ratio.",
+        conveys:"Operating costs: salaries, occupancy, technology. Paired with revenue it yields the efficiency ratio.",
         signal:"Efficiency ratio = noninterest expense / (NII + noninterest income). Lower is better.",
         camNote:{E:"Cost discipline drives the bottom line.", M:"Operating efficiency is a read on management quality."} },
       { code:"RI 14", name:"Net income", cam:["E"],
@@ -346,7 +346,7 @@ const SCHEDULES = [
   },
   {
     id:"RC-N", name:"Past Due & Nonaccrual", cam:["A"],
-    blurb:"The asset-quality early-warning system. Delinquency buckets, read against total loans, are the leading edge of credit deterioration — visible here before it reaches earnings.",
+    blurb:"The asset-quality early-warning system. Delinquency buckets, read against total loans, are the leading edge of credit deterioration, visible here before it reaches earnings.",
     lines:[
       { code:"RC-N col A", name:"30–89 days past due, still accruing", cam:["A"],
         conveys:"Early-stage delinquency that is still recognizing interest. The first tremor of borrower stress.",
@@ -367,7 +367,7 @@ const SCHEDULES = [
     blurb:"Realized losses and reserve adequacy. Part I records what was actually written off; Part II rolls forward the allowance and tests whether reserves keep pace with the problem assets in RC-N.",
     lines:[
       { code:"RI-B Pt I", name:"Net charge-offs", cam:["A"],
-        conveys:"Gross charge-offs less recoveries — the credit losses the bank actually realized this period.",
+        conveys:"Gross charge-offs less recoveries: the credit losses the bank actually realized this period.",
         signal:"Net charge-off rate = NCOs / average loans (annualized). Realized loss experience.",
         camNote:{A:"Proof of loss; validates or challenges the adequacy of prior reserves."} },
       { code:"RI-B Pt II", name:"Allowance for credit losses (ending balance)", cam:["A"],
@@ -382,7 +382,7 @@ const SCHEDULES = [
   },
   {
     id:"RC-E", name:"Deposit Detail", cam:["L"],
-    blurb:"The composition behind the RC deposit line. Where funding stability is actually decided — the split between sticky core deposits and volatile rate-shopping or brokered money.",
+    blurb:"The composition behind the RC deposit line. Where funding stability is actually decided, the split between sticky core deposits and volatile rate-shopping or brokered money.",
     lines:[
       { code:"RC-E Memo 1", name:"Brokered deposits", cam:["L"],
         conveys:"Deposits gathered through brokers or deposit-listing services. Cheap to raise at scale but rate-sensitive and prone to flight when pricing or condition slips.",
@@ -403,7 +403,7 @@ const SCHEDULES = [
     blurb:"Period averages rather than point-in-time balances. The correct denominators for margin and return ratios, smoothing out quarter-end window dressing.",
     lines:[
       { code:"RC-K", name:"Average earning assets", cam:["E"],
-        conveys:"The average balance of interest-earning assets over the quarter — the proper base for margin, not the period-end snapshot.",
+        conveys:"The average balance of interest-earning assets over the quarter, the proper base for margin, not the period-end snapshot.",
         signal:"Denominator for NIM and asset yield.",
         camNote:{E:"Gives a true-period margin instead of a date-stamped one."} },
       { code:"RC-K", name:"Average total loans", cam:["E","A"],
@@ -411,7 +411,7 @@ const SCHEDULES = [
         signal:"Denominator for NCO rate and loan yield.",
         camNote:{E:"Base for loan yield.", A:"Base for the annualized charge-off rate."} },
       { code:"RC-K", name:"Average total assets", cam:["E","C"],
-        conveys:"Average assets over the period — the denominator for ROA and the Tier 1 leverage ratio.",
+        conveys:"Average assets over the period: the denominator for ROA and the Tier 1 leverage ratio.",
         signal:"Denominator for ROA and leverage.",
         camNote:{E:"Period-correct ROA base.", C:"Average-asset base for the leverage ratio."} }
     ]
@@ -455,7 +455,7 @@ function syncFilterUI(){
   });
   const note=document.getElementById("filterNote");
   if(camFilter){
-    note.innerHTML=`Tracing <b style="color:${CAMELS[camFilter].color}">${camFilter} — ${CAMELS[camFilter].name}</b> across every schedule.<span class="clr" id="clrF">clear ✕</span>`;
+    note.innerHTML=`Tracing <b style="color:${CAMELS[camFilter].color}">${camFilter}: ${CAMELS[camFilter].name}</b> across every schedule.<span class="clr" id="clrF">clear ✕</span>`;
     document.getElementById("clrF").onclick=()=>{camFilter=null;syncFilterUI();render();};
   } else { note.innerHTML=""; }
 }
@@ -496,7 +496,7 @@ function render(){
     const head=document.createElement("div");head.className="sched-head";
     const matchCount=SCHEDULES.reduce((n,s)=>n+s.lines.filter(l=>l.cam.includes(camFilter)).length,0);
     head.innerHTML=`<div class="tag">CAMELS lens · cross-schedule</div>
-      <h2 style="color:${CAMELS[camFilter].color};text-shadow:0 0 10px ${CAMELS[camFilter].color}55">${camFilter} — ${CAMELS[camFilter].name}</h2>
+      <h2 style="color:${CAMELS[camFilter].color};text-shadow:0 0 10px ${CAMELS[camFilter].color}55">${camFilter}: ${CAMELS[camFilter].name}</h2>
       <div class="sub">Every line across the Call Report that an examiner reads for ${CAMELS[camFilter].name.toLowerCase()}. ${matchCount} lines, assembled in reporting order.</div>`;
     main.appendChild(head);
     const lines=document.createElement("div");lines.className="lines";
