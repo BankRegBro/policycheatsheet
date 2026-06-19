@@ -209,6 +209,9 @@ h1.mh-title .pdot{color:var(--wire);font-style:normal}
 .colophon .c-mark{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(28px,4vw,46px);line-height:1;letter-spacing:-.02em;margin-bottom:16px}
 .colophon .c-mark em{font-style:italic;color:var(--reg)}.colophon .c-mark .pdot{color:var(--wire)}
 .colophon p{font-family:'Fraunces',serif;font-style:italic;font-size:14px;line-height:1.6;color:var(--paper-soft);max-width:60ch;margin-bottom:10px}
+.colophon .c-contact{display:inline-flex;align-items:center;gap:8px;margin-top:6px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--paper-soft);text-decoration:none;border-bottom:1px solid var(--hairline);padding-bottom:2px;transition:color .3s,border-color .3s}
+.colophon .c-contact:hover{color:var(--wire);border-bottom-color:var(--rim)}
+.colophon .c-contact svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.6}
 .colophon .c-meta{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--paper-soft);margin-top:22px;padding-top:16px;border-top:1px solid var(--hairline)}
 
 
@@ -308,6 +311,18 @@ body.light .plate:hover{box-shadow:inset 0 1px 1px rgba(255,255,255,.6), 0 26px 
 .featured-heading .sec-kicker{margin-bottom:8px}
 .featured-name{font-family:'Fraunces',serif;font-weight:400;font-size:clamp(23px,3.2vw,38px);line-height:1;letter-spacing:-.015em}
 .featured-name em{font-style:italic;color:var(--wire)}
+/* ----- promoted workbench: one full-width feature card atop the featured row ----- */
+.plate.feature{grid-column:1 / -1;grid-template-columns:minmax(120px,150px) 1fr;align-items:center;
+  border-color:rgba(240,165,70,.5);
+  box-shadow:inset 0 1px 1px rgba(255,247,232,.26), inset 0 -12px 24px rgba(0,0,0,.28),
+    0 30px 70px -26px rgba(0,0,0,.7), 0 0 0 1px rgba(207,119,20,.1)}
+.plate.feature.glass.read{background:linear-gradient(135deg, rgba(207,119,20,.07), transparent 42%), var(--card-solid)}
+.plate.feature:hover{transform:translateY(-3px);
+  box-shadow:inset 0 1px 1px rgba(255,247,232,.34), 0 40px 84px -24px rgba(0,0,0,.78), 0 0 0 1px rgba(240,165,70,.2)}
+.plate.feature .chip{border-color:var(--rim)}
+.plate.feature h3{font-size:clamp(22px,2.8vw,32px)}
+.plate.feature p{font-size:14px;line-height:1.55;max-width:64ch}
+@media(max-width:760px){.plate.feature{grid-template-columns:minmax(110px,30%) 1fr;align-items:start}}
 
 /* ===== cinematic town hero (merge add-on) — remove this block to revert ===== */
 :root{--reg:#f0b43e}            /* "Reg" gold in dark mode */
@@ -394,6 +409,32 @@ body.light .masthead h1.mh-title,body.light .masthead .mh-kicker,body.light .mas
       </div>
     </div>
     <div class="plates featured-body" id="featuredBody">
+      <a class="plate feature glass read" href="callreport/" data-desk="structural" data-tags="bank workbench m&a merger irr interest rate risk modeling charter application de novo call report camels fdic api bank health scanner pro forma">
+        <div class="chip"><svg viewBox="0 0 100 100" aria-hidden="true">
+          <!-- bank workbench: a divider/compass measuring a rising column series (modeling + analysis) -->
+          <!-- ledger baseline -->
+          <line x1="14" y1="80" x2="86" y2="80" stroke="currentColor" stroke-width="0.8" opacity=".5"/>
+          <!-- column series under the instrument -->
+          <line x1="26" y1="80" x2="26" y2="62" stroke="currentColor" stroke-width="2.6"/>
+          <line x1="40" y1="80" x2="40" y2="54" stroke="currentColor" stroke-width="2.6"/>
+          <line x1="54" y1="80" x2="54" y2="44" stroke="currentColor" stroke-width="2.6"/>
+          <line x1="68" y1="80" x2="68" y2="34" stroke="currentColor" stroke-width="2.6"/>
+          <!-- divider / compass legs, accent -->
+          <path d="M 50 16 L 30 60" fill="none" class="accent-stroke" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M 50 16 L 70 60" fill="none" class="accent-stroke" stroke-width="1.8" stroke-linecap="round"/>
+          <!-- pivot + feet -->
+          <circle cx="50" cy="16" r="2.8" class="accent-fill"/>
+          <circle cx="30" cy="60" r="1.8" class="accent-fill"/>
+          <circle cx="70" cy="60" r="1.8" class="accent-fill"/>
+        </svg></div>
+        <div class="plate-body">
+          <div class="plate-num"><span class="desk">Featured</span> · Workbench</div>
+          <h3>Bank Workbench</h3>
+          <p>From M&amp;A, to IRR modeling, to charter applications, BankRegWire is here to help.</p>
+          <div class="plate-tags"><span>M&amp;A</span><span>IRR Modeling</span><span>Charters</span><span>Call Report</span></div>
+          <div class="plate-link">Open the workbench →</div>
+        </div>
+      </a>
       <a class="plate glass read" href="consent-order-matrix.html" data-desk="enforcement" data-tags="baas fintech enforcement consent order matrix sponsor middleware">
         <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16"/><path d="M7.5 20.5h9"/><path d="M4.5 7h15"/><path d="M4.5 7l-2.3 4.8h4.6z"/><path d="M19.5 7l-2.3 4.8h4.6z"/></svg></div>
         <div class="plate-body">
@@ -1027,32 +1068,6 @@ body.light .masthead h1.mh-title,body.light .masthead .mh-kicker,body.light .mas
           <div class="plate-link">Open the file →</div>
         </div>
       </a>
-      <a class="plate glass read" href="callreport/" data-desk="structural" data-tags="fdic api call report camels bank health scanner financials peer benchmark cet1 ffiec cdr line map literal form m&a pro forma">
-        <div class="chip"><svg viewBox="0 0 100 100" aria-hidden="true">
-          <!-- bank vitals: an EKG pulse reading a bank's condition, over call-report figures -->
-          <!-- vitals baseline -->
-          <line x1="14" y1="44" x2="86" y2="44" stroke="currentColor" stroke-width="0.7" opacity=".4"/>
-          <!-- pulse trace, accent on the spike -->
-          <path d="M 14 44 L 32 44 L 37 44 L 41 32 L 47 58 L 53 20 L 59 44 L 70 44 L 86 44" fill="none" class="accent-stroke" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          <!-- reading node at the peak -->
-          <circle cx="53" cy="20" r="2.6" class="accent-fill"/>
-          <!-- call-report figures below: ledger columns -->
-          <line x1="22" y1="80" x2="22" y2="68" stroke="currentColor" stroke-width="2.6"/>
-          <line x1="34" y1="80" x2="34" y2="60" stroke="currentColor" stroke-width="2.6"/>
-          <line x1="46" y1="80" x2="46" y2="72" stroke="currentColor" stroke-width="2.6"/>
-          <line x1="58" y1="80" x2="58" y2="64" stroke="currentColor" stroke-width="2.6"/>
-          <line x1="70" y1="80" x2="70" y2="56" stroke="currentColor" stroke-width="2.6"/>
-          <!-- ledger rule under the columns -->
-          <line x1="16" y1="84" x2="78" y2="84" stroke="currentColor" stroke-width="0.8" opacity=".55"/>
-        </svg></div>
-        <div class="plate-body">
-          <div class="plate-num"><span class="desk">Structural</span> · 25</div>
-          <h3>Call Report Suite</h3>
-          <p>Four FDIC-data tools for reading a bank's condition: a curated CAMELS line-map, a literal call report form viewer, a live bank-health scanner, and an M&amp;A partner screen with pro forma threshold flags.</p>
-          <div class="plate-tags"><span>FDIC API</span><span>Call Report</span><span>CAMELS</span><span>M&amp;A Screen</span></div>
-          <div class="plate-link">Open the file →</div>
-        </div>
-      </a>
     </div>
   </section>
 
@@ -1062,6 +1077,7 @@ body.light .masthead h1.mh-title,body.light .masthead .mh-kicker,body.light .mas
     <div class="c-mark serif">Bank<em>Reg</em>Wire<span class="pdot">.</span></div>
     <p>Filed from the primary source. Guidance, rule text, and legislation read closely, with conclusions front-loaded and a working practitioner in mind.</p>
     <p>The engraving beneath the page is a quiet field of currencies, dollar, euro, and bitcoin foremost. It runs the whole site as one plate; the glass above it carries the reading.</p>
+    <a class="c-contact" href="mailto:feedback@bankregwire.com"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>Contact the site's creator</a>
     <div class="c-meta">© 2026 BankRegWire · A working catalogue · Not legal advice</div>
   </footer>
 </div>
