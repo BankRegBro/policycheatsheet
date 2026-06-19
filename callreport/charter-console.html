@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Charter Console · De Novo National Bank Application Workbench</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070b08;--bg2:#0a110c;--panel:#0c1610;--panel2:#0f1d14;--grid:rgba(95,232,138,0.06);
+--phos:#5fe88a;--phos-dim:#3a7d54;--phos-faint:#27543a;--ink:#cfeede;--ink-dim:#6f9683;
+--amber:#ffb347;--alert:#ff6b6b;--gold:#ffd166;--teal:#54d6d6;--teal-dim:#2f7d7d;
+--edge:rgba(95,232,138,0.16);--edge-soft:rgba(95,232,138,0.09);
+/* accent flips with charter mode */
+--ac:var(--phos);--ac-dim:var(--phos-dim);--ac-faint:var(--phos-faint);}
+body.trust{--ac:var(--teal);--ac-dim:var(--teal-dim);--ac-faint:#244f4f;}
+*{box-sizing:border-box;margin:0;padding:0}html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:'JetBrains Mono',ui-monospace,monospace;font-size:13.5px;line-height:1.5;min-height:100vh;
+background-image:radial-gradient(120% 90% at 50% -10%,rgba(95,232,138,0.05),transparent 60%),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:auto,100% 28px,28px 100%}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;background:repeating-linear-gradient(0deg,rgba(0,0,0,0.16) 0,rgba(0,0,0,0.16) 1px,transparent 1px,transparent 3px);mix-blend-mode:multiply;opacity:0.5}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:9998;background:radial-gradient(130% 120% at 50% 50%,transparent 55%,rgba(0,0,0,0.5) 100%)}
+.wrap{max-width:1120px;margin:0 auto;padding:20px 16px 90px}
+header{border:1px solid var(--edge);background:linear-gradient(180deg,var(--panel),var(--bg2))}
+.titlebar{display:flex;align-items:center;gap:9px;padding:9px 13px;border-bottom:1px solid var(--edge-soft);background:rgba(95,232,138,0.04)}
+.dot{width:9px;height:9px;border-radius:50%;border:1px solid var(--ac-dim)}.dot.on{background:var(--ac);box-shadow:0 0 7px var(--ac)}
+.tb-label{margin-left:auto;color:var(--ac-dim);font-size:10.5px;letter-spacing:0.16em;text-transform:uppercase}
+.head-main{padding:18px 16px 16px}
+.eyebrow{color:var(--ac-dim);font-size:10.5px;letter-spacing:0.24em;text-transform:uppercase;margin-bottom:7px}
+h1{font-size:clamp(19px,4vw,28px);font-weight:800;color:var(--ac);text-shadow:0 0 13px rgba(95,232,138,0.4);line-height:1.12}
+body.trust h1{text-shadow:0 0 13px rgba(84,214,214,0.4)}
+h1 .cur{display:inline-block;width:0.55ch;background:var(--ac);box-shadow:0 0 9px var(--ac);animation:blink 1.1s steps(1) infinite;color:transparent;margin-left:2px}
+@keyframes blink{50%{opacity:0}}
+.subhead{margin-top:9px;color:var(--ink-dim);max-width:86ch;font-size:12.5px;line-height:1.55}.subhead b{color:var(--ink)}
+.toolnav{display:flex;flex-wrap:wrap;align-items:center;gap:3px;margin-bottom:14px;padding:7px 10px;border:1px solid var(--edge);background:linear-gradient(180deg,var(--panel),var(--bg2));border-radius:2px;font-size:11.5px}
+.toolnav a{color:var(--ink-dim);text-decoration:none;padding:6px 10px;border-radius:2px;transition:.12s;white-space:nowrap}
+.toolnav a:hover{color:var(--ink);background:var(--panel2)}
+.toolnav a.active{color:var(--ac);background:color-mix(in srgb,var(--ac) 12%,var(--panel));font-weight:700}
+.toolnav a.home{color:var(--amber)}
+.toolnav .navsep{width:1px;height:16px;background:var(--edge);margin:0 5px}
+.toolnav .navttl{color:var(--ac-dim);letter-spacing:0.12em;text-transform:uppercase;font-size:9.5px;margin-right:3px}
+@media(max-width:560px){.toolnav{font-size:10.5px}.toolnav .navttl{display:none}}
+
+/* master switch panel */
+.master{margin-top:16px;border:1px solid var(--edge);background:linear-gradient(180deg,var(--panel),var(--bg2))}
+.master .mh{padding:9px 13px;border-bottom:1px solid var(--edge-soft);display:flex;align-items:center;gap:9px;background:rgba(95,232,138,0.04)}
+.master .mh .mt{font-size:10.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ac-dim);font-weight:800}
+.modebadge{margin-left:auto;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;font-weight:800;padding:3px 9px;border-radius:2px;color:#06140d;background:var(--ac)}
+.master .mb{padding:13px 14px;display:grid;grid-template-columns:repeat(2,1fr);gap:13px}
+@media(max-width:720px){.master .mb{grid-template-columns:1fr}}
+.swgrp .swl{font-size:10px;letter-spacing:0.13em;text-transform:uppercase;color:var(--ac-dim);margin-bottom:7px;display:flex;align-items:center;gap:6px}
+.swgrp .swl .cite{color:var(--ac-faint);font-size:9px;letter-spacing:0.04em;text-transform:none}
+.seg{display:flex;border:1px solid var(--edge);border-radius:2px;overflow:hidden}
+.segbtn{flex:1;background:var(--panel);color:var(--ink-dim);border:0;border-left:1px solid var(--edge);padding:8px 6px;cursor:pointer;font-family:inherit;font-size:11px;transition:.12s;white-space:nowrap}
+.segbtn:first-child{border-left:0}
+.segbtn:hover{color:var(--ink);background:var(--panel2)}
+.segbtn.on{background:color-mix(in srgb,var(--ac) 16%,var(--panel));color:var(--ac);font-weight:700}
+.segbtn:disabled{opacity:0.4;cursor:not-allowed}
+@media(max-width:560px){.segbtn{font-size:10px;padding:8px 3px}}
+.swnote{grid-column:1 / -1;color:var(--ac-faint);font-size:10px;line-height:1.55;border-top:1px dashed var(--edge-soft);padding-top:9px}
+.swnote b{color:var(--ink-dim)}
+
+/* section header */
+.sechd{display:flex;align-items:baseline;gap:10px;margin:24px 0 9px;padding-bottom:6px;border-bottom:1px solid var(--edge-soft)}
+.sechd .n{color:var(--ac-faint);font-size:11px;font-weight:800}
+.sechd h2{color:var(--ac);font-size:14px;font-weight:800;letter-spacing:0.02em;text-transform:uppercase}
+.sechd .note{margin-left:auto;color:var(--ink-dim);font-size:10.5px}
+
+/* readiness cards */
+.cards{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+@media(max-width:860px){.cards{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:520px){.cards{grid-template-columns:repeat(2,1fr)}}
+.card{border:1px solid var(--edge);background:linear-gradient(180deg,var(--panel),var(--bg2));padding:12px 13px;border-radius:2px}
+.card .cl{font-size:9px;letter-spacing:0.13em;text-transform:uppercase;color:var(--ac-dim)}
+.card .cv{font-size:21px;font-weight:800;color:var(--ac);text-shadow:0 0 11px rgba(95,232,138,0.32);margin-top:6px;line-height:1}
+body.trust .card .cv{text-shadow:0 0 11px rgba(84,214,214,0.32)}
+.card .cd{font-size:10px;color:var(--ink-dim);margin-top:6px;line-height:1.4}
+.card.warn{border-color:color-mix(in srgb,var(--amber) 45%,transparent)}.card.warn .cv{color:var(--amber);text-shadow:0 0 11px rgba(255,179,71,0.28)}
+.card.bad{border-color:color-mix(in srgb,var(--alert) 50%,transparent)}.card.bad .cv{color:var(--alert);text-shadow:none}
+.card.big{grid-column:span 2}
+@media(max-width:520px){.card.big{grid-column:span 2}}
+.meter{height:5px;background:rgba(95,232,138,0.12);border-radius:3px;margin-top:9px;overflow:hidden}
+.meter .fill{height:100%;background:var(--ac);box-shadow:0 0 8px var(--ac);transition:width .3s}
+
+/* collapsible input groups */
+.grp{border:1px solid var(--edge);background:var(--bg2);margin-bottom:10px}
+.grp .gh{padding:10px 14px;border-bottom:1px solid transparent;display:flex;align-items:center;gap:9px;cursor:pointer;background:rgba(95,232,138,0.03)}
+.grp.open .gh{border-bottom-color:var(--edge-soft)}
+.grp .gh .gn{color:var(--ac-faint);font-size:10.5px;font-weight:800;min-width:18px}
+.grp .gh h3{font-size:12px;color:var(--ink);font-weight:700}
+.grp .gh .car{color:var(--ac-dim);font-size:11px;transition:.15s}
+.grp.open .gh .car{transform:rotate(90deg)}
+.grp .gh .st{margin-left:auto;font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;padding:3px 8px;border-radius:2px;border:1px solid var(--edge)}
+.grp .gh .st.ok{color:var(--ac);border-color:var(--ac-dim)}
+.grp .gh .st.part{color:var(--amber);border-color:color-mix(in srgb,var(--amber) 40%,transparent)}
+.grp .gh .st.none{color:var(--ink-dim)}
+.grp .gb{padding:13px 14px;display:none}.grp.open .gb{display:block}
+.gbnote{color:var(--ac-faint);font-size:10.5px;line-height:1.55;margin-bottom:13px;border-left:2px solid var(--ac-dim);padding-left:11px}
+.gbnote b{color:var(--ink-dim)}
+
+/* field rows */
+.frow{display:grid;grid-template-columns:minmax(160px,1fr) minmax(180px,1.4fr);gap:11px;align-items:center;margin-bottom:11px}
+.frow:last-child{margin-bottom:0}
+@media(max-width:560px){.frow{grid-template-columns:1fr;gap:5px}}
+.flab{font-size:11.5px;color:var(--ink)}
+.flab .sub{display:block;color:var(--ac-faint);font-size:9.5px;margin-top:2px;letter-spacing:0.02em;line-height:1.4}
+.fin{background:var(--panel);border:1px solid var(--edge);color:var(--ink);font-family:inherit;font-size:12.5px;padding:7px 9px;border-radius:2px;outline:none;width:100%}
+.fin:focus{border-color:var(--ac-dim);color:var(--ac)}
+.fin::placeholder{color:var(--ac-faint)}
+textarea.fin{resize:vertical;min-height:62px;line-height:1.5}
+select.fin{cursor:pointer}
+.finwrap{display:flex;align-items:center;gap:5px;border:1px solid var(--edge);background:var(--panel);border-radius:2px;padding:0 9px}
+.finwrap .u{color:var(--ac-dim);font-size:11px;white-space:nowrap}
+.finwrap input{flex:1;background:transparent;border:0;color:var(--ink);font-family:inherit;font-size:12.5px;padding:7px 0;outline:none;text-align:right;min-width:0}
+.finwrap input:focus{color:var(--ac)}
+
+/* roster */
+.roster{border:1px solid var(--edge-soft)}
+.rrow{display:grid;grid-template-columns:1.4fr 1fr 64px 64px 28px;gap:8px;align-items:center;padding:7px 10px;border-top:1px solid var(--edge-soft);font-size:11.5px}
+.rrow:first-child{border-top:0}
+.rrow.rhd{background:rgba(95,232,138,0.04);color:var(--ac-dim);font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase}
+.rrow input[type=text]{background:var(--panel);border:1px solid var(--edge-soft);color:var(--ink);font-family:inherit;font-size:11.5px;padding:5px 7px;border-radius:2px;outline:none;width:100%}
+.rrow input[type=text]:focus{border-color:var(--ac-dim);color:var(--ac)}
+.rrow select{background:var(--panel);border:1px solid var(--edge-soft);color:var(--ink);font-family:inherit;font-size:11px;padding:5px 4px;border-radius:2px;outline:none;width:100%;cursor:pointer}
+.rchk{display:flex;align-items:center;justify-content:center}
+.rchk input{width:15px;height:15px;accent-color:var(--ac);cursor:pointer}
+.rdel{background:transparent;border:0;color:var(--ink-dim);cursor:pointer;font-size:14px;font-family:inherit;padding:0}
+.rdel:hover{color:var(--alert)}
+@media(max-width:620px){.rrow{grid-template-columns:1.3fr 60px 60px 24px;gap:6px}.rrow .rrole{display:none}}
+.radd{margin-top:9px;display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--edge);background:var(--panel);color:var(--ink-dim);padding:7px 12px;cursor:pointer;font-family:inherit;font-size:11.5px;border-radius:2px;transition:.12s}
+.btn:hover{color:var(--ink);border-color:var(--ac-dim)}
+.btn.acc{color:var(--ac);border-color:var(--ac-dim)}
+.btn.acc:hover{background:color-mix(in srgb,var(--ac) 11%,var(--panel))}
+
+/* checklist */
+.check{border:1px solid var(--edge-soft)}
+.citem{display:flex;align-items:flex-start;gap:10px;padding:8px 11px;border-top:1px solid var(--edge-soft);cursor:pointer}
+.citem:first-child{border-top:0}
+.citem:hover{background:var(--panel2)}
+.citem input{width:15px;height:15px;accent-color:var(--ac);cursor:pointer;margin-top:2px;flex-shrink:0}
+.citem .ct{font-size:11.5px;color:var(--ink);line-height:1.45}
+.citem .ct .csub{display:block;color:var(--ink-dim);font-size:10px;margin-top:2px}
+.citem.trustonly .ct .csub{color:var(--teal-dim)}
+
+/* flag / narrative blocks */
+.flag{margin-top:11px;border:1px solid color-mix(in srgb,var(--amber) 40%,transparent);background:color-mix(in srgb,var(--amber) 7%,var(--bg2));padding:10px 13px;font-size:11.5px;color:var(--amber);line-height:1.5}
+.flag.bad{border-color:color-mix(in srgb,var(--alert) 45%,transparent);background:color-mix(in srgb,var(--alert) 8%,var(--bg2));color:#ffc9c9}
+.flag.ok{border-color:var(--ac-dim);background:color-mix(in srgb,var(--ac) 6%,var(--bg2));color:var(--ac)}
+.computed{margin-top:11px;padding:10px 13px;border:1px solid var(--edge-soft);background:var(--panel);font-size:11.5px;line-height:1.6}
+.computed .cl{font-size:9.5px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ac-dim);margin-bottom:6px}
+.computed b{color:var(--ac)}.computed .w{color:var(--amber)}
+
+/* timeline */
+.timeline{border:1px solid var(--edge);background:var(--bg2)}
+.tlrow{display:grid;grid-template-columns:34px 1fr auto;gap:11px;align-items:center;padding:10px 13px;border-top:1px solid var(--edge-soft)}
+.tlrow:first-child{border-top:0}
+.tlrow .tn{width:26px;height:26px;border-radius:50%;border:1px solid var(--ac-dim);display:flex;align-items:center;justify-content:center;color:var(--ac);font-size:10.5px;font-weight:800}
+.tlrow .tinfo .tt{font-size:12px;color:var(--ink);font-weight:700}
+.tlrow .tinfo .td{font-size:10.5px;color:var(--ink-dim);margin-top:2px;line-height:1.4}
+.tlrow .tdate{font-size:12px;color:var(--ac);font-weight:700;text-align:right;white-space:nowrap}
+.tlrow .tdate .dl{display:block;font-size:9px;color:var(--ac-faint);letter-spacing:0.1em;text-transform:uppercase;font-weight:400;margin-bottom:2px}
+
+/* draft package */
+.draftbar{margin:14px 0 10px;display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.draft{border:1px solid var(--edge);background:#0a0f0b;display:none}
+.draft.show{display:block}
+.draft .dhd{padding:9px 13px;border-bottom:1px solid var(--edge-soft);display:flex;align-items:center;gap:8px;background:rgba(95,232,138,0.04)}
+.draft .dhd .dt{font-size:10.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ac-dim);font-weight:800}
+.draft .dhd .dmeta{margin-left:auto;color:var(--ink-dim);font-size:10px}
+.draftdoc{padding:8px 4px}
+.dsec{padding:14px 16px;border-bottom:1px solid var(--edge-soft)}
+.dsec:last-child{border-bottom:0}
+.dsec .dsh{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ac-dim);font-weight:800;margin-bottom:9px}
+.dsec p{font-size:12px;color:var(--ink);line-height:1.7;margin-bottom:9px}
+.dsec p:last-child{margin-bottom:0}
+.dsec p b{color:var(--ac)}
+.dsec ul{margin:0 0 9px 0;padding-left:18px}
+.dsec li{font-size:12px;color:var(--ink);line-height:1.65;margin-bottom:4px}
+.dsec .placeholder{color:var(--amber);font-style:italic}
+.dtbl{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:6px}
+.dtbl th,.dtbl td{padding:6px 9px;border-bottom:1px solid var(--edge-soft);text-align:left}
+.dtbl th{color:var(--ac-dim);font-size:9.5px;letter-spacing:0.06em;text-transform:uppercase}
+.dtbl td .yes{color:var(--ac)}.dtbl td .no{color:var(--alert)}
+
+/* glossary */
+.gl{font:inherit;color:var(--ac);background:transparent;border:0;padding:0;cursor:pointer;border-bottom:1px dotted var(--ac-dim)}
+.gl:hover,.gl:focus{color:#9af5c0;border-bottom-color:var(--ac);outline:none}
+body.trust .gl:hover,body.trust .gl:focus{color:#a6f0f0}
+#glpop{position:fixed;z-index:10001;max-width:320px;display:none;border:1px solid var(--ac-dim);background:linear-gradient(180deg,#0d1b12,#0a130d);box-shadow:0 8px 30px rgba(0,0,0,0.7);border-radius:3px;padding:11px 13px}
+#glpop .gl-t{color:var(--ac);font-weight:800;font-size:12.5px;margin-bottom:5px}#glpop .gl-d{color:var(--ink);font-size:12px;line-height:1.55}
+#glpop .gl-c{color:var(--ac-faint);font-size:10px;margin-top:7px;letter-spacing:0.03em}
+
+footer{margin-top:28px;border-top:1px solid var(--edge-soft);padding-top:13px;color:var(--ink-dim);font-size:11px;line-height:1.65}footer b{color:var(--ink-dim)}.src{color:var(--ac-dim)}.disc{color:var(--ac-faint)}
+@media(prefers-reduced-motion:reduce){h1 .cur{animation:none}}
+@media print{body::after,body::before{display:none}.toolnav,.master,.draftbar,.btn{display:none}body{background:#fff;color:#000}.draft{border-color:#999}.dsec p,.dsec li{color:#000}.dsec p b{color:#000}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="toolnav"><a class="home" href="https://bankregwire.com/wire.html">↩ BankRegWire</a><span class="navsep"></span><span class="navttl">Bank Workbench</span><a href="callreport-linemap.html">CAMELS Map</a><a href="callreport-literal.html">Literal Form</a><a href="bank-health-scanner.html">Health Scanner</a><a href="ma-partner-finder.html">M&amp;A Finder</a><a href="pro-forma-merger.html">Merger Model</a><a href="interest-rate-risk.html">Rate Risk</a><a href="charter-console.html" class="active">Charter Console</a></nav>
+
+  <header>
+    <div class="titlebar"><span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="tb-label" id="tbLabel">12 CFR 5.20 · de novo application workbench</span></div>
+    <div class="head-main">
+      <div class="eyebrow">Charter application prep</div>
+      <h1 id="h1">Draft a national bank charter<span class="cur">_</span></h1>
+      <p class="subhead">Set the <b>charter type</b> and structure, build the <b>organizing group</b>, size the <b>capital plan</b>, and the console assembles a populated first draft of the OCC charter application: the <b>cover and overview</b>, a <b>business plan</b> scaffold built to the Business Plan Guidelines, the <b>standard de novo conditions</b> tuned to your capital, the <b>minimum-policy</b> commitments, the <b>biographical-report roster</b>, and a <b>phase timeline</b> with the statutory deadlines. Every section branches on whether you are organizing a <b>full-service national bank</b> or a <b>national trust bank</b>. The output is a working draft and a readiness read, not legal advice.</p>
+    </div>
+  </header>
+
+  <!-- MASTER SWITCH -->
+  <div class="master">
+    <div class="mh"><span class="dot on" style="width:7px;height:7px"></span><span class="mt">Master configuration</span><span class="modebadge" id="modeBadge">Full-service mode</span></div>
+    <div class="mb">
+      <div class="swgrp">
+        <div class="swl">Charter type <span class="cite">12 USC 27(a)</span></div>
+        <div class="seg" id="swType">
+          <button class="segbtn on" data-v="full">Full-service national bank</button>
+          <button class="segbtn" data-v="trust">National trust bank</button>
+        </div>
+      </div>
+      <div class="swgrp">
+        <div class="swl">Deposit insurance <span class="cite">12 CFR 5.20(e)(3)</span></div>
+        <div class="seg" id="swIns">
+          <button class="segbtn on" data-v="ins">FDIC insured</button>
+          <button class="segbtn" data-v="unins">Uninsured</button>
+        </div>
+      </div>
+      <div class="swgrp">
+        <div class="swl">Corporate structure</div>
+        <div class="seg" id="swStruct">
+          <button class="segbtn on" data-v="standalone">Standalone</button>
+          <button class="segbtn" data-v="hc">Holding company</button>
+        </div>
+      </div>
+      <div class="swgrp">
+        <div class="swl">Review track <span class="cite">12 CFR 5.13(a)</span></div>
+        <div class="seg" id="swTrack">
+          <button class="segbtn on" data-v="standard">Standard</button>
+          <button class="segbtn" data-v="expedited">Expedited</button>
+        </div>
+      </div>
+      <div class="swgrp">
+        <div class="swl">Novel / high-risk activities</div>
+        <div class="seg" id="swNovel">
+          <button class="segbtn on" data-v="no">Conventional</button>
+          <button class="segbtn" data-v="yes">Digital assets / fintech</button>
+        </div>
+      </div>
+      <div class="swgrp">
+        <div class="swl">Target filing date</div>
+        <div class="finwrap" style="padding:0 9px"><input type="date" id="fileDate" style="text-align:left"></div>
+      </div>
+      <div class="swnote" id="swNote"></div>
+    </div>
+  </div>
+
+  <!-- READINESS DASHBOARD -->
+  <div class="sechd"><span class="n">00</span><h2>Readiness</h2><span class="note">live composite against the 12 CFR 5.20(e)–(f) review factors</span></div>
+  <div class="cards" id="cards"></div>
+
+  <!-- INPUT GROUPS -->
+  <div class="sechd"><span class="n">01</span><h2>Application workbench</h2><span class="note">inputs flow into the draft below</span></div>
+  <div id="groups"></div>
+
+  <!-- TIMELINE -->
+  <div class="sechd"><span class="n">02</span><h2>Phase timeline</h2><span class="note">statutory clocks from your target filing date</span></div>
+  <div class="timeline" id="timeline"></div>
+
+  <!-- DRAFT -->
+  <div class="sechd"><span class="n">03</span><h2>Draft application package</h2><span class="note">assembled from your inputs</span></div>
+  <div class="draftbar">
+    <button class="btn acc" id="buildBtn">Assemble draft</button>
+    <button class="btn" id="printBtn">Print / save PDF</button>
+    <button class="btn" id="copyBtn">Copy text</button>
+    <span class="src" id="draftMsg" style="font-size:10.5px"></span>
+  </div>
+  <div class="draft" id="draft"></div>
+
+  <footer>
+    <b>Sources:</b> National Bank Act, 12 USC 21 et seq. and 12 USC 27(a); 12 CFR 5.20, 5.26, and 12 CFR 9; OCC Comptroller's Licensing Manual, <span class="src">Charters</span> booklet (Dec. 2021) and <span class="src">Background Investigations</span> booklet (Feb. 2025); the Interagency Charter and Federal Deposit Insurance Application (FDIC 6200/05) and Interagency Biographical and Financial Report (FDIC 6200/06); OCC Bulletin 2007-21 (trust-bank capital and liquidity); and the OCC's March 2026 national bank chartering final rule. <span class="src">This console produces a structured first draft and a completeness read. It does not file with the OCC, run background checks, build the full financial projection model, or replace counsel. Capital floors, the Tier 1 leverage minimum, and condition durations are set case by case in the OCC's decision letter and are shown here as planning defaults, not commitments.</span><br>
+    <span class="disc">Educational and drafting-support tool. Not legal, accounting, or regulatory advice. Not affiliated with the OCC, FDIC, or Federal Reserve.</span>
+  </footer>
+</div>
+<div id="glpop" role="dialog"></div>
+
+<script>
+/* ============================ glossary ============================ */
+const GLOSSARY={
+ denovo:{t:"De novo bank",d:"A newly organized bank with no operating history, as distinct from a charter conversion or merger. De novo banks face a heightened-supervision period of no less than three years after opening.",c:"Charters booklet"},
+ ibfr:{t:"Interagency Biographical and Financial Report (IBFR)",d:"FDIC Form 6200/06. Required for every organizer, proposed director, senior executive officer, and 10 percent-or-more shareholder. Captures biographical, employment, regulatory, criminal, and litigation history plus a personal financial statement. Never filed on its own.",c:"FDIC 6200/06"},
+ prelim:{t:"Preliminary conditional approval",d:"The first OCC decision. It clears the substantive review and authorizes the group to organize the bank, but not to conduct banking. Capital must be raised within 12 months and the bank must open within 18 months.",c:"12 CFR 5.20(i)(6)"},
+ finalapp:{t:"Final approval",d:"The OCC's authorization to open, issued after the organization phase and a preopening examination, together with the certificate to commence business under 12 USC 27(a).",c:"12 USC 27(a)"},
+ t1lev:{t:"Tier 1 leverage ratio",d:"Tier 1 capital divided by average total assets. For a de novo full-service bank the OCC sets a minimum leverage floor, held throughout the first three years, commensurate with the business plan's risk. A traditional baseline is around 8 percent; higher for novel-activity banks.",c:"12 CFR 3"},
+ b0721:{t:"OCC Bulletin 2007-21",d:"The OCC's capital and liquidity framework for uninsured national trust banks: a specific minimum dollar capital amount plus a liquidity floor equal to the greater of a fixed dollar amount or roughly 180 days of operating expenses, scaling up with size and complexity.",c:"OCC Bulletin 2007-21"},
+ fiduciary:{t:"Fiduciary powers",d:"Trust and related powers under 12 USC 92a and 12 CFR 9, exercised when the bank acts for the benefit of others as trustee, executor, custodian, or investment adviser. For a trust charter the request is folded into the application under 12 CFR 5.26, not filed separately.",c:"12 USC 92a · 12 CFR 9"},
+ cra:{t:"Community Reinvestment Act (CRA)",d:"Applies to insured depository institutions. An insured de novo must describe how it will help meet community credit needs, including low- and moderate-income areas. Uninsured trust banks are outside CRA as a matter of law.",c:"12 USC 2901 et seq."},
+ cats:{t:"Central Application Tracking System (CATS)",d:"The OCC's electronic portal through which organizers file and track the charter application.",c:"OCC"},
+ fiveorg:{t:"Five organizers",d:"A national bank must be organized by five or more natural persons, who normally serve as the initial board of directors. Each must show responsibility, honesty, and integrity and make a financial commitment reasonable to their means.",c:"12 USC 21 · 12 CFR 5.20(d)(8)"},
+ prefiling:{t:"Prefiling meeting",d:"A meeting the OCC normally requires before filing, attended by all organizers and the proposed chief executive officer, to surface capital, management, business-plan, and background issues early.",c:"Charters booklet"},
+ bizplan:{t:"Business plan",d:"A three-year plan built to the OCC and FDIC Business Plan Guidelines, covering the business description, marketing, management, records and controls, financial management, monitoring, an alternative strategy, and quarterly financial projections.",c:"12 CFR 5.20(g)(1)"},
+ field:{t:"Field investigation",d:"The OCC's on-site verification of the organizers, proposed management, capital, and the reasonableness of the business plan and market analysis.",c:"Charters booklet"},
+ expedited:{t:"Expedited review",d:"A streamlined track available chiefly where a full-service applicant is sponsored by a holding company whose lead depository institution is an eligible bank. Most standalone de novos undergo standard review.",c:"12 CFR 5.13(a)"},
+ sigdev:{t:"Significant deviation",d:"A material change from the approved business plan or operations, including changes to the risk and operating limits. A standard condition requires 60 days' prior written notice and OCC non-objection through the first three years.",c:"12 CFR 5.20(g)"},
+ orgcert:{t:"Organization Certificate",d:"With the Articles of Association, the document the organizers adopt and forward to the OCC to form the body corporate. Once accepted, the entity operates under the In Organization label.",c:"12 USC 22"},
+ preopen:{t:"Preopening examination",d:"An on-site OCC examination before opening that verifies risk management, adopted policies, information security and systems, the engaged external auditor, and capital. Recent letters require a preopening notice 60 days before the target opening date.",c:"Charters booklet"},
+ bsaaml:{t:"BSA/AML program",d:"A written program meeting 12 CFR 21.21: internal controls, independent testing, a designated BSA officer, training, and board approval, plus OFAC screening. Required for any bank taking deposits or moving funds.",c:"12 CFR 21.21"},
+ infosec:{t:"Information security program",d:"A written program meeting the Interagency Guidelines Establishing Information Security Standards, scaled to the bank's size and complexity and to any novel technology or digital-asset activities.",c:"12 CFR 30 App. B"},
+ fedmem:{t:"Federal Reserve membership",d:"All national banks are members of the Federal Reserve System and must subscribe to Reserve Bank stock equal to 6 percent of capital and surplus, with 3 percent paid in. Membership takes effect when the bank opens.",c:"12 USC 222 · Reg I"},
+ bhc:{t:"Bank holding company",d:"A company that controls a bank generally must obtain Federal Reserve approval under the Bank Holding Company Act and Regulation Y. The parent of an uninsured national trust bank may, in defined circumstances, fall outside that treatment.",c:"BHC Act · Reg Y"},
+ ppic:{t:"Initial paid-in capital",d:"The capital raised before opening, net of organizational and preopening expenses. The OCC sets a specific floor in the decision letter, sized to the business plan's risk rather than to a fixed regulatory minimum.",c:"Charters booklet"},
+ cdi:{t:"Custody / fiduciary operations",d:"For a trust charter, the operating core: trust administration, custody and safekeeping, asset servicing, and related activities under 12 CFR 9, rather than lending and deposit gathering.",c:"12 CFR 9"}
+};
+const pop=document.getElementById("glpop");
+function esc(s){return String(s==null?"":s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+function gl(key,label){const g=GLOSSARY[key];if(!g)return esc(label);return `<button class="gl" data-k="${key}" tabindex="0">${esc(label)}</button>`;}
+function showPop(b){const g=GLOSSARY[b.dataset.k];if(!g)return;pop.innerHTML=`<div class="gl-t">${esc(g.t)}</div><div class="gl-d">${esc(g.d)}</div>${g.c?`<div class="gl-c">${esc(g.c)}</div>`:""}`;pop.style.display="block";const r=b.getBoundingClientRect(),pw=pop.offsetWidth,ph=pop.offsetHeight;let left=Math.min(Math.max(8,r.left),window.innerWidth-pw-8);let below=r.bottom+10+ph<window.innerHeight||r.top-ph-10<8;pop.style.left=left+"px";pop.style.top=(below?r.bottom+10:r.top-ph-10)+"px";}
+function hidePop(){pop.style.display="none";}
+document.addEventListener("click",e=>{const b=e.target.closest(".gl");if(b){e.stopPropagation();showPop(b);}else if(!e.target.closest("#glpop"))hidePop();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")hidePop();});
+window.addEventListener("scroll",hidePop,true);
+
+/* ============================ state ============================ */
+const S={
+ type:"full", ins:"ins", struct:"standalone", track:"standard", novel:"no",
+ fileDate:"",
+ // profile
+ name:"", city:"", state:"", focus:"", openTarget:"",
+ // people
+ people:[],
+ // capital
+ capital:"", levFloor:"", trustCap:"", opex:"", liqFloor:"",
+ // business
+ model:"", niche:"", market:"", products:"", y3assets:"", profitQ:"",
+ // trust business
+ fidServices:"", custodyModel:"", aua:"",
+ // projections framing
+ fundingMix:"", primaryRevenue:"",
+ // policies
+ policies:{},
+ // related filings ack
+ filings:{}
+};
+
+/* ============================ defaults ============================ */
+function applyTypeDefaults(){
+ if(S.type==="trust"){
+   // most national trust banks are uninsured; default and lock to uninsured unless user overrides
+   if(!S._insTouched) S.ins="unins";
+ } else {
+   if(!S._insTouched) S.ins="ins";
+ }
+}
+function suggestedLev(){ return S.novel==="yes" ? 11 : 8; }
+
+/* ============================ formatting ============================ */
+function fmtUSD(v){if(v==null||isNaN(v)||v==="")return null;const n=+v;const a=Math.abs(n);if(a>=1e9)return "$"+(a/1e9).toFixed(2)+"B";if(a>=1e6)return "$"+(a/1e6).toFixed(2)+"M";if(a>=1e3)return "$"+(a/1e3).toFixed(0)+"K";return "$"+a.toFixed(0);}
+function num(v){const n=parseFloat(String(v).replace(/[, $]/g,""));return isNaN(n)?null:n;}
+function addDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x;}
+function addMonths(d,n){const x=new Date(d);x.setMonth(x.getMonth()+n);return x;}
+function fmtDate(d){if(!d||isNaN(d))return "—";return d.toLocaleDateString("en-US",{year:"numeric",month:"short",day:"numeric"});}
+
+/* ============================ readiness ============================ */
+function readiness(){
+ const r={};
+ // organizers
+ const orgs=S.people.filter(p=>p.role==="Organizer"||p.role==="Organizer/Director");
+ r.orgCount=S.people.length?orgs.length:0;
+ r.orgOK = orgs.length>=5;
+ // IBFR completeness
+ const need=S.people.length;
+ const ib=S.people.filter(p=>p.ibfr).length;
+ const fp=S.people.filter(p=>p.fp).length;
+ r.ibfrPct = need? Math.round((ib+fp)/(need*2)*100):0;
+ // capital
+ if(S.type==="full"){
+   const cap=num(S.capital), lev=num(S.levFloor);
+   r.capEntered = cap!=null;
+   r.capOK = cap!=null && lev!=null && lev>=suggestedLev();
+   r.capLabel = cap!=null? fmtUSD(cap*1e6):"—";
+ } else {
+   const cap=num(S.trustCap), opex=num(S.opex);
+   const liq180 = opex!=null? opex*1e6*180/365 : null;
+   const liqReq = (liq180!=null)? Math.max(num(S.liqFloor)? num(S.liqFloor)*1e6 : 500000, liq180) : (num(S.liqFloor)? num(S.liqFloor)*1e6:null);
+   r.capEntered = cap!=null;
+   r.capOK = cap!=null && liqReq!=null;
+   r.capLabel = cap!=null? fmtUSD(cap*1e6):"—";
+   r.liqReq = liqReq;
+ }
+ // business plan fields
+ const bizFields = S.type==="trust"
+   ? [S.model,S.niche,S.market,S.fidServices,S.custodyModel,S.profitQ]
+   : [S.model,S.niche,S.market,S.products,S.y3assets,S.profitQ];
+ const bizDone = bizFields.filter(x=>x&&x.trim()).length;
+ r.bizPct = Math.round(bizDone/bizFields.length*100);
+ // policies
+ const polKeys=policyList().map(p=>p.k);
+ const polDone=polKeys.filter(k=>S.policies[k]).length;
+ r.polPct = polKeys.length? Math.round(polDone/polKeys.length*100):0;
+ // profile
+ const profDone=[S.name,S.city,S.state].filter(x=>x&&x.trim()).length;
+ r.profPct=Math.round(profDone/3*100);
+ // composite
+ const parts=[r.profPct, r.orgOK?100:r.orgCount/5*100, r.ibfrPct, r.capOK?100:(r.capEntered?50:0), r.bizPct, r.polPct];
+ r.overall=Math.round(parts.reduce((a,b)=>a+b,0)/parts.length);
+ return r;
+}
+
+/* ============================ policy list ============================ */
+function policyList(){
+ const base=[
+   {k:"board",t:"Board supervision and governance policy",s:"Director duties, committee structure, succession",cite:""},
+   {k:"audit",t:"Internal and external audit program",s:"Independent internal audit; annual external audit engagement",cite:""},
+   {k:"ic",t:"Accounting and internal control system",s:"Records, reconciliation, segregation of duties",cite:""},
+   {k:"infosec",t:"Information security program",s:"Written program; vendor management; incident response",cite:"infosec"},
+   {k:"privacy",t:"Privacy and customer-information safeguards",s:"Opt-out and safeguarding of customer information",cite:""},
+   {k:"dr",t:"Business continuity and disaster recovery",s:"Resumption planning and testing",cite:""},
+   {k:"bsa",t:"BSA/AML program and OFAC screening",s:"Internal controls, independent testing, BSA officer, training",cite:"bsaaml"},
+   {k:"capital",t:"Capital plan and dividend policy",s:"Three-year capital plan; profit plan and budget",cite:""},
+   {k:"compliance",t:"Compliance management program",s:"Consumer, fair lending, and regulatory reporting",cite:""}
+ ];
+ if(S.type==="full"){
+   base.push(
+     {k:"loan",t:"Loan policy and credit administration",s:"Underwriting, loan review, ACL methodology, concentrations, lending limits",cite:""},
+     {k:"funds",t:"Funds management and liquidity policy",s:"Liquidity monitoring; brokered and volatile funding",cite:""},
+     {k:"invest",t:"Investment securities and interest-rate-risk policy",s:"Portfolio limits; rate-risk measurement",cite:""},
+     {k:"insider",t:"Insider transactions policy",s:"Regulation O and affiliate transactions",cite:""}
+   );
+ } else {
+   base.push(
+     {k:"fid9",t:"Fiduciary policies under 12 CFR 9",s:"Account administration, reviews, conflicts and self-dealing, recordkeeping",cite:"cdi"},
+     {k:"custody",t:"Custody and safekeeping controls",s:"Asset segregation; sub-custodial oversight; reconciliation",cite:""},
+     {k:"fidliq",t:"Trust-bank capital and liquidity policy",s:"Quarterly capital and liquidity review per Bulletin 2007-21",cite:"b0721"}
+   );
+   if(S.novel==="yes"){
+     base.push({k:"keymgmt",t:"Digital-asset custody and key management policy",s:"Cryptographic key controls; cold storage; transaction authorization",cite:""});
+   }
+ }
+ return base;
+}
+
+/* ============================ related filings ============================ */
+function filingList(){
+ const f=[];
+ if(S.ins==="ins"){
+   f.push({k:"fdic",t:"FDIC deposit insurance application",s:"Filed on the same Interagency form; FDIC decides insurance independently. Required before final OCC approval."});
+   f.push({k:"cra",t:"CRA component of the business plan",s:"Describe how the bank will help meet community credit needs, including low- and moderate-income areas."});
+ } else {
+   f.push({k:"noins",t:"No FDIC insurance application",s:"Uninsured charter. The FDIC insurance application and CRA component do not apply."});
+ }
+ f.push({k:"fed",t:"Federal Reserve membership and Reserve Bank stock",s:"All national banks subscribe to Reserve Bank stock equal to 6 percent of capital and surplus; membership effective at opening."});
+ if(S.struct==="hc"){
+   f.push({k:"bhc",t:"Holding company application to the Federal Reserve",s:"BHC Act / Regulation Y approval generally required before final OCC approval. File in parallel.",note:S.type==="trust"?"A parent of an uninsured trust bank may fall outside BHC Act treatment; confirm the analysis.":""});
+ }
+ if(S.type==="trust"){
+   f.push({k:"fidpow",t:"Fiduciary powers request",s:"Folded into the charter application under 12 CFR 5.26: scope of powers, capital and surplus statement, senior trust-management bios, and locations of fiduciary activities."});
+ }
+ return f;
+}
+
+/* ============================ render ============================ */
+const E=id=>document.getElementById(id);
+function setSeg(groupId,val,key){
+ const seg=E(groupId);
+ [...seg.querySelectorAll(".segbtn")].forEach(b=>b.classList.toggle("on",b.dataset.v===val));
+}
+function renderMaster(){
+ setSeg("swType",S.type);setSeg("swIns",S.ins);setSeg("swStruct",S.struct);setSeg("swTrack",S.track);setSeg("swNovel",S.novel);
+ const badge=E("modeBadge");
+ badge.textContent = S.type==="trust"?"Trust mode":"Full-service mode";
+ document.body.classList.toggle("trust",S.type==="trust");
+ E("h1").innerHTML = (S.type==="trust"?"Draft a national trust charter":"Draft a national bank charter")+'<span class="cur">_</span>';
+ E("tbLabel").textContent = (S.type==="trust"?"12 CFR 5.20 + 5.26 · trust charter workbench":"12 CFR 5.20 · de novo application workbench");
+ // expedited only sensible for HC-sponsored
+ const expBtn=[...E("swTrack").querySelectorAll(".segbtn")].find(b=>b.dataset.v==="expedited");
+ if(S.struct!=="hc"){ if(S.track==="expedited"){S.track="standard";} expBtn.disabled=true; } else { expBtn.disabled=false; }
+ setSeg("swTrack",S.track);
+ // note
+ let n=[];
+ if(S.type==="trust"){
+   n.push("Trust mode requests "+gl("fiduciary","fiduciary powers")+" under 12 CFR 5.26 inside the application. Capital and liquidity follow "+gl("b0721","Bulletin 2007-21")+" rather than a Tier 1 leverage floor.");
+   if(S.ins==="unins") n.push("Uninsured: no FDIC insurance application and "+gl("cra","CRA")+" does not apply.");
+ } else {
+   n.push("Full-service mode sets a dollar "+gl("ppic","initial paid-in capital")+" floor plus a "+gl("t1lev","Tier 1 leverage")+" minimum held through the first three years.");
+   if(S.ins==="ins") n.push("Insured: the "+gl("cra","CRA")+" component and the FDIC insurance application are required.");
+ }
+ if(S.novel==="yes") n.push("Novel-activity flag raises the suggested leverage floor toward 10–12 percent and adds heightened information-security and operational-readiness expectations.");
+ if(S.track==="expedited") n.push(gl("expedited","Expedited review")+" assumes an eligible holding-company sponsor; standalone de novos almost always run standard.");
+ E("swNote").innerHTML=n.join(" ");
+}
+
+function renderCards(){
+ const r=readiness();
+ const c=[];
+ c.push(`<div class="card big"><div class="cl">Overall readiness</div><div class="cv">${r.overall}%</div><div class="meter"><div class="fill" style="width:${r.overall}%"></div></div><div class="cd">composite of profile, organizers, ${gl("ibfr","IBFRs")}, capital, plan, policies</div></div>`);
+ c.push(`<div class="card ${r.orgOK?'':'warn'}"><div class="cl">Organizers</div><div class="cv">${r.orgCount}</div><div class="cd">${r.orgOK?'meets the 5+ rule':'need '+gl("fiveorg","5+ organizers")}</div></div>`);
+ c.push(`<div class="card ${r.ibfrPct===100?'':(r.ibfrPct>0?'warn':'bad')}"><div class="cl">IBFR + prints</div><div class="cv">${r.ibfrPct}%</div><div class="cd">per person, both required</div></div>`);
+ c.push(`<div class="card ${r.capOK?'':(r.capEntered?'warn':'bad')}"><div class="cl">Capital</div><div class="cv" style="font-size:17px">${r.capLabel}</div><div class="cd">${S.type==="trust"?gl("b0721","Bulletin 2007-21"):gl("ppic","paid-in")+" + "+gl("t1lev","leverage")}</div></div>`);
+ c.push(`<div class="card ${r.bizPct>66?'':(r.bizPct>0?'warn':'bad')}"><div class="cl">Business plan</div><div class="cv">${r.bizPct}%</div><div class="cd">core fields populated</div></div>`);
+ document.getElementById("cards").innerHTML=c.join("");
+}
+
+function field(label,sub,id,val,ph,type){
+ const inp = type==="textarea"
+   ? `<textarea class="fin" data-f="${id}" placeholder="${esc(ph||'')}">${esc(val||'')}</textarea>`
+   : `<input class="fin" data-f="${id}" type="${type||'text'}" value="${esc(val||'')}" placeholder="${esc(ph||'')}">`;
+ return `<div class="frow"><div class="flab">${label}${sub?`<span class="sub">${sub}</span>`:''}</div>${inp}</div>`;
+}
+function unitField(label,sub,id,val,unit,ph){
+ return `<div class="frow"><div class="flab">${label}${sub?`<span class="sub">${sub}</span>`:''}</div><div class="finwrap"><span class="u">${unit}</span><input data-f="${id}" type="text" value="${esc(val||'')}" placeholder="${esc(ph||'')}"></div></div>`;
+}
+
+function renderGroups(){
+ const r=readiness();
+ const g=[];
+ const stTag=(pct,okWhen)=>{
+   if(pct>=100||okWhen===true) return '<span class="st ok">complete</span>';
+   if(pct>0||okWhen==="part") return '<span class="st part">in progress</span>';
+   return '<span class="st none">empty</span>';
+ };
+
+ // 01 profile
+ g.push(grp("A","Proposed bank profile", S.profOpen,
+   stTag(r.profPct),
+   `<div class="gbnote">The identity block of the Interagency application. The proposed name must be available and not misleading; location anchors the public-notice publication and, for insured banks, the community-needs analysis.</div>`
+   + field("Proposed bank name","include the word that signals charter type, e.g. National Association or Trust","name",S.name,S.type==="trust"?"e.g. Meridian Trust, National Association":"e.g. Meridian National Bank")
+   + `<div class="frow"><div class="flab">Main office location<span class="sub">city and state of the head office</span></div><div style="display:grid;grid-template-columns:1.6fr .8fr;gap:8px"><input class="fin" data-f="city" value="${esc(S.city)}" placeholder="City"><input class="fin" data-f="state" value="${esc(S.state)}" placeholder="ST" maxlength="2"></div></div>`
+   + field("Special focus","optional: community development, cash management, "+(S.type==="trust"?"digital-asset custody":"SBA / niche lending"),"focus",S.focus,"e.g. commercial banking for the lower middle market")
+   + field("Target opening","planning date the 18-month clock is measured against","openTarget",S.openTarget,"","date")
+ ));
+
+ // 02 organizing group
+ const rosterRows=S.people.map((p,i)=>`<div class="rrow">
+   <input type="text" data-p="${i}" data-pf="name" value="${esc(p.name)}" placeholder="Full name">
+   <select data-p="${i}" data-pf="role" class="rrole">${["Organizer/Director","Organizer","Director","Senior Executive Officer","10%+ Shareholder"].map(o=>`<option ${p.role===o?'selected':''}>${o}</option>`).join("")}</select>
+   <div class="rchk"><input type="checkbox" data-p="${i}" data-pf="ibfr" ${p.ibfr?'checked':''} title="IBFR submitted"></div>
+   <div class="rchk"><input type="checkbox" data-p="${i}" data-pf="fp" ${p.fp?'checked':''} title="Fingerprints submitted"></div>
+   <button class="rdel" data-del="${i}" title="Remove">✕</button>
+ </div>`).join("");
+ g.push(grp("B","Organizing group and management", S.peopleOpen,
+   stTag(null, r.orgOK && r.ibfrPct===100 ? true : (S.people.length?"part":false)),
+   `<div class="gbnote">A national bank needs ${gl("fiveorg","five or more organizers")} who typically become the first board. Every organizer, director, ${gl("preopen","senior executive officer")}, and 10 percent-or-more holder needs an ${gl("ibfr","IBFR")} and fingerprints. The OCC vets each one and reserves a prior-no-objection right over senior officers and directors through the de novo period.</div>`
+   + `<div class="roster"><div class="rrow rhd"><div>Name</div><div class="rrole">Role</div><div style="text-align:center">IBFR</div><div style="text-align:center">Prints</div><div></div></div>${rosterRows||'<div class="rrow"><div style="grid-column:1/-1;color:var(--ink-dim)">No people added yet.</div></div>'}</div>`
+   + `<div class="radd"><button class="btn acc" data-add="Organizer/Director">+ Add organizer</button><button class="btn" data-add="Senior Executive Officer">+ Add officer</button><button class="btn" data-add="10%+ Shareholder">+ Add 10%+ holder</button></div>`
+   + (r.orgOK?'':`<div class="flag">Organizing group has ${r.orgCount} of the 5 organizers required by 12 USC 21.</div>`)
+ ));
+
+ // 03 capital
+ let capBody;
+ if(S.type==="full"){
+   const cap=num(S.capital),lev=num(S.levFloor),sug=suggestedLev();
+   capBody=`<div class="gbnote">There is no fixed statutory dollar minimum for a full-service national bank. The OCC sets a specific ${gl("ppic","initial paid-in capital")} floor in the decision letter, sized to the plan's risk, plus a ${gl("t1lev","Tier 1 leverage")} minimum held through the first three years.</div>`
+     + unitField("Initial paid-in capital","raised before opening, net of organizational and preopening expenses","capital",S.capital,"$M","e.g. 25")
+     + unitField("Proposed Tier 1 leverage floor","held throughout the first three years","levFloor",S.levFloor,"%","e.g. "+sug)
+     + `<div class="computed"><div class="cl">Read</div>${cap!=null?`Initial capital of <b>${fmtUSD(cap*1e6)}</b>. `:'Enter a capital figure to model the floor. '}${lev!=null?(lev>=sug?`Leverage floor of <b>${lev}%</b> meets or exceeds the <b>${sug}%</b> suggested for this risk profile.`:`Leverage floor of <span class="w">${lev}%</span> is below the <b>${sug}%</b> suggested for ${S.novel==="yes"?"a novel-activity":"a conventional"} de novo. The OCC routinely sets higher.`):`Suggested floor for this profile: <b>${sug}%</b>.`}</div>`;
+ } else {
+   const cap=num(S.trustCap),opex=num(S.opex),floor=num(S.liqFloor);
+   const liq180 = opex!=null? opex*1e6*180/365 : null;
+   const liqReq = liq180!=null? Math.max(floor?floor*1e6:500000, liq180) : (floor?floor*1e6:null);
+   capBody=`<div class="gbnote">An uninsured national trust bank is capitalized under ${gl("b0721","Bulletin 2007-21")}: a minimum dollar capital amount plus a liquidity floor equal to the greater of a fixed dollar amount or roughly 180 days of operating expenses, reviewed at least quarterly and scaling with size and complexity.</div>`
+     + unitField("Minimum capital","specific dollar floor proposed in the plan","trustCap",S.trustCap,"$M","e.g. 10")
+     + unitField("Projected annual operating expense","drives the 180-day liquidity test","opex",S.opex,"$M","e.g. 6")
+     + unitField("Fixed liquidity floor","the dollar leg of the greater-of test","liqFloor",S.liqFloor,"$M","e.g. 0.5")
+     + `<div class="computed"><div class="cl">Read</div>${cap!=null?`Minimum capital of <b>${fmtUSD(cap*1e6)}</b>. `:'Enter capital to model the floor. '}${liqReq!=null?`Liquidity requirement is the greater of the fixed floor and 180 days of opex: <b>${fmtUSD(liqReq)}</b>${liq180!=null?` (180-day opex ≈ ${fmtUSD(liq180)})`:''}.`:'Enter operating expense to compute the 180-day liquidity test.'}</div>`;
+ }
+ g.push(grp("C","Capital and liquidity plan", S.capOpen, stTag(null, r.capOK?true:(r.capEntered?"part":false)), capBody));
+
+ // 04 business plan
+ let bizBody=`<div class="gbnote">The ${gl("bizplan","business plan")} is the spine of the application. The OCC denies applications with weak plans, so the model, market, and path to viability carry weight. The full plan runs three years with quarterly projections; this captures the narrative core the draft builds from.</div>`;
+ if(S.type==="trust"){
+   bizBody += field("Business model","what the trust bank does and for whom","model",S.model,"e.g. institutional custody and trustee services for digital-asset funds","textarea")
+     + field("Niche and differentiation","why this bank, why now","niche",S.niche,"the specific gap in the market","textarea")
+     + field("Target market","client segments, geography, sourcing","market",S.market,"e.g. registered funds, RIAs, and qualified custodians nationwide","textarea")
+     + field("Fiduciary and custody services","scope of "+gl("cdi","trust operations")+" under 12 CFR 9","fidServices",S.fidServices,"e.g. directed trustee, custodian, escrow, and account administration","textarea")
+     + field("Custody operating model","how assets are held and controlled","custodyModel",S.custodyModel,S.novel==="yes"?"e.g. segregated cold storage with multi-party key controls and a named sub-custodian":"e.g. omnibus and segregated custody with named sub-custodial relationships","textarea")
+     + unitField("Year-3 assets under administration","scale the plan targets","aua",S.aua,"$B","e.g. 5")
+     + field("Path to viability","when and how the bank reaches sustained profitability","profitQ",S.profitQ,"e.g. fee-driven breakeven in quarter 9 on AUA of ~$2B","textarea");
+ } else {
+   bizBody += field("Business model","what the bank does and for whom","model",S.model,"e.g. relationship commercial banking for the lower middle market","textarea")
+     + field("Niche and differentiation","why this bank, why now","niche",S.niche,"the specific gap in the market","textarea")
+     + field("Target market","customer segments, geography, demographics","market",S.market,"e.g. owner-operated businesses in the metro area","textarea")
+     + field("Products and services","deposits, lending, and fee lines","products",S.products,"e.g. C&I and CRE lending, treasury management, business deposits","textarea")
+     + unitField("Year-3 total assets","scale the plan targets","y3assets",S.y3assets,"$M","e.g. 350")
+     + field("Path to viability","when and how the bank turns profitable","profitQ",S.profitQ,"e.g. profitable in quarter 10; cumulative breakeven by year 3","textarea");
+ }
+ g.push(grp("D","Business plan core", S.bizOpen, stTag(r.bizPct), bizBody));
+
+ // 05 projections framing
+ g.push(grp("E","Financial projections framing", S.projOpen, stTag(([S.fundingMix,S.primaryRevenue].filter(x=>x&&x.trim()).length/2)*100),
+   `<div class="gbnote">The application requires opening-day pro formas plus quarterly projections for three years, mapped to the Call Report and shown in dollars and as a percent of assets, with documented assumptions and a sensitivity analysis. This captures the framing; build the full model separately.</div>`
+   + field(S.type==="trust"?"Primary revenue drivers":"Funding mix","high-level assumption the projections rest on",S.type==="trust"?"primaryRevenue":"fundingMix",S.type==="trust"?S.primaryRevenue:S.fundingMix,S.type==="trust"?"e.g. custody basis-point fees, account fees, and cash-management spread":"e.g. 70% core deposits, 20% money market, 10% time","textarea")
+   + field(S.type==="trust"?"Expense and staffing assumptions":"Primary revenue drivers","what scales the cost base",S.type==="trust"?"fundingMix":"primaryRevenue",S.type==="trust"?S.fundingMix:S.primaryRevenue,S.type==="trust"?"e.g. technology and custody-ops staffing scaling with AUA":"e.g. net interest income on the loan book plus treasury fees","textarea")
+ ));
+
+ // 06 policies
+ const pl=policyList();
+ const polRows=pl.map(p=>`<label class="citem"><input type="checkbox" data-pol="${p.k}" ${S.policies[p.k]?'checked':''}><span class="ct">${p.cite?gl(p.cite,p.t):esc(p.t)}<span class="csub">${esc(p.s)}</span></span></label>`).join("");
+ g.push(grp("F","Minimum policies and risk management", S.polOpen, stTag(r.polPct),
+   `<div class="gbnote">The board adopts these at its first meeting and completes them no later than the ${gl("preopen","preopening examination")} request. Check the ones the organizing group has committed to draft. The list adapts to charter type${S.novel==="yes"?" and to the novel-activity flag":""}.</div>`
+   + `<div class="check">${polRows}</div>`
+ ));
+
+ // 07 related filings
+ const fl=filingList();
+ const filRows=fl.map(f=>`<label class="citem ${f.k==='fidpow'||f.k==='fidliq'?'trustonly':''}"><input type="checkbox" data-fil="${f.k}" ${S.filings[f.k]?'checked':''}><span class="ct">${esc(f.t)}<span class="csub">${esc(f.s)}${f.note?' · '+esc(f.note):''}</span></span></label>`).join("");
+ g.push(grp("G","Related filings", S.filOpen, stTag(null,"part"),
+   `<div class="gbnote">What travels alongside the charter application. This list rebuilds from the master switch: insurance, ${gl("fedmem","Fed membership")}, any ${gl("bhc","holding-company")} filing, and, for trust banks, the ${gl("fiduciary","fiduciary-powers")} request.</div>`
+   + `<div class="check">${filRows}</div>`
+ ));
+
+ document.getElementById("groups").innerHTML=g.join("");
+}
+function grp(letter,title,open,statusHTML,body){
+ return `<div class="grp ${open?'open':''}" data-grp="${letter}"><div class="gh"><span class="gn">${letter}</span><span class="car">▸</span><h3>${esc(title)}</h3>${statusHTML}</div><div class="gb">${body}</div></div>`;
+}
+
+/* ============================ timeline ============================ */
+function renderTimeline(){
+ const tl=document.getElementById("timeline");
+ const base = S.fileDate? new Date(S.fileDate+"T00:00:00") : null;
+ const rows=[
+   {n:1,t:"Prefiling meeting",d:"All organizers and the proposed CEO meet the OCC before filing.",off:base?addDays(base,-30):null,dl:"Target"},
+   {n:2,t:"File application + publish notice",d:"File via "+gl("cats","CATS")+"; publish public notice the same day.",off:base,dl:"Filing"},
+   {n:3,t:"Comment period closes",d:"30-day public comment window under 12 CFR 5.10.",off:base?addDays(base,30):null,dl:"+30 days"},
+   {n:4,t:"OCC decision target",d:gl("field","Field investigation")+" and substantive review; "+gl("prelim","preliminary conditional approval")+".",off:base?addDays(base,120):null,dl:"+120 days"},
+   {n:5,t:"Capital raised",d:"Subscriptions closed and capital in place.",off:base?addMonths(addDays(base,120),12):null,dl:"+12 mo from approval"},
+   {n:6,t:"Preopening notice",d:gl("preopen","Preopening")+" notice 60 days before opening.",off:base?addDays(addMonths(addDays(base,120),18),-60):null,dl:"opening −60 days"},
+   {n:7,t:"Open for business",d:gl("finalapp","Final approval")+" and the certificate under 12 USC 27(a).",off:base?addMonths(addDays(base,120),18):null,dl:"+18 mo from approval"}
+ ];
+ tl.innerHTML=rows.map(r=>`<div class="tlrow"><div class="tn">${r.n}</div><div class="tinfo"><div class="tt">${r.t}</div><div class="td">${r.d}</div></div><div class="tdate"><span class="dl">${r.dl}</span>${base?fmtDate(r.off):"set filing date"}</div></div>`).join("");
+}
+
+/* ============================ draft ============================ */
+function art(){ return S.type==="trust"?"national trust bank":"national bank"; }
+function bankName(){ return S.name.trim()||"[Proposed Bank Name]"; }
+function loc(){ return (S.city.trim()&&S.state.trim())?`${S.city.trim()}, ${S.state.trim().toUpperCase()}`:"[city, state]"; }
+function ph(v,fallback){ return (v&&v.trim())? esc(v.trim()) : `<span class="placeholder">${esc(fallback)}</span>`; }
+
+function buildDraft(){
+ const r=readiness();
+ const d=document.getElementById("draft");
+ const orgs=S.people.filter(p=>p.role==="Organizer"||p.role==="Organizer/Director");
+ const officers=S.people.filter(p=>p.role==="Senior Executive Officer");
+ const sug=suggestedLev();
+ const cap=S.type==="full"?num(S.capital):num(S.trustCap);
+ const lev=num(S.levFloor)||sug;
+
+ let html=`<div class="dhd"><span class="dt">Draft · ${art()} charter application</span><span class="dmeta">${bankName()} · ${loc()} · readiness ${r.overall}%</span></div><div class="draftdoc">`;
+
+ // Cover / overview
+ html+=`<div class="dsec"><div class="dsh">Application overview</div>
+ <p>This application is submitted to the Office of the Comptroller of the Currency under the National Bank Act, 12 USC 21 et seq., and 12 CFR 5.20, requesting ${S.type==="trust"?"a charter for a national trust bank whose operations will be limited to those of a trust company and activities related thereto under 12 USC 27(a), together with fiduciary powers under 12 USC 92a and 12 CFR 5.26":"a charter to organize a full-service national banking association under 12 USC 27(a)"}. The proposed bank, ${ph(S.name,"[Proposed Bank Name]")}, will be headquartered in ${loc()}.</p>
+ <p>The organizing group consists of ${orgs.length||"[number]"} organizer${orgs.length===1?"":"s"} who will serve as the initial board of directors. ${S.ins==="ins"?"The applicants concurrently file for federal deposit insurance with the FDIC on this Interagency form.":"The proposed bank will be uninsured; it will not accept deposits or make loans, and the FDIC deposit insurance application and the Community Reinvestment Act do not apply."} ${S.struct==="hc"?"The bank will be controlled by a holding company, for which a corresponding application is filed with the Federal Reserve.":"The bank will be organized on a standalone basis."} The applicants ${S.track==="expedited"?"request expedited review under 12 CFR 5.13(a)":"proceed under standard review"}.</p>
+ <p>${S.focus.trim()?`Special focus: ${esc(S.focus.trim())}.`:""} The business plan, financial projections, organizing documents, biographical and financial reports, and policy commitments follow as required attachments.</p>
+ </div>`;
+
+ // Executive summary
+ html+=`<div class="dsec"><div class="dsh">Business plan · I. Executive summary</div>
+ <p>${bankName()} will operate as ${ph(S.model, S.type==="trust"?"[describe the trust and custody business and the clients it serves]":"[describe the banking business and the customers it serves]")}. ${S.niche.trim()?`Its differentiation rests on ${esc(S.niche.trim())}.`:`<span class="placeholder">[State the market gap the bank fills.]</span>`}</p>
+ <p>The bank will serve ${ph(S.market,"[target market: segments, geography, and how clients are sourced]")}. ${S.type==="trust"
+   ? `Its core services comprise ${ph(S.fidServices,"[scope of fiduciary and custody services under 12 CFR 9]")}, with assets held under ${ph(S.custodyModel,"[the custody operating model]")}.${S.aua.trim()?` The plan targets approximately ${esc(S.aua.trim())} in assets under administration by year three.`:""}`
+   : `Its products comprise ${ph(S.products,"[deposit, lending, and fee products]")}.${S.y3assets.trim()?` The plan targets approximately $${esc(S.y3assets.trim())} million in total assets by year three.`:""}`}</p>
+ <p>Capitalization: ${cap!=null?`initial capital of <b>${fmtUSD(cap*1e6)}</b>`:`<span class="placeholder">[initial capital]</span>`}${S.type==="full"?`, with a Tier 1 leverage ratio maintained at no less than ${lev}% throughout the first three years`:`, sized and supported by liquidity under OCC Bulletin 2007-21`}. ${ph(S.profitQ,"[State the path to sustained profitability and the cumulative breakeven point.]")}</p>
+ </div>`;
+
+ // Description of business
+ html+=`<div class="dsec"><div class="dsh">Business plan · III. Description of business</div>
+ <p>Legal form and ownership: ${bankName()} will be a ${art()} chartered by the OCC.${S.struct==="hc"?" It will be a subsidiary of a holding company; affiliate transactions will be conducted at arm's length and within applicable limits.":" It will be held directly by its organizers and investors."} Office structure: a head office in ${loc()}${S.focus.trim()?`, with the special focus noted above`:""}.</p>
+ ${S.type==="trust"
+   ? `<p>The bank's operations are limited to those of a trust company and activities related thereto. It will act in ${ph(S.fidServices,"[fiduciary and custody capacities]")} and will not accept deposits or make commercial loans. Fiduciary activities will be administered under 12 CFR 9, with account acceptance, review, and conflict controls described in the policy section.</p>`
+   : `<p>The bank will conduct the general business of banking, gathering deposits and extending credit as described in the products section, supported by treasury and cash-management services.</p>`}
+ </div>`;
+
+ // Management
+ const roster = S.people.length
+   ? `<table class="dtbl"><thead><tr><th>Name</th><th>Proposed role</th><th>IBFR</th><th>Prints</th></tr></thead><tbody>${S.people.map(p=>`<tr><td>${esc(p.name||"[name]")}</td><td>${esc(p.role)}</td><td>${p.ibfr?'<span class="yes">filed</span>':'<span class="no">pending</span>'}</td><td>${p.fp?'<span class="yes">filed</span>':'<span class="no">pending</span>'}</td></tr>`).join("")}</tbody></table>`
+   : `<p class="placeholder">[Add the organizing group, directors, and senior executive officers.]</p>`;
+ html+=`<div class="dsec"><div class="dsh">Business plan · V. Management plan</div>
+ <p>The organizing group of ${orgs.length||"[number]"} will serve as the initial board.${officers.length?` Proposed senior executive officers include ${officers.map(o=>esc(o.name||"[name]")).join(", ")}.`:` <span class="placeholder">[Identify the proposed CEO and senior executive officers.]</span>`} Each organizer, director, senior executive officer, and 10 percent-or-more shareholder submits an Interagency Biographical and Financial Report and fingerprints; the OCC retains a prior-no-objection right over senior officers and directors through the de novo period.</p>
+ ${roster}
+ ${r.orgOK?"":`<p class="placeholder">Note: a national bank requires five or more organizers; the group currently lists ${orgs.length}.</p>`}
+ </div>`;
+
+ // Records, systems, controls + policies
+ const pl=policyList();
+ html+=`<div class="dsec"><div class="dsh">Business plan · VI. Records, systems, and controls</div>
+ <p>The board will adopt the following policies at its first meeting and complete them before the preopening examination${S.novel==="yes"?", with heightened attention to information security, key management, and operational readiness given the novel activities":""}:</p>
+ <ul>${pl.map(p=>`<li>${esc(p.t)}${S.policies[p.k]?"":' <span class="placeholder">(to be drafted)</span>'}</li>`).join("")}</ul>
+ </div>`;
+
+ // Financial management
+ html+=`<div class="dsec"><div class="dsh">Business plan · VII. Financial management plan</div>
+ <p>Capital and earnings: ${cap!=null?`opening capital of <b>${fmtUSD(cap*1e6)}</b>`:`<span class="placeholder">[opening capital]</span>`}${S.type==="full"?`, a Tier 1 leverage floor of ${lev}% through year three, and a dividend policy deferring distributions until capital and earnings support them`:`, with capital and liquidity reviewed at least quarterly under Bulletin 2007-21`}. ${S.type==="trust"
+   ? `Revenue rests on ${ph(S.primaryRevenue,"[primary revenue drivers]")}; the expense base scales per ${ph(S.fundingMix,"[expense and staffing assumptions]")}.`
+   : `Funding is planned as ${ph(S.fundingMix,"[funding mix]")}; earnings rest on ${ph(S.primaryRevenue,"[primary revenue drivers]")}.`} Opening-day pro formas and quarterly projections for three years, with documented assumptions and a sensitivity analysis, are attached.</p>
+ </div>`;
+
+ // Conditions
+ html+=`<div class="dsec"><div class="dsh">Standard de novo conditions (anticipated)</div>
+ <p>The OCC ordinarily imposes the following enforceable conditions, which the applicants expect and accept:</p>
+ <ul>
+ <li><b>Significant deviation.</b> 60 days' prior written notice and OCC non-objection before any significant deviation from the business plan or operations, including changes to risk and operating limits, through the first three years.</li>
+ ${S.type==="full"
+   ? `<li><b>Capital maintenance.</b> A minimum capital level commensurate with the business plan, with a Tier 1 leverage ratio of no less than ${lev}% maintained throughout the first three years of operation.</li>`
+   : `<li><b>Capital and liquidity.</b> Minimum capital and a liquidity floor consistent with OCC Bulletin 2007-21, reviewed at least quarterly, scaling with size and complexity.</li>`}
+ <li><b>Management vetting.</b> Prior OCC no-objection before appointing any senior executive officer (including the chief risk officer, chief information security officer, BSA officer, and head of internal audit) or director during the period specified by the OCC.</li>
+ <li><b>De novo period.</b> Heightened supervision for no less than three years after opening.</li>
+ </ul>
+ </div>`;
+
+ // Related filings
+ const fl=filingList();
+ html+=`<div class="dsec"><div class="dsh">Related filings and authorizations</div>
+ <ul>${fl.map(f=>`<li><b>${esc(f.t)}.</b> ${esc(f.s)}${f.note?` ${esc(f.note)}`:""}</li>`).join("")}</ul>
+ </div>`;
+
+ html+=`</div>`;
+ d.innerHTML=html;
+ d.classList.add("show");
+ document.getElementById("draftMsg").textContent=`Assembled · ${r.overall}% complete · placeholders in amber mark fields still to fill.`;
+ if(d.scrollIntoView) d.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function plainText(){
+ const d=document.getElementById("draft");
+ if(!d.classList.contains("show")) buildDraft();
+ let out=`DRAFT · ${art().toUpperCase()} CHARTER APPLICATION\n${bankName()} · ${loc()}\n\n`;
+ d.querySelectorAll(".dsec").forEach(s=>{
+   out+= s.querySelector(".dsh").textContent.toUpperCase()+"\n";
+   s.querySelectorAll("p,li").forEach(el=>{ out+= (el.tagName==="LI"?"  - ":"")+el.textContent.replace(/\s+/g," ").trim()+"\n"; });
+   out+="\n";
+ });
+ out+="Generated by Charter Console. Drafting support only; not legal advice.";
+ return out;
+}
+
+/* ============================ events ============================ */
+function rerender(){ renderMaster(); applyTypeDefaults(); renderMaster(); renderCards(); renderGroups(); renderTimeline(); }
+
+document.addEventListener("click",e=>{
+ // segmented switches
+ const seg=e.target.closest(".segbtn");
+ if(seg && !seg.disabled){
+   const parent=seg.parentElement.id;
+   const v=seg.dataset.v;
+   if(parent==="swType"){S.type=v;}
+   else if(parent==="swIns"){S.ins=v;S._insTouched=true;}
+   else if(parent==="swStruct"){S.struct=v;}
+   else if(parent==="swTrack"){S.track=v;}
+   else if(parent==="swNovel"){S.novel=v;}
+   rerender(); return;
+ }
+ // group toggle
+ const gh=e.target.closest(".gh");
+ if(gh){ const grp=gh.parentElement; grp.classList.toggle("open");
+   const L=grp.dataset.grp; const map={A:"profOpen",B:"peopleOpen",C:"capOpen",D:"bizOpen",E:"projOpen",F:"polOpen",G:"filOpen"};
+   S[map[L]]=grp.classList.contains("open"); return; }
+ // add person
+ const add=e.target.closest("[data-add]");
+ if(add){ S.people.push({name:"",role:add.dataset.add,ibfr:false,fp:false}); S.peopleOpen=true; renderGroups(); renderCards(); return; }
+ // delete person
+ const del=e.target.closest("[data-del]");
+ if(del){ S.people.splice(+del.dataset.del,1); renderGroups(); renderCards(); return; }
+ // buttons
+ if(e.target.id==="buildBtn"){ buildDraft(); return; }
+ if(e.target.id==="printBtn"){ if(!document.getElementById("draft").classList.contains("show")) buildDraft(); setTimeout(()=>window.print(),200); return; }
+ if(e.target.id==="copyBtn"){ const t=plainText(); navigator.clipboard.writeText(t).then(()=>{document.getElementById("draftMsg").textContent="Copied draft text to clipboard.";}).catch(()=>{document.getElementById("draftMsg").textContent="Copy failed; select the draft text manually.";}); return; }
+});
+
+document.addEventListener("input",e=>{
+ const f=e.target.dataset.f;
+ if(f!==undefined){ S[f]=e.target.value; if(["name","city","state"].includes(f)){renderMaster();} renderCards(); renderTimeline(); return; }
+ // person fields
+ if(e.target.dataset.p!==undefined){
+   const i=+e.target.dataset.p, pf=e.target.dataset.pf;
+   if(pf==="ibfr"||pf==="fp") S.people[i][pf]=e.target.checked;
+   else S.people[i][pf]=e.target.value;
+   if(pf==="role"){renderGroups();} renderCards(); return;
+ }
+ // policy
+ if(e.target.dataset.pol!==undefined){ S.policies[e.target.dataset.pol]=e.target.checked; renderCards(); return; }
+ // filings
+ if(e.target.dataset.fil!==undefined){ S.filings[e.target.dataset.fil]=e.target.checked; return; }
+ // file date
+ if(e.target.id==="fileDate"){ S.fileDate=e.target.value; renderTimeline(); return; }
+});
+
+/* ============================ init ============================ */
+// seed a couple of organizer rows so the roster is not empty
+S.people=[{name:"",role:"Organizer/Director",ibfr:false,fp:false},{name:"",role:"Organizer/Director",ibfr:false,fp:false}];
+S.profOpen=true; S.peopleOpen=true; S.capOpen=true; S.bizOpen=true;
+rerender();
+</script>
+</body>
+</html>
