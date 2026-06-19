@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="description" content="BankRegWire Call Report Suite: five FDIC-data tools for reading a bank's condition from the primary source.">
-<title>Call Report Suite · BankRegWire</title>
+<meta name="description" content="BankRegWire Bank Workbench: seven tools for reading, screening, and building a bank from the supervisory record.">
+<title>Bank Workbench · BankRegWire</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23070b08'/%3E%3Cline x1='4' y1='16' x2='28' y2='16' stroke='%235fe88a' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='3.5' fill='%235fe88a'/%3E%3Ccircle cx='16' cy='16' r='1.4' fill='%23070b08'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
-   BANKREGWIRE · Call Report Suite landing
+   BANKREGWIRE · Bank Workbench landing
    Palette + CRT treatment carried over from bank-health-scanner.html
    Background: three.js phosphor oscilloscope (graceful fallback)
    ============================================================ */
@@ -142,15 +142,15 @@ footer .disc{color:var(--phos-faint);margin-top:6px}
     <div class="titlebar">
       <span class="dot on"></span><span class="dot"></span><span class="dot"></span>
       <a class="tb-back" href="https://bankregwire.com/wire.html"><span class="arw">←</span> bankregwire.com</a>
-      <span class="tb-label">Call Report Suite</span>
+      <span class="tb-label">Bank Workbench</span>
     </div>
     <div class="head-main">
       <div class="eyebrow">BankRegWire <b>//</b> tool suite</div>
-      <h1>CALL REPORT SUITE<span class="cur"></span></h1>
-      <p class="subhead">Five FDIC-data instruments for reading a bank by its numbers, straight from the primary source: a curated <b>CAMELS line-map</b>, the <b>literal call report form</b>, a live <b>health scanner</b>, an <b>M&amp;A partner screen</b>, and a full <b>pro forma merger model</b>.</p>
+      <h1>BANK WORKBENCH<span class="cur"></span></h1>
+      <p class="subhead">Seven instruments for reading, screening, and building a bank from the supervisory record: a curated <b>CAMELS line-map</b>, the <b>literal call report form</b>, a live <b>health scanner</b>, an <b>M&amp;A partner screen</b>, a full <b>pro forma merger model</b>, an <b>interest rate risk screen</b>, and a <b>de novo charter application workbench</b>.</p>
       <div class="statline">
-        <span><span class="k">Tools</span> <span class="v">05</span></span>
-        <span><span class="k">Source</span> <span class="v">FDIC · FFIEC</span></span>
+        <span><span class="k">Tools</span> <span class="v">07</span></span>
+        <span><span class="k">Source</span> <span class="v">FDIC · FFIEC · OCC</span></span>
         <span><span class="k">Filed from</span> <span class="v">Arlington, VA</span></span>
         <span class="live"><i></i> Feed nominal</span>
       </div>
@@ -264,18 +264,58 @@ footer .disc{color:var(--phos-faint);margin-top:6px}
       </div>
     </a>
 
+    <!-- 06 · Interest rate risk screen -->
+    <a class="tool" href="interest-rate-risk.html" style="--acc:var(--c-S)">
+      <div class="chip"><svg viewBox="0 0 100 100" aria-hidden="true">
+        <line x1="20" y1="24" x2="20" y2="76" stroke="currentColor" stroke-width="1.4" opacity=".5"/>
+        <line x1="20" y1="76" x2="84" y2="76" stroke="currentColor" stroke-width="1.4" opacity=".5"/>
+        <path d="M 24 66 C 42 60, 60 54, 82 50" fill="none" stroke="currentColor" stroke-width="1.6" opacity=".65"/>
+        <path d="M 24 56 C 42 46, 60 36, 82 30" fill="none" class="accent-stroke" stroke-width="1.8"/>
+        <path d="M 70 28 L 82 30 L 76 39" fill="none" class="accent-stroke" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="82" cy="30" r="2.4" class="accent-fill"/>
+      </svg></div>
+      <div class="tbody">
+        <div class="tnum"><span class="seq">06</span> / Screen</div>
+        <h3>Interest Rate Risk Screen</h3>
+        <p>Lay out the repricing ladder and the behavioral assumptions no filing carries: deposit betas, core-deposit duration, prepayment. The screen runs earnings at risk and economic value of equity under parallel shocks and the Basel six, with the supervisory outlier test and an AFS and HTM capital lens.</p>
+        <div class="tags"><span>IRRBB</span><span>EVE &amp; NII</span><span>Basel six</span></div>
+        <div class="foot">Open file →<span class="badge">Offline</span></div>
+      </div>
+    </a>
+
+    <!-- 07 · Charter console -->
+    <a class="tool" href="charter-console.html" style="--acc:var(--c-E)">
+      <div class="chip"><svg viewBox="0 0 100 100" aria-hidden="true">
+        <rect x="24" y="18" width="40" height="54" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/>
+        <line x1="31" y1="30" x2="57" y2="30" stroke="currentColor" stroke-width="1.4" opacity=".7"/>
+        <line x1="31" y1="38" x2="57" y2="38" stroke="currentColor" stroke-width="1.4" opacity=".7"/>
+        <line x1="31" y1="46" x2="50" y2="46" stroke="currentColor" stroke-width="1.4" opacity=".7"/>
+        <circle cx="63" cy="65" r="12" fill="none" class="accent-stroke" stroke-width="1.8"/>
+        <path d="M 63 58 l 1.9 3.9 4.3 .6 -3.1 3 .7 4.3 -3.8 -2 -3.8 2 .7 -4.3 -3.1 -3 4.3 -.6 z" class="accent-fill"/>
+      </svg></div>
+      <div class="tbody">
+        <div class="tnum"><span class="seq">07</span> / Console</div>
+        <h3>Charter Console</h3>
+        <p>Set the charter type, build the organizing group, and size the capital plan, and the console drafts a first pass at an OCC de novo national bank application: the cover and overview, a business plan scaffold built to the Business Plan Guidelines, and the capital and management pieces, under 12 CFR 5.20.</p>
+        <div class="tags"><span>12 CFR 5.20</span><span>De Novo</span><span>OCC</span></div>
+        <div class="foot">Open file →<span class="badge">Offline</span></div>
+      </div>
+    </a>
+
   </main>
 
   <section class="notes" aria-label="Working notes">
     <h2>// on the wiring</h2>
-    <p>The <b>line-map</b> and <b>literal form</b> run entirely offline; nothing leaves the browser. The <b>scanner</b>, <b>partner finder</b>, and <b>merger model</b> read the FDIC API through a Cloudflare Worker that handles CORS and caches for an hour, mapping <code>/api/*</code> straight to <code>banks.data.fdic.gov/api/*</code>. FDIC figures lag roughly thirty to sixty days after quarter-end.</p>
+    <p>The <b>line-map</b>, <b>literal form</b>, <b>rate-risk screen</b>, and <b>charter console</b> run entirely offline; nothing leaves the browser. The <b>scanner</b>, <b>partner finder</b>, and <b>merger model</b> read the FDIC API through a Cloudflare Worker that handles CORS and caches for an hour, mapping <code>/api/*</code> straight to <code>banks.data.fdic.gov/api/*</code>. FDIC figures lag roughly thirty to sixty days after quarter-end.</p>
     <p>The <b>partner finder's</b> quick pro forma sums reported balances and asset-weights capital ratios and ROA. The <b>merger model</b> goes further, applying the acquisition method in full: goodwill, fair-value marks, the CECL day-two provision, and a recomputed capital stack, with the price multiple, the stock and cash mix, and the cash funding source as levers. Both set charter, ownership, and antitrust concentration aside. These are screening and education tools, not investment, legal, or supervisory advice.</p>
+    <p>The <b>rate-risk screen</b> is input-first rather than API-seeded. The granular repricing ladder is not exposed cleanly by the FDIC feed, and a bank’s deposit betas and core-deposit durations live only inside its own ALM system, so you enter the ladder and the behavioral assumptions and stress them directly: earnings at risk, economic value of equity, the Basel six, and the supervisory outlier test.</p>
+    <p>The <b>charter console</b> assembles a populated first draft of an OCC de novo national bank application from the charter type, the organizing group, and the capital plan, scaffolded to the Business Plan Guidelines and 12 CFR 5.20. It is a drafting aid, not a filing.</p>
   </section>
 
   <footer>
     <div class="mark">BankRegWire</div>
     <div>Filed from the primary source. Call report schedules and FDIC figures read closely, with conclusions front-loaded and a working practitioner in mind.</div>
-    <div class="disc">© 2026 BankRegWire · Call Report Suite · Not investment, legal, or supervisory advice</div>
+    <div class="disc">© 2026 BankRegWire · Bank Workbench · Not investment, legal, or supervisory advice</div>
   </footer>
 </div>
 
