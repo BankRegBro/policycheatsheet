@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interest Rate Risk Screen · IRRBB Earnings &amp; EVE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070b08;--bg2:#0a110c;--panel:#0c1610;--panel2:#0f1d14;--grid:rgba(95,232,138,0.06);
+--phos:#5fe88a;--phos-dim:#3a7d54;--phos-faint:#27543a;--ink:#cfeede;--ink-dim:#6f9683;
+--amber:#ffb347;--alert:#ff6b6b;--gold:#ffd166;
+--edge:rgba(95,232,138,0.16);--edge-soft:rgba(95,232,138,0.09);
+--c-C:#6ba8ff;--c-A:#ffb347;--c-E:#5fe88a;--c-L:#54d6d6;--c-S:#ff7a5c;}
+*{box-sizing:border-box;margin:0;padding:0}html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:'JetBrains Mono',ui-monospace,monospace;font-size:13.5px;line-height:1.5;min-height:100vh;
+background-image:radial-gradient(120% 90% at 50% -10%,rgba(95,232,138,0.05),transparent 60%),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:auto,100% 28px,28px 100%}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;background:repeating-linear-gradient(0deg,rgba(0,0,0,0.16) 0,rgba(0,0,0,0.16) 1px,transparent 1px,transparent 3px);mix-blend-mode:multiply;opacity:0.5}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:9998;background:radial-gradient(130% 120% at 50% 50%,transparent 55%,rgba(0,0,0,0.5) 100%)}
+.wrap{max-width:1120px;margin:0 auto;padding:20px 16px 90px}
+header{border:1px solid var(--edge);background:linear-gradient(180deg,var(--panel),var(--bg2))}
+.titlebar{display:flex;align-items:center;gap:9px;padding:9px 13px;border-bottom:1px solid var(--edge-soft);background:rgba(95,232,138,0.04)}
+.dot{width:9px;height:9px;border-radius:50%;border:1px solid var(--phos-dim)}.dot.on{background:var(--phos);box-shadow:0 0 7px var(--phos)}
+.tb-label{margin-left:auto;color:var(--phos-dim);font-size:10.5px;letter-spacing:0.16em;text-transform:uppercase}
+.head-main{padding:18px 16px 16px}
+.eyebrow{color:var(--phos-dim);font-size:10.5px;letter-spacing:0.24em;text-transform:uppercase;margin-bottom:7px}
+h1{font-size:clamp(19px,4vw,28px);font-weight:800;color:var(--phos);text-shadow:0 0 13px rgba(95,232,138,0.4);line-height:1.12}
+h1 .cur{display:inline-block;width:0.55ch;background:var(--phos);box-shadow:0 0 9px var(--phos);animation:blink 1.1s steps(1) infinite;color:transparent;margin-left:2px}
+@keyframes blink{50%{opacity:0}}
+.subhead{margin-top:9px;color:var(--ink-dim);max-width:84ch;font-size:12.5px;line-height:1.55}.subhead b{color:var(--ink)}
+.btn{border:1px solid var(--edge);background:var(--panel);color:var(--ink-dim);padding:9px 13px;cursor:pointer;font-family:inherit;font-size:12px;border-radius:2px;transition:.12s}
+.btn:hover{color:var(--ink);border-color:var(--phos-dim)}
+.toolnav{display:flex;flex-wrap:wrap;align-items:center;gap:3px;margin-bottom:14px;padding:7px 10px;border:1px solid var(--edge);background:linear-gradient(180deg,var(--panel),var(--bg2));border-radius:2px;font-size:11.5px}
+.toolnav a{color:var(--ink-dim);text-decoration:none;padding:6px 10px;border-radius:2px;transition:.12s;white-space:nowrap}
+.toolnav a:hover{color:var(--ink);background:var(--panel2)}
+.toolnav a.active{color:var(--phos);background:color-mix(in srgb,var(--phos) 12%,var(--panel));font-weight:700}
+.toolnav a.home{color:var(--amber)}
+.toolnav .navsep{width:1px;height:16px;background:var(--edge);margin:0 5px}
+.toolnav .navttl{color:var(--phos-dim);letter-spacing:0.12em;text-transform:uppercase;font-size:9.5px;margin-right:3px}
+@media(max-width:560px){.toolnav{font-size:10.5px}.toolnav .navttl{display:none}}
+
+/* two-bank picker */
+.picker{margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:640px){.picker{grid-template-columns:1fr}}
+.slot{border:1px solid var(--edge);background:var(--bg2)}
+.slot .sl-hd{padding:9px 13px;border-bottom:1px solid var(--edge-soft);display:flex;align-items:center;gap:8px;background:rgba(95,232,138,0.04)}
+.slot .sl-role{font-size:10px;letter-spacing:0.16em;text-transform:uppercase;font-weight:800;padding:3px 8px;border-radius:2px}
+.slot.acq .sl-role{color:#06140d;background:var(--phos)}
+.slot.tgt .sl-role{color:#06140d;background:var(--amber)}
+.slot .sl-hint{color:var(--ink-dim);font-size:10.5px;margin-left:auto}
+.slot .sl-body{padding:11px 13px}
+.sbox{display:flex;align-items:center;gap:8px;border:1px solid var(--edge);background:var(--panel);padding:8px 11px;border-radius:2px}
+.sbox input{flex:1;background:transparent;border:0;color:var(--ink);font-family:inherit;font-size:13.5px;outline:none;min-width:0}
+.sbox input::placeholder{color:var(--phos-faint)}.sbox .pr{color:var(--phos);font-weight:700}
+.slot.tgt .sbox .pr{color:var(--amber)}
+.sl-results{margin-top:9px;border:1px solid var(--edge-soft);display:none}.sl-results.show{display:block}
+.res-row{display:flex;align-items:baseline;gap:9px;padding:7px 11px;border-top:1px solid var(--edge-soft);cursor:pointer}.res-row:first-child{border-top:0}.res-row:hover{background:var(--panel2)}
+.res-row .nm{color:var(--ink);font-weight:500;flex:1}.res-row .cert{color:var(--phos-dim);font-size:10.5px}
+.sl-picked{margin-top:9px;display:none;border:1px solid var(--edge);background:var(--panel);padding:10px 12px;border-radius:2px}.sl-picked.show{display:block}
+.sl-picked .pn{color:var(--ink);font-weight:700;font-size:13px}.sl-picked .pm{color:var(--ink-dim);font-size:11px;margin-top:4px;line-height:1.5}.sl-picked .pm b{color:var(--ink)}
+.sl-picked .clr{margin-top:8px;font-size:10.5px;color:var(--phos-dim);cursor:pointer;border:0;background:transparent;font-family:inherit;padding:0;border-bottom:1px dotted var(--phos-dim)}
+.sl-msg{margin-top:8px;font-size:11px;color:var(--ink-dim)}.sl-msg.err{color:#ffc9c9}
+.demobar{margin-top:11px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.chip{border:1px solid var(--edge);background:var(--panel);color:var(--phos);padding:6px 11px;cursor:pointer;font-family:inherit;font-size:11.5px;border-radius:2px}
+.chip:hover{background:color-mix(in srgb,var(--phos) 11%,var(--panel));border-color:var(--phos-dim)}
+.chip.demo{color:var(--amber)}
+.chip .lab{font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--phos-dim);margin-right:3px}
+
+/* model shell */
+.model{margin-top:18px;display:none}.model.show{display:block}
+.sechd{display:flex;align-items:baseline;gap:10px;margin:22px 0 9px;padding-bottom:6px;border-bottom:1px solid var(--edge-soft)}
+.sechd .n{color:var(--phos-faint);font-size:11px;font-weight:800}
+.sechd h2{color:var(--phos);font-size:14px;font-weight:800;letter-spacing:0.02em;text-transform:uppercase}
+.sechd .note{margin-left:auto;color:var(--ink-dim);font-size:10.5px}
+
+/* headline cards */
+.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+@media(max-width:860px){.cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:420px){.cards{grid-template-columns:1fr}}
+.card{border:1px solid var(--edge);background:linear-gradient(180deg,var(--panel),var(--bg2));padding:13px 14px;border-radius:2px}
+.card .cl{font-size:9.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--phos-dim)}
+.card .cv{font-size:23px;font-weight:800;color:var(--phos);text-shadow:0 0 11px rgba(95,232,138,0.32);margin-top:6px;line-height:1}
+.card .cd{font-size:10.5px;color:var(--ink-dim);margin-top:6px;line-height:1.4}
+.card .cd .up{color:var(--phos)}.card .cd .dn{color:var(--alert)}
+.card.warn{border-color:color-mix(in srgb,var(--amber) 45%,transparent)}.card.warn .cv{color:var(--amber);text-shadow:0 0 11px rgba(255,179,71,0.28)}
+.card.bad{border-color:color-mix(in srgb,var(--alert) 50%,transparent)}.card.bad .cv{color:var(--alert);text-shadow:none}
+
+/* assumptions */
+.assum{border:1px solid var(--edge);background:var(--bg2)}
+.assum .agrp{padding:12px 14px;border-top:1px solid var(--edge-soft)}.assum .agrp:first-child{border-top:0}
+.assum .agl{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--phos-dim);margin-bottom:10px}
+.arow{display:grid;grid-template-columns:minmax(150px,1.3fr) 1fr 86px;gap:11px;align-items:center;margin-bottom:11px}
+.arow:last-child{margin-bottom:0}
+@media(max-width:560px){.arow{grid-template-columns:1fr 70px;gap:8px}.arow input[type=range]{grid-column:1 / -1;order:3}}
+.arow .alab{font-size:11.5px;color:var(--ink)}
+.arow .alab .sub{display:block;color:var(--phos-faint);font-size:9.5px;margin-top:2px;letter-spacing:0.02em}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;background:rgba(95,232,138,0.14);border-radius:3px;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:var(--phos);box-shadow:0 0 7px rgba(95,232,138,0.6);cursor:pointer;border:0}
+input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;background:var(--phos);box-shadow:0 0 7px rgba(95,232,138,0.6);cursor:pointer;border:0}
+.arow .aval{display:flex;align-items:center;gap:3px;border:1px solid var(--edge);background:var(--panel);border-radius:2px;padding:5px 7px}
+.arow .aval input{width:100%;background:transparent;border:0;color:var(--phos);font-family:inherit;font-size:12.5px;text-align:right;outline:none}
+.arow .aval .u{color:var(--phos-dim);font-size:10.5px}
+.resetbar{padding:10px 14px;border-top:1px solid var(--edge-soft);display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.resetbar .pre{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--phos-dim);margin-right:2px}
+.bench{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:6px;align-items:stretch;margin-top:3px;padding-top:9px;border-top:1px dashed var(--edge-soft)}
+.bench .blab{width:100%;font-size:9.5px;letter-spacing:0.13em;text-transform:uppercase;color:var(--phos-dim);margin-bottom:1px}
+.bchip{border:1px solid var(--edge);background:var(--panel);color:var(--ink-dim);padding:4px 9px;cursor:pointer;font-family:inherit;border-radius:2px;transition:.12s;display:flex;flex-direction:column;align-items:flex-start;line-height:1.2;text-align:left}
+.bchip b{color:var(--phos);font-size:11.5px;font-weight:700}
+.bchip span{color:var(--phos-faint);font-size:9px;letter-spacing:0.03em;margin-top:1px;white-space:nowrap}
+.bchip:hover{border-color:var(--phos-dim);background:color-mix(in srgb,var(--phos) 8%,var(--panel))}
+.bchip.on{border-color:var(--phos);background:color-mix(in srgb,var(--phos) 14%,var(--panel))}
+.bchip.on b{text-shadow:0 0 8px rgba(95,232,138,0.45)}
+.benchnote{grid-column:1 / -1;color:var(--phos-faint);font-size:9.5px;line-height:1.55;margin-top:8px}
+.benchnote b{color:var(--ink-dim)}
+.seg{grid-column:2 / -1;display:flex;border:1px solid var(--edge);border-radius:2px;overflow:hidden}
+.segbtn{flex:1;background:var(--panel);color:var(--ink-dim);border:0;border-left:1px solid var(--edge);padding:7px 6px;cursor:pointer;font-family:inherit;font-size:10.5px;transition:.12s;white-space:nowrap}
+.segbtn:first-child{border-left:0}
+.segbtn:hover{color:var(--ink);background:var(--panel2)}
+.segbtn.on{background:color-mix(in srgb,var(--phos) 16%,var(--panel));color:var(--phos);font-weight:700}
+@media(max-width:560px){.seg{grid-column:1 / -1}.segbtn{font-size:9.5px;padding:7px 3px}}
+.scl{color:var(--phos-dim);font-size:10.5px;margin:0 0 8px;line-height:1.5}
+.scl b{color:var(--ink)}
+.tbl tr.cur{background:color-mix(in srgb,var(--phos) 10%,transparent)}
+.tbl tr.cur td:first-child{box-shadow:inset 2px 0 0 var(--phos)}
+.tbl .mx{color:var(--ink)}
+.cv-good{color:var(--phos)}.cv-warn{color:var(--amber)}.cv-bad{color:var(--alert)}
+.scgap{height:14px}
+
+/* editable input grid */
+.inputs{border:1px solid var(--edge);background:var(--bg2)}
+.inputs .ih{padding:10px 14px;border-bottom:1px solid var(--edge-soft);display:flex;align-items:center;gap:9px;cursor:pointer;background:rgba(95,232,138,0.03)}
+.inputs .ih h3{font-size:11.5px;color:var(--ink);font-weight:700}
+.inputs .ih .car{color:var(--phos-dim);font-size:11px}
+.inputs .ih .ihn{margin-left:auto;color:var(--ink-dim);font-size:10px}
+.inputs .ib{padding:6px 4px 10px;overflow-x:auto;display:none}.inputs .ib.show{display:block}
+.igtab{width:100%;border-collapse:collapse;font-size:11.5px;min-width:520px}
+.igtab th,.igtab td{padding:5px 10px;border-bottom:1px solid var(--edge-soft);text-align:right;white-space:nowrap}
+.igtab th:first-child,.igtab td:first-child{text-align:left;color:var(--ink-dim);white-space:normal}
+.igtab thead th{color:var(--phos-dim);font-size:10px;letter-spacing:0.04em;text-transform:uppercase}
+.igtab thead th.acqc{color:var(--phos)}.igtab thead th.tgtc{color:var(--amber)}
+.igtab tbody tr.sec td{color:var(--phos-dim);font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;padding-top:9px;border-bottom:0}
+.igtab input{width:96px;background:var(--panel);border:1px solid var(--edge-soft);color:var(--ink);font-family:inherit;font-size:11.5px;text-align:right;padding:3px 6px;border-radius:2px;outline:none}
+.igtab input:focus{border-color:var(--phos-dim);color:var(--phos)}
+.igtab .est{color:var(--amber)}
+.ibnote{padding:4px 14px 0;color:var(--phos-faint);font-size:10px;line-height:1.5}
+
+/* tables */
+.tbl{width:100%;border-collapse:collapse;font-size:11.5px}
+.tblwrap{border:1px solid var(--edge);background:var(--bg2);overflow-x:auto}
+.tbl th,.tbl td{padding:7px 11px;border-bottom:1px solid var(--edge-soft);text-align:right;white-space:nowrap}
+.tbl th:first-child,.tbl td:first-child{text-align:left;color:var(--ink-dim);white-space:normal}
+.tbl thead th{color:var(--phos-dim);font-size:10px;letter-spacing:0.04em;text-transform:uppercase}
+.tbl thead th.pf{color:var(--phos)}
+.tbl td.pf{color:var(--phos);font-weight:700}
+.tbl td.delta .up{color:var(--phos)}.tbl td.delta .dn{color:var(--alert)}.tbl td.delta .fl{color:var(--ink-dim)}
+.tbl tr.tot td{border-top:1px solid var(--edge);font-weight:700;color:var(--ink)}
+.tbl tr.tot td.pf{color:var(--phos)}
+.tbl tr.sub td:first-child{padding-left:22px;color:var(--ink-dim)}
+.tbl .pos{color:var(--phos)}.tbl .neg{color:var(--alert)}
+.minw{min-width:560px}
+
+.bridge{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:760px){.bridge{grid-template-columns:1fr}}
+
+.narr{margin-top:12px;border-left:2px solid var(--phos-dim);padding:10px 0 10px 13px;font-size:12px;color:var(--ink);line-height:1.6}
+.narr b{color:var(--phos)}.narr .w{color:var(--amber)}
+.cross{margin-top:11px;border-left:2px solid var(--amber);padding-left:11px}
+.cross .x{display:block;font-size:11.5px;color:var(--amber);padding:2px 0;line-height:1.45}
+.flag{margin-top:11px;border:1px solid color-mix(in srgb,var(--amber) 40%,transparent);background:color-mix(in srgb,var(--amber) 7%,var(--bg2));padding:10px 13px;font-size:11.5px;color:var(--amber);line-height:1.5}
+.flag.bad{border-color:color-mix(in srgb,var(--alert) 45%,transparent);background:color-mix(in srgb,var(--alert) 8%,var(--bg2));color:#ffc9c9}
+
+.gl{font:inherit;color:var(--phos);background:transparent;border:0;padding:0;cursor:pointer;border-bottom:1px dotted var(--phos-dim)}
+.gl:hover,.gl:focus{color:#9af5c0;border-bottom-color:var(--phos);outline:none}
+#glpop{position:fixed;z-index:10001;max-width:300px;display:none;border:1px solid var(--phos-dim);background:linear-gradient(180deg,#0d1b12,#0a130d);box-shadow:0 8px 30px rgba(0,0,0,0.7);border-radius:3px;padding:11px 13px}
+#glpop .gl-t{color:var(--phos);font-weight:800;font-size:12.5px;margin-bottom:5px}#glpop .gl-d{color:var(--ink);font-size:12px;line-height:1.5}
+
+footer{margin-top:28px;border-top:1px solid var(--edge-soft);padding-top:13px;color:var(--ink-dim);font-size:11px;line-height:1.65}footer b{color:var(--ink-dim)}.src{color:var(--phos-dim)}.disc{color:var(--phos-faint)}
+@media(prefers-reduced-motion:reduce){h1 .cur{animation:none}}
+</style>
+<style>
+/* ---- interest-rate-risk additions ---- */
+.ladtab{width:100%;border-collapse:collapse;font-size:11px;min-width:680px}
+.ladtab th,.ladtab td{padding:5px 7px;border-bottom:1px solid var(--edge-soft);text-align:right;white-space:nowrap}
+.ladtab th:first-child,.ladtab td:first-child{text-align:left;color:var(--ink);white-space:normal}
+.ladtab thead th{color:var(--phos-dim);font-size:9.5px;letter-spacing:0.03em;text-transform:uppercase}
+.ladtab .grp td{color:var(--phos-dim);font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;padding-top:10px;border-bottom:0;text-align:left}
+.ladtab input{width:68px;background:var(--panel);border:1px solid var(--edge-soft);color:var(--ink);font-family:inherit;font-size:11px;text-align:right;padding:3px 5px;border-radius:2px;outline:none}
+.ladtab input:focus{border-color:var(--phos-dim);color:var(--phos)}
+.ladtab input.yld{width:52px;color:var(--phos)}
+.ladtab td.tot{color:var(--ink-dim);font-weight:700}
+.chartbox{border:1px solid var(--edge);background:var(--bg2);padding:12px 10px}
+.chartbox svg{width:100%;height:auto;display:block}
+.cap-in{display:flex;gap:16px;flex-wrap:wrap;align-items:center;padding:11px 12px;border:1px solid var(--edge);background:var(--bg2);margin-top:10px}
+.cap-in label{font-size:11.5px;color:var(--ink-dim);display:flex;align-items:center;gap:7px}
+.cap-in input{width:120px;background:var(--panel);border:1px solid var(--edge-soft);color:var(--phos);font-family:inherit;font-size:12px;text-align:right;padding:5px 8px;border-radius:2px;outline:none}
+.sot{margin-top:11px;border:1px solid color-mix(in srgb,var(--alert) 45%,transparent);background:color-mix(in srgb,var(--alert) 8%,var(--bg2));padding:11px 13px;font-size:12px;color:#ffc9c9;line-height:1.55}
+.sot.ok{border-color:color-mix(in srgb,var(--phos) 30%,transparent);background:color-mix(in srgb,var(--phos) 6%,var(--bg2));color:var(--phos)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="toolnav"><a class="home" href="https://bankregwire.com/wire.html">↩ BankRegWire</a><span class="navsep"></span><span class="navttl">Bank Workbench</span><a href="callreport-linemap.html">CAMELS Map</a><a href="callreport-literal.html">Literal Form</a><a href="bank-health-scanner.html">Health Scanner</a><a href="ma-partner-finder.html">M&amp;A Finder</a><a href="pro-forma-merger.html">Merger Model</a><a href="interest-rate-risk.html" class="active">Rate Risk</a><a href="charter-console.html">Charter Console</a></nav>
+  <header>
+    <div class="titlebar"><span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="tb-label">interest rate risk · IRRBB screen</span></div>
+    <div class="head-main">
+      <div class="eyebrow">Interest rate risk screen</div>
+      <h1>Shock the balance sheet<span class="cur">_</span></h1>
+      <p class="subhead">Lay out the bank's <b>repricing and maturity ladder</b> the way the Call Report does, set the <b>behavioral assumptions</b> that never appear in any filing (deposit betas, the effective duration of core deposits, prepayment behavior), and the screen runs both lenses of rate risk: <b>earnings at risk</b>, the change in net interest income, and <b>economic value at risk</b>, the change in EVE. It shocks the curve with parallel moves and the six Basel scenarios, applies the supervisory outlier test, and shows the AFS and HTM capital lens. Loaded with an example bank, and every cell is yours to overwrite with your own numbers.</p>
+    </div>
+  </header>
+
+  <div class="demobar"><span class="chip"><span class="lab">Inputs</span></span><button class="chip demo" id="resetBtn">Reset to example bank</button><span class="sl-msg" id="resetMsg" style="margin-top:0"></span></div>
+
+  <div class="model show" id="irr"></div>
+
+  <footer>
+    <b>Method:</b> a gap-and-duration screen built on the public Call Report repricing ladder (Schedules RC-B, RC-C, and RC-E) plus the behavioral assumptions a bank holds internally. <span class="src">Earnings at risk reprices balances inside a twelve-month window at the fraction of the year they stay outstanding after repricing, with non-maturity deposits repricing at an asymmetric up and down beta. Economic value at risk applies bucket modified durations in a dollar-duration framework; the six Basel scenarios use the USD standardized shock sizes and the e^(-t/4) rotation weighting; the supervisory outlier test flags a worst-case EVE decline beyond 15% of Tier 1 capital. It is a screening and teaching model, not an option-adjusted ALM system: it does not price the full convexity of mortgage cash flows, basis risk across indices, or embedded caps and floors, it treats core-deposit life as an input rather than a model, and it assumes reinvestment at the shocked curve. Results are only as good as the betas, durations, and ladder you enter.</span><br>
+    <span class="disc">Educational tool. Not investment, accounting, or regulatory advice.</span>
+  </footer>
+
+</div>
+<div id="glpop" role="dialog"></div>
+<script>
+const GLOSSARY = {"defs":{"htm":{"t":"Held-to-maturity (HTM)","d":"Debt securities the bank intends and is able to hold to maturity, carried at amortized cost rather than fair value, so rate-driven price changes do not show on the balance sheet."},"afs":{"t":"Available-for-sale (AFS)","d":"Debt securities carried at fair value with unrealized gains and losses flowing through AOCI in equity rather than through earnings."},"aoci":{"t":"Accumulated other comprehensive income (AOCI)","d":"The equity bucket that holds unrealized items such as AFS securities marks and cash-flow-hedge gains and losses. Banks that did not opt out include it in regulatory capital."},"acl":{"t":"Allowance for credit losses (ACL)","d":"The contra-asset reserve held against expected credit losses under CECL. It reduces the carrying value of loans and is rebuilt through the income-statement provision."},"cecl":{"t":"Current expected credit losses (CECL)","d":"The accounting standard requiring banks to reserve for lifetime expected losses at origination, making the allowance forward-looking rather than incurred-loss based."},"cet1":{"t":"Common equity tier 1 (CET1)","d":"The highest-quality, most loss-absorbing regulatory capital: common stock, retained earnings, and qualifying AOCI, net of deductions like goodwill."},"tier1":{"t":"Tier 1 capital","d":"Going-concern capital: CET1 plus additional tier 1 instruments such as qualifying noncumulative perpetual preferred stock."},"tier2":{"t":"Tier 2 capital","d":"Gone-concern capital that absorbs losses in resolution: qualifying subordinated debt and a limited portion of the allowance."},"rwa":{"t":"Risk-weighted assets (RWA)","d":"Assets and off-balance-sheet exposures scaled by regulatory risk weights, forming the denominator of the risk-based capital ratios."},"levratio":{"t":"Leverage ratio","d":"Tier 1 capital divided by average total assets, a non-risk-weighted capital measure that backstops the risk-based ratios."},"cblr":{"t":"Community bank leverage ratio (CBLR)","d":"A simplified single-ratio capital regime for qualifying banks under about $10B. Electing it and staying above the threshold deems the bank well-capitalized."},"ccb":{"t":"Capital conservation buffer","d":"An additional layer of CET1 above the minimums; falling into it restricts dividends and discretionary bonus payments."},"nonaccrual":{"t":"Nonaccrual","d":"Status for a loan on which the bank stops recognizing interest income because full collection of principal or interest is in doubt. The core of nonperforming assets."},"pastdue":{"t":"Past due","d":"A loan on which a contractual payment is overdue, bucketed by 30-89 days and 90 or more days for reporting and early-warning purposes."},"chargeoff":{"t":"Charge-off","d":"The amount of a loan removed from the books as uncollectible, reducing the allowance. Net charge-offs subtract recoveries."},"recovery":{"t":"Recoveries","d":"Amounts collected on loans previously charged off, which replenish the allowance."},"provision":{"t":"Provision for credit losses","d":"The income-statement expense that builds or maintains the allowance to the level CECL requires."},"mbs":{"t":"Mortgage-backed securities (MBS)","d":"Securities backed by pools of mortgage loans, a large share of most banks' investment portfolios and a key source of rate and prepayment risk."},"brokered":{"t":"Brokered deposits","d":"Deposits placed through a third-party broker or deposit-listing arrangement. Cheap to raise at scale but rate-sensitive and run-prone."},"reciprocal":{"t":"Reciprocal deposits","d":"Deposits a bank receives through a network in exchange for placing a matching amount at other banks, used to keep large balances within insurance limits."},"sweep":{"t":"Sweep deposits","d":"Balances automatically moved (swept) into or out of deposit accounts, often from affiliated brokerage, with varying insurance and stability profiles."},"listing":{"t":"Deposit listing services","d":"Services that list a bank's rates to attract deposits without a broker. Not classified as brokered but still rate-sensitive funding."},"mmda":{"t":"Money market deposit accounts (MMDA)","d":"Savings accounts with limited transactions and tiered rates, a core nontransaction funding category."},"now":{"t":"NOW accounts","d":"Negotiable order of withdrawal accounts: interest-bearing transaction accounts for eligible customers."},"timedep":{"t":"Time deposits","d":"Deposits with a fixed maturity, such as CDs. Larger and longer maturities are more rate-sensitive and, above the insurance limit, more run-prone."},"transaction":{"t":"Transaction accounts","d":"Deposit accounts that permit unlimited transfers and payments to third parties, including demand deposits and NOW accounts."},"msa":{"t":"Mortgage servicing assets (MSAs)","d":"The capitalized right to service mortgages owned by others. Subject to regulatory capital deduction thresholds because their value is volatile."},"dta":{"t":"Deferred tax assets (DTAs)","d":"Future tax benefits from items like net operating loss carryforwards. Those reliant on future profitability are deducted from capital."},"dtl":{"t":"Deferred tax liabilities (DTLs)","d":"Future tax obligations that can offset certain capital deductions such as goodwill and intangibles."},"pcd":{"t":"Purchased credit-deteriorated (PCD)","d":"Acquired financial assets that had a more-than-insignificant credit deterioration since origination, with the allowance set up at acquisition rather than through provision."},"goodwill":{"t":"Goodwill","d":"The premium paid in an acquisition above the fair value of net assets. Deducted in full from CET1 capital."},"intangible":{"t":"Intangible assets","d":"Non-physical assets such as core deposit intangibles. Most are deducted from regulatory capital."},"fiduciary":{"t":"Fiduciary activities","d":"Trust and asset-management services in which the bank acts for the benefit of others, generating fee income reported in Schedule RI."},"trading":{"t":"Trading assets","d":"Positions held for short-term resale or to profit from price movements, carried at fair value with gains and losses in earnings."},"fedfunds":{"t":"Federal funds","d":"Overnight unsecured lending of reserve balances between banks. Sold = lent out; purchased = borrowed."},"repo":{"t":"Repurchase agreement","d":"Short-term secured borrowing (repo) or lending (reverse repo) collateralized by securities, used for funding and liquidity management."},"subdebt":{"t":"Subordinated notes and debentures","d":"Long-term debt that ranks below deposits and senior debt in resolution and can qualify as Tier 2 capital."},"surplus":{"t":"Surplus","d":"Paid-in capital in excess of the par value of stock issued, part of permanent equity."},"retearn":{"t":"Retained earnings","d":"Cumulative net income kept in the bank rather than paid out, a primary internal source of capital."},"nci":{"t":"Noncontrolling interests","d":"The portion of a consolidated subsidiary's equity owned by outside parties, also called minority interest."},"ibf":{"t":"International Banking Facility (IBF)","d":"A set of asset and liability accounts that lets a U.S. bank conduct international business with reduced reserve and regulatory burden."},"edge":{"t":"Edge and Agreement subsidiaries","d":"Specialized subsidiaries chartered to engage in international banking and investment activities."},"modification":{"t":"Loan modifications","d":"Concessions to borrowers in financial difficulty (the successor concept to troubled debt restructurings under ASU 2022-02)."},"oreo":{"t":"Other real estate owned (OREO)","d":"Property the bank holds after foreclosure or in satisfaction of debt, a lagging indicator of credit problems."},"nii":{"t":"Net interest income","d":"Interest earned on assets minus interest paid on funding. The dominant earnings driver for most banks."},"lease":{"t":"Lease financing receivables","d":"Amounts due under leases the bank originates as a form of secured financing, reported alongside loans."},"atrr":{"t":"Allocated transfer risk reserve","d":"A reserve regulators can require against the transfer risk on certain international assets."},"slr":{"t":"Supplementary leverage ratio (SLR)","d":"A leverage ratio capturing on- and off-balance-sheet exposure, applicable to the largest banking organizations."},"saccr":{"t":"SA-CCR","d":"The standardized approach for counterparty credit risk, a method for measuring derivative exposure in the capital rules."},"advapproaches":{"t":"Advanced approaches","d":"The capital framework for the largest, most complex banks that uses internal models for risk-weighted assets."},"rou":{"t":"Right-of-use assets","d":"The balance-sheet asset recognizing a lessee's right to use a leased item under current lease accounting."},"esop":{"t":"ESOP","d":"Employee stock ownership plan; unearned ESOP shares are netted against common stock plus surplus in capital."},"ipc":{"t":"Individuals, partnerships, and corporations","d":"The deposit-ownership category covering ordinary retail and business depositors, as opposed to governments and other banks."}},"surfaces":{"held-to-maturity":"htm","HTM":"htm","available-for-sale":"afs","AFS":"afs","accumulated other comprehensive income":"aoci","AOCI":"aoci","allowance for credit losses":"acl","allowances for credit losses":"acl","ACL":"acl","CECL":"cecl","common equity tier 1":"cet1","CET1":"cet1","tier 1 capital":"tier1","Tier 1 minority interest":"tier1","tier 2 capital":"tier2","risk-weighted assets":"rwa","risk-weighted asset":"rwa","RWA":"rwa","leverage ratio":"levratio","community bank leverage ratio":"cblr","CBLR":"cblr","capital conservation buffer":"ccb","nonaccrual":"nonaccrual","Nonaccrual":"nonaccrual","past due":"pastdue","Past Due":"pastdue","charge-off":"chargeoff","charge-offs":"chargeoff","Charge-Offs":"chargeoff","Charge-offs":"chargeoff","recoveries":"recovery","Recoveries":"recovery","provision for credit losses":"provision","provisions for credit losses":"provision","Provisions for credit losses":"provision","mortgage-backed securities":"mbs","MBS":"mbs","brokered deposits":"brokered","brokered deposit":"brokered","reciprocal deposits":"reciprocal","sweep deposits":"sweep","deposit listing services":"listing","listing services":"listing","money market deposit accounts":"mmda","MMDAs":"mmda","MMDA":"mmda","NOW accounts":"now","time deposits":"timedep","time deposit":"timedep","transaction accounts":"transaction","transaction account":"transaction","mortgage servicing assets":"msa","MSAs":"msa","deferred tax assets":"dta","DTAs":"dta","DTA":"dta","deferred tax liabilities":"dtl","DTLs":"dtl","DTL":"dtl","purchased credit-deteriorated":"pcd","PCD":"pcd","goodwill":"goodwill","Goodwill":"goodwill","intangible assets":"intangible","intangible":"intangible","fiduciary activities":"fiduciary","fiduciary":"fiduciary","trading assets":"trading","trading liabilities":"trading","federal funds sold":"fedfunds","federal funds purchased":"fedfunds","Federal funds":"fedfunds","securities sold under agreements to repurchase":"repo","securities purchased under agreements to resell":"repo","subordinated notes and debentures":"subdebt","surplus":"surplus","retained earnings":"retearn","noncontrolling (minority) interests":"nci","noncontrolling interest":"nci","minority interest":"nci","IBFs":"ibf","IBF":"ibf","Edge and Agreement subsidiaries":"edge","Edge and Agreement":"edge","loan modifications":"modification","Loan modifications":"modification","other real estate owned":"oreo","net interest income":"nii","lease financing receivables":"lease","Income from lease financing receivables":"lease","Allocated transfer risk reserve":"atrr","allocated transfer risk reserve":"atrr","supplementary leverage ratio":"slr","Supplementary leverage ratio":"slr","SA-CCR":"saccr","advanced approaches":"advapproaches","right-of-use assets":"rou","unearned ESOP shares":"esop","ESOP":"esop","individuals, partnerships, and corporations":"ipc","IPC":"ipc"}};
+</script>
+<script>
+/* ============================ helpers ============================ */
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s==null?"":s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+function num(v){if(v==null)return null;const n=parseFloat(String(v).replace(/,/g,""));return isNaN(n)?null:n;}
+function fmtUSD(v){if(v==null||isNaN(v))return "n/a";const a=Math.abs(v);let s=v<0?"-":"";if(a>=1e9)return s+"$"+(a/1e9).toFixed(2)+"B";if(a>=1e6)return s+"$"+(a/1e6).toFixed(1)+"M";if(a>=1e3)return s+"$"+(a/1e3).toFixed(0)+"K";return s+"$"+a.toFixed(0);}
+function fmtK(k){if(k==null||isNaN(k))return "n/a";return fmtUSD(k*1000);}
+function fmtKsign(k){if(k==null||isNaN(k))return "n/a";return (k>=0?"+":"")+fmtK(k);}
+function fmtPct(v,d){if(v==null||isNaN(v))return "n/a";return v.toFixed(d==null?2:d)+"%";}
+function fmtPctS(v,d){if(v==null||isNaN(v))return "n/a";return (v>=0?"+":"")+v.toFixed(d==null?1:d)+"%";}
+/* glossary linking (GLOSSARY object defined in the preceding script block) */
+const _SURF=GLOSSARY.surfaces,_DEFS=GLOSSARY.defs;
+const _KEYS=Object.keys(_SURF).sort((a,b)=>b.length-a.length);
+const _GLRE=new RegExp("(?<![A-Za-z0-9])(?:"+_KEYS.map(s=>s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("|")+")(?![A-Za-z0-9])","g");
+const _SURFLC={};for(const k in _SURF)_SURFLC[k.toLowerCase()]=_SURF[k];
+function linkTerms(t){return t.replace(_GLRE,(m)=>{const key=_SURF[m]||_SURFLC[m.toLowerCase()];return key?`<button class="gl" data-k="${key}" tabindex="0">${m}</button>`:m;});}
+const pop=$("glpop");
+function showPop(b){const g=_DEFS[b.dataset.k];if(!g)return;pop.innerHTML=`<div class="gl-t">${esc(g.t)}</div><div class="gl-d">${esc(g.d)}</div>`;pop.style.display="block";const r=b.getBoundingClientRect(),pw=pop.offsetWidth,ph=pop.offsetHeight;let left=Math.min(Math.max(8,r.left),window.innerWidth-pw-8);let below=r.bottom+10+ph<window.innerHeight||r.top-ph-10<8;pop.style.left=left+"px";pop.style.top=(below?r.bottom+10:r.top-ph-10)+"px";}
+function hidePop(){pop.style.display="none";}
+document.addEventListener("click",e=>{const b=e.target.closest(".gl");if(b){e.stopPropagation();showPop(b);}else if(!e.target.closest("#glpop"))hidePop();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")hidePop();});
+window.addEventListener("scroll",hidePop,true);
+
+/* ============================ IRRBB engine ============================ */
+const BUCKETS=[
+ {k:'b0',lab:'\u2264 3 mo',mid:0.125,dur:0.12},
+ {k:'b1',lab:'3\u201312 mo',mid:0.625,dur:0.60},
+ {k:'b2',lab:'1\u20133 yr',mid:2.0,dur:1.80},
+ {k:'b3',lab:'3\u20135 yr',mid:4.0,dur:3.60},
+ {k:'b4',lab:'5\u201315 yr',mid:10.0,dur:7.00},
+ {k:'b5',lab:'> 15 yr',mid:20.0,dur:12.0}
+];
+const sum=a=>a.reduce((s,x)=>s+(+x||0),0);
+
+function irrEngine(M,P){
+  const B=BUCKETS;
+  const assetReset=P.assetReset/100, prepay=P.prepay/100;
+  const HM=12;
+  const wH=i=>{const mid=B[i].mid*12; return mid>=HM?0:(HM-mid)/HM;};
+
+  let assetInt=0, liabInt=0, EA=0, totA=0, totL=0;
+  M.assets.forEach(a=>{const bal=sum(a.b); assetInt+=bal*a.y/100; EA+=bal; totA+=bal;});
+  M.liabs.forEach(l=>{const bal=sum(l.b); liabInt+=bal*l.y/100; totL+=bal;});
+  M.nmd.forEach(n=>{liabInt+=(+n.bal||0)*n.y/100; totL+=(+n.bal||0);});
+  const baseNII=assetInt-liabInt, NIM=EA?baseNII/EA*100:null;
+
+  const gap=B.map((b,i)=>{
+    let ra=0; M.assets.forEach(a=>ra+=(+a.b[i]||0));
+    let rl=0; M.liabs.forEach(l=>rl+=(+l.b[i]||0));
+    return {lab:b.lab, ra, rl, gap:ra-rl};
+  });
+  let cum=0; gap.forEach(g=>{cum+=g.gap; g.cum=cum;});
+  let rsa1=0,rsl1=0; [0,1].forEach(i=>{M.assets.forEach(a=>rsa1+=(+a.b[i]||0)); M.liabs.forEach(l=>rsl1+=(+l.b[i]||0));});
+  let nmdRS=0; M.nmd.forEach(n=>nmdRS+=(+n.bal||0)*(n.betaUp/100));
+  const gap1=rsa1-(rsl1+nmdRS), gap1pct=EA?gap1/EA*100:null;
+
+  function dNII(dr){
+    const up=dr>0;
+    let dA=0; M.assets.forEach(a=>B.forEach((b,i)=>{dA+=(+a.b[i]||0)*wH(i);}));
+    dA*=dr*assetReset;
+    let dL=0; M.liabs.forEach(l=>B.forEach((b,i)=>{dL+=(+l.b[i]||0)*wH(i);}));
+    dL*=dr;
+    let dN=0; M.nmd.forEach(n=>{const beta=(up?n.betaUp:n.betaDn)/100; dN+=(+n.bal||0)*beta;});
+    dN*=dr;
+    return dA-(dL+dN);
+  }
+  function dEVE(shock){
+    let dA=0;
+    M.assets.forEach(a=>B.forEach((b,i)=>{
+      let md=b.dur;
+      if(prepay>0 && (a.id==='fx'||a.id==='afs'||a.id==='htm') && shock(b.mid)>0) md*=(1+prepay);
+      dA+=-(+a.b[i]||0)*md*shock(b.mid);
+    }));
+    let dL=0;
+    M.liabs.forEach(l=>B.forEach((b,i)=>{ dL+=-(+l.b[i]||0)*b.dur*shock(b.mid); }));
+    M.nmd.forEach(n=>{ dL+=-(+n.bal||0)*n.dur*shock(n.dur); });
+    return dA-dL;
+  }
+  let DDa=0; M.assets.forEach(a=>B.forEach((b,i)=>{DDa+=(+a.b[i]||0)*b.dur;}));
+  let DDl=0; M.liabs.forEach(l=>B.forEach((b,i)=>{DDl+=(+l.b[i]||0)*b.dur;})); M.nmd.forEach(n=>DDl+=(+n.bal||0)*n.dur);
+  const MDa=totA?DDa/totA:0, MDl=totL?DDl/totL:0;
+  const dE=M.tier1?(DDa-DDl)/M.tier1:null;
+
+  const Ss=P.baselShort/10000, Sl=P.baselLong/10000, Sp=P.baselParallel/10000;
+  const eS=t=>Math.exp(-t/4);
+  const scen={
+    par_up:   t=>+Sp, par_dn:   t=>-Sp,
+    short_up: t=>+Ss*eS(t), short_dn: t=>-Ss*eS(t),
+    steepener:t=>-0.65*Ss*eS(t)+0.90*Sl*(1-eS(t)),
+    flattener:t=>+0.80*Ss*eS(t)-0.60*Sl*(1-eS(t))
+  };
+  const eve={}; for(const k in scen) eve[k]=dEVE(scen[k]);
+  let worst=0,worstK=null; for(const k in eve){ if(eve[k]<worst){worst=eve[k];worstK=k;} }
+  const sotPct=M.tier1?worst/M.tier1*100:null;
+
+  const BPS=[-400,-300,-200,-100,100,200,300,400];
+  const niiSet=BPS.map(bp=>{const d=dNII(bp/10000);return {bp,d,pct:baseNII?d/baseNII*100:null};});
+  const eveSet=BPS.map(bp=>{const d=dEVE(()=>bp/10000);return {bp,d,pct:M.tier1?d/M.tier1*100:null};});
+
+  function mark(dr){let afs=0,htm=0;M.assets.forEach(a=>B.forEach((b,i)=>{
+    if(a.afs)afs+=-(+a.b[i]||0)*b.dur*dr; if(a.htm)htm+=-(+a.b[i]||0)*b.dur*dr;}));return {afs,htm};}
+  const lensSet=[-200,-100,100,200,300].map(bp=>({bp,...mark(bp/10000)}));
+
+  return {baseNII,NIM,EA,totA,totL,gap,gap1,gap1pct,MDa,MDl,dE,DDa,DDl,
+          eve,worst,worstK,sotPct,niiSet,eveSet,lensSet};
+}
+
+/* ============================ default example bank ============================ */
+function demoModel(){return {
+ name:"Example Community Bank",
+ assets:[
+  {id:'fl', lab:'Floating-rate loans', b:[250000,100000,0,0,0,0], y:7.5},
+  {id:'fx', lab:'Fixed-rate loans',    b:[50000,120000,300000,250000,130000,0], y:5.8},
+  {id:'afs',lab:'AFS securities',       b:[0,30000,90000,110000,130000,20000], y:3.2, afs:true},
+  {id:'htm',lab:'HTM securities',       b:[0,0,20000,50000,110000,40000], y:2.6, htm:true},
+  {id:'csh',lab:'Cash & short invest.', b:[100000,0,0,0,0,0], y:4.8}
+ ],
+ liabs:[
+  {id:'cd', lab:'Time deposits (CDs)',   b:[140000,200000,70000,10000,0,0], y:4.3},
+  {id:'bor',lab:'Borrowings (FHLB/sub)', b:[40000,20000,30000,30000,0,0], y:4.8}
+ ],
+ nmd:[
+  {id:'ibd',lab:'Interest-bearing NMDs', bal:900000, y:1.6, betaUp:50, betaDn:35, dur:3.5, decay:8},
+  {id:'dda',lab:'Noninterest-bearing (DDA)', bal:380000, y:0, betaUp:0, betaDn:0, dur:4.5, decay:5}
+ ],
+ tier1:200000, aociOptOut:true
+};}
+let MODEL=demoModel();
+
+const LEVERS=[
+ {grp:"Behavioral assumptions",items:[
+  {k:"assetReset",lab:"Asset reprice pass-through",sub:"how fully repricing or maturing assets follow the market",min:50,max:100,step:5,val:100,u:"%"},
+  {k:"prepay",lab:"Prepay extension on up-shocks",sub:"lengthens fixed-asset and MBS duration when rates rise, a convexity proxy",min:0,max:40,step:5,val:10,u:"%"}
+ ]},
+ {grp:"Basel shock sizes (USD standardized)",items:[
+  {k:"baselParallel",lab:"Parallel shock",sub:"applied across the whole curve",min:100,max:400,step:25,val:200,u:"bp"},
+  {k:"baselShort",lab:"Short-rate shock",sub:"weighted to the front end",min:100,max:500,step:25,val:300,u:"bp"},
+  {k:"baselLong",lab:"Long-rate shock",sub:"weighted to the long end",min:100,max:400,step:25,val:150,u:"bp"}
+ ]}
+];
+function readLevers(){const p={};LEVERS.forEach(g=>g.items.forEach(it=>{const el=$("lv_"+it.k);p[it.k]=num(el?el.value:it.val)??it.val;}));return p;}
+
+/* ============================ tiny SVG bar chart ============================ */
+function svgBars(data,opt){
+  opt=opt||{};const W=660,H=opt.h||156,padB=28,padT=14,padL=6,padR=6;
+  const n=data.length,gap=8,slot=(W-padL-padR)/n,bw=slot-gap;
+  const max=Math.max(1,...data.map(d=>Math.abs(d.v)));
+  const zy=padT+(H-padT-padB)*0.5,scale=(H-padT-padB)*0.5/max;
+  let bars="";
+  data.forEach((d,i)=>{
+    const x=padL+i*slot+gap/2,hh=Math.abs(d.v)*scale,y=d.v>=0?zy-hh:zy;
+    const col=d.v>=0?(opt.pos||"#5fe88a"):(opt.neg||"#ff6b6b");
+    bars+=`<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(1,hh).toFixed(1)}" rx="1" fill="${col}" opacity="0.82"/>`;
+    bars+=`<text x="${(x+bw/2).toFixed(1)}" y="${(H-padB+13).toFixed(1)}" fill="#6f9683" font-size="9.5" text-anchor="middle">${esc(d.lab)}</text>`;
+    const vl=opt.fmt?opt.fmt(d):"";
+    if(vl)bars+=`<text x="${(x+bw/2).toFixed(1)}" y="${(d.v>=0?Math.max(padT+8,y-3):y+hh+11).toFixed(1)}" fill="${col}" font-size="8.5" text-anchor="middle">${esc(vl)}</text>`;
+  });
+  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet"><line x1="${padL}" y1="${zy.toFixed(1)}" x2="${W-padR}" y2="${zy.toFixed(1)}" stroke="#27543a" stroke-width="1"/>${bars}</svg>`;
+}
+
+/* ============================ build shell ============================ */
+function buildShell(){
+  let h="";
+  h+=`<div class="sechd"><span class="n">01</span><h2>Your balance sheet</h2><span class="note">$ thousands \u00b7 every cell editable</span></div>`;
+  h+=`<div class="inputs"><div class="ih" id="igT"><span class="car">\u25be</span><h3>Repricing and maturity ladder</h3><span class="ihn">fixed by maturity \u00b7 floating by next reset</span></div><div class="ib show" id="igB"></div></div>`;
+  h+=`<div class="sechd"><span class="n">02</span><h2>Assumptions</h2><span class="note">move a lever, everything recomputes</span></div><div class="assum" id="levbox"></div>`;
+  h+=`<div class="sechd"><span class="n">03</span><h2>Risk profile</h2><span class="note">earnings and economic value at a glance</span></div><div id="cards" class="cards"></div><div id="flags"></div>`;
+  h+=`<div class="sechd"><span class="n">04</span><h2>Repricing gap</h2><span class="note">rate-sensitive assets minus liabilities</span></div><div id="gap"></div>`;
+  h+=`<div class="sechd"><span class="n">05</span><h2>Earnings at risk</h2><span class="note">\u0394 net interest income, 12 months</span></div><div id="nii"></div>`;
+  h+=`<div class="sechd"><span class="n">06</span><h2>Economic value at risk</h2><span class="note">\u0394EVE and the Basel six</span></div><div id="eve"></div>`;
+  h+=`<div class="sechd"><span class="n">07</span><h2>Securities capital lens</h2><span class="note">AFS and HTM marks under shocks</span></div><div id="lens"></div>`;
+  h+=`<div class="sechd"><span class="n">08</span><h2>Read</h2></div><div id="read"></div>`;
+  $("irr").innerHTML=h;
+  buildLadder(); buildLevers();
+  $("igT").onclick=()=>{const b=$("igB"),c=$("igT").querySelector(".car");const open=b.classList.toggle("show");c.textContent=open?"\u25be":"\u25b8";};
+  recompute();
+}
+
+function ladInput(side,i,bk,val){return `<input data-s="${side}" data-i="${i}" data-b="${bk}" value="${val==null?0:Math.round(val)}" inputmode="numeric">`;}
+function yldInput(side,i,val){return `<input class="yld" data-s="${side}" data-i="${i}" data-y="1" value="${val==null?0:val}" inputmode="decimal">`;}
+function buildLadder(){
+  const bh=BUCKETS.map(b=>`<th>${esc(b.lab)}</th>`).join("");
+  let h=`<table class="ladtab"><thead><tr><th>Category</th>${bh}<th>Rate&nbsp;%</th><th>Total</th></tr></thead><tbody>`;
+  h+=`<tr class="grp"><td colspan="9">Rate-sensitive assets</td></tr>`;
+  MODEL.assets.forEach((a,i)=>{
+    const cells=BUCKETS.map((b,bi)=>`<td>${ladInput("a",i,bi,a.b[bi])}</td>`).join("");
+    h+=`<tr><td>${linkTerms(a.lab)}</td>${cells}<td>${yldInput("a",i,a.y)}</td><td class="tot" id="tot_a_${i}">${fmtK(sum(a.b))}</td></tr>`;
+  });
+  h+=`<tr class="grp"><td colspan="9">Term liabilities</td></tr>`;
+  MODEL.liabs.forEach((l,i)=>{
+    const cells=BUCKETS.map((b,bi)=>`<td>${ladInput("l",i,bi,l.b[bi])}</td>`).join("");
+    h+=`<tr><td>${linkTerms(l.lab)}</td>${cells}<td>${yldInput("l",i,l.y)}</td><td class="tot" id="tot_l_${i}">${fmtK(sum(l.b))}</td></tr>`;
+  });
+  h+=`</tbody></table>`;
+  // NMD table
+  h+=`<table class="ladtab" style="margin-top:10px;min-width:560px"><thead><tr><th>Non-maturity deposits</th><th>Balance</th><th>Rate&nbsp;%</th><th>Beta&nbsp;up</th><th>Beta&nbsp;dn</th><th>Eff.&nbsp;dur</th><th>Decay&nbsp;%</th></tr></thead><tbody>`;
+  MODEL.nmd.forEach((n,i)=>{
+    h+=`<tr><td>${linkTerms(n.lab)}</td>`+
+       `<td><input data-s="n" data-i="${i}" data-n="bal" value="${Math.round(n.bal)}" inputmode="numeric"></td>`+
+       `<td><input class="yld" data-s="n" data-i="${i}" data-n="y" value="${n.y}" inputmode="decimal"></td>`+
+       `<td><input class="yld" data-s="n" data-i="${i}" data-n="betaUp" value="${n.betaUp}" inputmode="decimal"></td>`+
+       `<td><input class="yld" data-s="n" data-i="${i}" data-n="betaDn" value="${n.betaDn}" inputmode="decimal"></td>`+
+       `<td><input class="yld" data-s="n" data-i="${i}" data-n="dur" value="${n.dur}" inputmode="decimal"></td>`+
+       `<td><input class="yld" data-s="n" data-i="${i}" data-n="decay" value="${n.decay}" inputmode="decimal"></td></tr>`;
+  });
+  h+=`</tbody></table>`;
+  // capital row
+  h+=`<div class="cap-in"><label>Tier 1 capital ($000) <input id="cap_t1" value="${Math.round(MODEL.tier1)}" inputmode="numeric"></label>`+
+     `<label>AOCI treatment <span class="seg" id="aociSeg" style="display:inline-flex;width:auto;vertical-align:middle;margin-left:4px">`+
+     `<button class="segbtn${MODEL.aociOptOut?" on":""}" data-aoci="1">Opt-out</button>`+
+     `<button class="segbtn${MODEL.aociOptOut?"":" on"}" data-aoci="0">Include AFS</button></span></label></div>`;
+  h+=`<div class="ibnote" style="padding:8px 2px 0">Place fixed-rate balances by remaining maturity and floating balances by next repricing date, mirroring Call Report Schedules RC-B, RC-C, and RC-E. Non-maturity deposits have no contractual date, so they are driven by beta and an assumed effective duration. Loaded with an example bank; overwrite any cell with your own numbers.</div>`;
+  $("igB").innerHTML=h;
+  wireLadder();
+}
+function wireLadder(){
+  $("igB").querySelectorAll("input[data-s]").forEach(inp=>inp.addEventListener("input",()=>{
+    const s=inp.dataset.s,i=+inp.dataset.i,v=num(inp.value);
+    if(s==="a"||s==="l"){const arr=s==="a"?MODEL.assets:MODEL.liabs;
+      if(inp.dataset.y){arr[i].y=v??0;} else {arr[i].b[+inp.dataset.b]=v??0; $("tot_"+s+"_"+i).textContent=fmtK(sum(arr[i].b));}}
+    else if(s==="n"){MODEL.nmd[i][inp.dataset.n]=v??0;}
+    recompute();
+  }));
+  $("cap_t1").addEventListener("input",()=>{MODEL.tier1=num($("cap_t1").value)??0;recompute();});
+  $("aociSeg").querySelectorAll(".segbtn").forEach(b=>b.onclick=()=>{
+    MODEL.aociOptOut=b.dataset.aoci==="1";
+    $("aociSeg").querySelectorAll(".segbtn").forEach(x=>x.classList.toggle("on",x===b));recompute();});
+}
+function buildLevers(){
+  let h="";
+  LEVERS.forEach(g=>{
+    h+=`<div class="agrp"><div class="agl">${esc(g.grp)}</div>`;
+    g.items.forEach(it=>{
+      h+=`<div class="arow"><div class="alab">${esc(it.lab)}<span class="sub">${esc(it.sub)}</span></div>`+
+         `<input type="range" id="rv_${it.k}" min="${it.min}" max="${it.max}" step="${it.step}" value="${it.val}">`+
+         `<div class="aval"><input type="text" id="lv_${it.k}" value="${it.val}" inputmode="decimal"><span class="u">${esc(it.u)}</span></div></div>`;
+    });
+    h+=`</div>`;
+  });
+  $("levbox").innerHTML=h;
+  LEVERS.forEach(g=>g.items.forEach(it=>{
+    const r=$("rv_"+it.k),t=$("lv_"+it.k);
+    r.addEventListener("input",()=>{t.value=r.value;recompute();});
+    t.addEventListener("input",()=>{const v=num(t.value);if(v!=null)r.value=Math.min(it.max,Math.max(it.min,v));recompute();});
+  }));
+}
+
+/* ============================ render ============================ */
+function recompute(){
+  const P=readLevers();
+  const R=irrEngine(MODEL,P);
+  renderCards(R,P); renderGap(R); renderNII(R); renderEVE(R,P); renderLens(R,P); renderRead(R,P);
+}
+function pctCls(v,warn,bad){return v==null?"":(v<=bad?"bad":(v<=warn?"warn":""));}
+
+function renderCards(R,P){
+  const nii200=R.niiSet.find(s=>s.bp===200), eve200=R.eveSet.find(s=>s.bp===200);
+  const sensWord=R.gap1pct==null?"":(R.gap1pct<0?"liability-sensitive":"asset-sensitive");
+  const sotCls=R.sotPct==null?"":(R.sotPct<=-15?"bad":(R.sotPct<=-10?"warn":""));
+  const cards=[
+    {cl:"One-year gap / earning assets",cv:fmtPctS(R.gap1pct,1),cd:sensWord},
+    {cl:"\u0394NII at +200 bp",cls:pctCls(nii200?nii200.pct:null,-5,-10),cv:nii200?fmtPctS(nii200.pct,1):"n/a",cd:`of net interest income \u00b7 ${nii200?fmtKsign(nii200.d):""}`},
+    {cl:"\u0394EVE at +200 bp",cls:pctCls(eve200?eve200.pct:null,-10,-15),cv:eve200?fmtPctS(eve200.pct,1):"n/a",cd:`of Tier 1 \u00b7 ${eve200?fmtKsign(eve200.d):""}`},
+    {cl:"Supervisory outlier test",cls:sotCls,cv:R.sotPct==null?"n/a":fmtPctS(R.sotPct,1),cd:`worst Basel scenario vs Tier 1`},
+    {cl:"Duration of equity",cv:R.dE==null?"n/a":R.dE.toFixed(2)+" yr",cd:`assets ${R.MDa.toFixed(2)} \u00b7 liabs ${R.MDl.toFixed(2)}`}
+  ];
+  $("cards").innerHTML=cards.map(c=>`<div class="card ${c.cls||""}"><div class="cl">${c.cl}</div><div class="cv">${c.cv}</div><div class="cd">${esc(c.cd)}</div></div>`).join("");
+  let fl="";
+  if(R.sotPct!=null&&R.sotPct<=-15)fl+=`<div class="sot">\u26a0 Supervisory outlier. The worst Basel scenario takes economic value of equity down ${fmtPct(Math.abs(R.sotPct),1)} against Tier 1 capital, past the 15% screen the 2016 Basel standards use to flag banks for closer review. The driver here is the ${esc(scenName(R.worstK))} scenario.</div>`;
+  else if(R.sotPct!=null&&R.sotPct<=-10)fl+=`<div class="sot ok" style="border-color:color-mix(in srgb,var(--amber) 40%,transparent);background:color-mix(in srgb,var(--amber) 7%,var(--bg2));color:var(--amber)">The worst Basel scenario (${esc(scenName(R.worstK))}) erodes ${fmtPct(Math.abs(R.sotPct),1)} of Tier 1 economic value, inside the 15% outlier screen but worth watching.</div>`;
+  $("flags").innerHTML=fl;
+}
+function scenName(k){return {par_up:"parallel up",par_dn:"parallel down",short_up:"short-rate up",short_dn:"short-rate down",steepener:"steepener",flattener:"flattener"}[k]||k;}
+
+function renderGap(R){
+  let body=R.gap.map(g=>`<tr><td>${esc(g.lab)}</td><td>${fmtK(g.ra)}</td><td>${fmtK(g.rl)}</td><td class="${g.gap>=0?'pos':'neg'}">${fmtKsign(g.gap)}</td><td>${fmtKsign(g.cum)}</td></tr>`).join("");
+  const chart=svgBars(R.gap.map(g=>({lab:g.lab.replace(/\s/g,'\u00a0'),v:g.cum})),{h:150,pos:"#5fe88a",neg:"#ffb347",fmt:d=>""});
+  $("gap").innerHTML=`<div class="tblwrap"><table class="tbl minw"><thead><tr><th>Repricing bucket</th><th>RSA</th><th>RSL (term)</th><th>Period gap</th><th>Cumulative</th></tr></thead><tbody>${body}</tbody></table></div>`+
+   `<div class="chartbox" style="margin-top:10px">${chart}<div class="ibnote" style="padding:6px 2px 0">Cumulative repricing gap by bucket. Term liabilities only; non-maturity deposits reprice through beta, not a contractual date, so the headline one-year gap above folds them in at their up-rate beta.</div></div>`;
+}
+
+function renderNII(R){
+  const body=R.niiSet.map(s=>`<tr><td>${s.bp>0?'+':''}${s.bp} bp</td><td class="${s.d>=0?'pos':'neg'}">${fmtKsign(s.d)}</td><td class="${s.pct>=0?'pos':'neg'}">${fmtPctS(s.pct,1)}</td></tr>`).join("");
+  const chart=svgBars(R.niiSet.map(s=>({lab:(s.bp>0?'+':'')+s.bp,v:s.pct})),{h:156,pos:"#5fe88a",neg:"#ff6b6b",fmt:d=>fmtPctS(d.v,1)});
+  $("nii").innerHTML=`<div class="chartbox">${chart}</div>`+
+   `<div class="tblwrap" style="margin-top:10px"><table class="tbl"><thead><tr><th>Parallel shock</th><th>\u0394 net interest income</th><th>% of base NII</th></tr></thead><tbody>${body}</tbody></table></div>`+
+   `<div class="ibnote" style="padding:8px 2px 0">Twelve-month earnings at risk. Balances repricing inside the year are captured at the fraction of the year they are outstanding after repricing; non-maturity deposits reprice at their beta, which is asymmetric, so a down-rate move is not the mirror image of an up-rate move.</div>`;
+}
+
+function renderEVE(R,P){
+  const body=R.eveSet.map(s=>`<tr><td>${s.bp>0?'+':''}${s.bp} bp</td><td class="${s.d>=0?'pos':'neg'}">${fmtKsign(s.d)}</td><td class="${s.pct>=0?'pos':'neg'}">${fmtPctS(s.pct,1)}</td></tr>`).join("");
+  const chart=svgBars(R.eveSet.map(s=>({lab:(s.bp>0?'+':'')+s.bp,v:s.pct})),{h:156,pos:"#5fe88a",neg:"#ff6b6b",fmt:d=>fmtPctS(d.v,1)});
+  const order=['par_up','par_dn','short_up','short_dn','steepener','flattener'];
+  const bRows=order.map(k=>{const v=R.eve[k],pc=MODEL.tier1?v/MODEL.tier1*100:null;const cls=pc<=-15?'neg':(pc>=0?'pos':'');
+    return `<tr class="${k===R.worstK?'cur':''}"><td>${esc(scenName(k))}</td><td class="${v>=0?'pos':'neg'}">${fmtKsign(v)}</td><td class="${cls}">${fmtPctS(pc,1)}</td></tr>`;}).join("");
+  $("eve").innerHTML=`<div class="chartbox">${chart}<div class="ibnote" style="padding:6px 2px 0">\u0394EVE under parallel shocks, as a percent of Tier 1 capital. Asymmetry between up and down comes from the prepay-extension convexity proxy.</div></div>`+
+   `<div class="bridge" style="margin-top:11px"><div><div class="tblwrap"><table class="tbl"><thead><tr><th>Parallel ramp</th><th>\u0394EVE</th><th>% Tier 1</th></tr></thead><tbody>${body}</tbody></table></div></div>`+
+   `<div><div class="tblwrap"><table class="tbl"><thead><tr><th>Basel six scenarios</th><th>\u0394EVE</th><th>% Tier 1</th></tr></thead><tbody>${bRows}</tbody></table></div>`+
+   `<div class="ibnote" style="padding:8px 2px 0">Basel sizes: parallel ${P.baselParallel} bp, short ${P.baselShort} bp, long ${P.baselLong} bp. The rotation scenarios weight the short shock by e^(-t/4) and the long shock by its complement. The highlighted row is the worst case behind the outlier test.</div></div></div>`;
+}
+
+function renderLens(R,P){
+  const optout=MODEL.aociOptOut;
+  const body=R.lensSet.map(s=>`<tr><td>${s.bp>0?'+':''}${s.bp} bp</td><td class="${s.afs>=0?'pos':'neg'}">${fmtKsign(s.afs)}</td><td class="${s.htm>=0?'pos':'neg'}">${fmtKsign(s.htm)}</td><td>${MODEL.tier1?fmtPctS((s.afs+(optout?0:0))/MODEL.tier1*100,1):'n/a'}</td></tr>`).join("");
+  $("lens").innerHTML=`<div class="tblwrap"><table class="tbl"><thead><tr><th>Parallel shock</th><th>AFS mark</th><th>HTM mark (economic)</th><th>AFS / Tier 1</th></tr></thead><tbody>${body}</tbody></table></div>`+
+   `<div class="ibnote" style="padding:8px 2px 0">${optout?"This bank has <b>opted out</b> of including AOCI in regulatory capital, so AFS marks move tangible book value and GAAP equity but not the capital ratios. ":"This bank <b>includes AFS in capital</b>, so the AFS mark flows straight into CET1. "}The HTM column is the unrealized economic loss that never books to either, the gap that turned latent in 2022 and 2023 into a solvency question for banks with long, low-coupon held-to-maturity books. ${linkTerms("Held-to-maturity")} marks are shown for the same duration profile as if they were marked.</div>`;
+}
+
+function renderRead(R,P){
+  const nii200=R.niiSet.find(s=>s.bp===200),nii400=R.niiSet.find(s=>s.bp===400);
+  const eve200=R.eveSet.find(s=>s.bp===200);
+  const sens=R.gap1pct<0?"liability-sensitive":"asset-sensitive";
+  const niiWord=nii200.d<0?"falls":"rises";
+  let lead=`On a one-year beta-adjusted basis the balance sheet is <b>${sens}</b> (${fmtPctS(R.gap1pct,1)} of earning assets), so net interest income <b>${niiWord}</b> when rates rise: about <b>${fmtPctS(nii200.pct,1)}</b> of NII at +200 and ${fmtPctS(nii400.pct,1)} at +400. `;
+  lead+=`The down-rate side is not symmetric because non-maturity deposits reprice at a lower beta on the way down than up. `;
+  let body=`On economic value, the book carries a duration of equity of <b>${R.dE==null?"n/a":R.dE.toFixed(2)+" years"}</b> (assets ${R.MDa.toFixed(2)}, liabilities ${R.MDl.toFixed(2)}), so a +200 parallel shock moves EVE by <b>${fmtPctS(eve200.pct,1)}</b> of Tier 1. `;
+  if(R.sotPct!=null&&R.sotPct<=-15)body+=`Across the Basel six, the <b>${scenName(R.worstK)}</b> scenario is the bind, taking EVE down <b>${fmtPct(Math.abs(R.sotPct),1)}</b> of Tier 1 and tripping the 15% supervisory outlier screen. That is the classic shape of a bank funded short and invested long. `;
+  else body+=`Across the Basel six, the worst case is the <b>${scenName(R.worstK)}</b> at ${fmtPctS(R.sotPct,1)} of Tier 1, inside the 15% outlier screen. `;
+  body+=`The single biggest assumption in the EVE number is the effective duration on non-maturity deposits: lengthen it and the liability side absorbs more of the rate move, shortening the duration of equity. The single biggest assumption in the NII number is the deposit beta. Pressure-test both, then look at the securities lens, where the HTM column is the loss that never books to capital.`;
+  $("read").innerHTML=`<div class="narr">${linkTerms(lead)}<br><br>${linkTerms(body)}</div>`+
+   `<div class="ibnote" style="padding:10px 2px 0">This is a gap-and-duration screen, not an option-adjusted model. It cannot price the full convexity of mortgage cash flows or the true behavioral life of core deposits, and it is only as good as the betas and durations you enter. It is built for first-pass screening and teaching, the same posture an examiner takes before reaching for the bank's internal model.</div>`;
+}
+
+/* ============================ boot ============================ */
+$("resetBtn").onclick=()=>{MODEL=demoModel();buildLadder();
+  LEVERS.forEach(g=>g.items.forEach(it=>{$("rv_"+it.k).value=it.val;$("lv_"+it.k).value=it.val;}));recompute();
+  $("resetMsg").textContent="Reset to the example bank.";};
+buildShell();
+
+</script>
+</body>
+</html>
