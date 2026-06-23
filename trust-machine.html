@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Trust Machine · BankRegWire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,500&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+  :root{
+    --paper:#efe7d6;
+    --paper-2:#e7ddc8;
+    --panel:#f6f0e2;
+    --ink:#211a14;
+    --ink-soft:#4a3f33;
+    --ink-faint:#7a6e5c;
+    --rule:#c9bda3;
+    --rule-soft:#d8cdb4;
+    --oxblood:#74201f;
+    --oxblood-2:#8d2a25;
+    --copper:#a8662f;
+    --copper-soft:#c08a4f;
+    --sage:#5b6650;
+    --maxw:1180px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:"Archivo",system-ui,sans-serif;
+    font-size:17px;line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(33,26,20,0.012) 3px,rgba(33,26,20,0.012) 4px);
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+  a{color:var(--oxblood);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* Masthead */
+  .masthead{border-bottom:2px solid var(--ink);background:var(--paper)}
+  .masthead-top{display:flex;align-items:baseline;justify-content:space-between;
+    padding:16px 0 12px;gap:18px;flex-wrap:wrap}
+  .wordmark{font-family:"Fraunces",serif;font-weight:900;font-size:26px;letter-spacing:.01em}
+  .wordmark .dot{color:var(--oxblood)}
+  .masthead-meta{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--ink-faint);text-align:right;line-height:1.7}
+  .masthead-meta b{color:var(--ink-soft);font-weight:700}
+
+  /* Hero */
+  .hero{position:relative;overflow:hidden;border-bottom:1px solid var(--rule)}
+  .hero-bg{position:absolute;inset:-12%;z-index:0;
+    background:
+      radial-gradient(42% 38% at 22% 26%, rgba(168,102,47,0.22), transparent 62%),
+      radial-gradient(40% 44% at 80% 28%, rgba(116,32,31,0.20), transparent 60%),
+      radial-gradient(54% 50% at 52% 88%, rgba(95,102,80,0.15), transparent 62%),
+      radial-gradient(40% 40% at 86% 82%, rgba(176,106,50,0.16), transparent 60%);
+    animation:heroDrift 24s ease-in-out infinite alternate}
+  @keyframes heroDrift{
+    0%{transform:translate3d(0,0,0) scale(1.02)}
+    50%{transform:translate3d(1.6%,-1.4%,0) scale(1.08)}
+    100%{transform:translate3d(-1.4%,1%,0) scale(1.04)}}
+  .hero-content{position:relative;z-index:2;padding:48px 0 56px}
+  .kicker{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.26em;
+    text-transform:uppercase;color:var(--oxblood);font-weight:700;margin-bottom:20px}
+  #heroCanvas{display:none;width:100%;height:clamp(210px,40vh,380px);margin:4px 0 0}
+  .hero.canvas-on #heroCanvas{display:block}
+  h1{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(44px,8vw,92px);
+    line-height:.96;letter-spacing:-.02em;margin:0 0 4px;max-width:14ch}
+  h1 em{font-style:italic;font-weight:500;color:var(--oxblood)}
+  .hero.canvas-on h1{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;
+    overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  .deck{font-family:"Fraunces",serif;font-weight:400;font-size:clamp(19px,2.6vw,26px);
+    line-height:1.4;color:var(--ink-soft);max-width:42ch;margin:22px 0 0}
+  .byline{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--ink-faint);margin-top:26px;
+    border-top:1px solid var(--rule-soft);padding-top:14px;display:inline-block}
+  .hero-deck{position:relative;overflow:hidden;margin-top:18px;max-width:580px;padding:24px 30px 26px;border-radius:20px;
+    background:linear-gradient(135deg, rgba(247,241,228,0.58), rgba(238,230,213,0.30));
+    -webkit-backdrop-filter:blur(18px) saturate(165%);backdrop-filter:blur(18px) saturate(165%);
+    border:1px solid rgba(255,255,255,0.5);
+    box-shadow:0 12px 36px rgba(33,26,20,0.17), inset 0 1px 1px rgba(255,255,255,0.8), inset 0 -12px 26px rgba(116,32,31,0.05)}
+  .hero-deck::before{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+    background:linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.55) 47%, transparent 60%);
+    background-size:240% 240%;animation:sheen 9s ease-in-out infinite}
+  @keyframes sheen{0%{background-position:140% 50%}100%{background-position:-60% 50%}}
+  .hero-deck .deck{margin:0}
+  .hero-deck .byline{margin-top:16px;border-top-color:rgba(116,32,31,0.18)}
+
+  /* Rules strip */
+  .strip{background:var(--ink);color:var(--paper);padding:8px 0}
+  .strip-inner{display:flex;flex-wrap:wrap;gap:0;align-items:stretch}
+  .stat{flex:1 1 150px;padding:14px 18px;border-right:1px solid rgba(239,231,214,.16)}
+  .stat:last-child{border-right:none}
+  .stat .n{font-family:"Fraunces",serif;font-weight:700;font-size:30px;line-height:1;color:var(--paper)}
+  .stat .n small{font-size:15px;font-weight:500;color:var(--copper-soft)}
+  .stat .l{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.13em;
+    text-transform:uppercase;color:rgba(239,231,214,.62);margin-top:8px}
+  .strip-foot{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.08em;
+    color:rgba(239,231,214,.5);text-align:center;padding:8px 0 2px}
+
+  /* Section scaffolding */
+  section{padding:64px 0}
+  .eyebrow{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--copper);font-weight:700;display:flex;align-items:center;gap:14px;margin-bottom:18px}
+  .eyebrow::after{content:"";flex:1;height:1px;background:var(--rule)}
+  h2{font-family:"Fraunces",serif;font-weight:700;font-size:clamp(30px,5vw,48px);
+    line-height:1.02;letter-spacing:-.015em;margin:0 0 16px}
+  .lead{font-size:18px;color:var(--ink-soft);max-width:62ch;margin:0 0 8px}
+
+  /* Machinery: freeze / squeeze / shift */
+  .machine{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);
+    border:1px solid var(--rule);margin-top:36px}
+  .gear{background:var(--panel);padding:30px 26px}
+  .gear .verb{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(26px,3vw,34px);
+    color:var(--oxblood);margin-bottom:6px}
+  .gear .num{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.18em;
+    color:var(--ink-faint);text-transform:uppercase;margin-bottom:14px}
+  .gear p{margin:0;font-size:15.5px;color:var(--ink-soft)}
+  .gear p b{color:var(--ink)}
+
+  /* Case study anatomy */
+  .case{background:var(--ink);color:var(--paper);margin-top:8px}
+  .case-head{padding:50px 0 0}
+  .case .eyebrow{color:var(--copper-soft)}
+  .case .eyebrow::after{background:rgba(239,231,214,.18)}
+  .case h2{color:var(--paper)}
+  .case .lead{color:rgba(239,231,214,.72)}
+  .anatomy{display:grid;grid-template-columns:280px 1fr;gap:0;margin-top:38px;
+    border-top:1px solid rgba(239,231,214,.18)}
+  .steps{border-right:1px solid rgba(239,231,214,.18)}
+  .step-btn{display:block;width:100%;text-align:left;background:none;border:none;cursor:pointer;
+    color:rgba(239,231,214,.6);padding:20px 24px 20px 0;border-bottom:1px solid rgba(239,231,214,.1);
+    font-family:"Archivo",sans-serif;transition:color .2s,padding .2s}
+  .step-btn:last-child{border-bottom:none}
+  .step-btn .sn{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;
+    display:block;margin-bottom:6px;color:var(--copper-soft)}
+  .step-btn .st{font-family:"Fraunces",serif;font-size:21px;font-weight:600;line-height:1.1}
+  .step-btn:hover{color:var(--paper);padding-left:8px}
+  .step-btn.active{color:var(--paper);padding-left:14px}
+  .step-btn.active .sn{color:var(--paper)}
+  .step-panel{padding:34px 0 40px 44px}
+  .step-figure{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(40px,6vw,68px);
+    line-height:.9;color:var(--copper-soft);margin-bottom:4px}
+  .step-figure small{display:block;font-family:"JetBrains Mono",monospace;font-size:12px;
+    letter-spacing:.14em;color:rgba(239,231,214,.55);text-transform:uppercase;font-weight:400;margin-top:14px}
+  .step-body{font-size:18px;line-height:1.55;color:var(--paper);max-width:54ch;margin-top:18px;
+    min-height:120px}
+  .step-tag{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:11px;
+    letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--copper);color:var(--copper-soft);
+    padding:5px 11px;margin-top:18px}
+  .case-foot{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.06em;
+    color:rgba(239,231,214,.5);padding:24px 0 50px;border-top:1px solid rgba(239,231,214,.14);margin-top:30px}
+
+  /* Catalogue controls */
+  .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:34px 0 8px;
+    position:sticky;top:57px;background:var(--paper);padding:16px 0;z-index:20;border-bottom:1px solid var(--rule-soft)}
+  .chip{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;
+    border:1px solid var(--rule);background:var(--panel);color:var(--ink-soft);padding:8px 14px;cursor:pointer;
+    border-radius:0;transition:all .15s;font-weight:500}
+  .chip:hover{border-color:var(--ink-soft);color:var(--ink)}
+  .chip.on{background:var(--oxblood);color:var(--paper);border-color:var(--oxblood)}
+  .search{flex:1 1 200px;min-width:160px}
+  .search input{width:100%;font-family:"JetBrains Mono",monospace;font-size:13px;
+    border:1px solid var(--rule);background:var(--panel);color:var(--ink);padding:9px 12px}
+  .search input:focus{outline:2px solid var(--copper);outline-offset:-1px;border-color:var(--copper)}
+  .count{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--ink-faint);margin:14px 0 22px}
+
+  /* Catalogue grid */
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule)}
+  .card{background:var(--panel);padding:0;display:flex;flex-direction:column}
+  .card-head{padding:24px 26px 20px;cursor:pointer;position:relative}
+  .card-head:focus-visible{outline:2px solid var(--copper);outline-offset:-2px}
+  .card-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px}
+  .card-name{font-family:"Fraunces",serif;font-weight:700;font-size:24px;line-height:1.05;letter-spacing:-.01em}
+  .card-abbr{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;
+    color:var(--paper);background:var(--ink);padding:4px 8px;white-space:nowrap;align-self:flex-start}
+  .card-blurb{font-size:15.5px;color:var(--ink-soft);line-height:1.45}
+  .card-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+  .tag{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+    padding:3px 8px;border:1px solid var(--rule);color:var(--ink-faint)}
+  .tag.rev{border-color:var(--sage);color:var(--sage)}
+  .tag.irr{border-color:var(--oxblood);color:var(--oxblood)}
+  .card-expand{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--copper);margin-top:16px;display:flex;align-items:center;gap:6px}
+  .card-expand .pm{font-weight:700;font-size:14px;transition:transform .2s}
+  .card.open .card-expand .pm{transform:rotate(45deg)}
+  .card-detail{max-height:0;overflow:hidden;transition:max-height .35s ease;background:var(--paper-2)}
+  .card.open .card-detail{max-height:700px}
+  .card-detail-inner{padding:22px 26px 26px;border-top:1px solid var(--rule)}
+  .dl-label{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--copper);font-weight:700;margin-bottom:8px}
+  .mech{font-size:15px;color:var(--ink-soft);margin:0 0 22px;line-height:1.55}
+  .example{border-left:3px solid var(--oxblood);padding-left:16px}
+  .ex-who{font-family:"Fraunces",serif;font-weight:600;font-size:18px;font-style:italic;margin-bottom:6px}
+  .ex-what{font-size:14.5px;color:var(--ink-soft);line-height:1.5;margin:0 0 10px}
+  .ex-src{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.08em;color:var(--ink-faint)}
+  .no-results{grid-column:1/-1;background:var(--panel);padding:46px;text-align:center;
+    font-family:"Fraunces",serif;font-style:italic;font-size:20px;color:var(--ink-faint)}
+
+  /* Tab navigation */
+  .tabnav{position:sticky;top:0;z-index:40;
+    background:rgba(239,231,214,0.72);
+    -webkit-backdrop-filter:blur(20px) saturate(160%);backdrop-filter:blur(20px) saturate(160%);
+    border-bottom:1px solid rgba(116,32,31,0.2);box-shadow:0 6px 22px rgba(33,26,20,0.07)}
+  .tabnav-inner{display:flex;gap:0}
+  .tab{font-family:"JetBrains Mono",monospace;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;
+    font-weight:700;background:none;border:none;border-bottom:3px solid transparent;color:var(--ink-faint);
+    padding:18px 4px;margin-right:34px;cursor:pointer;transition:color .15s,border-color .15s;margin-bottom:-2px}
+  .tab:hover{color:var(--ink-soft)}
+  .tab.on{color:var(--oxblood);border-bottom-color:var(--oxblood)}
+  .tab .tn{font-size:10px;color:var(--copper);margin-right:7px}
+  .view[hidden]{display:none}
+
+  /* Law view */
+  .law-intro{padding:58px 0 18px}
+  .law-intro .thesis{font-family:"Fraunces",serif;font-weight:400;font-size:clamp(20px,2.7vw,28px);
+    line-height:1.42;color:var(--ink);max-width:50ch;margin:18px 0 0}
+  .law-intro .thesis b{font-weight:600;color:var(--oxblood)}
+  .foundations{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);
+    border:1px solid var(--rule);margin-top:40px}
+  .foundation{background:var(--panel);padding:28px 26px}
+  .foundation h3{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--copper);margin:0 0 14px}
+  .foundation p{margin:0 0 12px;font-size:15px;color:var(--ink-soft);line-height:1.55}
+  .foundation p:last-child{margin-bottom:0}
+  .foundation b{color:var(--ink)}
+
+  /* Timeline */
+  .timeline{margin-top:18px;border-top:1px solid var(--rule)}
+  .tl-legend{display:flex;flex-wrap:wrap;gap:18px;margin:24px 0 8px;
+    font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.08em;color:var(--ink-faint)}
+  .tl-key{display:inline-flex;align-items:center;gap:7px}
+  .tl-dot{width:11px;height:11px;border:2px solid var(--oxblood);background:var(--paper);display:inline-block}
+  .tl-dot.open{border-color:var(--copper);background:var(--copper)}
+  .tl-dot.both{border-color:var(--oxblood);background:var(--copper)}
+  .tl-row{display:grid;grid-template-columns:120px 1fr;gap:0;border-bottom:1px solid var(--rule-soft);
+    position:relative}
+  .tl-row:last-child{border-bottom:none}
+  .tl-year{font-family:"Fraunces",serif;font-weight:900;font-size:30px;color:var(--ink);
+    padding:26px 20px 26px 0;line-height:1;border-right:2px solid var(--rule);position:relative}
+  .tl-marker{position:absolute;right:-7px;top:32px;width:11px;height:11px;background:var(--paper);
+    border:2px solid var(--oxblood);border-radius:0;z-index:2}
+  .tl-marker.open{border-color:var(--copper);background:var(--copper)}
+  .tl-marker.both{border-color:var(--oxblood);background:var(--copper)}
+  .tl-body{padding:24px 0 24px 30px}
+  .tl-flag{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+    font-weight:700;padding:3px 9px;display:inline-block;margin-bottom:11px;border:1px solid}
+  .tl-flag.restrict{color:var(--oxblood);border-color:var(--oxblood)}
+  .tl-flag.open{color:var(--copper);border-color:var(--copper)}
+  .tl-flag.both{color:var(--ink);border-color:var(--ink);background:rgba(168,102,47,.12)}
+  .tl-title{font-family:"Fraunces",serif;font-weight:700;font-size:21px;line-height:1.15;margin-bottom:8px}
+  .tl-text{font-size:15px;color:var(--ink-soft);line-height:1.55;margin:0;max-width:64ch}
+  .tl-cite{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.06em;color:var(--ink-faint);margin-top:9px}
+  .tl-cite a{color:var(--oxblood);border-bottom:1px solid var(--rule);padding-bottom:1px}
+  .tl-cite a:hover{border-bottom-color:var(--oxblood);text-decoration:none}
+  .ex-src a{color:var(--oxblood);border-bottom:1px solid var(--rule)}
+  .ex-src a:hover{border-bottom-color:var(--oxblood);text-decoration:none}
+  .sources a{color:var(--oxblood)}
+
+  /* Principles */
+  .principles{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);
+    border:1px solid var(--rule);margin-top:38px}
+  .principle{background:var(--ink);color:var(--paper);padding:30px 26px}
+  .principle .pnum{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;
+    color:var(--copper-soft);margin-bottom:14px}
+  .principle h3{font-family:"Fraunces",serif;font-weight:700;font-size:24px;line-height:1.05;margin:0 0 12px;color:var(--paper)}
+  .principle p{margin:0;font-size:14.5px;line-height:1.55;color:rgba(239,231,214,.78)}
+
+  .exp-select{display:none;width:100%;font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:500;
+    border:1px solid var(--ink);background:var(--paper);color:var(--ink);padding:13px 40px 13px 14px;margin-bottom:14px;
+    -webkit-appearance:none;appearance:none;border-radius:0;cursor:pointer;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M0 0l6 8 6-8z' fill='%23741f1f'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 14px center}
+  .exp-select:focus{outline:2px solid var(--copper);outline-offset:-1px}
+
+  /* In-practice explorer */
+  .explorer{display:grid;grid-template-columns:236px 1fr;gap:0;border:1px solid var(--rule);margin-top:30px;background:var(--panel)}
+  .exp-list{border-right:1px solid var(--rule);background:var(--paper)}
+  .exp-item{display:block;width:100%;text-align:left;border:none;background:none;cursor:pointer;
+    padding:15px 18px;border-bottom:1px solid var(--rule-soft);font-family:"Archivo",sans-serif;
+    color:var(--ink-soft);transition:background .15s,color .15s}
+  .exp-item:last-child{border-bottom:none}
+  .exp-item .ea{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;color:var(--copper);display:block;margin-bottom:3px}
+  .exp-item .en{font-family:"Fraunces",serif;font-size:16px;font-weight:600;line-height:1.12;display:block}
+  .exp-item:hover{background:var(--paper-2);color:var(--ink)}
+  .exp-item.on{background:var(--ink);color:var(--paper)}
+  .exp-item.on .ea{color:var(--copper-soft)}
+  .exp-stage{padding:24px 26px 28px;min-width:0}
+  .exp-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+  .exp-title{font-family:"Fraunces",serif;font-weight:700;font-size:26px;line-height:1.05}
+  .exp-stepcount{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.12em;color:var(--ink-faint)}
+  .exp-legend{display:flex;flex-wrap:wrap;gap:16px;margin:0 0 6px;font-family:"JetBrains Mono",monospace;
+    font-size:10px;letter-spacing:.04em;color:var(--ink-faint)}
+  .exp-legend span{display:inline-flex;align-items:center;gap:7px}
+  .exp-legend i{width:20px;height:0;border-top-width:2.5px;border-top-style:solid;display:inline-block}
+  .exp-svg-wrap{background:#f6f0e2;border:1px solid var(--rule);margin:0 0 16px}
+  .exp-svg-wrap svg{width:100%;height:auto;display:block}
+  .exp-caption{min-height:72px}
+  .exp-caption .ct{font-family:"Fraunces",serif;font-weight:600;font-size:19px;margin-bottom:4px}
+  .exp-caption .cd{font-size:15px;color:var(--ink-soft);line-height:1.5;max-width:64ch}
+  .exp-controls{display:flex;align-items:center;gap:10px;margin-top:14px}
+  .exp-btn{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    border:1px solid var(--ink);background:var(--paper);color:var(--ink);padding:9px 16px;cursor:pointer;transition:background .15s,color .15s}
+  .exp-btn:hover{background:var(--ink);color:var(--paper)}
+  .exp-btn.on{background:var(--oxblood);color:var(--paper);border-color:var(--oxblood)}
+  .exp-btn.on:hover{background:var(--oxblood);color:var(--paper)}
+  .exp-btn:disabled{opacity:.3;cursor:default}
+  .exp-btn:disabled:hover{background:var(--paper);color:var(--ink)}
+  .exp-dots{display:flex;gap:7px;margin-left:6px}
+  .exp-dot{width:9px;height:9px;border:1.5px solid var(--rule);background:none;cursor:pointer;padding:0}
+  .exp-dot.on{background:var(--oxblood);border-color:var(--oxblood)}
+  .exp-take{margin-top:20px;border-left:3px solid var(--copper);padding-left:16px;font-size:14.5px;color:var(--ink-soft);line-height:1.5}
+  .exp-take b{color:var(--copper);font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;display:block;margin-bottom:5px}
+
+  /* Footer */
+  footer{border-top:2px solid var(--ink);margin-top:30px;padding:42px 0 70px}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:40px}
+  .foot-grid h3{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--oxblood);margin:0 0 14px}
+  .foot-grid p{font-size:13.5px;color:var(--ink-soft);margin:0 0 12px;line-height:1.55}
+  .sources{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-faint);line-height:1.9}
+  .disclaimer{font-size:12px;color:var(--ink-faint);border-top:1px solid var(--rule-soft);
+    margin-top:34px;padding-top:18px;line-height:1.55;max-width:80ch}
+
+  @media(max-width:820px){
+    #heroCanvas{height:clamp(150px,26vh,230px)}
+    .hero-content{padding:34px 0 42px}
+    .hero-deck{max-width:100%;padding:20px 18px 22px}
+    .machine{grid-template-columns:1fr}
+    .anatomy{grid-template-columns:1fr}
+    .steps{border-right:none;border-bottom:1px solid rgba(239,231,214,.18);
+      display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch}
+    .step-btn{flex:0 0 200px;border-bottom:none;border-right:1px solid rgba(239,231,214,.1);padding:16px}
+    .step-btn:hover,.step-btn.active{padding-left:16px}
+    .step-panel{padding:30px 0 36px}
+    .grid{grid-template-columns:1fr}
+    .foot-grid{grid-template-columns:1fr;gap:26px}
+    .controls{position:static}
+    .tab{margin-right:22px;font-size:11px;letter-spacing:.08em}
+    .tabnav-inner{overflow-x:auto;-webkit-overflow-scrolling:touch}
+    .tab{flex:0 0 auto;white-space:nowrap}
+    .foundations{grid-template-columns:1fr}
+    .principles{grid-template-columns:1fr}
+    .tl-row{grid-template-columns:74px 1fr}
+    .tl-year{font-size:21px;padding:22px 12px 22px 0}
+    .tl-marker{top:26px}
+    .tl-body{padding:20px 0 22px 18px}
+    .explorer{grid-template-columns:1fr}
+    .exp-select{display:block}
+    .exp-list{display:none}
+    .exp-stage{padding:20px 16px 24px}
+  }
+  /* Glossary tooltips */
+  .term{border-bottom:1px dotted var(--copper);cursor:help}
+  .term:hover{border-bottom-style:solid}
+  .strip .term,.case .term,.principle .term,.step-body .term{border-bottom-color:var(--copper-soft)}
+  #glossTip{position:fixed;z-index:120;max-width:268px;background:var(--panel);color:var(--ink);
+    border:1px solid var(--rule);box-shadow:0 12px 32px rgba(33,26,20,0.24);padding:12px 14px;border-radius:11px;
+    font-family:"Archivo",sans-serif;font-size:13px;line-height:1.45;pointer-events:none;
+    opacity:0;transform:translateY(4px);transition:opacity .14s ease,transform .14s ease}
+  #glossTip.show{opacity:1;transform:translateY(0)}
+  #glossTip b{display:block;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--oxblood);margin-bottom:6px}
+
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important}
+    .hero-bg,.hero-deck::before{animation:none!important}
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap masthead-top">
+    <div class="wordmark">BankRegWire<span class="dot">.</span></div>
+    <div class="masthead-meta">
+      <div><b>Reference</b> &nbsp;/&nbsp; Estate &amp; Trust</div>
+      <div>Dispatch No. 41 &nbsp;·&nbsp; Updated 2026</div>
+    </div>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="wrap hero-content">
+    <div class="kicker">The Anatomy of American Wealth</div>
+    <h1>The Trust <em>Machine</em></h1>
+    <canvas id="heroCanvas" aria-hidden="true"></canvas>
+    <div class="hero-deck">
+      <p class="deck">A field guide to the legal structures Americans use to pass wealth, sidestep probate, shield assets, and keep fortunes beyond the reach of the taxman. With the real cases that show each one at work.</p>
+      <div class="byline">A working catalogue of 18 trust types · primary-source examples</div>
+    </div>
+  </div>
+</div>
+
+<nav class="tabnav">
+  <div class="wrap tabnav-inner">
+    <button class="tab on" data-view="guide"><span class="tn">01</span>The Field Guide</button>
+    <button class="tab" data-view="playbook"><span class="tn">02</span>The Playbook</button>
+    <button class="tab" data-view="law"><span class="tn">03</span>The Legal Backing</button>
+    <button class="tab" data-view="practice"><span class="tn">04</span>In Practice</button>
+  </div>
+</nav>
+
+<div class="view" id="view-guide">
+
+<div class="strip">
+  <div class="wrap">
+    <div class="strip-inner">
+      <div class="stat"><div class="n">$15<small>M</small></div><div class="l">Estate &amp; gift exemption / person</div></div>
+      <div class="stat"><div class="n">$30<small>M</small></div><div class="l">Combined / married couple</div></div>
+      <div class="stat"><div class="n">$15<small>M</small></div><div class="l">GST exemption / person</div></div>
+      <div class="stat"><div class="n">40<small>%</small></div><div class="l">Top transfer-tax rate</div></div>
+      <div class="stat"><div class="n">$19<small>K</small></div><div class="l">Annual gift exclusion</div></div>
+      <div class="stat"><div class="n">2034</div><div class="l">Next scheduled sunset</div></div>
+    </div>
+    <div class="strip-foot">2026 federal figures. The One Big Beautiful Bill Act (signed July 4, 2025) made the $15M exemption permanent and indexed it for inflation from 2027.</div>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">The catalogue</div>
+    <h2>Eighteen trusts, and what each one is for</h2>
+    <p class="lead">Filter by what the trust is built to do. Tap any entry for the mechanics and a real case. Note the divide that runs through all of it: <b>revocable</b> trusts keep you in control but leave assets in your estate, while <b>irrevocable</b> trusts make you give up control in exchange for tax savings and protection.</p>
+
+    <div class="controls">
+      <button class="chip on" data-filter="all">All</button>
+      <button class="chip" data-filter="probate">Avoid probate</button>
+      <button class="chip" data-filter="tax">Cut transfer tax</button>
+      <button class="chip" data-filter="protect">Protect assets</button>
+      <button class="chip" data-filter="benefits">Preserve benefits</button>
+      <button class="chip" data-filter="charity">Charitable</button>
+      <button class="chip" data-filter="control">Control &amp; incapacity</button>
+      <span class="search"><input type="text" id="search" placeholder="Search trusts, e.g. GRAT, special needs, dynasty…" aria-label="Search trusts"></span>
+    </div>
+    <div class="count" id="count"></div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+</div><!-- /view-guide -->
+
+<div class="view" id="view-playbook" hidden>
+
+  <section class="law-intro">
+    <div class="wrap">
+      <div class="eyebrow">The playbook</div>
+      <h2>How the ultra-rich pass wealth tax-free</h2>
+      <p class="thesis">The catalogue lists the tools. This is how they combine in the real world: first the three moves that sit under almost every large transfer, then the clearest public example we have, the structure Phil Knight built around his Nike fortune.</p>
+    </div>
+  </section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">How the machinery works</div>
+    <h2>Three moves under every billion</h2>
+    <p class="lead">Strip away the acronyms and almost every sophisticated wealth-transfer plan runs the same three moves. The point is never to hide money. It is to make a fortune appear smaller than it is at the one moment the government measures it.</p>
+    <div class="machine">
+      <div class="gear">
+        <div class="num">Move 01</div>
+        <div class="verb">Freeze</div>
+        <p>Lock today's value inside your estate using notes or annuities, so every dollar of <b>future growth</b> accrues to your heirs instead of to you. The asset you keep stops climbing; the one they get takes off.</p>
+      </div>
+      <div class="gear">
+        <div class="num">Move 02</div>
+        <div class="verb">Squeeze</div>
+        <p>Shrink the reported value with <b>minority and marketability discounts</b>. Split one asset among several owners and you can tell the IRS the parts are worth less than the whole, even when nothing real has changed.</p>
+      </div>
+      <div class="gear">
+        <div class="num">Move 03</div>
+        <div class="verb">Shift</div>
+        <p>Move the frozen, discounted asset into a trust that sits <b>outside your taxable estate</b>. Make it generation-skipping and the wealth can compound for descendants who are never taxed on it again.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="case">
+  <div class="wrap case-head">
+    <div class="eyebrow">Case study</div>
+    <h2>Anatomy of a tax-free billion</h2>
+    <p class="lead">Because Nike is a public company and its founder sits on the board, the structure Phil Knight built is visible in SEC filings. Tax attorney Bob Lord reverse-engineered it for Bloomberg. It is the clearest public look at how the three moves combine, and it is entirely legal.</p>
+  </div>
+  <div class="wrap">
+    <div class="anatomy">
+      <div class="steps" id="steps"></div>
+      <div class="step-panel">
+        <div class="step-figure" id="figure"></div>
+        <div class="step-body" id="body"></div>
+        <div class="step-tag" id="tag"></div>
+      </div>
+    </div>
+    <div class="case-foot">Source: Bloomberg Businessweek, "The Hidden Ways the Ultrarich Pass Wealth to Their Heirs Tax Free" (2021); analysis by Bob Lord drawn from public SEC filings; Walton v. Commissioner, 115 T.C. 589 (2000). Figures reflect reporting at the time.</div>
+  </div>
+</div>
+
+</div><!-- /view-playbook -->
+
+
+<div class="view" id="view-law" hidden>
+
+  <section class="law-intro">
+    <div class="wrap">
+      <div class="eyebrow">The legal backing</div>
+      <h2>Built by one body of law, taxed by another</h2>
+      <p class="thesis">The American trust sits in a gap between two legal systems that were never reconciled. <b>Common law</b> built the trust and, for centuries, limited it. The <b>tax code</b> spent a hundred years trying to tax what moves through it. Almost every technique on the other tab exists because an anti-abuse rule, written to shut one door, left another standing open.</p>
+
+      <div class="foundations">
+        <div class="foundation">
+          <h3>The common-law foundation</h3>
+          <p>A trust splits ownership in two: the trustee holds <b>legal title</b> while the beneficiary holds the <b>beneficial interest</b>. That division, an English equity invention refined over centuries, is what lets one person hold and manage property for another's benefit.</p>
+          <p>The common law's brake was the <b>Rule Against Perpetuities</b>: an interest had to vest, if at all, within a life in being plus twenty-one years. It existed to stop the dead hand from ruling property forever. Repeal that rule, as a handful of states have, and the perpetual dynasty trust becomes possible.</p>
+        </div>
+        <div class="foundation">
+          <h3>The federal transfer-tax trilogy</h3>
+          <p>Three taxes are the thing trusts are engineered around. The <b>estate tax</b> arrived in 1916, the <b>gift tax</b> followed in 1924 and became permanent in 1932, and the <b>generation-skipping transfer tax</b> came in 1976.</p>
+          <p>Together they were meant to take a cut at every link in the chain: at death, at lifetime gifts, and at any attempt to leapfrog a generation. The history below is the story of how each was written, worked around, patched, and worked around again.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:24px">
+    <div class="wrap">
+      <div class="eyebrow">A century of cat and mouse</div>
+      <h2>Every closed door opened another</h2>
+      <p class="lead">Top to bottom, this is a pattern rather than a list. Congress or the courts move to shut a loophole, and the same statute, or the state next door, opens the next one. The tags mark which way each door swung.</p>
+      <div class="tl-legend">
+        <span class="tl-key"><span class="tl-dot"></span> Attempt to restrict</span>
+        <span class="tl-key"><span class="tl-dot open"></span> A door opened</span>
+        <span class="tl-key"><span class="tl-dot both"></span> Both at once</span>
+      </div>
+      <div class="timeline" id="timeline"></div>
+    </div>
+  </section>
+
+  <section style="padding-top:24px">
+    <div class="wrap">
+      <div class="eyebrow">Why it keeps happening</div>
+      <h2>Three principles under the whole game</h2>
+      <p class="lead">Strip the history down and the same three forces produce loophole after loophole.</p>
+      <div class="principles">
+        <div class="principle">
+          <div class="pnum">Principle 01</div>
+          <h3>The mismatch</h3>
+          <p>The income-tax rules and the transfer-tax rules were drafted by different hands and never aligned. You can be the owner of a trust for income tax while the same assets sit outside your estate for the estate tax. The intentionally defective grantor trust lives entirely inside that gap.</p>
+        </div>
+        <div class="principle">
+          <div class="pnum">Principle 02</div>
+          <h3>Federalism as a feature</h3>
+          <p>Transfer tax is federal, but trust law is state. States compete to be the most permissive on trust duration, secrecy, and self-settled protection, while the federal exemption supplies the tax shield. Dynasty and asset-protection trusts live in that seam.</p>
+        </div>
+        <div class="principle">
+          <div class="pnum">Principle 03</div>
+          <h3>Anti-abuse rules as scaffolding</h3>
+          <p>Time and again, the statute written to kill one technique becomes the authority for the next. Chapter 14 outlawed the GRIT and, in the same breath, authorized the GRAT. The grantor-trust rules meant to stop income-shifting now power the IDGT.</p>
+        </div>
+      </div>
+      <p style="font-size:14.5px;color:var(--ink-soft);line-height:1.6;max-width:80ch;margin:34px 0 0;border-left:3px solid var(--copper);padding-left:18px">A note on intent: charitable trusts and special needs trusts are not loopholes. Congress built them on purpose, to encourage giving and to protect benefits for people with disabilities. The line between an incentive Congress intended and a loophole it merely tolerates is exactly what the fights below are about.</p>
+    </div>
+  </section>
+
+</div><!-- /view-law -->
+
+<div class="view" id="view-practice" hidden>
+
+  <section class="law-intro">
+    <div class="wrap">
+      <div class="eyebrow">In practice</div>
+      <h2>What the money actually does</h2>
+      <p class="thesis">Pick a structure and step through it. Each diagram traces the parties and the flows between them: what goes into the trust, what comes back, what reaches the heirs, and where the tax does or does not land. Dollar figures are illustrative, meant to show the shape of the move rather than a real plan.</p>
+    </div>
+  </section>
+
+  <section style="padding-top:8px">
+    <div class="wrap">
+      <div class="exp-legend" id="expLegend"></div>
+      <select class="exp-select" id="expSelect" aria-label="Choose a trust structure"></select>
+      <div class="explorer">
+        <div class="exp-list" id="expList"></div>
+        <div class="exp-stage">
+          <div class="exp-head">
+            <div class="exp-title" id="expTitle"></div>
+            <div class="exp-stepcount" id="expCount"></div>
+          </div>
+          <div class="exp-svg-wrap" id="expSvg"></div>
+          <div class="exp-caption">
+            <div class="ct" id="expCt"></div>
+            <div class="cd" id="expCd"></div>
+          </div>
+          <div class="exp-controls">
+            <button class="exp-btn" id="expPrev">Prev</button>
+            <button class="exp-btn" id="expNext">Next</button>
+            <button class="exp-btn" id="expPlay" aria-pressed="false">Auto-play</button>
+            <div class="exp-dots" id="expDots"></div>
+          </div>
+          <div class="exp-take"><b>In short</b><span id="expTake"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /view-practice -->
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h3>About this dispatch</h3>
+        <p>This catalogue surveys the principal trust forms used in United States estate, tax, and asset-protection planning. Definitions describe how each structure functions under federal law as of 2026. Examples are drawn from public record: court decisions, SEC filings, published wills, and investigative reporting.</p>
+        <p>The headline cases (Knight, Walton, Adelson, Onassis, Helmsley) are matters of public record. Many planning structures, by design, are private, so the everyday examples describe standard practice rather than named individuals.</p>
+      </div>
+      <div>
+        <h3>Sources</h3>
+        <div class="sources">
+          Bloomberg Businessweek (2021)<br>
+          <a href="https://www.leagle.com/decision/2000704115aotc5891664" target="_blank" rel="noopener">Walton v. Commissioner, 115 T.C. 589 (2000)</a><br>
+          IRC <a href="https://www.law.cornell.edu/uscode/text/26/2010" target="_blank" rel="noopener">§ 2010</a>, <a href="https://www.law.cornell.edu/uscode/text/26/2702" target="_blank" rel="noopener">§ 2702</a>, <a href="https://www.law.cornell.edu/uscode/text/26/7520" target="_blank" rel="noopener">§ 7520</a><br>
+          <a href="https://www.law.cornell.edu/uscode/text/42/1396p" target="_blank" rel="noopener">42 U.S.C. § 1396p(d)(4)</a><br>
+          One Big Beautiful Bill Act (2025)<br>
+          Institute for Policy Studies / Bob Lord<br>
+          Uniform Trust Code; state trust statutes
+        </div>
+      </div>
+    </div>
+    <div class="disclaimer">Educational reference only. This is not legal, tax, or investment advice, and no part of it creates an advisory relationship. Trust and tax law varies by state and changes frequently; figures shown reflect 2026 federal law. Anyone planning an estate should consult a qualified attorney and tax professional.</div>
+  </div>
+</footer>
+
+<script>
+/* ---------- Case study steps ---------- */
+const STEPS = [
+  {n:"Start", t:"A fortune in the estate", fig:"$60B", figl:"All exposed to a 40% estate tax",
+   body:"Phil Knight holds the bulk of his wealth in Nike stock. Left untouched, every dollar above the exemption faces a 40 percent federal estate tax at death. The whole project that follows exists to move that stock out before the government can measure it.",
+   tag:"The problem"},
+  {n:"Move 01 · Freeze", t:"Nine GRATs", fig:"$6.1B", figl:"Shifted to heirs, near-zero reported gift",
+   body:"Between 2009 and 2016 Knight ran nine grantor retained annuity trusts. Each took back an annuity worth almost the full value he put in, so the reported gift was essentially nothing. Because Nike climbed far faster than the IRS hurdle rate, roughly 38.7 million shares of pure appreciation, about $6.1 billion, landed with his heirs free of gift and estate tax.",
+   tag:"GRAT · IRC § 2702"},
+  {n:"Move 02 · Squeeze", t:"Into Swoosh LLC", fig:"−15%", figl:"Discount on the value handed over",
+   body:"In 2015 Knight moved most of his remaining shares into an entity called Swoosh LLC, then split the ownership. Once no single piece controls the company, you can argue each piece is worth less than its share of the whole. That minority discount let him report a far smaller value than the market price.",
+   tag:"Valuation discount"},
+  {n:"Move 03 · Shift", t:"The Travis trust buys in", fig:"$215M", figl:"Tax-free gift, father to son, in one move",
+   body:"A trust controlled by Knight's son Travis bought a slice of Swoosh at about a 15 percent discount, a roughly $215 million tax-free gift in a single transaction. The Travis Irrevocable Trust ended up holding billions in Nike value, including the shares that had already left through the GRATs, all outside Knight's taxable estate.",
+   tag:"Dynasty / irrevocable trust"},
+  {n:"Result", t:"What the public filings show", fig:"$3.6B", figl:"Estimated transfer tax sidestepped",
+   body:"Reverse-engineering the filings, Bob Lord estimated Knight moved on the order of $10 billion free of transfer tax and could avoid roughly $3.6 billion in tax. Every step was legal. That is the point: the estate tax has become, for those who can afford the planning, close to optional.",
+   tag:"Legal, and that is the story"}
+];
+
+const stepsEl = document.getElementById('steps');
+const figEl = document.getElementById('figure');
+const bodyEl = document.getElementById('body');
+const tagEl = document.getElementById('tag');
+
+STEPS.forEach((s,i)=>{
+  const b = document.createElement('button');
+  b.className = 'step-btn' + (i===0?' active':'');
+  b.innerHTML = `<span class="sn">${s.n}</span><span class="st">${s.t}</span>`;
+  b.addEventListener('click', ()=>selectStep(i));
+  stepsEl.appendChild(b);
+});
+function selectStep(i){
+  const s = STEPS[i];
+  document.querySelectorAll('.step-btn').forEach((b,j)=>b.classList.toggle('active', j===i));
+  figEl.innerHTML = `${s.fig}<small>${s.figl}</small>`;
+  bodyEl.textContent = s.body;
+  tagEl.textContent = s.tag;
+  if(window.glossify)window.glossify(bodyEl);
+}
+selectStep(0);
+
+/* ---------- Trust catalogue ---------- */
+const TRUSTS = [
+  {name:"Revocable living trust", abbr:"RLT", rev:"Revocable", tags:["probate","control"],
+   blurb:"Keeps your estate out of public probate while you stay fully in control.",
+   mech:"You move assets into a trust you can amend or dissolve at any time, serving as trustee during life and naming a successor to take over at death or incapacity. Because you keep that control, the assets stay in your taxable estate. This is a privacy and probate tool, not a tax-avoidance one.",
+   who:"Prince, the counterexample",
+   what:"When the musician died in 2016 with no will and no trust, his estate, valued in the tens of millions, spent years in open court while heirs and the IRS fought publicly over what it was worth. A funded revocable trust is exactly what keeps that process private.",
+   src:"Carver County, Minn. probate; widely reported"},
+
+  {name:"Irrevocable trust", abbr:"", rev:"Irrevocable", tags:["tax","protect"],
+   blurb:"The foundation of nearly every tax and asset-protection plan: assets you give up for good.",
+   mech:"Once funded you cannot amend or revoke it, and you hand control to a trustee. That surrender is the whole point: the assets generally leave your taxable estate and move beyond the reach of future creditors. Most of the specialized trusts in this catalogue are irrevocable trusts built for one job.",
+   who:"The category, not a single case",
+   what:"Almost every billionaire wealth-transfer structure, from GRATs to dynasty trusts to IDGTs, is a flavor of irrevocable trust. The trade is always identical: give up control to escape the estate tax.",
+   src:"General principle"},
+
+  {name:"Testamentary trust", abbr:"", rev:"By will", tags:["control"],
+   blurb:"A trust written into your will that springs to life only when you die.",
+   mech:"It does not exist while you are alive. The will creates it at death, which means the assets pass through probate first before funding it. The most common use is holding money for minor children until they reach an age you choose.",
+   who:"Wills with young children",
+   what:"A parent leaves assets to a testamentary trust that funds a child's education and releases principal in stages at 25, 30, and 35, rather than handing a teenager a lump sum.",
+   src:"Standard practice"},
+
+  {name:"Grantor retained annuity trust", abbr:"GRAT", rev:"Irrevocable", tags:["tax"],
+   blurb:"Freezes an asset's value and hands all the future growth to your heirs gift-tax-free.",
+   mech:"You put an appreciating asset into a short-term trust and take back an annuity worth almost the full value plus an IRS-set interest rate, the section 7520 rate. Anything the asset earns above that hurdle passes to your heirs with a reported gift of essentially zero. The catch is mortality risk: die during the term and the assets snap back into your estate.",
+   who:"Phil Knight, Nike",
+   what:"Knight ran nine GRATs from 2009 to 2016 that moved about 38.7 million Nike shares, worth roughly $6.1 billion, to his heirs with no gift or estate tax. The technique was blessed by the Tax Court in Walton v. Commissioner after Audrey Walton of the Walmart family beat the IRS.",
+   src:"Bloomberg; SEC filings; <a href='https://www.leagle.com/decision/2000704115aotc5891664' target='_blank' rel='noopener'>Walton v. Commissioner, 115 T.C. 589</a>"},
+
+  {name:"Intentionally defective grantor trust", abbr:"IDGT", rev:"Irrevocable", tags:["tax"],
+   blurb:"Invisible for income tax, airtight for estate tax.",
+   mech:"The trust is drafted to be defective, meaning you keep paying the income tax on what it earns even though the assets sit outside your estate. Those tax payments amount to an extra tax-free gift every year. Owners often sell appreciating assets to the IDGT for a promissory note, freezing value the way a GRAT does but with no mortality cliff.",
+   who:"The founder's playbook",
+   what:"An installment sale to an IDGT lets a founder swap fast-growing private stock for a low-interest note. The upside accrues inside the trust while the note's value stays frozen in the estate.",
+   src:"Common estate-planning technique"},
+
+  {name:"Dynasty trust", abbr:"", rev:"Irrevocable", tags:["tax","protect"],
+   blurb:"A fortune engineered to pass through generations without ever being taxed again.",
+   mech:"Normally every generation the money skips triggers the generation-skipping transfer tax. By allocating GST exemption and parking the trust in a state that repealed the rule against perpetuities, families let wealth compound for centuries, or forever in South Dakota, untouched by transfer tax. Alaska, Delaware, Nevada, and South Dakota rewrote their laws specifically to win this business.",
+   who:"The South Dakota trust industry",
+   what:"South Dakota's perpetual-trust and secrecy rules have pulled trillions of dollars into the state, making it a domestic answer to offshore havens. Knight's overall structure carries the hallmarks of a dynasty trust stacked on top of his GRATs.",
+   src:"Bloomberg; Pandora Papers reporting"},
+
+  {name:"Spousal lifetime access trust", abbr:"SLAT", rev:"Irrevocable", tags:["tax","protect"],
+   blurb:"Locks in today's high exemption while your spouse keeps a back door to the money.",
+   mech:"One spouse funds an irrevocable trust for the other, using lifetime exemption now and removing future growth from both estates. Because the beneficiary spouse can take distributions, the couple keeps indirect access. The risk is divorce, or the beneficiary spouse dying first, either of which closes that door.",
+   who:"Post-OBBBA couples",
+   what:"With the exemption at $15 million per person in 2026, couples build paired but deliberately differing SLATs to push up to $30 million out of their estates while still reaching the funds through the beneficiary spouse.",
+   src:"OBBBA, 2025; practitioner guidance"},
+
+  {name:"Irrevocable life insurance trust", abbr:"ILIT", rev:"Irrevocable", tags:["tax"],
+   blurb:"Keeps a life-insurance payout out of your estate and ready to cover the tax bill.",
+   mech:"The trust, not you, owns the policy, so the death benefit is not counted in your estate. Heirs receive tax-free cash at exactly the moment they need it: to pay estate taxes or buy out a family business, without a forced sale of illiquid assets.",
+   who:"Family-business succession",
+   what:"An ILIT holding a large policy gives heirs the liquidity to pay a 40 percent estate-tax bill on an illiquid company without selling it or borrowing against it.",
+   src:"Standard practice"},
+
+  {name:"Qualified personal residence trust", abbr:"QPRT", rev:"Irrevocable", tags:["tax"],
+   blurb:"Gives your home to your kids at a steep discount while you keep living in it.",
+   mech:"You transfer a home into the trust but keep the right to live there rent-free for a set term, which sharply cuts the gift's reported value. Outlive the term and the house passes to your heirs at that discounted value, with all later appreciation outside your estate. As with a GRAT, dying during the term undoes it.",
+   who:"Vacation-home transfers",
+   what:"Families routinely use QPRTs to move an appreciating second home to the next generation at a fraction of market value for gift-tax purposes.",
+   src:"Common estate-planning technique"},
+
+  {name:"Charitable remainder trust", abbr:"CRT", rev:"Irrevocable", tags:["charity","tax"],
+   blurb:"Sell an appreciated asset, skip the capital-gains hit, draw income for life, benefit charity.",
+   mech:"You donate an appreciated asset to the trust, which can sell it without an immediate capital-gains tax, then pays you an income stream for life or a term of years. You take an upfront charitable deduction, and whatever remains goes to charity at the end.",
+   who:"Concentrated-stock unwinds",
+   what:"An executive sitting on low-basis stock moves it into a CRT, diversifies inside the trust tax-free, and converts a single risky holding into a lifetime income stream while securing a deduction.",
+   src:"Common charitable technique"},
+
+  {name:"Charitable lead trust", abbr:"CLT", rev:"Irrevocable", tags:["charity","tax"],
+   blurb:"Charity collects first, then the remainder lands with your heirs at a discounted tax cost.",
+   mech:"The mirror image of a CRT: the charity receives payments for a term, and whatever is left passes to your heirs. When interest rates are low, the reported value of the heirs' remainder can be driven close to zero, transferring wealth at little or no transfer-tax cost.",
+   who:"Jacqueline Kennedy Onassis",
+   what:"Her will steered the bulk of her estate into a charitable lead trust designed to fund charity for a term, then pass the remainder to her grandchildren with reduced transfer tax. It became the textbook example, often called a Jackie O trust.",
+   src:"Onassis will; estate-planning literature"},
+
+  {name:"Qualified terminable interest property trust", abbr:"QTIP", rev:"Irrevocable", tags:["tax","control"],
+   blurb:"Supports a surviving spouse now while you decide who ultimately inherits.",
+   mech:"Assets qualify for the unlimited marital deduction, so no tax is due at the first death, but the first spouse dictates where the property goes after the survivor dies. It is the standard tool in blended families: provide for a second spouse while protecting children from a first marriage.",
+   who:"Blended families",
+   what:"A remarried parent leaves assets in a QTIP that pays income to the new spouse for life, then sends the principal to children from the first marriage rather than to the new spouse's heirs.",
+   src:"Standard practice"},
+
+  {name:"Bypass / credit shelter trust", abbr:"B trust", rev:"Irrevocable", tags:["tax"],
+   blurb:"Captures the first spouse's exemption so a couple doesn't waste half of it.",
+   mech:"At the first death, an amount up to that spouse's exemption funds a trust that benefits the survivor but stays out of the survivor's own estate. Portability made this less essential for the basic exemption, but it still shelters all future appreciation and preserves GST exemption, which portability cannot.",
+   who:"Two-exemption planning",
+   what:"Couples with appreciating assets still use credit-shelter trusts so that growth after the first death is never taxed again in the survivor's estate.",
+   src:"Standard practice"},
+
+  {name:"Special needs trust", abbr:"SNT", rev:"Irrevocable", tags:["benefits","protect"],
+   blurb:"Provides for a disabled loved one without costing them Medicaid or SSI.",
+   mech:"Means-tested benefits vanish if a disabled person holds assets directly, so the trust holds funds for their benefit and pays for what the programs do not cover. Third-party SNTs are funded by family. First-party (d4A) SNTs hold the beneficiary's own money, such as a settlement, but must repay Medicaid at death. Pooled (d4C) trusts are run by nonprofits.",
+   who:"Inheritance and settlement planning",
+   what:"Parents leave an inheritance to a third-party SNT so a child with disabilities keeps Medicaid and SSI while the trust funds therapy, travel, and quality-of-life expenses the programs ignore.",
+   src:"<a href='https://www.law.cornell.edu/uscode/text/42/1396p' target='_blank' rel='noopener'>42 U.S.C. 1396p(d)(4)</a>"},
+
+  {name:"Spendthrift trust", abbr:"", rev:"Either", tags:["protect"],
+   blurb:"Shields a beneficiary's inheritance from creditors and from their own bad decisions.",
+   mech:"A spendthrift clause bars the beneficiary from pledging their interest and blocks creditors from reaching trust assets until the trustee actually makes a distribution. The trustee controls timing and amount, which protects an heir who is young, vulnerable, or prone to overspending.",
+   who:"Heirs with creditor exposure",
+   what:"A family leaves assets in a spendthrift trust for a beneficiary in a high-liability profession, so a future lawsuit or divorce cannot reach the inheritance.",
+   src:"Uniform Trust Code § 502"},
+
+  {name:"Domestic asset protection trust", abbr:"DAPT", rev:"Irrevocable", tags:["protect"],
+   blurb:"Lets you protect your own assets from future creditors, in the right state.",
+   mech:"Most states forbid shielding assets you settle on yourself, but about twenty, led by Nevada, South Dakota, Delaware, and Alaska, now let you create an irrevocable trust, name yourself a discretionary beneficiary, and still keep the assets safe from later creditors. How well it holds against out-of-state creditors remains legally contested.",
+   who:"Physicians and entrepreneurs",
+   what:"A surgeon settles a Nevada asset-protection trust to insulate personal wealth from future malpractice claims while keeping a discretionary interest in the funds.",
+   src:"Nevada NRS 166; comparable state statutes"},
+
+  {name:"Totten trust / payable-on-death", abbr:"POD", rev:"Revocable", tags:["probate"],
+   blurb:"The simplest trust there is: a bank account that pays a named person at your death.",
+   mech:"You name a payable-on-death beneficiary on an account and keep full control, free to spend it or change the beneficiary anytime. At death the balance passes straight to that person outside probate. It is a convenience tool, not a tax or protection device.",
+   who:"Everyday accounts",
+   what:"A POD designation on a checking account lets a parent pass the balance to a child immediately at death, with no court process and no lawyer.",
+   src:"Common banking practice"},
+
+  {name:"Pet trust", abbr:"", rev:"Either", tags:["control"],
+   blurb:"Legally enforceable care and funding for an animal after you're gone.",
+   mech:"Now recognized in all fifty states, a pet trust sets aside money and names both a caretaker and a trustee to make sure an animal is provided for. Courts can trim amounts they find excessive.",
+   who:"Leona Helmsley",
+   what:"The hotelier left a $12 million trust for her Maltese, named Trouble, in 2007. A judge later cut it to $2 million. It remains the most famous pet trust in American law.",
+   src:"N.Y. Surrogate's Court; widely reported"}
+];
+
+const TAGLABELS = {probate:"Avoids probate", tax:"Cuts transfer tax", protect:"Protects assets",
+  benefits:"Preserves benefits", charity:"Charitable", control:"Control"};
+
+const grid = document.getElementById('grid');
+const countEl = document.getElementById('count');
+let activeFilter = 'all';
+let searchTerm = '';
+
+function revClass(r){
+  if(r==='Revocable') return 'rev';
+  if(r==='Irrevocable') return 'irr';
+  return '';
+}
+
+function render(){
+  grid.innerHTML = '';
+  const list = TRUSTS.filter(t=>{
+    const okFilter = activeFilter==='all' || t.tags.includes(activeFilter);
+    const hay = (t.name+' '+t.abbr+' '+t.blurb+' '+t.who).toLowerCase();
+    const okSearch = !searchTerm || hay.includes(searchTerm);
+    return okFilter && okSearch;
+  });
+
+  countEl.textContent = list.length + (list.length===1?' trust':' trusts') +
+    (activeFilter==='all'?'':' · '+TAGLABELS[activeFilter]);
+
+  if(list.length===0){
+    grid.innerHTML = '<div class="no-results">No trusts match that search.</div>';
+    return;
+  }
+
+  list.forEach(t=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    const tagHtml = t.tags.map(tg=>`<span class="tag">${TAGLABELS[tg]}</span>`).join('');
+    const abbrHtml = t.abbr ? `<span class="card-abbr">${t.abbr}</span>` : '';
+    card.innerHTML = `
+      <div class="card-head" tabindex="0" role="button" aria-expanded="false">
+        <div class="card-top">
+          <div class="card-name">${t.name}</div>
+          ${abbrHtml}
+        </div>
+        <div class="card-blurb">${t.blurb}</div>
+        <div class="card-tags">
+          <span class="tag ${revClass(t.rev)}">${t.rev}</span>
+          ${tagHtml}
+        </div>
+        <div class="card-expand"><span class="pm">+</span> Mechanics &amp; a real case</div>
+      </div>
+      <div class="card-detail">
+        <div class="card-detail-inner">
+          <div class="dl-label">How it works</div>
+          <p class="mech">${t.mech}</p>
+          <div class="dl-label">In action</div>
+          <div class="example">
+            <div class="ex-who">${t.who}</div>
+            <p class="ex-what">${t.what}</p>
+            <div class="ex-src">${t.src}</div>
+          </div>
+        </div>
+      </div>`;
+    const head = card.querySelector('.card-head');
+    const toggle = ()=>{
+      const open = card.classList.toggle('open');
+      head.setAttribute('aria-expanded', open ? 'true':'false');
+    };
+    head.addEventListener('click', toggle);
+    head.addEventListener('keydown', e=>{
+      if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }
+    });
+    grid.appendChild(card);
+  });
+  if(window.glossify)window.glossify(grid);
+}
+
+document.querySelectorAll('.chip[data-filter]').forEach(chip=>{
+  chip.addEventListener('click', ()=>{
+    document.querySelectorAll('.chip[data-filter]').forEach(c=>c.classList.remove('on'));
+    chip.classList.add('on');
+    activeFilter = chip.dataset.filter;
+    render();
+  });
+});
+document.getElementById('search').addEventListener('input', e=>{
+  searchTerm = e.target.value.trim().toLowerCase();
+  render();
+});
+
+render();
+
+/* ---------- Cat-and-mouse timeline ---------- */
+const LII = 'https://www.law.cornell.edu/uscode/text/';
+const WALTON = 'https://www.leagle.com/decision/2000704115aotc5891664';
+const SDCL = 'https://sdlegislature.gov/Statutes/43-5-8';
+
+const TIMELINE = [
+  {year:"1916", type:"restrict", flag:"System takes shape",
+   title:"The estate tax arrives, and the gift tax follows",
+   text:"The modern estate tax is enacted in 1916; the gift tax joins it in 1924 and becomes permanent in 1932. Together they create the thing every later structure is built to avoid: a 40 percent toll on large transfers at death or by gift.",
+   cites:[{t:"Revenue Act of 1916"},{t:"IRC § 2001",u:LII+'26/2001'},{t:"§ 2501",u:LII+'26/2501'}]},
+  {year:"1976", type:"restrict", flag:"Door closed",
+   title:"The first generation-skipping tax",
+   text:"Wealthy families had been stacking life estates so a fortune could benefit children, then grandchildren, taxed only once instead of at each death. Congress targets the maneuver with the first GST tax. It is so complex that it proves almost unworkable.",
+   cites:[{t:"Tax Reform Act of 1976, Pub. L. 94-455"},{t:"now IRC ch. 13, § 2601",u:LII+'26/2601'}]},
+  {year:"1983", type:"open", flag:"Door opened (states)",
+   title:"South Dakota repeals the Rule Against Perpetuities",
+   text:"South Dakota becomes the first state to abolish the centuries-old limit on how long a trust can last. A trust can now run forever. Alaska, Delaware, and Nevada follow. The legal precondition for the perpetual dynasty trust is now in place, set not by Congress but by competing state legislatures.",
+   cites:[{t:"SDCL § 43-5-8",u:SDCL}]},
+  {year:"1985", type:"open", flag:"Door opened (ruling)",
+   title:"Rev. Rul. 85-13 makes a grantor and their trust one taxpayer",
+   text:"The IRS rules that transactions between a grantor and a grantor trust are disregarded, treating the trust as the grantor's alter ego and rejecting a contrary appeals-court holding. The aim was to deny a taxpayer-favorable argument. The lasting effect is to make the sale-to-a-grantor-trust technique possible, with no capital gain on the sale.",
+   cites:[{t:"Rev. Rul. 85-13 (rejecting Rothstein, 2d Cir. 1984)"},{t:"grantor-trust rules, IRC § 671",u:LII+'26/671'}]},
+  {year:"1986", type:"both", flag:"Closed, then reopened",
+   title:"The modern GST tax, and the exemption that undoes it",
+   text:"Congress retroactively repeals the 1976 tax and enacts the version still in force, taxing direct skips, taxable terminations, and taxable distributions. But it ships with a per-person GST exemption. Allocate that exemption to a trust in a state with no perpetuities rule and the fortune is taxed once, then never again. The fix and the loophole arrive together.",
+   cites:[{t:"Tax Reform Act of 1986"},{t:"IRC ch. 13, § 2601",u:LII+'26/2601'}]},
+  {year:"1990", type:"both", flag:"Closed, then reopened",
+   title:"Chapter 14 kills the GRIT and writes the GRAT into law",
+   text:"To stop estate-freeze abuses, Congress enacts the special valuation rules of Chapter 14. Section 2702 shuts down the grantor retained income trust. In the very same provision it carves out a qualified interest exception, and that exception is the GRAT. The anti-abuse statute becomes the birth certificate of the dominant wealth-transfer tool.",
+   cites:[{t:"OBRA 1990"},{t:"IRC § 2702",u:LII+'26/2702'},{t:"§ 2704",u:LII+'26/2704'}]},
+  {year:"2000", type:"open", flag:"Door opened (court)",
+   title:"Walton blesses the zeroed-out GRAT",
+   text:"Audrey Walton, of the Walmart family, beats the IRS in Tax Court, establishing that a GRAT can be structured so the reported gift is essentially zero. The IRS later acquiesces. The technique that moves billions for a near-zero gift now has a judicial seal of approval.",
+   cites:[{t:"Walton v. Commissioner, 115 T.C. 589 (2000)",u:WALTON},{t:"IRS Notice 2003-72"}]},
+  {year:"2004", type:"open", flag:"Door opened (ruling)",
+   title:"Rev. Rul. 2004-64 makes the tax burn free",
+   text:"The IRS concedes that when a grantor pays the income tax on a grantor trust's earnings, that payment is not an additional taxable gift. The grantor can now quietly shrink their own estate every year while the trust compounds untouched. This is the ruling that completes the IDGT.",
+   cites:[{t:"Rev. Rul. 2004-64"},{t:"IRC § 671",u:LII+'26/671'}]},
+  {year:"2005", type:"restrict", flag:"Door closed (federal)",
+   title:"Bankruptcy law claws back self-settled trusts",
+   text:"As states race to authorize trusts that shield your own assets from your own creditors, Congress answers with a federal counter: a ten-year lookback letting a bankruptcy trustee unwind transfers to a self-settled trust made to defraud creditors. A partial brake on the state asset-protection boom.",
+   cites:[{t:"BAPCPA 2005"},{t:"11 U.S.C. § 548(e)",u:LII+'11/548'}]},
+  {year:"2010-12", type:"both", flag:"Whiplash, then a tool",
+   title:"Repeal, revival, and portability",
+   text:"The estate tax vanishes for a single year in 2010, then returns. The 2010 act introduces portability, letting a surviving spouse inherit a deceased spouse's unused exemption. The 2012 act makes a $5 million exemption permanent at a 40 percent rate. Portability quietly reduces the need for some older trust structures while leaving the high-end ones untouched.",
+   cites:[{t:"EGTRRA 2001"},{t:"2010 Tax Relief Act"},{t:"ATRA 2012"},{t:"portability, IRC § 2010(c)",u:LII+'26/2010'}]},
+  {year:"2016", type:"restrict", flag:"Door closed (then reopened)",
+   title:"Treasury moves on valuation discounts, and loses",
+   text:"Treasury proposes regulations under section 2704 to curb the minority and marketability discounts that let families report a closely held interest as worth far less than its share of the whole. More than 28,000 mostly hostile comments pour in. After a 2017 executive order on regulatory burden, Treasury withdraws the rules entirely. The squeeze survives.",
+   cites:[{t:"Prop. regs., IRC § 2704 (2016), withdrawn 2017",u:LII+'26/2704'}]},
+  {year:"2016", type:"open", flag:"Door opened on purpose",
+   title:"The Special Needs Trust Fairness Act",
+   text:"A rare door Congress opens deliberately. Correcting a 23-year oversight from the 1993 law that created first-party special needs trusts, Congress finally lets disabled individuals with capacity establish their own, instead of relying on a parent, grandparent, guardian, or court.",
+   cites:[{t:"21st Century Cures Act § 5007"},{t:"42 U.S.C. § 1396p(d)(4)(A)",u:LII+'42/1396p'}]},
+  {year:"2017→26", type:"open", flag:"Door opened wide",
+   title:"The exemption doubles, then becomes permanent",
+   text:"The 2017 tax law roughly doubles the exemption, and the 2025 One Big Beautiful Bill Act makes it permanent at $15 million per person from 2026, indexed for inflation. Fewer than one estate in a thousand now owes the tax. The structures on the other tab remain fully available to those who still do.",
+   cites:[{t:"TCJA 2017"},{t:"OBBBA 2025"},{t:"exemption, IRC § 2010",u:LII+'26/2010'}]}
+];
+
+function renderCites(cites){
+  return cites.map(c=> c.u ? `<a href="${c.u}" target="_blank" rel="noopener">${c.t}</a>` : c.t).join(' · ');
+}
+
+const FLAGCLASS = {restrict:"restrict", open:"open", both:"both"};
+const tl = document.getElementById('timeline');
+TIMELINE.forEach(e=>{
+  const row = document.createElement('div');
+  row.className = 'tl-row';
+  row.innerHTML = `
+    <div class="tl-year">${e.year}<span class="tl-marker ${FLAGCLASS[e.type]}"></span></div>
+    <div class="tl-body">
+      <span class="tl-flag ${FLAGCLASS[e.type]}">${e.flag}</span>
+      <div class="tl-title">${e.title}</div>
+      <p class="tl-text">${e.text}</p>
+      <div class="tl-cite">${renderCites(e.cites)}</div>
+    </div>`;
+  tl.appendChild(row);
+});
+
+/* ---------- In-practice structure explorer ---------- */
+const POS={TL:[120,80],TC:[380,64],TR:[640,80],ML:[120,220],C:[380,220],MR:[640,220],BL:[120,360],BC:[380,372],BR:[640,360]};
+const KINDS={in:'#a8662f',back:'#3a3027',out:'#74201f',charity:'#5b6650',access:'#c08a4f',tax:'#211a14'};
+const EDGE={in:{w:2.1,dash:''},back:{w:2,dash:''},out:{w:2.4,dash:''},charity:{w:2.1,dash:''},access:{w:1.8,dash:'5 4'},tax:{w:1.6,dash:'3 4'}};
+const LEGEND=[['in','Asset in'],['back','Payments back'],['out','To heirs'],['charity','To charity'],['access','Access / benefit'],['tax','Tax / payback']];
+
+function escapeXml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+const STRUCT=[
+ {abbr:"RLT", name:"Revocable living trust",
+  nodes:[
+   {id:"g",label:"Grantor",sub:"and trustee",pos:"TL",kind:"grantor"},
+   {id:"t",label:"Revocable trust",sub:"change anytime",pos:"C",kind:"trust"},
+   {id:"s",label:"Successor trustee",sub:"takes over at death",pos:"TR",kind:"other"},
+   {id:"h",label:"Heirs",pos:"BR",kind:"heir"}],
+  steps:[
+   {title:"Fund the trust",detail:"The grantor retitles assets into a trust they fully control, usually serving as their own trustee.",edges:[{from:"g",to:"t",label:"retitle assets",kind:"in"}]},
+   {title:"Keep control while living",detail:"Because the grantor can amend or revoke it at will, the assets stay in the taxable estate. This is a privacy and probate tool, not a tax move.",edges:[{from:"t",to:"g",label:"full control",kind:"back"}]},
+   {title:"At death, skip probate",detail:"A successor trustee steps in and distributes the assets privately, with no public court process.",edges:[{from:"t",to:"s",label:"control passes",kind:"back"},{from:"t",to:"h",label:"private distribution",kind:"out"}]}],
+  takeaway:"Control and privacy. Estate-tax exposure is unchanged."},
+
+ {abbr:"IRREVOCABLE", name:"Irrevocable trust",
+  nodes:[
+   {id:"g",label:"Grantor",pos:"TL",kind:"grantor"},
+   {id:"t",label:"Irrevocable trust",sub:"no take-backs",pos:"C",kind:"trust"},
+   {id:"h",label:"Beneficiaries",pos:"BR",kind:"heir"}],
+  steps:[
+   {title:"Surrender the assets",detail:"Once funded, the grantor cannot amend or revoke it and gives up control to a trustee. Notice there is no control arrow back, unlike a revocable trust.",edges:[{from:"g",to:"t",label:"transfers, for good",kind:"in"}]},
+   {title:"Now outside the estate",detail:"Because the grantor no longer owns the assets, they generally fall outside the taxable estate and beyond the reach of future creditors. That surrender is the whole point.",edges:[],highlight:["t"]},
+   {title:"On to the beneficiaries",detail:"The trustee holds and distributes on the trust's terms. Most of the specialized trusts here are irrevocable trusts built for one job.",edges:[{from:"t",to:"h",label:"on the trust's terms",kind:"out"}]}],
+  takeaway:"The price of every tax and protection benefit: you cannot take it back."},
+
+ {abbr:"TESTAMENTARY", name:"Testamentary trust",
+  nodes:[
+   {id:"e",label:"Estate / will",pos:"TL",kind:"grantor"},
+   {id:"pr",label:"Probate court",pos:"ML",kind:"gov"},
+   {id:"t",label:"Testamentary trust",pos:"C",kind:"trust"},
+   {id:"h",label:"Children",pos:"BR",kind:"heir"}],
+  steps:[
+   {title:"Written into the will",detail:"The trust does not exist while the grantor is alive. The will only brings it into being at death.",edges:[],highlight:["e"]},
+   {title:"Through probate first",detail:"Unlike a living trust, the assets pass through the public probate process before they fund the trust.",edges:[{from:"e",to:"pr",label:"validated at death",kind:"access"},{from:"pr",to:"t",label:"then funds the trust",kind:"in"}]},
+   {title:"Held for the children",detail:"The trust holds the assets and releases them in stages, for example at ages 25, 30, and 35.",edges:[{from:"t",to:"h",label:"released in stages",kind:"out"}]}],
+  takeaway:"Easy to add to a will, but it does not avoid probate."},
+
+ {abbr:"GRAT", name:"Grantor retained annuity trust",
+  nodes:[
+   {id:"g",label:"Grantor",pos:"TL",kind:"grantor"},
+   {id:"t",label:"GRAT",sub:"2-year term",pos:"C",kind:"trust"},
+   {id:"h",label:"Heirs",sub:"remainder",pos:"BR",kind:"heir"}],
+  steps:[
+   {title:"Transfer the asset",detail:"The grantor moves an appreciating asset, say $10M of stock, into a short-term trust.",edges:[{from:"g",to:"t",label:"$10M stock",kind:"in"}]},
+   {title:"Take the annuity back",detail:"The trust pays back an annuity worth almost the full value plus the IRS hurdle rate, roughly $5.4M a year for two years. The reported gift is engineered to near zero.",edges:[{from:"t",to:"g",label:"~$5.4M / yr x2",kind:"back"}]},
+   {title:"Beat the hurdle",detail:"If the stock grows faster than the IRS hurdle rate (the section 7520 rate, here about 5 percent), assets are left over after the annuity is fully paid.",edges:[],highlight:["t"]},
+   {title:"Remainder to heirs",detail:"Everything above the hurdle passes to the heirs free of gift and estate tax.",edges:[{from:"t",to:"h",label:"appreciation, tax-free",kind:"out"}]},
+   {title:"The one risk",detail:"If the grantor dies during the term, the assets snap back into the estate and the plan simply resets. Little is lost but fees.",edges:[{from:"t",to:"g",label:"assets snap back",kind:"back",curve:34}]}],
+  takeaway:"Heads the family wins, tails it ties. Outperformance passes free; a miss just returns to the grantor."},
+
+ {abbr:"IDGT", name:"Intentionally defective grantor trust",
+  nodes:[
+   {id:"g",label:"Grantor",pos:"TL",kind:"grantor"},
+   {id:"t",label:"IDGT",sub:"out of the estate",pos:"C",kind:"trust"},
+   {id:"irs",label:"IRS",pos:"TR",kind:"gov"},
+   {id:"h",label:"Heirs",pos:"BR",kind:"heir"}],
+  steps:[
+   {title:"Sell the asset to the trust",detail:"After a small seed gift, the grantor sells an appreciating asset to the trust in exchange for a promissory note.",edges:[{from:"g",to:"t",label:"sells asset",kind:"in"}]},
+   {title:"Take back a frozen note",detail:"The note carries a low fixed rate, so its value stays frozen in the estate. No capital gain is triggered, because grantor and trust are one taxpayer (Rev. Rul. 85-13).",edges:[{from:"t",to:"g",label:"low-interest note",kind:"back"}]},
+   {title:"Pay the trust's income tax",detail:"The grantor pays the tax on the trust's earnings from outside funds. That payment is not a gift (Rev. Rul. 2004-64), so it quietly shrinks the estate while the trust grows untaxed.",edges:[{from:"g",to:"irs",label:"pays the tax",kind:"tax"}]},
+   {title:"Growth lands with heirs",detail:"Everything the asset earns above the note rate accrues inside the trust, outside the estate, for the heirs.",edges:[{from:"t",to:"h",label:"growth above the note",kind:"out"}]}],
+  takeaway:"A GRAT without the mortality cliff. The yearly tax burn is a bonus tax-free transfer."},
+
+ {abbr:"DYNASTY", name:"Dynasty trust",
+  nodes:[
+   {id:"g",label:"Grantor",pos:"TL",kind:"grantor"},
+   {id:"t",label:"Dynasty trust",sub:"GST-exempt, perpetual",pos:"C",kind:"trust"},
+   {id:"c",label:"Children",pos:"MR",kind:"heir"},
+   {id:"gc",label:"Grandchildren",pos:"BR",kind:"heir"},
+   {id:"ggc",label:"Great-grandkids",pos:"BC",kind:"heir"}],
+  steps:[
+   {title:"Fund with the exemption",detail:"The grantor allocates GST exemption, up to $15M, to the trust on the way in. That is the one and only transfer-tax event.",edges:[{from:"g",to:"t",label:"$15M + GST exemption",kind:"in"}]},
+   {title:"Children benefit, never own",detail:"The trust can support the children, but they never hold legal title, so nothing is taxed in their estates at death.",edges:[{from:"t",to:"c",label:"use, not ownership",kind:"out"}]},
+   {title:"Grandchildren, no skip tax",detail:"The wealth passes to the next generation with no estate or generation-skipping tax at the transition.",edges:[{from:"t",to:"gc",label:"no tax at the skip",kind:"out"}]},
+   {title:"And onward, potentially forever",detail:"In a state that abolished the Rule Against Perpetuities, such as South Dakota, the trust can compound for descendants indefinitely.",edges:[{from:"t",to:"ggc",label:"perpetual",kind:"out"}]}],
+  takeaway:"Taxed once on the way in. In a no-perpetuities state, potentially never again."},
+
+ {abbr:"SLAT", name:"Spousal lifetime access trust",
+  nodes:[
+   {id:"d",label:"Donor spouse",pos:"TL",kind:"grantor"},
+   {id:"t",label:"SLAT",sub:"out of both estates",pos:"C",kind:"trust"},
+   {id:"b",label:"Beneficiary spouse",pos:"MR",kind:"other"},
+   {id:"h",label:"Children",pos:"BR",kind:"heir"}],
+  steps:[
+   {title:"One spouse funds it",detail:"The donor spouse uses lifetime exemption now, removing the assets and their future growth from both spouses' estates.",edges:[{from:"d",to:"t",label:"uses exemption now",kind:"in"}]},
+   {title:"The other spouse can draw",detail:"Because the beneficiary spouse can receive distributions, the couple keeps indirect access to the money.",edges:[{from:"t",to:"b",label:"distributions",kind:"access"}]},
+   {title:"Remainder to the heirs",detail:"Whatever remains passes to the children outside the estate.",edges:[{from:"t",to:"h",label:"to heirs later",kind:"out"}]},
+   {title:"The risk",detail:"Divorce, or the beneficiary spouse dying first, closes the back door to the money.",edges:[],highlight:["b"]}],
+  takeaway:"Use the exemption without fully letting go, as long as the marriage lasts."},
+
+ {abbr:"ILIT", name:"Irrevocable life insurance trust",
+  nodes:[
+   {id:"g",label:"Grantor",pos:"TL",kind:"grantor"},
+   {id:"t",label:"ILIT",pos:"C",kind:"trust"},
+   {id:"p",label:"Life policy",pos:"TR",kind:"other"},
+   {id:"h",label:"Heirs",pos:"BR",kind:"heir"}],
+  steps:[
+   {title:"The trust owns the policy",detail:"The trust, not the grantor, owns the life insurance, so the death benefit is not counted in the estate.",edges:[{from:"t",to:"p",label:"owns the policy",kind:"in"}]},
+   {title:"Fund the premiums",detail:"The grantor makes annual gifts to the trust. Crummey withdrawal rights let those gifts qualify for the annual exclusion.",edges:[{from:"g",to:"t",label:"premium gifts",kind:"in"}]},
+   {title:"Tax-free payout",detail:"At death the proceeds flow to the trust and out to the heirs, free of estate tax, giving them liquidity to pay a 40 percent bill without a fire sale.",edges:[{from:"p",to:"t",label:"death benefit",kind:"back"},{from:"t",to:"h",label:"tax-free to heirs",kind:"out"}]}],
+  takeaway:"Tax-free cash exactly when heirs need it to cover the estate-tax bill."},
+
+ {abbr:"QPRT", name:"Qualified personal residence trust",
+  nodes:[
+   {id:"g",label:"Grantor",pos:"TL",kind:"grantor"},
+   {id:"t",label:"QPRT",pos:"C",kind:"trust"},
+   {id:"h",label:"Heirs",pos:"BR",kind:"heir"}],
+  steps:[
+   {title:"Transfer the home",detail:"The grantor moves a residence, say a $2M home, into the trust.",edges:[{from:"g",to:"t",label:"home, ~$2M",kind:"in"}]},
+   {title:"Keep living there",detail:"The grantor retains the right to live rent-free for a set term. That retained use sharply cuts the reported gift, to roughly $1.1M in this illustration.",edges:[{from:"t",to:"g",label:"rent-free, for a term",kind:"access"}]},
+   {title:"House to heirs at a discount",detail:"Outlive the term and the home passes to the heirs at the discounted value, with all later appreciation outside the estate.",edges:[{from:"t",to:"h",label:"at the discounted value",kind:"out"}]},
+   {title:"The risk",detail:"Die during the term and the transfer unwinds, pulling the home back into the estate.",edges:[],highlight:["g"]}],
+  takeaway:"Move an appreciating home to the kids cheaply, and keep living in it."},
+
+ {abbr:"CRT", name:"Charitable remainder trust",
+  nodes:[
+   {id:"d",label:"Donor",pos:"TL",kind:"grantor"},
+   {id:"t",label:"CRT",pos:"C",kind:"trust"},
+   {id:"irs",label:"IRS",pos:"TR",kind:"gov"},
+   {id:"ch",label:"Charity",pos:"BR",kind:"charity"}],
+  steps:[
+   {title:"Donate an appreciated asset",detail:"The donor contributes a low-basis asset, such as concentrated stock, to the trust.",edges:[{from:"d",to:"t",label:"appreciated asset",kind:"in"}]},
+   {title:"Sell inside, claim a deduction",detail:"The trust sells the asset with no immediate capital-gains tax and can diversify. The donor takes an upfront charitable deduction.",edges:[{from:"irs",to:"d",label:"tax deduction",kind:"access"}],highlight:["t"]},
+   {title:"Income for life",detail:"The trust pays the donor an income stream for life or a fixed term.",edges:[{from:"t",to:"d",label:"income for life",kind:"back"}]},
+   {title:"Remainder to charity",detail:"Whatever is left at the end goes to the charity.",edges:[{from:"t",to:"ch",label:"remainder to charity",kind:"charity"}]}],
+  takeaway:"Diversify out of a concentrated position, draw income, and give, while skipping the capital-gains hit."},
+
+ {abbr:"CLT", name:"Charitable lead trust",
+  nodes:[
+   {id:"d",label:"Donor",pos:"TL",kind:"grantor"},
+   {id:"t",label:"CLT",pos:"C",kind:"trust"},
+   {id:"ch",label:"Charity",pos:"TR",kind:"charity"},
+   {id:"h",label:"Heirs",pos:"BR",kind:"heir"}],
+  steps:[
+   {title:"Fund the lead trust",detail:"The donor places assets in the trust.",edges:[{from:"d",to:"t",label:"fund",kind:"in"}]},
+   {title:"Charity is paid first",detail:"The charity receives a stream of payments for a set term of years.",edges:[{from:"t",to:"ch",label:"payments for a term",kind:"charity"}]},
+   {title:"Discounted remainder to heirs",detail:"Whatever remains passes to the heirs. When rates are low, the reported value of that remainder can be driven close to zero.",edges:[{from:"t",to:"h",label:"discounted remainder",kind:"out"}]}],
+  takeaway:"Charity first, heirs later, at little transfer-tax cost. The Jacqueline Onassis move."},
+
+ {abbr:"QTIP", name:"Qualified terminable interest property trust",
+  nodes:[
+   {id:"g",label:"First spouse",pos:"TL",kind:"grantor"},
+   {id:"t",label:"QTIP trust",pos:"C",kind:"trust"},
+   {id:"sp",label:"Surviving spouse",pos:"MR",kind:"other"},
+   {id:"h",label:"Children",sub:"from 1st marriage",pos:"BR",kind:"heir"}],
+  steps:[
+   {title:"Fund at the first death",detail:"The transfer qualifies for the unlimited marital deduction, so no tax is due at the first spouse's death.",edges:[{from:"g",to:"t",label:"marital transfer",kind:"in"}]},
+   {title:"Income to the survivor",detail:"The surviving spouse receives the income for life but cannot redirect where the property ultimately goes.",edges:[{from:"t",to:"sp",label:"income for life",kind:"access"}]},
+   {title:"The first spouse picks the heirs",detail:"At the survivor's death, the principal passes to beneficiaries the first spouse chose, classically children from a first marriage.",edges:[{from:"t",to:"h",label:"to chosen heirs",kind:"out"}]}],
+  takeaway:"Provide for a second spouse while protecting children from a first marriage."},
+
+ {abbr:"B TRUST", name:"Bypass / credit shelter trust",
+  nodes:[
+   {id:"g",label:"First spouse",pos:"TL",kind:"grantor"},
+   {id:"t",label:"Bypass trust",pos:"C",kind:"trust"},
+   {id:"sp",label:"Surviving spouse",pos:"MR",kind:"other"},
+   {id:"h",label:"Heirs",pos:"BR",kind:"heir"}],
+  steps:[
+   {title:"Capture the first exemption",detail:"At the first death, an amount up to that spouse's exemption funds the trust, preserving exemption that portability alone would not fully keep for GST.",edges:[{from:"g",to:"t",label:"up to the exemption",kind:"in"}]},
+   {title:"The survivor can benefit",detail:"The surviving spouse can draw income and support, yet the trust stays out of the survivor's own estate.",edges:[{from:"t",to:"sp",label:"income and support",kind:"access"}]},
+   {title:"Growth escapes a second tax",detail:"All appreciation after the first death passes to the heirs without a second round of estate tax at the survivor's death.",edges:[{from:"t",to:"h",label:"untaxed growth",kind:"out"}]}],
+  takeaway:"Shelters the first spouse's exemption and all later growth from a second estate tax."},
+
+ {abbr:"SNT", name:"Special needs trust",
+  nodes:[
+   {id:"f",label:"Family",sub:"third party",pos:"TL",kind:"grantor"},
+   {id:"t",label:"Special needs trust",pos:"C",kind:"trust"},
+   {id:"p",label:"SSI / Medicaid",pos:"TR",kind:"gov"},
+   {id:"b",label:"Beneficiary",sub:"with a disability",pos:"MR",kind:"heir"},
+   {id:"st",label:"State",pos:"BR",kind:"gov"}],
+  steps:[
+   {title:"Family funds the trust",detail:"In a third-party trust, relatives contribute their own money for the beneficiary.",edges:[{from:"f",to:"t",label:"funds",kind:"in"}]},
+   {title:"Pay for the extras",detail:"The trustee pays for what the programs do not cover: therapy, travel, quality of life. Not basic cash the beneficiary controls.",edges:[{from:"t",to:"b",label:"supplemental needs",kind:"access"}]},
+   {title:"Benefits stay intact",detail:"Because the beneficiary never controls the assets, means-tested SSI and Medicaid continue uninterrupted.",edges:[{from:"p",to:"b",label:"benefits continue",kind:"access"}]},
+   {title:"First-party payback",detail:"If instead the trust holds the beneficiary's own money, a (d)(4)(A) trust, the state must be repaid for Medicaid at death before anything passes on.",edges:[{from:"t",to:"st",label:"Medicaid repaid at death",kind:"tax"}],highlight:["st","t"]}],
+  takeaway:"Quality of life without losing the means-tested safety net."},
+
+ {abbr:"SPENDTHRIFT", name:"Spendthrift trust",
+  nodes:[
+   {id:"g",label:"Grantor",pos:"TL",kind:"grantor"},
+   {id:"t",label:"Spendthrift trust",pos:"C",kind:"trust"},
+   {id:"b",label:"Beneficiary",pos:"MR",kind:"heir"},
+   {id:"c",label:"Creditors",pos:"BR",kind:"gov"}],
+  steps:[
+   {title:"Fund the trust",detail:"The grantor places assets in a trust that carries a spendthrift clause.",edges:[{from:"g",to:"t",label:"funds",kind:"in"}]},
+   {title:"The trustee holds the spigot",detail:"The beneficiary cannot pledge or assign their interest; the trustee decides the timing and amount of every distribution.",edges:[{from:"t",to:"b",label:"discretionary payouts",kind:"access"}]},
+   {title:"Creditors are shut out",detail:"Until the trustee actually distributes, a beneficiary's creditors cannot reach the trust. The creditor sits outside the structure.",edges:[],highlight:["t","b"]}],
+  takeaway:"Shields an inheritance from the beneficiary's creditors and their own bad decisions."},
+
+ {abbr:"DAPT", name:"Domestic asset protection trust",
+  nodes:[
+   {id:"g",label:"Settlor",sub:"and a beneficiary",pos:"TL",kind:"grantor"},
+   {id:"t",label:"Protection trust",sub:"Nevada, S. Dakota",pos:"C",kind:"trust"},
+   {id:"c",label:"Future creditors",pos:"BR",kind:"gov"}],
+  steps:[
+   {title:"Settle your own assets",detail:"Unusually, the settlor funds an irrevocable trust and names themselves a discretionary beneficiary. About twenty states now allow this.",edges:[{from:"g",to:"t",label:"into the trust",kind:"in"}]},
+   {title:"Still a beneficiary",detail:"The settlor can take discretionary distributions, keeping a benefit in assets they have technically given away.",edges:[{from:"t",to:"g",label:"discretionary access",kind:"access"}]},
+   {title:"Future creditors shut out",detail:"The trust shields the assets from later creditors. Its strength against an out-of-state creditor remains legally contested.",edges:[],highlight:["t","g"]}],
+  takeaway:"Protect your own assets from future creditors, in a permissive state."},
+
+ {abbr:"POD", name:"Totten trust / payable-on-death",
+  nodes:[
+   {id:"g",label:"Account owner",pos:"TL",kind:"grantor"},
+   {id:"a",label:"POD account",pos:"C",kind:"trust"},
+   {id:"b",label:"Named beneficiary",pos:"BR",kind:"heir"}],
+  steps:[
+   {title:"Name a beneficiary",detail:"You add a payable-on-death designation to a bank account.",edges:[{from:"g",to:"a",label:"POD designation",kind:"in"}]},
+   {title:"Full control while living",detail:"You keep complete control: spend the balance or change the beneficiary anytime.",edges:[{from:"a",to:"g",label:"spend or change freely",kind:"back"}]},
+   {title:"Pays out at death",detail:"The balance passes straight to the named person, outside probate, with no court process.",edges:[{from:"a",to:"b",label:"directly, no probate",kind:"out"}]}],
+  takeaway:"The simplest trust there is. Convenience, not tax or protection."},
+
+ {abbr:"PET TRUST", name:"Pet trust",
+  nodes:[
+   {id:"g",label:"Grantor",pos:"TL",kind:"grantor"},
+   {id:"t",label:"Pet trust",pos:"C",kind:"trust"},
+   {id:"care",label:"Caretaker",pos:"MR",kind:"other"},
+   {id:"pet",label:"The animal",pos:"BR",kind:"heir"}],
+  steps:[
+   {title:"Set aside funds",detail:"The grantor funds a trust and names both a caretaker and a trustee.",edges:[{from:"g",to:"t",label:"funds",kind:"in"}]},
+   {title:"Pay the caretaker",detail:"The trustee releases money to the caretaker to cover the animal's needs.",edges:[{from:"t",to:"care",label:"pays for care",kind:"access"}]},
+   {title:"Care for the animal's life",detail:"Recognized in all fifty states. A court can trim an amount it finds excessive, as one did with Leona Helmsley's $12M trust for her dog.",edges:[{from:"care",to:"pet",label:"food, vet, shelter",kind:"access"}]}],
+  takeaway:"Enforceable care for an animal after you are gone."}
+];
+
+function border(cx,cy,tx,ty){const hw=75,hh=27,dx=tx-cx,dy=ty-cy;if(!dx&&!dy)return[cx,cy];const t=Math.min(hw/Math.max(Math.abs(dx),1e-6),hh/Math.max(Math.abs(dy),1e-6));return[cx+dx*t,cy+dy*t];}
+
+function buildSVG(s,si){
+  const step=s.steps[si],edges=step.edges||[];
+  const active=new Set();edges.forEach(e=>{active.add(e.from);active.add(e.to);});(step.highlight||[]).forEach(id=>active.add(id));
+  const byId={};s.nodes.forEach(n=>byId[n.id]=n);
+  const defs='<defs>'+Object.keys(KINDS).map(k=>`<marker id="m-${k}" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L6,3 L0,6 Z" fill="${KINDS[k]}"/></marker>`).join('')+'</defs>';
+  let eS='',lS='';
+  edges.forEach(e=>{
+    const a=byId[e.from],b=byId[e.to],[ax,ay]=POS[a.pos],[bx,by]=POS[b.pos];
+    let p1=border(ax,ay,bx,by),p2=border(bx,by,ax,ay);
+    const dx=p2[0]-p1[0],dy=p2[1]-p1[1],L=Math.hypot(dx,dy)||1,ux=dx/L,uy=dy/L;
+    p1=[p1[0]+ux*3,p1[1]+uy*3];p2=[p2[0]-ux*11,p2[1]-uy*11];
+    const st=EDGE[e.kind];let d,mx,my;
+    if(e.curve){const px=-uy,py=ux,cxp=(p1[0]+p2[0])/2+px*e.curve,cyp=(p1[1]+p2[1])/2+py*e.curve;
+      d=`M${p1[0].toFixed(1)},${p1[1].toFixed(1)} Q${cxp.toFixed(1)},${cyp.toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`;
+      mx=0.25*p1[0]+0.5*cxp+0.25*p2[0];my=0.25*p1[1]+0.5*cyp+0.25*p2[1];}
+    else{d=`M${p1[0].toFixed(1)},${p1[1].toFixed(1)} L${p2[0].toFixed(1)},${p2[1].toFixed(1)}`;mx=(p1[0]+p2[0])/2;my=(p1[1]+p2[1])/2;}
+    eS+=`<path d="${d}" fill="none" stroke="${KINDS[e.kind]}" stroke-width="${st.w}" ${st.dash?`stroke-dasharray="${st.dash}"`:''} marker-end="url(#m-${e.kind})"/>`;
+    if(e.label){const w=e.label.length*6.0+12;lS+=`<g transform="translate(${mx.toFixed(1)},${my.toFixed(1)})"><rect x="${(-w/2).toFixed(1)}" y="-9" width="${w.toFixed(1)}" height="18" fill="#f6f0e2"/><text x="0" y="4" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#3a3027">${escapeXml(e.label)}</text></g>`;}
+  });
+  let nS='';
+  s.nodes.forEach(n=>{const[cx,cy]=POS[n.pos],on=active.has(n.id),trust=n.kind==='trust';
+    const fill=trust?'#f3e7d2':'#f6f0e2',stroke=on?'#74201f':(trust?'#9a4f3a':'#211a14'),sw=on?2:(trust?1.8:1.3),op=on?1:0.34;
+    nS+=`<g opacity="${op}"><rect x="${cx-75}" y="${cy-27}" width="150" height="54" rx="2" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`;
+    if(n.sub){nS+=`<text x="${cx}" y="${cy-3}" text-anchor="middle" font-family="Fraunces,serif" font-weight="600" font-size="14" fill="#211a14">${escapeXml(n.label)}</text><text x="${cx}" y="${cy+15}" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8.5" fill="#7a6e5c">${escapeXml(n.sub)}</text>`;}
+    else{nS+=`<text x="${cx}" y="${cy+5}" text-anchor="middle" font-family="Fraunces,serif" font-weight="600" font-size="15" fill="#211a14">${escapeXml(n.label)}</text>`;}
+    nS+='</g>';
+  });
+  return `<svg viewBox="0 0 760 440" role="img" aria-label="${escapeXml(s.name)} structure diagram">${defs}${eS}${lS}${nS}</svg>`;
+}
+
+let curS=0,curStep=0;
+const elList=document.getElementById('expList'),elTitle=document.getElementById('expTitle'),elCount=document.getElementById('expCount'),
+  elSvg=document.getElementById('expSvg'),elCt=document.getElementById('expCt'),elCd=document.getElementById('expCd'),
+  elTake=document.getElementById('expTake'),elDots=document.getElementById('expDots'),elPrev=document.getElementById('expPrev'),elNext=document.getElementById('expNext');
+
+document.getElementById('expLegend').innerHTML=LEGEND.map(([k,l])=>`<span><i style="border-top-color:${KINDS[k]};${EDGE[k].dash?'border-top-style:dashed;':''}"></i>${l}</span>`).join('');
+
+STRUCT.forEach((s,i)=>{const b=document.createElement('button');b.className='exp-item'+(i===0?' on':'');
+  b.innerHTML=`<span class="ea">${s.abbr||'TRUST'}</span><span class="en">${s.name}</span>`;
+  b.addEventListener('click',()=>{curS=i;curStep=0;renderExp();if(playing)startTimer();});elList.appendChild(b);});
+
+const elSelect=document.getElementById('expSelect');
+elSelect.innerHTML=STRUCT.map((s,i)=>`<option value="${i}">${escapeXml(s.name)}</option>`).join('');
+elSelect.addEventListener('change',()=>{curS=+elSelect.value;curStep=0;renderExp();if(playing)startTimer();});
+
+function renderExp(){
+  const s=STRUCT[curS];
+  document.querySelectorAll('.exp-item').forEach((b,i)=>b.classList.toggle('on',i===curS));
+  elSelect.value=curS;
+  elTitle.textContent=s.name;
+  elCount.textContent='Step '+(curStep+1)+' of '+s.steps.length;
+  elSvg.innerHTML=buildSVG(s,curStep);
+  const st=s.steps[curStep];
+  elCt.textContent=st.title;elCd.textContent=st.detail;elTake.textContent=s.takeaway;
+  if(window.glossify){window.glossify(elCd);window.glossify(elTake);}
+  elPrev.disabled=curStep===0;elNext.disabled=curStep===s.steps.length-1;
+  elDots.innerHTML=s.steps.map((_,i)=>`<button class="exp-dot${i===curStep?' on':''}" data-i="${i}" aria-label="Step ${i+1}"></button>`).join('');
+  elDots.querySelectorAll('.exp-dot').forEach(d=>d.addEventListener('click',()=>{curStep=+d.dataset.i;renderExp();if(playing)startTimer();}));
+}
+elPrev.addEventListener('click',()=>{if(curStep>0){curStep--;renderExp();if(playing)startTimer();}});
+elNext.addEventListener('click',()=>{if(curStep<STRUCT[curS].steps.length-1){curStep++;renderExp();if(playing)startTimer();}});
+
+let playing=false, timer=null;
+const elPlay=document.getElementById('expPlay');
+function advance(){const s=STRUCT[curS];if(curStep<s.steps.length-1)curStep++;else{curS=(curS+1)%STRUCT.length;curStep=0;}renderExp();}
+function startTimer(){clearInterval(timer);timer=setInterval(advance,3400);}
+function setPlaying(p){playing=p;elPlay.classList.toggle('on',p);elPlay.textContent=p?'Pause':'Auto-play';elPlay.setAttribute('aria-pressed',p?'true':'false');if(p)startTimer();else clearInterval(timer);}
+elPlay.addEventListener('click',()=>setPlaying(!playing));
+
+renderExp();
+
+/* ---------- Tab switching ---------- */
+const views={guide:document.getElementById('view-guide'),playbook:document.getElementById('view-playbook'),law:document.getElementById('view-law'),practice:document.getElementById('view-practice')};
+document.querySelectorAll('.tab[data-view]').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    const v=tab.dataset.view;
+    document.querySelectorAll('.tab[data-view]').forEach(t=>t.classList.toggle('on',t===tab));
+    Object.keys(views).forEach(k=>{views[k].hidden=(k!==v);});
+    if(v!=='practice') setPlaying(false);
+    window.scrollTo({top:0,behavior:'auto'});
+  });
+});
+</script>
+
+<script>
+/* ---------- Hero: particle title that assembles "The Trust Machine" ---------- */
+(function(){
+  const hero=document.querySelector('.hero');
+  const canvas=document.getElementById('heroCanvas');
+  if(!hero||!canvas) return;
+  const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  let glOK=false;
+  try{const tc=document.createElement('canvas');glOK=!!(window.WebGLRenderingContext&&(tc.getContext('webgl')||tc.getContext('experimental-webgl')));}catch(e){glOK=false;}
+  // Fallback: leave the CSS <h1> visible, canvas hidden.
+  if(reduce || !window.THREE || !glOK) return;
+
+  const ready = (document.fonts&&document.fonts.load) ? document.fonts.load('900 100px "Fraunces"').then(()=>document.fonts.ready) : Promise.resolve();
+  ready.then(init).catch(init);
+
+  let renderer,scene,camera,geo,points,count=0,tgt,startA,phase,delay,tStart,W,H,vis=true,psize=2.4;
+
+  function pickFont(x,line,maxW,maxH){
+    x.font='900 100px "Fraunces", serif';
+    const wPer=x.measureText(line).width/100;
+    return Math.min(maxH, maxW/wPer);
+  }
+  function sampleText(w,h){
+    const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');
+    x.clearRect(0,0,w,h);x.fillStyle='#fff';x.textAlign='center';x.textBaseline='middle';
+    const maxW=w*0.9;
+    const fsOne=pickFont(x,'The Trust Machine',maxW,h*0.74);
+    const fsTwo=Math.min(pickFont(x,'The Trust',maxW,h*0.46),pickFont(x,'Machine',maxW,h*0.46));
+    if(w>640 && fsOne>=fsTwo*0.9){
+      x.font='900 '+fsOne+'px "Fraunces", serif';
+      x.fillText('The Trust Machine', w/2, h*0.52);
+    } else {
+      x.font='900 '+fsTwo+'px "Fraunces", serif';
+      x.fillText('The Trust', w/2, h*0.32);
+      x.fillText('Machine', w/2, h*0.70);
+    }
+    const data=x.getImageData(0,0,w,h).data;
+    const step=w>900?3:4, pts=[];
+    for(let yy=0;yy<h;yy+=step){for(let xx=0;xx<w;xx+=step){
+      if(data[(yy*w+xx)*4+3]>150) pts.push({x:xx+(Math.random()-0.5)*step*0.5, y:yy+(Math.random()-0.5)*step*0.5});
+    }}
+    const cap=w>900?8000:4200;
+    if(pts.length>cap){const out=[],stride=pts.length/cap;for(let i=0;i<cap;i++)out.push(pts[Math.floor(i*stride)]);return out;}
+    return pts;
+  }
+
+  function build(targets){
+    if(points){scene.remove(points);geo.dispose();points.material.dispose();}
+    count=targets.length;
+    const pos=new Float32Array(count*3);startA=new Float32Array(count*3);
+    tgt=new Float32Array(count*3);const colors=new Float32Array(count*3);
+    phase=new Float32Array(count);delay=new Float32Array(count);
+    const c1=new THREE.Color('#241c15'),c2=new THREE.Color('#74201f'),c3=new THREE.Color('#a8662f');
+    for(let i=0;i<count;i++){
+      const ix=i*3,t=targets[i],sx=Math.random()*W,sy=Math.random()*H;
+      startA[ix]=sx;startA[ix+1]=sy;startA[ix+2]=0;
+      pos[ix]=sx;pos[ix+1]=sy;pos[ix+2]=0;
+      tgt[ix]=t.x;tgt[ix+1]=t.y;tgt[ix+2]=0;
+      const r=Math.random(),c=r<0.72?c1:(r<0.9?c2:c3);
+      colors[ix]=c.r;colors[ix+1]=c.g;colors[ix+2]=c.b;
+      phase[i]=Math.random()*6.283;delay[i]=Math.random()*0.55;
+    }
+    geo=new THREE.BufferGeometry();
+    geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+    geo.setAttribute('color',new THREE.BufferAttribute(colors,3));
+    const mat=new THREE.PointsMaterial({size:psize,sizeAttenuation:false,vertexColors:true,transparent:true,opacity:0.96,depthTest:false});
+    points=new THREE.Points(geo,mat);scene.add(points);
+  }
+
+  const GATHER=2200;
+  function frame(now){
+    requestAnimationFrame(frame);
+    if(!geo||!vis) return;
+    const el=now-tStart, pos=geo.attributes.position.array;
+    for(let i=0;i<count;i++){
+      const ix=i*3;let p=(el-delay[i]*1000)/GATHER;if(p<0)p=0;else if(p>1)p=1;
+      const e=1-Math.pow(1-p,3);
+      let x=startA[ix]+(tgt[ix]-startA[ix])*e, y=startA[ix+1]+(tgt[ix+1]-startA[ix+1])*e;
+      if(p>=1){const tt=now/1000;x+=Math.sin(tt*1.2+phase[i])*0.45;y+=Math.cos(tt+phase[i])*0.45;}
+      pos[ix]=x;pos[ix+1]=y;
+    }
+    geo.attributes.position.needsUpdate=true;
+    renderer.render(scene,camera);
+  }
+
+  function init(){
+    hero.classList.add('canvas-on');
+    W=canvas.clientWidth||hero.clientWidth||900;
+    H=canvas.clientHeight||300;
+    const DPR=Math.min(window.devicePixelRatio||1,2);
+    psize=Math.max(2.4, 1.7*DPR+1.0);
+    renderer=new THREE.WebGLRenderer({canvas:canvas,alpha:true,antialias:true});
+    renderer.setPixelRatio(DPR);renderer.setSize(W,H,false);
+    scene=new THREE.Scene();
+    camera=new THREE.OrthographicCamera(0,W,0,H,-100,100);camera.position.z=10;
+    build(sampleText(W,H));
+    tStart=performance.now();
+    requestAnimationFrame(frame);
+    if(window.IntersectionObserver){
+      new IntersectionObserver(es=>{vis=es[0].isIntersecting;},{threshold:0}).observe(hero);
+    }
+    let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{
+      const nW=canvas.clientWidth,nH=canvas.clientHeight;
+      if(!nW||!nH||(nW===W&&nH===H))return;
+      W=nW;H=nH;renderer.setSize(W,H,false);camera.right=W;camera.bottom=H;camera.updateProjectionMatrix();
+      build(sampleText(W,H));tStart=performance.now();
+    },280);});
+  }
+})();
+</script>
+
+<div id="glossTip" role="tooltip" aria-hidden="true"></div>
+<script>
+/* ---------- Glossary tooltips for acronyms ---------- */
+(function(){
+  const G={
+    GST:{t:"Generation-skipping transfer tax",d:"A federal tax aimed at wealth that skips a generation, such as passing from grandparent straight to grandchild."},
+    GRAT:{t:"Grantor retained annuity trust",d:"Freezes an asset's value and passes its future growth to heirs gift-tax-free."},
+    GRIT:{t:"Grantor retained income trust",d:"The 1980s predecessor to the GRAT, shut down by Congress in 1990."},
+    IDGT:{t:"Intentionally defective grantor trust",d:"Sits outside the estate for estate tax, yet the grantor keeps paying its income tax, shrinking the estate further."},
+    ILIT:{t:"Irrevocable life insurance trust",d:"Holds a life policy so the death benefit stays out of the taxable estate."},
+    QPRT:{t:"Qualified personal residence trust",d:"Transfers a home to heirs at a discounted value while the grantor keeps living in it for a term."},
+    CRT:{t:"Charitable remainder trust",d:"Pays the donor income for life, with whatever remains going to charity."},
+    CLT:{t:"Charitable lead trust",d:"Pays a charity first for a term, then passes the remainder to heirs at a reduced transfer-tax cost."},
+    QTIP:{t:"Qualified terminable interest property trust",d:"Supports a surviving spouse while the first spouse controls who ultimately inherits."},
+    SNT:{t:"Special needs trust",d:"Provides for a person with disabilities without costing them Medicaid or SSI."},
+    DAPT:{t:"Domestic asset protection trust",d:"A self-settled trust that shields the settlor's own assets from future creditors, allowed in about twenty states."},
+    SLAT:{t:"Spousal lifetime access trust",d:"Uses the exemption now while the other spouse keeps indirect access to the funds."},
+    POD:{t:"Payable on death",d:"A beneficiary designation that passes an account directly at death, outside probate."},
+    RLT:{t:"Revocable living trust",d:"A trust the grantor can change or revoke anytime, used mainly to avoid probate."},
+    IRS:{t:"Internal Revenue Service",d:"The federal tax authority."},
+    IRC:{t:"Internal Revenue Code",d:"The body of federal tax statutes, organized by section number."},
+    SSI:{t:"Supplemental Security Income",d:"A means-tested federal benefit for people with limited income and resources."},
+    OBRA:{t:"Omnibus Budget Reconciliation Act",d:"Used here for the 1990 and 1993 budget laws that reshaped trust and valuation rules."},
+    EGTRRA:{t:"Economic Growth and Tax Relief Reconciliation Act of 2001",d:"Phased in estate-tax changes including a one-year repeal in 2010."},
+    ATRA:{t:"American Taxpayer Relief Act of 2012",d:"Made a $5 million exemption permanent at a 40 percent rate."},
+    TCJA:{t:"Tax Cuts and Jobs Act of 2017",d:"Temporarily roughly doubled the estate and gift tax exemption."},
+    OBBBA:{t:"One Big Beautiful Bill Act of 2025",d:"Made the $15 million exemption permanent, indexed for inflation."},
+    BAPCPA:{t:"Bankruptcy Abuse Prevention and Consumer Protection Act of 2005",d:"Added a ten-year clawback for transfers into self-settled asset-protection trusts."},
+    Crummey:{t:"Crummey power",d:"A temporary withdrawal right that lets gifts to a trust qualify for the annual gift-tax exclusion. From a 1968 court case."}
+  };
+  const keys=Object.keys(G).sort((a,b)=>b.length-a.length);
+  const re=new RegExp('\\b('+keys.join('|')+')(s)?\\b','g');
+  const SKIP={SCRIPT:1,STYLE:1,CANVAS:1,SELECT:1,OPTION:1,A:1,TEXTAREA:1,BUTTON:1};
+
+  function glossify(root){
+    if(!root) return;
+    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode(n){
+      if(!n.nodeValue||n.nodeValue.length<3) return NodeFilter.FILTER_REJECT;
+      let p=n.parentNode;
+      while(p&&p!==root.parentNode){
+        if(p.nodeType===1){
+          if(SKIP[p.nodeName]) return NodeFilter.FILTER_REJECT;
+          if(p.classList&&p.classList.contains('term')) return NodeFilter.FILTER_REJECT;
+        }
+        p=p.parentNode;
+      }
+      re.lastIndex=0;
+      return re.test(n.nodeValue)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;
+    }});
+    const todo=[]; while(walker.nextNode()) todo.push(walker.currentNode);
+    todo.forEach(node=>{
+      const text=node.nodeValue; re.lastIndex=0; let m,last=0,any=false;
+      const frag=document.createDocumentFragment();
+      while((m=re.exec(text))){
+        any=true;
+        if(m.index>last) frag.appendChild(document.createTextNode(text.slice(last,m.index)));
+        const span=document.createElement('span');
+        span.className='term'; span.setAttribute('data-k',m[1]); span.textContent=m[0];
+        frag.appendChild(span);
+        last=m.index+m[0].length;
+      }
+      if(any){ if(last<text.length) frag.appendChild(document.createTextNode(text.slice(last))); node.parentNode.replaceChild(frag,node); }
+    });
+  }
+  window.glossify=glossify;
+
+  const tip=document.getElementById('glossTip');
+  let active=null;
+  function show(el){
+    const g=G[el.getAttribute('data-k')]; if(!g)return;
+    tip.innerHTML=''; const b=document.createElement('b'); b.textContent=g.t;
+    tip.appendChild(b); tip.appendChild(document.createTextNode(g.d));
+    tip.classList.add('show'); tip.setAttribute('aria-hidden','false');
+    const r=el.getBoundingClientRect(), tw=tip.offsetWidth, th=tip.offsetHeight;
+    let left=r.left+r.width/2-tw/2;
+    left=Math.max(10,Math.min(left,window.innerWidth-tw-10));
+    let top=r.top-th-10; if(top<10) top=r.bottom+10;
+    tip.style.left=left+'px'; tip.style.top=top+'px'; active=el;
+  }
+  function hide(){tip.classList.remove('show');tip.setAttribute('aria-hidden','true');active=null;}
+
+  document.addEventListener('mouseover',e=>{const t=e.target.closest&&e.target.closest('.term');if(t)show(t);});
+  document.addEventListener('mouseout',e=>{const t=e.target.closest&&e.target.closest('.term');if(t)hide();});
+  document.addEventListener('click',e=>{
+    const t=e.target.closest&&e.target.closest('.term');
+    if(t){e.preventDefault(); if(active===t)hide(); else show(t);}
+    else if(active) hide();
+  });
+  window.addEventListener('scroll',()=>{if(active)hide();},true);
+  window.addEventListener('resize',()=>{if(active)hide();});
+
+  glossify(document.body);
+})();
+</script>
+</body>
+</html>
