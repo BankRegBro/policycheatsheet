@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Housing Convergence · BankRegWire</title>
+<meta name="description" content="BankRegWire · Congress, HUD, and FHFA pushing one supply-side, deregulatory housing strategy in June 2026, read from the primary source.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,500&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+  :root{
+    --paper:#efe7d6;
+    --paper-2:#e7ddc8;
+    --panel:#f6f0e2;
+    --ink:#211a14;
+    --ink-soft:#4a3f33;
+    --ink-faint:#7a6e5c;
+    --rule:#c9bda3;
+    --rule-soft:#d8cdb4;
+    --oxblood:#74201f;
+    --oxblood-2:#8d2a25;
+    --copper:#a8662f;
+    --copper-soft:#c08a4f;
+    --sage:#5b6650;
+    --maxw:1180px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:"Archivo",system-ui,sans-serif;font-size:17px;line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    background-image:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(33,26,20,0.012) 3px,rgba(33,26,20,0.012) 4px);
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+  a{color:var(--oxblood);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* Masthead */
+  .masthead{border-bottom:2px solid var(--ink);background:var(--paper)}
+  .masthead-top{display:flex;align-items:baseline;justify-content:space-between;padding:16px 0 12px;gap:18px;flex-wrap:wrap}
+  .wordmark{font-family:"Fraunces",serif;font-weight:900;font-size:26px;letter-spacing:.01em}
+  .wordmark .dot{color:var(--oxblood)}
+  .masthead-meta{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);text-align:right;line-height:1.7}
+  .masthead-meta b{color:var(--ink-soft);font-weight:700}
+
+  /* Hero */
+  .hero{position:relative;overflow:hidden;border-bottom:1px solid var(--rule)}
+  .hero-bg{position:absolute;inset:-12%;z-index:0;
+    background:
+      radial-gradient(42% 38% at 22% 26%, rgba(168,102,47,0.22), transparent 62%),
+      radial-gradient(40% 44% at 80% 28%, rgba(116,32,31,0.20), transparent 60%),
+      radial-gradient(54% 50% at 52% 88%, rgba(95,102,80,0.15), transparent 62%),
+      radial-gradient(40% 40% at 86% 82%, rgba(176,106,50,0.16), transparent 60%);
+    animation:heroDrift 24s ease-in-out infinite alternate}
+  @keyframes heroDrift{0%{transform:translate3d(0,0,0) scale(1.02)}50%{transform:translate3d(1.6%,-1.4%,0) scale(1.08)}100%{transform:translate3d(-1.4%,1%,0) scale(1.04)}}
+  .hero-content{position:relative;z-index:2;padding:48px 0 56px;text-align:center}
+  .kicker{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--oxblood);font-weight:700;margin-bottom:20px}
+  #heroCanvas{display:none;width:100%;height:clamp(200px,38vh,360px);margin:4px 0 0}
+  .hero.canvas-on #heroCanvas{display:block}
+  h1{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(42px,7.6vw,88px);line-height:.96;letter-spacing:-.02em;margin:0 auto 4px;max-width:15ch}
+  h1 em{font-style:italic;font-weight:500;color:var(--oxblood)}
+  .hero.canvas-on h1{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  .deck{font-family:"Fraunces",serif;font-weight:400;font-size:clamp(18px,2.5vw,25px);line-height:1.4;color:var(--ink-soft);max-width:44ch;margin:0}
+  .byline{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-top:16px;border-top:1px solid rgba(116,32,31,0.18);padding-top:14px;display:inline-block}
+  .hero-deck{position:relative;overflow:hidden;margin:18px auto 0;text-align:left;max-width:600px;padding:24px 30px 26px;border-radius:20px;
+    background:linear-gradient(135deg, rgba(247,241,228,0.58), rgba(238,230,213,0.30));
+    -webkit-backdrop-filter:blur(18px) saturate(165%);backdrop-filter:blur(18px) saturate(165%);
+    border:1px solid rgba(255,255,255,0.5);
+    box-shadow:0 12px 36px rgba(33,26,20,0.17), inset 0 1px 1px rgba(255,255,255,0.8), inset 0 -12px 26px rgba(116,32,31,0.05)}
+  .hero-deck::before{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+    background:linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.55) 47%, transparent 60%);
+    background-size:240% 240%;animation:sheen 9s ease-in-out infinite}
+  @keyframes sheen{0%{background-position:140% 50%}100%{background-position:-60% 50%}}
+
+  /* Stat strip */
+  .strip{background:var(--ink);color:var(--paper);padding:8px 0}
+  .strip-inner{display:flex;flex-wrap:wrap;gap:0;align-items:stretch}
+  .stat{flex:1 1 150px;padding:14px 18px;border-right:1px solid rgba(239,231,214,.16)}
+  .stat:last-child{border-right:none}
+  .stat .n{font-family:"Fraunces",serif;font-weight:700;font-size:30px;line-height:1;color:var(--paper)}
+  .stat .n small{font-size:15px;font-weight:500;color:var(--copper-soft)}
+  .stat .l{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:rgba(239,231,214,.62);margin-top:8px}
+  .strip-foot{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.08em;color:rgba(239,231,214,.5);text-align:center;padding:8px 0 2px}
+
+  /* Section scaffolding */
+  section{padding:60px 0}
+  .eyebrow{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--copper);font-weight:700;display:flex;align-items:center;gap:14px;margin-bottom:18px}
+  .eyebrow::after{content:"";flex:1;height:1px;background:var(--rule)}
+  h2{font-family:"Fraunces",serif;font-weight:700;font-size:clamp(28px,4.6vw,46px);line-height:1.02;letter-spacing:-.015em;margin:0 0 16px}
+  .lead{font-size:18px;color:var(--ink-soft);max-width:64ch;margin:0 0 8px}
+  .lead b{color:var(--ink)}
+
+  /* Tab nav */
+  .tabnav{position:sticky;top:0;z-index:40;background:rgba(239,231,214,0.72);
+    -webkit-backdrop-filter:blur(20px) saturate(160%);backdrop-filter:blur(20px) saturate(160%);
+    border-bottom:1px solid rgba(116,32,31,0.2);box-shadow:0 6px 22px rgba(33,26,20,0.07)}
+  .tabnav-inner{display:flex;gap:0;overflow-x:auto;scrollbar-width:none}
+  .tabnav-inner::-webkit-scrollbar{display:none}
+  .tab{font-family:"JetBrains Mono",monospace;font-size:12.5px;letter-spacing:.13em;text-transform:uppercase;font-weight:700;
+    background:none;border:none;border-bottom:3px solid transparent;color:var(--ink-faint);white-space:nowrap;
+    padding:18px 4px;margin-right:32px;cursor:pointer;transition:color .15s,border-color .15s;margin-bottom:-2px}
+  .tab:hover{color:var(--ink-soft)}
+  .tab.on{color:var(--oxblood);border-bottom-color:var(--oxblood)}
+  .tab .tn{font-size:10px;color:var(--copper);margin-right:7px}
+  .view[hidden]{display:none}
+
+  /* Levers / machine */
+  .machine{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:36px}
+  .gear{background:var(--panel);padding:30px 26px}
+  .gear .num{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.18em;color:var(--ink-faint);text-transform:uppercase;margin-bottom:14px}
+  .gear .verb{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(26px,3vw,34px);color:var(--oxblood);margin-bottom:6px}
+  .gear p{margin:0;font-size:15.5px;color:var(--ink-soft)}
+  .gear p b{color:var(--ink)}
+
+  /* Law-intro / thesis */
+  .law-intro{padding:54px 0 14px}
+  .law-intro .thesis{font-family:"Fraunces",serif;font-weight:400;font-size:clamp(20px,2.6vw,27px);line-height:1.42;color:var(--ink);max-width:52ch;margin:18px 0 0}
+  .law-intro .thesis b{font-weight:600;color:var(--oxblood)}
+
+  /* Controls */
+  .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:30px 0 8px;position:sticky;top:55px;background:var(--paper);padding:16px 0;z-index:20;border-bottom:1px solid var(--rule-soft)}
+  .chip{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--rule);background:var(--panel);color:var(--ink-soft);padding:8px 14px;cursor:pointer;transition:all .15s;font-weight:500}
+  .chip:hover{border-color:var(--ink-soft);color:var(--ink)}
+  .chip.on{background:var(--oxblood);color:var(--paper);border-color:var(--oxblood)}
+  .count{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin:14px 0 22px}
+
+  /* Catalogue grid (instruments + stakeholders) */
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule)}
+  .card{background:var(--panel);display:flex;flex-direction:column}
+  .card-head{padding:24px 26px 22px;cursor:pointer;position:relative}
+  .card-head:focus-visible{outline:2px solid var(--copper);outline-offset:-2px}
+  .card-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:8px}
+  .card-name{font-family:"Fraunces",serif;font-weight:700;font-size:23px;line-height:1.05;letter-spacing:-.01em}
+  .card-abbr{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.1em;color:var(--paper);background:var(--ink);padding:4px 8px;white-space:nowrap;align-self:flex-start}
+  .card-abbr.congress{background:var(--oxblood)}
+  .card-abbr.hud{background:var(--copper)}
+  .card-abbr.fhfa{background:var(--sage)}
+  .card-net{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;margin:2px 0 6px}
+  .card-net.up{color:var(--sage)} .card-net.mix{color:var(--copper)} .card-net.watch{color:var(--oxblood)}
+  .card-blurb{font-size:15px;color:var(--ink-soft);line-height:1.45}
+  .card-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+  .tag{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border:1px solid var(--rule);color:var(--ink-faint)}
+  .card-expand{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--copper);margin-top:16px;display:flex;align-items:center;gap:6px}
+  .card-expand .pm{font-weight:700;font-size:14px;transition:transform .2s}
+  .card.open .card-expand .pm{transform:rotate(45deg)}
+  .card-detail{max-height:0;overflow:hidden;transition:max-height .4s ease;background:var(--paper-2)}
+  .card.open .card-detail{max-height:1400px}
+  .card-detail-inner{padding:22px 26px 26px;border-top:1px solid var(--rule)}
+  .dl-label{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--copper);font-weight:700;margin-bottom:8px}
+  .mech{font-size:15px;color:var(--ink-soft);margin:0 0 20px;line-height:1.55}
+  .mech b{color:var(--ink)}
+  .no-results{grid-column:1/-1;background:var(--panel);padding:46px;text-align:center;font-family:"Fraunces",serif;font-style:italic;font-size:20px;color:var(--ink-faint)}
+
+  /* Provision lists (cards + matrix pane) */
+  .prov{border-top:1px solid var(--rule);padding:12px 0}
+  .prov:first-of-type{border-top:1px dashed var(--rule)}
+  .prov .ref{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.05em;color:var(--paper);background:var(--copper);padding:2px 7px;display:inline-block;margin-bottom:6px}
+  .prov[data-org="Congress"] .ref{background:var(--oxblood)}
+  .prov[data-org="HUD"] .ref{background:var(--copper)}
+  .prov[data-org="FHFA"] .ref{background:var(--sage)}
+  .prov .txt{font-size:14.5px;color:var(--ink);line-height:1.5}
+  .prov .txt b{color:var(--oxblood-2)}
+
+  /* Convergence matrix */
+  .matrix-wrap{border:1px solid var(--rule);background:var(--panel);margin-top:6px}
+  .matrix-scroll{overflow-x:auto}
+  table.matrix{border-collapse:collapse;width:100%;min-width:700px}
+  table.matrix th,table.matrix td{border:1px solid var(--rule);text-align:center;vertical-align:middle}
+  table.matrix thead th{background:var(--paper-2);font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);font-weight:700;padding:11px 8px;cursor:pointer}
+  table.matrix thead th.corner{text-align:left;cursor:default;color:var(--ink-faint);font-weight:500}
+  table.matrix thead th .org{display:block;color:var(--copper);font-size:9.5px;letter-spacing:.1em;margin-bottom:2px}
+  table.matrix thead th .kind{display:block;font-weight:400;font-size:9.5px;color:var(--ink-faint);letter-spacing:.03em;margin-top:2px}
+  table.matrix thead th:hover:not(.corner){background:rgba(168,102,47,.12)}
+  th.rowhead{text-align:left;background:var(--panel);font-family:"Archivo";font-size:13.5px;font-weight:600;color:var(--ink);padding:11px 12px;cursor:pointer;min-width:210px;line-height:1.2}
+  th.rowhead:hover{background:rgba(168,102,47,.12);color:var(--oxblood)}
+  th.rowhead .k{display:block;font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.1em;color:var(--ink-faint);font-weight:500;text-transform:uppercase;margin-bottom:3px}
+  td.cell{padding:0;height:54px;cursor:pointer;transition:background .12s}
+  td.cell.empty{cursor:default;background:repeating-linear-gradient(45deg,transparent,transparent 6px,rgba(33,26,20,.03) 6px,rgba(33,26,20,.03) 7px)}
+  td.cell:not(.empty):hover{background:rgba(168,102,47,.12)}
+  td.cell .dot{display:inline-block;border-radius:50%}
+  td.cell[data-s="3"] .dot{width:18px;height:18px;background:var(--oxblood)}
+  td.cell[data-s="2"] .dot{width:14px;height:14px;background:var(--copper)}
+  td.cell[data-s="1"] .dot{width:9px;height:9px;background:var(--copper-soft)}
+  td.cell.sel{background:rgba(116,32,31,.13);box-shadow:inset 0 0 0 2px var(--oxblood)}
+  th.rowhead.sel,thead th.sel{background:rgba(116,32,31,.11);box-shadow:inset 0 0 0 2px var(--oxblood)}
+  .legend{display:flex;flex-wrap:wrap;gap:18px;align-items:center;padding:14px 2px 2px;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;color:var(--ink-faint)}
+  .legend .li{display:flex;align-items:center;gap:7px}
+  .legend .d{border-radius:50%;display:inline-block}
+  .legend .d.s3{width:16px;height:16px;background:var(--oxblood)}
+  .legend .d.s2{width:12px;height:12px;background:var(--copper)}
+  .legend .d.s1{width:8px;height:8px;background:var(--copper-soft)}
+  #pane{margin-top:20px;background:var(--panel);border:1px solid var(--rule);border-left:4px solid var(--oxblood);padding:20px 24px;min-height:120px}
+  #pane .ph{color:var(--ink-faint);font-style:italic;font-family:"Fraunces",serif;font-size:18px}
+  #pane .pane-k{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--copper);font-weight:700}
+  #pane h3{font-family:"Fraunces",serif;font-size:23px;font-weight:700;margin:4px 0 4px;line-height:1.1}
+  #pane .sub{color:var(--ink-soft);font-size:14px;margin:0 0 12px}
+
+  /* Timeline */
+  .tl-legend{display:flex;flex-wrap:wrap;gap:18px;margin:24px 0 8px;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.08em;color:var(--ink-faint)}
+  .tl-key{display:inline-flex;align-items:center;gap:7px}
+  .tl-dot{width:11px;height:11px;border:2px solid var(--oxblood);background:var(--paper);display:inline-block}
+  .tl-dot.open{border-color:var(--copper);background:var(--copper)}
+  .tl-dot.both{border-color:var(--oxblood);background:var(--copper)}
+  .timeline{margin-top:18px;border-top:1px solid var(--rule)}
+  .tl-row{display:grid;grid-template-columns:130px 1fr;gap:0;border-bottom:1px solid var(--rule-soft)}
+  .tl-row:last-child{border-bottom:none}
+  .tl-year{font-family:"Fraunces",serif;font-weight:900;font-size:23px;color:var(--ink);padding:26px 18px 26px 0;line-height:1.05;border-right:2px solid var(--rule);position:relative}
+  .tl-marker{position:absolute;right:-7px;top:30px;width:11px;height:11px;background:var(--paper);border:2px solid var(--oxblood);z-index:2}
+  .tl-marker.open{border-color:var(--copper);background:var(--copper)}
+  .tl-marker.both{border-color:var(--oxblood);background:var(--copper)}
+  .tl-body{padding:24px 0 24px 28px}
+  .tl-flag{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;padding:3px 9px;display:inline-block;margin-bottom:11px;border:1px solid}
+  .tl-flag.restrict{color:var(--oxblood);border-color:var(--oxblood)}
+  .tl-flag.open{color:var(--copper);border-color:var(--copper)}
+  .tl-flag.both{color:var(--ink);border-color:var(--ink);background:rgba(168,102,47,.12)}
+  .tl-title{font-family:"Fraunces",serif;font-weight:700;font-size:20px;line-height:1.15;margin-bottom:8px}
+  .tl-text{font-size:15px;color:var(--ink-soft);line-height:1.55;margin:0;max-width:66ch}
+
+  /* Principles */
+  .principles{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:36px}
+  .principle{background:var(--ink);color:var(--paper);padding:30px 26px}
+  .principle .pnum{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;color:var(--copper-soft);margin-bottom:14px}
+  .principle h3{font-family:"Fraunces",serif;font-weight:700;font-size:23px;line-height:1.05;margin:0 0 12px;color:var(--paper)}
+  .principle p{margin:0;font-size:14.5px;line-height:1.55;color:rgba(239,231,214,.78)}
+  .principle p b{color:var(--copper-soft)}
+  .note-bar{font-size:14.5px;color:var(--ink-soft);line-height:1.6;max-width:82ch;margin:34px 0 0;border-left:3px solid var(--copper);padding-left:18px}
+  .note-bar b{color:var(--ink)}
+
+  /* Footer */
+  footer{border-top:2px solid var(--ink);margin-top:30px;padding:42px 0 70px}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:40px}
+  .foot-grid h3{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--oxblood);margin:0 0 14px}
+  .foot-grid p{font-size:13.5px;color:var(--ink-soft);margin:0 0 12px;line-height:1.55}
+  .sources{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-faint);line-height:1.95}
+  .sources a{color:var(--oxblood)}
+  .disclaimer{font-size:12px;color:var(--ink-faint);border-top:1px solid var(--rule-soft);margin-top:34px;padding-top:18px;line-height:1.55;max-width:82ch}
+
+  /* Glossary */
+  .term{border-bottom:1px dotted var(--copper);cursor:help}
+  .term:hover{border-bottom-style:solid}
+  .strip .term,.principle .term{border-bottom-color:var(--copper-soft)}
+  #glossTip{position:fixed;z-index:120;max-width:268px;background:var(--panel);color:var(--ink);
+    border:1px solid var(--rule);box-shadow:0 12px 32px rgba(33,26,20,0.24);padding:12px 14px;border-radius:11px;
+    font-family:"Archivo",sans-serif;font-size:13px;line-height:1.45;pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .14s ease,transform .14s ease}
+  #glossTip.show{opacity:1;transform:translateY(0)}
+  #glossTip b{display:block;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--oxblood);margin-bottom:6px}
+
+  @media(max-width:860px){
+    .machine{grid-template-columns:1fr}
+    .principles{grid-template-columns:1fr}
+    .grid{grid-template-columns:1fr}
+    .foundations{grid-template-columns:1fr}
+    .foot-grid{grid-template-columns:1fr;gap:28px}
+    .tl-row{grid-template-columns:96px 1fr}
+  }
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important}
+    .hero-bg,.hero-deck::before{animation:none!important}
+  }
+</style>
+</head>
+
+<body>
+
+<header class="masthead">
+  <div class="wrap masthead-top">
+    <div class="wordmark">BankRegWire<span class="dot">.</span></div>
+    <div class="masthead-meta">
+      <div><b>Reform Tracker</b> &nbsp;/&nbsp; Housing Finance</div>
+      <div>Dispatch No. 42 &nbsp;·&nbsp; Updated June 2026</div>
+    </div>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="wrap hero-content">
+    <div class="kicker">The June 2026 Housing Push</div>
+    <h1>The Housing <em>Convergence</em></h1>
+    <canvas id="heroCanvas" aria-hidden="true"></canvas>
+    <div class="hero-deck">
+      <p class="deck">Congress, HUD, and FHFA moved the same supply-side, deregulatory housing agenda from three directions in one mid-2026 window, anchored by Executive Order 14394. The bill has cleared both chambers and awaits the President's signature; two of the rules are open for comment now.</p>
+      <div class="byline">One bill, three rules · read together · filed from the primary source</div>
+    </div>
+  </div>
+</div>
+
+<nav class="tabnav">
+  <div class="wrap tabnav-inner">
+    <button class="tab on" data-view="conv"><span class="tn">01</span>The Convergence</button>
+    <button class="tab" data-view="instr"><span class="tn">02</span>The Instruments</button>
+    <button class="tab" data-view="impact"><span class="tn">03</span>Who It Touches</button>
+    <button class="tab" data-view="live"><span class="tn">04</span>What Is Live</button>
+  </div>
+</nav>
+
+<!-- ===================== VIEW 01 · THE CONVERGENCE ===================== -->
+<div class="view" id="view-conv">
+
+  <div class="strip">
+    <div class="wrap">
+      <div class="strip-inner">
+        <div class="stat"><div class="n">4</div><div class="l">Federal actions, one strategy</div></div>
+        <div class="stat"><div class="n">12</div><div class="l">Titles in the final bill</div></div>
+        <div class="stat"><div class="n">$6<small>B</small></div><div class="l">Exam threshold, up from $3B</div></div>
+        <div class="stat"><div class="n">350</div><div class="l">Homes that trip the investor ban</div></div>
+        <div class="stat"><div class="n">65.6<small>%</small></div><div class="l">Chattel-loan denial rate</div></div>
+        <div class="stat"><div class="n">Jul 24</div><div class="l">Duty to Serve comments close</div></div>
+      </div>
+      <div class="strip-foot">Final reconciled bill (H.R. 6644 EAS2) passed both chambers 22 June 2026 and awaits signature; the HUD and FHFA rules are proposals open to comment.</div>
+    </div>
+  </div>
+
+  <section>
+    <div class="wrap">
+      <div class="eyebrow">The conclusion, up front</div>
+      <h2>Supply-side and deregulatory, by statute and by rule, all at once</h2>
+      <p class="lead">The four documents are not separate stories. They are coordinated moves in one strategy: expand housing supply and cut compliance cost rather than subsidize demand. The clearest convergence is <b>manufactured and factory-built housing</b>, which appears in three of the four instruments at once. The most consequential survivor of reconciliation is the <b>community-banking title</b>, which had no Senate counterpart yet made it into the final bill intact. The bill is finished in form and awaits signature; the executive actions are open for comment right now.</p>
+      <div class="machine" id="levers"></div>
+    </div>
+  </section>
+
+  <section style="padding-top:8px">
+    <div class="wrap">
+      <div class="eyebrow">The signature view</div>
+      <h2>The convergence matrix</h2>
+      <p class="lead">Eight policy threads down the side, four instruments across the top. A filled cell means that instrument acts on that thread; a bigger, darker dot means heavier action. <b>Tap any cell, row, or column header</b> to load the underlying provisions, with citations. Empty cells are hatched.</p>
+      <div class="matrix-wrap">
+        <div class="matrix-scroll">
+          <table class="matrix" id="mtx"><thead><tr id="mtx-head"></tr></thead><tbody id="mtx-body"></tbody></table>
+        </div>
+      </div>
+      <div class="legend">
+        <span class="li"><span class="d s3"></span> Heavy / central</span>
+        <span class="li"><span class="d s2"></span> Moderate</span>
+        <span class="li"><span class="d s1"></span> Light / indirect</span>
+        <span class="li">Hatched = no provision</span>
+      </div>
+      <div id="pane"><div class="ph">Select a cell, a thread, or an instrument above to read the specific provisions and their citations.</div></div>
+    </div>
+  </section>
+
+</div><!-- /view-conv -->
+
+<!-- ===================== VIEW 02 · THE INSTRUMENTS ===================== -->
+<div class="view" id="view-instr" hidden>
+  <section class="law-intro">
+    <div class="wrap">
+      <div class="eyebrow">The instruments</div>
+      <h2>One legislative vehicle, three executive actions</h2>
+      <p class="thesis">The bill carries the broadest scope and is now reconciled and awaiting signature. The rules are narrower but already in motion. Filter by which branch issued each, and open any card for its mechanism and the specific provisions.</p>
+    </div>
+  </section>
+  <section style="padding-top:8px">
+    <div class="wrap">
+      <div class="controls" id="instrControls"></div>
+      <div class="count" id="instrCount"></div>
+      <div class="grid" id="instrGrid"></div>
+    </div>
+  </section>
+</div><!-- /view-instr -->
+
+<!-- ===================== VIEW 03 · WHO IT TOUCHES ===================== -->
+<div class="view" id="view-impact" hidden>
+  <section class="law-intro">
+    <div class="wrap">
+      <div class="eyebrow">Downstream</div>
+      <h2>The same four documents, ten different landings</h2>
+      <p class="thesis">Where you sit decides what the package does to you. Filter by net direction. The colored label is the direction of the package for that group, not a verdict on any single provision. Open any card for the specifics.</p>
+    </div>
+  </section>
+  <section style="padding-top:8px">
+    <div class="wrap">
+      <div class="controls" id="stakeControls"></div>
+      <div class="count" id="stakeCount"></div>
+      <div class="grid" id="stakeGrid"></div>
+    </div>
+  </section>
+</div><!-- /view-impact -->
+
+<!-- ===================== VIEW 04 · WHAT IS LIVE ===================== -->
+<div class="view" id="view-live" hidden>
+  <section class="law-intro">
+    <div class="wrap">
+      <div class="eyebrow">Sequencing</div>
+      <h2>What is settled, and what is still in motion</h2>
+      <p class="thesis">The bill is finished in form and awaits signature, so the near-term action is on the executive side. Comment windows are the immediate handle for anyone who wants to shape the outcome.</p>
+    </div>
+  </section>
+
+  <section style="padding-top:14px">
+    <div class="wrap">
+      <div class="eyebrow">The record</div>
+      <h2>From introduction to the President's desk</h2>
+      <div class="tl-legend">
+        <span class="tl-key"><span class="tl-dot both"></span> Passed / effective</span>
+        <span class="tl-key"><span class="tl-dot open"></span> Comment open</span>
+        <span class="tl-key"><span class="tl-dot"></span> Awaiting action</span>
+      </div>
+      <div class="timeline" id="timeline"></div>
+    </div>
+  </section>
+
+  <section style="padding-top:14px">
+    <div class="wrap">
+      <div class="eyebrow">Analyst notes</div>
+      <h2>How to read the package</h2>
+      <p class="lead">Strip away the press releases and four forces explain the whole move.</p>
+      <div class="principles" id="principles"></div>
+      <p class="note-bar"><b>A note on what is not here.</b> This dispatch reads the four documents as one strategy. It is not a section-by-section summary of the 374-page bill, and the rules remain proposals that can change through comment. The controlling text for the legislation is H.R. 6644 EAS2; the controlling text for each rule is its Federal Register entry.</p>
+    </div>
+  </section>
+</div><!-- /view-live -->
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h3>About this dispatch</h3>
+        <p>This file reads four converging housing actions of June 2026 against their primary sources: the 21st Century ROAD to Housing Act (H.R. 6644), HUD's manufactured-home and FHA streamlining actions, and FHFA's Duty to Serve rewrite. Conclusions are front-loaded; provisions are cited to title, section, or Federal Register page.</p>
+        <p>The legislation has passed both chambers and awaits the President's signature, so it is not yet law. The rules are proposals open to change through notice and comment. Status and exact text should be confirmed against the sources before any provision is relied upon.</p>
+      </div>
+      <div>
+        <h3>Sources</h3>
+        <div class="sources">
+          <a href="https://www.congress.gov/bill/119th-congress/house-bill/6644/text" target="_blank" rel="noopener">H.R. 6644 EAS2</a> (final text)<br>
+          <a href="https://www.federalregister.gov/documents/2026/06/24/2026-12750/enterprise-duty-to-serve-underserved-markets" target="_blank" rel="noopener">FHFA Duty to Serve, 91 FR 37848</a><br>
+          <a href="https://www.hud.gov/news/hud-no-26-049" target="_blank" rel="noopener">HUD No. 26-049</a> · manufactured-home rule<br>
+          <a href="https://www.federalregister.gov/documents/2026/06/12/2026-11851/revising-the-definition-of-manufactured-home-to-lower-housing-costs" target="_blank" rel="noopener">FR 2026-11851</a><br>
+          <a href="https://www.hud.gov/news/hud-no-26-051" target="_blank" rel="noopener">HUD No. 26-051</a> · FHA streamlining<br>
+          <a href="https://www.everycrsreport.com/reports/R48922.html" target="_blank" rel="noopener">CRS R48922</a> · version comparison<br>
+          E.O. 14394, Removing Regulatory Barriers to Affordable Home Construction
+        </div>
+      </div>
+    </div>
+    <div class="disclaimer">Educational reference only. This is not legal, tax, or investment advice, and no part of it creates an advisory relationship. The legislation described has passed both chambers but is not enacted; the rules described are proposals subject to change. Figures and statuses reflect reporting as of June 2026.</div>
+  </div>
+</footer>
+
+<script>
+const INSTRUMENTS = [
+  {id:"road",  org:"Congress", label:"ROAD to Housing Act",  kind:"H.R. 6644"},
+  {id:"hudmh", org:"HUD",      label:"Manufactured-Home Rule", kind:"HUD-26-049"},
+  {id:"hudfha",org:"HUD",      label:"FHA Streamlining",     kind:"HUD-26-051"},
+  {id:"dts",   org:"FHFA",     label:"Duty to Serve Rewrite", kind:"91 FR 37848"}
+];
+const THREADS = [
+  {id:"mh",     k:"Thread 01", name:"Manufactured & factory-built housing"},
+  {id:"supply", k:"Thread 02", name:"Building more · zoning & land use"},
+  {id:"fha",    k:"Thread 03", name:"FHA & mortgage access"},
+  {id:"gse",    k:"Thread 04", name:"GSE & secondary-market liquidity"},
+  {id:"dereg",  k:"Thread 05", name:"Deregulation & administrative burden"},
+  {id:"banks",  k:"Thread 06", name:"Community banks & charter formation"},
+  {id:"rural",  k:"Thread 07", name:"Rural & high-needs markets"},
+  {id:"preserv",k:"Thread 08", name:"Preservation, renters & investor structure"}
+];
+const CELLS = {
+  /* ---- Manufactured & factory-built ---- */
+  "mh__road":{s:3,provs:[
+    {org:"Congress",ref:"ROAD Title III · Sec. 301",txt:"Amends the statutory definition of <b>manufactured home</b> (42 U.S.C. 5402) to permit construction <b>with or without a permanent chassis</b>, directs HUD to issue revised standards with a distinct label and data plate, and requires states to certify within one to two years that they treat both types in parity, including for financing, title, insurance, and taxes."},
+    {org:"Congress",ref:"ROAD Title III · Sec. 301(d) (final)",txt:"The reconciled text keeps <b>both</b> chamber positions: HUD must adopt <b>minimum energy efficiency standards within one year</b> and update them every three years, and <b>no other federal agency's</b> energy standard has legal effect unless HUD adopts it through the consensus process. HUD gains primary authority over manufactured-home standards."},
+    {org:"Congress",ref:"ROAD Title III · Sec. 302",txt:"Directs HUD to identify barriers to <b>modular methods</b> in FHA construction financing, examine an alternative draw schedule, and study a uniform commercial code for modular homes."},
+    {org:"Congress",ref:"ROAD Title III · Sec. 303",txt:"Reforms FHA <b>Title I</b> Property Improvement and Manufactured Home Loan programs: higher baseline loan limits, revised term and indexing rules, and ADUs as an eligible use."},
+    {org:"Congress",ref:"ROAD Title III · Sec. 304 (final)",txt:"Formally authorizes the <b>PRICE</b> program (Preservation and Reinvestment in Community Enhancement) for manufactured-home communities, with set-asides for Indian tribes and the Department of Hawaiian Home Lands. Previously Senate-only, it survived reconciliation into the final bill."}
+  ]},
+  "mh__hudmh":{s:3,provs:[
+    {org:"HUD",ref:"HUD-26-049 · Proposed rule",txt:"Removes the <b>permanent chassis requirement for upper floor sections</b>, enabling multi-story manufactured housing built and transported without a chassis on upper floors."},
+    {org:"HUD",ref:"FR 2026-11851",txt:"Updates the HUD Code definition plus the Model Manufactured Home Installation Standards and the Installation Program regulations, giving manufacturers design flexibility to cut production cost."},
+    {org:"HUD",ref:"HUD-26-049",txt:"Framed around the fact that more than <b>20 million Americans</b> live in manufactured homes; intended to expand supply of an inherently affordable product."}
+  ]},
+  "mh__dts":{s:3,provs:[
+    {org:"FHFA",ref:"91 FR 37848 · §1283.3(c)",txt:"Manufactured housing is one of three statutory underserved markets. The rewrite removes prescribed activities and pushes the Enterprises toward <b>responsible chattel lending</b>, which they have never purchased despite an annual extra-credit designation since 2017."},
+    {org:"FHFA",ref:"91 FR 37848 · Market context",txt:"Cites a <b>65.6% denial rate</b> on chattel loans versus 8.8% for site-built, and 9.24% versus 6.63% average rates, the financing gap that offsets the home's lower price. Roughly 70-80% of new manufactured homes are titled as personal property."},
+    {org:"FHFA",ref:"91 FR 37848 · §1283.2",txt:"Requests comment on expanding the <b>manufactured home</b> definition to modular, panelized, and other factory-built homes, and simplifies the manufactured-housing-community affordability calculation."}
+  ]},
+
+  /* ---- Supply / zoning ---- */
+  "supply__road":{s:3,provs:[
+    {org:"Congress",ref:"ROAD Title I · Sec. 102 (final)",txt:"Model building-code language for <b>point-access block buildings</b> (single-stair, up to six stories) and coordination with the International Code Council to add them to the IBC, plus pilot grants."},
+    {org:"Congress",ref:"ROAD Title I · Sec. 107 (final)",txt:"Abolishes the Regulatory Barriers Clearinghouse and replaces it with HUD <b>housing supply frameworks</b>: guidelines and best practices for state and local land-use reform, developed with an external task force."},
+    {org:"Congress",ref:"ROAD Title II · Sec. 205 (final)",txt:"The <b>BUILD Housing Act</b> reallocates CDBG formula funds against a <b>housing growth improvement rate</b>, cutting funding 10% for below-median entitlement communities and redistributing to higher-growth recipients. Previously Senate-only, retained in the final text."},
+    {org:"Congress",ref:"ROAD Title II · Sec. 204 (final)",txt:"Makes <b>new housing construction an eligible CDBG activity</b>, capped at 20% of a grantee's allocation and limited to HOME-affordable housing."},
+    {org:"Congress",ref:"ROAD Title II · Sec. 206-210 (final)",txt:"NEPA reclassification for HUD activities (Unlocking Housing Supply Act), an <b>Innovation Fund</b> for high-growth jurisdictions, <b>pattern-book</b> grants (Accelerating Home Building Act), and vacant-building conversion to attainable housing (RESIDE Act)."},
+    {org:"Congress",ref:"ROAD Title II · Sec. 211 (final)",txt:"The <b>Housing Affordability Act</b> raises FHA multifamily baseline loan limits and re-indexes them to a multifamily construction deflator rather than the CPI, expanding multifamily financing capacity."}
+  ]},
+  "supply__hudmh":{s:2,provs:[
+    {org:"HUD",ref:"HUD-26-049",txt:"Multi-story manufactured housing directly adds <b>buildable density</b> to the factory-built segment, a supply lever distinct from site-built zoning reform."}
+  ]},
+  "supply__hudfha":{s:1,provs:[
+    {org:"HUD",ref:"HUD-26-051 · Limited 203(k)",txt:"Expands flexibility under the <b>Limited 203(k)</b> rehabilitation program by increasing contractor draw requests, easing completion of rehab that returns units to supply."}
+  ]},
+  "supply__dts":{s:2,provs:[
+    {org:"FHFA",ref:"91 FR 37848 · §1282.37 removals",txt:"Removes the restriction on multifamily <b>subordinate liens</b> and expands <b>LIHTC equity</b> eligibility from rural-only to all underserved markets, supporting development and preservation finance."}
+  ]},
+
+  /* ---- FHA & mortgage access ---- */
+  "fha__road":{s:3,provs:[
+    {org:"Congress",ref:"ROAD Title IV · Sec. 401-402 (final)",txt:"CFPB studies of loan-originator compensation and QM <b>points-and-fees thresholds</b> as they affect small-dollar mortgages, with attention to CDFI-affiliated originators, and authority to follow with rulemaking."},
+    {org:"Congress",ref:"ROAD Title IV · Sec. 403",txt:"Changes standards for <b>FHA appraisers</b> and amends FIRREA, adding appraiser workforce training grants to the Appraisal Subcommittee's eligible activities."},
+    {org:"Congress",ref:"ROAD Title IV · Sec. 404-405",txt:"Creates an <b>FSS Escrow Expansion Pilot</b> (escrow-only Family Self-Sufficiency) and reforms Housing Choice Voucher inspections, including remote inspections in rural areas."},
+    {org:"Congress",ref:"ROAD Title I · Sec. 105 (final)",txt:"<b>FHA Small-Dollar Mortgages</b>: authorizes a time-limited HUD pilot to increase access to small-dollar mortgage credit, with reporting requirements."}
+  ]},
+  "fha__hudfha":{s:3,provs:[
+    {org:"HUD",ref:"HUD-26-051 · Appraisals",txt:"Streamlines <b>appraisal field-review</b> QC that averages $425 per review, an expected ~$3.3 million in annual industry savings and better alignment with other programs."},
+    {org:"HUD",ref:"HUD-26-051 · Mortgagee QC",txt:"Modernizes mortgagee approval and quality control, including a permanent exemption of <b>disaster-driven early payment defaults</b> from the QC sample, easing smaller-lender participation."},
+    {org:"HUD",ref:"HUD-26-051 · Forms & servicing",txt:"Eliminates the duplicative <b>Form 92900-B</b> at closing and clarifies loss-mitigation rules on trial payment plans to protect the Mutual Mortgage Insurance Fund without penalizing proactive borrowers."},
+    {org:"HUD",ref:"HUD-26-051",txt:"These 14 changes sit inside <b>150-plus FHA Single Family streamlining actions</b> taken since the start of the administration, spanning origination through servicing."}
+  ]},
+  "fha__dts":{s:2,provs:[
+    {org:"FHFA",ref:"91 FR 37848 · §1283.3(a)-(b)",txt:"Restates the statutory duty to develop loan products and <b>flexible underwriting</b>, assist primary lenders in low-income and minority areas, and help insured depositories meet CRA obligations."},
+    {org:"FHFA",ref:"91 FR 37848 · §1283.7",txt:"Recalculates <b>median income</b> so families in concentrated-poverty areas are not excluded, citing Freddie Mac's HeritageOne product in Indian areas as the motivating gap."}
+  ]},
+
+  /* ---- GSE / secondary market ---- */
+  "gse__road":{s:1,provs:[
+    {org:"Congress",ref:"ROAD Title VI · Sec. 601",txt:"Directs the FHFA Director to add a <b>VA-loan prompt</b> to the Uniform Residential Loan Application beneath the military-service question."},
+    {org:"Congress",ref:"ROAD Title VII · Sec. 704",txt:"Requires FHA, VA, USDA, and FHFA to maintain <b>appraised-value reconsideration</b> procedures and a GAO study of a public appraisal database."}
+  ]},
+  "gse__dts":{s:3,provs:[
+    {org:"FHFA",ref:"91 FR 37848 · Overview",txt:"<b>Rescinds and replaces</b> the entire Duty to Serve regulation, relocating it from 12 CFR part 1282 to a new part 1283 and removing prescribed Statutory and Regulatory Activities, minimum counts, and extra credit."},
+    {org:"FHFA",ref:"91 FR 37848 · §1283.6",txt:"Shifts from an inputs model to an <b>outcome-based</b> evaluation on a CAMELSO-style 1-to-5 scale. Ratings of 1-3 are compliant; 4-5 are not. A former 'minimally passing' no longer counts as compliance."},
+    {org:"FHFA",ref:"91 FR 37848 · §1283.4",txt:"Adds program-management and program-requirements components, issues a <b>single consolidated non-objection</b> per Enterprise, fixes a six-month plan-review cycle, and limits modifications to 'special circumstances' such as a pandemic or systemic crisis."},
+    {org:"FHFA",ref:"91 FR 37848 · §1283.5",txt:"Publishes only annual reports, shifts disclosure responsibility to the Enterprises, and accelerates reporting deadlines, all under the Enterprises' current <b>conservatorship</b>."}
+  ]},
+
+  /* ---- Deregulation ---- */
+  "dereg__road":{s:2,provs:[
+    {org:"Congress",ref:"ROAD · NEPA provisions",txt:"Reclassifies NEPA review levels for HUD activities, exempts additional categories from review, directs limits on <b>duplicative environmental review</b>, and updates Build America Buy America guidance."},
+    {org:"Congress",ref:"ROAD Title I · Sec. 103, 107",txt:"Infill exemptions from environmental study for USDA rural projects and abolition of the Regulatory Barriers Clearinghouse, both burden-reduction moves."}
+  ]},
+  "dereg__hudmh":{s:2,provs:[
+    {org:"HUD",ref:"HUD-26-049",txt:"Removing the chassis constraint is itself a <b>deregulatory design change</b>: fewer mandated structural elements, lower production cost, more manufacturer flexibility."}
+  ]},
+  "dereg__hudfha":{s:3,provs:[
+    {org:"HUD",ref:"HUD-26-051",txt:"Explicitly framed as <b>slashing red tape</b>: eliminates outdated requirements, reduces administrative burden, and makes FHA financing more efficient for borrowers and lenders."}
+  ]},
+  "dereg__dts":{s:3,provs:[
+    {org:"FHFA",ref:"91 FR 37848 · E.O. 14394",txt:"Removes water and energy efficiency Regulatory Activities to comply with <b>E.O. 14394</b>, eliminates the prescribed-activity menu and extra credit, and cites E.O. 14192 on deregulation."},
+    {org:"FHFA",ref:"91 FR 37848 · §1283.4-1283.5",txt:"Cuts the plan-review cycle from over eight months to six, accelerates quarterly and annual reporting, and curtails the routine modification practice the Agency calls administratively burdensome."}
+  ]},
+
+  /* ---- Community banks ---- */
+  "banks__road":{s:3,provs:[
+    {org:"Congress",ref:"ROAD Title IX · Sec. 901-902 (final)",txt:"Exempts <b>custodial deposits</b> from brokered-deposit treatment for eligible, well-capitalized institutions (broadly those under $10 billion in assets), and expands the <b>reciprocal-deposit</b> exemption on a tiered scale up to roughly $96 billion. A reciprocal-deposit study to Congress is added. Had no Senate counterpart; survived intact."},
+    {org:"Congress",ref:"ROAD Title IX · Sec. 903-904 (final)",txt:"Raises the asset threshold for more frequent full-scope <b>examinations from $3 billion to $6 billion</b> and modernizes credit-union board requirements, including reduced mandatory meeting frequency for seasoned, well-capitalized institutions."},
+    {org:"Congress",ref:"ROAD Title IX · Sec. 905-906 (final)",txt:"<b>Systemic risk authority transparency</b> tightens disclosure around the systemic-risk exception to least-cost resolution (examination reports to Congress), and a Treasury <b>mentor-protege</b> program pairs large institutions with small and rural depositories."},
+    {org:"Congress",ref:"ROAD Title IX · Sec. 907-909 (final)",txt:"<b>De novo</b> charter relief: a review of capital-raising barriers in consultation with the SEC, an assigned <b>caseworker</b> for each applicant, mentor partnerships, a <b>two-year capital phase-in pilot</b> for qualifying new community banks, and a rural-depositories revitalization study."}
+  ]},
+  "banks__dts":{s:1,provs:[
+    {org:"FHFA",ref:"91 FR 37848 · §1283.3(b)",txt:"Tangential link only: the duty to serve requires the Enterprises to <b>assist insured depository institutions</b> in meeting their CRA obligations, a statutory program requirement now elevated to a rated component."}
+  ]},
+
+  /* ---- Rural / high-needs ---- */
+  "rural__road":{s:2,provs:[
+    {org:"Congress",ref:"ROAD Title V · Sec. 502 (final)",txt:"The <b>Rural Housing Service Reform Act</b> makes permanent and revises USDA RHS programs: the Multifamily Preservation and Revitalization demo, Section 521 rental-assistance decoupling, and Section 502 and 504 single-family changes, including higher Section 504 income eligibility and lien thresholds."},
+    {org:"Congress",ref:"ROAD Title I · Sec. 103; Title IV · Sec. 405",txt:"Infill exemption for USDA rural projects and conditioned <b>remote inspections</b> in rural or small areas under the Housing Choice Voucher program."}
+  ]},
+  "rural__hudmh":{s:1,provs:[
+    {org:"HUD",ref:"HUD-26-049",txt:"Manufactured housing disproportionately serves <b>rural and lower-income</b> households, so the chassis rule's supply effect concentrates there."}
+  ]},
+  "rural__dts":{s:3,provs:[
+    {org:"FHFA",ref:"91 FR 37848 · §1283.2 rural area",txt:"Redefines <b>rural area</b> to fold in high-needs rural regions and adds <b>Indian area</b> to the high-needs definition, reversing FHFA's 2016 position. Aims the Enterprises at the rural market as a whole rather than narrow silos."},
+    {org:"FHFA",ref:"91 FR 37848 · Median income",txt:"The recalculated <b>median-income</b> test is built for concentrated-poverty rural and Indian areas where the existing formula excludes genuinely low-income families."},
+    {org:"FHFA",ref:"91 FR 37848 · Agricultural workers",txt:"Removes the agricultural-worker activity, noting 83% now live in private-market housing, while encouraging continued work (the Enterprises cite $132 million supporting 829 units)."}
+  ]},
+
+  /* ---- Preservation / renters / investors ---- */
+  "preserv__road":{s:3,provs:[
+    {org:"Congress",ref:"ROAD Title X · Sec. 1001 (final)",txt:"<b>Homes are for people, not corporations.</b> Bars <b>large institutional investors</b> (control of 350-plus single-family homes) from acquiring more, with civil penalties up to the greater of $1 million or three times the price. Exceptions for new construction and build-to-rent. Establishes a <b>Renter Outreach Resource</b> (toll-free line and website), and provides that no agency may force divestiture of existing holdings."},
+    {org:"Congress",ref:"ROAD Title II · Sec. 212 (final)",txt:"Removes the end date and unit cap on the <b>Rental Assistance Demonstration</b>, allowing all remaining public housing to convert over time, with new reporting and enforcement against noncompliant properties. Previously Senate-only, retained in the final text."},
+    {org:"Congress",ref:"ROAD Title V · Sec. 501 (final)",txt:"Broad <b>HOME program</b> reform: reauthorization, higher homeownership income and price limits, Community Land Trust and CHDO changes, infrastructure eligibility, and added NEPA exemptions with limits on duplicative environmental review."},
+    {org:"Congress",ref:"ROAD Title V · Sec. 503-504 (final)",txt:"Lets Emergency Solutions Grants recipients waive the cap on <b>street outreach and emergency shelter</b> spending, and the <b>Reforming Disaster Recovery Act</b> institutionalizes CDBG Disaster Recovery as a standing program with a Long-Term Disaster Recovery Fund. The disaster provision was previously Senate-only."}
+  ]},
+  "preserv__hudfha":{s:1,provs:[
+    {org:"HUD",ref:"HUD-26-051 · Loss mitigation",txt:"Clarifies <b>trial-payment-plan</b> loss-mitigation rules to protect the insurance fund while ensuring proactive borrowers are not penalized, a tenant-side servicing protection."}
+  ]},
+  "preserv__dts":{s:3,provs:[
+    {org:"FHFA",ref:"91 FR 37848 · Market context",txt:"Affordable housing preservation is a statutory underserved market in crisis: a net loss of <b>2.5 million units</b> renting below $600 between 2014 and 2024, and a <b>LIHTC subsidy cliff</b> with over half a million units exiting compliance between 2025 and 2038."},
+    {org:"FHFA",ref:"91 FR 37848 · §1282.37 removals",txt:"Expands tools for preservation: removes the subordinate-lien restriction and the rural-only limit on LIHTC equity, and notes Freddie Mac's Workforce Housing Preservation product."}
+  ]}
+};
+const STAKE = [
+  {id:"buyers", name:"Prospective homebuyers", net:"up", netLabel:"Net easing",
+   pts:[
+     "<b>FHA closing and QC changes</b> aim to lower lender cost and friction, which can pass through to borrowers (HUD-26-051).",
+     "<b>Small-dollar mortgage</b> study, pilot, and points-and-fees review target the loans hardest to originate today (ROAD Title IV; Title I Sec. 105).",
+     "More <b>supply</b> from zoning, pattern-book, and conversion grants is the slow but largest lever on price (ROAD Title II)."
+   ]},
+  {id:"mh", name:"Manufactured-home & chattel buyers", net:"up", netLabel:"Strongest tailwind",
+   pts:[
+     "<b>Chassis-free, multi-story</b> homes expand product range and cut production cost (HUD-26-049).",
+     "<b>Chattel-lending push</b> and Title I loan reform target the 65.6% denial rate and rate premium on personal-property loans (FHFA DTS; ROAD Sec. 303).",
+     "Possible expansion of the <b>manufactured home</b> definition to modular and panelized homes (FHFA comment request)."
+   ]},
+  {id:"renters", name:"Renters & tenants", net:"mix", netLabel:"Mixed",
+   pts:[
+     "<b>Institutional-investor ban</b> on 350-plus-home owners could ease competition for starter homes (ROAD Title X / IX).",
+     "<b>Preservation tools</b> address the 2.5 million lost sub-$600 units and the LIHTC subsidy cliff (FHFA DTS).",
+     "The <b>Rental Assistance Demonstration</b> cap and end date are removed, and the HOME program is reauthorized and reformed (Sec. 212, Sec. 501)."
+   ]},
+  {id:"banks", name:"Community & de novo banks", net:"up", netLabel:"Targeted relief, now in final bill",
+   pts:[
+     "<b>Custodial- and reciprocal-deposit</b> relief plus a $3B-to-$6B exam threshold ease funding and supervision (ROAD Title IX, Sec. 901-903).",
+     "<b>De novo</b> review of capital-raising barriers, an assigned caseworker, and a two-year capital phase-in pilot lower the cost of new charters (Sec. 907-908).",
+     "Title IX had <b>no Senate counterpart yet survived reconciliation</b>, consolidating from twelve sections to nine in the final text."
+   ]},
+  {id:"gse", name:"Fannie Mae & Freddie Mac", net:"mix", netLabel:"More latitude, sharper grading",
+   pts:[
+     "<b>'Any eligible action'</b> replaces the prescribed menu, giving the Enterprises far more strategic latitude (FHFA DTS).",
+     "<b>CAMELSO 1-to-5</b> ratings raise the bar: a former minimally-passing now reads as noncompliant.",
+     "New <b>program-management</b> component pulls boards and senior management into rated accountability, under conservatorship."
+   ]},
+  {id:"slg", name:"State & local governments", net:"mix", netLabel:"Carrots and conditions",
+   pts:[
+     "Competitive <b>Innovation Fund</b>, pattern-book, and conversion grants reward supply growth (ROAD Title II).",
+     "The <b>BUILD Housing Act</b> cuts CDBG funds 10% for low-growth entitlement communities and redistributes to higher-growth recipients (Sec. 205).",
+     "New <b>zoning frameworks</b> and an undeveloped-land database push transparency and land-use reform (House)."
+   ]},
+  {id:"rural", name:"Rural & high-needs communities", net:"up", netLabel:"Refocused attention",
+   pts:[
+     "<b>Indian areas</b> folded into the high-needs rural definition, and a median-income fix stops excluding genuinely low-income families (FHFA DTS).",
+     "USDA RHS preservation programs made <b>permanent</b>, with Section 502 and 504 single-family reforms (ROAD Title V, Sec. 502).",
+     "The <b>PRICE</b> program for manufactured-home communities is formally authorized, with set-asides for tribes and Hawaiian Home Lands (Sec. 304)."
+   ]},
+  {id:"vets", name:"Veterans", net:"up", netLabel:"Procedural gains",
+   pts:[
+     "<b>VA-loan prompt</b> added to the loan application so eligible borrowers are flagged (ROAD Title VI).",
+     "<b>HUD-VASH</b> income definition excludes VA disability benefits for eligibility while counting them for rent, with parity across programs.",
+     "The <b>VALID Act</b> requires lenders to give FHA applicants a comparison of FHA versus VA loan terms (Sec. 603)."
+   ]},
+  {id:"builders", name:"Homebuilders & manufacturers", net:"up", netLabel:"Lower barriers",
+   pts:[
+     "<b>Point-access block</b> code work and NEPA reclassification cut design and review friction (ROAD Titles I-II).",
+     "Manufacturers gain <b>multi-story flexibility</b> and lower production cost (HUD-26-049).",
+     "Modular study and FHA construction-financing reforms target offsite construction (ROAD Sec. 302-303)."
+   ]},
+  {id:"sfr", name:"Institutional SFR investors", net:"watch", netLabel:"Restriction now enacted in form",
+   pts:[
+     "Owners controlling <b>350-plus single-family homes</b> are barred from acquiring more, under final Title X (Sec. 1001).",
+     "Penalties up to the greater of <b>$1 million or three times</b> the purchase price, with build-to-rent and new-construction exceptions.",
+     "The final text does <b>not require divestiture</b> of existing holdings and adds a Renter Outreach Resource for tenants of large investors."
+   ]}
+];
+const EVENTS = [
+  {d:"11 Dec 2025",h:"H.R. 6644 introduced",badge:"",bc:"",p:"Filed as the Housing for the 21st Century Act by Reps. Hill, Waters, Flood, and Cleaver."},
+  {d:"9 Feb 2026",h:"House passes H.R. 6644",badge:"",bc:"",p:"Six titles, 38 sections in the House-passed version."},
+  {d:"12 Mar 2026",h:"Senate passes its substitute",badge:"",bc:"",p:"S.Amdt. 4308 renames it the 21st Century ROAD to Housing Act: 11 titles, 43 sections."},
+  {d:"20 May 2026",h:"House amends the Senate version",badge:"",bc:"",p:"House amendment to the Senate amendment: 12 titles, 56 sections, including the community-banking title."},
+  {d:"12 Jun 2026",h:"HUD manufactured-home rule proposed",badge:"Comment open",bc:"open",p:"FR 2026-11851 would remove the permanent-chassis requirement for upper floors (HUD-26-049)."},
+  {d:"22 Jun 2026",h:"Congress clears the reconciled bill",badge:"Passed both chambers",bc:"eff",p:"The Senate agreed to the House amendment with a final Senate amendment (H.R. 6644 EAS2). The reconciled 21st Century ROAD to Housing Act runs 12 titles and 59 sections, folding in provisions that had lived in only one chamber."},
+  {d:"23 Jun 2026",h:"HUD announces 14 FHA changes",badge:"Effective",bc:"eff",p:"FHA Single Family streamlining (HUD-26-051), within 150-plus actions; mostly implemented through handbook and lender guidance."},
+  {d:"24 Jun 2026",h:"FHFA Duty to Serve rule published",badge:"Comment open",bc:"open",p:"91 FR 37848 (RIN 2590-AB64). The rewrite to 'any eligible action' and CAMELSO ratings opens for public comment."},
+  {d:"Now",h:"Bill awaits the President's signature",badge:"Pending",bc:"pending",p:"Having passed both chambers, the 21st Century ROAD to Housing Act is presented to the President. Signature would enact it; the executive rules proceed on their own track regardless.",now:true},
+  {d:"24 Jul 2026",h:"Duty to Serve comments close",badge:"Deadline",bc:"open",p:"Thirty-day window. The most immediate handle for shaping the GSE mission framework.",future:true}
+];
+
+/* ---- Lever machine ---- */
+const LEVERS = [
+  {num:"Lever 01 · Congress", verb:"Legislate", p:"The <b>21st Century ROAD to Housing Act</b> sets the statutory scaffolding: zoning and land-use incentives, manufactured-housing reform, FHA access, an institutional-investor ban, a restored community-banking title, and a CBDC prohibition. Passed both chambers; awaits the President's signature."},
+  {num:"Lever 02 · HUD", verb:"Deregulate", p:"Two executive actions strip design and compliance cost: a <b>manufactured-home rule</b> permitting chassis-free upper floors, and <b>fourteen FHA</b> Single Family changes inside 150-plus streamlining moves."},
+  {num:"Lever 03 · FHFA", verb:"Re-rate", p:"The <b>Duty to Serve</b> rewrite trades a prescribed-activity menu for 'any eligible action,' pushes responsible chattel lending, and grades the GSEs on a CAMELSO 1-to-5 supervisory scale."}
+];
+
+/* ---- Instrument card metadata ---- */
+const INSTRUMENT_META = {
+  road:{lever:"Congress", abbr:"Congress", blurb:"A bipartisan omnibus, reconciled across both chambers and awaiting signature. Twelve titles spanning supply, manufactured housing, FHA access, program reform, veterans, oversight, community banks, an investor ban, and a CBDC prohibition.",
+        tags:["H.R. 6644","12 titles · 59 sections","Awaits signature"],
+        mech:"Reconciliation folded in provisions that had lived in only one chamber, including the entire community-banking title, the RAD cap removal, the PRICE authorization, the BUILD CDBG reallocation, and the CDBG-DR disaster program. Section 301 merged both energy approaches at once."},
+  hudmh:{lever:"HUD", abbr:"HUD", blurb:"A proposed rule redefining a manufactured home to permit upper floors built and transported without a permanent chassis, opening multi-story factory-built housing.",
+        tags:["HUD-26-049","FR 2026-11851","Comment open"],
+        mech:"Amends the HUD Code definition plus the Model Installation Standards and Installation Program regulations, lowering production cost and giving manufacturers design flexibility for an inherently affordable product."},
+  hudfha:{lever:"HUD", abbr:"HUD / FHA", blurb:"Fourteen FHA Single Family policy changes, part of 150-plus streamlining actions, cutting origination, servicing, and quality-control burden.",
+        tags:["HUD-26-051","Effective","Red-tape cut"],
+        mech:"Spans appraisal field-review QC (about $3.3 million in annual savings), Limited 203(k) draw flexibility, mortgagee approval and QC, a duplicative-form elimination, and clarified loss-mitigation rules on trial payment plans."},
+  dts:{lever:"FHFA", abbr:"FHFA", blurb:"A proposed rule that rescinds and replaces the GSE Duty to Serve framework, trading prescribed activities for 'any eligible action' and outcome-based CAMELSO ratings.",
+        tags:["91 FR 37848","RIN 2590-AB64","Comment closes 24 Jul"],
+        mech:"Removes the prescribed-activity menu, minimum counts, and extra credit; pushes responsible chattel lending; recalculates median income for concentrated-poverty areas; and grades Fannie and Freddie 1 to 5, where a former minimally-passing no longer counts as compliance."}
+};
+
+/* ---- Glossary ---- */
+const GLOSS = {
+  FHFA:{t:"Federal Housing Finance Agency",d:"Conservator and regulator of Fannie Mae and Freddie Mac."},
+  FHA:{t:"Federal Housing Administration",d:"HUD's mortgage-insurance program for single-family and multifamily loans."},
+  HUD:{t:"Department of Housing and Urban Development",d:"The federal housing agency."},
+  GSE:{t:"Government-sponsored enterprise",d:"Here, Fannie Mae and Freddie Mac, currently in conservatorship."},
+  GSEs:{t:"Government-sponsored enterprises",d:"Here, Fannie Mae and Freddie Mac, currently in conservatorship."},
+  DTS:{t:"Duty to Serve",d:"The GSE obligation to serve the manufactured-housing, rural, and affordable-preservation markets."},
+  LIHTC:{t:"Low-Income Housing Tax Credit",d:"The principal federal subsidy for affordable rental development."},
+  NEPA:{t:"National Environmental Policy Act",d:"The federal statute requiring environmental review of federal actions."},
+  CDBG:{t:"Community Development Block Grant",d:"HUD's flexible formula grant to states and localities."},
+  RAD:{t:"Rental Assistance Demonstration",d:"Converts public housing to project-based Section 8 rental assistance."},
+  MMIF:{t:"Mutual Mortgage Insurance Fund",d:"The fund backing FHA single-family mortgage insurance."},
+  CRA:{t:"Community Reinvestment Act",d:"Requires banks to help meet the credit needs of their local communities."},
+  URLA:{t:"Uniform Residential Loan Application",d:"The standard form used to apply for a residential mortgage."},
+  CBDC:{t:"Central bank digital currency",d:"A digital form of central-bank money; the bill prohibits the Fed from issuing one through 2030."},
+  PRICE:{t:"Preservation and Reinvestment in Community Enhancement",d:"HUD grants for manufactured-home communities, formally authorized by the bill."},
+  MTW:{t:"Moving to Work",d:"A demonstration giving selected public housing authorities added flexibility."},
+  RHS:{t:"Rural Housing Service",d:"USDA's rural housing lending and rental agency."},
+  USICH:{t:"U.S. Interagency Council on Homelessness",d:"The federal body coordinating homelessness policy."},
+  CAMELSO:{t:"FHFA supervisory rating scale",d:"A 1-to-5 examination scale (CAMELS plus an additional component) used by FHFA's examination divisions."},
+  HCV:{t:"Housing Choice Voucher",d:"The Section 8 tenant-based rental voucher program."},
+  FSS:{t:"Family Self-Sufficiency",d:"A HUD program pairing an escrow account with self-sufficiency support."},
+  ADU:{t:"Accessory dwelling unit",d:"A secondary dwelling on a single-family lot."},
+  ADUs:{t:"Accessory dwelling units",d:"Secondary dwellings on a single-family lot."},
+  QM:{t:"Qualified Mortgage",d:"A CFPB standard that gives lenders a compliance safe harbor."},
+  CFPB:{t:"Consumer Financial Protection Bureau",d:"The federal consumer-finance regulator."},
+  CDFI:{t:"Community Development Financial Institution",d:"A mission lender serving underserved markets."},
+  CHDO:{t:"Community Housing Development Organization",d:"A nonprofit set-aside recipient under the HOME program."},
+  BABA:{t:"Build America, Buy America Act",d:"Domestic-content requirements for federally assisted infrastructure."},
+  FIRREA:{t:"Financial Institutions Reform, Recovery, and Enforcement Act",d:"The 1989 law that, among other things, governs appraisal oversight."},
+  VA:{t:"Department of Veterans Affairs",d:"Administers the VA home-loan guaranty, among other benefits."},
+  ESG:{t:"Emergency Solutions Grants",d:"HUD funding for street outreach, emergency shelter, and homelessness services."},
+  ICC:{t:"International Code Council",d:"The body that develops the model International Building Code."},
+  IBC:{t:"International Building Code",d:"The widely adopted model building code."}
+};
+
+/* ============================ RENDER ============================ */
+const $=id=>document.getElementById(id);
+
+/* -- Levers -- */
+$("levers").innerHTML = LEVERS.map(l=>
+  `<div class="gear"><div class="num">${l.num}</div><div class="verb">${l.verb}</div><p>${l.p}</p></div>`).join("");
+
+/* -- Matrix -- */
+const head=$("mtx-head"), bodyEl=$("mtx-body"), pane=$("pane");
+let corner=document.createElement("th");corner.className="corner";corner.innerHTML="Threads &nbsp;\\&nbsp; Instruments";head.appendChild(corner);
+INSTRUMENTS.forEach(ins=>{
+  const th=document.createElement("th");th.dataset.ins=ins.id;
+  th.innerHTML=`<span class="org">${ins.org}</span>${ins.label}<span class="kind">${ins.kind}</span>`;
+  th.addEventListener("click",()=>showInstrument(ins.id));head.appendChild(th);
+});
+THREADS.forEach(t=>{
+  const tr=document.createElement("tr");
+  const rh=document.createElement("th");rh.className="rowhead";rh.dataset.thread=t.id;
+  rh.innerHTML=`<span class="k">${t.k}</span>${t.name}`;rh.addEventListener("click",()=>showThread(t.id));tr.appendChild(rh);
+  INSTRUMENTS.forEach(ins=>{
+    const key=t.id+"__"+ins.id, td=document.createElement("td");td.className="cell";
+    const cell=CELLS[key];
+    if(cell){td.dataset.s=cell.s;td.dataset.key=key;td.innerHTML=`<span class="dot"></span>`;
+      td.title=`${t.name} \u00d7 ${ins.label}`;td.addEventListener("click",()=>showCell(key,t,ins));}
+    else{td.classList.add("empty");td.setAttribute("aria-hidden","true");}
+    tr.appendChild(td);
+  });
+  bodyEl.appendChild(tr);
+});
+function clearSel(){document.querySelectorAll(".cell.sel,.rowhead.sel,thead th.sel").forEach(e=>e.classList.remove("sel"));}
+function provHTML(p){return `<div class="prov" data-org="${p.org}"><span class="ref">${p.ref}</span><div class="txt">${p.txt}</div></div>`;}
+function paneHead(k,h,sub){return `<div class="pane-k">${k}</div><h3>${h}</h3><p class="sub">${sub}</p>`;}
+function paintPane(html){pane.innerHTML=html;if(window.glossify)glossify(pane);if(pane.scrollIntoView)pane.scrollIntoView({behavior:"smooth",block:"nearest"});}
+function showCell(key,t,ins){clearSel();const td=document.querySelector(`.cell[data-key="${key}"]`);if(td)td.classList.add("sel");
+  paintPane(paneHead(`${t.name} \u00d7 ${ins.org}`,ins.label,`What the ${ins.kind} instrument does on this thread.`)+CELLS[key].provs.map(provHTML).join(""));}
+function showThread(id){clearSel();document.querySelector(`.rowhead[data-thread="${id}"]`).classList.add("sel");
+  const t=THREADS.find(x=>x.id===id);let provs=[];INSTRUMENTS.forEach(ins=>{const c=CELLS[t.id+"__"+ins.id];if(c)provs=provs.concat(c.provs);});
+  paintPane(paneHead("Read across one thread",t.name,`Every instrument that acts on this thread, in one place. ${provs.length} provisions.`)+provs.map(provHTML).join(""));}
+function showInstrument(id){clearSel();document.querySelector(`thead th[data-ins="${id}"]`).classList.add("sel");
+  const ins=INSTRUMENTS.find(x=>x.id===id);let provs=[];THREADS.forEach(t=>{const c=CELLS[t.id+"__"+ins.id];if(c)provs=provs.concat(c.provs);});
+  paintPane(paneHead(`${ins.org} \u00b7 ${ins.kind}`,ins.label,`Everything this instrument does, grouped down its column. ${provs.length} provisions.`)+provs.map(provHTML).join(""));}
+
+/* -- Instrument cards (view 02) -- */
+function instrProvs(id){let provs=[];THREADS.forEach(t=>{const c=CELLS[t.id+"__"+id];if(c)provs=provs.concat(c.provs);});return provs;}
+const instrGrid=$("instrGrid"), instrCount=$("instrCount");
+const instrFilters=[["all","All instruments"],["Congress","Congress"],["HUD","HUD"],["FHFA","FHFA"]];
+$("instrControls").innerHTML=instrFilters.map((f,i)=>`<button class="chip${i===0?' on':''}" data-f="${f[0]}">${f[1]}</button>`).join("");
+function renderInstr(filter){
+  instrGrid.innerHTML="";
+  const list=INSTRUMENTS.filter(ins=>filter==="all"||ins.org===filter);
+  instrCount.textContent=`${list.length} instrument${list.length===1?"":"s"} shown`;
+  list.forEach(ins=>{
+    const m=INSTRUMENT_META[ins.id], provs=instrProvs(ins.id);
+    const card=document.createElement("div");card.className="card";
+    card.innerHTML=`
+      <div class="card-head" tabindex="0" role="button" aria-expanded="false">
+        <div class="card-top"><div class="card-name">${ins.label}</div><div class="card-abbr ${m.lever.toLowerCase()}">${m.abbr}</div></div>
+        <div class="card-blurb">${m.blurb}</div>
+        <div class="card-tags">${m.tags.map(t=>`<span class="tag">${t}</span>`).join("")}</div>
+        <div class="card-expand"><span class="pm">+</span> Mechanism &amp; provisions</div>
+      </div>
+      <div class="card-detail"><div class="card-detail-inner">
+        <div class="dl-label">How it works</div>
+        <p class="mech">${m.mech}</p>
+        <div class="dl-label">Key provisions (${provs.length})</div>
+        ${provs.map(provHTML).join("")}
+      </div></div>`;
+    const headEl=card.querySelector(".card-head");
+    const toggle=()=>{const open=card.classList.toggle("open");headEl.setAttribute("aria-expanded",open?"true":"false");};
+    headEl.addEventListener("click",toggle);
+    headEl.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle();}});
+    instrGrid.appendChild(card);
+  });
+  if(window.glossify)glossify(instrGrid);
+}
+$("instrControls").querySelectorAll(".chip").forEach(c=>c.addEventListener("click",()=>{
+  $("instrControls").querySelectorAll(".chip").forEach(x=>x.classList.remove("on"));c.classList.add("on");renderInstr(c.dataset.f);}));
+renderInstr("all");
+
+/* -- Stakeholder cards (view 03) -- */
+const NETLABEL={up:"Easing",mix:"Mixed",watch:"Watch"};
+const stakeGrid=$("stakeGrid"), stakeCount=$("stakeCount");
+const stakeFilters=[["all","All"],["up","Easing"],["mix","Mixed"],["watch","Watch"]];
+$("stakeControls").innerHTML=stakeFilters.map((f,i)=>`<button class="chip${i===0?' on':''}" data-f="${f[0]}">${f[1]}</button>`).join("");
+function renderStake(filter){
+  stakeGrid.innerHTML="";
+  const list=STAKE.filter(s=>filter==="all"||s.net===filter);
+  stakeCount.textContent=`${list.length} constituenc${list.length===1?"y":"ies"} shown`;
+  list.forEach(s=>{
+    const card=document.createElement("div");card.className="card";
+    card.innerHTML=`
+      <div class="card-head" tabindex="0" role="button" aria-expanded="false">
+        <div class="card-top"><div class="card-name">${s.name}</div><div class="card-abbr">${NETLABEL[s.net]}</div></div>
+        <div class="card-net ${s.net}">${s.netLabel}</div>
+        <div class="card-expand"><span class="pm">+</span> What changes for them</div>
+      </div>
+      <div class="card-detail"><div class="card-detail-inner">
+        ${s.pts.map(p=>`<div class="prov"><div class="txt">${p}</div></div>`).join("")}
+      </div></div>`;
+    const headEl=card.querySelector(".card-head");
+    const toggle=()=>{const open=card.classList.toggle("open");headEl.setAttribute("aria-expanded",open?"true":"false");};
+    headEl.addEventListener("click",toggle);
+    headEl.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle();}});
+    stakeGrid.appendChild(card);
+  });
+  if(window.glossify)glossify(stakeGrid);
+}
+$("stakeControls").querySelectorAll(".chip").forEach(c=>c.addEventListener("click",()=>{
+  $("stakeControls").querySelectorAll(".chip").forEach(x=>x.classList.remove("on"));c.classList.add("on");renderStake(c.dataset.f);}));
+renderStake("all");
+
+/* -- Timeline (view 04) -- */
+const FLAG={passed:"both",open:"open",pending:"restrict",eff:"both"};
+const tl=$("timeline");
+EVENTS.forEach(e=>{
+  const type = e.bc==="eff"?"passed" : e.bc==="open"?"open" : "pending";
+  const cls=FLAG[type];
+  const row=document.createElement("div");row.className="tl-row";
+  row.innerHTML=`
+    <div class="tl-year">${e.d}<span class="tl-marker ${cls}"></span></div>
+    <div class="tl-body">
+      ${e.badge?`<span class="tl-flag ${cls}">${e.badge}</span>`:""}
+      <div class="tl-title">${e.h}</div>
+      <p class="tl-text">${e.p}</p>
+    </div>`;
+  tl.appendChild(row);
+});
+
+/* -- Principles (view 04) -- */
+const PRINCIPLES=[
+  {n:"Force 01",h:"The removed guardrails are the policy",p:"FHFA drops the energy and water efficiency activities and the prescribed-activity menu. The bill, by contrast, keeps a mandatory minimum manufactured-home energy standard while centralizing that authority in HUD. The deregulatory framing is real content, and the energy line went the more interventionist way."},
+  {n:"Force 02",h:"Reconciliation added, it did not subtract",p:"Provisions that lived in only one chamber survived into the final text: the community-banking title, the RAD cap removal, the PRICE authorization, the BUILD CDBG reallocation, and the CDBG-DR program. The conference grew the bill."},
+  {n:"Force 03",h:"Chattel is the tell",p:"FHFA flagged chattel lending for extra credit every year since 2017 and the GSEs bought none. The rewrite removes the menu precisely to force the issue, alongside HUD's chassis rule and the bill's Title I loan reforms."}
+];
+$("principles").innerHTML=PRINCIPLES.map(p=>
+  `<div class="principle"><div class="pnum">${p.n}</div><h3>${p.h}</h3><p>${p.p}</p></div>`).join("");
+
+/* -- Tab switching -- */
+const views={conv:$("view-conv"),instr:$("view-instr"),impact:$("view-impact"),live:$("view-live")};
+document.querySelectorAll(".tab[data-view]").forEach(tab=>{
+  tab.addEventListener("click",()=>{
+    const v=tab.dataset.view;
+    document.querySelectorAll(".tab[data-view]").forEach(t=>t.classList.toggle("on",t===tab));
+    Object.keys(views).forEach(k=>{views[k].hidden=(k!==v);});
+    window.scrollTo({top:0,behavior:"auto"});
+  });
+});
+</script>
+
+<script>
+/* ---------- Hero: particle title that assembles "The Housing Convergence" ---------- */
+(function(){
+  const hero=document.querySelector(".hero"), canvas=document.getElementById("heroCanvas");
+  if(!hero||!canvas) return;
+  const reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+  let glOK=false;
+  try{const tc=document.createElement("canvas");glOK=!!(window.WebGLRenderingContext&&(tc.getContext("webgl")||tc.getContext("experimental-webgl")));}catch(e){glOK=false;}
+  if(reduce || !window.THREE || !glOK) return;
+  const ready=(document.fonts&&document.fonts.load)?document.fonts.load('900 100px "Fraunces"').then(()=>document.fonts.ready):Promise.resolve();
+  ready.then(init).catch(init);
+  let renderer,scene,camera,geo,points,count=0,tgt,startA,phase,delay,tStart,W,H,vis=true,psize=2.4;
+  function pickFont(x,line,maxW,maxH){x.font='900 100px "Fraunces", serif';const wPer=x.measureText(line).width/100;return Math.min(maxH,maxW/wPer);}
+  function sampleText(w,h){
+    const c=document.createElement("canvas");c.width=w;c.height=h;const x=c.getContext("2d");
+    x.clearRect(0,0,w,h);x.fillStyle="#fff";x.textAlign="center";x.textBaseline="middle";
+    const maxW=w*0.92;
+    const fsOne=pickFont(x,"The Housing Convergence",maxW,h*0.66);
+    const fsTwo=Math.min(pickFont(x,"The Housing",maxW,h*0.46),pickFont(x,"Convergence",maxW,h*0.46));
+    if(w>720 && fsOne>=fsTwo*0.82){
+      x.font='900 '+fsOne+'px "Fraunces", serif';x.fillText("The Housing Convergence",w/2,h*0.52);
+    }else{
+      x.font='900 '+fsTwo+'px "Fraunces", serif';
+      x.fillText("The Housing",w/2,h*0.34);x.fillText("Convergence",w/2,h*0.70);
+    }
+    const data=x.getImageData(0,0,w,h).data, step=w>900?3:4, pts=[];
+    for(let yy=0;yy<h;yy+=step){for(let xx=0;xx<w;xx+=step){
+      if(data[(yy*w+xx)*4+3]>150) pts.push({x:xx+(Math.random()-0.5)*step*0.5,y:yy+(Math.random()-0.5)*step*0.5});}}
+    const cap=w>900?8200:4400;
+    if(pts.length>cap){const out=[],stride=pts.length/cap;for(let i=0;i<cap;i++)out.push(pts[Math.floor(i*stride)]);return out;}
+    return pts;
+  }
+  function build(targets){
+    if(points){scene.remove(points);geo.dispose();points.material.dispose();}
+    count=targets.length;
+    const pos=new Float32Array(count*3);startA=new Float32Array(count*3);tgt=new Float32Array(count*3);
+    const colors=new Float32Array(count*3);phase=new Float32Array(count);delay=new Float32Array(count);
+    const c1=new THREE.Color("#241c15"),c2=new THREE.Color("#74201f"),c3=new THREE.Color("#a8662f");
+    for(let i=0;i<count;i++){
+      const ix=i*3,t=targets[i],sx=Math.random()*W,sy=Math.random()*H;
+      startA[ix]=sx;startA[ix+1]=sy;startA[ix+2]=0;pos[ix]=sx;pos[ix+1]=sy;pos[ix+2]=0;
+      tgt[ix]=t.x;tgt[ix+1]=t.y;tgt[ix+2]=0;
+      const r=Math.random(),c=r<0.72?c1:(r<0.9?c2:c3);colors[ix]=c.r;colors[ix+1]=c.g;colors[ix+2]=c.b;
+      phase[i]=Math.random()*6.283;delay[i]=Math.random()*0.55;
+    }
+    geo=new THREE.BufferGeometry();
+    geo.setAttribute("position",new THREE.BufferAttribute(pos,3));
+    geo.setAttribute("color",new THREE.BufferAttribute(colors,3));
+    const mat=new THREE.PointsMaterial({size:psize,sizeAttenuation:false,vertexColors:true,transparent:true,opacity:0.96,depthTest:false});
+    points=new THREE.Points(geo,mat);scene.add(points);
+  }
+  const GATHER=2200;
+  function frame(now){
+    requestAnimationFrame(frame);if(!geo||!vis)return;
+    const el=now-tStart,pos=geo.attributes.position.array;
+    for(let i=0;i<count;i++){
+      const ix=i*3;let p=(el-delay[i]*1000)/GATHER;if(p<0)p=0;else if(p>1)p=1;
+      const e=1-Math.pow(1-p,3);
+      let xx=startA[ix]+(tgt[ix]-startA[ix])*e, yy=startA[ix+1]+(tgt[ix+1]-startA[ix+1])*e;
+      if(p>=1){const tt=now/1000;xx+=Math.sin(tt*1.2+phase[i])*0.45;yy+=Math.cos(tt+phase[i])*0.45;}
+      pos[ix]=xx;pos[ix+1]=yy;
+    }
+    geo.attributes.position.needsUpdate=true;renderer.render(scene,camera);
+  }
+  function init(){
+    hero.classList.add("canvas-on");
+    W=canvas.clientWidth||hero.clientWidth||900;H=canvas.clientHeight||300;
+    const DPR=Math.min(window.devicePixelRatio||1,2);psize=Math.max(2.4,1.7*DPR+1.0);
+    renderer=new THREE.WebGLRenderer({canvas:canvas,alpha:true,antialias:true});
+    renderer.setPixelRatio(DPR);renderer.setSize(W,H,false);
+    scene=new THREE.Scene();
+    camera=new THREE.OrthographicCamera(0,W,0,H,-100,100);camera.position.z=10;
+    build(sampleText(W,H));tStart=performance.now();requestAnimationFrame(frame);
+    if(window.IntersectionObserver){new IntersectionObserver(es=>{vis=es[0].isIntersecting;},{threshold:0}).observe(hero);}
+    let rt;window.addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(()=>{
+      const nW=canvas.clientWidth,nH=canvas.clientHeight;if(!nW||!nH||(nW===W&&nH===H))return;
+      W=nW;H=nH;renderer.setSize(W,H,false);camera.right=W;camera.bottom=H;camera.updateProjectionMatrix();
+      build(sampleText(W,H));tStart=performance.now();
+    },280);});
+  }
+})();
+</script>
+
+<div id="glossTip" role="tooltip" aria-hidden="true"></div>
+<script>
+/* ---------- Glossary tooltips ---------- */
+(function(){
+  const G=GLOSS;
+  const keys=Object.keys(G).sort((a,b)=>b.length-a.length);
+  const re=new RegExp('\\b('+keys.join('|')+')\\b','g');
+  const SKIP={SCRIPT:1,STYLE:1,CANVAS:1,SELECT:1,OPTION:1,A:1,TEXTAREA:1,BUTTON:1};
+  function glossify(root){
+    if(!root)return;
+    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode(n){
+      if(!n.nodeValue||n.nodeValue.length<2)return NodeFilter.FILTER_REJECT;
+      let p=n.parentNode;
+      while(p&&p!==root.parentNode){
+        if(p.nodeType===1){if(SKIP[p.nodeName])return NodeFilter.FILTER_REJECT;
+          if(p.classList&&p.classList.contains("term"))return NodeFilter.FILTER_REJECT;}
+        p=p.parentNode;
+      }
+      re.lastIndex=0;return re.test(n.nodeValue)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;
+    }});
+    const todo=[];while(walker.nextNode())todo.push(walker.currentNode);
+    todo.forEach(node=>{
+      const text=node.nodeValue;re.lastIndex=0;let m,last=0,any=false;
+      const frag=document.createDocumentFragment();
+      while((m=re.exec(text))){any=true;
+        if(m.index>last)frag.appendChild(document.createTextNode(text.slice(last,m.index)));
+        const span=document.createElement("span");span.className="term";span.setAttribute("data-k",m[1]);span.textContent=m[0];
+        frag.appendChild(span);last=m.index+m[0].length;}
+      if(any){if(last<text.length)frag.appendChild(document.createTextNode(text.slice(last)));node.parentNode.replaceChild(frag,node);}
+    });
+  }
+  window.glossify=glossify;
+  const tip=document.getElementById("glossTip");let active=null;
+  function show(el){
+    const g=G[el.getAttribute("data-k")];if(!g)return;
+    tip.innerHTML="";const b=document.createElement("b");b.textContent=g.t;tip.appendChild(b);tip.appendChild(document.createTextNode(g.d));
+    tip.classList.add("show");tip.setAttribute("aria-hidden","false");
+    const r=el.getBoundingClientRect(),tw=tip.offsetWidth,th=tip.offsetHeight;
+    let left=r.left+r.width/2-tw/2;left=Math.max(10,Math.min(left,window.innerWidth-tw-10));
+    let top=r.top-th-10;if(top<10)top=r.bottom+10;
+    tip.style.left=left+"px";tip.style.top=top+"px";active=el;
+  }
+  function hide(){tip.classList.remove("show");tip.setAttribute("aria-hidden","true");active=null;}
+  document.addEventListener("mouseover",e=>{const t=e.target.closest&&e.target.closest(".term");if(t)show(t);});
+  document.addEventListener("mouseout",e=>{const t=e.target.closest&&e.target.closest(".term");if(t)hide();});
+  document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest(".term");
+    if(t){e.preventDefault();if(active===t)hide();else show(t);}else if(active)hide();});
+  window.addEventListener("scroll",()=>{if(active)hide();},true);
+  window.addEventListener("resize",()=>{if(active)hide();});
+  glossify(document.body);
+})();
+</script>
+</body>
+</html>
