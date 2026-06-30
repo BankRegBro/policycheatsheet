@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BankRegWire — supercharge your financial services expertise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#eef2ff;--muted:#9aa6c8;--dim:#6b76a0;
+  --navy:#0a0e1c;--navy2:#10162e;--steel:#222b48;
+  --cyan:#3bb4ff;--cyan-br:#9fe3ff;--gold:#f6c81e;--gold-br:#ffe07a;--line:rgba(255,255,255,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased;
+  background:
+    radial-gradient(70% 38% at 12% 92%, rgba(59,180,255,.10), transparent 60%),
+    radial-gradient(58% 38% at 90% 80%, rgba(246,200,30,.06), transparent 60%),
+    radial-gradient(95% 50% at 50% 46%, rgba(40,60,140,.15), transparent 62%),
+    linear-gradient(180deg,#0a0e1c 0%,#0a0e1c 38%,#0e1430 64%,#070a18 100%) fixed}
+a{color:inherit;text-decoration:none}
+svg{width:1em;height:1em;fill:currentColor;display:inline-block;vertical-align:-.12em}
+
+/* hero */
+.hero{position:relative;height:100svh;min-height:600px;overflow:hidden;background:#070a16}
+.hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.scrim{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(7,10,22,.6) 0%,rgba(7,10,22,0) 24%,rgba(7,10,22,0) 50%,rgba(7,10,22,.55) 78%,rgba(7,10,22,.92) 100%),
+  linear-gradient(90deg,rgba(7,10,22,.62) 0%,rgba(7,10,22,.12) 42%,rgba(7,10,22,0) 70%)}
+.loopfade{position:absolute;inset:0;z-index:2;background:#05070f;opacity:0;pointer-events:none}
+.htop{position:absolute;top:0;left:0;right:0;z-index:6;display:flex;align-items:center;justify-content:space-between;padding:22px clamp(20px,5vw,76px)}
+.brand{display:flex;align-items:center;gap:9px;font-family:'Archivo';font-weight:800;font-size:18px;color:#fff}
+.brand .b{color:var(--gold);font-size:19px;filter:drop-shadow(0 0 8px rgba(246,200,30,.6))}
+.brand .wm{color:#fff}.brand .wm i{font-style:normal;color:#cfd7f0}
+.toplink{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#cdd6f2;padding:9px 15px;border:1px solid var(--line);border-radius:10px;background:rgba(10,14,30,.4);backdrop-filter:blur(8px);transition:.16s}
+.toplink:hover{color:#fff;border-color:rgba(159,227,255,.55);box-shadow:0 0 22px -6px rgba(59,180,255,.6)}
+.story{position:absolute;left:clamp(20px,5vw,80px);bottom:clamp(54px,11vh,120px);z-index:4;max-width:min(70vw,760px)}
+.line{position:absolute;left:0;bottom:0;opacity:0;transform:translateY(16px);filter:blur(6px);transition:opacity .65s,transform .65s,filter .65s;pointer-events:none;white-space:nowrap}
+.line.on{opacity:1;transform:none;filter:none;pointer-events:auto}
+.beat{font-family:'Archivo';font-weight:700;font-size:clamp(26px,4.4vw,52px);line-height:1.04;text-shadow:0 4px 30px rgba(0,0,0,.6)}
+.beat .c{color:var(--cyan-br)}
+.payoff{white-space:normal;max-width:min(70vw,760px)}
+.kick2{font-family:'JetBrains Mono',monospace;font-size:clamp(10px,1.3vw,13px);letter-spacing:.26em;text-transform:uppercase;color:var(--cyan-br);display:flex;align-items:center;gap:9px;margin-bottom:16px}
+.kick2 .b{color:var(--gold)}
+.payoff h1{font-family:'Archivo';font-weight:900;font-size:clamp(34px,6vw,76px);line-height:1.0;letter-spacing:-.02em;text-shadow:0 6px 40px rgba(0,0,0,.55)}
+.payoff h1 em{font-style:normal;background:linear-gradient(95deg,var(--gold-br),var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 24px rgba(246,200,30,.4))}
+.payoff .sub{margin-top:16px;font-size:clamp(14px,1.7vw,18px);color:#c4cdec}
+.cta{display:inline-flex;align-items:center;gap:10px;margin-top:26px;padding:15px 26px;border-radius:13px;font-family:'Archivo';font-weight:800;font-size:14px;letter-spacing:.04em;text-transform:uppercase;color:#1a1405;background:linear-gradient(180deg,var(--gold-br),var(--gold));box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 16px 44px -14px rgba(246,200,30,.75),0 0 50px -10px rgba(246,200,30,.4);transition:transform .16s,box-shadow .16s}
+.cta:hover{transform:translateY(-2px)}.cta .b{font-size:17px}
+.scrollcue{position:absolute;left:50%;transform:translateX(-50%);bottom:22px;z-index:4;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#8ea0c8;opacity:.8}
+
+/* sticky header */
+.shead{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;align-items:center;gap:18px;
+  padding:12px clamp(16px,4vw,40px);background:rgba(9,12,24,.82);backdrop-filter:blur(16px) saturate(1.3);-webkit-backdrop-filter:blur(16px) saturate(1.3);
+  border-bottom:1px solid var(--line);transform:translateY(-100%);transition:transform .3s ease}
+.shead.on{transform:none}
+.shead .brand{font-size:15px}.shead .brand .b{font-size:16px}
+.snav{display:flex;gap:2px;margin-left:8px;flex-wrap:wrap}
+.snav a{position:relative;font-size:12px;color:#aeb7d4;padding:7px 11px;border-radius:8px;transition:.14s;white-space:nowrap}
+.snav a:hover{color:#fff;background:rgba(255,255,255,.06)}
+.snav a.active{color:#fff}
+.snav a.active::after{content:"";position:absolute;left:11px;right:11px;bottom:2px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--cyan-br),var(--gold))}
+.shead .cta{margin:0 0 0 auto;padding:9px 16px;font-size:11.5px;border-radius:9px}
+.shead .cta .b{font-size:13px}
+@media(max-width:900px){.snav{display:none}}
+
+/* main */
+.main{position:relative;z-index:2;max-width:1280px;margin:0 auto;padding:64px clamp(20px,4vw,54px) 70px}
+.feat{display:block;position:relative;overflow:hidden;border-radius:20px;padding:30px clamp(24px,3vw,40px);margin-bottom:46px;
+  background:linear-gradient(135deg, rgba(59,180,255,.12), rgba(246,200,30,.06) 70%, transparent), rgba(120,170,225,.06);
+  border:1px solid rgba(159,227,255,.28);box-shadow:0 30px 80px -50px rgba(59,180,255,.6),inset 0 1px 0 rgba(255,255,255,.12);transition:transform .2s,box-shadow .2s}
+.feat:hover{transform:translateY(-3px);box-shadow:0 40px 90px -50px rgba(59,180,255,.7)}
+.feat::after{content:"";position:absolute;top:0;left:0;width:140px;height:3px;background:linear-gradient(90deg,var(--gold-br),var(--cyan-br),transparent)}
+.feat .meta{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.newpill{color:#06243a;background:linear-gradient(180deg,var(--gold-br),var(--gold));padding:3px 10px;border-radius:999px;font-weight:700;display:inline-flex;align-items:center;gap:5px}
+.newpill .b{font-size:12px}
+.feat h2{font-family:'Archivo';font-weight:900;font-size:clamp(26px,3.4vw,40px);line-height:1.05;margin-top:14px;max-width:20ch}
+.feat p{margin-top:12px;font-size:15px;line-height:1.55;color:#bcc6e6;max-width:64ch}
+.feat .go{margin-top:18px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-br);display:flex;gap:8px;align-items:center}
+
+.filterbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.filterbar .lab{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan-br);margin-right:4px}
+.chip{font-family:'Inter';font-size:12px;color:#c3cce6;padding:7px 13px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.03);cursor:pointer;transition:.14s}
+.chip:hover{border-color:rgba(159,227,255,.5);color:#fff}
+.chip.on{color:#06243a;background:linear-gradient(180deg,var(--cyan-br),var(--cyan));border-color:transparent;font-weight:600}
+.tclear{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);background:none;border:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.tclear:hover{color:#fff}
+.fcount{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin:6px 0 30px}
+
+.desk{margin-top:54px;scroll-margin-top:80px}
+.sec-head{display:flex;gap:18px;align-items:flex-start;margin-bottom:22px}
+.sec-head .roman{font-family:'Archivo';font-weight:800;font-size:30px;color:rgba(159,227,255,.5);line-height:1;min-width:54px}
+.sec-head .kick{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.sec-head h2{font-family:'Archivo';font-weight:800;font-size:clamp(20px,2.4vw,28px);margin-top:5px;color:#fff;display:flex;align-items:center;gap:11px}
+.sec-head .count{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;color:#06243a;background:var(--cyan-br);border-radius:999px;padding:2px 9px}
+.sec-head .blurb{margin-top:9px;font-size:13.5px;line-height:1.5;color:#9aa6c8;max-width:72ch}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(284px,1fr));gap:18px}
+.card{position:relative;overflow:hidden;border-radius:16px;padding:22px;min-height:212px;display:flex;flex-direction:column;
+  background:linear-gradient(155deg, rgba(59,180,255,.05), rgba(120,170,235,.02) 42%, rgba(246,200,30,.035)), rgba(120,170,225,.05);
+  backdrop-filter:blur(13px) saturate(1.2);-webkit-backdrop-filter:blur(13px) saturate(1.2);
+  border:1px solid var(--line);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 20px 46px -34px rgba(0,0,0,.8);transition:transform .2s,border-color .2s,box-shadow .2s}
+.card::after{content:"";position:absolute;top:0;left:18px;right:42%;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--cyan-br),var(--gold) 75%,transparent)}
+.card:hover{transform:translateY(-4px);border-color:rgba(159,227,255,.6);background:rgba(120,180,255,.06);box-shadow:0 26px 60px -30px rgba(59,180,255,.5),0 0 0 1px rgba(159,227,255,.3),0 0 34px -6px rgba(59,180,255,.32)}
+.card:hover .go{color:var(--cyan-br)}
+.card .meta{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.07em;color:var(--muted);text-transform:uppercase}
+.card .meta b{color:var(--cyan-br)}
+.card h3{font-family:'Archivo';margin-top:12px;font-size:19px;font-weight:800;line-height:1.18;color:#fff}
+.card p{margin-top:9px;font-size:13px;line-height:1.5;color:#aab2d6;flex:1}
+.card .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.card .tags span{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.04em;color:#8fa0c4;border:1px solid var(--line);border-radius:6px;padding:3px 7px}
+.card .go{margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-br);display:flex;gap:8px;align-items:center}
+.card.inst{background:linear-gradient(155deg, rgba(246,200,30,.08), rgba(59,180,255,.04) 60%), rgba(120,170,225,.05);border-color:rgba(246,200,30,.28)}
+.card.inst .meta b{color:var(--gold-br)}
+
+.foot{position:relative;z-index:2;text-align:center;padding:40px 20px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.07em;color:#6b76a0;border-top:1px solid rgba(255,255,255,.07)}
+.foot .b{color:var(--gold)}
+#cardfx{position:absolute;top:0;left:0;width:100%;z-index:3;pointer-events:none;display:block}
+@media(max-width:760px){.line{white-space:normal}.beat{font-size:30px}.sec-head .roman{display:none}}
+@media (prefers-reduced-motion: reduce){.line{transition:opacity .3s}}
+</style></head>
+<body>
+
+<header class="shead" id="shead">
+  <div class="brand"><span class="b"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 L4 14 H10 L8.5 22 L20 9 H13 Z"/></svg></span><span class="wm">BANK<i>REGWIRE</i></span></div>
+  <nav class="snav"><a href="#sec-reference">Reference Desk</a><a href="#sec-digital">Digital Assets</a><a href="#sec-supervision">Supervision</a><a href="#sec-fintech">Third-Party, BaaS</a><a href="#sec-aml">AML</a><a href="#sec-charter">Charter, Preemption</a><a href="#sec-housing">Housing</a><a href="#sec-trackers">Trackers</a><a href="#instruments">Instruments</a></nav>
+  <a href="#wire" class="cta"><span class="b"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 L4 14 H10 L8.5 22 L20 9 H13 Z"/></svg></span> Enter</a>
+</header>
+
+<section class="hero">
+  <video id="bg" autoplay muted loop playsinline poster="poster.jpg"><source src="hero.webm" type="video/webm">
+    <source src="hero-1080.mp4" type="video/mp4"></video>
+  <div class="scrim"></div><div class="loopfade" id="loopfade"></div>
+  <header class="htop">
+    <div class="brand"><span class="b"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 L4 14 H10 L8.5 22 L20 9 H13 Z"/></svg></span><span class="wm">BANK<i>REGWIRE</i></span></div>
+    <a href="#wire" class="toplink">Enter the wire</a>
+  </header>
+  <div class="story">
+    <div class="line beat" data-ph="0">Buried in the fine print.</div>
+    <div class="line beat" data-ph="1">So you plug into <span class="c">the wire.</span></div>
+    <div class="line payoff" data-ph="2">
+      <div class="kick2"><span class="b"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 L4 14 H10 L8.5 22 L20 9 H13 Z"/></svg></span> The pulse of financial regulation</div>
+      <h1><em>Supercharge</em> your financial<br>services expertise.</h1>
+      <div class="sub">BankRegWire turns the daily flood of rulemakings, filings, and call reports into power you can use.</div>
+      <a href="#wire" class="cta"><span class="b"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 L4 14 H10 L8.5 22 L20 9 H13 Z"/></svg></span> Enter the wire</a>
+    </div>
+  </div>
+  <div class="scrollcue">scroll &darr;</div>
+</section>
+
+<main class="main" id="wire">
+  <a class="feat" href="treasury-department-reference.html"><div class="meta"><span class="newpill"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 L4 14 H10 L8.5 22 L20 9 H13 Z"/></svg> Latest on the wire</span> &middot; <b>№ 30</b> &middot; Filed Jun 28</div><h2>The U.S. Treasury</h2><p>An interactive reference to the U.S. Department of the Treasury: its functions and bureaus, who leads it, where its authority comes from under Title 31, and the major events from 1775 to today.</p><div class="go">Open the file &rarr;</div></a>
+  <div class="filterbar"><span class="lab">Filter by topic</span><button class="chip" data-topic="Stablecoins">Stablecoins</button><button class="chip" data-topic="Digital Assets">Digital Assets</button><button class="chip" data-topic="Payments">Payments</button><button class="chip" data-topic="AML/BSA">AML/BSA</button><button class="chip" data-topic="Third-Party Risk">Third-Party Risk</button><button class="chip" data-topic="BaaS &amp; Fintech">BaaS &amp; Fintech</button><button class="chip" data-topic="Licensing">Licensing</button><button class="chip" data-topic="Model Risk">Model Risk</button><button class="chip" data-topic="Supervision &amp; Exam">Supervision &amp; Exam</button><button class="chip" data-topic="Preemption">Preemption</button><button class="chip" data-topic="Charters">Charters</button><button class="chip" data-topic="M&amp;A">M&amp;A</button><button class="chip" data-topic="Housing">Housing</button><button class="chip" data-topic="CFPB">CFPB</button><button class="chip" data-topic="Legislation">Legislation</button><button class="chip" data-topic="Live Tracker">Live Tracker</button><button class="tclear" id="tclear">clear</button></div>
+  <div class="fcount" id="fcount">27 dispatches across 8 desks</div>
+  <section class="desk" id="sec-reference"><div class="sec-head"><div class="roman">I.</div><div><div class="kick">Desk I</div><h2>Reference Desk <span class="count">5</span></h2><p class="blurb">Start here. The evergreen layer beneath every dispatch: who charters, who examines, and how U.S. banking got to its present shape.</p></div></div><div class="grid"><a class="card" href="history-of-banking.html" data-topics="Charters"><div class="meta"><b>№ 01</b> &middot; History <span class="filed">&middot; Filed May 27</span></div><h3>History of Banking</h3><p>A long-arc reading of U.S. banking structure — from the First Bank of the United States through the National Bank Act, the founding of the Federal Reserve, Glass–Steagall and FDIC, to the dual-charter system today. The reference layer beneath every other dispatch.</p><div class="tags"><span>National Bank Act</span><span>Federal Reserve Act</span><span>Glass–Steagall</span></div><div class="go">Open the file &rarr;</div></a><a class="card" href="regulatory-map.html" data-topics="Supervision &amp; Exam|Charters"><div class="meta"><b>№ 02</b> &middot; Map <span class="filed">&middot; Filed May 20</span></div><h3>Regulatory Map</h3><p>A working map of the federal–state supervisory architecture: who charters, who examines, who enforces, and where authority overlaps across the dual banking system.</p><div class="tags"><span>FDIC</span><span>OCC</span><span>FRB</span></div><div class="go">Open the file &rarr;</div></a><a class="card" href="fed-reserve-interactive-reference.html" data-topics="Supervision &amp; Exam|Payments"><div class="meta"><b>№ 03</b> &middot; Reference <span class="filed">&middot; Filed Jun 18</span></div><h3>An In-Depth Look at the Fed and Its Functions</h3><p>An interactive reference to the Federal Reserve System: the dual mandate, the FOMC, supervision, payments, and the twelve district banks.</p><div class="tags"><span>Federal Reserve</span><span>Reference</span></div><div class="go">Open the file &rarr;</div></a><a class="card" href="us-trust-company-regulatory-framework.html" data-topics="Charters|Preemption"><div class="meta"><b>№ 04</b> &middot; Reference <span class="filed">&middot; Filed May 20</span></div><h3>U.S. Trust Company Regulatory Framework</h3><p>How state-chartered and OCC-chartered trust companies are supervised, including the CSBS Nationwide Cooperative Agreement, MTL exposure, and federal preemption posture.</p><div class="tags"><span>12 CFR Pt. 9</span><span>CSBS NCA</span><span>State Law</span></div><div class="go">Open the file &rarr;</div></a><a class="card" href="treasury-department-reference.html" data-topics="Supervision &amp; Exam|Charters|AML/BSA"><div class="meta"><b>№ 30</b> &middot; Reference <span class="filed">&middot; Filed Jun 28</span></div><h3>The U.S. Treasury</h3><p>An interactive reference to the U.S. Department of the Treasury: its functions and bureaus, who leads it, where its authority comes from under Title 31, and the major events from 1775 to today.</p><div class="tags"><span>Title 31</span><span>OCC · FinCEN</span><span>Public Debt</span></div><div class="go">Open the file &rarr;</div></a></div></section><section class="desk" id="sec-digital"><div class="sec-head"><div class="roman">II.</div><div><div class="kick">Desk II</div><h2>Digital Assets &amp; Payments <span class="count">4</span></h2><p class="blurb">Stablecoins, market structure, and the payment rails. GENIUS Act pathways, the dual-track regime, and the Fed payment account.</p></div></div><div class="grid"><a class="card" href="genius-act-dashboard.html" data-topics="Stablecoins|Digital Assets"><div class="meta"><b>№ 05</b> &middot; Reading <span class="filed">&middot; Filed May 20</span></div><h3>GENIUS Act Dashboard</h3><p>A working framework for how the GENIUS Act applies to OCC-supervised stablecoin issuers — permitted issuer pathways, reserve composition, and statutory tripwires.</p><div class="tags"><span>GENIUS Act</span><span>Payment Stablecoins</span><span>12 USC § 1818</span></div><div class="go">Open the file &rarr;</div></a><a class="card" href="two-track-republic.html" data-topics="Stablecoins|Charters|Preemption"><div class="meta"><b>№ 06</b> &middot; Reading <span class="filed">&middot; Filed May 31</span></div><h3>The Two-Track Republic</h3><p>A second reading of the GENIUS Act through its defining structural choice — the dual federal and state pathways for payment stablecoin issuers, the $10B threshold that divides them, and what the bifurcation means for charter strategy.</p><div class="tags"><span>GENIUS Act</span><span>Dual Track</span><span>State vs. Federal</span></div><div class="go">Open the file &rarr;</div></a><a class="card" href="market-structure-watch.html" data-topics="Digital Assets|Legislation"><div class="meta"><b>№ 07</b> &middot; Tracker <span class="filed">&middot; Filed Jun 3</span></div><h3>The Odds Digital Asset Market Structure Gets Done</h3><p>A handicapping of whether digital asset market structure legislation gets enacted — the CLARITY Act&#x27;s path through the Senate, the sticking points between the committees, and the odds the framework crosses the finish line this Congress.</p><div class="tags"><span>Digital Assets</span><span>Market Structure</span><span>CLARITY Act</span></div><div class="go">Open the file &rarr;</div></a><a class="card" href="fed-payment-account-analysis.html" data-topics="Payments"><div class="meta"><b>№ 08</b> &middot; Tracker <span class="filed">&middot; Filed May 26</span></div><h3>Fed Payment Account Analysis</h3><p>Analysis of the Federal Reserve&#x27;s proposed Payment Account — colloquially the &quot;skinny&quot; master account — with a running record of Board action from Governor Waller&#x27;s October 2025 framing through the May 2026 formal proposal.</p><div class="tags"><span>Payment Account</span><span>12 USC § 342</span><span>Account Access</span></div><div class="go">Open the file &rarr;</div></a></div></section><section class="desk" id="sec-supervision"><div class="sec-head"><div class="roman">III.</div><div><div class="kick">Desk III</div><h2>Supervision &amp; Exam <span class="count">3</span></h2><p class="blurb">Examiner frameworks and supervisory posture: model risk, CAMELS, the Fed&#x27;s operating principles, and the analyst&#x27;s workbench.</p></div></div><div class="grid"><a class="card" href="model-risk-management-2026.html" data-topics="Model Risk|Supervision &amp; Exam"><div class="meta"><b>№ 09</b> &middot; Reading <span class="filed">&middot; Filed May 20</span></div><h3>Model Risk Management 2026</h3><p>A side-by-side reading of FIL-15-2026 against SR 11-7, mapping where the federal agencies&#x27; new model risk guidance retains, sharpens, or quietly narrows the 2011 baseline.</p><div class="tags"><span>FIL-15-2026</span><span>SR 11-7</span><span>12 CFR Pt. 30</span></div><div class="go">Open the file &rarr;</div></a><a class="card" href="ufirs-camels-2026-change-briefing.html" data-topics="Supervision &amp; Exam"><div class="meta"><b>№ 10</b> &middot; Reading <span class="filed">&middot; Filed May 20</span></div><h3>UFIRS CAMELS 2026 Change Briefing</h3><p>What changed in the Uniform Financial Institutions Rating System in 2026, and how examiner expectations shift in practice across the six CAMELS components.</p><div class="tags"><span>UFIRS</span><span>FFIEC</span><span>FIL-2026</span></div><div class="go">Open the file &rarr;</div></a><a class="card" href="fed-supervisory-comp.html" data-topics="Supervision &amp; Exam|Model Risk"><div class="meta"><b>№ 11</b> &middot; Reference <span class="filed">&middot; Filed May 20</span></div><h3>New Federal Reserve Supervisory Operating Principles</h3><p>A look at an important pivot — Vice Chair Bowman&#x27;s Statement of Supervisory Operating Principles, which redirects Federal Reserve examiners toward material financial risk and away from process, and the October 2025 → April 2026 revision arc.</p><div class="tags"><span>Material Risk</span><span>MRA / MRIA</span><span>VCfS Bowman</span></div><div class="go">Open the file &rarr;</div></a></div></section><section class="desk" id="sec-fintech"><div class="sec-head"><div class="roman">IV.</div><div><div class="kick">Desk IV</div><h2>Third-Party, BaaS &amp; Fintech <span class="count">2</span></h2><p class="blurb">Where banks meet fintech: third-party risk and how the licensing perimeter is drawn.</p></div></div><div class="grid"><a class="card" href="third-party-risk-management.html" data-topics="Third-Party Risk|BaaS &amp; Fintech"><div class="meta"><b>№ 14</b> &middot; Reading <span class="filed">&middot; Filed May 20</span></div><h3>A New Way to Understand Third-Party Risk Management</h3><p>A ground-up rethink of the 2023 interagency third-party risk guidance — what it left ambiguous, where the BaaS enforcement wave exposed the gaps, and what the guidance should have been.</p><div class="tags"><span>Third-Party Risk</span><span>Interagency Guidance</span><span>Vendor Oversight</span></div><div class="go">Open the file &rarr;</div></a><a class="card" href="bankregwire-licensing.html" data-topics="Licensing|BaaS &amp; Fintech|Digital Assets"><div class="meta"><b>№ 15</b> &middot; Tracker <span class="filed">&middot; Filed Jun 1</span></div><h3>Global Fintech Licensing</h3><p>A comparative reading of how major jurisdictions license fintechs — U.S. state MTLs and special-purpose charters set against the UK, EU/MiCA, Singapore and others — mapping where the perimeter is drawn and how passporting works.</p><div class="tags"><span>Licensing</span><span>MTL</span><span>MiCA</span></div><div class="go">Open the file &rarr;</div></a></div></section><section class="desk" id="sec-aml"><div class="sec-head"><div class="roman">V.</div><div><div class="kick">Desk V</div><h2>AML / BSA &amp; Integrity <span class="count">2</span></h2><p class="blurb">Financial-crime program rules and the integrity perimeter, read from the rule text.</p></div></div><div class="grid"><a class="card" href="aml-cft-program-rule-navigator.html" data-topics="AML/BSA"><div class="meta"><b>№ 16</b> &middot; Reading <span class="filed">&middot; Filed May 20</span></div><h3>AML/CFT Program Rule Navigator</h3><p>A clause-anchored walkthrough of the 2026 FinCEN and FDIC AML/CFT Program Rule proposals, grounded in the rule text itself rather than secondary commentary.</p><div class="tags"><span>31 CFR § 1020.210</span><span>FinCEN NPRM</span><span>FDIC FIL</span></div><div class="go">Open the file &rarr;</div></a><a class="card" href="financial-system-integrity.html" data-topics="AML/BSA|Legislation"><div class="meta"><b>№ 17</b> &middot; Brief <span class="filed">&middot; Filed Jun 9</span></div><h3>Financial System Integrity</h3><p>A clause-anchored reading of the recent White House Executive Order on Financial System Integrity — what the order directs, the agencies tasked with carrying it out, and the agency releases issued in response.</p><div class="tags"><span>Executive Order</span><span>System Integrity</span><span>Agency Releases</span></div><div class="go">Open the file &rarr;</div></a></div></section><section class="desk" id="sec-charter"><div class="sec-head"><div class="roman">VI.</div><div><div class="kick">Desk VI</div><h2>Charter, Preemption &amp; M&amp;A <span class="count">3</span></h2><p class="blurb">The structural fights: preemption authority, charter strategy, and bank merger review.</p></div></div><div class="grid"><a class="card" href="olp182-preemption-docket.html" data-topics="Preemption|Charters"><div class="meta"><b>№ 18</b> &middot; Docket <span class="filed">&middot; Filed Jun 18</span></div><h3>The Preemption Docket</h3><p>Preemption has taken on renewed focus under the current administration and banking agency leadership. A look back at what the bank trade associations asked for in response to the DOJ&#x27;s RFI on state laws with significant adverse effects on the national economy and interstate commerce (Docket OLP182, 90 FR 39427), and where those requests stand now.</p><div class="tags"><span>Preemption</span><span>DOJ OLP182</span><span>Trade Groups</span></div><div class="go">Open the file &rarr;</div></a><a class="card" href="occ-preemption-timeline.html" data-topics="Preemption|Charters"><div class="meta"><b>№ 19</b> &middot; Timeline <span class="filed">&middot; Filed May 20</span></div><h3>OCC Preemption Timeline</h3><p>A timeline of OCC preemption authority — statute, regulation, and litigation — through the Dodd-Frank standard at 12 USC § 25b and the recent reassertions.</p><div class="tags"><span>12 USC § 25b</span><span>Cuomo v. Clearing House</span><span>Cantero</span></div><div class="go">Open the file &rarr;</div></a><a class="card" href="bank-merger-reform-scorecard.html" data-topics="M&amp;A"><div class="meta"><b>№ 20</b> &middot; Tracker <span class="filed">&middot; Filed May 20</span></div><h3>Bank Merger Reform Scorecard</h3><p>A live scorecard of pending bank M&amp;A reform across the FDIC, OCC, and Federal Reserve — tracking OCC threshold alignment, HHI modernization, and rural de minimis treatment.</p><div class="tags"><span>12 CFR § 5.33</span><span>HHI</span><span>FDIC Statement</span></div><div class="go">Open the file &rarr;</div></a></div></section><section class="desk" id="sec-housing"><div class="sec-head"><div class="roman">VII.</div><div><div class="kick">Desk VII</div><h2>Housing &amp; Community Banking <span class="count">1</span></h2><p class="blurb">Housing supply, affordability, and the community-bank stake across legislation and rulemaking.</p></div></div><div class="grid"><a class="card" href="road-to-housing-banking.html" data-topics="Housing|Legislation"><div class="meta"><b>№ 21</b> &middot; Tracker <span class="filed">&middot; Filed Jun 17</span></div><h3>The 21st Century ROAD to Housing Act</h3><p>The most consequential banking legislation since the GENIUS Act, read from the bank&#x27;s seat — the public welfare investment cap lifted from 15 to 20 percent, the community banking sections restored in the House amendment, and where the bicameral package sits between the 89–10 Senate vote and final reconciliation.</p><div class="tags"><span>ROAD to Housing</span><span>H.R. 6644</span><span>Community Banking</span></div><div class="go">Open the file &rarr;</div></a></div></section><section class="desk" id="sec-trackers"><div class="sec-head"><div class="roman">VIII.</div><div><div class="kick">Desk VIII</div><h2>Trackers &amp; Watchlists <span class="count">7</span></h2><p class="blurb">Live records of who has moved and what is coming: agency policy, the rulemaking calendar, bills, trade-group positions, and the CFPB rebuild.</p></div></div><div class="grid"><a class="card" href="eo-brief.html" data-topics="Legislation"><div class="meta"><b>№ 23</b> &middot; Brief <span class="filed">&middot; Filed May 21</span></div><h3>The Recent White House Innovation Executive Orders</h3><p>A clause-anchored reading of two recent White House executive orders shaping financial services policy — what each order directs, the agencies tasked with implementation, and the regulatory cascade downstream.</p><div class="tags"><span>Executive Action</span><span>Federal Register</span><span>Agency Implementation</span></div><div class="go">Open the file &rarr;</div></a><a class="card" href="gould-occ-policy-tracker.html" data-topics="Charters|Licensing|Live Tracker"><div class="meta"><b>№ 24</b> &middot; Tracker <span class="filed">&middot; Filed May 20</span></div><h3>Gould OCC Policy Tracker</h3><p>A running record of OCC policy moves under Comptroller Gould — chartering decisions, preemption posture, supervisory letters, and licensing precedent.</p><div class="tags"><span>OCC Bulletins</span><span>12 CFR Pt. 5</span><span>Licensing</span></div><div class="go">Open the file &rarr;</div></a><a class="card" href="cfpb-unmaking-tracker.html" data-topics="CFPB|Live Tracker"><div class="meta"><b>№ 25</b> &middot; Tracker <span class="filed">&middot; Filed Jun 2</span></div><h3>The CFPB&#x27;s Transformation</h3><p>A running tracker of the changes remaking the Consumer Financial Protection Bureau — leadership and funding posture, rulemaking withdrawals, staffing and structural changes, and the litigation over its authority.</p><div class="tags"><span>CFPB</span><span>Agency Action</span><span>Rule Rollback</span></div><div class="go">Open the file &rarr;</div></a><a class="card" href="rulemaking-calendar.html" data-topics="Live Tracker"><div class="meta"><b>№ 26</b> &middot; Tracker <span class="filed">&middot; Filed May 26</span></div><h3>A Policy Lookahead</h3><p>An experimental rulemaking calendar that triangulates what is coming from agency principals&#x27; on-the-record comments, the Federal Register, OIRA&#x27;s pending review queue, and each agency&#x27;s Unified Spring Agenda.</p><div class="tags"><span>Proof of Concept</span><span>Multi-source</span><span>Forecast</span></div><div class="go">Open the file &rarr;</div></a><a class="card" href="aba-bpi-icba-comparison-sourced.html" data-topics="Supervision &amp; Exam"><div class="meta"><b>№ 27</b> &middot; Comparison <span class="filed">&middot; Filed May 29</span></div><h3>ABA · BPI · ICBA Position Comparison</h3><p>A sourced comparison of the headline policy positions of the ABA, BPI, and ICBA — mapping where the three trade groups align (Basel capital, supervisory reform) and where ICBA&#x27;s community-bank principles diverge on consolidation and the separation of banking and commerce.</p><div class="tags"><span>Basel III</span><span>Trade Groups</span><span>Joint Letters</span></div><div class="go">Open the file &rarr;</div></a><a class="card" href="financial-services-bill-tracker.html" data-topics="Legislation|Live Tracker"><div class="meta"><b>№ 28</b> &middot; Tracker <span class="filed">&middot; Filed Jun 2</span></div><h3>Financial Services Bill Tracker</h3><p>A live tracker of financial services legislation moving through Congress — bills by chamber and committee, sponsor and posture, and where each sits on the path from introduction to enactment.</p><div class="tags"><span>Legislation</span><span>HFSC</span><span>Senate Banking</span></div><div class="go">Open the file &rarr;</div></a><a class="card" href="influence-register-brw.html" data-topics="Legislation|Digital Assets|Housing|BaaS &amp; Fintech"><div class="meta"><b>№ 31</b> &middot; Register <span class="filed">&middot; Filed Jun 28</span></div><h3>The Influence Register</h3><p>A field guide to the banking, mortgage, crypto, and fintech associations that draft the comment letters, fund the PACs, and file the lawsuits, sorted into six fault lines and cross-tagged by rivalry.</p><div class="tags"><span>Trade Groups</span><span>Lobbying</span><span>Fault Lines</span></div><div class="go">Open the file &rarr;</div></a></div></section>
+  <section class="desk" id="instruments"><div class="sec-head"><div class="roman"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 L4 14 H10 L8.5 22 L20 9 H13 Z"/></svg></div>
+    <div><div class="kick">Live</div><h2>Instruments <span class="count">2</span></h2>
+    <p class="blurb">Working tools, not just reading. Operate on real bank data and track the rulemaking pipeline in real time.</p></div></div>
+    <div class="grid"><a class="card inst" href="callreport/index.html"><div class="meta"><b>Console</b> &middot; Instrument &middot; Live</div><h3>Bank Workbench</h3><p>Pull any bank&#x27;s call report and operate on it: health scan, IRRBB, deposit beta, TPRM console, charter console, challenger core.</p><div class="go">Launch the instrument &rarr;</div></a><a class="card inst" href="regulatory-tracker.html"><div class="meta"><b>Live board</b> &middot; Instrument &middot; Live</div><h3>Regulatory Tracker</h3><p>A live board of open rulemakings, comment deadlines, and effective dates across the federal banking agencies and the CFPB.</p><div class="go">Launch the instrument &rarr;</div></a></div></section>
+</main>
+<div class="foot"><span class="b"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 L4 14 H10 L8.5 22 L20 9 H13 Z"/></svg></span> BankRegWire &middot; a working catalogue of U.S. financial services regulation &middot; filed from Arlington, VA</div>
+<canvas id="cardfx"></canvas>
+
+<script>
+(function(){var v=document.getElementById('bg');if(!v)return;
+ try{var sd=navigator.connection&&navigator.connection.saveData;
+  var big=(window.innerWidth*Math.min(window.devicePixelRatio||1,2))>=1700;
+  var webm=v.canPlayType&&(v.canPlayType('video/webm;codecs="vp9"')||v.canPlayType('video/webm;codecs=vp9'));
+  if(!webm&&big&&!sd){v.src='hero.mp4';v.load();}
+ }catch(e){}})();
+</script>
+<script>
+/* timed story + smooth loop */
+(function(){var v=document.getElementById('bg'),fade=document.getElementById('loopfade');
+ var lines=[].slice.call(document.querySelectorAll('.line')),cur=-1;
+ function ph(p){if(p===cur)return;cur=p;lines.forEach(function(l){l.classList.toggle('on',+l.dataset.ph===p);});}
+ function tick(){var t=v.currentTime||0,d=v.duration||8;ph(t<2.2?0:(t<4.8?1:2));
+  var f=0;if(t>d-0.5)f=(t-(d-0.5))/0.5;else if(t<0.5)f=1-t/0.5;fade.style.opacity=(Math.max(0,Math.min(1,f))*0.92).toFixed(3);requestAnimationFrame(tick);}
+ v.play&&v.play().catch(function(){});requestAnimationFrame(tick);})();
+/* sticky header reveal */
+(function(){var sh=document.getElementById('shead'),hero=document.querySelector('.hero');
+ function on(){sh.classList.toggle('on', window.scrollY>hero.offsetHeight-90);}
+ addEventListener('scroll',on,{passive:true});on();})();
+/* scrollspy: highlight the active desk in the nav */
+(function(){var links=[].slice.call(document.querySelectorAll('.snav a'));
+ var secs=[].slice.call(document.querySelectorAll('.desk'));
+ if(!links.length||!secs.length)return;
+ function setA(id){links.forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#'+id);});}
+ function spy(){var thresh=150,cur=null;
+   secs.forEach(function(s){if(s.offsetParent!==null&&s.getBoundingClientRect().top<=thresh)cur=s;});
+   if(window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-2){
+     for(var k=secs.length-1;k>=0;k--){if(secs[k].offsetParent!==null){cur=secs[k];break;}}}
+   if(!cur){for(var i=0;i<secs.length;i++){if(secs[i].offsetParent!==null){cur=secs[i];break;}}}
+   if(cur)setA(cur.id);}
+ addEventListener('scroll',spy,{passive:true});addEventListener('resize',spy);spy();})();
+/* topic filtering */
+(function(){var chips=[].slice.call(document.querySelectorAll('.chip')),active={};
+ var cards=[].slice.call(document.querySelectorAll('.main .card:not(.inst)')),fc=document.getElementById('fcount');
+ var TOTAL=27;
+ function apply(){var keys=Object.keys(active),vis=0;
+   cards.forEach(function(c){var ts=(c.getAttribute('data-topics')||'').split('|');
+     var show=!keys.length||keys.some(function(k){return ts.indexOf(k)>=0;});
+     c.style.display=show?'':'none';if(show)vis++;});
+   document.querySelectorAll('.desk').forEach(function(d){if(d.id==='instruments')return;
+     var any=d.querySelector('.card:not([style*="display: none"])');
+     // robust visible check
+     var has=[].slice.call(d.querySelectorAll('.card')).some(function(c){return c.style.display!=='none';});
+     d.style.display=has?'':'none';});
+   fc.textContent=keys.length?(vis+' of '+TOTAL+' dispatches · '+keys.join(', ')):(TOTAL+' dispatches across 8 desks');
+   document.dispatchEvent(new Event('cardschanged'));}
+ chips.forEach(function(ch){ch.addEventListener('click',function(){var t=ch.dataset.topic;
+   if(active[t]){delete active[t];ch.classList.remove('on');}else{active[t]=1;ch.classList.add('on');}apply();});});
+ document.getElementById('tclear').addEventListener('click',function(){active={};chips.forEach(function(c){c.classList.remove('on');});apply();});
+})();
+/* electric current around cards on hover (cyan + gold) */
+(function(){var cv=document.getElementById('cardfx');if(!cv)return;var ctx=cv.getContext('2d');
+ var W=0,H=0,DPR=Math.min(window.devicePixelRatio||1,2),reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,cards=[];
+ function rr(L,T,R,Bo,r){var p=[],w=R-L,h=Bo-T;r=Math.min(r,w/2,h/2);var st=9,a;
+  for(var x=L+r;x<R-r;x+=st)p.push({x:x,y:T});for(a=-Math.PI/2;a<0;a+=0.22)p.push({x:R-r+Math.cos(a)*r,y:T+r+Math.sin(a)*r});
+  for(var y=T+r;y<Bo-r;y+=st)p.push({x:R,y:y});for(a=0;a<Math.PI/2;a+=0.22)p.push({x:R-r+Math.cos(a)*r,y:Bo-r+Math.sin(a)*r});
+  for(x=R-r;x>L+r;x-=st)p.push({x:x,y:Bo});for(a=Math.PI/2;a<Math.PI;a+=0.22)p.push({x:L+r+Math.cos(a)*r,y:Bo-r+Math.sin(a)*r});
+  for(y=Bo-r;y>T+r;y-=st)p.push({x:L,y:y});for(a=Math.PI;a<Math.PI*1.5;a+=0.22)p.push({x:L+r+Math.cos(a)*r,y:T+r+Math.sin(a)*r});return p;}
+ function compute(){var sx=scrollX||0,sy=scrollY||0;cards=[].slice.call(document.querySelectorAll('.card')).filter(function(el){return el.offsetParent!==null;}).map(function(el){
+   var r=el.getBoundingClientRect();return{el:el,perim:rr(r.left+sx-2,r.top+sy-2,r.right+sx+2,r.bottom+sy+2,18),phase:0,was:false};});}
+ function resize(){cv.style.height='0px';H=Math.max(document.documentElement.scrollHeight,innerHeight);W=document.documentElement.clientWidth;
+   cv.width=W*DPR;cv.height=H*DPR;cv.style.width=W+'px';cv.style.height=H+'px';ctx.setTransform(DPR,0,0,DPR,0,0);compute();}
+ function comet(P,n,head,core,glow){var Lc=Math.max(12,Math.round(n*0.30));
+  for(var k=0;k<Lc;k++){var idx=((Math.floor(head)-k)%n+n)%n,idx2=((idx-1)%n+n)%n,t=1-k/Lc,p=P[idx],q=P[idx2];
+   ctx.strokeStyle='rgba('+glow+','+(0.14*t)+')';ctx.lineWidth=8*t+1.5;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();
+   ctx.strokeStyle='rgba('+core+','+(0.92*t)+')';ctx.lineWidth=2.5*t+0.5;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();}
+  var hp=P[Math.floor(head)%n],g=ctx.createRadialGradient(hp.x,hp.y,0,hp.x,hp.y,16);
+  g.addColorStop(0,'rgba('+core+',.95)');g.addColorStop(.4,'rgba('+glow+',.5)');g.addColorStop(1,'rgba('+glow+',0)');
+  ctx.fillStyle=g;ctx.beginPath();ctx.arc(hp.x,hp.y,16,0,7);ctx.fill();}
+ function chev(P,n,t){var i=Math.floor(t)%n,p=P[i],q=P[(i+2)%n],a=Math.atan2(q.y-p.y,q.x-p.x);
+  ctx.save();ctx.translate(p.x,p.y);ctx.rotate(a);ctx.strokeStyle='rgba(255,214,80,.9)';ctx.lineWidth=2.2;ctx.lineCap='round';
+  var s=5;ctx.beginPath();ctx.moveTo(-s,-s);ctx.lineTo(s,0);ctx.lineTo(-s,s);ctx.stroke();ctx.restore();}
+ function draw(cs,dt){var P=cs.perim,n=P.length;if(!cs.was){cs.phase=0;cs.was=true;}
+  ctx.strokeStyle='rgba(59,180,255,.12)';ctx.lineWidth=1.4;ctx.beginPath();for(var a=0;a<n;a++){var p=P[a];a?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y);}ctx.closePath();ctx.stroke();
+  if(reduce){ctx.strokeStyle='rgba(159,227,255,.5)';ctx.lineWidth=2;ctx.beginPath();for(var b=0;b<n;b++){var q=P[b];b?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y);}ctx.closePath();ctx.stroke();return;}
+  cs.phase+=(n/120)*(dt/16.7);comet(P,n,cs.phase,'159,227,255','59,180,255');comet(P,n,cs.phase+n*0.5,'255,236,170','246,200,30');
+  chev(P,n,(cs.phase+n*0.25)%n);chev(P,n,(cs.phase+n*0.75)%n);}
+ var last=performance.now();
+ function loop(now){var dt=Math.min(40,now-last);last=now;ctx.clearRect(0,0,W,H);ctx.globalCompositeOperation='lighter';
+  for(var i=0;i<cards.length;i++){var cs=cards[i],on=false;try{on=cs.el.matches(':hover');}catch(e){}if(on)draw(cs,dt);else cs.was=false;}
+  ctx.globalCompositeOperation='source-over';requestAnimationFrame(loop);}
+ addEventListener('resize',resize);addEventListener('load',resize);document.addEventListener('cardschanged',resize);
+ resize();setTimeout(resize,600);requestAnimationFrame(loop);})();
+</script>
+</body></html>
