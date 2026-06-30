@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Influence Register | BankRegWire</title>
+<meta name="description" content="A BankRegWire field tool mapping the banking, mortgage, crypto, and fintech trade associations that shape financial policy in Washington, sorted by pillar and cross-tagged by rivalry.">
+<!--
+  BankRegWire dispatch: The Influence Register
+  Single-file, no-build, GitHub Pages ready. Requires .nojekyll at repo root.
+  LINK TARGETS to confirm against your routing:
+    home  -> index.html
+    wire  -> wire-v2.html
+  Set the dispatch number in the eyebrow to match the wire-v2 catalogue once the
+  apex / www count is reconciled.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f3efe6; --paper-2:#ece5d6; --paper-3:#e4dccb;
+    --ink:#1c1a17; --ink-soft:#4a4540; --ink-faint:#736c63;
+    --oxblood:#6e2230; --oxblood-deep:#561722; --copper:#b06a35;
+    --rule:rgba(28,26,23,0.14); --rule-strong:rgba(28,26,23,0.28);
+    --shadow:0 1px 0 rgba(28,26,23,0.05),0 18px 40px -28px rgba(28,26,23,0.45);
+    --p-banking:#6e2230; --p-mortgage:#b06a35; --p-crypto:#3f6b5e;
+    --p-fintech:#46587a; --p-cross:#5a534b;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:'Archivo',system-ui,sans-serif;font-size:16px;line-height:1.55;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+  ::selection{background:var(--oxblood);color:var(--paper);}
+  a{color:var(--oxblood);text-decoration:none;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+
+  /* ===== Site header ===== */
+  .site-head{position:sticky;top:0;z-index:60;background:rgba(243,239,230,0.92);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--ink);}
+  .site-head-inner{display:flex;align-items:center;justify-content:space-between;
+    padding:12px 28px;max-width:1180px;margin:0 auto;}
+  .wordmark{font-family:'Fraunces',serif;font-weight:600;font-size:1.32rem;
+    letter-spacing:-0.01em;color:var(--ink);display:flex;align-items:baseline;gap:2px;}
+  .wordmark .reg{color:var(--oxblood);}
+  .wordmark .tick{width:7px;height:7px;background:var(--copper);display:inline-block;margin-left:5px;}
+  .site-nav{display:flex;gap:24px;align-items:center;
+    font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.1em;
+    text-transform:uppercase;}
+  .site-nav a{color:var(--ink-soft);}
+  .site-nav a:hover{color:var(--oxblood);}
+  .site-nav .here{color:var(--ink);border-bottom:2px solid var(--copper);padding-bottom:2px;}
+
+  /* ===== Hero ===== */
+  .hero{position:relative;overflow:hidden;border-bottom:2px solid var(--ink);
+    background:linear-gradient(180deg,var(--paper) 0%,var(--paper-2) 100%);}
+  #hero-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;}
+  .hero-scrim{position:absolute;inset:0;background:
+    radial-gradient(120% 90% at 18% 12%, rgba(243,239,230,0) 0%, rgba(243,239,230,0.65) 70%, rgba(236,229,214,0.9) 100%);
+    pointer-events:none;}
+  .hero-inner{position:relative;z-index:2;padding:60px 0 54px;}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.22em;
+    text-transform:uppercase;color:var(--ink-soft);margin:0 0 22px;display:flex;
+    flex-wrap:wrap;gap:8px 14px;align-items:center;}
+  .eyebrow .b{color:var(--oxblood);font-weight:600;}
+  .eyebrow .sep{color:var(--rule-strong);}
+  h1.title{font-family:'Fraunces',serif;font-weight:600;
+    font-size:clamp(2.5rem,6vw,4.7rem);line-height:0.98;letter-spacing:-0.02em;
+    margin:0 0 22px;max-width:15ch;}
+  h1.title em{font-style:italic;color:var(--oxblood);font-weight:500;}
+  .dek{font-family:'Fraunces',serif;font-weight:400;
+    font-size:clamp(1.05rem,1.7vw,1.34rem);line-height:1.5;max-width:60ch;
+    color:var(--ink-soft);margin:0 0 28px;}
+  .topic-chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .topic-chips .tc{font-family:'JetBrains Mono',monospace;font-size:10.5px;
+    letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-soft);
+    border:1px solid var(--rule-strong);padding:5px 11px;display:inline-flex;
+    align-items:center;gap:7px;}
+  .topic-chips .tc .dot{width:8px;height:8px;border-radius:50%;background:var(--mk);}
+
+  /* ===== Standfirst ===== */
+  .standfirst{padding:40px 0 8px;}
+  .standfirst .lede{font-family:'Fraunces',serif;font-size:1.18rem;line-height:1.5;
+    max-width:70ch;color:var(--ink);margin:0 0 8px;}
+  .standfirst .lede .drop{float:left;font-family:'Fraunces',serif;font-weight:600;
+    font-size:3.4rem;line-height:0.72;padding:6px 12px 0 0;color:var(--oxblood);}
+  .byline{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.08em;
+    text-transform:uppercase;color:var(--ink-faint);margin:18px 0 0;}
+  .statbar{display:flex;flex-wrap:wrap;gap:0;border-top:1px solid var(--ink);
+    border-bottom:1px solid var(--ink);margin:26px 0 0;}
+  .statbar .stat{flex:1 1 150px;padding:18px 22px 16px;border-right:1px solid var(--rule);}
+  .statbar .stat:last-child{border-right:none;}
+  .stat .num{font-family:'Fraunces',serif;font-weight:600;font-size:2rem;line-height:1;
+    display:block;margin-bottom:6px;letter-spacing:-0.02em;}
+  .stat .lbl{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.13em;
+    text-transform:uppercase;color:var(--ink-faint);}
+
+  /* ===== Tool tabs ===== */
+  nav.viewtabs{position:sticky;top:49px;z-index:50;background:var(--paper);
+    border-top:1px solid var(--rule);border-bottom:1px solid var(--ink);margin-top:34px;}
+  .viewtabs-inner{display:flex;gap:0;max-width:1180px;margin:0 auto;padding:0 28px;}
+  .viewtab{appearance:none;background:none;border:none;cursor:pointer;
+    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.13em;
+    text-transform:uppercase;color:var(--ink-soft);padding:15px 22px 15px 0;
+    margin-right:22px;border-bottom:3px solid transparent;margin-bottom:-1px;transition:color .15s;}
+  .viewtab:hover{color:var(--ink);}
+  .viewtab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--oxblood);}
+
+  .controls{padding:26px 0 18px;}
+  .controls-row{display:flex;flex-wrap:wrap;gap:14px 18px;align-items:center;justify-content:space-between;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{appearance:none;cursor:pointer;background:transparent;border:1px solid var(--rule-strong);
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;
+    color:var(--ink-soft);padding:7px 13px;display:inline-flex;align-items:center;gap:7px;transition:all .14s;}
+  .chip:hover{border-color:var(--ink);color:var(--ink);}
+  .chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .chip .dot{width:8px;height:8px;border-radius:50%;background:var(--mk,var(--ink-faint));display:inline-block;}
+  .chip[aria-pressed="true"] .dot{outline:1px solid var(--paper);}
+  .toolset{display:flex;gap:14px;align-items:center;}
+  .search{position:relative;}
+  .search input{font-family:'Archivo',sans-serif;font-size:14px;border:1px solid var(--rule-strong);
+    background:var(--paper);padding:9px 12px 9px 32px;width:230px;color:var(--ink);}
+  .search input:focus{outline:2px solid var(--oxblood);outline-offset:-1px;border-color:var(--oxblood);}
+  .search svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);opacity:.5;}
+  .toggle{display:flex;border:1px solid var(--rule-strong);}
+  .toggle button{appearance:none;background:transparent;border:none;cursor:pointer;
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;
+    color:var(--ink-soft);padding:8px 12px;}
+  .toggle button[aria-pressed="true"]{background:var(--ink);color:var(--paper);}
+  .toggle button+button{border-left:1px solid var(--rule-strong);}
+  .resultline{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.08em;
+    text-transform:uppercase;color:var(--ink-faint);margin:16px 0 0;}
+  .resultline b{color:var(--oxblood);font-weight:600;}
+
+  /* ===== Grid ===== */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;padding:24px 0 60px;}
+  .grid.list-mode{grid-template-columns:1fr;gap:0;border-top:1px solid var(--rule);}
+  .card{text-align:left;background:var(--paper-2);border:1px solid var(--rule);cursor:pointer;padding:0;
+    overflow:hidden;display:flex;flex-direction:column;position:relative;
+    transition:transform .16s,box-shadow .16s,border-color .16s;}
+  .card:hover{transform:translateY(-4px);border-color:var(--brand,var(--ink));box-shadow:0 0 0 1.5px var(--brand,var(--ink)),0 16px 38px -24px rgba(28,26,23,0.5);}
+  .card:focus-visible{outline:2px solid var(--oxblood);outline-offset:2px;}
+  .card .topline{height:4px;background:var(--brand,var(--mk));}
+  .card .cbody{padding:18px 18px 16px;display:flex;flex-direction:column;height:100%;}
+  .card .pill{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.13em;text-transform:uppercase;
+    color:var(--mk);font-weight:600;margin-bottom:11px;display:flex;align-items:center;gap:7px;}
+  .card .pill .flag{color:var(--ink-faint);border:1px solid var(--rule-strong);padding:1px 5px;font-size:8.5px;letter-spacing:0.1em;}
+  .card .acr{font-family:'Fraunces',serif;font-weight:600;font-size:1.55rem;line-height:1;letter-spacing:-0.01em;margin-bottom:5px;}
+  .card .nm{font-size:13px;color:var(--ink-soft);line-height:1.35;margin-bottom:13px;}
+  .card .mis{font-size:13.5px;color:var(--ink);line-height:1.45;margin-bottom:14px;flex:1;}
+  .card .meta{display:flex;flex-wrap:wrap;gap:4px 14px;font-family:'JetBrains Mono',monospace;font-size:10px;
+    letter-spacing:0.04em;color:var(--ink-faint);border-top:1px solid var(--rule);padding-top:11px;}
+  .card .meta span b{color:var(--ink-soft);font-weight:500;}
+  .grid.list-mode .card{flex-direction:row;align-items:stretch;border:none;border-bottom:1px solid var(--rule);background:transparent;}
+  .grid.list-mode .card:hover{transform:none;box-shadow:none;background:var(--paper-2);border-bottom-color:var(--brand,var(--ink));}
+  .grid.list-mode .card .topline{height:auto;width:4px;flex:0 0 4px;}
+  .grid.list-mode .card .cbody{flex-direction:row;align-items:center;gap:20px;padding:15px 18px;width:100%;}
+  .grid.list-mode .pill{margin-bottom:0;flex:0 0 132px;flex-direction:column;align-items:flex-start;gap:4px;}
+  .grid.list-mode .acr{margin-bottom:0;flex:0 0 105px;font-size:1.25rem;}
+  .grid.list-mode .nm{margin-bottom:0;flex:1 1 200px;}
+  .grid.list-mode .mis{display:none;}
+  .grid.list-mode .meta{border:none;padding:0;flex:0 0 auto;justify-content:flex-end;}
+
+  /* ===== Fault lines ===== */
+  .view{display:none;} .view.active{display:block;}
+  .fl-intro{padding:30px 0 8px;max-width:64ch;}
+  .fl-intro h2{font-family:'Fraunces',serif;font-weight:600;font-size:2rem;letter-spacing:-0.015em;margin:0 0 12px;}
+  .fl-intro p{color:var(--ink-soft);font-size:15px;margin:0;}
+  .faultlines{padding:18px 0 60px;display:flex;flex-direction:column;border-top:1px solid var(--ink);}
+  .fault{border-bottom:1px solid var(--rule);padding:24px 0;}
+  .fault-head{display:flex;align-items:flex-start;gap:18px;}
+  .fault-num{font-family:'Fraunces',serif;font-weight:600;font-size:2.4rem;line-height:0.8;color:var(--oxblood);
+    flex:0 0 auto;width:54px;letter-spacing:-0.02em;}
+  .fault-main{flex:1;}
+  .fault h3{font-family:'Fraunces',serif;font-weight:600;font-size:1.4rem;margin:0 0 8px;letter-spacing:-0.01em;line-height:1.1;}
+  .fault .vs{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--copper);margin-bottom:10px;}
+  .fault p{margin:0 0 14px;color:var(--ink-soft);font-size:14.5px;max-width:72ch;}
+  .fault .combatants{display:flex;flex-wrap:wrap;gap:7px;}
+  .tagbtn{appearance:none;cursor:pointer;background:var(--paper-2);border:1px solid var(--rule-strong);
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.05em;color:var(--ink-soft);
+    padding:5px 10px;transition:all .14s;display:inline-flex;align-items:center;gap:6px;}
+  .tagbtn:hover{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .tagbtn .dot{width:7px;height:7px;border-radius:50%;background:var(--mk);}
+  .tagbtn .side{opacity:.55;}
+
+  /* ===== Modal ===== */
+  .modal-scrim{position:fixed;inset:0;background:rgba(20,18,15,0.55);backdrop-filter:blur(2px);z-index:90;
+    display:none;align-items:flex-start;justify-content:center;padding:5vh 20px;overflow-y:auto;}
+  .modal-scrim.open{display:flex;}
+  .modal{background:var(--paper);max-width:760px;width:100%;border:2px solid var(--ink);
+    box-shadow:0 40px 90px -30px rgba(0,0,0,.6);position:relative;animation:rise .22s ease;}
+  @keyframes rise{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+  .modal .mk-bar{height:6px;background:var(--mk);}
+  .modal-close{position:absolute;top:14px;right:14px;appearance:none;background:var(--paper);
+    border:1px solid var(--rule-strong);width:34px;height:34px;cursor:pointer;font-size:18px;line-height:1;color:var(--ink-soft);z-index:2;}
+  .modal-close:hover{background:var(--ink);color:var(--paper);}
+  .modal-inner{padding:30px 38px 38px;}
+  .modal .m-pill{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.13em;text-transform:uppercase;
+    color:var(--mk);font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:9px;flex-wrap:wrap;}
+  .modal .m-flag{color:var(--ink-faint);border:1px solid var(--rule-strong);padding:2px 7px;font-size:9px;letter-spacing:0.1em;}
+  .modal h2.m-acr{font-family:'Fraunces',serif;font-weight:600;font-size:2.5rem;line-height:0.98;letter-spacing:-0.02em;margin:0 0 4px;}
+  .modal .m-name{font-size:15px;color:var(--ink-soft);margin-bottom:22px;}
+  .m-facts{display:flex;flex-wrap:wrap;gap:0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);margin-bottom:24px;}
+  .m-facts .f{flex:1 1 33%;min-width:120px;padding:12px 16px 11px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);}
+  .m-facts .f .k{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:4px;}
+  .m-facts .f .v{font-size:14px;color:var(--ink);line-height:1.3;}
+  .m-sec{margin-bottom:22px;}
+  .m-sec h4{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.13em;text-transform:uppercase;
+    color:var(--oxblood);margin:0 0 9px;padding-bottom:7px;border-bottom:1px solid var(--rule);}
+  .m-sec p{margin:0 0 10px;font-size:14.5px;line-height:1.55;color:var(--ink);}
+  .m-sec p:last-child{margin-bottom:0;}
+  .m-sec ul{margin:0;padding-left:18px;}
+  .m-sec li{font-size:14px;line-height:1.5;margin-bottom:6px;color:var(--ink);}
+  .m-leader b{color:var(--oxblood);font-weight:600;}
+  .m-fl-tags{display:flex;flex-wrap:wrap;gap:7px;}
+  .m-fl-tags .flt{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;background:var(--paper-2);
+    border:1px solid var(--rule-strong);padding:5px 9px;color:var(--ink-soft);cursor:pointer;}
+  .m-fl-tags .flt:hover{background:var(--ink);color:var(--paper);}
+
+  /* ===== Footer ===== */
+  footer{border-top:2px solid var(--ink);background:var(--paper-2);padding:42px 0 50px;}
+  footer h3{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--oxblood);margin:0 0 14px;}
+  footer .cols{display:grid;grid-template-columns:1.4fr 1fr;gap:38px;}
+  footer p{font-size:13px;color:var(--ink-soft);line-height:1.6;margin:0 0 12px;max-width:70ch;}
+  footer .sig{font-family:'Fraunces',serif;font-style:italic;font-size:1.1rem;color:var(--ink);margin-top:6px;}
+  footer ul{margin:0;padding-left:16px;}
+  footer li{font-size:12.5px;color:var(--ink-soft);line-height:1.5;margin-bottom:7px;}
+  .foot-links{display:flex;gap:22px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:11.5px;
+    letter-spacing:0.1em;text-transform:uppercase;margin-top:4px;}
+  .foot-links a{color:var(--ink);}
+  .foot-links a:hover{color:var(--oxblood);}
+  .colophon{margin-top:32px;padding-top:18px;border-top:1px solid var(--rule);font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;letter-spacing:0.06em;color:var(--ink-faint);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+  .empty{padding:60px 20px;text-align:center;color:var(--ink-faint);font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.05em;}
+
+  @media(max-width:720px){
+    .wrap{padding:0 18px;}
+    .site-head-inner{padding:11px 18px;}
+    .site-nav{gap:16px;font-size:10.5px;}
+    .site-nav .hide-sm{display:none;}
+    .hero-inner{padding:42px 0 38px;}
+    .standfirst .lede .drop{font-size:2.8rem;}
+    .statbar .stat{flex:1 1 50%;border-bottom:1px solid var(--rule);}
+    nav.viewtabs{top:48px;}
+    .viewtabs-inner{overflow-x:auto;padding:0 18px;}
+    .controls-row{flex-direction:column;align-items:stretch;}
+    .toolset{justify-content:space-between;}
+    .search input{width:100%;}
+    .modal-inner{padding:24px 22px 30px;}
+    .modal h2.m-acr{font-size:2rem;}
+    footer .cols{grid-template-columns:1fr;gap:26px;}
+    .grid.list-mode .cbody{flex-wrap:wrap;}
+    .grid.list-mode .pill{flex-basis:auto;flex-direction:row;}
+    .grid.list-mode .meta{display:none;}
+  }
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important;}}
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="site-head-inner">
+    <a class="wordmark" href="index.html" aria-label="BankRegWire home">Bank<span class="reg">Reg</span>Wire<span class="tick"></span></a>
+    <nav class="site-nav">
+      <a href="wire-v2.html">The Wire</a>
+      <a href="index.html" class="hide-sm">Dispatches</a>
+      <span class="here">Influence Register</span>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-scrim"></div>
+  <div class="wrap hero-inner">
+    <p class="eyebrow">
+      <span class="b">BankRegWire Dispatch</span>
+      <span class="sep">/</span><span>Field Tool</span>
+      <span class="sep">/</span><span>June 2026</span>
+    </p>
+    <h1 class="title">The trade groups that <em>work</em> the financial perimeter</h1>
+    <p class="dek">An interactive field guide to the banking, mortgage, crypto, and fintech associations that draft the comment letters, fund the PACs, and file the lawsuits shaping policy in Washington. Sorted by pillar, cross-tagged by the rivalries that move the debate.</p>
+    <div class="topic-chips">
+      <span class="tc" style="--mk:var(--p-banking)"><span class="dot"></span>Banking</span>
+      <span class="tc" style="--mk:var(--p-mortgage)"><span class="dot"></span>Mortgage</span>
+      <span class="tc" style="--mk:var(--p-crypto)"><span class="dot"></span>Crypto</span>
+      <span class="tc" style="--mk:var(--p-fintech)"><span class="dot"></span>Fintech</span>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <section class="standfirst">
+    <p class="lede"><span class="drop">W</span>ashington's financial-policy debates are easier to read as conflicts than as a roster. A capital rule, an open-banking mandate, a stablecoin bill: each pits a coalition against a rival, and the same handful of associations show up on opposite sides again and again. This tool profiles the heavyweights in four pillars, then cross-tags each to the six fault lines where the real fights happen.</p>
+    <p class="byline">Compiled by BankRegWire &middot; Leadership and figures current as of late 2025 / early 2026</p>
+    <div class="statbar">
+      <div class="stat"><span class="num" id="stat-count">0</span><span class="lbl">Associations profiled</span></div>
+      <div class="stat"><span class="num">4</span><span class="lbl">Pillars + cross-cutting</span></div>
+      <div class="stat"><span class="num">6</span><span class="lbl">Active fault lines</span></div>
+      <div class="stat"><span class="num">$245M+</span><span class="lbl">Crypto PAC haul, '24 cycle</span></div>
+    </div>
+  </section>
+</div>
+
+<nav class="viewtabs">
+  <div class="viewtabs-inner">
+    <button class="viewtab" data-view="directory" aria-selected="true">Directory</button>
+    <button class="viewtab" data-view="faultlines" aria-selected="false">Fault Lines</button>
+    <button class="viewtab" data-view="about" aria-selected="false">Method &amp; Caveats</button>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section class="view active" id="view-directory">
+    <div class="controls">
+      <div class="controls-row">
+        <div class="chips" id="pillar-chips" role="group" aria-label="Filter by pillar"></div>
+        <div class="toolset">
+          <div class="search">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="search" id="search" placeholder="Search name, mission, leader..." aria-label="Search associations">
+          </div>
+          <div class="toggle" role="group" aria-label="View mode">
+            <button id="btn-gallery" aria-pressed="true">Gallery</button>
+            <button id="btn-list" aria-pressed="false">List</button>
+          </div>
+        </div>
+      </div>
+      <p class="resultline" id="resultline"></p>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section class="view" id="view-faultlines">
+    <div class="fl-intro">
+      <h2>The six fault lines</h2>
+      <p>The most useful way to read this landscape is conflict by conflict. These are the rivalries and alliances that decide outcomes. Tap any combatant to open its dossier.</p>
+    </div>
+    <div class="faultlines" id="faultlines"></div>
+  </section>
+
+  <section class="view" id="view-about">
+    <div class="fl-intro">
+      <h2>Method &amp; caveats</h2>
+      <p>How this register was built, what is verified, and what to treat with caution.</p>
+    </div>
+    <div style="padding:18px 0 60px;max-width:74ch;">
+      <div class="m-sec"><h4>What this is</h4>
+        <p>A structured reference on the heavyweight financial-services trade associations operating in Washington across four pillars: banking, mortgage, crypto and digital assets, and fintech, plus the cross-cutting groups that touch all of them. Each entry carries founding, headquarters, mission, membership, current leadership, signature positions, lobbying and PAC activity, named campaigns, coalitions, and the tensions most relevant to an outside stakeholder.</p></div>
+      <div class="m-sec"><h4>Sourcing</h4>
+        <p>Built from primary sources where possible: association websites, IRS Form 990 filings, Senate LDA lobbying disclosures, FEC and OpenSecrets data, and reputable trade press. Lobbying figures are 2024 annual totals from OpenSecrets unless noted. Membership counts and asset-coverage figures are largely association-supplied and should be read as promotional unless tied to a regulator source or a 990.</p></div>
+      <div class="m-sec"><h4>Volatility warnings</h4>
+        <ul>
+          <li>Crypto leadership turned over heavily in 2025. Blockchain Association, Crypto Council for Innovation, The Digital Chamber, and the DeFi Education Fund all changed top leadership that year. Re-verify before any publication-critical use.</li>
+          <li>AFSA (Winslow replaced Himpler, July 2025) and ALTA (Morton replaced Tomb, June 2025) also changed chief executives recently. Older sources still list predecessors.</li>
+          <li>The CFPB Section 1033 open-banking rule is in flux. A November 2025 preliminary injunction blocks enforcement while the Bureau pursues a new rulemaking. The rule has not been finally vacated.</li>
+          <li>Some 2024 lobbying figures were not separately retrieved (BPI, CBA, CCI, and several smaller groups). Pull these from Senate LDA before relying on them.</li>
+        </ul></div>
+      <div class="m-sec"><h4>Classification notes</h4>
+        <p>Coin Center is a research and advocacy nonprofit closer to a think tank than a member-funded trade group. Stand With Crypto is a grassroots mobilization vehicle, and Fairshake is a super PAC network rather than a trade association. All are flagged where they appear because they shape the same debates from a different posture.</p></div>
+    </div>
+  </section>
+</main>
+
+<div class="modal-scrim" id="scrim" role="dialog" aria-modal="true" aria-labelledby="m-acr">
+  <div class="modal" id="modal">
+    <div class="mk-bar" id="m-mk"></div>
+    <button class="modal-close" id="m-close" aria-label="Close dossier">&times;</button>
+    <div class="modal-inner" id="modal-inner"></div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h3>About this dispatch</h3>
+        <p>The Influence Register is a BankRegWire field tool for the Washington policy community: members and staff, agency officials, journalists, and the associations themselves. It is descriptive, not an endorsement of any group's positions, and the policy characterizations are drawn from each association's own public advocacy.</p>
+        <p class="sig">Read the perimeter by its rivalries, not its rosters.</p>
+        <div class="foot-links">
+          <a href="index.html">&larr; All dispatches</a>
+          <a href="wire-v2.html">The Wire</a>
+        </div>
+      </div>
+      <div>
+        <h3>Reading the markers</h3>
+        <ul id="legend"></ul>
+      </div>
+    </div>
+    <div class="colophon">
+      <span>BankRegWire &middot; The Influence Register</span>
+      <span>Leadership current as of late 2025 / early 2026 &middot; verify before citing</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============ HERO PARTICLE NETWORK (dependency-free) ============ */
+(function(){
+  const canvas = document.getElementById("hero-canvas");
+  const hero = document.querySelector(".hero");
+  if(!canvas || !hero) return;
+  const ctx = canvas.getContext("2d");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let w,h,dpr,nodes,raf;
+  const INK="28,26,23", OX="110,34,48", CO="176,106,53";
+  function size(){
+    dpr = Math.min(window.devicePixelRatio||1, 2);
+    w = hero.clientWidth; h = hero.clientHeight;
+    canvas.width = w*dpr; canvas.height = h*dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    const count = Math.max(28, Math.min(64, Math.round(w/22)));
+    nodes = Array.from({length:count}, ()=>({
+      x:Math.random()*w, y:Math.random()*h,
+      vx:(Math.random()-0.5)*0.22, vy:(Math.random()-0.5)*0.22,
+      r:Math.random()*1.6+1.0,
+      c: Math.random()<0.16 ? OX : (Math.random()<0.16 ? CO : INK)
+    }));
+  }
+  function frame(){
+    ctx.clearRect(0,0,w,h);
+    for(const n of nodes){
+      n.x+=n.vx; n.y+=n.vy;
+      if(n.x<0||n.x>w) n.vx*=-1;
+      if(n.y<0||n.y>h) n.vy*=-1;
+    }
+    for(let i=0;i<nodes.length;i++){
+      for(let j=i+1;j<nodes.length;j++){
+        const a=nodes[i], b=nodes[j];
+        const dx=a.x-b.x, dy=a.y-b.y, d=Math.hypot(dx,dy);
+        if(d<128){
+          ctx.strokeStyle="rgba("+INK+","+(0.10*(1-d/128)).toFixed(3)+")";
+          ctx.lineWidth=0.6;
+          ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+        }
+      }
+    }
+    for(const n of nodes){
+      ctx.fillStyle="rgba("+n.c+","+(n.c===INK?0.32:0.6)+")";
+      ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);ctx.fill();
+    }
+    raf=requestAnimationFrame(frame);
+  }
+  function start(){
+    size();
+    if(reduce){ // draw a single static frame
+      for(const n of nodes){ctx.fillStyle="rgba("+n.c+",0.5)";ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);ctx.fill();}
+      return;
+    }
+    cancelAnimationFrame(raf); frame();
+  }
+  let t; window.addEventListener("resize",()=>{clearTimeout(t);t=setTimeout(start,180);});
+  start();
+})();
+
+/* ============ DATA ============ */
+const PILLARS = {
+  banking:{label:"Banking",mk:"var(--p-banking)"}, mortgage:{label:"Mortgage",mk:"var(--p-mortgage)"},
+  crypto:{label:"Crypto",mk:"var(--p-crypto)"}, fintech:{label:"Fintech",mk:"var(--p-fintech)"},
+  cross:{label:"Cross-cutting",mk:"var(--p-cross)"}
+};
+const FAULTS = {
+  "banks-vs-cu":{n:"01",title:"Banks vs. Credit Unions",vs:"The tax war",
+    body:"The defining, decades-old rivalry. ICBA and ABA attack the credit-union federal income tax exemption and credit unions' acquisition of tax-paying community banks. America's Credit Unions defends the exemption as its single top priority under the 'Don't Tax My Credit Union' banner. ICBA argues credit unions used the exemption to avoid roughly $4.3 billion in federal income taxes in 2025 while holding $2.5 trillion in tax-free assets.",
+    sides:[["ABA","challenger"],["ICBA","challenger"],["acu","defender"]]},
+  "banks-vs-fintech":{n:"02",title:"Banks vs. Fintech &amp; Crypto",vs:"The regulatory perimeter and open banking",
+    body:"Bank groups led by BPI, joined by the Kentucky Bankers Association and Forcht Bank, sued to kill the CFPB's Section 1033 open-banking rule and won a preliminary injunction in November 2025. Fintech groups (FTA, AFC) and the standards body FDX champion the rule. Banks also resist ILC and fintech federal charters that bypass the bank framework.",
+    sides:[["BPI","incumbent"],["ABA","incumbent"],["CBA","incumbent"],["FTA","challenger"],["AFC","challenger"],["FDX","challenger"]]},
+  "big-vs-community":{n:"03",title:"Big Banks vs. Community Banks",vs:"Tailoring and tiered relief",
+    body:"BPI and the Financial Services Forum speak for the largest institutions and prioritize the Basel III endgame capital fight. ICBA and CHLA prioritize tiered, tailored relief and argue small institutions should not face rules designed for giants. ABA must straddle both camps, which is the central tension of running a big-tent association.",
+    sides:[["BPI","big"],["FSF","big"],["ICBA","community"],["CHLA","community"],["ABA","straddle"]]},
+  "intra-crypto":{n:"04",title:"Intra-Crypto Competition",vs:"Too many voices, competing agendas",
+    body:"Multiple well-funded groups compete for primacy and sometimes push competing agendas, most visibly CFTC versus SEC jurisdiction and DeFi-specific versus exchange-centric priorities. New Blockchain Association CEO Summer Mersinger has explicitly called for industry unity, a tell that the fragmentation is real.",
+    sides:[["BA","contender"],["CCI","contender"],["TDC","contender"],["DEF","specialist"],["CC","specialist"],["SPI","contender"]]},
+  "title-siege":{n:"05",title:"The Title Industry Under Siege",vs:"ALTA vs. FHFA pilots and fintech alternatives",
+    body:"ALTA defends the title-insurance model against FHFA title-waiver pilots and fintech alternatives that it argues strip consumer protections. The fight pits ALTA against cost-cutting pressure from FHFA and some large lenders, with MBA and HPC navigating between member interests on either side.",
+    sides:[["ALTA","defender"],["MBA","adjacent"],["HPC","adjacent"]]},
+  "money-asymmetry":{n:"06",title:"The Money-Story Asymmetry",vs:"Lobbying dollars vs. election dollars",
+    body:"Legacy bank trades dominate direct federal lobbying: ABA near $7.4M, SIFMA near $7.6M, America's Credit Unions near $6.8M in 2024. Crypto's influence runs heavily through election spending instead. Crypto-related PACs and affiliated groups raised over $245 million for the 2024 cycle, and the Fairshake network banked roughly $193M heading into 2026, dwarfing the sector's registered lobbying.",
+    sides:[["ABA","lobby"],["SIFMA","lobby"],["acu","lobby"],["BA","election"],["FTA","election"],["Fairshake","election"]]}
+};
+const DATA = [
+{id:"ABA",brand:"#1B4D89",pillar:"banking",acr:"ABA",name:"American Bankers Association",founded:"1875",hq:"Washington, DC",lob:"~$7.39M (2024)",
+ mission:"The only trade association representing banks of all sizes, charters, and business models. The self-described voice of the nation's $25 trillion-plus banking industry.",
+ members:"Banks of every size, from small community banks to the largest money-center institutions. JPMorgan, Bank of America, and Wells Fargo all sit on its board. Represents an industry safeguarding roughly $19.7T in deposits and extending more than $13T in loans, and runs a State Association Alliance spanning all 50 state bankers associations.",
+ leader:"<b>Rob Nichols</b>, President &amp; CEO since August 2015. 2025-26 Board Chair: <b>Kenneth Kelly</b>, Chairman &amp; CEO of First Independence Bank (Detroit), elected October 2025. Executive staff includes a Chief Policy Officer and General Counsel.",
+ positions:["Released the 2025 Blueprint for Growth","Opposes Basel III endgame capital increases","Opposes the CFPB Section 1033 open-banking rule and Section 1071 small-business data collection","Pushes 'rational regulation,' pro-growth tax policy, and an all-of-government approach to fraud"],
+ campaigns:"Plaintiff and leader in industry litigation against regulators (seven suits in recent years). Runs the #BanksNeverAskThat anti-fraud consumer campaign and #PracticeSafeChecks.",
+ coalitions:"Member of the Engage China coalition. Leads the ABA / State Association Alliance.",
+ tension:"The big tent. Nichols is repeatedly named among Washington's top lobbyists. Persistent tension with ICBA over whether ABA adequately represents community banks. Aligned with BPI on big-bank capital fights but must balance small and large members.",
+ faults:["banks-vs-cu","banks-vs-fintech","big-vs-community","money-asymmetry"]},
+{id:"ICBA",brand:"#0C4A7A",pillar:"banking",acr:"ICBA",name:"Independent Community Bankers of America",founded:"1930",hq:"Washington, DC",lob:"~$3.29M (2024)",
+ mission:"One mission: to create and promote an environment where community banks flourish. Exclusively represents community banks.",
+ members:"Nearly 5,000 community banks of all sizes.",
+ leader:"<b>Rebeca Romero Rainey</b>, President &amp; CEO, a third-generation community banker and former CEO of Centinel Bank of Taos. 2025-26 Chairman: <b>Jack E. Hopkins</b>, President &amp; CEO of CorTrust Bank (Sioux Falls). Chairman-elect: Alice P. Frazier.",
+ positions:["'Repair, Reform, and Thrive' advocacy plan","Aggressively opposes tax-exempt credit unions acquiring tax-paying community banks","Pushes tiered and tailored regulatory relief","Helped shape stablecoin policy in the GENIUS Act; seeks fair tax treatment for community banks"],
+ campaigns:"Public campaign against credit-union acquisitions of banks and against the credit-union tax exemption. Opposes ILC / industrial loan charters.",
+ coalitions:"Leads community-bank coalitions and operates as a distinct voice alongside ABA.",
+ tension:"The community-bank champion. Frequent tension with ABA, which it sees as big-bank-dominated, and an intense, longstanding rivalry with the credit-union lobby. Argues credit unions exploit their exemption to overpay for community banks.",
+ faults:["banks-vs-cu","banks-vs-fintech","big-vs-community"]},
+{id:"BPI",brand:"#1E2A4A",pillar:"banking",acr:"BPI",name:"Bank Policy Institute",founded:"2018",hq:"Washington, DC",lob:"Not separately retrieved",
+ mission:"Nonpartisan public policy, research, and advocacy group representing universal banks, regional banks, and major foreign banks doing business in the US.",
+ members:"About 42 of the largest banking institutions. Board chaired by JPMorgan Chase CEO Jamie Dimon and includes Brian Moynihan (BofA), Charles Scharf (Wells Fargo), and Andrew Cecere (U.S. Bancorp).",
+ leader:"<b>Greg Baer</b>, President &amp; CEO, former Clearing House Association president, former Assistant Treasury Secretary, and a former JPMorgan and Fed official. Heather Hogsett leads the BITS technology-policy division as EVP.",
+ positions:["Leading opponent of the Basel III endgame","Pushing an overhaul of bank supervision toward material financial risk over check-the-box compliance","Opposes the CFPB 1033 rule","Supports congressional action on ILCs"],
+ campaigns:"Co-lead plaintiff with the Kentucky Bankers Association and Forcht Bank in the suit against the CFPB's Section 1033 rule, filed October 22, 2024 in the Eastern District of Kentucky. The court issued a preliminary injunction in November 2025, finding plaintiffs likely to succeed on all four claims. Also litigated the Fed stress-test framework.",
+ coalitions:"Works alongside ABA on big-bank issues. Operates BITS for cybersecurity and fraud.",
+ tension:"The big-bank brain trust: research-heavy and litigation-forward. Represents the largest institutions, so its interests can diverge from ICBA's community banks, and it competes with ABA to represent the biggest banks.",
+ faults:["banks-vs-fintech","big-vs-community"]},
+{id:"CBA",brand:"#15619D",pillar:"banking",acr:"CBA",name:"Consumer Bankers Association",founded:"1919",hq:"Washington, DC area",lob:"Not separately retrieved",
+ mission:"America's only member-driven trade association focused exclusively on retail banking.",
+ members:"The nation's largest retail banks, the vast majority holding more than $10B in assets and subject to CFPB supervision. Members account for roughly 2 million employees, $3.4T in consumer loans, and $173B in small-business loans.",
+ leader:"<b>Lindsey Johnson</b>, President &amp; CEO since July 2022, the first woman to lead CBA, former US Mortgage Insurers president and ex-Senate Banking staff. Kelvin Chen, SEVP and Head of Policy; David Pommerehn, EVP, General Counsel and Head of Regulatory Affairs; Kyle Glenn, SVP, Head of Legislative Affairs.",
+ positions:["Leading CFPB-reform advocate; published a white paper calling for restructuring the Bureau","Opposes the prior administration's 1033 final rule on fraud and liability grounds","Active on credit-card fees, small-dollar loans, and CRA"],
+ campaigns:"CFPB-reform push. Hosts CBA LIVE, its roughly 2,000-attendee annual conference.",
+ coalitions:"Works with ABA and BPI on consumer-facing regulatory fights.",
+ tension:"The retail-banking specialist. Overlaps with ABA on large retail banks but is distinguished by its concentrated CFPB focus.",
+ faults:["banks-vs-fintech"]},
+{id:"acu",brand:"#0E63B3",pillar:"banking",acr:"ACU",name:"America's Credit Unions",founded:"2024",hq:"Washington, DC",lob:"~$6.79M (2024)",
+ mission:"Unified national trade association advancing, empowering, and protecting credit unions, formed from the merger of CUNA and NAFCU.",
+ members:"The large majority of US credit unions. The industry serves more than 140 million member-owners, and the association represents 95 percent-plus of industry assets.",
+ leader:"<b>Jim Nussle</b>, President &amp; CEO, former CUNA CEO, former US Representative, and former OMB Director. NAFCU's Dan Berger exited at the end of 2023.",
+ positions:["Top priority is preserving the credit-union federal income tax exemption","Regulatory relief","Defending field-of-membership rules and credit-union acquisition activity"],
+ campaigns:"The 'Don't Tax My Credit Union' campaign.",
+ coalitions:"Works with state credit-union Leagues across all 50 states, Puerto Rico, and Guam.",
+ tension:"The credit-union megaphone. Its defining rivalry is with ICBA and ABA over the tax exemption and over credit unions acquiring community banks. Banks argue the exemption is an unfair subsidy.",
+ faults:["banks-vs-cu","money-asymmetry"]},
+{id:"IIB",brand:"#1A3A5F",pillar:"banking",acr:"IIB",name:"Institute of International Bankers",founded:"1966 (unverified)",hq:"New York, NY (DC-based CEO)",lob:"Not retrieved",
+ mission:"Represents internationally headquartered banks operating in the United States, seeking equal competitive treatment versus domestic banks.",
+ members:"Internationally headquartered banks whose US operations hold roughly $5T in assets and fund about 27 percent of US commercial lending.",
+ leader:"<b>Beth Zorc</b>, CEO since January 2023, former Senate Banking counsel.",
+ positions:["Equal competitive treatment for foreign banking organizations","Tailored application of US prudential rules to foreign banks","Capital and resolution policy as applied cross-border"],
+ campaigns:"Annual Washington conference and sustained engagement on the US treatment of foreign banking organizations.",
+ coalitions:"Aligns with large-bank groups on capital and supervision where interests overlap.",
+ tension:"The foreign-bank voice. Generally aligned with BPI and ABA on capital, but focused narrowly on cross-border competitive equity. Founding year commonly cited as 1966 but not independently confirmed.",
+ faults:[]},
+{id:"NBA",brand:"#14457B",pillar:"banking",acr:"NBA",name:"National Bankers Association",founded:"1927",hq:"Washington, DC",lob:"Not retrieved",
+ mission:"The voice for minority depository institutions, including Black-, Hispanic-, Asian-, Native American-, and women-owned banks.",
+ members:"Minority depository institutions across 32 states and territories.",
+ leader:"<b>Nicole A. Elam</b>, President &amp; CEO since 2021.",
+ positions:["Capital and deposit support for MDIs","Access to federal programs and partnerships","CDFI and minority-bank investment vehicles"],
+ campaigns:"Partnerships channeling capital to MDIs, including federal clean-investment and Treasury programs.",
+ coalitions:"Works with federal agencies, large banks, and philanthropic funders on MDI capitalization.",
+ tension:"A mission-focused group representing a distinct and underserved bank segment, more often a partner than a combatant in the major fault lines.",
+ faults:[]},
+{id:"MBCA",brand:"#3C5A78",pillar:"banking",acr:"MBCA",name:"Mid-Size Bank Coalition of America",founded:"Coalition",hq:"United States",lob:"Not retrieved",
+ mission:"Coalition of mid-sized US banks, the regional tier between community banks and the largest money-center institutions.",
+ members:"Mid-sized regional banks seeking regulatory tailoring appropriate to their tier.",
+ leader:"Coalition leadership rotates among member-bank executives.",
+ positions:["Regulatory tailoring for mid-size institutions","Proportionate supervision and capital treatment","Liquidity and deposit-stability policy after 2023 regional-bank stress"],
+ campaigns:"Advocacy on right-sizing rules for the regional tier.",
+ coalitions:"Operates as a coalition rather than a full-service trade association.",
+ tension:"Speaks for an institution size band whose interests sit between ICBA's community banks and BPI's giants, and can be squeezed by both.",
+ faults:["big-vs-community"]},
+{id:"FSF",brand:"#1F3A5F",pillar:"banking",acr:"FSF",name:"Financial Services Forum",founded:"2000",hq:"Washington, DC",lob:"Not retrieved",
+ mission:"CEO-level advocacy group representing the eight largest US banks.",
+ members:"The chief executives of the eight largest US banks.",
+ leader:"Led by a President and CEO with a small, senior policy staff.",
+ positions:["Capital and Basel policy for the largest banks","Systemic-risk and resolution frameworks","The competitiveness of large US banks"],
+ campaigns:"Research and principals-level engagement rather than grassroots campaigns.",
+ coalitions:"Closely aligned with BPI on big-bank priorities.",
+ tension:"The most exclusive bank club in Washington. Its eight-CEO membership makes it the purest expression of the biggest banks' interests and a frequent foil for community-bank and consumer groups.",
+ faults:["big-vs-community"]},
+{id:"MBA",brand:"#0F5E8A",pillar:"mortgage",acr:"MBA",name:"Mortgage Bankers Association",founded:"1914",hq:"Washington, DC",lob:"~$3.0M (2024)",
+ mission:"Represents the real estate finance industry across both residential and commercial or multifamily lending.",
+ members:"More than 2,200 member companies spanning independent mortgage banks, bank- and credit-union-affiliated lenders, servicers, and vendors. Board includes Wells Fargo, Fifth Third, Freedom Mortgage, Guild, and Lennar Mortgage.",
+ leader:"<b>Robert (Bob) Broeksmit</b>, CMB, President &amp; CEO since 2018. 2025 Chair: Laura Escobar (Lennar Mortgage). 2026 Chair: Christine R. Chandler. Bill Killmer leads legislative and political affairs as chief lobbyist; Michael Briggs is General Counsel; Pete Mills leads residential policy; Michael Fratantoni is Chief Economist.",
+ positions:["GSE reform that limits taxpayer risk","Credit-report cost and competition reform, ending the 'government-granted oligopoly'","Trigger-leads legislation","Servicing liquidity through Ginnie Mae; opposing CFPB overreach"],
+ campaigns:"Credit-report reform and a trigger-leads ban. Runs mPower (women's networking) and the Opens Doors Foundation.",
+ coalitions:"Works with HPC, NAR, and ALTA on housing-finance issues.",
+ tension:"The dominant mortgage-finance voice, bridging banks and independent mortgage banks. Some tension with bank trades over whether IMBs face adequate or excessive oversight.",
+ faults:["title-siege"]},
+{id:"HPC",brand:"#2A6098",pillar:"mortgage",acr:"HPC",name:"Housing Policy Council",founded:"Trade council",hq:"Washington, DC",lob:"Not retrieved",
+ mission:"Trade association of the nation's leading mortgage lenders, servicers, mortgage and title insurers, and data and technology firms, focused on the safety and soundness of the housing-finance system.",
+ members:"Leading national mortgage lenders and servicers, mortgage, hazard, and title insurers, and technology and data companies.",
+ leader:"<b>Ed DeMarco</b>, President since June 2017, former Acting Director of FHFA from 2009 to 2014, where he served as conservator of Fannie Mae and Freddie Mac.",
+ positions:["Responsible GSE conservatorship exit","GSE pricing transparency","Nonbank servicer liquidity","Consistent regulatory treatment across market participants"],
+ campaigns:"Policy-led engagement on GSE reform and servicing rather than public campaigns.",
+ coalitions:"Overlaps with MBA but represents a narrower set of large firms.",
+ tension:"An elite, policy-heavy council of the largest housing-finance firms. DeMarco's FHFA background gives it deep credibility on GSE reform.",
+ faults:["title-siege"]},
+{id:"ALTA",brand:"#0C6E9C",pillar:"mortgage",acr:"ALTA",name:"American Land Title Association",founded:"1907",hq:"Washington, DC",lob:"Not retrieved",
+ mission:"National trade association of the land-title insurance and settlement-services industry.",
+ members:"More than 6,000 title insurance companies, title and settlement agents, abstracters, title searchers, and real estate attorneys. The industry employs over 120,000 people.",
+ leader:"<b>Chris Morton</b>, CEO since June 2025, formerly SVP of Public Affairs and Chief Advocacy Officer, succeeding Diane Tomb after roughly six years. President: Richard Welshons.",
+ positions:["Defending the title-insurance model against title-insurance alternatives and waivers pushed by FHFA","Backing the Protecting America's Property Rights Act","Wire-fraud and cybersecurity awareness","Addressing discriminatory covenants"],
+ campaigns:"Active defense against FHFA title-waiver pilots and fintech title alternatives.",
+ coalitions:"Works with MBA and housing-finance groups, though their interests can diverge on title waivers.",
+ tension:"The title industry's defender, under direct threat from FHFA pilots and fintech alternatives it argues undercut consumer protection. Tomb's exit was widely read as a sign of pressure on the group's Capitol Hill effectiveness.",
+ faults:["title-siege"]},
+{id:"NAR",brand:"#0B6DB7",pillar:"mortgage",acr:"NAR",name:"National Association of Realtors",founded:"1908",hq:"Chicago / Washington, DC",lob:"Among top US spenders",
+ mission:"The largest US trade association, representing roughly 1.5 million realtor members, with deep relevance to mortgage finance.",
+ members:"About 1.5 million real estate professionals.",
+ leader:"Led by a CEO and an elected volunteer leadership structure.",
+ positions:["Mortgage interest deduction","GSE reform and conforming loan limits","Housing supply and affordability"],
+ campaigns:"Recently navigated the landmark commission-structure antitrust settlement of 2024. Maintains one of the largest lobbying and political operations in Washington.",
+ coalitions:"Allies with MBA and housing groups on finance and supply issues.",
+ tension:"A political heavyweight by sheer scale. Relevant to this landscape mainly through mortgage finance and housing policy rather than bank regulation.",
+ faults:[]},
+{id:"CHLA",brand:"#1E6B9E",pillar:"mortgage",acr:"CHLA",name:"Community Home Lenders of America",founded:"Trade association",hq:"Arlington, VA",lob:"Not retrieved",
+ mission:"The only national association exclusively representing independent mortgage bankers, the small and mid-sized community-based nonbank lenders.",
+ members:"Independent mortgage bankers. IMBs originate roughly two-thirds of all US mortgages and about 90 percent of FHA and VA loans.",
+ leader:"<b>Scott Olson</b>, Executive Director, a former House Financial Services Committee staffer.",
+ positions:["Opposing bank-style capital rules for IMBs, arguing they pose zero taxpayer or financial risk","FHA and Ginnie Mae policy that supports small lenders","Access to credit for underserved borrowers"],
+ campaigns:"Advocacy distinguishing small and mid-size IMBs from large nonbanks. Distinct from the separate Community Mortgage Lenders of America.",
+ coalitions:"Aligns with MBA on many issues but speaks specifically for smaller IMBs.",
+ tension:"The small-IMB champion, arguing the segment is over-targeted by capital and liquidity proposals designed for larger or riskier players.",
+ faults:["big-vs-community"]},
+{id:"MHI",brand:"#2C7A7B",pillar:"mortgage",acr:"MHI",name:"Manufactured Housing Institute",founded:"Trade association",hq:"Arlington, VA",lob:"Not retrieved",
+ mission:"National trade group for the manufactured and factory-built housing industry.",
+ members:"Manufacturers, lenders, retailers, and suppliers across the manufactured-housing sector.",
+ leader:"Led by a President and CEO with a federal-affairs team.",
+ positions:["Chattel lending policy","FHA Title I program","GSE Duty to Serve for manufactured housing"],
+ campaigns:"Advocacy on financing access for manufactured homes.",
+ coalitions:"Works with housing-finance and affordable-housing groups.",
+ tension:"Relevant to mortgage finance through a specialized, affordability-focused lending niche.",
+ faults:[]},
+{id:"BA",brand:"#2D6CDF",pillar:"crypto",acr:"BA",name:"Blockchain Association",founded:"2018",hq:"Washington, DC",lob:"~$1.97M (2024)",
+ mission:"Leading trade association representing the crypto industry in Washington, advancing digital-asset policy and defending decentralized technology.",
+ members:"More than 125 leading crypto organizations, including exchanges, custodians, investors, and infrastructure firms.",
+ leader:"<b>Summer Mersinger</b>, CEO since June 2, 2025, a former CFTC Commissioner and ex-aide to Senate Majority Leader John Thune. She succeeded Kristin Smith, who left to lead the Solana Policy Institute. Board President: Marta Belcher. Head of Policy: Sarah Milby.",
+ positions:["Market-structure legislation, the CLARITY Act","Stablecoin implementation under the GENIUS Act","Crypto tax reform","Opposing restrictive SEC enforcement"],
+ campaigns:"Joint letters opposing SEC Commissioner Caroline Crenshaw's reconfirmation. Unified industry market-structure principles.",
+ coalitions:"Coordinates with the Crypto Council for Innovation and the DeFi Education Fund on OCC GENIUS rulemaking comments and the anti-Crenshaw letter.",
+ tension:"The flagship crypto lobby. Mersinger's CFTC pedigree signals a push for CFTC over SEC jurisdiction. Some intra-industry friction over the proliferation of crypto groups; Mersinger has explicitly called for unity.",
+ faults:["intra-crypto","money-asymmetry"]},
+{id:"CCI",brand:"#2B3A55",pillar:"crypto",acr:"CCI",name:"Crypto Council for Innovation",founded:"2021",hq:"Washington, DC",lob:"Not retrieved",
+ mission:"A premier global alliance advancing crypto through research, education, and advocacy.",
+ members:"Major crypto firms and investors including a16z, Fidelity, Coinbase, and newest member SoFi. Houses the Proof of Stake Alliance (Jito Labs, Marinade, Consensys, Babylon).",
+ leader:"<b>Ji Hun Kim</b>, CEO since July 24, 2025, formerly interim CEO and President from January 2025 and former Chief Legal and Policy Officer, with prior roles as Gemini and Kraken counsel. He succeeded inaugural CEO Sheila Warren. Board Chair: Avichal Garg.",
+ positions:["Comprehensive market-structure legislation","A digital-asset tax framework","GENIUS Act implementation via OCC rulemaking comments","Prediction markets at the CFTC"],
+ campaigns:"The 'failure to pass market structure cedes US leadership' two-pager. Proof of Stake Alliance staking advocacy.",
+ coalitions:"Houses the Proof of Stake Alliance and coordinates with the Blockchain Association on OCC GENIUS rulemaking.",
+ tension:"The institutional, globally minded crypto voice with heavy a16z and Fidelity influence. Overlaps with the Blockchain Association and is distinguished by its international scope.",
+ faults:["intra-crypto"]},
+{id:"TDC",brand:"#1497B0",pillar:"crypto",acr:"TDC",name:"The Digital Chamber",founded:"2014",hq:"Washington, DC",lob:"Not retrieved",
+ mission:"The largest US trade association promoting blockchain, digital currency, and digital assets. Formerly the Chamber of Digital Commerce.",
+ members:"Broad blockchain-industry membership. Runs a State Network and a PAC.",
+ leader:"<b>Cody Carbone</b>, CEO since April 2025, promoted from President. Founder Perianne Boring moved to Board Chair. The group acquired UK body CryptoUK in 2025.",
+ positions:["A stablecoin framework allowing both banks and non-banks to issue with strict reserves","State-level digital-asset policy","Anti-CBDC advocacy"],
+ campaigns:"State Network engagement and federal stablecoin and market-structure advocacy.",
+ coalitions:"Competes with newer groups for membership and primacy; expanded internationally via CryptoUK.",
+ tension:"The veteran, original crypto group, now more offense-oriented under a friendlier administration. Competes for primacy with the Blockchain Association and CCI.",
+ faults:["intra-crypto"]},
+{id:"DEF",brand:"#1FAA6B",pillar:"crypto",acr:"DEF",name:"DeFi Education Fund",founded:"2021",hq:"Washington, DC",lob:"Not retrieved",
+ mission:"Research and advocacy for decentralized finance.",
+ members:"Supported by the DeFi industry; structured as an advocacy fund rather than a dues membership.",
+ leader:"<b>Amanda Tuminelli</b>, Executive Director since March 17, 2025, also Chief Legal Officer. She succeeded Miller Whitehouse-Levine, who moved to the Solana Policy Institute and remains on DEF's board.",
+ positions:["Fought the IRS and Treasury 'DeFi broker' reporting rule through litigation","DeFi protections in market-structure legislation","Privacy","Opposed SEC Commissioner Crenshaw's reconfirmation"],
+ campaigns:"Litigation-forward defense of decentralized, non-custodial software against intermediary regulation.",
+ coalitions:"Coordinates with the Blockchain Association on shared priorities.",
+ tension:"The DeFi-specific advocate, narrower than the Blockchain Association or CCI and focused on protecting decentralized software from intermediary-style regulation.",
+ faults:["intra-crypto"]},
+{id:"CC",brand:"#2E9E5B",pillar:"crypto",acr:"CC",name:"Coin Center",founded:"2014",hq:"Washington, DC",lob:"n/a (nonprofit)",flag:"Nonprofit / think tank",
+ mission:"Nonprofit research and advocacy center focused on the public-policy issues facing cryptocurrency. More think tank than lobby.",
+ members:"Funded by donations rather than dues; not a membership trade association.",
+ leader:"<b>Peter Van Valkenburgh</b>, Executive Director since January 1, 2025, formerly Research Director. Founder Jerry Brito and Robin Weisman stepped down at the end of 2024 and remain on the board. Landon Zinda is Policy Director.",
+ positions:["Financial privacy","Constitutional challenges to crypto surveillance","Sued Treasury over Tornado Cash sanctions","Fighting IRS crypto tax-reporting rules"],
+ campaigns:"Litigation and constitutional advocacy, including the Tornado Cash sanctions challenge.",
+ coalitions:"Respected across the industry as an independent voice rather than a corporate bloc.",
+ tension:"Flagged: a principled, privacy and civil-liberties-focused think tank rather than a corporate lobby, with a distinct mission from the membership-funded trades.",
+ faults:["intra-crypto"]},
+{id:"SWC",brand:"#0052FF",pillar:"crypto",acr:"SWC",name:"Stand With Crypto Alliance",founded:"2023",hq:"United States",lob:"n/a (grassroots)",flag:"Grassroots vehicle",
+ mission:"Grassroots advocacy nonprofit launched by Coinbase to mobilize crypto owners and grade politicians on crypto support.",
+ members:"Reached about 2.6 million US signups after adding 675,000 in the past year.",
+ leader:"Backed by Coinbase with a campaign-style organizing team.",
+ positions:["Mobilizing constituents behind pro-crypto legislation","Grading lawmakers on crypto stances","Driving member emails to Congress"],
+ campaigns:"Shepherded roughly 925,000 member emails to lawmakers in 2025.",
+ coalitions:"Works alongside the trade associations and the Fairshake PAC network.",
+ tension:"Flagged: a mobilization vehicle, not a traditional trade association, but a key force multiplier for the sector's lobbying.",
+ faults:[]},
+{id:"Fairshake",brand:"#C0492E",pillar:"crypto",acr:"FShake",name:"Fairshake (PAC network)",founded:"2023",hq:"United States",lob:"n/a (super PAC)",flag:"Super PAC network",
+ mission:"The crypto industry's super PAC network, with affiliates Protect Progress and Defend American Jobs.",
+ members:"Funded chiefly by Coinbase, Ripple, and a16z.",
+ leader:"Operated by political strategists on behalf of its corporate funders.",
+ positions:["Backing crypto-friendly candidates across both parties","Opposing candidates seen as hostile to digital assets"],
+ campaigns:"Spent more than $133M in independent expenditures in 2024 and banked roughly $193M heading into the 2026 midterms.",
+ coalitions:"The political-money arm that complements the trade associations' lobbying.",
+ tension:"Flagged: a super PAC, not a trade association, but central to the sector's DC influence and the clearest example of crypto's election-spending strategy.",
+ faults:["money-asymmetry"]},
+{id:"SPI",brand:"#9945FF",pillar:"crypto",acr:"SPI",name:"Solana Policy Institute",founded:"2025",hq:"Washington, DC",lob:"Not retrieved",
+ mission:"A newer, specialized crypto policy group focused on the Solana ecosystem and broader digital-asset policy.",
+ members:"Aligned with the Solana ecosystem and its participants.",
+ leader:"<b>Kristin Smith</b>, President since May 2025, formerly CEO of the Blockchain Association. Miller Whitehouse-Levine also joined from the DeFi Education Fund.",
+ positions:["Market-structure legislation","Network and validator policy","Digital-asset taxation"],
+ campaigns:"Early-stage advocacy building on its founders' Washington track records.",
+ coalitions:"Part of the broader crypto advocacy ecosystem, drawing talent from established groups.",
+ tension:"A specialized new entrant whose leadership pedigree, drawn from the Blockchain Association and DEF, instantly made it a player and added to intra-crypto competition.",
+ faults:["intra-crypto"]},
+{id:"FTA",brand:"#3457D5",pillar:"fintech",acr:"FTA",name:"Financial Technology Association",founded:"2020",hq:"Washington, DC",lob:"~$0.32M (2024)",
+ mission:"The leading trade association for the technology-centered financial-services industry, advocating modernized, consumer-centric regulation.",
+ members:"Major fintechs including Plaid, Chime, Betterment, Mercury, MX, Revolut, and Remitly, with board members from Brex and Figure.",
+ leader:"<b>Penny Lee</b>, President &amp; CEO, the inaugural chief executive, former Invariant public-affairs lead and ex-Senior Advisor to Senate Majority Leader Harry Reid.",
+ positions:["Strong defender of the CFPB Section 1033 open-banking rule","Opposes banks 'placing a tollbooth on data access'","AI in financial services","Payments and capital-markets innovation"],
+ campaigns:"Open-banking and 1033 defense. Annual Fintech CEO Summit and 'Fintech Explained' Hill briefings.",
+ coalitions:"Allies with AFC and consumer-data-access advocates against incumbent banks on 1033.",
+ tension:"The marquee fintech voice, directly opposed to bank groups on open banking and data access and aligned with fintech and crypto on the regulatory perimeter.",
+ faults:["banks-vs-fintech","money-asymmetry"]},
+{id:"AFC",brand:"#1E72B8",pillar:"fintech",acr:"AFC",name:"American Fintech Council",founded:"2021",hq:"Washington, DC",lob:"Not retrieved",
+ mission:"A standards-based association representing responsible fintech companies and innovative banks offering embedded finance, emphasizing consumer protection and compliance.",
+ members:"Leading fintechs and innovative or partner banks, including lending and banking-as-a-service firms, FICO, and PerformLine.",
+ leader:"<b>Phil Goldfeder</b>, CEO since February 2023, former Cross River SVP, former New York State Assemblyman, and ex-Schumer aide. Community Advisory Board Chairman: Prof. Cornelius Hurley.",
+ positions:["Consumer data access and open banking","Responsible bank-fintech partnerships and third-party risk management","Responsible BNPL standards opposing a state patchwork","AI"],
+ campaigns:"Standard-setting for responsible bank-fintech partnership models.",
+ coalitions:"Aligned with FTA against incumbent-bank data restrictions.",
+ tension:"The 'responsible fintech' standard-setter, focused on partnership-banking models. Overlaps and competes with FTA for fintech primacy.",
+ faults:["banks-vs-fintech"]},
+{id:"ETA",brand:"#0E5AA7",pillar:"fintech",acr:"ETA",name:"Electronic Transactions Association",founded:"1990",hq:"Washington, DC",lob:"Not retrieved",
+ mission:"The premier voice of the payments industry, a global advocacy and trade association for payments and fintech.",
+ members:"More than 500 companies across the payments value chain, including Amazon, Apple, Bank of America, Mastercard, Visa, PayPal, Block, Discover, and Chime. Members process roughly $56.75T annually. Acquired the American Transaction Processors Coalition in 2025-26.",
+ leader:"<b>Jodie Kelley</b>, CEO. 2026 Board President: Jamie Walker (U.S. Bank). EVP for government affairs: Scott Talbott.",
+ positions:["Opposing state interchange-fee restrictions such as the Illinois Interchange Fee Prohibition Act","Anti-fraud government engagement","Money-transmission and surcharge regulation","Crypto and payments innovation"],
+ campaigns:"Coordinated opposition to state interchange-fee laws.",
+ coalitions:"Aligned with card networks; can clash with merchant groups over interchange.",
+ tension:"The payments-industry powerhouse with broad incumbent and fintech membership, aligned with the card networks against merchant interchange efforts.",
+ faults:[]},
+{id:"AFSA",brand:"#15457E",pillar:"fintech",acr:"AFSA",name:"American Financial Services Association",founded:"1916",hq:"Washington, DC",lob:"Not retrieved",
+ mission:"Represents the consumer credit industry, protecting access to credit and consumer choice.",
+ members:"About 450 members, including consumer and commercial finance companies, vehicle finance, card issuers, and industrial banks.",
+ leader:"<b>Celia Winslow</b>, President &amp; CEO since July 2025, succeeding Bill Himpler. Many older sources still list Himpler.",
+ positions:["Protecting access to consumer credit","Vehicle-finance policy","Rate and fee regulation across consumer lending"],
+ campaigns:"Sustained advocacy on consumer-credit access and state and federal lending rules.",
+ coalitions:"Works with consumer-lending and industrial-bank interests.",
+ tension:"The consumer-credit industry's voice, spanning installment, vehicle, and card lenders, with a stake in industrial-bank and rate-regulation debates.",
+ faults:[]},
+{id:"FDX",brand:"#1597A6",pillar:"fintech",acr:"FDX",name:"Financial Data Exchange",founded:"2018",hq:"Reston, VA",lob:"n/a (standards body)",flag:"Standards body",
+ mission:"Nonprofit standards body developing the royalty-free FDX API for consumer-permissioned data sharing, the technical backbone of US open banking.",
+ members:"More than 200 organizations, with over 114 million consumer accounts on FDX-aligned APIs.",
+ leader:"<b>Kevin Feltes</b>, CEO since November 2024, the body's first chief executive and a former JPMorgan executive.",
+ positions:["A common, royalty-free open-banking data standard","Operationalizing consumer-permissioned data access","Security and interoperability across the data-sharing ecosystem"],
+ campaigns:"In January 2025 the CFPB recognized FDX as an official standard-setting body under Section 1033.",
+ coalitions:"Bridges banks and fintechs as the neutral standards layer, even as the two camps fight over the 1033 rule itself.",
+ tension:"Flagged: a standards body rather than a lobby. It sits structurally between the banks and fintechs, supplying the technical plumbing both sides need even while they litigate the rules.",
+ faults:["banks-vs-fintech"]},
+{id:"IPA",brand:"#2168A8",pillar:"fintech",acr:"IPA",name:"Innovative Payments Association",founded:"2008",hq:"Washington, DC",lob:"Not retrieved",
+ mission:"Represents the electronic payments sector, including prepaid products, mobile wallets, and peer-to-peer payments. Formerly the National Branded Prepaid Card Association.",
+ members:"Prepaid, mobile-wallet, and P2P payment companies.",
+ leader:"<b>Brian Tate</b>, President &amp; CEO.",
+ positions:["Prepaid and payments regulation","Consumer protection in electronic payments","Fraud and money-transmission policy"],
+ campaigns:"Advocacy on prepaid and digital-payments rules.",
+ coalitions:"Works with payments and fintech groups on shared regulatory issues.",
+ tension:"A focused payments voice, complementary to ETA but specialized in prepaid and emerging consumer-payment products.",
+ faults:[]},
+{id:"SIFMA",brand:"#1B4F8A",pillar:"cross",acr:"SIFMA",name:"Securities Industry and Financial Markets Association",founded:"2006",hq:"New York / Washington, DC",lob:"~$7.62M (2024)",
+ mission:"Represents broker-dealers, investment banks, and asset managers, touching banking and crypto through capital rules and market structure.",
+ members:"Members account for roughly 75 percent of US broker-dealer revenue and about 50 percent of asset-management AUM.",
+ leader:"<b>Kenneth E. Bentsen, Jr.</b>, President &amp; CEO, a former Texas Congressman.",
+ positions:["Opposing the Basel III endgame","Treasury clearing-mandate implementation","Digital assets and tokenization"],
+ campaigns:"Sustained engagement on capital, market structure, and the Treasury clearing mandate.",
+ coalitions:"Aligns with bank trades on capital rules; engages the crypto debate through market-structure work.",
+ tension:"The securities-industry heavyweight. Overlaps with bank groups on capital and with crypto groups on market structure, making it a connective node across pillars.",
+ faults:["money-asymmetry"]},
+{id:"USCC",brand:"#16294F",pillar:"cross",acr:"USCC",name:"US Chamber of Commerce (financial arms)",founded:"1912",hq:"Washington, DC",lob:"Among top US spenders",
+ mission:"The broad business federation whose Center for Capital Markets Competitiveness engages on financial regulation.",
+ members:"A broad cross-section of US business, with financial-services firms among its members.",
+ leader:"Led by the Chamber's President and CEO, with the CCMC running financial-regulation work.",
+ positions:["Challenging CFPB rules","Capital-markets competitiveness","Broad deregulatory advocacy across financial services"],
+ campaigns:"A frequent co-litigant and ally of bank trades in challenges to financial regulation.",
+ coalitions:"Allies with bank and industry trades on regulatory and litigation fights.",
+ tension:"A powerful generalist ally for the bank and industry camps, adding litigation muscle and breadth to financial-regulation fights without being a financial trade group itself.",
+ faults:["banks-vs-fintech"]}
+];
+
+/* ============ STATE ============ */
+let activePillar="all", query="", mode="gallery", pillarFromFault=null;
+const $ = s => document.querySelector(s);
+const byId = id => DATA.find(d=>d.id===id);
+const grid = $("#grid");
+function pillarMeta(p){return PILLARS[p]||{label:p,mk:"var(--ink)"};}
+
+function matches(d){
+  if(activePillar!=="all" && d.pillar!==activePillar) return false;
+  if(pillarFromFault && !d._hl) return false;
+  if(query){
+    const hay=(d.acr+" "+d.name+" "+d.mission+" "+d.leader+" "+d.tension).toLowerCase();
+    if(!hay.includes(query)) return false;
+  }
+  return true;
+}
+function cardHTML(d){
+  const pm=pillarMeta(d.pillar);
+  const flag=d.flag?`<span class="flag">${d.flag}</span>`:"";
+  return `<button class="card" data-id="${d.id}" style="--mk:${pm.mk};--brand:${d.brand||pm.mk}">
+    <span class="topline"></span>
+    <span class="cbody">
+      <span class="pill"><span class="dot" style="background:${pm.mk}"></span>${pm.label}${flag}</span>
+      <span class="acr">${d.acr}</span>
+      <span class="nm">${d.name}</span>
+      <span class="mis">${d.mission}</span>
+      <span class="meta"><span><b>Est</b> ${d.founded}</span><span><b>HQ</b> ${d.hq}</span><span><b>Lobby</b> ${d.lob}</span></span>
+    </span></button>`;
+}
+function render(){
+  DATA.forEach(d=>d._hl = pillarFromFault?pillarFromFault.includes(d.id):false);
+  const shown=DATA.filter(matches);
+  grid.className="grid"+(mode==="list"?" list-mode":"");
+  grid.innerHTML = shown.length===0
+    ? `<div class="empty">No associations match these filters. Clear the search or pick a different pillar.</div>`
+    : shown.map(cardHTML).join("");
+  let line=`<b>${shown.length}</b> of ${DATA.length} associations`;
+  if(activePillar!=="all") line+=` &middot; ${pillarMeta(activePillar).label}`;
+  if(pillarFromFault) line+=` &middot; highlighting one fault line <button id="clearfault" class="mono" style="background:none;border:none;color:var(--oxblood);cursor:pointer;text-decoration:underline;font-size:11px;">reset</button>`;
+  if(query) line+=` &middot; "${query}"`;
+  $("#resultline").innerHTML=line;
+  const cf=$("#clearfault"); if(cf) cf.onclick=()=>{pillarFromFault=null;render();};
+}
+function openModal(id){
+  const d=byId(id); if(!d) return;
+  const pm=pillarMeta(d.pillar);
+  $("#m-mk").style.background=d.brand||pm.mk;
+  const flag=d.flag?`<span class="m-flag">${d.flag}</span>`:"";
+  const faultTags=(d.faults||[]).map(f=>`<button class="flt" data-fault="${f}">${FAULTS[f].title.replace(/&amp;/g,'&')}</button>`).join("");
+  const posList=d.positions.map(p=>`<li>${p}</li>`).join("");
+  $("#modal-inner").innerHTML=`
+    <div class="m-pill" style="color:${pm.mk}"><span class="dot" style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${pm.mk}"></span>${pm.label}${flag}</div>
+    <h2 class="m-acr" id="m-acr">${d.acr}</h2>
+    <div class="m-name">${d.name}</div>
+    <div class="m-facts">
+      <div class="f"><div class="k">Founded</div><div class="v">${d.founded}</div></div>
+      <div class="f"><div class="k">Headquarters</div><div class="v">${d.hq}</div></div>
+      <div class="f"><div class="k">Federal lobbying</div><div class="v">${d.lob}</div></div>
+    </div>
+    <div class="m-sec"><h4>Mission</h4><p>${d.mission}</p></div>
+    <div class="m-sec"><h4>Membership</h4><p>${d.members}</p></div>
+    <div class="m-sec m-leader"><h4>Leadership</h4><p>${d.leader}</p></div>
+    <div class="m-sec"><h4>Key positions, 2025-26</h4><ul>${posList}</ul></div>
+    <div class="m-sec"><h4>Signature campaigns</h4><p>${d.campaigns}</p></div>
+    <div class="m-sec"><h4>Coalitions</h4><p>${d.coalitions}</p></div>
+    <div class="m-sec"><h4>Reputation &amp; tensions</h4><p>${d.tension}</p></div>
+    ${faultTags?`<div class="m-sec"><h4>Appears in fault lines</h4><div class="m-fl-tags">${faultTags}</div></div>`:""}`;
+  $("#scrim").classList.add("open"); document.body.style.overflow="hidden"; $("#m-close").focus();
+  $("#modal-inner").querySelectorAll(".flt").forEach(b=>{b.onclick=()=>{closeModal();switchView("faultlines");flashFault(b.dataset.fault);};});
+}
+function closeModal(){$("#scrim").classList.remove("open");document.body.style.overflow="";}
+function faultHTML(key){
+  const f=FAULTS[key];
+  const combatants=f.sides.map(([id,side])=>{
+    const d=byId(id); const pm=d?pillarMeta(d.pillar):{mk:"var(--ink)"};
+    return `<button class="tagbtn" data-id="${id}" style="--mk:${pm.mk}"><span class="dot"></span>${d?d.acr:id} <span class="side">${side}</span></button>`;
+  }).join("");
+  return `<div class="fault" id="fault-${key}"><div class="fault-head"><div class="fault-num">${f.n}</div>
+    <div class="fault-main"><h3>${f.title}</h3><div class="vs">${f.vs}</div><p>${f.body}</p>
+    <div class="combatants">${combatants}</div></div></div></div>`;
+}
+function renderFaults(){
+  $("#faultlines").innerHTML=Object.keys(FAULTS).map(faultHTML).join("");
+  $("#faultlines").querySelectorAll(".tagbtn").forEach(b=>{b.onclick=()=>openModal(b.dataset.id);});
+}
+function flashFault(key){
+  const el=$("#fault-"+key); if(!el) return;
+  el.scrollIntoView({behavior:"smooth",block:"center"});
+  el.animate([{background:"rgba(176,106,53,0.22)"},{background:"rgba(176,106,53,0)"}],{duration:1600,easing:"ease-out"});
+}
+function switchView(v){
+  document.querySelectorAll(".viewtab").forEach(t=>t.setAttribute("aria-selected",String(t.dataset.view===v)));
+  document.querySelectorAll(".view").forEach(s=>s.classList.toggle("active",s.id==="view-"+v));
+  const tabs=document.querySelector("nav.viewtabs");
+  if(tabs) window.scrollTo({top:tabs.offsetTop-50,behavior:"smooth"});
+}
+function buildChips(){
+  const opts=[["all","All","var(--ink)"]].concat(Object.keys(PILLARS).map(k=>[k,PILLARS[k].label,PILLARS[k].mk]));
+  $("#pillar-chips").innerHTML=opts.map(([k,l,mk])=>`<button class="chip" data-pillar="${k}" aria-pressed="${k==='all'}" style="--mk:${mk}"><span class="dot"></span>${l}</button>`).join("");
+  $("#pillar-chips").querySelectorAll(".chip").forEach(c=>{c.onclick=()=>{activePillar=c.dataset.pillar;pillarFromFault=null;
+    $("#pillar-chips").querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed",String(x===c)));render();};});
+}
+function buildLegend(){
+  $("#legend").innerHTML=Object.keys(PILLARS).map(k=>{const p=PILLARS[k];
+    return `<li><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${p.mk};margin-right:8px;vertical-align:middle;"></span>${p.label}</li>`;}).join("")
+    +`<li style="margin-top:8px;color:var(--ink-faint)">Each card's top bar uses the organization's brand color; the labeled dot and the filters show its pillar.</li>`
+    +`<li style="color:var(--ink-faint)">Flagged entries are regulators, nonprofits, standards bodies, or PACs, not conventional trade associations.</li>`;
+}
+buildChips(); buildLegend(); renderFaults(); render();
+$("#stat-count").textContent=DATA.length;
+document.querySelectorAll(".viewtab").forEach(t=>t.onclick=()=>switchView(t.dataset.view));
+grid.addEventListener("click",e=>{const c=e.target.closest(".card");if(c)openModal(c.dataset.id);});
+$("#search").addEventListener("input",e=>{query=e.target.value.trim().toLowerCase();render();});
+$("#btn-gallery").onclick=()=>{mode="gallery";$("#btn-gallery").setAttribute("aria-pressed","true");$("#btn-list").setAttribute("aria-pressed","false");render();};
+$("#btn-list").onclick=()=>{mode="list";$("#btn-list").setAttribute("aria-pressed","true");$("#btn-gallery").setAttribute("aria-pressed","false");render();};
+$("#m-close").onclick=closeModal;
+$("#scrim").addEventListener("click",e=>{if(e.target.id==="scrim")closeModal();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
+</script>
+</body>
+</html>

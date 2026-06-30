@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>The U.S. Treasury · BankRegWire</title>
+<meta name="description" content="An interactive reference to the U.S. Department of the Treasury — what it does, who leads it, where it derives its authority, and the major events in its history. Filed from the primary source." />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="BankRegWire" />
+<meta property="og:title" content="The U.S. Treasury — An Interactive Reference" />
+<meta property="og:description" content="What Treasury does, who leads it, where its authority comes from, and the milestones that built it. Conclusions front-loaded, read from the primary source." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --paper:#F4EFE4;
+    --paper-2:#ECE5D6;
+    --paper-3:#E4DBC8;
+    --ink:#211B14;
+    --ink-2:#4A4137;
+    --ink-3:#73685A;
+    --oxblood:#6B1F2B;
+    --oxblood-d:#551722;
+    --copper:#AE6A33;
+    --copper-l:#C7905E;
+    --rule:rgba(33,27,20,0.16);
+    --rule-soft:rgba(33,27,20,0.08);
+    --shadow:0 1px 0 rgba(33,27,20,0.05), 0 14px 34px -22px rgba(33,27,20,0.45);
+    --maxw:1080px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Archivo",system-ui,sans-serif;
+    font-size:17px;
+    line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+
+  /* faint engraved guilloché behind the masthead — currency is, literally, engraved */
+  .plate{
+    position:absolute;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    opacity:.10;
+    background:
+      radial-gradient(circle at 22% 30%, transparent 0 38px, rgba(110,31,43,.5) 39px 40px, transparent 41px 999px),
+      radial-gradient(circle at 22% 30%, transparent 0 64px, rgba(174,106,51,.45) 65px 66px, transparent 67px 999px),
+      radial-gradient(circle at 78% 64%, transparent 0 44px, rgba(110,31,43,.4) 45px 46px, transparent 47px 999px),
+      radial-gradient(circle at 78% 64%, transparent 0 72px, rgba(174,106,51,.4) 73px 74px, transparent 75px 999px),
+      repeating-radial-gradient(circle at 50% 40%, transparent 0 7px, rgba(33,27,20,.25) 7px 7.6px, transparent 7.6px 16px);
+    mask-image:linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
+    -webkit-mask-image:linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
+  }
+
+  a{color:inherit;}
+  ::selection{background:rgba(174,106,51,.28);}
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:40;
+    background:rgba(244,239,228,.86);
+    backdrop-filter:saturate(140%) blur(8px);
+    -webkit-backdrop-filter:saturate(140%) blur(8px);
+    border-bottom:1px solid var(--rule);
+  }
+  .topbar-in{
+    max-width:var(--maxw); margin:0 auto;
+    padding:11px 22px;
+    display:flex; align-items:center; gap:18px;
+    justify-content:space-between;
+  }
+  .wordmark{
+    font-family:"Archivo",sans-serif; font-weight:700;
+    letter-spacing:.12em; font-size:13px; text-transform:uppercase;
+    text-decoration:none; white-space:nowrap;
+  }
+  .wordmark b{color:var(--oxblood);}
+  .navlinks{ display:flex; gap:4px; flex-wrap:wrap; }
+  .navlinks a{
+    font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.06em;
+    text-transform:uppercase; text-decoration:none; color:var(--ink-3);
+    padding:5px 9px; border-radius:2px; transition:color .18s, background .18s;
+  }
+  .navlinks a:hover{ color:var(--ink); background:var(--paper-3); }
+  .navlinks a.active{ color:var(--oxblood); }
+  .navlinks a .rn{ color:var(--copper); margin-right:5px; }
+  @media (max-width:720px){ .navlinks{ display:none; } }
+
+  /* ---------- shell ---------- */
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 22px; position:relative; z-index:1; }
+
+  /* ---------- masthead ---------- */
+  header.mast{ position:relative; padding:62px 0 30px; overflow:hidden; }
+  .eyebrow{
+    font-family:"JetBrains Mono",monospace; font-size:12px; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--oxblood); font-weight:500;
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  }
+  .eyebrow .dot{ width:5px; height:5px; background:var(--copper); border-radius:50%; display:inline-block; }
+  h1.title{
+    font-family:"Fraunces",serif; font-weight:600;
+    font-size:clamp(44px,8.4vw,86px); line-height:.98; letter-spacing:-.015em;
+    margin:.34em 0 .12em; max-width:14ch;
+  }
+  h1.title em{ font-style:italic; font-weight:500; color:var(--oxblood); }
+  .standfirst{
+    font-size:clamp(18px,2.4vw,21px); line-height:1.5; color:var(--ink-2);
+    max-width:60ch; margin:.4em 0 0;
+  }
+  .standfirst b{ color:var(--ink); font-weight:600; }
+
+  .wire{
+    height:2px; margin:30px 0 22px; position:relative; overflow:hidden;
+    background:var(--rule-soft);
+  }
+  .wire::after{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(90deg, var(--oxblood), var(--copper) 55%, var(--copper-l));
+    transform-origin:left center; transform:scaleX(0);
+    animation:draw 1.5s cubic-bezier(.2,.7,.2,1) .25s forwards;
+  }
+  @keyframes draw{ to{ transform:scaleX(1);} }
+  @media (prefers-reduced-motion: reduce){ .wire::after{ animation:none; transform:scaleX(1);} }
+
+  .metarow{ display:flex; flex-wrap:wrap; gap:8px; }
+  .chip{
+    font-family:"JetBrains Mono",monospace; font-size:11.5px; letter-spacing:.04em;
+    color:var(--ink-2); background:var(--paper-2);
+    border:1px solid var(--rule); border-radius:2px; padding:6px 10px; white-space:nowrap;
+  }
+  .chip b{ color:var(--oxblood); font-weight:600; }
+
+  /* ---------- sections ---------- */
+  section{ padding:46px 0 8px; scroll-margin-top:74px; }
+  .sec-head{ display:flex; align-items:baseline; gap:14px; border-bottom:1px solid var(--rule); padding-bottom:12px; margin-bottom:24px; }
+  .rn-big{ font-family:"Fraunces",serif; font-style:italic; font-weight:500; font-size:clamp(20px,3vw,26px); color:var(--copper); line-height:1; }
+  .sec-head h2{
+    font-family:"Fraunces",serif; font-weight:600; font-size:clamp(26px,4.4vw,40px);
+    line-height:1.04; letter-spacing:-.01em; margin:0;
+  }
+  .sec-kicker{ font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-3); margin-left:auto; align-self:center; }
+  @media (max-width:560px){ .sec-kicker{ display:none; } }
+
+  .lead{ font-size:19px; line-height:1.55; max-width:64ch; margin:0 0 24px; }
+  .lead b{ color:var(--oxblood); font-weight:600; }
+  p{ max-width:68ch; }
+  .muted{ color:var(--ink-3); }
+
+  /* function ledger */
+  .ledger{ display:grid; grid-template-columns:repeat(2,1fr); gap:0 38px; margin:6px 0 30px; border-top:1px solid var(--rule-soft); }
+  @media (max-width:640px){ .ledger{ grid-template-columns:1fr; } }
+  .ledger li{ list-style:none; display:flex; gap:12px; padding:13px 0; border-bottom:1px solid var(--rule-soft); align-items:flex-start; }
+  .ledger ul{ margin:0; padding:0; }
+  .ledger .ix{ font-family:"JetBrains Mono",monospace; font-size:12px; color:var(--copper); padding-top:2px; min-width:22px; }
+  .ledger .fx{ font-size:15.5px; line-height:1.45; }
+  .ledger .fx b{ font-weight:600; }
+
+  /* bureau accordion */
+  .bur-intro{ font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3); margin:34px 0 12px; }
+  .bureaus{ border-top:1px solid var(--rule); }
+  .bureau{ border-bottom:1px solid var(--rule); }
+  .bureau-btn{
+    width:100%; text-align:left; background:none; border:0; cursor:pointer;
+    padding:16px 4px; display:flex; align-items:center; gap:16px; color:inherit;
+    font-family:inherit;
+  }
+  .bureau-btn:hover{ background:var(--rule-soft); }
+  .bureau-btn:focus-visible{ outline:2px solid var(--copper); outline-offset:-2px; }
+  .bur-abbr{ font-family:"JetBrains Mono",monospace; font-weight:600; font-size:13px; color:var(--oxblood); min-width:84px; }
+  .bur-name{ font-family:"Fraunces",serif; font-size:18px; font-weight:500; flex:1; }
+  .bur-tag{ font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3); }
+  .bur-plus{ font-family:"JetBrains Mono",monospace; color:var(--copper); font-size:18px; transition:transform .22s; }
+  .bureau.open .bur-plus{ transform:rotate(45deg); }
+  @media (max-width:560px){ .bur-tag{ display:none; } .bur-abbr{ min-width:64px; } }
+  .bureau-body{ max-height:0; overflow:hidden; transition:max-height .3s ease; }
+  .bureau.open .bureau-body{ max-height:460px; }
+  .bureau-inner{ padding:0 4px 20px 100px; }
+  @media (max-width:560px){ .bureau-inner{ padding-left:64px; } }
+  .bureau-inner p{ margin:0 0 12px; font-size:15.5px; line-height:1.55; }
+  .bureau-stats{ display:flex; flex-wrap:wrap; gap:8px; }
+
+  /* two-number budget callout */
+  .twocol{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin:30px 0 8px; }
+  @media (max-width:640px){ .twocol{ grid-template-columns:1fr; } }
+  .figbox{ background:var(--paper-2); border:1px solid var(--rule); border-radius:3px; padding:20px; position:relative; }
+  .figbox .lab{ font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3); }
+  .figbox .big{ font-family:"Fraunces",serif; font-weight:600; font-size:clamp(30px,5vw,42px); line-height:1.02; margin:8px 0 6px; color:var(--oxblood); }
+  .figbox .sub{ font-size:14px; line-height:1.45; color:var(--ink-2); }
+
+  /* leadership */
+  .lead-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin:8px 0 26px; }
+  @media (max-width:640px){ .lead-grid{ grid-template-columns:1fr; } }
+  .lcard{ border:1px solid var(--rule); border-radius:3px; padding:16px 18px; background:var(--paper-2); }
+  .lcard .role{ font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); }
+  .lcard .who{ font-family:"Fraunces",serif; font-size:21px; font-weight:600; margin:5px 0 2px; }
+  .lcard .who.vac{ color:var(--ink-3); font-style:italic; font-weight:500; font-size:18px; }
+  .lcard .note{ font-size:13.5px; color:var(--ink-2); line-height:1.45; }
+  .flag{ display:inline-block; font-family:"JetBrains Mono",monospace; font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; color:#fff; background:var(--copper); padding:2px 6px; border-radius:2px; margin-bottom:6px; }
+  .flag.vac{ background:var(--ink-3); }
+
+  .factline{ display:flex; gap:12px; align-items:flex-start; padding:11px 0; border-bottom:1px solid var(--rule-soft); }
+  .factline:first-of-type{ border-top:1px solid var(--rule); }
+  .factline .k{ font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--copper); min-width:160px; padding-top:2px; }
+  .factline .v{ font-size:15.5px; line-height:1.5; flex:1; }
+  @media (max-width:560px){ .factline{ flex-direction:column; gap:2px; } .factline .k{ min-width:0; } }
+
+  /* authority — constitutional cards + statute mapper */
+  .clausegrid{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:8px 0 30px; }
+  @media (max-width:760px){ .clausegrid{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:480px){ .clausegrid{ grid-template-columns:1fr; } }
+  .clause{ border:1px solid var(--rule); border-radius:3px; padding:15px; background:var(--paper-2); }
+  .clause .cite{ font-family:"JetBrains Mono",monospace; font-size:11px; color:var(--copper); letter-spacing:.03em; }
+  .clause .cn{ font-family:"Fraunces",serif; font-size:16.5px; font-weight:600; margin:6px 0 5px; line-height:1.2; }
+  .clause .cd{ font-size:13.5px; line-height:1.45; color:var(--ink-2); }
+
+  .mapper{ display:grid; grid-template-columns:minmax(0,260px) 1fr; gap:0; border:1px solid var(--rule); border-radius:3px; overflow:hidden; margin:6px 0 8px; }
+  @media (max-width:680px){ .mapper{ grid-template-columns:1fr; } }
+  .mapper-list{ border-right:1px solid var(--rule); background:var(--paper-2); }
+  @media (max-width:680px){ .mapper-list{ border-right:0; border-bottom:1px solid var(--rule); display:flex; overflow-x:auto; } }
+  .mapper-list button{
+    display:block; width:100%; text-align:left; background:none; border:0; cursor:pointer;
+    padding:13px 16px; font-family:inherit; font-size:14.5px; color:var(--ink-2);
+    border-bottom:1px solid var(--rule-soft); transition:background .15s,color .15s; white-space:nowrap;
+  }
+  .mapper-list button:hover{ background:var(--paper-3); color:var(--ink); }
+  .mapper-list button.on{ background:var(--paper); color:var(--oxblood); font-weight:600; box-shadow:inset 3px 0 0 var(--oxblood); }
+  @media (max-width:680px){ .mapper-list button{ border-bottom:0; } .mapper-list button.on{ box-shadow:inset 0 -3px 0 var(--oxblood); } }
+  .mapper-detail{ padding:22px 24px; min-height:170px; }
+  .mapper-detail .md-cite{ font-family:"JetBrains Mono",monospace; font-size:12px; color:var(--copper); letter-spacing:.04em; }
+  .mapper-detail .md-h{ font-family:"Fraunces",serif; font-size:22px; font-weight:600; margin:7px 0 9px; line-height:1.12; }
+  .mapper-detail p{ margin:0; font-size:15.5px; line-height:1.55; }
+
+  /* timeline */
+  .erafilter{ display:flex; flex-wrap:wrap; gap:7px; margin:4px 0 26px; }
+  .erafilter button{
+    font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+    background:var(--paper-2); border:1px solid var(--rule); color:var(--ink-2);
+    padding:7px 12px; border-radius:2px; cursor:pointer; transition:all .15s;
+  }
+  .erafilter button:hover{ border-color:var(--copper); color:var(--ink); }
+  .erafilter button.on{ background:var(--oxblood); border-color:var(--oxblood); color:#fff; }
+
+  .timeline{ position:relative; margin:0 0 10px; padding-left:30px; }
+  .timeline::before{
+    content:""; position:absolute; left:7px; top:6px; bottom:6px; width:2px;
+    background:linear-gradient(180deg, var(--copper), var(--oxblood));
+    border-radius:2px;
+  }
+  .tl-item{ position:relative; padding:0 0 4px; margin-bottom:8px; }
+  .tl-node{
+    position:absolute; left:-30px; top:7px; width:14px; height:14px; border-radius:50%;
+    background:var(--paper); border:2px solid var(--oxblood); box-shadow:0 0 0 4px var(--paper);
+  }
+  .tl-btn{
+    width:100%; text-align:left; background:none; border:0; cursor:pointer; color:inherit;
+    font-family:inherit; padding:8px 8px 8px 4px; display:flex; gap:14px; align-items:baseline;
+    border-radius:3px; transition:background .15s;
+  }
+  .tl-btn:hover{ background:var(--rule-soft); }
+  .tl-btn:focus-visible{ outline:2px solid var(--copper); outline-offset:-2px; }
+  .tl-year{ font-family:"JetBrains Mono",monospace; font-weight:600; font-size:13.5px; color:var(--oxblood); min-width:74px; }
+  .tl-title{ font-family:"Fraunces",serif; font-size:18px; font-weight:500; line-height:1.25; flex:1; }
+  .tl-era{ font-family:"JetBrains Mono",monospace; font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); }
+  @media (max-width:560px){ .tl-era{ display:none; } .tl-year{ min-width:60px; } }
+  .tl-body{ max-height:0; overflow:hidden; transition:max-height .28s ease; }
+  .tl-item.open .tl-body{ max-height:320px; }
+  .tl-item.open .tl-node{ background:var(--oxblood); }
+  .tl-inner{ padding:2px 8px 14px 92px; font-size:15px; line-height:1.55; color:var(--ink-2); }
+  @media (max-width:560px){ .tl-inner{ padding-left:64px; } }
+  .tl-inner .src{ display:block; margin-top:8px; font-family:"JetBrains Mono",monospace; font-size:11px; color:var(--copper); letter-spacing:.03em; }
+
+  /* notes / caveats */
+  .notes{ background:var(--paper-2); border:1px solid var(--rule); border-left:3px solid var(--copper); border-radius:3px; padding:20px 22px; margin:34px 0 8px; }
+  .notes h3{ font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-3); margin:0 0 12px; }
+  .notes ul{ margin:0; padding-left:18px; }
+  .notes li{ font-size:14.5px; line-height:1.55; margin-bottom:9px; color:var(--ink-2); }
+  .notes li b{ color:var(--ink); }
+
+  /* colophon */
+  footer{ margin-top:54px; border-top:1px solid var(--rule); padding:40px 0 70px; position:relative; z-index:1; }
+  .colophon{ font-family:"Fraunces",serif; font-size:clamp(22px,3.4vw,30px); font-weight:600; }
+  .colophon em{ font-style:italic; color:var(--oxblood); }
+  .col-body{ max-width:60ch; font-size:15px; line-height:1.6; color:var(--ink-2); margin:14px 0 22px; }
+  .sources{ font-family:"JetBrains Mono",monospace; font-size:11.5px; line-height:1.9; color:var(--ink-3); letter-spacing:.02em; }
+  .sources b{ color:var(--copper); font-weight:500; }
+  .foot-meta{ display:flex; flex-wrap:wrap; gap:8px 18px; margin-top:24px; font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.04em; color:var(--ink-3); }
+  .foot-meta a{ color:var(--oxblood); text-decoration:none; }
+  .foot-meta a:hover{ text-decoration:underline; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-in">
+    <a class="wordmark" href="https://www.bankregwire.com/wire.html">BANK<b>REG</b>WIRE</a>
+    <nav class="navlinks" id="nav">
+      <a href="#does"><span class="rn">I</span>What it does</a>
+      <a href="#leads"><span class="rn">II</span>Who leads it</a>
+      <a href="#authority"><span class="rn">III</span>Authority</a>
+      <a href="#history"><span class="rn">IV</span>History</a>
+    </nav>
+  </div>
+</div>
+
+<div class="wrap">
+  <header class="mast">
+    <div class="plate"></div>
+    <div class="eyebrow"><span>Structural · 25</span><span class="dot"></span><span>Reference</span><span class="dot"></span><span>The Dual Banking System</span></div>
+    <h1 class="title">The U.S. <em>Treasury</em>.</h1>
+    <p class="standfirst">The federal government's finance department, standing since <b>1789</b>. It collects the revenue, manages the debt, manufactures the cash, supervises the national banks, and runs the sanctions. Almost everything it does happens inside nine operating bureaus, the IRS chief among them.</p>
+    <div class="wire"></div>
+    <div class="metarow">
+      <span class="chip">Established · <b>2 Sept 1789</b></span>
+      <span class="chip">Codified · <b>Title 31 U.S.C.</b></span>
+      <span class="chip">Secretary · <b>Bessent (79th)</b></span>
+      <span class="chip">Staff · <b>≈114,000</b></span>
+      <span class="chip">Bureaus · <b>9 operating</b></span>
+    </div>
+  </header>
+
+  <!-- I. WHAT IT DOES -->
+  <section id="does">
+    <div class="sec-head">
+      <span class="rn-big">I</span>
+      <h2>What it does</h2>
+      <span class="sec-kicker">Functions · Bureaus · Scale</span>
+    </div>
+
+    <p class="lead">Treasury is the government's <b>money plumbing</b>. It brings the revenue in, sends the payments out, finances the gap by selling debt, and prints and mints the currency itself. The policy work sits in the Departmental Offices; the operations sit in the bureaus, which hold about 98 percent of the workforce.</p>
+
+    <div class="ledger">
+      <ul>
+        <li><span class="ix">01</span><span class="fx"><b>Collects the revenue.</b> Taxes, customs duties, and monies due to the United States, chiefly through the IRS.</span></li>
+        <li><span class="ix">02</span><span class="fx"><b>Pays the bills.</b> Disburses nearly all federal payments and keeps the government's accounts.</span></li>
+        <li><span class="ix">03</span><span class="fx"><b>Manages the public debt.</b> Issues Treasury bills, notes, and bonds and services the outstanding debt.</span></li>
+        <li><span class="ix">04</span><span class="fx"><b>Makes the money.</b> Mints coin and prints paper currency and federal securities.</span></li>
+        <li><span class="ix">05</span><span class="fx"><b>Supervises national banks.</b> Charters and examines national banks and federal thrifts through the OCC.</span></li>
+      </ul>
+      <ul>
+        <li><span class="ix">06</span><span class="fx"><b>Advises on policy.</b> Domestic and international financial, monetary, economic, trade, and fiscal policy.</span></li>
+        <li><span class="ix">07</span><span class="fx"><b>Enforces the finance laws.</b> Pursues tax evaders, counterfeiters, and forgers.</span></li>
+        <li><span class="ix">08</span><span class="fx"><b>Runs the sanctions.</b> Administers economic and trade sanctions through OFAC.</span></li>
+        <li><span class="ix">09</span><span class="fx"><b>Fights financial crime.</b> Administers the Bank Secrecy Act and the AML/CFT regime through FinCEN.</span></li>
+      </ul>
+    </div>
+
+    <p class="bur-intro">The nine operating bureaus · tap to open</p>
+    <div class="bureaus" id="bureaus"></div>
+
+    <div class="twocol">
+      <div class="figbox">
+        <div class="lab">Total outlays · FY2024</div>
+        <div class="big">≈ $1.3 T</div>
+        <div class="sub">About a fifth of all federal spending, third among agencies. But this is overwhelmingly interest on the public debt and refundable tax credits, not the cost of running the place.</div>
+      </div>
+      <div class="figbox">
+        <div class="lab">Operating budget</div>
+        <div class="big">≈ $13–14 B</div>
+        <div class="sub">The discretionary cost of the department itself. The IRS is by far the largest piece, collecting about $4.7 trillion, near 96 percent of the funding that runs the federal government.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- II. WHO LEADS IT -->
+  <section id="leads">
+    <div class="sec-head">
+      <span class="rn-big">II</span>
+      <h2>Who leads it</h2>
+      <span class="sec-kicker">As of 2026 · time-sensitive</span>
+    </div>
+
+    <p class="lead"><b>Scott Bessent, the 79th Secretary of the Treasury</b>, sworn in 28 January 2025 on a 68 to 29 Senate vote. The Secretary is the government's chief financial officer and the President's principal economic advisor, and sits fifth in the line of presidential succession.</p>
+
+    <div class="lead-grid" id="leadership"></div>
+
+    <div class="factline"><span class="k">Appointment</span><span class="v">Nominated by the President, confirmed by the Senate after a Finance Committee hearing, under the Appointments Clause. A Level I Executive Schedule post.</span></div>
+    <div class="factline"><span class="k">In the Cabinet</span><span class="v">A member of the Cabinet by custom and of the National Security Council by law.</span></div>
+    <div class="factline"><span class="k">Succession</span><span class="v">Fifth in the presidential line of succession, after the Secretary of State and before the Secretary of Defense.</span></div>
+    <div class="factline"><span class="k">On the currency</span><span class="v">The signatures of the Secretary and the Treasurer of the United States both appear on Federal Reserve notes.</span></div>
+  </section>
+
+  <!-- III. AUTHORITY -->
+  <section id="authority">
+    <div class="sec-head">
+      <span class="rn-big">III</span>
+      <h2>Where its authority comes from</h2>
+      <span class="sec-kicker">Constitution · Title 31 · Statute</span>
+    </div>
+
+    <p class="lead">The <b>power of the purse</b>. Treasury executes the taxing, borrowing, and coinage powers that Article I of the Constitution gives to Congress, plus the spending that only an appropriation can release. Its organization is codified in Title 31 of the U.S. Code, and individual functions trace to their own statutes.</p>
+
+    <div class="clausegrid">
+      <div class="clause"><div class="cite">Art. I · §8 · cl. 1</div><div class="cn">Tax & Spend</div><div class="cd">Congress may lay and collect taxes, duties, imposts, and excises.</div></div>
+      <div class="clause"><div class="cite">Art. I · §8 · cl. 2</div><div class="cn">Borrow</div><div class="cd">Borrow money on the credit of the United States.</div></div>
+      <div class="clause"><div class="cite">Art. I · §8 · cl. 5</div><div class="cn">Coin Money</div><div class="cd">Coin money and regulate its value.</div></div>
+      <div class="clause"><div class="cite">Art. I · §9 · cl. 7</div><div class="cn">Appropriations</div><div class="cd">No money drawn from the Treasury but by appropriation made in law.</div></div>
+      <div class="clause"><div class="cite">Art. I · §8 · cl. 18</div><div class="cn">Necessary & Proper</div><div class="cd">Hamilton's implied-powers basis for the First Bank, later affirmed in McCulloch v. Maryland.</div></div>
+      <div class="clause"><div class="cite">31 U.S.C. §301</div><div class="cn">The Department</div><div class="cd">Establishes Treasury as an executive department and the Secretary's general authority at §321.</div></div>
+    </div>
+
+    <p class="muted" style="font-size:14.5px;margin:0 0 16px;">The founding statute is the Act of 2 September 1789, which created the Department and the offices of Secretary, Comptroller, Auditor, Treasurer, and Register. Alexander Hamilton was sworn in nine days later. Each major function below carries its own delegated authority. Pick one.</p>
+
+    <div class="mapper">
+      <div class="mapper-list" id="mapperList"></div>
+      <div class="mapper-detail" id="mapperDetail"></div>
+    </div>
+  </section>
+
+  <!-- IV. HISTORY -->
+  <section id="history">
+    <div class="sec-head">
+      <span class="rn-big">IV</span>
+      <h2>Major events</h2>
+      <span class="sec-kicker">1775 → 2025 · tap to expand</span>
+    </div>
+
+    <p class="lead">Treasury is the <b>second-oldest department</b> in the government, and most of its present shape was set in three bursts: the founding under Hamilton, the financing of the Civil War, and the modern fiscal state built around 1913. Filter the spine, or open any entry.</p>
+
+    <div class="erafilter" id="eraFilter"></div>
+    <div class="timeline" id="timeline"></div>
+  </section>
+
+  <div class="notes">
+    <h3>Reading notes</h3>
+    <ul>
+      <li><b>Leadership is volatile.</b> As of mid-2026 there is no Senate-confirmed Deputy Secretary or IRS Commissioner; both are filled on a "performing the duties" basis. Re-verify the officeholder fields against treasury.gov before relying on them.</li>
+      <li><b>The headline spending figure is not operating cost.</b> Treasury's roughly $1.3 trillion in outlays is mostly interest on the public debt and refundable tax credits. Net interest on the debt passed $1 trillion for the first time in FY2025.</li>
+      <li><b>Staff counts diverge by measure.</b> The ≈114,000 department-wide figure is a September 2024 OPM number; 2025 workforce reductions lowered it. The IRS alone has multiple official measures (about 90,500 FTE; over 100,000 headcount) that should not be conflated.</li>
+      <li><b>Some bodies evolved in stages.</b> FinCEN began as a 1990 Treasury order and became a statutory bureau in 2002; the Mint was founded in 1792 but only came fully under Treasury in 1873. Both dates appear on the spine.</li>
+    </ul>
+  </div>
+
+  <footer>
+    <div class="colophon">Filed from the <em>primary source</em>.</div>
+    <p class="col-body">An interactive reference, not a brief. Functions are anchored to their governing statutes, conclusions are front-loaded, and the figures are labeled by fiscal year so they are not mistaken for one another. Where sources conflict on a minor detail, the primary Treasury, U.S. Code, IRS, and GAO records were taken over secondary commentary.</p>
+    <div class="sources">
+      <b>Primary sources ·</b> U.S. Department of the Treasury (home.treasury.gov; treasury bureaus; officials)<br/>
+      <b>·</b> Title 31 U.S.C. §§301, 321 et seq. (uscode.house.gov) · IRS Data Book FY2023 & Budget and Workforce<br/>
+      <b>·</b> GAO-24-107033 (TARP lifetime cost) · Federal Reserve History (First Bank, National Bank Acts, Bretton Woods, Treasury–Fed Accord)<br/>
+      <b>·</b> U.S. Senate roll-call records · U.S. Mint, BEP, OCC, OFAC, FinCEN, TTB
+    </div>
+    <div class="foot-meta">
+      <span>© 2026 BankRegWire</span>
+      <span>A working catalogue · Not legal advice</span>
+      <span>As of June 2026</span>
+      <a href="https://www.bankregwire.com/wire.html">← Back to the wire</a>
+    </div>
+  </footer>
+</div>
+
+<script>
+/* ---------------- DATA ---------------- */
+const BUREAUS = [
+  { abbr:"IRS", name:"Internal Revenue Service", tag:"Revenue",
+    body:"The largest bureau. Determines, assesses, and collects internal revenue, and administers the Internal Revenue Code. For FY2023 it collected about $4.7 trillion, roughly 96 percent of the funding that supports federal operations.",
+    chips:["Title 26 U.S.C.","≈100,000 staff","Est. 1862 / renamed 1953"] },
+  { abbr:"Fiscal Svc", name:"Bureau of the Fiscal Service", tag:"Payments & Debt",
+    body:"Formed in 2012 by merging the Financial Management Service and the Bureau of the Public Debt. Runs government accounting, payments, collections, and debt issuance. In 2025 it began phasing out paper checks for electronic payment.",
+    chips:["Government-wide accounts","Debt issuance","Created 2012"] },
+  { abbr:"U.S. Mint", name:"United States Mint", tag:"Coinage",
+    body:"Produces circulating coinage plus bullion and commemorative coins, and safeguards the bullion reserve at Fort Knox. Operates facilities in Philadelphia, Denver, San Francisco, and West Point.",
+    chips:["Coinage Act 1792","Fort Knox","4 facilities"] },
+  { abbr:"BEP", name:"Bureau of Engraving and Printing", tag:"Currency",
+    body:"Designs and manufactures U.S. paper currency, along with securities and other official documents. The engraving craft that gives the department its texture.",
+    chips:["Federal Reserve notes","Securities","Est. 1862"] },
+  { abbr:"OCC", name:"Office of the Comptroller of the Currency", tag:"Bank Supervision",
+    body:"Charters, regulates, and supervises national banks and federal savings associations. An independent bureau within Treasury, created with the national banking system in 1863.",
+    chips:["12 U.S.C. §1","National banks","Est. 1863"] },
+  { abbr:"OFAC", name:"Office of Foreign Assets Control", tag:"Sanctions",
+    body:"Administers and enforces economic and trade sanctions and maintains the Specially Designated Nationals (SDN) list. Sits within the Office of Terrorism and Financial Intelligence.",
+    chips:["IEEPA 1977","SDN List","Est. 1950"] },
+  { abbr:"FinCEN", name:"Financial Crimes Enforcement Network", tag:"AML / CFT",
+    body:"Administers the Bank Secrecy Act and collects and analyzes financial-transaction reporting (CTRs and SARs) to counter money laundering and terrorist financing.",
+    chips:["Bank Secrecy Act","SAR / CTR","Order 1990 · statute 2002"] },
+  { abbr:"TTB", name:"Alcohol & Tobacco Tax and Trade Bureau", tag:"Excise",
+    body:"Administers the laws on alcohol and tobacco production and distribution and collects the related excise taxes, plus firearms and ammunition excise. Created in 2003 when ATF's enforcement side moved to Justice.",
+    chips:["Excise tax","Created 2003","Split from ATF"] },
+  { abbr:"& others", name:"TIGTA, OIG, CDFI Fund, OFR, FSOC, FFB", tag:"Oversight & Policy",
+    body:"Supporting units: the Treasury Inspector General for Tax Administration and the Office of Inspector General; the Community Development Financial Institutions Fund; the Office of Financial Research and the Financial Stability Oversight Council secretariat; and the Federal Financing Bank.",
+    chips:["Oversight","Financial stability","Community investment"] }
+];
+
+const LEADERS = [
+  { role:"Secretary of the Treasury", who:"Scott Bessent", flag:"79th · confirmed", vac:false,
+    note:"Sworn in 28 Jan 2025 on a 68–29 vote. Former hedge-fund manager; first openly gay person to lead the department." },
+  { role:"Deputy Secretary", who:"Vacant", flag:"performing duties", vac:true,
+    note:"Michael Faulkender served from Mar 2025 and left that August. Francis Brooke performs the delegable duties." },
+  { role:"Under Secretary, Domestic Finance", who:"Jonathan McKernan", flag:"confirmed", vac:false,
+    note:"Leads the domestic-finance policy shop, including debt management and financial institutions." },
+  { role:"Under Secretary, International Affairs & TFI", who:"Acting", flag:"performing duties", vac:true,
+    note:"International Affairs and Terrorism and Financial Intelligence are filled on an acting basis." },
+  { role:"Treasurer of the United States", who:"Brandon Beach", flag:"since May 2025", vac:false,
+    note:"Took office 5 May 2025. Oversees the Mint and BEP; signature appears on the currency." },
+  { role:"IRS Commissioner", who:"Vacant", flag:"performing duties", vac:true,
+    note:"Billy Long was confirmed in June 2025 and removed that August. The Secretary performs the duties." }
+];
+
+const STATUTES = [
+  { fn:"Collect the income tax", cite:"16th Amendment · Revenue Act of 1913 · Title 26 U.S.C.", h:"The modern income tax",
+    d:"The 16th Amendment (1913) removed the apportionment barrier, and the Revenue Act of 1913 built the income tax and the Bureau of Internal Revenue, now codified in the Internal Revenue Code at Title 26 and administered by the IRS." },
+  { fn:"Charter national banks", cite:"National Currency & Bank Acts 1863–64 · 12 U.S.C. §1", h:"The national banking system",
+    d:"The National Currency Act of 1863, expanded in 1864, created the national banking system and the Office of the Comptroller of the Currency, the chartering and supervisory authority for national banks." },
+  { fn:"Administer sanctions", cite:"TWEA 1917 · IEEPA 1977", h:"Economic sanctions",
+    d:"OFAC's sanctions authority runs from the Trading with the Enemy Act of 1917 and, principally, the International Emergency Economic Powers Act of 1977, under which the President declares an emergency and Treasury implements." },
+  { fn:"Counter money laundering", cite:"Bank Secrecy Act 1970 · 31 U.S.C. §5311 et seq.", h:"The AML / CFT regime",
+    d:"The Bank Secrecy Act of 1970 built the reporting backbone, currency-transaction and suspicious-activity reports, that FinCEN administers to detect money laundering and terrorist financing." },
+  { fn:"Coin and print the money", cite:"Coinage Act of 1792 · 31 U.S.C. §§5101, 5114", h:"Currency and coin",
+    d:"The Coinage Act of 1792 established the Mint and the dollar. Title 31 carries the modern coinage and currency authorities exercised by the Mint and the Bureau of Engraving and Printing." },
+  { fn:"Issue the public debt", cite:"31 U.S.C. ch. 31 · §3101 et seq.", h:"Debt management",
+    d:"Title 31 authorizes Treasury to borrow on the credit of the United States and to issue bills, notes, and bonds, subject to the statutory debt limit set by Congress." },
+  { fn:"Stabilize a crisis", cite:"EESA 2008 · Pub. L. 110-343", h:"Emergency authority",
+    d:"The Emergency Economic Stabilization Act of 2008 created the $700 billion Troubled Asset Relief Program and the Office of Financial Stability; Dodd-Frank later cut the authority to $475 billion." }
+];
+
+const ERAS = [
+  { id:"all",      label:"All" },
+  { id:"founding", label:"Founding 1775–1815" },
+  { id:"civilwar", label:"Civil War 1861–1865" },
+  { id:"modern",   label:"Modern State 1913–1953" },
+  { id:"postwar",  label:"Postwar 1944–1990" },
+  { id:"contemp",  label:"Contemporary 2003–" }
+];
+
+const TIMELINE = [
+  { year:"1775–89", era:"founding", title:"Confederation finance", d:"The Continental Congress funds the Revolution with bills of credit from June 1775; Robert Morris serves as Superintendent of Finance from 1781, and a Treasury Board oversees confederation finances until 1789.", src:"Continental Congress records" },
+  { year:"2 Sep 1789", era:"founding", title:"The Department is established", d:"Congress passes the act establishing the Department of the Treasury. It is immediately the largest department in the new government, with about 39 employees.", src:"Act of 2 Sept 1789" },
+  { year:"11 Sep 1789", era:"founding", title:"Hamilton sworn in", d:"Alexander Hamilton becomes the first Secretary of the Treasury and serves until 1795, designing the institutions of public credit.", src:"Treasury historical record" },
+  { year:"1790", era:"founding", title:"Assumption and public credit", d:"Hamilton's Report on the Public Credit leads to federal assumption of roughly $75 million in state Revolutionary War debts and full repayment, reviving the nation's credit.", src:"Report on the Public Credit" },
+  { year:"1791", era:"founding", title:"First Bank of the United States", d:"Chartered 25 Feb 1791 for twenty years after the Hamilton–Jefferson clash over implied powers; opens in Philadelphia that December.", src:"Federal Reserve History" },
+  { year:"1792", era:"founding", title:"The Mint and the dollar", d:"The Coinage Act of 2 Apr 1792 establishes the U.S. Mint and the dollar. The Philadelphia Mint is the first federal building raised under the Constitution.", src:"Coinage Act of 1792" },
+  { year:"1861–62", era:"civilwar", title:"Greenbacks and the first income tax", d:"The Legal Tender Act of 1862 creates United States Notes, the first federal fiat paper money, and the Revenue Act of 1862 creates the Commissioner of Internal Revenue and the first federal income tax.", src:"Legal Tender Act · Revenue Act 1862" },
+  { year:"1863", era:"civilwar", title:"National banks and the OCC", d:"The National Currency Act creates the national banking system and the Office of the Comptroller of the Currency, expanded by the National Bank Act of 1864.", src:"National Banking Acts" },
+  { year:"1865", era:"civilwar", title:"The Secret Service", d:"Established under Treasury on 5 July 1865 to combat rampant counterfeiting of the new federal currency. It remained in Treasury until 2003.", src:"Treasury historical record" },
+  { year:"1913", era:"modern", title:"Income tax and the Federal Reserve", d:"The 16th Amendment and the Revenue Act of 1913 build the modern income tax and the Bureau of Internal Revenue; the Federal Reserve Act creates the central bank the same year.", src:"16th Amdt · Federal Reserve Act" },
+  { year:"1933–34", era:"modern", title:"Leaving the gold standard", d:"Amid the Depression and the New Deal, the United States leaves the domestic gold standard, reshaping Treasury's monetary role.", src:"New Deal monetary record" },
+  { year:"1940–45", era:"postwar", title:"War bonds and funds control", d:"World War II war-bond drives finance the conflict; the Office of Foreign Funds Control (1940) becomes a precursor to OFAC.", src:"Treasury wartime record" },
+  { year:"Jul 1944", era:"postwar", title:"Bretton Woods", d:"A conference organized by the U.S. Treasury, with Harry Dexter White a chief architect, creates the IMF, the World Bank, and the dollar-based postwar monetary system.", src:"Federal Reserve History" },
+  { year:"1950", era:"postwar", title:"OFAC formally established", d:"The Office of Foreign Assets Control is created after China's entry into the Korean War, consolidating the sanctions function.", src:"OFAC historical record" },
+  { year:"Mar 1951", era:"postwar", title:"The Treasury–Fed Accord", d:"Separates government debt management from monetary policy and establishes the modern independence of the Federal Reserve.", src:"Federal Reserve History" },
+  { year:"1953", era:"modern", title:"The IRS is named", d:"The Bureau of Internal Revenue is reorganized and renamed the Internal Revenue Service.", src:"Treasury Decision 6038" },
+  { year:"1970", era:"postwar", title:"Bank Secrecy Act", d:"The Currency and Foreign Transactions Reporting Act builds the anti-money-laundering reporting regime that FinCEN later administers.", src:"Bank Secrecy Act 1970" },
+  { year:"1977", era:"postwar", title:"IEEPA", d:"The International Emergency Economic Powers Act becomes OFAC's principal sanctions authority.", src:"IEEPA · 50 U.S.C." },
+  { year:"1990", era:"postwar", title:"FinCEN created", d:"Established by Treasury order to analyze financial-crime data; it becomes a statutory bureau in 2002.", src:"Treasury order · USA PATRIOT Act" },
+  { year:"2003", era:"contemp", title:"ATF and Secret Service depart", d:"Under the Homeland Security Act, ATF's enforcement role moves to Justice and the Secret Service and Customs move to DHS. Treasury creates the TTB to keep the alcohol and tobacco tax function.", src:"Homeland Security Act 2002" },
+  { year:"2008", era:"contemp", title:"TARP", d:"The Emergency Economic Stabilization Act creates the $700 billion Troubled Asset Relief Program and the Office of Financial Stability. By its 2023 wind-down, $443.5 billion had been spent at a lifetime cost of $31.1 billion.", src:"EESA 2008 · GAO-24-107033" },
+  { year:"2025", era:"contemp", title:"Bessent becomes the 79th Secretary", d:"Sworn in 28 Jan 2025. The same year, net interest on the public debt passes $1 trillion for the first time, and Treasury intensifies sanctions on major Russian oil producers.", src:"Senate records · Treasury releases" }
+];
+
+/* ---------------- RENDER ---------------- */
+const $ = (s,el=document)=>el.querySelector(s);
+
+// bureaus
+const burHost = $("#bureaus");
+BUREAUS.forEach((b,i)=>{
+  const el = document.createElement("div");
+  el.className = "bureau";
+  el.innerHTML = `
+    <button class="bureau-btn" aria-expanded="false">
+      <span class="bur-abbr">${b.abbr}</span>
+      <span class="bur-name">${b.name}</span>
+      <span class="bur-tag">${b.tag}</span>
+      <span class="bur-plus">+</span>
+    </button>
+    <div class="bureau-body"><div class="bureau-inner">
+      <p>${b.body}</p>
+      <div class="bureau-stats">${b.chips.map(c=>`<span class="chip">${c}</span>`).join("")}</div>
+    </div></div>`;
+  burHost.appendChild(el);
+  el.querySelector(".bureau-btn").addEventListener("click",()=>{
+    const open = el.classList.toggle("open");
+    el.querySelector(".bureau-btn").setAttribute("aria-expanded", open);
+  });
+});
+
+// leadership
+const leadHost = $("#leadership");
+LEADERS.forEach(l=>{
+  const el = document.createElement("div");
+  el.className = "lcard";
+  el.innerHTML = `
+    <div class="role">${l.role}</div>
+    <span class="flag ${l.vac?'vac':''}">${l.flag}</span>
+    <div class="who ${l.vac?'vac':''}">${l.who}</div>
+    <div class="note">${l.note}</div>`;
+  leadHost.appendChild(el);
+});
+
+// statute mapper
+const mList = $("#mapperList"), mDetail = $("#mapperDetail");
+function renderStatute(i){
+  const s = STATUTES[i];
+  mDetail.innerHTML = `<div class="md-cite">${s.cite}</div><div class="md-h">${s.h}</div><p>${s.d}</p>`;
+  [...mList.children].forEach((btn,j)=>btn.classList.toggle("on", j===i));
+}
+STATUTES.forEach((s,i)=>{
+  const btn = document.createElement("button");
+  btn.textContent = s.fn;
+  btn.addEventListener("click",()=>renderStatute(i));
+  mList.appendChild(btn);
+});
+renderStatute(0);
+
+// timeline + filter
+const tlHost = $("#timeline"), eraHost = $("#eraFilter");
+let activeEra = "all";
+function renderTimeline(){
+  tlHost.innerHTML = "";
+  TIMELINE.filter(t=>activeEra==="all"||t.era===activeEra).forEach(t=>{
+    const el = document.createElement("div");
+    el.className = "tl-item";
+    el.innerHTML = `
+      <span class="tl-node"></span>
+      <button class="tl-btn" aria-expanded="false">
+        <span class="tl-year">${t.year}</span>
+        <span class="tl-title">${t.title}</span>
+        <span class="tl-era">${(ERAS.find(e=>e.id===t.era)||{}).label.split(" ")[0]}</span>
+      </button>
+      <div class="tl-body"><div class="tl-inner">${t.d}<span class="src">Source · ${t.src}</span></div></div>`;
+    tlHost.appendChild(el);
+    el.querySelector(".tl-btn").addEventListener("click",()=>{
+      const open = el.classList.toggle("open");
+      el.querySelector(".tl-btn").setAttribute("aria-expanded", open);
+    });
+  });
+}
+ERAS.forEach(e=>{
+  const btn = document.createElement("button");
+  btn.textContent = e.label;
+  if(e.id==="all") btn.classList.add("on");
+  btn.addEventListener("click",()=>{
+    activeEra = e.id;
+    [...eraHost.children].forEach(b=>b.classList.remove("on"));
+    btn.classList.add("on");
+    renderTimeline();
+  });
+  eraHost.appendChild(btn);
+});
+renderTimeline();
+
+// scroll-spy
+const navLinks = [...document.querySelectorAll("#nav a")];
+const sections = navLinks.map(a=>document.querySelector(a.getAttribute("href")));
+const spy = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){
+      const id = "#"+en.target.id;
+      navLinks.forEach(a=>a.classList.toggle("active", a.getAttribute("href")===id));
+    }
+  });
+},{ rootMargin:"-45% 0px -50% 0px" });
+sections.forEach(s=>s&&spy.observe(s));
+</script>
+</body>
+</html>
