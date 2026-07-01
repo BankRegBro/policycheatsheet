@@ -303,6 +303,7 @@ body{background:radial-gradient(60% 28% at 50% 0%, rgba(59,180,255,.08), transpa
 
     <div class="modetoggle" role="tablist" aria-label="View">
       <button id="mode-docket" class="on" role="tab" aria-selected="true">Live docket</button>
+      <button id="mode-untriaged" role="tab" aria-selected="false">Untriaged</button>
       <button id="mode-archive" role="tab" aria-selected="false">Closed record</button>
     </div>
 
@@ -370,8 +371,8 @@ body{background:radial-gradient(60% 28% at 50% 0%, rgba(59,180,255,.08), transpa
    The Docket + Closed Record — one page, two modes.
    docket bills: disposition "in_flight"; archive bills: "enacted"/"died".
    ============================================================ */
-let DOCKET = [], ARCHIVE = [];
-let mode = "docket";            // "docket" | "archive"
+let DOCKET = [], ARCHIVE = [], UNTRIAGED = [];
+let mode = "docket";            // "docket" | "untriaged" | "archive"
 let BILLS = [];                 // active list
 
 /* ---------- stage helpers (docket) ---------- */
@@ -410,6 +411,19 @@ const SORTS = {
   docket: [["stage","Furthest along"],["recent","Most recent action"],["theme","By subject"],["number","Bill number"]],
   archive:[["closed","Most recently closed"],["outcome","Enacted first"],["theme","By subject"],["number","Bill number"]]
 };
+SORTS.untriaged = SORTS.docket;   // untriaged bills are in-flight, sort like the docket
+const sortSet = () => (mode==="archive") ? SORTS.archive : SORTS.docket;
+
+/* ---------- stage text (where a bill sits) ---------- */
+const STAGE_TEXT = {1:"Introduced",2:"In committee",3:"Passed a chamber",4:"In 2nd chamber",5:"Enacted"};
+function stripHTML(s){ return String(s||"").replace(/<[^>]+>/g," ").replace(/&nbsp;/g," ").replace(/\s+/g," ").trim(); }
+function shortSummary(b, n){
+  const t = stripHTML(b.summary);
+  if(!t) return "";
+  if(t.length <= (n||240)) return t;
+  const cut = t.slice(0, n||240);
+  return cut.slice(0, cut.lastIndexOf(" ")) + "…";
+}
 
 /* ---------- archive helpers ---------- */
 const isEnacted  = b => b.disposition === "enacted";
@@ -643,7 +657,45 @@ function archiveCardHTML(b){
     </div>
   </article>`;
 }
-function billHTML(b){ return isTerminal(b) ? archiveCardHTML(b) : docketCardHTML(b); }
+function untriagedCardHTML(b){
+  const sc = STAGE_CLASS[b.stage] || "introduced";
+  const bc = STAGE_BILLCLASS[b.stage] || "s-introduced";
+  const summ = shortSummary(b, 260);
+  const full = stripHTML(b.summary);
+  const matched = (b.matchedOn||[]).filter(x=>x!=="curation").join(", ");
+  return `
+  <article class="bill ${bc} untriaged" data-id="${b.id}">
+    <div class="bhead" role="button" tabindex="0">
+      <div class="bmain">
+        <div class="billno">${b.no} <span style="color:var(--ink-faint);font-weight:400;">· ${b.theme}</span></div>
+        <h3 class="stitle">${b.title||'(untitled)'}</h3>
+        ${summ?`<p class="summ">${summ}</p>`:`<p class="summ" style="color:var(--ink-faint);font-style:italic;">No summary provided yet.</p>`}
+        <div class="cardtags">
+          <span class="tg">${b.chamber||''}</span>
+          ${matched?`<span class="tg">matched: ${matched}</span>`:''}
+        </div>
+      </div>
+      <div class="bside">
+        <div class="status ${sc}">${STAGE_TEXT[b.stage]||'Introduced'}</div>
+        <div>
+          <div class="track">${trackHTML(b.stage)}</div>
+          <div class="tracklabs">${TRACK_LABELS.map((l,i)=>`<span style="${i+1<=b.stage?'color:var(--ink-soft);font-weight:600':''}">${l}</span>`).join("")}</div>
+        </div>
+      </div>
+    </div>
+    <div class="detail">
+      <div class="detailpad">
+        <div class="dsec"><h4>Summary${b.summarySource==='crs'?' · via CRS':''}</h4><p>${full||'No summary available yet.'}</p></div>
+        <a class="srclink" href="${b.src}" target="_blank" rel="noopener">↗ View on Congress.gov</a>
+        <p style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;color:var(--ink-faint);margin:10px 0 0;">Auto-discovered · not yet tracked. Add to curation.json to promote it onto the live docket.</p>
+      </div>
+    </div>
+  </article>`;
+}
+function billHTML(b){
+  if(mode==="untriaged") return untriagedCardHTML(b);
+  return isTerminal(b) ? archiveCardHTML(b) : docketCardHTML(b);
+}
 
 function render(){
   const filtered = BILLS.filter(matches);
@@ -652,8 +704,12 @@ function render(){
     let msg;
     if(BILLS.length===0 && mode==="archive"){
       msg = 'Nothing has closed yet. Bills appear here once they are enacted into law or expire with the Congress.';
+    } else if(BILLS.length===0 && mode==="untriaged"){
+      msg = 'No bills are awaiting review. Committee discovery adds bills here for you to scan; promote the ones worth tracking into curation.json.';
     } else {
-      msg = mode==="archive" ? 'No closed measures match these filters. Try clearing one.' : 'No measures match these filters. Try clearing one.';
+      msg = (mode==="archive") ? 'No closed measures match these filters. Try clearing one.'
+          : (mode==="untriaged") ? 'No discovered bills match these filters. Try clearing one.'
+          : 'No measures match these filters. Try clearing one.';
     }
     billsEl.innerHTML = `<div class="empty">${msg}</div>`;
   } else {
@@ -661,7 +717,7 @@ function render(){
     billsEl.querySelectorAll(".bill").forEach((el,i)=>{ el.style.animationDelay = (i*45)+"ms"; });
     attachHandlers();
   }
-  const noun = mode==="archive" ? "closed measures" : "measures";
+  const noun = (mode==="archive") ? "closed measures" : (mode==="untriaged") ? "discovered bills" : "measures";
   $("#resultcount").textContent = `Showing ${sorted.length} of ${BILLS.length} ${noun}`;
   const anyFilter = activeThemes.size||activeMeta.size||query;
   $("#clearbtn").style.display = anyFilter ? "inline":"none";
@@ -691,8 +747,9 @@ function attachHandlers(){
 /* ---------- mode switch ---------- */
 function rebuildSort(){
   const sel = $("#sort");
-  sel.innerHTML = SORTS[mode].map(([v,l])=>`<option value="${v}">Sort · ${l}</option>`).join("");
-  sortMode = SORTS[mode][0][0];
+  const set = sortSet();
+  sel.innerHTML = set.map(([v,l])=>`<option value="${v}">Sort · ${l}</option>`).join("");
+  sortMode = set[0][0];
   sel.value = sortMode;
 }
 function applyModeCopy(){
@@ -703,6 +760,12 @@ function applyModeCopy(){
     $("#metalab").innerHTML = "Filter by outcome &amp; chamber";
     $("#billcount").textContent = ARCHIVE.length;
     $("#bylinemid").innerHTML = `<b>${en}</b> enacted · <b>${di}</b> expired`;
+  } else if(mode==="untriaged"){
+    $(".title").innerHTML = 'The Untriaged <span class="amp">Queue</span>';
+    $("#deck").innerHTML = 'Bills auto-discovered from the House Financial Services and Senate Banking dockets that clear the jurisdiction and salience tests but are <em>not yet curated</em>. Scan them and promote the ones worth tracking.';
+    $("#metalab").innerHTML = "Filter by stage &amp; chamber";
+    $("#billcount").textContent = UNTRIAGED.length;
+    $("#bylinemid").innerHTML = `<b>${UNTRIAGED.length}</b> awaiting review`;
   } else {
     $(".title").innerHTML = 'The Legislative <span class="amp">Docket</span>';
     $("#deck").innerHTML = 'A working catalogue of the bank, payments, data, digital-asset &amp; housing bills moving through the 119th Congress — <em>read from the primary source, with conclusions front-loaded</em> and filed through the lens of the dual banking system.';
@@ -713,14 +776,15 @@ function applyModeCopy(){
 }
 function setMode(m){
   mode = m;
-  BILLS = (mode==="archive") ? ARCHIVE : DOCKET;
+  BILLS = (mode==="archive") ? ARCHIVE : (mode==="untriaged") ? UNTRIAGED : DOCKET;
   META  = (mode==="archive") ? META_ARCHIVE : META_DOCKET;
   activeThemes.clear(); activeMeta.clear(); query=""; showAll=false;
   $("#search").value = "";
-  $("#mode-docket").classList.toggle("on", mode==="docket");
-  $("#mode-archive").classList.toggle("on", mode==="archive");
-  $("#mode-docket").setAttribute("aria-selected", mode==="docket");
-  $("#mode-archive").setAttribute("aria-selected", mode==="archive");
+  ["docket","untriaged","archive"].forEach(k=>{
+    const btn = $("#mode-"+k);
+    btn.classList.toggle("on", mode===k);
+    btn.setAttribute("aria-selected", mode===k);
+  });
   applyModeCopy();
   rebuildSort();
   buildChips();
@@ -738,6 +802,7 @@ $("#clearbtn").addEventListener("click", ()=>{
   buildChips(); render();
 });
 $("#mode-docket").addEventListener("click", ()=>{ if(mode!=="docket") setMode("docket"); });
+$("#mode-untriaged").addEventListener("click", ()=>{ if(mode!=="untriaged") setMode("untriaged"); });
 $("#mode-archive").addEventListener("click", ()=>{ if(mode!=="archive") setMode("archive"); });
 
 async function getJSON(url){
@@ -752,8 +817,8 @@ async function boot(){
     billsEl.innerHTML = `<div class="empty">Could not load the docket (docket-build/data/docket.json). ${e}</div>`;
     return;
   }
-  try{ ARCHIVE = await getJSON('docket-build/data/archive.json'); }
-  catch(e){ ARCHIVE = []; }
+  try{ ARCHIVE = await getJSON('docket-build/data/archive.json'); } catch(e){ ARCHIVE = []; }
+  try{ UNTRIAGED = await getJSON('docket-build/data/untriaged.json'); } catch(e){ UNTRIAGED = []; }
   setMode("docket");
 }
 boot();
