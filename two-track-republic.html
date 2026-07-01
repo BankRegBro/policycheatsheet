@@ -7,30 +7,30 @@
 <title>The Two-Track Republic · BankRegWire</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2316150f'/%3E%3Cline x1='5' y1='16' x2='27' y2='16' stroke='%23d97e1d' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='3.5' fill='%23d97e1d'/%3E%3Ccircle cx='16' cy='16' r='1.4' fill='%2316150f'/%3E%3C/svg%3E">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500;1,9..144,600&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Archivo:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500;1,9..144,600&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
   :root{
-    --paper:#F3ECDC;
-    --paper-2:#ECE3CF;
-    --card:#FBF6EA;
-    --ink:#16150f;
-    --ink-soft:#48433a;
-    --ink-faint:#8a8273;
-    --rule:#ddd0b6;
-    --rule-strong:#c9b78c;
+    --paper:#0a0e1c;
+    --paper-2:#10162e;
+    --card:#10162e;
+    --ink:#e8edff;
+    --ink-soft:#c2cbe8;
+    --ink-faint:#99a4c6;
+    --rule:rgba(255,255,255,0.13);
+    --rule-strong:rgba(255,255,255,0.13);
     /* signature accent — burnt ochre */
-    --ochre:#d97e1d;
-    --ochre-deep:#b5641a;
-    --ochre-wash:#f4e6c9;
+    --ochre:#e9a55d;
+    --ochre-deep:#e8a05e;
+    --ochre-wash:#473715;
     /* federal / structural — navy */
-    --navy:#1c3a52;
-    --navy-2:#2c5777;
-    --navy-wash:#e3eaf0;
+    --navy:#71a9d6;
+    --navy-2:#71abd6;
+    --navy-wash:#202f3c;
     /* negative / excluded — oxblood */
-    --oxblood:#7c2d2d;
-    --oxblood-wash:#f0e0d9;
-    --display:'Fraunces', Georgia, 'Times New Roman', serif;
-    --sans:'Archivo', ui-sans-serif, system-ui, sans-serif;
+    --oxblood:#3bb4ff;
+    --oxblood-wash:#9fe3ff;
+    --display:'Archivo', Georgia, 'Times New Roman', serif;
+    --sans:'Inter', ui-sans-serif, system-ui, sans-serif;
     --mono:'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
   }
 
@@ -100,7 +100,7 @@
   .tile.ox .v{color:var(--oxblood);}
 
   /* ---------- section anchor nav ---------- */
-  .secnav{position:sticky;top:0;z-index:30;background:rgba(243,236,220,0.93);backdrop-filter:blur(6px);
+  .secnav{position:sticky;top:0;z-index:30;background:rgba(10,14,28,0.93);backdrop-filter:blur(6px);
     border-bottom:1px solid var(--rule-strong);margin-top:8px;}
   .secnav .inner{display:flex;gap:0;overflow-x:auto;font-family:var(--mono);font-size:11px;
     letter-spacing:.1em;text-transform:uppercase;scrollbar-width:none;}
@@ -353,10 +353,16 @@
     blockquote.pull{font-size:20px;}
     .fmeta{text-align:left;}
   }
+
+/* supercharge reskin */
+body{background:radial-gradient(60% 28% at 50% 0%, rgba(59,180,255,.08), transparent 60%), linear-gradient(180deg,#0a0e1c 0%,#0b1126 58%,#080b1c 100%)}
+::selection{background:rgba(59,180,255,.28)}
+.foot-contact{color:#ffe07a}
+.flag{color:#04121f !important}
 </style>
 </head>
 <body>
-<a class="brw-backhome" href="wire.html" aria-label="Back to BankRegWire">← BankRegWire</a>
+<a class="brw-backhome" href="index.html" aria-label="Back to BankRegWire">← BankRegWire</a>
 <style>
 .brw-backhome{position:fixed;top:14px;left:14px;z-index:9999;display:inline-flex;align-items:center;gap:6px;
   font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
@@ -744,7 +750,7 @@
     <div class="pstrip">
       <span>End of Dispatch · <span class="acc">The Two-Track Republic</span></span>
       <span>U.S. Financial Services Regulation</span>
-      <span>Set in Fraunces, Archivo &amp; JetBrains Mono</span>
+      <span>Set in Archivo, Inter &amp; JetBrains Mono</span>
     </div>
   </footer>
 
@@ -873,5 +879,51 @@
   start();
 })();
 </script>
+
+<style>
+.brw-wirenav{--bg:#16150f;--pa:#f1ede2;--cu:#cf7714;--cb:#f0a546;--ox:#7a1f2b;--hl:rgba(241,237,226,.14);
+  font-family:'Inter',system-ui,sans-serif;max-width:1060px;margin:64px auto 0;padding:0 22px 56px;color:var(--pa)}
+.brw-wirenav *{box-sizing:border-box}
+.brw-wirenav .bw-band{background:linear-gradient(180deg,rgba(22,21,15,.0),rgba(22,21,15,.55) 18%),var(--bg);
+  border:1px solid var(--hl);border-radius:16px;padding:26px 26px 22px;box-shadow:0 18px 50px -28px rgba(0,0,0,.7)}
+.brw-wirenav .bw-kick{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--cb);opacity:.85}
+.brw-wirenav .bw-crumb{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.04em;opacity:.6;margin-top:6px}
+.brw-wirenav .bw-crumb a{color:inherit;text-decoration:none;border-bottom:1px solid transparent}
+.brw-wirenav .bw-crumb a:hover{border-color:var(--cu)}
+.brw-wirenav .bw-pn{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+@media(max-width:620px){.brw-wirenav .bw-pn{grid-template-columns:1fr}}
+.brw-wirenav .bw-step{display:block;border:1px solid var(--hl);border-radius:12px;padding:14px 16px;text-decoration:none;color:var(--pa);transition:.16s;background:rgba(241,237,226,.02)}
+.brw-wirenav .bw-step:hover{border-color:rgba(240,165,70,.4);background:rgba(241,237,226,.05)}
+.brw-wirenav .bw-step.next{text-align:right}
+.brw-wirenav .bw-dir{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;opacity:.55}
+.brw-wirenav .bw-ti{display:block;font-family:'Archivo',Georgia,serif;font-size:18px;line-height:1.2;margin-top:5px;font-weight:540}
+.brw-wirenav .bw-step.empty{opacity:.32;pointer-events:none}
+.brw-wirenav .bw-rel{margin-top:20px;padding-top:18px;border-top:1px solid var(--hl)}
+.brw-wirenav .bw-rel .bw-kick{margin-bottom:10px;display:block}
+.brw-wirenav .bw-chips{display:flex;flex-wrap:wrap;gap:9px}
+.brw-wirenav .bw-chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--hl);border-radius:999px;padding:7px 13px;
+  text-decoration:none;color:var(--pa);font-size:13px;transition:.16s}
+.brw-wirenav .bw-chip:hover{border-color:var(--cu);background:rgba(207,119,20,.08)}
+.brw-wirenav .bw-chip .d{width:5px;height:5px;border-radius:50%;background:var(--cu)}
+.brw-wirenav .bw-all{display:inline-block;margin-top:18px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--cb);text-decoration:none;border-bottom:1px solid rgba(240,165,70,.4);padding-bottom:2px}
+.brw-wirenav .bw-all:hover{color:var(--pa)}
+@media print{.brw-wirenav{display:none}}
+</style>
+<nav class="brw-wirenav" aria-label="Continue on the wire">
+  <div class="bw-band">
+    <div class="bw-kick">Continue on the wire</div>
+    <div class="bw-crumb"><a href="index.html">The Wire</a> &nbsp;/&nbsp; Digital Assets &amp; Payments &nbsp;/&nbsp; The Two-Track Republic</div>
+    <div class="bw-pn">
+      <a class="bw-step prev" href="genius-act-dashboard.html"><span class="bw-dir">← Previous dispatch</span><span class="bw-ti">GENIUS Act Dashboard</span></a>
+      <a class="bw-step next" href="market-structure-watch.html"><span class="bw-dir">Next dispatch →</span><span class="bw-ti">The Odds Digital Asset Market Structure Gets Done</span></a>
+    </div>
+    <div class="bw-rel">
+      <span class="bw-kick">Related dispatches</span>
+      <div class="bw-chips"><a class="bw-chip" href="olp182-preemption-docket.html"><span class="d"></span>The Preemption Docket</a><a class="bw-chip" href="us-trust-company-regulatory-framework.html"><span class="d"></span>U.S. Trust Company Regulatory Framework</a><a class="bw-chip" href="occ-preemption-timeline.html"><span class="d"></span>OCC Preemption Timeline</a></div>
+    </div>
+    <a class="bw-all" href="index.html">All dispatches &nbsp;&#8599;</a><a class="foot-contact bw-all" href="mailto:feedback@bankregwire.com">Contact the author &nbsp;&#9993;</a>
+  </div>
+</nav>
 </body>
 </html>
