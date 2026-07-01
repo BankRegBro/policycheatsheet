@@ -28,6 +28,7 @@ DATA = ROOT / "data"
 CURATION = ROOT / "curation.json"
 OUT = DATA / "docket.json"
 UNTRIAGED = DATA / "untriaged.json"
+ARCHIVE = DATA / "archive.json"
 
 
 # ---------------------------------------------------------------- API client
@@ -159,7 +160,12 @@ def base_from_curation(cur):
         "crsSummaryUrl": cur.get("src", ""),
 
         "disposition": "enacted" if stage >= 5 else "in_flight",
-        "enacted": {"isLaw": stage >= 5, "publicLaw": None, "enactedDate": None, "textUrl": None},
+        "enacted": {
+            "isLaw": stage >= 5,
+            "publicLaw": cur.get("publicLaw"),
+            "enactedDate": cur.get("enactedDate"),
+            "textUrl": cur.get("textUrl"),
+        },
 
         "tracked": True,
         "pinned": cur.get("pinned", False),
@@ -212,6 +218,17 @@ def enrich(b, api, cur):
     b["stageKey"] = X.stage_key(b["stage"])
     b["disposition"] = "enacted" if b["stage"] >= 5 else "in_flight"
 
+    # Enactment metadata, from the API when the bill has become law.
+    if b["stage"] >= 5:
+        b["enacted"]["isLaw"] = True
+        laws = detail.get("laws") or []
+        if laws:
+            pl = f"{laws[0].get('type', 'Public Law')} {laws[0].get('number', '')}".strip()
+            b["enacted"]["publicLaw"] = pl or b["enacted"].get("publicLaw")
+        b["enacted"]["enactedDate"] = b["enacted"].get("enactedDate") or b["lastDate"]
+        # Curation may hand-supply a text URL; otherwise leave the congress.gov page.
+        b["enacted"]["textUrl"] = b["enacted"].get("textUrl") or cur.get("textUrl") or b.get("src")
+
     # CRS summary only fills in if the curator left summary blank.
     if not cur.get("summary"):
         summaries = api.sub(t, n, "summaries", "summaries")
@@ -224,9 +241,77 @@ def enrich(b, api, cur):
     return b
 
 
+# ---------------------------------------------------------------- Phase 3: archive
+def load_archive():
+    """Existing archive keyed by id. Prior entries are never lost on a refresh."""
+    if ARCHIVE.exists():
+        try:
+            return {b["id"]: b for b in json.loads(ARCHIVE.read_text())}
+        except Exception:
+            return {}
+    return {}
+
+
+def to_archive_record(b, disposition):
+    """Freeze a live docket record into the archive under a terminal disposition.
+    'enacted' = became law; 'died' = end-of-Congress sweep with no enactment."""
+    rec = dict(b)
+    rec["disposition"] = disposition
+    rec["tracked"] = False
+    rec["archivedDate"] = now_iso()
+    if disposition == "enacted":
+        rec["enacted"] = dict(rec.get("enacted") or {})
+        rec["enacted"]["isLaw"] = True
+        if not rec["enacted"].get("enactedDate"):
+            rec["enacted"]["enactedDate"] = rec.get("lastDate")
+        rec["stage"] = max(rec.get("stage", 1), 5)
+        rec["stageKey"] = X.stage_key(rec["stage"])
+    else:  # died
+        rec["diedDate"] = now_iso()
+        rec["diedCongress"] = C.CONGRESS
+    return rec
+
+
+def partition_and_archive(docket, do_sweep):
+    """Split enacted bills out of the live docket into the archive. On --sweep,
+    also retire everything still in flight as 'died'. Returns the live docket.
+    Enacted always beats died: a sweep never downgrades an enacted entry."""
+    arch = load_archive()
+
+    live = []
+    for b in docket:
+        already = arch.get(b["id"], {}).get("disposition") == "enacted"
+        if b.get("stage", 1) >= 5 or already:
+            rec = to_archive_record(b, "enacted")
+            arch[b["id"]] = rec
+            print(f"  archived (enacted) {b['no']}")
+        else:
+            live.append(b)
+
+    if do_sweep:
+        for b in live:
+            if arch.get(b["id"], {}).get("disposition") == "enacted":
+                continue
+            arch[b["id"]] = to_archive_record(b, "died")
+            print(f"  swept (died) {b['no']}")
+        live = []   # the Congress is closed; nothing remains in flight
+
+    records = list(arch.values())
+    # Most recently closed first: enacted date, then died date, then archived stamp.
+    def close_date(r):
+        return (r.get("enacted", {}) or {}).get("enactedDate") or r.get("diedDate") or r.get("archivedDate") or ""
+    records.sort(key=close_date, reverse=True)
+
+    ARCHIVE.parent.mkdir(parents=True, exist_ok=True)
+    ARCHIVE.write_text(json.dumps(records, indent=2, ensure_ascii=False))
+    print(f"Wrote {ARCHIVE.relative_to(REPO)}  ({len(records)} archived)")
+    return live
+
+
 # ---------------------------------------------------------------- main
 def main():
     do_discover = "--discover" in sys.argv[1:]
+    do_sweep = "--sweep" in sys.argv[1:]
     key = os.environ.get("CONGRESS_API_KEY", "").strip()
     curation = json.loads(CURATION.read_text())["bills"]
     api = Congress(key) if key else None
@@ -243,6 +328,9 @@ def main():
             except Exception as e:
                 print(f"  ! {cur.get('no')}: {e}", file=sys.stderr)
         docket.append(b)
+
+    # Move enacted bills (and, on --sweep, dead ones) into the archive.
+    docket = partition_and_archive(docket, do_sweep)
 
     # Furthest along first, then most recent action.
     docket.sort(key=lambda x: (x["stage"], x["lastDate"] or ""), reverse=True)
