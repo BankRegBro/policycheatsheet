@@ -89,6 +89,13 @@ SALIENCE = {
     "has_companion": True,      # an identified related/companion bill
 }
 
+# ---- Phase 2 discovery budget ----
+# Committee bill lists can run to hundreds; salience needs per-bill detail calls.
+# One discovery run hydrates at most this many NEW candidates, most-recently-acted
+# first, then keeps only those that clear jurisdiction + salience. Bounds the call
+# budget: ~DISCOVERY_CAP * 5 endpoints per run, well under the hourly cap.
+DISCOVERY_CAP = 40
+
 # ---- Stage model (mirrors the existing tool) ----
 # 1 introduced  2 committee  3 passed-origin  4 cross-chamber  5 enacted
 STAGE_KEY = {1: "introduced", 2: "committee", 3: "passed_origin", 4: "cross_chamber", 5: "enacted"}
