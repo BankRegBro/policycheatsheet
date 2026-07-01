@@ -350,10 +350,6 @@ def main():
             print(f"Wrote {UNTRIAGED.relative_to(REPO)}  ({len(untriaged)} untriaged)")
 
 
-if __name__ == "__main__":
-    main()
-
-
 # ---------------------------------------------------------------- Phase 2: discovery
 def base_from_discovery(ref, title):
     """A docket-shaped record for an auto-discovered bill. Mirrors base_from_curation
@@ -534,3 +530,10 @@ def discover(api, curation, cap=None):
 
     untriaged.sort(key=lambda x: (x["stage"], x["lastDate"] or ""), reverse=True)
     return untriaged
+
+
+# ---------------------------------------------------------------- entry point
+# Must stay at the very bottom: main() calls discover(), which is defined above,
+# so every function must be bound before this line executes.
+if __name__ == "__main__":
+    main()
