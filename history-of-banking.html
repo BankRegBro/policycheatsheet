@@ -6,44 +6,44 @@
 <title>The Architecture of American Finance — An Interactive Reference</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style>
   :root {
     /* Treasury palette */
-    --ink: #14213d;
-    --ink-dark: #0a1428;
-    --ink-soft: #2a3a5a;
-    --paper: #f5ecd6;
-    --paper-soft: #faf3e1;
-    --paper-deep: #ebe0c4;
-    --gold: #b08a3e;
-    --gold-soft: #c9a961;
-    --gold-pale: #e8d9a8;
-    --oxblood: #6b1a1a;
-    --rule: #8b7340;
-    --text: #1a1a1a;
-    --text-muted: #5a4f3a;
-    --text-faint: #8b7d5e;
+    --ink:#e8edff;
+    --ink-dark:#e8edff;
+    --ink-soft:#c2cbe8;
+    --paper:#0a0e1c;
+    --paper-soft:#0a0e1c;
+    --paper-deep:#070a18;
+    --gold:#f6c81e;
+    --gold-soft:#ffe07a;
+    --gold-pale:#ffe07a;
+    --oxblood:#3bb4ff;
+    --rule:rgba(255,255,255,0.13);
+    --text:#e8edff;
+    --text-muted:#c2cbe8;
+    --text-faint:#99a4c6;
 
     /* Category accents */
-    --c-depository: #1e3a5f;
-    --c-securities: #a06a1a;
-    --c-gse: #2d5a3d;
-    --c-consumer: #5a2d57;
-    --c-treasury: #7a2929;
-    --c-insurance: #1e5a5a;
-    --c-coord: #3d3d3d;
-    --c-ghost: #6b6356;
+    --c-depository:#719cd6;
+    --c-securities:#e5b061;
+    --c-gse:#71d695;
+    --c-consumer:#d671cf;
+    --c-treasury:#d67171;
+    --c-insurance:#71d6d6;
+    --c-coord:#e8edff;
+    --c-ghost:#c2cbe8;
 
     /* Era colors for timeline */
-    --era-founding: #6b4226;
-    --era-free: #8b6332;
-    --era-national: #b08a3e;
-    --era-modern: #1e5a5a;
-    --era-newdeal: #2d5a3d;
-    --era-deregulation: #a06a1a;
-    --era-postcrisis: #5a2d57;
-    --era-current: #6b1a1a;
+    --era-founding:#d69a71;
+    --era-free:#d6a871;
+    --era-national:#d6b471;
+    --era-modern:#71d6d6;
+    --era-newdeal:#71d695;
+    --era-deregulation:#e5b061;
+    --era-postcrisis:#d671cf;
+    --era-current:#db6b6b;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -100,7 +100,7 @@
   .masthead::after { bottom: 0.75rem; }
 
   .ornament-top {
-    font-family: 'Fraunces', serif;
+    font-family: 'Archivo', serif;
     color: var(--gold);
     font-size: 1.5rem;
     letter-spacing: 1rem;
@@ -109,7 +109,7 @@
   }
 
   .masthead h1 {
-    font-family: 'Fraunces', serif;
+    font-family: 'Archivo', serif;
     font-weight: 400;
     font-size: clamp(2rem, 5vw, 3.5rem);
     line-height: 1.1;
@@ -177,7 +177,7 @@
   }
 
   .nav-btn .roman {
-    font-family: 'Fraunces', serif;
+    font-family: 'Archivo', serif;
     font-size: 0.9rem;
     margin-right: 0.5rem;
     color: var(--gold);
@@ -221,7 +221,7 @@
   }
 
   .section-num {
-    font-family: 'Fraunces', serif;
+    font-family: 'Archivo', serif;
     font-size: 0.9rem;
     letter-spacing: 0.3em;
     color: var(--gold);
@@ -231,7 +231,7 @@
   }
 
   .section-title {
-    font-family: 'Fraunces', serif;
+    font-family: 'Archivo', serif;
     font-weight: 300;
     font-size: clamp(1.75rem, 4vw, 2.75rem);
     color: var(--ink);
@@ -260,12 +260,12 @@
   }
   .section-rule span {
     padding: 0 1rem;
-    font-family: 'Fraunces', serif;
+    font-family: 'Archivo', serif;
     font-size: 1rem;
   }
 
   .section-tagline {
-    font-family: 'Fraunces', serif;
+    font-family: 'Archivo', serif;
     font-style: italic;
     color: var(--text-muted);
     font-size: 1.1rem;
@@ -278,7 +278,7 @@
   .lede {
     max-width: 720px;
     margin: 0 auto 3rem;
-    font-family: 'Fraunces', serif;
+    font-family: 'Archivo', serif;
     font-size: 1.15rem;
     line-height: 1.7;
     color: var(--ink);
@@ -286,7 +286,7 @@
   }
 
   .lede::first-letter {
-    font-family: 'Fraunces', serif;
+    font-family: 'Archivo', serif;
     font-size: 4.5rem;
     float: left;
     line-height: 0.85;
@@ -315,7 +315,7 @@
   }
 
   .stat-num {
-    font-family: 'Fraunces', serif;
+    font-family: 'Archivo', serif;
     font-size: 2.25rem;
     color: var(--ink);
     line-height: 1;
@@ -363,7 +363,7 @@
   }
 
   .framework-title {
-    font-family: 'Fraunces', serif;
+    font-family: 'Archivo', serif;
     font-size: 1.25rem;
     color: var(--ink);
     text-align: center;
@@ -532,7 +532,7 @@
   }
 
   .event-title {
-    font-family: 'Fraunces', serif;
+    font-family: 'Archivo', serif;
     font-size: 1.15rem;
     color: var(--ink);
     margin: 0.25rem 0 0.5rem;
@@ -644,7 +644,7 @@
   }
 
   .reg-category-title {
-    font-family: 'Fraunces', serif;
+    font-family: 'Archivo', serif;
     font-size: 1.5rem;
     color: var(--ink);
     font-variation-settings: "opsz" 144, "SOFT" 30;
@@ -701,7 +701,7 @@
   }
 
   .reg-acronym {
-    font-family: 'Fraunces', serif;
+    font-family: 'Archivo', serif;
     font-size: 1.5rem;
     color: var(--ink);
     margin-bottom: 0.25rem;
@@ -778,7 +778,7 @@
     width: 32px;
     height: 32px;
     cursor: pointer;
-    font-family: 'Fraunces', serif;
+    font-family: 'Archivo', serif;
     font-size: 1.25rem;
     color: var(--ink);
     transition: all 0.15s;
@@ -795,7 +795,7 @@
   }
 
   .modal-acronym {
-    font-family: 'Fraunces', serif;
+    font-family: 'Archivo', serif;
     font-size: 2.5rem;
     color: var(--ink);
     line-height: 1;
@@ -804,7 +804,7 @@
   }
 
   .modal-name {
-    font-family: 'Fraunces', serif;
+    font-family: 'Archivo', serif;
     font-style: italic;
     color: var(--ink-soft);
     font-size: 1.1rem;
@@ -850,7 +850,7 @@
   .modal-val strong { color: var(--ink); font-weight: 600; }
 
   .modal-section-title {
-    font-family: 'Fraunces', serif;
+    font-family: 'Archivo', serif;
     font-style: italic;
     font-size: 1rem;
     color: var(--ink-soft);
@@ -858,7 +858,7 @@
   }
 
   .modal-body {
-    font-family: 'Fraunces', serif;
+    font-family: 'Archivo', serif;
     font-size: 0.95rem;
     color: var(--text);
     line-height: 1.65;
@@ -953,7 +953,7 @@
     height: 0;
     border-style: solid;
     border-width: 0 5px 5px 0;
-    border-color: transparent rgba(245,236,214,0.6) transparent transparent;
+    border-color: transparent rgba(10,14,28,0.6) transparent transparent;
     pointer-events: none;
   }
 
@@ -979,7 +979,7 @@
   }
 
   .legend-title {
-    font-family: 'Fraunces', serif;
+    font-family: 'Archivo', serif;
     font-size: 1.1rem;
     color: var(--ink);
     margin-bottom: 0.75rem;
@@ -1009,7 +1009,7 @@
   .legend-content { flex: 1; }
 
   .legend-city {
-    font-family: 'Fraunces', serif;
+    font-family: 'Archivo', serif;
     font-size: 0.95rem;
     color: var(--ink);
     line-height: 1.1;
@@ -1041,7 +1041,7 @@
   .state-tooltip.show { opacity: 1; }
 
   .state-tooltip .tt-state {
-    font-family: 'Fraunces', serif;
+    font-family: 'Archivo', serif;
     font-size: 0.9rem;
     color: var(--gold);
   }
@@ -1084,7 +1084,7 @@
   }
 
   .theme-num {
-    font-family: 'Fraunces', serif;
+    font-family: 'Archivo', serif;
     font-size: 3rem;
     color: var(--gold-pale);
     line-height: 1;
@@ -1105,7 +1105,7 @@
   }
 
   .theme-title {
-    font-family: 'Fraunces', serif;
+    font-family: 'Archivo', serif;
     font-size: 1.4rem;
     color: var(--ink);
     line-height: 1.2;
@@ -1115,7 +1115,7 @@
   }
 
   .theme-text {
-    font-family: 'Fraunces', serif;
+    font-family: 'Archivo', serif;
     color: var(--text);
     font-size: 0.95rem;
     line-height: 1.6;
@@ -1137,7 +1137,7 @@
   }
 
   .footer-ornament {
-    font-family: 'Fraunces', serif;
+    font-family: 'Archivo', serif;
     color: var(--gold);
     font-size: 1.25rem;
     letter-spacing: 0.5rem;
@@ -1167,10 +1167,16 @@
     .nav-btn { padding: 0.75rem 0.75rem; font-size: 0.65rem; }
     .nav-btn .roman { font-size: 0.75rem; margin-right: 0.25rem; }
   }
+
+/* supercharge reskin */
+body{background:radial-gradient(60% 28% at 50% 0%, rgba(59,180,255,.08), transparent 60%), linear-gradient(180deg,#0a0e1c 0%,#0b1126 58%,#080b1c 100%)}
+::selection{background:rgba(59,180,255,.28)}
+.foot-contact{color:#ffe07a}
+.flag{color:#04121f !important}
 </style>
 </head>
 <body>
-<a class="brw-backhome" href="wire.html" aria-label="Back to BankRegWire">← BankRegWire</a>
+<a class="brw-backhome" href="index.html" aria-label="Back to BankRegWire">← BankRegWire</a>
 <style>
 .brw-backhome{position:fixed;top:14px;left:14px;z-index:9999;display:inline-flex;align-items:center;gap:6px;
   font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
@@ -1994,9 +2000,9 @@ function renderLegend() {
 
   // Add an explanatory footnote for FDIC consolidation
   if (currentMap === 'fdic') {
-    html += `<div style="margin-top:1rem;padding-top:0.75rem;border-top:1px dashed var(--rule);font-size:0.7rem;line-height:1.5;color:var(--text-muted);font-style:italic;font-family:'Fraunces',serif;">The FDIC consolidated its 1998 eight-region structure (which had separate Boston and Memphis offices) into today's six regions: Boston was folded into New York, and Memphis was divided between the Dallas and Chicago regions.</div>`;
+    html += `<div style="margin-top:1rem;padding-top:0.75rem;border-top:1px dashed var(--rule);font-size:0.7rem;line-height:1.5;color:var(--text-muted);font-style:italic;font-family:'Archivo',serif;">The FDIC consolidated its 1998 eight-region structure (which had separate Boston and Memphis offices) into today's six regions: Boston was folded into New York, and Memphis was divided between the Dallas and Chicago regions.</div>`;
   } else if (currentMap === 'fed') {
-    html += `<div style="margin-top:1rem;padding-top:0.75rem;border-top:1px dashed var(--rule);font-size:0.7rem;line-height:1.5;color:var(--text-muted);font-style:italic;font-family:'Fraunces',serif;">Fourteen states are divided between two Federal Reserve districts (shown as diagonally split tiles). Missouri is the only state served by two Reserve Bank head offices — St. Louis and Kansas City. Boundaries last revised February 1996.</div>`;
+    html += `<div style="margin-top:1rem;padding-top:0.75rem;border-top:1px dashed var(--rule);font-size:0.7rem;line-height:1.5;color:var(--text-muted);font-style:italic;font-family:'Archivo',serif;">Fourteen states are divided between two Federal Reserve districts (shown as diagonally split tiles). Missouri is the only state served by two Reserve Bank head offices — St. Louis and Kansas City. Boundaries last revised February 1996.</div>`;
   }
 
   document.getElementById('legend-list').innerHTML = html;
@@ -2067,5 +2073,51 @@ renderMap();
 renderThemes();
 </script>
 
+
+<style>
+.brw-wirenav{--bg:#16150f;--pa:#f1ede2;--cu:#cf7714;--cb:#f0a546;--ox:#7a1f2b;--hl:rgba(241,237,226,.14);
+  font-family:'Inter',system-ui,sans-serif;max-width:1060px;margin:64px auto 0;padding:0 22px 56px;color:var(--pa)}
+.brw-wirenav *{box-sizing:border-box}
+.brw-wirenav .bw-band{background:linear-gradient(180deg,rgba(22,21,15,.0),rgba(22,21,15,.55) 18%),var(--bg);
+  border:1px solid var(--hl);border-radius:16px;padding:26px 26px 22px;box-shadow:0 18px 50px -28px rgba(0,0,0,.7)}
+.brw-wirenav .bw-kick{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--cb);opacity:.85}
+.brw-wirenav .bw-crumb{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.04em;opacity:.6;margin-top:6px}
+.brw-wirenav .bw-crumb a{color:inherit;text-decoration:none;border-bottom:1px solid transparent}
+.brw-wirenav .bw-crumb a:hover{border-color:var(--cu)}
+.brw-wirenav .bw-pn{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+@media(max-width:620px){.brw-wirenav .bw-pn{grid-template-columns:1fr}}
+.brw-wirenav .bw-step{display:block;border:1px solid var(--hl);border-radius:12px;padding:14px 16px;text-decoration:none;color:var(--pa);transition:.16s;background:rgba(241,237,226,.02)}
+.brw-wirenav .bw-step:hover{border-color:rgba(240,165,70,.4);background:rgba(241,237,226,.05)}
+.brw-wirenav .bw-step.next{text-align:right}
+.brw-wirenav .bw-dir{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;opacity:.55}
+.brw-wirenav .bw-ti{display:block;font-family:'Archivo',Georgia,serif;font-size:18px;line-height:1.2;margin-top:5px;font-weight:540}
+.brw-wirenav .bw-step.empty{opacity:.32;pointer-events:none}
+.brw-wirenav .bw-rel{margin-top:20px;padding-top:18px;border-top:1px solid var(--hl)}
+.brw-wirenav .bw-rel .bw-kick{margin-bottom:10px;display:block}
+.brw-wirenav .bw-chips{display:flex;flex-wrap:wrap;gap:9px}
+.brw-wirenav .bw-chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--hl);border-radius:999px;padding:7px 13px;
+  text-decoration:none;color:var(--pa);font-size:13px;transition:.16s}
+.brw-wirenav .bw-chip:hover{border-color:var(--cu);background:rgba(207,119,20,.08)}
+.brw-wirenav .bw-chip .d{width:5px;height:5px;border-radius:50%;background:var(--cu)}
+.brw-wirenav .bw-all{display:inline-block;margin-top:18px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--cb);text-decoration:none;border-bottom:1px solid rgba(240,165,70,.4);padding-bottom:2px}
+.brw-wirenav .bw-all:hover{color:var(--pa)}
+@media print{.brw-wirenav{display:none}}
+</style>
+<nav class="brw-wirenav" aria-label="Continue on the wire">
+  <div class="bw-band">
+    <div class="bw-kick">Continue on the wire</div>
+    <div class="bw-crumb"><a href="index.html">The Wire</a> &nbsp;/&nbsp; Reference Desk &nbsp;/&nbsp; History of Banking</div>
+    <div class="bw-pn">
+      <span class="bw-step prev empty"><span class="bw-dir">Previous</span><span class="bw-ti">End of the wire</span></span>
+      <a class="bw-step next" href="regulatory-map.html"><span class="bw-dir">Next dispatch →</span><span class="bw-ti">Regulatory Map</span></a>
+    </div>
+    <div class="bw-rel">
+      <span class="bw-kick">Related dispatches</span>
+      <div class="bw-chips"><a class="bw-chip" href="treasury-department-reference.html"><span class="d"></span>The U.S. Treasury</a><a class="bw-chip" href="us-trust-company-regulatory-framework.html"><span class="d"></span>U.S. Trust Company Regulatory Framework</a><a class="bw-chip" href="regulatory-map.html"><span class="d"></span>Regulatory Map</a></div>
+    </div>
+    <a class="bw-all" href="index.html">All dispatches &nbsp;&#8599;</a><a class="foot-contact bw-all" href="mailto:feedback@bankregwire.com">Contact the author &nbsp;&#9993;</a>
+  </div>
+</nav>
 </body>
 </html>
