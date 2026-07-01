@@ -7,7 +7,7 @@ No secrets in this file; the Congress key comes from the environment.
 CONGRESS = 119
 
 # ---- API ----
-API_BASE = "https://api.data.gov/congress/v3"
+API_BASE = "https://api.congress.gov/v3"
 PAGE_LIMIT = 250          # max the API allows
 REQUEST_TIMEOUT = 30      # seconds
 RETRY = 3
