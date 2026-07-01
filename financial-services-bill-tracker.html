@@ -564,11 +564,11 @@ $("#clearbtn").addEventListener("click", ()=>{
 
 async function boot(){
   try{
-    const res = await fetch('data/docket.json', {cache:'no-store'});
+    const res = await fetch('docket-build/data/docket.json', {cache:'no-store'});
     if(!res.ok) throw new Error(res.status);
     BILLS = await res.json();
   }catch(e){
-    billsEl.innerHTML = `<div class="empty">Could not load the docket (data/docket.json). ${e}</div>`;
+    billsEl.innerHTML = `<div class="empty">Could not load the docket (docket-build/data/docket.json). ${e}</div>`;
     return;
   }
   $("#billcount").textContent = BILLS.length;
