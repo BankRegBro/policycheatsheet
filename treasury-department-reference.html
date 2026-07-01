@@ -11,22 +11,22 @@
 <meta property="og:description" content="What Treasury does, who leads it, where its authority comes from, and the milestones that built it. Conclusions front-loaded, read from the primary source." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style>
   :root{
-    --paper:#F4EFE4;
-    --paper-2:#ECE5D6;
-    --paper-3:#E4DBC8;
-    --ink:#211B14;
-    --ink-2:#4A4137;
-    --ink-3:#73685A;
-    --oxblood:#6B1F2B;
-    --oxblood-d:#551722;
-    --copper:#AE6A33;
-    --copper-l:#C7905E;
-    --rule:rgba(33,27,20,0.16);
-    --rule-soft:rgba(33,27,20,0.08);
-    --shadow:0 1px 0 rgba(33,27,20,0.05), 0 14px 34px -22px rgba(33,27,20,0.45);
+    --paper:#0a0e1c;
+    --paper-2:#10162e;
+    --paper-3:#141b34;
+    --ink:#e8edff;
+    --ink-2:#c2cbe8;
+    --ink-3:#99a4c6;
+    --oxblood:#3bb4ff;
+    --oxblood-d:#2a86d0;
+    --copper:#f6c81e;
+    --copper-l:#ffe07a;
+    --rule:rgba(255,255,255,0.13);
+    --rule-soft:rgba(255,255,255,0.07);
+    --shadow:0 1px 0 rgba(255,255,255,0.04), 0 20px 46px -30px rgba(0,0,0,0.72);
     --maxw:1080px;
   }
 
@@ -36,9 +36,9 @@
 
   body{
     margin:0;
-    background:var(--paper);
+    background:radial-gradient(60% 28% at 50% 0%, rgba(59,180,255,.08), transparent 60%), linear-gradient(180deg,#0a0e1c 0%,#0b1126 58%,#080b1c 100%);
     color:var(--ink);
-    font-family:"Archivo",system-ui,sans-serif;
+    font-family:"Inter",system-ui,sans-serif;
     font-size:17px;
     line-height:1.62;
     -webkit-font-smoothing:antialiased;
@@ -54,22 +54,22 @@
     pointer-events:none;
     opacity:.10;
     background:
-      radial-gradient(circle at 22% 30%, transparent 0 38px, rgba(110,31,43,.5) 39px 40px, transparent 41px 999px),
-      radial-gradient(circle at 22% 30%, transparent 0 64px, rgba(174,106,51,.45) 65px 66px, transparent 67px 999px),
-      radial-gradient(circle at 78% 64%, transparent 0 44px, rgba(110,31,43,.4) 45px 46px, transparent 47px 999px),
-      radial-gradient(circle at 78% 64%, transparent 0 72px, rgba(174,106,51,.4) 73px 74px, transparent 75px 999px),
-      repeating-radial-gradient(circle at 50% 40%, transparent 0 7px, rgba(33,27,20,.25) 7px 7.6px, transparent 7.6px 16px);
+      radial-gradient(circle at 22% 30%, transparent 0 38px, rgba(59,180,255,.5) 39px 40px, transparent 41px 999px),
+      radial-gradient(circle at 22% 30%, transparent 0 64px, rgba(246,200,30,.45) 65px 66px, transparent 67px 999px),
+      radial-gradient(circle at 78% 64%, transparent 0 44px, rgba(59,180,255,.4) 45px 46px, transparent 47px 999px),
+      radial-gradient(circle at 78% 64%, transparent 0 72px, rgba(246,200,30,.4) 73px 74px, transparent 75px 999px),
+      repeating-radial-gradient(circle at 50% 40%, transparent 0 7px, rgba(159,227,255,.22) 7px 7.6px, transparent 7.6px 16px);
     mask-image:linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
     -webkit-mask-image:linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
   }
 
   a{color:inherit;}
-  ::selection{background:rgba(174,106,51,.28);}
+  ::selection{background:rgba(59,180,255,.28);}
 
   /* ---------- top bar ---------- */
   .topbar{
     position:sticky; top:0; z-index:40;
-    background:rgba(244,239,228,.86);
+    background:rgba(9,12,24,.82);
     backdrop-filter:saturate(140%) blur(8px);
     -webkit-backdrop-filter:saturate(140%) blur(8px);
     border-bottom:1px solid var(--rule);
@@ -81,7 +81,7 @@
     justify-content:space-between;
   }
   .wordmark{
-    font-family:"Archivo",sans-serif; font-weight:700;
+    font-family:"Inter",sans-serif; font-weight:700;
     letter-spacing:.12em; font-size:13px; text-transform:uppercase;
     text-decoration:none; white-space:nowrap;
   }
@@ -109,7 +109,7 @@
   }
   .eyebrow .dot{ width:5px; height:5px; background:var(--copper); border-radius:50%; display:inline-block; }
   h1.title{
-    font-family:"Fraunces",serif; font-weight:600;
+    font-family:"Archivo",serif; font-weight:600;
     font-size:clamp(44px,8.4vw,86px); line-height:.98; letter-spacing:-.015em;
     margin:.34em 0 .12em; max-width:14ch;
   }
@@ -144,9 +144,9 @@
   /* ---------- sections ---------- */
   section{ padding:46px 0 8px; scroll-margin-top:74px; }
   .sec-head{ display:flex; align-items:baseline; gap:14px; border-bottom:1px solid var(--rule); padding-bottom:12px; margin-bottom:24px; }
-  .rn-big{ font-family:"Fraunces",serif; font-style:italic; font-weight:500; font-size:clamp(20px,3vw,26px); color:var(--copper); line-height:1; }
+  .rn-big{ font-family:"Archivo",serif; font-style:italic; font-weight:500; font-size:clamp(20px,3vw,26px); color:var(--copper); line-height:1; }
   .sec-head h2{
-    font-family:"Fraunces",serif; font-weight:600; font-size:clamp(26px,4.4vw,40px);
+    font-family:"Archivo",serif; font-weight:600; font-size:clamp(26px,4.4vw,40px);
     line-height:1.04; letter-spacing:-.01em; margin:0;
   }
   .sec-kicker{ font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-3); margin-left:auto; align-self:center; }
@@ -178,7 +178,7 @@
   .bureau-btn:hover{ background:var(--rule-soft); }
   .bureau-btn:focus-visible{ outline:2px solid var(--copper); outline-offset:-2px; }
   .bur-abbr{ font-family:"JetBrains Mono",monospace; font-weight:600; font-size:13px; color:var(--oxblood); min-width:84px; }
-  .bur-name{ font-family:"Fraunces",serif; font-size:18px; font-weight:500; flex:1; }
+  .bur-name{ font-family:"Archivo",serif; font-size:18px; font-weight:500; flex:1; }
   .bur-tag{ font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3); }
   .bur-plus{ font-family:"JetBrains Mono",monospace; color:var(--copper); font-size:18px; transition:transform .22s; }
   .bureau.open .bur-plus{ transform:rotate(45deg); }
@@ -195,7 +195,7 @@
   @media (max-width:640px){ .twocol{ grid-template-columns:1fr; } }
   .figbox{ background:var(--paper-2); border:1px solid var(--rule); border-radius:3px; padding:20px; position:relative; }
   .figbox .lab{ font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3); }
-  .figbox .big{ font-family:"Fraunces",serif; font-weight:600; font-size:clamp(30px,5vw,42px); line-height:1.02; margin:8px 0 6px; color:var(--oxblood); }
+  .figbox .big{ font-family:"Archivo",serif; font-weight:600; font-size:clamp(30px,5vw,42px); line-height:1.02; margin:8px 0 6px; color:var(--oxblood); }
   .figbox .sub{ font-size:14px; line-height:1.45; color:var(--ink-2); }
 
   /* leadership */
@@ -203,7 +203,7 @@
   @media (max-width:640px){ .lead-grid{ grid-template-columns:1fr; } }
   .lcard{ border:1px solid var(--rule); border-radius:3px; padding:16px 18px; background:var(--paper-2); }
   .lcard .role{ font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); }
-  .lcard .who{ font-family:"Fraunces",serif; font-size:21px; font-weight:600; margin:5px 0 2px; }
+  .lcard .who{ font-family:"Archivo",serif; font-size:21px; font-weight:600; margin:5px 0 2px; }
   .lcard .who.vac{ color:var(--ink-3); font-style:italic; font-weight:500; font-size:18px; }
   .lcard .note{ font-size:13.5px; color:var(--ink-2); line-height:1.45; }
   .flag{ display:inline-block; font-family:"JetBrains Mono",monospace; font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; color:#fff; background:var(--copper); padding:2px 6px; border-radius:2px; margin-bottom:6px; }
@@ -221,7 +221,7 @@
   @media (max-width:480px){ .clausegrid{ grid-template-columns:1fr; } }
   .clause{ border:1px solid var(--rule); border-radius:3px; padding:15px; background:var(--paper-2); }
   .clause .cite{ font-family:"JetBrains Mono",monospace; font-size:11px; color:var(--copper); letter-spacing:.03em; }
-  .clause .cn{ font-family:"Fraunces",serif; font-size:16.5px; font-weight:600; margin:6px 0 5px; line-height:1.2; }
+  .clause .cn{ font-family:"Archivo",serif; font-size:16.5px; font-weight:600; margin:6px 0 5px; line-height:1.2; }
   .clause .cd{ font-size:13.5px; line-height:1.45; color:var(--ink-2); }
 
   .mapper{ display:grid; grid-template-columns:minmax(0,260px) 1fr; gap:0; border:1px solid var(--rule); border-radius:3px; overflow:hidden; margin:6px 0 8px; }
@@ -238,7 +238,7 @@
   @media (max-width:680px){ .mapper-list button{ border-bottom:0; } .mapper-list button.on{ box-shadow:inset 0 -3px 0 var(--oxblood); } }
   .mapper-detail{ padding:22px 24px; min-height:170px; }
   .mapper-detail .md-cite{ font-family:"JetBrains Mono",monospace; font-size:12px; color:var(--copper); letter-spacing:.04em; }
-  .mapper-detail .md-h{ font-family:"Fraunces",serif; font-size:22px; font-weight:600; margin:7px 0 9px; line-height:1.12; }
+  .mapper-detail .md-h{ font-family:"Archivo",serif; font-size:22px; font-weight:600; margin:7px 0 9px; line-height:1.12; }
   .mapper-detail p{ margin:0; font-size:15.5px; line-height:1.55; }
 
   /* timeline */
@@ -270,7 +270,7 @@
   .tl-btn:hover{ background:var(--rule-soft); }
   .tl-btn:focus-visible{ outline:2px solid var(--copper); outline-offset:-2px; }
   .tl-year{ font-family:"JetBrains Mono",monospace; font-weight:600; font-size:13.5px; color:var(--oxblood); min-width:74px; }
-  .tl-title{ font-family:"Fraunces",serif; font-size:18px; font-weight:500; line-height:1.25; flex:1; }
+  .tl-title{ font-family:"Archivo",serif; font-size:18px; font-weight:500; line-height:1.25; flex:1; }
   .tl-era{ font-family:"JetBrains Mono",monospace; font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); }
   @media (max-width:560px){ .tl-era{ display:none; } .tl-year{ min-width:60px; } }
   .tl-body{ max-height:0; overflow:hidden; transition:max-height .28s ease; }
@@ -289,7 +289,7 @@
 
   /* colophon */
   footer{ margin-top:54px; border-top:1px solid var(--rule); padding:40px 0 70px; position:relative; z-index:1; }
-  .colophon{ font-family:"Fraunces",serif; font-size:clamp(22px,3.4vw,30px); font-weight:600; }
+  .colophon{ font-family:"Archivo",serif; font-size:clamp(22px,3.4vw,30px); font-weight:600; }
   .colophon em{ font-style:italic; color:var(--oxblood); }
   .col-body{ max-width:60ch; font-size:15px; line-height:1.6; color:var(--ink-2); margin:14px 0 22px; }
   .sources{ font-family:"JetBrains Mono",monospace; font-size:11.5px; line-height:1.9; color:var(--ink-3); letter-spacing:.02em; }
@@ -297,13 +297,20 @@
   .foot-meta{ display:flex; flex-wrap:wrap; gap:8px 18px; margin-top:24px; font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.04em; color:var(--ink-3); }
   .foot-meta a{ color:var(--oxblood); text-decoration:none; }
   .foot-meta a:hover{ text-decoration:underline; }
+
+/* supercharge reskin */
+.flag{color:#04121f !important}
+.erafilter button.on{color:#04121f !important}
+.colophon .fbolt{width:.82em;height:.82em;fill:var(--copper);vertical-align:-.08em;filter:drop-shadow(0 0 8px rgba(246,200,30,.5))}
+.foot-contact{color:var(--copper-l)}
+::selection{background:rgba(59,180,255,.28)}
 </style>
 </head>
 <body>
 
 <div class="topbar">
   <div class="topbar-in">
-    <a class="wordmark" href="https://www.bankregwire.com/wire.html">BANK<b>REG</b>WIRE</a>
+    <a class="wordmark" href="index.html">BANK<b>REG</b>WIRE</a>
     <nav class="navlinks" id="nav">
       <a href="#does"><span class="rn">I</span>What it does</a>
       <a href="#leads"><span class="rn">II</span>Who leads it</a>
@@ -442,7 +449,7 @@
   </div>
 
   <footer>
-    <div class="colophon">Filed from the <em>primary source</em>.</div>
+    <div class="colophon"><svg class="fbolt" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 L4 14 H10 L8.5 22 L20 9 H13 Z"/></svg> Filed from the <em>primary source</em>.</div>
     <p class="col-body">An interactive reference, not a brief. Functions are anchored to their governing statutes, conclusions are front-loaded, and the figures are labeled by fiscal year so they are not mistaken for one another. Where sources conflict on a minor detail, the primary Treasury, U.S. Code, IRS, and GAO records were taken over secondary commentary.</p>
     <div class="sources">
       <b>Primary sources ·</b> U.S. Department of the Treasury (home.treasury.gov; treasury bureaus; officials)<br/>
@@ -454,7 +461,7 @@
       <span>© 2026 BankRegWire</span>
       <span>A working catalogue · Not legal advice</span>
       <span>As of June 2026</span>
-      <a href="https://www.bankregwire.com/wire.html">← Back to the wire</a>
+      <a href="index.html">← Back to the wire</a> &nbsp;&middot;&nbsp; <a href="index.html#instruments">Instruments</a> &nbsp;&middot;&nbsp; <a class="foot-contact" href="mailto:feedback@bankregwire.com">Contact the author</a>
     </div>
   </footer>
 </div>
@@ -661,5 +668,51 @@ const spy = new IntersectionObserver((entries)=>{
 },{ rootMargin:"-45% 0px -50% 0px" });
 sections.forEach(s=>s&&spy.observe(s));
 </script>
+
+<style>
+.brw-wirenav{--bg:#16150f;--pa:#f1ede2;--cu:#cf7714;--cb:#f0a546;--ox:#7a1f2b;--hl:rgba(241,237,226,.14);
+  font-family:'Inter',system-ui,sans-serif;max-width:1060px;margin:64px auto 0;padding:0 22px 56px;color:var(--pa)}
+.brw-wirenav *{box-sizing:border-box}
+.brw-wirenav .bw-band{background:linear-gradient(180deg,rgba(22,21,15,.0),rgba(22,21,15,.55) 18%),var(--bg);
+  border:1px solid var(--hl);border-radius:16px;padding:26px 26px 22px;box-shadow:0 18px 50px -28px rgba(0,0,0,.7)}
+.brw-wirenav .bw-kick{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--cb);opacity:.85}
+.brw-wirenav .bw-crumb{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.04em;opacity:.6;margin-top:6px}
+.brw-wirenav .bw-crumb a{color:inherit;text-decoration:none;border-bottom:1px solid transparent}
+.brw-wirenav .bw-crumb a:hover{border-color:var(--cu)}
+.brw-wirenav .bw-pn{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+@media(max-width:620px){.brw-wirenav .bw-pn{grid-template-columns:1fr}}
+.brw-wirenav .bw-step{display:block;border:1px solid var(--hl);border-radius:12px;padding:14px 16px;text-decoration:none;color:var(--pa);transition:.16s;background:rgba(241,237,226,.02)}
+.brw-wirenav .bw-step:hover{border-color:rgba(240,165,70,.4);background:rgba(241,237,226,.05)}
+.brw-wirenav .bw-step.next{text-align:right}
+.brw-wirenav .bw-dir{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;opacity:.55}
+.brw-wirenav .bw-ti{display:block;font-family:'Archivo',Georgia,serif;font-size:18px;line-height:1.2;margin-top:5px;font-weight:540}
+.brw-wirenav .bw-step.empty{opacity:.32;pointer-events:none}
+.brw-wirenav .bw-rel{margin-top:20px;padding-top:18px;border-top:1px solid var(--hl)}
+.brw-wirenav .bw-rel .bw-kick{margin-bottom:10px;display:block}
+.brw-wirenav .bw-chips{display:flex;flex-wrap:wrap;gap:9px}
+.brw-wirenav .bw-chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--hl);border-radius:999px;padding:7px 13px;
+  text-decoration:none;color:var(--pa);font-size:13px;transition:.16s}
+.brw-wirenav .bw-chip:hover{border-color:var(--cu);background:rgba(207,119,20,.08)}
+.brw-wirenav .bw-chip .d{width:5px;height:5px;border-radius:50%;background:var(--cu)}
+.brw-wirenav .bw-all{display:inline-block;margin-top:18px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--cb);text-decoration:none;border-bottom:1px solid rgba(240,165,70,.4);padding-bottom:2px}
+.brw-wirenav .bw-all:hover{color:var(--pa)}
+@media print{.brw-wirenav{display:none}}
+</style>
+<nav class="brw-wirenav" aria-label="Continue on the wire">
+  <div class="bw-band">
+    <div class="bw-kick">Continue on the wire</div>
+    <div class="bw-crumb"><a href="index.html">The Wire</a> &nbsp;/&nbsp; Reference Desk &nbsp;/&nbsp; The U.S. Treasury</div>
+    <div class="bw-pn">
+      <a class="bw-step prev" href="us-trust-company-regulatory-framework.html"><span class="bw-dir">← Previous dispatch</span><span class="bw-ti">U.S. Trust Company Regulatory Framework</span></a>
+      <a class="bw-step next" href="genius-act-dashboard.html"><span class="bw-dir">Next dispatch →</span><span class="bw-ti">GENIUS Act Dashboard</span></a>
+    </div>
+    <div class="bw-rel">
+      <span class="bw-kick">Related dispatches</span>
+      <div class="bw-chips"><a class="bw-chip" href="regulatory-map.html"><span class="d"></span>Regulatory Map</a><a class="bw-chip" href="fed-reserve-interactive-reference.html"><span class="d"></span>An In-Depth Look at the Fed and Its Functions</a><a class="bw-chip" href="history-of-banking.html"><span class="d"></span>History of Banking</a></div>
+    </div>
+    <a class="bw-all" href="index.html">All dispatches &nbsp;&#8599;</a>
+  </div>
+</nav>
 </body>
 </html>
