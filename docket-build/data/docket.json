@@ -7,16 +7,39 @@
     "number": 6644,
     "no": "H.R. 6644 / S. 2651",
     "title": "21st Century ROAD to Housing Act",
-    "officialTitle": null,
+    "officialTitle": "21st Century ROAD to Housing Act",
     "chamber": "Both",
     "sponsor": "Sen. Tim Scott (R-SC) & Sen. Elizabeth Warren (D-MA)",
     "party": "R",
     "bipartisan": true,
-    "cosponsorsCount": null,
+    "cosponsorsCount": 31,
     "committee": "Senate Banking / House Financial Services",
-    "committees": [],
-    "policyArea": null,
-    "subjects": [],
+    "committees": [
+      "hsvr00",
+      "hsba00"
+    ],
+    "policyArea": "Housing and Community Development",
+    "subjects": [
+      "Administrative law and regulatory procedures",
+      "Advisory bodies",
+      "Congressional oversight",
+      "Data collection, sharing, protection",
+      "Department of Housing and Urban Development",
+      "Disability assistance",
+      "Environmental assessment, monitoring, research",
+      "Government information and archives",
+      "Government studies and investigations",
+      "Housing and community development funding",
+      "Housing finance and home ownership",
+      "Housing industry and standards",
+      "Housing supply and affordability",
+      "Land use and conservation",
+      "Landlord and tenant",
+      "Licensing and registrations",
+      "Low- and moderate-income housing",
+      "Performance measurement",
+      "Public housing"
+    ],
     "matchedOn": [
       "curation"
     ],
@@ -25,10 +48,111 @@
     "stage": 4,
     "stageKey": "cross_chamber",
     "status": "Passed both chambers (differing texts); reconciliation pending",
-    "latestActionText": "Passed both chambers (differing texts); reconciliation pending",
-    "introducedDate": "S. 2651 reported Aug 1, 2025",
-    "lastDate": "2026-05-20",
-    "actions": [],
+    "latestActionText": "Presented to President.",
+    "introducedDate": "2025-12-11",
+    "lastDate": "2026-06-29",
+    "actions": [
+      {
+        "date": "2026-06-29",
+        "type": "Floor",
+        "text": "Presented to President."
+      },
+      {
+        "date": "2026-06-29",
+        "type": "President",
+        "text": "Presented to President."
+      },
+      {
+        "date": "2026-06-23",
+        "type": "Floor",
+        "text": "Motion to reconsider laid on the table Agreed to without objection."
+      },
+      {
+        "date": "2026-06-23",
+        "type": "ResolvingDifferences",
+        "text": "On motion that the House suspend the rules and agree to the Senate amendment to the House amendment to the Senate amendment Agreed to by the Yeas and Nays: (2/3 required): 358 - 32 (Roll no. 224). (text: CR H4151-4187)"
+      },
+      {
+        "date": "2026-06-23",
+        "type": "NotUsed",
+        "text": "Resolving differences -- House actions: On motion that the House suspend the rules and agree to the Senate amendment to the House amendment to the Senate amendment Agreed to by the Yeas and Nays: (2/3 required): 358 - 32 (Roll no. 224). (text: CR H4151-4187)"
+      },
+      {
+        "date": "2026-06-23",
+        "type": "ResolvingDifferences",
+        "text": "At the conclusion of debate, the Yeas and Nays were demanded and ordered. Pursuant to the provisions of clause 8, rule XX, the Chair announced that further proceedings on the motion would be postponed."
+      },
+      {
+        "date": "2026-06-23",
+        "type": "Floor",
+        "text": "DEBATE - The House proceeded with forty minutes of debate on the motion to suspend the rules and agree to the Senate amendment to the House amendment to the Senate amendment."
+      },
+      {
+        "date": "2026-06-23",
+        "type": "ResolvingDifferences",
+        "text": "Mr. Hill (AR) moved that the House suspend the rules and agree to the Senate amendment to the House amendment to the Senate amendment. (consideration: CR H4151-4193)"
+      },
+      {
+        "date": "2026-06-23",
+        "type": "Floor",
+        "text": "Message on Senate action sent to the House."
+      },
+      {
+        "date": "2026-06-22",
+        "type": "ResolvingDifferences",
+        "text": "Senate concurred in the House amendment to the Senate amendment with an amendment (SA 5823) by Yea-Nay Vote. 85 - 5. Record Vote Number: 182."
+      },
+      {
+        "date": "2026-06-22",
+        "type": "NotUsed",
+        "text": "Resolving differences -- Senate actions: Senate concurred in the House amendment to the Senate amendment with an amendment (SA 5823) by Yea-Nay Vote. 85 - 5. Record Vote Number: 182."
+      },
+      {
+        "date": "2026-06-22",
+        "type": "Floor",
+        "text": "Considered by Senate (Message from the House considered). (consideration: CR S2977, S2982-2984)"
+      },
+      {
+        "date": "2026-06-18",
+        "type": "Floor",
+        "text": "Motion by Senator Thune to refer to Senate Committee on Banking, Housing, and Urban Affairs the House message to accompany H.R. 6644 with instructions to report back forthwith with the following amendment (SA 5825) fell when cloture was invoked on the motion to concur in the House amendment to the Senate amendment to H.R. 6644 in Senate."
+      },
+      {
+        "date": "2026-06-18",
+        "type": "Floor",
+        "text": "Cloture on the motion to concur in the House amendment to the Senate amendment to H.R. 6644 with an amendment (SA 5823) invoked in Senate by Yea-Nay Vote. 84 - 8. Record Vote Number: 180."
+      },
+      {
+        "date": "2026-06-18",
+        "type": "Floor",
+        "text": "Considered by Senate (Message from the House considered). (consideration: CR S2913-2917)"
+      },
+      {
+        "date": "2026-06-16",
+        "type": "Floor",
+        "text": "Motion by Senator Thune to refer to Senate Committee on Banking, Housing, and Urban Affairs the House message to accompany H.R. 6644 with instructions to report back forthwith with the following amendment (SA5825) made in Senate."
+      },
+      {
+        "date": "2026-06-16",
+        "type": "Floor",
+        "text": "Cloture motion on the motion to concur in the House amendment to the Senate amendment to H.R. 6644 with an amendment (SA 5823) presented in Senate."
+      },
+      {
+        "date": "2026-06-16",
+        "type": "Floor",
+        "text": "Motion by Senator Thune to concur in the House amendment to the Senate amendment to H.R. 6644 with an amendment (SA 5823) made in Senate."
+      },
+      {
+        "date": "2026-06-16",
+        "type": "Floor",
+        "text": "Measure laid before Senate by motion. (consideration: CR S2813-2316)"
+      },
+      {
+        "date": "2026-06-16",
+        "type": "Floor",
+        "text": "Motion to proceed to consideration of the House message to accompany H.R. 6644 agreed to in Senate by Yea-Nay Vote. 87 - 8. Record Vote Number: 175."
+      }
+    ],
     "summary": "The marquee bipartisan housing package, combining the Senate's ROAD to Housing Act (S. 2651) and the House's Housing for the 21st Century Act, to boost supply, modernize HUD/FHA programs, and curb institutional ownership of single-family homes.",
     "summarySource": "human",
     "provisions": [
@@ -65,8 +189,8 @@
       "content": true
     },
     "vehicle": false,
-    "updateDate": null,
-    "lastRefreshed": "2026-07-01T19:16:57Z"
+    "updateDate": "2026-06-30T08:05:23Z",
+    "lastRefreshed": "2026-07-01T20:37:18Z"
   },
   {
     "id": "119-hr-3633",
@@ -76,16 +200,34 @@
     "number": 3633,
     "no": "H.R. 3633",
     "title": "Digital Asset Market CLARITY Act of 2025",
-    "officialTitle": null,
+    "officialTitle": "Digital Asset Market Clarity Act",
     "chamber": "House",
     "sponsor": "Rep. French Hill (R-AR) & Rep. G.T. Thompson (R-PA)",
     "party": "R",
     "bipartisan": true,
-    "cosponsorsCount": null,
+    "cosponsorsCount": 21,
     "committee": "Financial Services / Agriculture",
-    "committees": [],
-    "policyArea": null,
-    "subjects": [],
+    "committees": [
+      "ssbk00",
+      "hsba00",
+      "hsag00"
+    ],
+    "policyArea": "Finance and Financial Sector",
+    "subjects": [
+      "Advanced technology and technological innovations",
+      "Bank accounts, deposits, capital",
+      "Banking and financial institutions regulation",
+      "Business records",
+      "Computer security and identity theft",
+      "Computers and information technology",
+      "Currency",
+      "Data collection, sharing, protection",
+      "Digital media",
+      "Financial services and investments",
+      "Fraud offenses and financial crimes",
+      "Licensing and registrations",
+      "Securities"
+    ],
     "matchedOn": [
       "curation"
     ],
@@ -94,10 +236,111 @@
     "stage": 4,
     "stageKey": "cross_chamber",
     "status": "Passed House 294-134; advancing in Senate",
-    "latestActionText": "Passed House 294-134; advancing in Senate",
-    "introducedDate": "May 29, 2025",
-    "lastDate": "2026-05-14",
-    "actions": [],
+    "latestActionText": "Placed on Senate Legislative Calendar under General Orders. Calendar No. 423.",
+    "introducedDate": "2025-05-29",
+    "lastDate": "2026-06-01",
+    "actions": [
+      {
+        "date": "2026-06-01",
+        "type": "Calendars",
+        "text": "Placed on Senate Legislative Calendar under General Orders. Calendar No. 423."
+      },
+      {
+        "date": "2026-06-01",
+        "type": "Committee",
+        "text": "Committee on Banking, Housing, and Urban Affairs. Reported by Senator Scott SC, with an amendment in the nature of a substitute. Without written report."
+      },
+      {
+        "date": "2026-06-01",
+        "type": "Committee",
+        "text": "Committee on Banking, Housing, and Urban Affairs. Reported by Senator Scott SC, with an amendment in the nature of a substitute. Without written report."
+      },
+      {
+        "date": "2026-05-14",
+        "type": "Committee",
+        "text": "Committee on Banking, Housing, and Urban Affairs. Ordered to be reported with an amendment in the nature of a substitute favorably."
+      },
+      {
+        "date": "2025-09-18",
+        "type": "IntroReferral",
+        "text": "Received in the Senate and Read twice and referred to the Committee on Banking, Housing, and Urban Affairs."
+      },
+      {
+        "date": "2025-07-17",
+        "type": "Floor",
+        "text": "Motion to reconsider laid on the table Agreed to without objection."
+      },
+      {
+        "date": "2025-07-17",
+        "type": "Floor",
+        "text": "On passage Passed by the Yeas and Nays: 294 - 134 (Roll no. 199). (text of amendment in the nature of a substitute: CR H3373-3397)"
+      },
+      {
+        "date": "2025-07-17",
+        "type": "Floor",
+        "text": "Passed/agreed to in House: On passage Passed by the Yeas and Nays: 294 - 134 (Roll no. 199)."
+      },
+      {
+        "date": "2025-07-17",
+        "type": "Floor",
+        "text": "Considered as unfinished business. (consideration: CR H3449)"
+      },
+      {
+        "date": "2025-07-17",
+        "type": "Floor",
+        "text": "POSTPONED PROCEEDINGS - At the conclusion of debate on H.R. 3633, the Chair put the question on passage of the bill and by voice vote, announced that the ayes had prevailed. Ms. Craig demanded the yeas and nays and the Chair postponed further proceedings until a time to be announced."
+      },
+      {
+        "date": "2025-07-17",
+        "type": "Floor",
+        "text": "The previous question was ordered pursuant to the rule."
+      },
+      {
+        "date": "2025-07-17",
+        "type": "Floor",
+        "text": "DEBATE - The House proceeded with one hour of debate on H.R. 3633."
+      },
+      {
+        "date": "2025-07-17",
+        "type": "Floor",
+        "text": "Rule provides for consideration of H.R. 4016, H.R. 3633, H.R. 1919 and S. 1582. The resolution provides for consideration of H.R. 4016 and H.R. 3633 under a structured rule, and H.R. 1919 and S. 1582 under a closed rule, with one hour of general debate on each bill. The resolution provides for a motion to recommit on H.R. 4016, H.R. 3633, and H.R. 1919, and a motion to commit on S. 1582."
+      },
+      {
+        "date": "2025-07-17",
+        "type": "Floor",
+        "text": "Considered under the provisions of rule H. Res. 580. (consideration: CR H3373)"
+      },
+      {
+        "date": "2025-07-15",
+        "type": "Floor",
+        "text": "Rules Committee Resolution H. Res. 580 Reported to House. Rule provides for consideration of H.R. 4016, H.R. 3633, H.R. 1919 and S. 1582. The resolution provides for consideration of H.R. 4016 and H.R. 3633 under a structured rule, and H.R. 1919 and S. 1582 under a closed rule, with one hour of general debate on each bill. The resolution provides for a motion to recommit on H.R. 4016, H.R. 3633, and H.R. 1919, and a motion to commit on S. 1582."
+      },
+      {
+        "date": "2025-06-23",
+        "type": "Calendars",
+        "text": "Placed on the Union Calendar, Calendar No. 134."
+      },
+      {
+        "date": "2025-06-23",
+        "type": "Committee",
+        "text": "Reported (Amended) by the Committee on Financial Services. H. Rept. 119-168, Part II."
+      },
+      {
+        "date": "2025-06-23",
+        "type": "Committee",
+        "text": "Reported (Amended) by the Committee on Financial Services. H. Rept. 119-168, Part II."
+      },
+      {
+        "date": "2025-06-23",
+        "type": "Committee",
+        "text": "Reported (Amended) by the Committee on Agriculture. H. Rept. 119-168, Part I."
+      },
+      {
+        "date": "2025-06-23",
+        "type": "Committee",
+        "text": "Reported (Amended) by the Committee on Agriculture. H. Rept. 119-168, Part I."
+      }
+    ],
     "summary": "Establishes the framework dividing digital-asset oversight between the SEC and CFTC, with the CFTC taking the lead on 'digital commodities'; folds in the Anti-CBDC Surveillance State Act.",
     "summarySource": "human",
     "provisions": [
@@ -134,8 +377,8 @@
       "content": true
     },
     "vehicle": false,
-    "updateDate": null,
-    "lastRefreshed": "2026-07-01T19:16:57Z"
+    "updateDate": "2026-06-11T23:41:23Z",
+    "lastRefreshed": "2026-07-01T20:37:17Z"
   },
   {
     "id": "119-hr-3234",
@@ -145,16 +388,22 @@
     "number": 3234,
     "no": "H.R. 3234",
     "title": "Keeping Deposits Local Act",
-    "officialTitle": null,
+    "officialTitle": "Keeping Deposits Local Act",
     "chamber": "House",
     "sponsor": "Rep. Tom Emmer (R-MN) & Rep. Joyce Beatty (D-OH)",
     "party": "R",
     "bipartisan": true,
-    "cosponsorsCount": null,
+    "cosponsorsCount": 11,
     "committee": "Financial Services",
-    "committees": [],
-    "policyArea": null,
-    "subjects": [],
+    "committees": [
+      "ssbk00",
+      "hsba00"
+    ],
+    "policyArea": "Finance and Financial Sector",
+    "subjects": [
+      "Bank accounts, deposits, capital",
+      "Banking and financial institutions regulation"
+    ],
     "matchedOn": [
       "curation"
     ],
@@ -163,10 +412,96 @@
     "stage": 3,
     "stageKey": "passed_origin",
     "status": "Passed House 405-0; in Senate Banking",
-    "latestActionText": "Passed House 405-0; in Senate Banking",
-    "introducedDate": "May 7, 2025",
-    "lastDate": "2026-05-20",
-    "actions": [],
+    "latestActionText": "Received in the Senate and Read twice and referred to the Committee on Banking, Housing, and Urban Affairs.",
+    "introducedDate": "2025-05-07",
+    "lastDate": "2026-05-21",
+    "actions": [
+      {
+        "date": "2026-05-21",
+        "type": "IntroReferral",
+        "text": "Received in the Senate and Read twice and referred to the Committee on Banking, Housing, and Urban Affairs."
+      },
+      {
+        "date": "2026-05-20",
+        "type": "Floor",
+        "text": "Motion to reconsider laid on the table Agreed to without objection."
+      },
+      {
+        "date": "2026-05-20",
+        "type": "Floor",
+        "text": "On motion to suspend the rules and pass the bill, as amended Agreed to by the Yeas and Nays: (2/3 required): 405 - 0 (Roll no. 177)."
+      },
+      {
+        "date": "2026-05-20",
+        "type": "Floor",
+        "text": "Passed/agreed to in House: On motion to suspend the rules and pass the bill, as amended Agreed to by the Yeas and Nays: (2/3 required): 405 - 0 (Roll no. 177)."
+      },
+      {
+        "date": "2026-05-20",
+        "type": "Floor",
+        "text": "Considered as unfinished business. (consideration: CR H3644-3645)"
+      },
+      {
+        "date": "2026-05-19",
+        "type": "Floor",
+        "text": "At the conclusion of debate, the Yeas and Nays were demanded and ordered. Pursuant to the provisions of clause 8, rule XX, the Chair announced that further proceedings on the motion would be postponed."
+      },
+      {
+        "date": "2026-05-19",
+        "type": "Floor",
+        "text": "DEBATE - The House proceeded with forty minutes of debate on H.R. 3234."
+      },
+      {
+        "date": "2026-05-19",
+        "type": "Floor",
+        "text": "Considered under suspension of the rules. (consideration: CR H3582-3584; text: CR H3582)"
+      },
+      {
+        "date": "2026-05-19",
+        "type": "Floor",
+        "text": "Mr. Hill (AR) moved to suspend the rules and pass the bill, as amended."
+      },
+      {
+        "date": "2025-11-04",
+        "type": "Calendars",
+        "text": "Placed on the Union Calendar, Calendar No. 314."
+      },
+      {
+        "date": "2025-11-04",
+        "type": "Committee",
+        "text": "Reported (Amended) by the Committee on Financial Services. H. Rept. 119-362."
+      },
+      {
+        "date": "2025-11-04",
+        "type": "Committee",
+        "text": "Reported (Amended) by the Committee on Financial Services. H. Rept. 119-362."
+      },
+      {
+        "date": "2025-09-16",
+        "type": "Committee",
+        "text": "Ordered to be Reported (Amended) by the Yeas and Nays: 51 - 0."
+      },
+      {
+        "date": "2025-09-16",
+        "type": "Committee",
+        "text": "Committee Consideration and Mark-up Session Held"
+      },
+      {
+        "date": "2025-05-07",
+        "type": "IntroReferral",
+        "text": "Referred to the House Committee on Financial Services."
+      },
+      {
+        "date": "2025-05-07",
+        "type": "IntroReferral",
+        "text": "Introduced in House"
+      },
+      {
+        "date": "2025-05-07",
+        "type": "IntroReferral",
+        "text": "Introduced in House"
+      }
+    ],
     "summary": "Expands how much in reciprocal deposits a bank can hold before they count as 'brokered,' replacing the flat cap with a tiered, liability-based schedule.",
     "summarySource": "human",
     "provisions": [
@@ -202,8 +537,8 @@
       "content": true
     },
     "vehicle": false,
-    "updateDate": null,
-    "lastRefreshed": "2026-07-01T19:16:57Z"
+    "updateDate": "2026-05-23T06:53:30Z",
+    "lastRefreshed": "2026-07-01T20:37:25Z"
   },
   {
     "id": "119-hr-5317",
@@ -213,16 +548,24 @@
     "number": 5317,
     "no": "H.R. 5317",
     "title": "Community Bank Deposit Access Act",
-    "officialTitle": null,
+    "officialTitle": "Community Bank Deposit Access Act of 2025",
     "chamber": "House",
     "sponsor": "House Financial Services",
     "party": "R",
     "bipartisan": true,
-    "cosponsorsCount": null,
+    "cosponsorsCount": 0,
     "committee": "Financial Services",
-    "committees": [],
-    "policyArea": null,
-    "subjects": [],
+    "committees": [
+      "ssbk00",
+      "hsba00"
+    ],
+    "policyArea": "Finance and Financial Sector",
+    "subjects": [
+      "Bank accounts, deposits, capital",
+      "Banking and financial institutions regulation",
+      "Business investment and capital",
+      "Interest, dividends, interest rates"
+    ],
     "matchedOn": [
       "curation"
     ],
@@ -231,10 +574,96 @@
     "stage": 3,
     "stageKey": "passed_origin",
     "status": "Passed House 393-16; to Senate",
-    "latestActionText": "Passed House 393-16; to Senate",
-    "introducedDate": "2025",
-    "lastDate": "2026-05-20",
-    "actions": [],
+    "latestActionText": "Received in the Senate and Read twice and referred to the Committee on Banking, Housing, and Urban Affairs.",
+    "introducedDate": "2025-09-11",
+    "lastDate": "2026-05-21",
+    "actions": [
+      {
+        "date": "2026-05-21",
+        "type": "IntroReferral",
+        "text": "Received in the Senate and Read twice and referred to the Committee on Banking, Housing, and Urban Affairs."
+      },
+      {
+        "date": "2026-05-20",
+        "type": "Floor",
+        "text": "Motion to reconsider laid on the table Agreed to without objection."
+      },
+      {
+        "date": "2026-05-20",
+        "type": "Floor",
+        "text": "On motion to suspend the rules and pass the bill, as amended Agreed to by the Yeas and Nays: (2/3 required): 393 - 16 (Roll no. 179)."
+      },
+      {
+        "date": "2026-05-20",
+        "type": "Floor",
+        "text": "Passed/agreed to in House: On motion to suspend the rules and pass the bill, as amended Agreed to by the Yeas and Nays: (2/3 required): 393 - 16 (Roll no. 179)."
+      },
+      {
+        "date": "2026-05-20",
+        "type": "Floor",
+        "text": "Considered as unfinished business. (consideration: CR H3645-3646)"
+      },
+      {
+        "date": "2026-05-19",
+        "type": "Floor",
+        "text": "At the conclusion of debate, the Yeas and Nays were demanded and ordered. Pursuant to the provisions of clause 8, rule XX, the Chair announced that further proceedings on the motion would be postponed."
+      },
+      {
+        "date": "2026-05-19",
+        "type": "Floor",
+        "text": "DEBATE - The House proceeded with forty minutes of debate on H.R. 5317."
+      },
+      {
+        "date": "2026-05-19",
+        "type": "Floor",
+        "text": "Considered under suspension of the rules. (consideration: CR H3586-3588; text: CR H3586)"
+      },
+      {
+        "date": "2026-05-19",
+        "type": "Floor",
+        "text": "Mr. Hill (AR) moved to suspend the rules and pass the bill, as amended."
+      },
+      {
+        "date": "2025-11-04",
+        "type": "Calendars",
+        "text": "Placed on the Union Calendar, Calendar No. 321."
+      },
+      {
+        "date": "2025-11-04",
+        "type": "Committee",
+        "text": "Reported (Amended) by the Committee on Financial Services. H. Rept. 119-369."
+      },
+      {
+        "date": "2025-11-04",
+        "type": "Committee",
+        "text": "Reported (Amended) by the Committee on Financial Services. H. Rept. 119-369."
+      },
+      {
+        "date": "2025-09-16",
+        "type": "Committee",
+        "text": "Ordered to be Reported (Amended) by the Yeas and Nays: 48 - 2."
+      },
+      {
+        "date": "2025-09-16",
+        "type": "Committee",
+        "text": "Committee Consideration and Mark-up Session Held"
+      },
+      {
+        "date": "2025-09-11",
+        "type": "IntroReferral",
+        "text": "Referred to the House Committee on Financial Services."
+      },
+      {
+        "date": "2025-09-11",
+        "type": "IntroReferral",
+        "text": "Introduced in House"
+      },
+      {
+        "date": "2025-09-11",
+        "type": "IntroReferral",
+        "text": "Introduced in House"
+      }
+    ],
     "summary": "The custodial-deposit companion to Keeping Deposits Local, lets community banks hold custodial deposits without the brokered label, subject to a liability-based cap.",
     "summarySource": "human",
     "provisions": [
@@ -265,8 +694,8 @@
       "content": true
     },
     "vehicle": false,
-    "updateDate": null,
-    "lastRefreshed": "2026-07-01T19:16:57Z"
+    "updateDate": "2026-05-23T06:53:30Z",
+    "lastRefreshed": "2026-07-01T20:37:26Z"
   },
   {
     "id": "119-hr-4437",
@@ -276,16 +705,26 @@
     "number": 4437,
     "no": "H.R. 4437",
     "title": "SMART Act of 2025",
-    "officialTitle": null,
+    "officialTitle": "SMART Act of 2025",
     "chamber": "House",
     "sponsor": "Rep. William Timmons (R-SC)",
     "party": "R",
     "bipartisan": true,
-    "cosponsorsCount": null,
+    "cosponsorsCount": 1,
     "committee": "Financial Services",
-    "committees": [],
-    "policyArea": null,
-    "subjects": [],
+    "committees": [
+      "ssbk00",
+      "hsba00"
+    ],
+    "policyArea": "Finance and Financial Sector",
+    "subjects": [
+      "Bank accounts, deposits, capital",
+      "Banking and financial institutions regulation",
+      "Business records",
+      "Congressional oversight",
+      "Corporate finance and management",
+      "Government studies and investigations"
+    ],
     "matchedOn": [
       "curation"
     ],
@@ -294,10 +733,86 @@
     "stage": 3,
     "stageKey": "passed_origin",
     "status": "Passed House; in Senate Banking",
-    "latestActionText": "Passed House; in Senate Banking",
-    "introducedDate": "Jul 16, 2025",
+    "latestActionText": "Received in the Senate and Read twice and referred to the Committee on Banking, Housing, and Urban Affairs.",
+    "introducedDate": "2025-07-16",
     "lastDate": "2026-05-13",
-    "actions": [],
+    "actions": [
+      {
+        "date": "2026-05-13",
+        "type": "IntroReferral",
+        "text": "Received in the Senate and Read twice and referred to the Committee on Banking, Housing, and Urban Affairs."
+      },
+      {
+        "date": "2026-05-12",
+        "type": "Floor",
+        "text": "Motion to reconsider laid on the table Agreed to without objection."
+      },
+      {
+        "date": "2026-05-12",
+        "type": "Floor",
+        "text": "On motion to suspend the rules and pass the bill, as amended Agreed to by voice vote. (text: CR H3353-3354)"
+      },
+      {
+        "date": "2026-05-12",
+        "type": "Floor",
+        "text": "Passed/agreed to in House: On motion to suspend the rules and pass the bill, as amended Agreed to by voice vote. (text: CR H3353-3354)"
+      },
+      {
+        "date": "2026-05-12",
+        "type": "Floor",
+        "text": "DEBATE - The House proceeded with forty minutes of debate on H.R. 4437."
+      },
+      {
+        "date": "2026-05-12",
+        "type": "Floor",
+        "text": "Considered under suspension of the rules. (consideration: CR H3353-3356)"
+      },
+      {
+        "date": "2026-05-12",
+        "type": "Floor",
+        "text": "Mr. Hill (AR) moved to suspend the rules and pass the bill, as amended."
+      },
+      {
+        "date": "2025-09-08",
+        "type": "Calendars",
+        "text": "Placed on the Union Calendar, Calendar No. 206."
+      },
+      {
+        "date": "2025-09-08",
+        "type": "Committee",
+        "text": "Reported (Amended) by the Committee on Financial Services. H. Rept. 119-249."
+      },
+      {
+        "date": "2025-09-08",
+        "type": "Committee",
+        "text": "Reported (Amended) by the Committee on Financial Services. H. Rept. 119-249."
+      },
+      {
+        "date": "2025-07-22",
+        "type": "Committee",
+        "text": "Ordered to be Reported (Amended) by the Yeas and Nays: 53 - 1."
+      },
+      {
+        "date": "2025-07-22",
+        "type": "Committee",
+        "text": "Committee Consideration and Mark-up Session Held"
+      },
+      {
+        "date": "2025-07-16",
+        "type": "IntroReferral",
+        "text": "Referred to the House Committee on Financial Services."
+      },
+      {
+        "date": "2025-07-16",
+        "type": "IntroReferral",
+        "text": "Introduced in House"
+      },
+      {
+        "date": "2025-07-16",
+        "type": "IntroReferral",
+        "text": "Introduced in House"
+      }
+    ],
     "summary": "Supervisory Modifications for Appropriate Risk-based Testing, alternating limited-scope exams for well-managed, well-capitalized institutions of $6 billion or less.",
     "summarySource": "human",
     "provisions": [
@@ -334,8 +849,171 @@
       "content": true
     },
     "vehicle": false,
-    "updateDate": null,
-    "lastRefreshed": "2026-07-01T19:16:57Z"
+    "updateDate": "2026-05-15T03:08:24Z",
+    "lastRefreshed": "2026-07-01T20:37:18Z"
+  },
+  {
+    "id": "119-hr-4478",
+    "slug": "trust",
+    "congress": 119,
+    "type": "hr",
+    "number": 4478,
+    "no": "H.R. 4478",
+    "title": "TRUST Act of 2025",
+    "officialTitle": "TRUST Act of 2025",
+    "chamber": "House",
+    "sponsor": "Rep. Tim Moore (R-NC) & Rep. Ritchie Torres (D-NY)",
+    "party": "R",
+    "bipartisan": true,
+    "cosponsorsCount": 1,
+    "committee": "Financial Services",
+    "committees": [
+      "ssbk00",
+      "hsba00"
+    ],
+    "policyArea": "Finance and Financial Sector",
+    "subjects": [
+      "Bank accounts, deposits, capital",
+      "Banking and financial institutions regulation",
+      "Corporate finance and management",
+      "Federal Deposit Insurance Corporation (FDIC)",
+      "Performance measurement"
+    ],
+    "matchedOn": [
+      "curation"
+    ],
+    "theme": "Supervisory Relief",
+    "core": true,
+    "stage": 3,
+    "stageKey": "passed_origin",
+    "status": "Reported by Committee; on Union Calendar No. 209",
+    "latestActionText": "Received in the Senate and Read twice and referred to the Committee on Banking, Housing, and Urban Affairs.",
+    "introducedDate": "2025-07-17",
+    "lastDate": "2026-05-13",
+    "actions": [
+      {
+        "date": "2026-05-13",
+        "type": "IntroReferral",
+        "text": "Received in the Senate and Read twice and referred to the Committee on Banking, Housing, and Urban Affairs."
+      },
+      {
+        "date": "2026-05-12",
+        "type": "Floor",
+        "text": "Motion to reconsider laid on the table Agreed to without objection."
+      },
+      {
+        "date": "2026-05-12",
+        "type": "Floor",
+        "text": "On motion to suspend the rules and pass the bill Agreed to by voice vote. (text: CR H3358)"
+      },
+      {
+        "date": "2026-05-12",
+        "type": "Floor",
+        "text": "Passed/agreed to in House: On motion to suspend the rules and pass the bill Agreed to by voice vote. (text: CR H3358)"
+      },
+      {
+        "date": "2026-05-12",
+        "type": "Floor",
+        "text": "DEBATE - The House proceeded with forty minutes of debate on H.R. 4478."
+      },
+      {
+        "date": "2026-05-12",
+        "type": "Floor",
+        "text": "Considered under suspension of the rules. (consideration: CR H3357-3359)"
+      },
+      {
+        "date": "2026-05-12",
+        "type": "Floor",
+        "text": "Mr. Hill (AR) moved to suspend the rules and pass the bill."
+      },
+      {
+        "date": "2025-09-08",
+        "type": "Calendars",
+        "text": "Placed on the Union Calendar, Calendar No. 209."
+      },
+      {
+        "date": "2025-09-08",
+        "type": "Committee",
+        "text": "Reported by the Committee on Financial Services. H. Rept. 119-252."
+      },
+      {
+        "date": "2025-09-08",
+        "type": "Committee",
+        "text": "Reported by the Committee on Financial Services. H. Rept. 119-252."
+      },
+      {
+        "date": "2025-07-23",
+        "type": "Committee",
+        "text": "Ordered to be Reported by the Yeas and Nays: 48 - 0."
+      },
+      {
+        "date": "2025-07-23",
+        "type": "Committee",
+        "text": "Committee Consideration and Mark-up Session Held"
+      },
+      {
+        "date": "2025-07-22",
+        "type": "Committee",
+        "text": "Committee Consideration and Mark-up Session Held"
+      },
+      {
+        "date": "2025-07-17",
+        "type": "IntroReferral",
+        "text": "Referred to the House Committee on Financial Services."
+      },
+      {
+        "date": "2025-07-17",
+        "type": "IntroReferral",
+        "text": "Introduced in House"
+      },
+      {
+        "date": "2025-07-17",
+        "type": "IntroReferral",
+        "text": "Introduced in House"
+      }
+    ],
+    "summary": "Tailored Regulatory Updates for Supervisory Testing, lengthens the exam cycle by raising the asset threshold for the 18-month examination schedule.",
+    "summarySource": "human",
+    "provisions": [
+      "Raises the consolidated-asset threshold to qualify for an 18-month exam cycle from $3 billion to $6 billion.",
+      "Applies to insured depository institutions that are well-capitalized and well-managed at their most recent exam.",
+      "Frames the change as completing the tailoring intended (but, sponsors argue, under-implemented) since 2018."
+    ],
+    "related": [
+      {
+        "no": "H.R. 4437 (SMART Act)",
+        "relationship": "Related",
+        "url": ""
+      },
+      {
+        "no": "S. 3830 (Senate companion)",
+        "relationship": "Related",
+        "url": ""
+      },
+      {
+        "no": "Sec. 304 of H.R. 6955",
+        "relationship": "Related",
+        "url": ""
+      }
+    ],
+    "src": "https://www.congress.gov/bill/119th-congress/house-bill/4478",
+    "crsSummaryUrl": "https://www.congress.gov/bill/119th-congress/house-bill/4478",
+    "disposition": "in_flight",
+    "enacted": {
+      "isLaw": false,
+      "publicLaw": null,
+      "enactedDate": null,
+      "textUrl": null
+    },
+    "tracked": true,
+    "pinned": true,
+    "review": {
+      "theme": true,
+      "content": true
+    },
+    "vehicle": false,
+    "updateDate": "2026-05-15T03:08:24Z",
+    "lastRefreshed": "2026-07-01T20:37:19Z"
   },
   {
     "id": "119-hr-941",
@@ -345,16 +1023,24 @@
     "number": 941,
     "no": "H.R. 941",
     "title": "Small LENDER Act",
-    "officialTitle": null,
+    "officialTitle": "Small LENDER Act",
     "chamber": "House",
     "sponsor": "Rep. French Hill (R-AR)",
     "party": "R",
     "bipartisan": false,
-    "cosponsorsCount": null,
+    "cosponsorsCount": 16,
     "committee": "Financial Services",
-    "committees": [],
-    "policyArea": null,
-    "subjects": [],
+    "committees": [
+      "hsba00"
+    ],
+    "policyArea": "Commerce",
+    "subjects": [
+      "Banking and financial institutions regulation",
+      "Business records",
+      "Data collection, sharing, protection",
+      "Financial services and investments",
+      "Small business"
+    ],
     "matchedOn": [
       "curation"
     ],
@@ -363,10 +1049,51 @@
     "stage": 2,
     "stageKey": "committee",
     "status": "Reported by Committee (26-22)",
-    "latestActionText": "Reported by Committee (26-22)",
-    "introducedDate": "Feb 4, 2025",
-    "lastDate": "2026-04-21",
-    "actions": [],
+    "latestActionText": "Placed on the Union Calendar, Calendar No. 610.",
+    "introducedDate": "2025-02-04",
+    "lastDate": "2026-06-18",
+    "actions": [
+      {
+        "date": "2026-06-18",
+        "type": "Calendars",
+        "text": "Placed on the Union Calendar, Calendar No. 610."
+      },
+      {
+        "date": "2026-06-18",
+        "type": "Committee",
+        "text": "Reported (Amended) by the Committee on Financial Services. H. Rept. 119-702."
+      },
+      {
+        "date": "2026-06-18",
+        "type": "Committee",
+        "text": "Reported (Amended) by the Committee on Financial Services. H. Rept. 119-702."
+      },
+      {
+        "date": "2026-04-21",
+        "type": "Committee",
+        "text": "Ordered to be Reported by the Yeas and Nays: 26 - 22."
+      },
+      {
+        "date": "2026-04-21",
+        "type": "Committee",
+        "text": "Committee Consideration and Mark-up Session Held"
+      },
+      {
+        "date": "2025-02-04",
+        "type": "IntroReferral",
+        "text": "Referred to the House Committee on Financial Services."
+      },
+      {
+        "date": "2025-02-04",
+        "type": "IntroReferral",
+        "text": "Introduced in House"
+      },
+      {
+        "date": "2025-02-04",
+        "type": "IntroReferral",
+        "text": "Introduced in House"
+      }
+    ],
     "summary": "Narrows the reach of the CFPB's §1071 small-business-lending data rule, Small Lenders Exempt from New Data and Excessive Reporting, via exemptions, a safe harbor, and a later effective date.",
     "summarySource": "human",
     "provisions": [
@@ -407,8 +1134,8 @@
       "content": true
     },
     "vehicle": false,
-    "updateDate": null,
-    "lastRefreshed": "2026-07-01T19:16:57Z"
+    "updateDate": "2026-06-27T20:41:19Z",
+    "lastRefreshed": "2026-07-01T20:37:27Z"
   },
   {
     "id": "119-hr-6955",
@@ -418,16 +1145,38 @@
     "number": 6955,
     "no": "H.R. 6955",
     "title": "Main Street Capital Access Act",
-    "officialTitle": null,
+    "officialTitle": "Main Street Act",
     "chamber": "House",
     "sponsor": "Rep. French Hill (R-AR) & Rep. Andy Barr (R-KY)",
     "party": "R",
     "bipartisan": false,
-    "cosponsorsCount": null,
+    "cosponsorsCount": 33,
     "committee": "Financial Services",
-    "committees": [],
-    "policyArea": null,
-    "subjects": [],
+    "committees": [
+      "hsba00"
+    ],
+    "policyArea": "Finance and Financial Sector",
+    "subjects": [
+      "Accounting and auditing",
+      "Administrative law and regulatory procedures",
+      "Administrative remedies",
+      "Advisory bodies",
+      "Bank accounts, deposits, capital",
+      "Banking and financial institutions regulation",
+      "Business ethics",
+      "Business records",
+      "Congressional oversight",
+      "Consumer Financial Protection Bureau",
+      "Corporate finance and management",
+      "Credit and credit markets",
+      "Currency",
+      "Data collection, sharing, protection",
+      "Economic performance and conditions",
+      "Federal Deposit Insurance Corporation (FDIC)",
+      "Federal Reserve System",
+      "Financial crises and stabilization",
+      "Financial services and investments"
+    ],
     "matchedOn": [
       "curation"
     ],
@@ -436,10 +1185,51 @@
     "stage": 2,
     "stageKey": "committee",
     "status": "Reported; on Union Calendar No. 535",
-    "latestActionText": "Reported; on Union Calendar No. 535",
-    "introducedDate": "Jan 7, 2026",
+    "latestActionText": "Placed on the Union Calendar, Calendar No. 535.",
+    "introducedDate": "2026-01-07",
     "lastDate": "2026-04-20",
-    "actions": [],
+    "actions": [
+      {
+        "date": "2026-04-20",
+        "type": "Calendars",
+        "text": "Placed on the Union Calendar, Calendar No. 535."
+      },
+      {
+        "date": "2026-04-20",
+        "type": "Committee",
+        "text": "Reported (Amended) by the Committee on Financial Services. H. Rept. 119-617."
+      },
+      {
+        "date": "2026-04-20",
+        "type": "Committee",
+        "text": "Reported (Amended) by the Committee on Financial Services. H. Rept. 119-617."
+      },
+      {
+        "date": "2026-03-04",
+        "type": "Committee",
+        "text": "Ordered to be Reported by the Yeas and Nays: 26 - 16."
+      },
+      {
+        "date": "2026-03-04",
+        "type": "Committee",
+        "text": "Committee Consideration and Mark-up Session Held"
+      },
+      {
+        "date": "2026-01-07",
+        "type": "IntroReferral",
+        "text": "Referred to the House Committee on Financial Services."
+      },
+      {
+        "date": "2026-01-07",
+        "type": "IntroReferral",
+        "text": "Introduced in House"
+      },
+      {
+        "date": "2026-01-07",
+        "type": "IntroReferral",
+        "text": "Introduced in House"
+      }
+    ],
     "summary": "The omnibus vehicle. It bundles many of the stand-alone community-bank bills on this docket into one eight-title package on de novo formation, tailoring, supervision, deposits, resolution, and fintech.",
     "summarySource": "human",
     "provisions": [
@@ -491,8 +1281,8 @@
       "content": true
     },
     "vehicle": true,
-    "updateDate": null,
-    "lastRefreshed": "2026-07-01T19:16:57Z"
+    "updateDate": "2026-05-02T19:06:20Z",
+    "lastRefreshed": "2026-07-01T20:37:36Z"
   },
   {
     "id": "119-hr-7056",
@@ -502,16 +1292,24 @@
     "number": 7056,
     "no": "H.R. 7056",
     "title": "Community Bank Regulatory Tailoring Act",
-    "officialTitle": null,
+    "officialTitle": "Community Bank Regulatory Tailoring Act",
     "chamber": "House",
     "sponsor": "Rep. Andy Barr (R-KY) & Rep. Josh Gottheimer (D-NJ)",
     "party": "R",
     "bipartisan": true,
-    "cosponsorsCount": null,
+    "cosponsorsCount": 2,
     "committee": "Financial Services",
-    "committees": [],
-    "policyArea": null,
-    "subjects": [],
+    "committees": [
+      "hsba00"
+    ],
+    "policyArea": "Finance and Financial Sector",
+    "subjects": [
+      "Bank accounts, deposits, capital",
+      "Banking and financial institutions regulation",
+      "Currency",
+      "Economic performance and conditions",
+      "Financial services and investments"
+    ],
     "matchedOn": [
       "curation"
     ],
@@ -520,10 +1318,51 @@
     "stage": 2,
     "stageKey": "committee",
     "status": "Reported by Committee; on Union Calendar No. 480",
-    "latestActionText": "Reported by Committee; on Union Calendar No. 480",
-    "introducedDate": "Jan 14, 2026",
-    "lastDate": "2026-03-24",
-    "actions": [],
+    "latestActionText": "Placed on the Union Calendar, Calendar No. 480.",
+    "introducedDate": "2026-01-14",
+    "lastDate": "2026-03-19",
+    "actions": [
+      {
+        "date": "2026-03-19",
+        "type": "Calendars",
+        "text": "Placed on the Union Calendar, Calendar No. 480."
+      },
+      {
+        "date": "2026-03-19",
+        "type": "Committee",
+        "text": "Reported (Amended) by the Committee on Financial Services. H. Rept. 119-558."
+      },
+      {
+        "date": "2026-03-19",
+        "type": "Committee",
+        "text": "Reported (Amended) by the Committee on Financial Services. H. Rept. 119-558."
+      },
+      {
+        "date": "2026-01-22",
+        "type": "Committee",
+        "text": "Ordered to be Reported (Amended) by the Yeas and Nays: 33 - 21."
+      },
+      {
+        "date": "2026-01-22",
+        "type": "Committee",
+        "text": "Committee Consideration and Mark-up Session Held"
+      },
+      {
+        "date": "2026-01-14",
+        "type": "IntroReferral",
+        "text": "Referred to the House Committee on Financial Services."
+      },
+      {
+        "date": "2026-01-14",
+        "type": "IntroReferral",
+        "text": "Introduced in House"
+      },
+      {
+        "date": "2026-01-14",
+        "type": "IntroReferral",
+        "text": "Introduced in House"
+      }
+    ],
     "summary": "Indexes a slate of asset-based statutory thresholds for bank regulation to nominal GDP, so community-bank trigger points keep pace with economic growth.",
     "summarySource": "human",
     "provisions": [
@@ -559,8 +1398,8 @@
       "content": true
     },
     "vehicle": false,
-    "updateDate": null,
-    "lastRefreshed": "2026-07-01T19:16:57Z"
+    "updateDate": "2026-06-11T23:41:24Z",
+    "lastRefreshed": "2026-07-01T20:37:20Z"
   },
   {
     "id": "119-s-3755",
@@ -570,16 +1409,38 @@
     "number": 3755,
     "no": "S. 3755",
     "title": "Digital Commodity Intermediaries Act",
-    "officialTitle": null,
+    "officialTitle": "Digital Commodity Intermediaries Act",
     "chamber": "Senate",
     "sponsor": "Sen. John Boozman (R-AR), Chairman, Senate Agriculture",
     "party": "R",
     "bipartisan": false,
-    "cosponsorsCount": null,
+    "cosponsorsCount": 0,
     "committee": "Agriculture, Nutrition & Forestry",
-    "committees": [],
-    "policyArea": null,
-    "subjects": [],
+    "committees": [
+      "ssaf00"
+    ],
+    "policyArea": "Finance and Financial Sector",
+    "subjects": [
+      "Accounting and auditing",
+      "Administrative law and regulatory procedures",
+      "Advanced technology and technological innovations",
+      "Advisory bodies",
+      "Bank accounts, deposits, capital",
+      "Banking and financial institutions regulation",
+      "Bankruptcy",
+      "Business ethics",
+      "Business investment and capital",
+      "Business records",
+      "Commodities markets",
+      "Computer security and identity theft",
+      "Computers and information technology",
+      "Congressional oversight",
+      "Contracts and agency",
+      "Currency",
+      "Data collection, sharing, protection",
+      "Digital media",
+      "Economic performance and conditions"
+    ],
     "matchedOn": [
       "curation"
     ],
@@ -588,10 +1449,26 @@
     "stage": 2,
     "stageKey": "committee",
     "status": "Reported by Senate Ag (party-line); on calendar",
-    "latestActionText": "Reported by Senate Ag (party-line); on calendar",
-    "introducedDate": "Jan 21, 2026 (text)",
+    "latestActionText": "Placed on Senate Legislative Calendar under General Orders. Calendar No. 312.",
+    "introducedDate": "2026-02-02",
     "lastDate": "2026-02-02",
-    "actions": [],
+    "actions": [
+      {
+        "date": "2026-02-02",
+        "type": "Calendars",
+        "text": "Placed on Senate Legislative Calendar under General Orders. Calendar No. 312."
+      },
+      {
+        "date": "2026-02-02",
+        "type": "Committee",
+        "text": "Committee on Agriculture, Nutrition, and Forestry. Original measure reported to Senate by Senator Boozman. Without written report."
+      },
+      {
+        "date": "2026-02-02",
+        "type": "Committee",
+        "text": "Committee on Agriculture, Nutrition, and Forestry. Original measure reported to Senate by Senator Boozman. Without written report."
+      }
+    ],
     "summary": "The Senate Agriculture Committee's CFTC-side companion to the CLARITY Act, focused on who must register as a digital-commodity intermediary and how spot-market trading is supervised.",
     "summarySource": "human",
     "provisions": [
@@ -628,8 +1505,8 @@
       "content": true
     },
     "vehicle": false,
-    "updateDate": null,
-    "lastRefreshed": "2026-07-01T19:16:57Z"
+    "updateDate": "2026-06-11T23:26:42Z",
+    "lastRefreshed": "2026-07-01T20:37:18Z"
   },
   {
     "id": "119-hr-6547",
@@ -639,16 +1516,27 @@
     "number": 6547,
     "no": "H.R. 6547",
     "title": "Least Cost Exception Act",
-    "officialTitle": null,
+    "officialTitle": "Least Cost Exception Act",
     "chamber": "House",
     "sponsor": "Rep. Mike Flood (R-NE) & Rep. Bill Foster (D-IL)",
     "party": "R",
     "bipartisan": true,
-    "cosponsorsCount": null,
+    "cosponsorsCount": 4,
     "committee": "Financial Services",
-    "committees": [],
-    "policyArea": null,
-    "subjects": [],
+    "committees": [
+      "hsba00"
+    ],
+    "policyArea": "Finance and Financial Sector",
+    "subjects": [
+      "Accounting and auditing",
+      "Bank accounts, deposits, capital",
+      "Banking and financial institutions regulation",
+      "Congressional oversight",
+      "Corporate finance and management",
+      "Federal Deposit Insurance Corporation (FDIC)",
+      "Performance measurement",
+      "User charges and fees"
+    ],
     "matchedOn": [
       "curation"
     ],
@@ -657,10 +1545,56 @@
     "stage": 2,
     "stageKey": "committee",
     "status": "Reported by Committee; on Union Calendar No. 405",
-    "latestActionText": "Reported by Committee; on Union Calendar No. 405",
-    "introducedDate": "Dec 10, 2025",
+    "latestActionText": "Placed on the Union Calendar, Calendar No. 405.",
+    "introducedDate": "2025-12-10",
     "lastDate": "2026-02-02",
-    "actions": [],
+    "actions": [
+      {
+        "date": "2026-02-02",
+        "type": "Calendars",
+        "text": "Placed on the Union Calendar, Calendar No. 405."
+      },
+      {
+        "date": "2026-02-02",
+        "type": "Committee",
+        "text": "Reported (Amended) by the Committee on Financial Services. H. Rept. 119-474."
+      },
+      {
+        "date": "2026-02-02",
+        "type": "Committee",
+        "text": "Reported (Amended) by the Committee on Financial Services. H. Rept. 119-474."
+      },
+      {
+        "date": "2025-12-17",
+        "type": "Committee",
+        "text": "Ordered to be Reported (Amended) by the Yeas and Nays: 50 - 0."
+      },
+      {
+        "date": "2025-12-17",
+        "type": "Committee",
+        "text": "Committee Consideration and Mark-up Session Held"
+      },
+      {
+        "date": "2025-12-16",
+        "type": "Committee",
+        "text": "Committee Consideration and Mark-up Session Held"
+      },
+      {
+        "date": "2025-12-10",
+        "type": "IntroReferral",
+        "text": "Referred to the House Committee on Financial Services."
+      },
+      {
+        "date": "2025-12-10",
+        "type": "IntroReferral",
+        "text": "Introduced in House"
+      },
+      {
+        "date": "2025-12-10",
+        "type": "IntroReferral",
+        "text": "Introduced in House"
+      }
+    ],
     "summary": "Lets the FDIC waive the least-cost-resolution mandate to pursue alternative resolutions of failed banks, specifically to avoid pushing failed banks into the largest G-SIBs.",
     "summarySource": "human",
     "provisions": [
@@ -696,8 +1630,8 @@
       "content": true
     },
     "vehicle": false,
-    "updateDate": null,
-    "lastRefreshed": "2026-07-01T19:16:57Z"
+    "updateDate": "2026-06-11T23:26:34Z",
+    "lastRefreshed": "2026-07-01T20:37:24Z"
   },
   {
     "id": "119-hr-6556",
@@ -707,16 +1641,27 @@
     "number": 6556,
     "no": "H.R. 6556",
     "title": "Failing Bank Acquisition Fairness Act",
-    "officialTitle": null,
+    "officialTitle": "Failing Bank Acquisition Fairness Act",
     "chamber": "House",
     "sponsor": "Rep. Stephen Lynch (D-MA)",
     "party": "D",
     "bipartisan": false,
-    "cosponsorsCount": null,
+    "cosponsorsCount": 1,
     "committee": "Financial Services",
-    "committees": [],
-    "policyArea": null,
-    "subjects": [],
+    "committees": [
+      "hsba00"
+    ],
+    "policyArea": "Finance and Financial Sector",
+    "subjects": [
+      "Administrative law and regulatory procedures",
+      "Bank accounts, deposits, capital",
+      "Banking and financial institutions regulation",
+      "Corporate finance and management",
+      "Economic performance and conditions",
+      "Federal Deposit Insurance Corporation (FDIC)",
+      "Financial crises and stabilization",
+      "Performance measurement"
+    ],
     "matchedOn": [
       "curation"
     ],
@@ -725,10 +1670,56 @@
     "stage": 2,
     "stageKey": "committee",
     "status": "Reported by Committee; on Union Calendar No. 406",
-    "latestActionText": "Reported by Committee; on Union Calendar No. 406",
-    "introducedDate": "Dec 10, 2025",
+    "latestActionText": "Placed on the Union Calendar, Calendar No. 406.",
+    "introducedDate": "2025-12-10",
     "lastDate": "2026-02-02",
-    "actions": [],
+    "actions": [
+      {
+        "date": "2026-02-02",
+        "type": "Calendars",
+        "text": "Placed on the Union Calendar, Calendar No. 406."
+      },
+      {
+        "date": "2026-02-02",
+        "type": "Committee",
+        "text": "Reported (Amended) by the Committee on Financial Services. H. Rept. 119-475."
+      },
+      {
+        "date": "2026-02-02",
+        "type": "Committee",
+        "text": "Reported (Amended) by the Committee on Financial Services. H. Rept. 119-475."
+      },
+      {
+        "date": "2025-12-17",
+        "type": "Committee",
+        "text": "Ordered to be Reported (Amended) by the Yeas and Nays: 51 - 0."
+      },
+      {
+        "date": "2025-12-17",
+        "type": "Committee",
+        "text": "Committee Consideration and Mark-up Session Held"
+      },
+      {
+        "date": "2025-12-16",
+        "type": "Committee",
+        "text": "Committee Consideration and Mark-up Session Held"
+      },
+      {
+        "date": "2025-12-10",
+        "type": "IntroReferral",
+        "text": "Referred to the House Committee on Financial Services."
+      },
+      {
+        "date": "2025-12-10",
+        "type": "IntroReferral",
+        "text": "Introduced in House"
+      },
+      {
+        "date": "2025-12-10",
+        "type": "IntroReferral",
+        "text": "Introduced in House"
+      }
+    ],
     "summary": "The transparency counterpart to merger-relief bills: conditions any waiver of merger concentration limits in failing-bank deals and forces detailed reporting to Congress.",
     "summarySource": "human",
     "provisions": [
@@ -759,81 +1750,8 @@
       "content": true
     },
     "vehicle": false,
-    "updateDate": null,
-    "lastRefreshed": "2026-07-01T19:16:57Z"
-  },
-  {
-    "id": "119-hr-4478",
-    "slug": "trust",
-    "congress": 119,
-    "type": "hr",
-    "number": 4478,
-    "no": "H.R. 4478",
-    "title": "TRUST Act of 2025",
-    "officialTitle": null,
-    "chamber": "House",
-    "sponsor": "Rep. Tim Moore (R-NC) & Rep. Ritchie Torres (D-NY)",
-    "party": "R",
-    "bipartisan": true,
-    "cosponsorsCount": null,
-    "committee": "Financial Services",
-    "committees": [],
-    "policyArea": null,
-    "subjects": [],
-    "matchedOn": [
-      "curation"
-    ],
-    "theme": "Supervisory Relief",
-    "core": true,
-    "stage": 2,
-    "stageKey": "committee",
-    "status": "Reported by Committee; on Union Calendar No. 209",
-    "latestActionText": "Reported by Committee; on Union Calendar No. 209",
-    "introducedDate": "Jul 17, 2025",
-    "lastDate": "2025-09-08",
-    "actions": [],
-    "summary": "Tailored Regulatory Updates for Supervisory Testing, lengthens the exam cycle by raising the asset threshold for the 18-month examination schedule.",
-    "summarySource": "human",
-    "provisions": [
-      "Raises the consolidated-asset threshold to qualify for an 18-month exam cycle from $3 billion to $6 billion.",
-      "Applies to insured depository institutions that are well-capitalized and well-managed at their most recent exam.",
-      "Frames the change as completing the tailoring intended (but, sponsors argue, under-implemented) since 2018."
-    ],
-    "related": [
-      {
-        "no": "H.R. 4437 (SMART Act)",
-        "relationship": "Related",
-        "url": ""
-      },
-      {
-        "no": "S. 3830 (Senate companion)",
-        "relationship": "Related",
-        "url": ""
-      },
-      {
-        "no": "Sec. 304 of H.R. 6955",
-        "relationship": "Related",
-        "url": ""
-      }
-    ],
-    "src": "https://www.congress.gov/bill/119th-congress/house-bill/4478",
-    "crsSummaryUrl": "https://www.congress.gov/bill/119th-congress/house-bill/4478",
-    "disposition": "in_flight",
-    "enacted": {
-      "isLaw": false,
-      "publicLaw": null,
-      "enactedDate": null,
-      "textUrl": null
-    },
-    "tracked": true,
-    "pinned": true,
-    "review": {
-      "theme": true,
-      "content": true
-    },
-    "vehicle": false,
-    "updateDate": null,
-    "lastRefreshed": "2026-07-01T19:16:57Z"
+    "updateDate": "2026-07-01T20:22:48Z",
+    "lastRefreshed": "2026-07-01T20:37:25Z"
   },
   {
     "id": "119-hr-478",
@@ -843,16 +1761,29 @@
     "number": 478,
     "no": "H.R. 478",
     "title": "Promoting New Bank Formation Act",
-    "officialTitle": null,
+    "officialTitle": "Promoting New Bank Formation Act",
     "chamber": "House",
     "sponsor": "Rep. Andy Barr (R-KY)",
     "party": "R",
     "bipartisan": false,
-    "cosponsorsCount": null,
+    "cosponsorsCount": 24,
     "committee": "Financial Services",
-    "committees": [],
-    "policyArea": null,
-    "subjects": [],
+    "committees": [
+      "hsba00"
+    ],
+    "policyArea": "Finance and Financial Sector",
+    "subjects": [
+      "Administrative law and regulatory procedures",
+      "Agricultural prices, subsidies, credit",
+      "Bank accounts, deposits, capital",
+      "Banking and financial institutions regulation",
+      "Congressional oversight",
+      "Credit and credit markets",
+      "Financial services and investments",
+      "Government information and archives",
+      "Government studies and investigations",
+      "Rural conditions and development"
+    ],
     "matchedOn": [
       "curation"
     ],
@@ -861,10 +1792,51 @@
     "stage": 2,
     "stageKey": "committee",
     "status": "Reported by Committee; on Union Calendar No. 64",
-    "latestActionText": "Reported by Committee; on Union Calendar No. 64",
-    "introducedDate": "Jan 16, 2025",
-    "lastDate": "2025-04-02",
-    "actions": [],
+    "latestActionText": "Placed on the Union Calendar, Calendar No. 64.",
+    "introducedDate": "2025-01-16",
+    "lastDate": "2025-05-06",
+    "actions": [
+      {
+        "date": "2025-05-06",
+        "type": "Calendars",
+        "text": "Placed on the Union Calendar, Calendar No. 64."
+      },
+      {
+        "date": "2025-05-06",
+        "type": "Committee",
+        "text": "Reported (Amended) by the Committee on Financial Services. H. Rept. 119-90."
+      },
+      {
+        "date": "2025-05-06",
+        "type": "Committee",
+        "text": "Reported (Amended) by the Committee on Financial Services. H. Rept. 119-90."
+      },
+      {
+        "date": "2025-04-02",
+        "type": "Committee",
+        "text": "Ordered to be Reported (Amended) by the Yeas and Nays: 28 - 21."
+      },
+      {
+        "date": "2025-04-02",
+        "type": "Committee",
+        "text": "Committee Consideration and Mark-up Session Held"
+      },
+      {
+        "date": "2025-01-16",
+        "type": "IntroReferral",
+        "text": "Referred to the House Committee on Financial Services."
+      },
+      {
+        "date": "2025-01-16",
+        "type": "IntroReferral",
+        "text": "Introduced in House"
+      },
+      {
+        "date": "2025-01-16",
+        "type": "IntroReferral",
+        "text": "Introduced in House"
+      }
+    ],
     "summary": "Eases the path for de novo banks, a 3-year capital phase-in, relief for rural de novos, and faster review of business-plan changes, to reverse the collapse in new-bank charters.",
     "summarySource": "human",
     "provisions": [
@@ -901,8 +1873,8 @@
       "content": true
     },
     "vehicle": false,
-    "updateDate": null,
-    "lastRefreshed": "2026-07-01T19:16:57Z"
+    "updateDate": "2026-05-02T19:06:20Z",
+    "lastRefreshed": "2026-07-01T20:37:24Z"
   },
   {
     "id": "119-hr-976",
@@ -912,16 +1884,22 @@
     "number": 976,
     "no": "H.R. 976",
     "title": "1071 Repeal to Protect Small Business Lending Act",
-    "officialTitle": null,
+    "officialTitle": "1071 Repeal to Protect Small Business Lending Act",
     "chamber": "House",
     "sponsor": "Rep. Roger Williams (R-TX)",
     "party": "R",
     "bipartisan": false,
-    "cosponsorsCount": null,
+    "cosponsorsCount": 52,
     "committee": "Financial Services",
-    "committees": [],
-    "policyArea": null,
-    "subjects": [],
+    "committees": [
+      "hsba00"
+    ],
+    "policyArea": "Finance and Financial Sector",
+    "subjects": [
+      "Banking and financial institutions regulation",
+      "Consumer credit",
+      "Small business"
+    ],
     "matchedOn": [
       "curation"
     ],
@@ -930,10 +1908,51 @@
     "stage": 2,
     "stageKey": "committee",
     "status": "Reported by Committee",
-    "latestActionText": "Reported by Committee",
-    "introducedDate": "Feb 4, 2025",
-    "lastDate": "2025-04-02",
-    "actions": [],
+    "latestActionText": "Placed on the Union Calendar, Calendar No. 65.",
+    "introducedDate": "2025-02-04",
+    "lastDate": "2025-05-06",
+    "actions": [
+      {
+        "date": "2025-05-06",
+        "type": "Calendars",
+        "text": "Placed on the Union Calendar, Calendar No. 65."
+      },
+      {
+        "date": "2025-05-06",
+        "type": "Committee",
+        "text": "Reported (Amended) by the Committee on Financial Services. H. Rept. 119-91."
+      },
+      {
+        "date": "2025-05-06",
+        "type": "Committee",
+        "text": "Reported (Amended) by the Committee on Financial Services. H. Rept. 119-91."
+      },
+      {
+        "date": "2025-04-02",
+        "type": "Committee",
+        "text": "Ordered to be Reported (Amended) by the Yeas and Nays: 27 - 22."
+      },
+      {
+        "date": "2025-04-02",
+        "type": "Committee",
+        "text": "Committee Consideration and Mark-up Session Held"
+      },
+      {
+        "date": "2025-02-04",
+        "type": "IntroReferral",
+        "text": "Referred to the House Committee on Financial Services."
+      },
+      {
+        "date": "2025-02-04",
+        "type": "IntroReferral",
+        "text": "Introduced in House"
+      },
+      {
+        "date": "2025-02-04",
+        "type": "IntroReferral",
+        "text": "Introduced in House"
+      }
+    ],
     "summary": "The maximalist counterpart to the Small LENDER Act, repeals the §1071 small-business-lending data-collection statute outright.",
     "summarySource": "human",
     "provisions": [
@@ -963,8 +1982,8 @@
       "content": true
     },
     "vehicle": false,
-    "updateDate": null,
-    "lastRefreshed": "2026-07-01T19:16:57Z"
+    "updateDate": "2025-12-06T07:05:00Z",
+    "lastRefreshed": "2026-07-01T20:37:29Z"
   },
   {
     "id": "119-hr-8395",
@@ -974,15 +1993,17 @@
     "number": 8395,
     "no": "H.R. 8395",
     "title": "PACE Act of 2026",
-    "officialTitle": null,
+    "officialTitle": "PACE Act of 2026",
     "chamber": "House",
     "sponsor": "Rep. Young Kim (R-CA) & Rep. Sam Liccardo (D-CA)",
     "party": "R",
     "bipartisan": true,
-    "cosponsorsCount": null,
+    "cosponsorsCount": 2,
     "committee": "Financial Services",
-    "committees": [],
-    "policyArea": null,
+    "committees": [
+      "hsba00"
+    ],
+    "policyArea": "Finance and Financial Sector",
     "subjects": [],
     "matchedOn": [
       "curation"
@@ -992,10 +2013,26 @@
     "stage": 1,
     "stageKey": "introduced",
     "status": "Introduced; referred to committee",
-    "latestActionText": "Introduced; referred to committee",
-    "introducedDate": "Apr 21, 2026",
+    "latestActionText": "Referred to the House Committee on Financial Services.",
+    "introducedDate": "2026-04-21",
     "lastDate": "2026-04-21",
-    "actions": [],
+    "actions": [
+      {
+        "date": "2026-04-21",
+        "type": "IntroReferral",
+        "text": "Referred to the House Committee on Financial Services."
+      },
+      {
+        "date": "2026-04-21",
+        "type": "IntroReferral",
+        "text": "Introduced in House"
+      },
+      {
+        "date": "2026-04-21",
+        "type": "IntroReferral",
+        "text": "Introduced in House"
+      }
+    ],
     "summary": "Payments Access and Consumer Efficiency Act, creates an optional federal 'registered covered provider' status at the OCC for nonbank payment firms, with a pathway to direct Federal Reserve payment-rail access.",
     "summarySource": "human",
     "provisions": [
@@ -1032,8 +2069,8 @@
       "content": true
     },
     "vehicle": false,
-    "updateDate": null,
-    "lastRefreshed": "2026-07-01T19:16:57Z"
+    "updateDate": "2026-06-25T08:08:50Z",
+    "lastRefreshed": "2026-07-01T20:37:31Z"
   },
   {
     "id": "119-hr-8413",
@@ -1043,15 +2080,18 @@
     "number": 8413,
     "no": "H.R. 8413",
     "title": "SECURE Data Act",
-    "officialTitle": null,
+    "officialTitle": "SECURE Data Act",
     "chamber": "House",
     "sponsor": "Rep. John Joyce (R-PA), Vice Chair, Energy & Commerce",
     "party": "R",
     "bipartisan": false,
-    "cosponsorsCount": null,
+    "cosponsorsCount": 8,
     "committee": "Energy & Commerce / Judiciary",
-    "committees": [],
-    "policyArea": null,
+    "committees": [
+      "hsju00",
+      "hsif00"
+    ],
+    "policyArea": "Commerce",
     "subjects": [],
     "matchedOn": [
       "curation"
@@ -1061,10 +2101,31 @@
     "stage": 1,
     "stageKey": "introduced",
     "status": "Introduced; referred to E&C and Judiciary",
-    "latestActionText": "Introduced; referred to E&C and Judiciary",
-    "introducedDate": "Apr 21, 2026",
+    "latestActionText": "Referred to the Committee on Energy and Commerce, and in addition to the Committee on the Judiciary, for a period to be subsequently determined by the Speaker, in each case for consideration of such provisions as fall within the jurisdiction of the committee concerned.",
+    "introducedDate": "2026-04-21",
     "lastDate": "2026-04-21",
-    "actions": [],
+    "actions": [
+      {
+        "date": "2026-04-21",
+        "type": "IntroReferral",
+        "text": "Referred to the Committee on Energy and Commerce, and in addition to the Committee on the Judiciary, for a period to be subsequently determined by the Speaker, in each case for consideration of such provisions as fall within the jurisdiction of the committee concerned."
+      },
+      {
+        "date": "2026-04-21",
+        "type": "IntroReferral",
+        "text": "Referred to the Committee on Energy and Commerce, and in addition to the Committee on the Judiciary, for a period to be subsequently determined by the Speaker, in each case for consideration of such provisions as fall within the jurisdiction of the committee concerned."
+      },
+      {
+        "date": "2026-04-21",
+        "type": "IntroReferral",
+        "text": "Introduced in House"
+      },
+      {
+        "date": "2026-04-21",
+        "type": "IntroReferral",
+        "text": "Introduced in House"
+      }
+    ],
     "summary": "The first comprehensive national consumer-privacy framework of the 119th Congress, establishing data rights enforced by the FTC and state AGs, with federal preemption of state privacy law.",
     "summarySource": "human",
     "provisions": [
@@ -1096,8 +2157,8 @@
       "content": true
     },
     "vehicle": false,
-    "updateDate": null,
-    "lastRefreshed": "2026-07-01T19:16:57Z"
+    "updateDate": "2026-05-20T19:43:28Z",
+    "lastRefreshed": "2026-07-01T20:37:33Z"
   },
   {
     "id": "119-hr-8398",
@@ -1107,15 +2168,17 @@
     "number": 8398,
     "no": "H.R. 8398",
     "title": "GUARD Financial Data Act",
-    "officialTitle": null,
+    "officialTitle": "Guidelines for Use, Access, and Responsible Disclosure of Financial Data Act",
     "chamber": "House",
     "sponsor": "Rep. Bill Huizenga (R-MI), with Hill & Steil",
     "party": "R",
     "bipartisan": false,
-    "cosponsorsCount": null,
+    "cosponsorsCount": 6,
     "committee": "Financial Services",
-    "committees": [],
-    "policyArea": null,
+    "committees": [
+      "hsba00"
+    ],
+    "policyArea": "Finance and Financial Sector",
     "subjects": [],
     "matchedOn": [
       "curation"
@@ -1125,10 +2188,26 @@
     "stage": 1,
     "stageKey": "introduced",
     "status": "Introduced; referred to committee",
-    "latestActionText": "Introduced; referred to committee",
-    "introducedDate": "Apr 21, 2026",
+    "latestActionText": "Referred to the House Committee on Financial Services.",
+    "introducedDate": "2026-04-21",
     "lastDate": "2026-04-21",
-    "actions": [],
+    "actions": [
+      {
+        "date": "2026-04-21",
+        "type": "IntroReferral",
+        "text": "Referred to the House Committee on Financial Services."
+      },
+      {
+        "date": "2026-04-21",
+        "type": "IntroReferral",
+        "text": "Introduced in House"
+      },
+      {
+        "date": "2026-04-21",
+        "type": "IntroReferral",
+        "text": "Introduced in House"
+      }
+    ],
     "summary": "Guidelines for Use, Access, and Responsible Disclosure of Financial Data, modernizes Title V of the Gramm-Leach-Bliley Act as the financial-sector half of the privacy package.",
     "summarySource": "human",
     "provisions": [
@@ -1165,8 +2244,8 @@
       "content": true
     },
     "vehicle": false,
-    "updateDate": null,
-    "lastRefreshed": "2026-07-01T19:16:57Z"
+    "updateDate": "2026-05-13T08:06:30Z",
+    "lastRefreshed": "2026-07-01T20:37:34Z"
   },
   {
     "id": "119-s-3889",
@@ -1176,15 +2255,17 @@
     "number": 3889,
     "no": "S. 3889",
     "title": "American Lending Fairness Act of 2026",
-    "officialTitle": null,
+    "officialTitle": "American Lending Fairness Act of 2026",
     "chamber": "Senate",
     "sponsor": "Sen. Bernie Moreno (R-OH); House companion Rep. Warren Davidson (R-OH)",
     "party": "R",
     "bipartisan": false,
-    "cosponsorsCount": null,
+    "cosponsorsCount": 0,
     "committee": "Banking, Housing & Urban Affairs",
-    "committees": [],
-    "policyArea": null,
+    "committees": [
+      "ssbk00"
+    ],
+    "policyArea": "Finance and Financial Sector",
     "subjects": [],
     "matchedOn": [
       "curation"
@@ -1194,10 +2275,21 @@
     "stage": 1,
     "stageKey": "introduced",
     "status": "Introduced; referred to Senate Banking",
-    "latestActionText": "Introduced; referred to Senate Banking",
-    "introducedDate": "Feb 12, 2026",
+    "latestActionText": "Read twice and referred to the Committee on Banking, Housing, and Urban Affairs.",
+    "introducedDate": "2026-02-12",
     "lastDate": "2026-02-12",
-    "actions": [],
+    "actions": [
+      {
+        "date": "2026-02-12",
+        "type": "IntroReferral",
+        "text": "Read twice and referred to the Committee on Banking, Housing, and Urban Affairs."
+      },
+      {
+        "date": "2026-02-12",
+        "type": "IntroReferral",
+        "text": "Introduced in Senate"
+      }
+    ],
     "summary": "Restores nationwide interest-rate exportation parity for state-chartered banks by limiting a state's DIDMCA opt-out to loans made by its own chartered institutions.",
     "summarySource": "human",
     "provisions": [
@@ -1233,8 +2325,8 @@
       "content": true
     },
     "vehicle": false,
-    "updateDate": null,
-    "lastRefreshed": "2026-07-01T19:16:57Z"
+    "updateDate": "2026-04-21T16:03:41Z",
+    "lastRefreshed": "2026-07-01T20:37:30Z"
   },
   {
     "id": "119-s-3721",
@@ -1244,15 +2336,17 @@
     "number": 3721,
     "no": "S. 3721",
     "title": "Empowering States' Rights To Protect Consumers Act of 2026",
-    "officialTitle": null,
+    "officialTitle": "Empowering States' Rights To Protect Consumers Act of 2026",
     "chamber": "Senate",
     "sponsor": "Sen. Sheldon Whitehouse (D-RI), with Warren, Reed & Merkley",
     "party": "D",
     "bipartisan": false,
-    "cosponsorsCount": null,
+    "cosponsorsCount": 3,
     "committee": "Banking, Housing & Urban Affairs",
-    "committees": [],
-    "policyArea": null,
+    "committees": [
+      "ssbk00"
+    ],
+    "policyArea": "Finance and Financial Sector",
     "subjects": [],
     "matchedOn": [
       "curation"
@@ -1262,10 +2356,21 @@
     "stage": 1,
     "stageKey": "introduced",
     "status": "Introduced; referred to Senate Banking",
-    "latestActionText": "Introduced; referred to Senate Banking",
-    "introducedDate": "Jan 29, 2026",
+    "latestActionText": "Read twice and referred to the Committee on Banking, Housing, and Urban Affairs.",
+    "introducedDate": "2026-01-29",
     "lastDate": "2026-01-29",
-    "actions": [],
+    "actions": [
+      {
+        "date": "2026-01-29",
+        "type": "IntroReferral",
+        "text": "Read twice and referred to the Committee on Banking, Housing, and Urban Affairs."
+      },
+      {
+        "date": "2026-01-29",
+        "type": "IntroReferral",
+        "text": "Introduced in Senate"
+      }
+    ],
     "summary": "The consumer-side pole of the rate-preemption fight: amends the Truth in Lending Act to let states set the maximum APR on consumer-credit transactions in their borders.",
     "summarySource": "human",
     "provisions": [
@@ -1301,7 +2406,7 @@
       "content": true
     },
     "vehicle": false,
-    "updateDate": null,
-    "lastRefreshed": "2026-07-01T19:16:57Z"
+    "updateDate": "2026-03-11T16:27:19Z",
+    "lastRefreshed": "2026-07-01T20:37:31Z"
   }
 ]
