@@ -24,8 +24,10 @@ import classify as X
 
 ROOT = Path(__file__).resolve().parent
 REPO = ROOT.parent
+DATA = ROOT / "data"
 CURATION = ROOT / "curation.json"
-OUT = REPO / "data" / "docket.json"
+OUT = DATA / "docket.json"
+UNTRIAGED = DATA / "untriaged.json"
 
 
 # ---------------------------------------------------------------- API client
@@ -60,6 +62,45 @@ class Congress:
 
     def sub(self, t, n, resource, container):
         return self.get(f"bill/{C.CONGRESS}/{t}/{n}/{resource}").get(container, [])
+
+    def committee_bills(self, chamber, code):
+        """
+        All bills referred to a committee, paginated. Returns light refs
+        (type, number, latest action) - enough to dedupe and order before
+        spending detail calls. The list container key has varied across API
+        revisions, so we probe a couple of shapes defensively.
+        """
+        out, offset = [], 0
+        while True:
+            data = self.get(f"committee/{chamber}/{code}/bills",
+                            offset=offset, limit=C.PAGE_LIMIT)
+            container = data.get("committee-bills")
+            if not isinstance(container, dict):
+                container = data if isinstance(data, dict) else {}
+            bills = container.get("bills") or data.get("bills") or []
+            for b in bills:
+                t = (b.get("type") or "").lower().strip()
+                n = str(b.get("number") or "").strip()
+                if not (t and n):
+                    continue
+                la = b.get("latestAction") or {}
+                out.append({
+                    "type": t,
+                    "number": n,
+                    "lastDate": la.get("actionDate", ""),
+                    "latestActionText": la.get("text", ""),
+                    "title": b.get("title", ""),
+                })
+            pag = container.get("pagination") or data.get("pagination") or {}
+            count = pag.get("count")
+            offset += C.PAGE_LIMIT
+            if not bills:
+                break
+            if count is not None and offset >= count:
+                break
+            if offset > 10000:   # hard safety valve
+                break
+        return out
 
 
 # ---------------------------------------------------------------- helpers
@@ -185,6 +226,7 @@ def enrich(b, api, cur):
 
 # ---------------------------------------------------------------- main
 def main():
+    do_discover = "--discover" in sys.argv[1:]
     key = os.environ.get("CONGRESS_API_KEY", "").strip()
     curation = json.loads(CURATION.read_text())["bills"]
     api = Congress(key) if key else None
@@ -209,17 +251,198 @@ def main():
     OUT.write_text(json.dumps(docket, indent=2, ensure_ascii=False))
     print(f"Wrote {OUT.relative_to(REPO)}  ({len(docket)} bills)")
 
+    if do_discover:
+        if not api:
+            print("discovery skipped: --discover needs CONGRESS_API_KEY", file=sys.stderr)
+        else:
+            print("Running committee auto-discovery...")
+            untriaged = discover(api, curation)
+            UNTRIAGED.parent.mkdir(parents=True, exist_ok=True)
+            UNTRIAGED.write_text(json.dumps(untriaged, indent=2, ensure_ascii=False))
+            print(f"Wrote {UNTRIAGED.relative_to(REPO)}  ({len(untriaged)} untriaged)")
+
 
 if __name__ == "__main__":
     main()
 
 
-# ---------------------------------------------------------------- Phase 2 stub
-def discover(api):
+# ---------------------------------------------------------------- Phase 2: discovery
+def base_from_discovery(ref, title):
+    """A docket-shaped record for an auto-discovered bill. Mirrors base_from_curation
+    but flagged untriaged: not tracked, nothing human-ratified, no provisions."""
+    t, n = ref["type"], ref["number"]
+    return {
+        "id": f"{C.CONGRESS}-{t}-{n}",
+        "slug": None,
+        "congress": C.CONGRESS,
+        "type": t,
+        "number": n,
+        "no": f"{t.upper()} {n}",
+        "title": title or "",
+        "officialTitle": title or "",
+
+        "chamber": "House" if t.startswith("h") else "Senate",
+        "sponsor": "",
+        "party": "",
+        "bipartisan": False,
+        "cosponsorsCount": None,
+
+        "committee": "",
+        "committees": [],
+        "policyArea": None,
+        "subjects": [],
+        "matchedOn": [],
+        "theme": "Uncategorized",
+        "core": True,
+
+        "stage": 1,
+        "stageKey": "introduced",
+        "status": "",
+        "latestActionText": ref.get("latestActionText", ""),
+        "introducedDate": "",
+        "lastDate": ref.get("lastDate", ""),
+        "actions": [],
+
+        "summary": "",
+        "summarySource": "none",
+        "provisions": [],
+
+        "related": [],
+        "src": f"https://www.congress.gov/bill/{C.CONGRESS}th-congress/"
+               f"{'house-bill' if t == 'hr' else 'senate-bill' if t == 's' else t}/{n}",
+        "crsSummaryUrl": "",
+
+        "disposition": "in_flight",
+        "enacted": {"isLaw": False, "publicLaw": None, "enactedDate": None, "textUrl": None},
+
+        "tracked": False,
+        "pinned": False,
+        "review": {"theme": False, "content": False},
+
+        "vehicle": False,
+        "updateDate": None,
+        "lastRefreshed": now_iso(),
+    }
+
+
+def hydrate_discovered(api, ref):
+    """Fetch detail for one candidate, test jurisdiction + salience, and return a
+    fully-populated untriaged record, or None if it does not qualify."""
+    t, n = ref["type"], ref["number"]
+    detail = api.bill(t, n)
+    if not detail:
+        return None
+
+    title = detail.get("title") or ref.get("title", "")
+    la = detail.get("latestAction", {}) or {}
+    latest_text = la.get("text", ref.get("latestActionText", ""))
+    policy_area = (detail.get("policyArea") or {}).get("name")
+
+    actions_raw = api.sub(t, n, "actions", "actions")
+    actions = [
+        {"date": a.get("actionDate"), "type": (a.get("type") or ""), "text": a.get("text", "")}
+        for a in actions_raw
+    ]
+
+    subjects_raw = api.sub(t, n, "subjects", "subjects")
+    subjects = []
+    if isinstance(subjects_raw, dict):
+        subjects = [s.get("name") for s in subjects_raw.get("legislativeSubjects", []) if s.get("name")]
+
+    committees_raw = api.sub(t, n, "committees", "committees")
+    committees = [c.get("systemCode") for c in committees_raw if c.get("systemCode")]
+
+    cosp = api.get(f"bill/{C.CONGRESS}/{t}/{n}/cosponsors").get("pagination", {}) or {}
+    cosponsors = cosp.get("count")
+
+    related_raw = api.sub(t, n, "relatedbills", "relatedBills")
+    related = [
+        {"no": f"{(r.get('type') or '').upper()} {r.get('number')}",
+         "relationship": "Related", "url": r.get("url", "")}
+        for r in related_raw if r.get("number")
+    ]
+
+    stage = X.derive_stage(actions, latest_text)
+
+    # Jurisdiction gate (committee spine + policy/subject/keyword patches, minus excludes).
+    in_scope, matched = X.jurisdiction_match(committees, policy_area, subjects, title)
+    if not in_scope:
+        return None
+    # Salience gate (don't surface introduced-and-parked messaging bills).
+    if not X.is_salient(cosponsors, actions, related, stage):
+        return None
+
+    b = base_from_discovery(ref, title)
+    b["officialTitle"] = title
+    b["latestActionText"] = latest_text
+    b["lastDate"] = la.get("actionDate", b["lastDate"])
+    b["introducedDate"] = detail.get("introducedDate", "")
+    b["policyArea"] = policy_area
+    b["updateDate"] = detail.get("updateDateIncludingText") or detail.get("updateDate")
+    b["actions"] = actions
+    b["subjects"] = subjects
+    b["committees"] = committees
+    b["cosponsorsCount"] = cosponsors
+    b["related"] = related
+    b["matchedOn"] = matched
+
+    b["stage"] = stage
+    b["stageKey"] = X.stage_key(stage)
+    b["disposition"] = "enacted" if stage >= 5 else "in_flight"
+    b["enacted"]["isLaw"] = stage >= 5
+
+    theme = X.theme_for(subjects)
+    b["theme"] = theme
+    b["core"] = X.core_for(theme)
+
+    # CRS summary, verbatim and public-domain. Provisions stay human-only (empty here).
+    summaries = api.sub(t, n, "summaries", "summaries")
+    if summaries:
+        latest = summaries[-1]
+        text = (latest.get("text") or "").strip()
+        if text:
+            b["summary"] = text
+            b["summarySource"] = "crs"
+            b["crsSummaryUrl"] = b["src"]
+
+    b["lastRefreshed"] = now_iso()
+    return b
+
+
+def discover(api, curation, cap=None):
     """
-    Committee auto-discovery. Not run in Phase 1.
-    Pull /committee/{chamber}/{code}/bills for the two committees, classify each with
-    classify.jurisdiction_match + is_salient, tag summarySource='crs', and add anything
-    not already in curation to an 'untriaged' bucket for review.
+    Committee auto-discovery. Pull the bill lists for the two committees, drop anything
+    already curated, order by most-recent action, and hydrate up to `cap` candidates.
+    Each survivor must clear jurisdiction_match + is_salient. Returns the untriaged list.
     """
-    raise NotImplementedError("Phase 2")
+    cap = C.DISCOVERY_CAP if cap is None else cap
+    known = {(str(c["type"]).lower(), str(c["number"])) for c in curation}
+
+    refs = {}
+    for chamber, code in (("house", C.COMMITTEES["house"]), ("senate", C.COMMITTEES["senate"])):
+        listed = api.committee_bills(chamber, code)
+        print(f"  {chamber}/{code}: {len(listed)} bills referred")
+        for r in listed:
+            key = (r["type"], r["number"])
+            if key in known:
+                continue
+            prev = refs.get(key)
+            if prev is None or (r.get("lastDate", "") > prev.get("lastDate", "")):
+                refs[key] = r
+
+    ordered = sorted(refs.values(), key=lambda r: r.get("lastDate", "") or "", reverse=True)
+    budget = ordered[:cap]
+    print(f"  {len(refs)} new candidates; hydrating {len(budget)} (cap {cap})")
+
+    untriaged = []
+    for r in budget:
+        try:
+            b = hydrate_discovered(api, r)
+            if b:
+                untriaged.append(b)
+                print(f"  + {b['no']:<12} stage {b['stage']}  [{','.join(b['matchedOn']) or 'none'}]  {b['summarySource']}")
+        except Exception as e:
+            print(f"  ! discover {r['type'].upper()} {r['number']}: {e}", file=sys.stderr)
+
+    untriaged.sort(key=lambda x: (x["stage"], x["lastDate"] or ""), reverse=True)
+    return untriaged
