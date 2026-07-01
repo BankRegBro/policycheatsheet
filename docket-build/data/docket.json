@@ -1,0 +1,1307 @@
+[
+  {
+    "id": "119-hr-6644",
+    "slug": "road",
+    "congress": 119,
+    "type": "hr",
+    "number": 6644,
+    "no": "H.R. 6644 / S. 2651",
+    "title": "21st Century ROAD to Housing Act",
+    "officialTitle": null,
+    "chamber": "Both",
+    "sponsor": "Sen. Tim Scott (R-SC) & Sen. Elizabeth Warren (D-MA)",
+    "party": "R",
+    "bipartisan": true,
+    "cosponsorsCount": null,
+    "committee": "Senate Banking / House Financial Services",
+    "committees": [],
+    "policyArea": null,
+    "subjects": [],
+    "matchedOn": [
+      "curation"
+    ],
+    "theme": "Housing",
+    "core": false,
+    "stage": 4,
+    "stageKey": "cross_chamber",
+    "status": "Passed both chambers (differing texts); reconciliation pending",
+    "latestActionText": "Passed both chambers (differing texts); reconciliation pending",
+    "introducedDate": "S. 2651 reported Aug 1, 2025",
+    "lastDate": "2026-05-20",
+    "actions": [],
+    "summary": "The marquee bipartisan housing package, combining the Senate's ROAD to Housing Act (S. 2651) and the House's Housing for the 21st Century Act, to boost supply, modernize HUD/FHA programs, and curb institutional ownership of single-family homes.",
+    "summarySource": "human",
+    "provisions": [
+      "Increases FHA multifamily loan limits and modernizes HOME, CDBG, and related HUD programs.",
+      "Includes a community-banking title strengthening banks' role in the housing market.",
+      "Restricts large institutional investors from amassing single-family homes (responding to E.O. 14376).",
+      "Streamlines environmental review and rethinks rules that hamper small-dollar mortgage lending."
+    ],
+    "related": [
+      {
+        "no": "S. 2296 (FY26 NDAA vehicle, earlier)",
+        "relationship": "Related",
+        "url": ""
+      },
+      {
+        "no": "Build Now Act (Sec. 205)",
+        "relationship": "Related",
+        "url": ""
+      }
+    ],
+    "src": "https://www.congress.gov/bill/119th-congress/house-bill/6644",
+    "crsSummaryUrl": "https://www.congress.gov/bill/119th-congress/house-bill/6644",
+    "disposition": "in_flight",
+    "enacted": {
+      "isLaw": false,
+      "publicLaw": null,
+      "enactedDate": null,
+      "textUrl": null
+    },
+    "tracked": true,
+    "pinned": true,
+    "review": {
+      "theme": true,
+      "content": true
+    },
+    "vehicle": false,
+    "updateDate": null,
+    "lastRefreshed": "2026-07-01T17:27:35Z"
+  },
+  {
+    "id": "119-hr-3633",
+    "slug": "clarity",
+    "congress": 119,
+    "type": "hr",
+    "number": 3633,
+    "no": "H.R. 3633",
+    "title": "Digital Asset Market CLARITY Act of 2025",
+    "officialTitle": null,
+    "chamber": "House",
+    "sponsor": "Rep. French Hill (R-AR) & Rep. G.T. Thompson (R-PA)",
+    "party": "R",
+    "bipartisan": true,
+    "cosponsorsCount": null,
+    "committee": "Financial Services / Agriculture",
+    "committees": [],
+    "policyArea": null,
+    "subjects": [],
+    "matchedOn": [
+      "curation"
+    ],
+    "theme": "Digital Assets",
+    "core": true,
+    "stage": 4,
+    "stageKey": "cross_chamber",
+    "status": "Passed House 294-134; advancing in Senate",
+    "latestActionText": "Passed House 294-134; advancing in Senate",
+    "introducedDate": "May 29, 2025",
+    "lastDate": "2026-05-14",
+    "actions": [],
+    "summary": "Establishes the framework dividing digital-asset oversight between the SEC and CFTC, with the CFTC taking the lead on 'digital commodities'; folds in the Anti-CBDC Surveillance State Act.",
+    "summarySource": "human",
+    "provisions": [
+      "Defines a 'digital commodity' as an asset whose value is intrinsically linked to use of a blockchain; excludes securities, derivatives, and stablecoins.",
+      "Gives the CFTC central authority over digital-commodity spot markets and intermediaries; preserves limited SEC authority over primary-market fundraising via a tailored registration exemption.",
+      "Creates expedited / provisional registration pathways for brokers, dealers, and exchanges.",
+      "Bars Federal Reserve banks from offering products directly to individuals and prohibits a CBDC for monetary policy (Anti-CBDC title)."
+    ],
+    "related": [
+      {
+        "no": "S. 3755 (Senate Ag companion)",
+        "relationship": "Related",
+        "url": ""
+      },
+      {
+        "no": "Senate Banking CLARITY draft (Scott/Lummis)",
+        "relationship": "Related",
+        "url": ""
+      }
+    ],
+    "src": "https://www.congress.gov/bill/119th-congress/house-bill/3633",
+    "crsSummaryUrl": "https://www.congress.gov/bill/119th-congress/house-bill/3633",
+    "disposition": "in_flight",
+    "enacted": {
+      "isLaw": false,
+      "publicLaw": null,
+      "enactedDate": null,
+      "textUrl": null
+    },
+    "tracked": true,
+    "pinned": true,
+    "review": {
+      "theme": true,
+      "content": true
+    },
+    "vehicle": false,
+    "updateDate": null,
+    "lastRefreshed": "2026-07-01T17:27:35Z"
+  },
+  {
+    "id": "119-hr-3234",
+    "slug": "kdl",
+    "congress": 119,
+    "type": "hr",
+    "number": 3234,
+    "no": "H.R. 3234",
+    "title": "Keeping Deposits Local Act",
+    "officialTitle": null,
+    "chamber": "House",
+    "sponsor": "Rep. Tom Emmer (R-MN) & Rep. Joyce Beatty (D-OH)",
+    "party": "R",
+    "bipartisan": true,
+    "cosponsorsCount": null,
+    "committee": "Financial Services",
+    "committees": [],
+    "policyArea": null,
+    "subjects": [],
+    "matchedOn": [
+      "curation"
+    ],
+    "theme": "Deposits",
+    "core": true,
+    "stage": 3,
+    "stageKey": "passed_origin",
+    "status": "Passed House 405-0; in Senate Banking",
+    "latestActionText": "Passed House 405-0; in Senate Banking",
+    "introducedDate": "May 7, 2025",
+    "lastDate": "2026-05-20",
+    "actions": [],
+    "summary": "Expands how much in reciprocal deposits a bank can hold before they count as 'brokered,' replacing the flat cap with a tiered, liability-based schedule.",
+    "summarySource": "human",
+    "provisions": [
+      "Amends FDI Act §29(i): replaces the lesser-of-20%-or-$5B reciprocal-deposit cap with tiers scaled to total liabilities.",
+      "Lets institutions rated CAMELS 1, 2, or 3 qualify (vs. the current 'outstanding or good' composite standard).",
+      "Builds on Emmer's 2018 reciprocal-deposit reform."
+    ],
+    "related": [
+      {
+        "no": "H.R. 5317 (Community Bank Deposit Access)",
+        "relationship": "Related",
+        "url": ""
+      },
+      {
+        "no": "Main Street Depositor Protection Act (S.)",
+        "relationship": "Related",
+        "url": ""
+      }
+    ],
+    "src": "https://www.congress.gov/bill/119th-congress/house-bill/3234",
+    "crsSummaryUrl": "https://www.congress.gov/bill/119th-congress/house-bill/3234",
+    "disposition": "in_flight",
+    "enacted": {
+      "isLaw": false,
+      "publicLaw": null,
+      "enactedDate": null,
+      "textUrl": null
+    },
+    "tracked": true,
+    "pinned": true,
+    "review": {
+      "theme": true,
+      "content": true
+    },
+    "vehicle": false,
+    "updateDate": null,
+    "lastRefreshed": "2026-07-01T17:27:35Z"
+  },
+  {
+    "id": "119-hr-5317",
+    "slug": "cbda",
+    "congress": 119,
+    "type": "hr",
+    "number": 5317,
+    "no": "H.R. 5317",
+    "title": "Community Bank Deposit Access Act",
+    "officialTitle": null,
+    "chamber": "House",
+    "sponsor": "House Financial Services",
+    "party": "R",
+    "bipartisan": true,
+    "cosponsorsCount": null,
+    "committee": "Financial Services",
+    "committees": [],
+    "policyArea": null,
+    "subjects": [],
+    "matchedOn": [
+      "curation"
+    ],
+    "theme": "Deposits",
+    "core": true,
+    "stage": 3,
+    "stageKey": "passed_origin",
+    "status": "Passed House 393-16; to Senate",
+    "latestActionText": "Passed House 393-16; to Senate",
+    "introducedDate": "2025",
+    "lastDate": "2026-05-20",
+    "actions": [],
+    "summary": "The custodial-deposit companion to Keeping Deposits Local, lets community banks hold custodial deposits without the brokered label, subject to a liability-based cap.",
+    "summarySource": "human",
+    "provisions": [
+      "Reclassifies qualifying custodial deposits so they are not treated as brokered deposits.",
+      "Caps the carve-out at custodial deposits not exceeding 20% of a bank's total liabilities.",
+      "Targets the same goal as the reciprocal-deposit reform: stable funding for local lending."
+    ],
+    "related": [
+      {
+        "no": "H.R. 3234 (Keeping Deposits Local)",
+        "relationship": "Related",
+        "url": ""
+      }
+    ],
+    "src": "https://www.congress.gov/bill/119th-congress/house-bill/5317",
+    "crsSummaryUrl": "https://www.congress.gov/bill/119th-congress/house-bill/5317",
+    "disposition": "in_flight",
+    "enacted": {
+      "isLaw": false,
+      "publicLaw": null,
+      "enactedDate": null,
+      "textUrl": null
+    },
+    "tracked": true,
+    "pinned": true,
+    "review": {
+      "theme": true,
+      "content": true
+    },
+    "vehicle": false,
+    "updateDate": null,
+    "lastRefreshed": "2026-07-01T17:27:35Z"
+  },
+  {
+    "id": "119-hr-4437",
+    "slug": "smart",
+    "congress": 119,
+    "type": "hr",
+    "number": 4437,
+    "no": "H.R. 4437",
+    "title": "SMART Act of 2025",
+    "officialTitle": null,
+    "chamber": "House",
+    "sponsor": "Rep. William Timmons (R-SC)",
+    "party": "R",
+    "bipartisan": true,
+    "cosponsorsCount": null,
+    "committee": "Financial Services",
+    "committees": [],
+    "policyArea": null,
+    "subjects": [],
+    "matchedOn": [
+      "curation"
+    ],
+    "theme": "Supervisory Relief",
+    "core": true,
+    "stage": 3,
+    "stageKey": "passed_origin",
+    "status": "Passed House; in Senate Banking",
+    "latestActionText": "Passed House; in Senate Banking",
+    "introducedDate": "Jul 16, 2025",
+    "lastDate": "2026-05-13",
+    "actions": [],
+    "summary": "Supervisory Modifications for Appropriate Risk-based Testing, alternating limited-scope exams for well-managed, well-capitalized institutions of $6 billion or less.",
+    "summarySource": "human",
+    "provisions": [
+      "Amends FDI Act §10(d): after a full-scope, on-site exam, the next exam of a qualifying IDI is a limited-scope exam.",
+      "Applies to well-managed, well-capitalized IDIs and credit unions with ≤$6B in consolidated assets.",
+      "Lets institutions request consolidation of separate safety-and-soundness, consumer-compliance, and IT/cyber exams.",
+      "Directs regulators to issue implementing rules within 12 months; preserves authority for targeted reviews."
+    ],
+    "related": [
+      {
+        "no": "H.R. 4478 (TRUST Act)",
+        "relationship": "Related",
+        "url": ""
+      },
+      {
+        "no": "Sec. 303 of H.R. 6955 (Main Street omnibus)",
+        "relationship": "Related",
+        "url": ""
+      }
+    ],
+    "src": "https://www.congress.gov/bill/119th-congress/house-bill/4437",
+    "crsSummaryUrl": "https://www.congress.gov/bill/119th-congress/house-bill/4437",
+    "disposition": "in_flight",
+    "enacted": {
+      "isLaw": false,
+      "publicLaw": null,
+      "enactedDate": null,
+      "textUrl": null
+    },
+    "tracked": true,
+    "pinned": true,
+    "review": {
+      "theme": true,
+      "content": true
+    },
+    "vehicle": false,
+    "updateDate": null,
+    "lastRefreshed": "2026-07-01T17:27:35Z"
+  },
+  {
+    "id": "119-hr-941",
+    "slug": "smalllender",
+    "congress": 119,
+    "type": "hr",
+    "number": 941,
+    "no": "H.R. 941",
+    "title": "Small LENDER Act",
+    "officialTitle": null,
+    "chamber": "House",
+    "sponsor": "Rep. French Hill (R-AR)",
+    "party": "R",
+    "bipartisan": false,
+    "cosponsorsCount": null,
+    "committee": "Financial Services",
+    "committees": [],
+    "policyArea": null,
+    "subjects": [],
+    "matchedOn": [
+      "curation"
+    ],
+    "theme": "Lending Data (1071)",
+    "core": true,
+    "stage": 2,
+    "stageKey": "committee",
+    "status": "Reported by Committee (26-22)",
+    "latestActionText": "Reported by Committee (26-22)",
+    "introducedDate": "Feb 4, 2025",
+    "lastDate": "2026-04-21",
+    "actions": [],
+    "summary": "Narrows the reach of the CFPB's §1071 small-business-lending data rule, Small Lenders Exempt from New Data and Excessive Reporting, via exemptions, a safe harbor, and a later effective date.",
+    "summarySource": "human",
+    "provisions": [
+      "Amends ECOA §704B (15 U.S.C. 1691c-2) to exempt lenders below a high origination threshold (reported at fewer than 2,500 small-business loans).",
+      "Limits 'small business' to those with $1M or less in annual revenue.",
+      "Deletes certain data points (e.g., pricing, denial reasons) and adds a temporary compliance safe harbor and delayed effective date."
+    ],
+    "related": [
+      {
+        "no": "H.R. 976 (1071 Repeal Act)",
+        "relationship": "Related",
+        "url": ""
+      },
+      {
+        "no": "PROTECTED Act (S. 2352)",
+        "relationship": "Related",
+        "url": ""
+      },
+      {
+        "no": "CFPB 2026 Final 1071 Rule",
+        "relationship": "Related",
+        "url": ""
+      }
+    ],
+    "src": "https://www.congress.gov/bill/119th-congress/house-bill/941",
+    "crsSummaryUrl": "https://www.congress.gov/bill/119th-congress/house-bill/941",
+    "disposition": "in_flight",
+    "enacted": {
+      "isLaw": false,
+      "publicLaw": null,
+      "enactedDate": null,
+      "textUrl": null
+    },
+    "tracked": true,
+    "pinned": true,
+    "review": {
+      "theme": true,
+      "content": true
+    },
+    "vehicle": false,
+    "updateDate": null,
+    "lastRefreshed": "2026-07-01T17:27:35Z"
+  },
+  {
+    "id": "119-hr-6955",
+    "slug": "mainstreet",
+    "congress": 119,
+    "type": "hr",
+    "number": 6955,
+    "no": "H.R. 6955",
+    "title": "Main Street Capital Access Act",
+    "officialTitle": null,
+    "chamber": "House",
+    "sponsor": "Rep. French Hill (R-AR) & Rep. Andy Barr (R-KY)",
+    "party": "R",
+    "bipartisan": false,
+    "cosponsorsCount": null,
+    "committee": "Financial Services",
+    "committees": [],
+    "policyArea": null,
+    "subjects": [],
+    "matchedOn": [
+      "curation"
+    ],
+    "theme": "Supervisory Relief",
+    "core": true,
+    "stage": 2,
+    "stageKey": "committee",
+    "status": "Reported; on Union Calendar No. 535",
+    "latestActionText": "Reported; on Union Calendar No. 535",
+    "introducedDate": "Jan 7, 2026",
+    "lastDate": "2026-04-20",
+    "actions": [],
+    "summary": "The omnibus vehicle. It bundles many of the stand-alone community-bank bills on this docket into one eight-title package on de novo formation, tailoring, supervision, deposits, resolution, and fintech.",
+    "summarySource": "human",
+    "provisions": [
+      "Title I - New bank formation & local access: Promoting New Bank Formation (§101), Bank Failure Prevention (§103).",
+      "Title II - Tailoring: TAILOR Act (§201), small-BHC relief (§202), CBLR flexibility (§203), Tailoring & Indexing (§204).",
+      "Title III - Supervision: HUMPS (§301), FAIR Exams (§302), SMART (§303), TRUST (§304), stress-test transparency (§305).",
+      "Title VII - Resolutions: Least Cost Exception (§701). Title VIII - Innovation: Merchant Banking Modernization (§801), Bank-Fintech Partnership (§802)."
+    ],
+    "related": [
+      {
+        "no": "H.R. 478",
+        "relationship": "Related",
+        "url": ""
+      },
+      {
+        "no": "H.R. 4437",
+        "relationship": "Related",
+        "url": ""
+      },
+      {
+        "no": "H.R. 4478",
+        "relationship": "Related",
+        "url": ""
+      },
+      {
+        "no": "H.R. 6547",
+        "relationship": "Related",
+        "url": ""
+      },
+      {
+        "no": "H.R. 7056",
+        "relationship": "Related",
+        "url": ""
+      }
+    ],
+    "src": "https://www.congress.gov/bill/119th-congress/house-bill/6955",
+    "crsSummaryUrl": "https://www.congress.gov/bill/119th-congress/house-bill/6955",
+    "disposition": "in_flight",
+    "enacted": {
+      "isLaw": false,
+      "publicLaw": null,
+      "enactedDate": null,
+      "textUrl": null
+    },
+    "tracked": true,
+    "pinned": true,
+    "review": {
+      "theme": true,
+      "content": true
+    },
+    "vehicle": true,
+    "updateDate": null,
+    "lastRefreshed": "2026-07-01T17:27:35Z"
+  },
+  {
+    "id": "119-hr-7056",
+    "slug": "cbrt",
+    "congress": 119,
+    "type": "hr",
+    "number": 7056,
+    "no": "H.R. 7056",
+    "title": "Community Bank Regulatory Tailoring Act",
+    "officialTitle": null,
+    "chamber": "House",
+    "sponsor": "Rep. Andy Barr (R-KY) & Rep. Josh Gottheimer (D-NJ)",
+    "party": "R",
+    "bipartisan": true,
+    "cosponsorsCount": null,
+    "committee": "Financial Services",
+    "committees": [],
+    "policyArea": null,
+    "subjects": [],
+    "matchedOn": [
+      "curation"
+    ],
+    "theme": "Supervisory Relief",
+    "core": true,
+    "stage": 2,
+    "stageKey": "committee",
+    "status": "Reported by Committee; on Union Calendar No. 480",
+    "latestActionText": "Reported by Committee; on Union Calendar No. 480",
+    "introducedDate": "Jan 14, 2026",
+    "lastDate": "2026-03-24",
+    "actions": [],
+    "summary": "Indexes a slate of asset-based statutory thresholds for bank regulation to nominal GDP, so community-bank trigger points keep pace with economic growth.",
+    "summarySource": "human",
+    "provisions": [
+      "Indexes asset-based regulatory thresholds for community banks and small credit unions to nominal GDP.",
+      "Raises Bank Holding Company Act thresholds (e.g., $1M->$3M; $10B->$15B for certain provisions).",
+      "Raises a Community Reinvestment Act threshold (e.g., $250M->$800M)."
+    ],
+    "related": [
+      {
+        "no": "Sec. 204 of H.R. 6955",
+        "relationship": "Related",
+        "url": ""
+      },
+      {
+        "no": "H.R. 478 (Promoting New Bank Formation)",
+        "relationship": "Related",
+        "url": ""
+      }
+    ],
+    "src": "https://www.congress.gov/bill/119th-congress/house-bill/7056",
+    "crsSummaryUrl": "https://www.congress.gov/bill/119th-congress/house-bill/7056",
+    "disposition": "in_flight",
+    "enacted": {
+      "isLaw": false,
+      "publicLaw": null,
+      "enactedDate": null,
+      "textUrl": null
+    },
+    "tracked": true,
+    "pinned": true,
+    "review": {
+      "theme": true,
+      "content": true
+    },
+    "vehicle": false,
+    "updateDate": null,
+    "lastRefreshed": "2026-07-01T17:27:35Z"
+  },
+  {
+    "id": "119-s-3755",
+    "slug": "dcia",
+    "congress": 119,
+    "type": "s",
+    "number": 3755,
+    "no": "S. 3755",
+    "title": "Digital Commodity Intermediaries Act",
+    "officialTitle": null,
+    "chamber": "Senate",
+    "sponsor": "Sen. John Boozman (R-AR), Chairman, Senate Agriculture",
+    "party": "R",
+    "bipartisan": false,
+    "cosponsorsCount": null,
+    "committee": "Agriculture, Nutrition & Forestry",
+    "committees": [],
+    "policyArea": null,
+    "subjects": [],
+    "matchedOn": [
+      "curation"
+    ],
+    "theme": "Digital Assets",
+    "core": true,
+    "stage": 2,
+    "stageKey": "committee",
+    "status": "Reported by Senate Ag (party-line); on calendar",
+    "latestActionText": "Reported by Senate Ag (party-line); on calendar",
+    "introducedDate": "Jan 21, 2026 (text)",
+    "lastDate": "2026-02-02",
+    "actions": [],
+    "summary": "The Senate Agriculture Committee's CFTC-side companion to the CLARITY Act, focused on who must register as a digital-commodity intermediary and how spot-market trading is supervised.",
+    "summarySource": "human",
+    "provisions": [
+      "Provides a statutory definition of 'digital commodities' and a CFTC spot-market intermediary regime.",
+      "Customer-fund segregation, conflict-of-interest safeguards, and customer-disclosure requirements.",
+      "A trading-registration regime intended to onshore liquid, regulated markets while protecting retail participants.",
+      "Directs CFTC-SEC coordination on interagency rulemakings; carve-outs for software developers."
+    ],
+    "related": [
+      {
+        "no": "H.R. 3633 (House CLARITY Act)",
+        "relationship": "Related",
+        "url": ""
+      },
+      {
+        "no": "Senate Banking CLARITY draft",
+        "relationship": "Related",
+        "url": ""
+      }
+    ],
+    "src": "https://www.congress.gov/bill/119th-congress/senate-bill/3755",
+    "crsSummaryUrl": "https://www.congress.gov/bill/119th-congress/senate-bill/3755",
+    "disposition": "in_flight",
+    "enacted": {
+      "isLaw": false,
+      "publicLaw": null,
+      "enactedDate": null,
+      "textUrl": null
+    },
+    "tracked": true,
+    "pinned": true,
+    "review": {
+      "theme": true,
+      "content": true
+    },
+    "vehicle": false,
+    "updateDate": null,
+    "lastRefreshed": "2026-07-01T17:27:35Z"
+  },
+  {
+    "id": "119-hr-6547",
+    "slug": "lce",
+    "congress": 119,
+    "type": "hr",
+    "number": 6547,
+    "no": "H.R. 6547",
+    "title": "Least Cost Exception Act",
+    "officialTitle": null,
+    "chamber": "House",
+    "sponsor": "Rep. Mike Flood (R-NE) & Rep. Bill Foster (D-IL)",
+    "party": "R",
+    "bipartisan": true,
+    "cosponsorsCount": null,
+    "committee": "Financial Services",
+    "committees": [],
+    "policyArea": null,
+    "subjects": [],
+    "matchedOn": [
+      "curation"
+    ],
+    "theme": "Charters & Resolution",
+    "core": true,
+    "stage": 2,
+    "stageKey": "committee",
+    "status": "Reported by Committee; on Union Calendar No. 405",
+    "latestActionText": "Reported by Committee; on Union Calendar No. 405",
+    "introducedDate": "Dec 10, 2025",
+    "lastDate": "2026-02-02",
+    "actions": [],
+    "summary": "Lets the FDIC waive the least-cost-resolution mandate to pursue alternative resolutions of failed banks, specifically to avoid pushing failed banks into the largest G-SIBs.",
+    "summarySource": "human",
+    "provisions": [
+      "Amends the FDI Act to create an exception to the least-cost-resolution (LCR) requirement.",
+      "Favors resolution alternatives that do not further concentrate assets in global systemically important banks (G-SIBs).",
+      "Aims to give the FDIC flexibility to weigh competitive and economic effects beyond the narrow cost to the Deposit Insurance Fund."
+    ],
+    "related": [
+      {
+        "no": "Sec. 701 of H.R. 6955",
+        "relationship": "Related",
+        "url": ""
+      },
+      {
+        "no": "H.R. 6556 (Failing Bank Acquisition Fairness)",
+        "relationship": "Related",
+        "url": ""
+      }
+    ],
+    "src": "https://www.congress.gov/bill/119th-congress/house-bill/6547",
+    "crsSummaryUrl": "https://www.congress.gov/bill/119th-congress/house-bill/6547",
+    "disposition": "in_flight",
+    "enacted": {
+      "isLaw": false,
+      "publicLaw": null,
+      "enactedDate": null,
+      "textUrl": null
+    },
+    "tracked": true,
+    "pinned": true,
+    "review": {
+      "theme": true,
+      "content": true
+    },
+    "vehicle": false,
+    "updateDate": null,
+    "lastRefreshed": "2026-07-01T17:27:35Z"
+  },
+  {
+    "id": "119-hr-6556",
+    "slug": "fbaf",
+    "congress": 119,
+    "type": "hr",
+    "number": 6556,
+    "no": "H.R. 6556",
+    "title": "Failing Bank Acquisition Fairness Act",
+    "officialTitle": null,
+    "chamber": "House",
+    "sponsor": "Rep. Stephen Lynch (D-MA)",
+    "party": "D",
+    "bipartisan": false,
+    "cosponsorsCount": null,
+    "committee": "Financial Services",
+    "committees": [],
+    "policyArea": null,
+    "subjects": [],
+    "matchedOn": [
+      "curation"
+    ],
+    "theme": "Charters & Resolution",
+    "core": true,
+    "stage": 2,
+    "stageKey": "committee",
+    "status": "Reported by Committee; on Union Calendar No. 406",
+    "latestActionText": "Reported by Committee; on Union Calendar No. 406",
+    "introducedDate": "Dec 10, 2025",
+    "lastDate": "2026-02-02",
+    "actions": [],
+    "summary": "The transparency counterpart to merger-relief bills: conditions any waiver of merger concentration limits in failing-bank deals and forces detailed reporting to Congress.",
+    "summarySource": "human",
+    "provisions": [
+      "Permits an exception to deposit-concentration limits only where a bank is in default or in danger of default and non-approval would cause significant disruption or harm financial stability.",
+      "Requires a detailed report to Congress justifying any waiver of the limits.",
+      "Requires disclosure of alternative bids considered and the reasons each was rejected."
+    ],
+    "related": [
+      {
+        "no": "H.R. 6547 (Least Cost Exception)",
+        "relationship": "Related",
+        "url": ""
+      }
+    ],
+    "src": "https://www.congress.gov/bill/119th-congress/house-bill/6556",
+    "crsSummaryUrl": "https://www.congress.gov/bill/119th-congress/house-bill/6556",
+    "disposition": "in_flight",
+    "enacted": {
+      "isLaw": false,
+      "publicLaw": null,
+      "enactedDate": null,
+      "textUrl": null
+    },
+    "tracked": true,
+    "pinned": true,
+    "review": {
+      "theme": true,
+      "content": true
+    },
+    "vehicle": false,
+    "updateDate": null,
+    "lastRefreshed": "2026-07-01T17:27:35Z"
+  },
+  {
+    "id": "119-hr-4478",
+    "slug": "trust",
+    "congress": 119,
+    "type": "hr",
+    "number": 4478,
+    "no": "H.R. 4478",
+    "title": "TRUST Act of 2025",
+    "officialTitle": null,
+    "chamber": "House",
+    "sponsor": "Rep. Tim Moore (R-NC) & Rep. Ritchie Torres (D-NY)",
+    "party": "R",
+    "bipartisan": true,
+    "cosponsorsCount": null,
+    "committee": "Financial Services",
+    "committees": [],
+    "policyArea": null,
+    "subjects": [],
+    "matchedOn": [
+      "curation"
+    ],
+    "theme": "Supervisory Relief",
+    "core": true,
+    "stage": 2,
+    "stageKey": "committee",
+    "status": "Reported by Committee; on Union Calendar No. 209",
+    "latestActionText": "Reported by Committee; on Union Calendar No. 209",
+    "introducedDate": "Jul 17, 2025",
+    "lastDate": "2025-09-08",
+    "actions": [],
+    "summary": "Tailored Regulatory Updates for Supervisory Testing, lengthens the exam cycle by raising the asset threshold for the 18-month examination schedule.",
+    "summarySource": "human",
+    "provisions": [
+      "Raises the consolidated-asset threshold to qualify for an 18-month exam cycle from $3 billion to $6 billion.",
+      "Applies to insured depository institutions that are well-capitalized and well-managed at their most recent exam.",
+      "Frames the change as completing the tailoring intended (but, sponsors argue, under-implemented) since 2018."
+    ],
+    "related": [
+      {
+        "no": "H.R. 4437 (SMART Act)",
+        "relationship": "Related",
+        "url": ""
+      },
+      {
+        "no": "S. 3830 (Senate companion)",
+        "relationship": "Related",
+        "url": ""
+      },
+      {
+        "no": "Sec. 304 of H.R. 6955",
+        "relationship": "Related",
+        "url": ""
+      }
+    ],
+    "src": "https://www.congress.gov/bill/119th-congress/house-bill/4478",
+    "crsSummaryUrl": "https://www.congress.gov/bill/119th-congress/house-bill/4478",
+    "disposition": "in_flight",
+    "enacted": {
+      "isLaw": false,
+      "publicLaw": null,
+      "enactedDate": null,
+      "textUrl": null
+    },
+    "tracked": true,
+    "pinned": true,
+    "review": {
+      "theme": true,
+      "content": true
+    },
+    "vehicle": false,
+    "updateDate": null,
+    "lastRefreshed": "2026-07-01T17:27:35Z"
+  },
+  {
+    "id": "119-hr-478",
+    "slug": "pnbf",
+    "congress": 119,
+    "type": "hr",
+    "number": 478,
+    "no": "H.R. 478",
+    "title": "Promoting New Bank Formation Act",
+    "officialTitle": null,
+    "chamber": "House",
+    "sponsor": "Rep. Andy Barr (R-KY)",
+    "party": "R",
+    "bipartisan": false,
+    "cosponsorsCount": null,
+    "committee": "Financial Services",
+    "committees": [],
+    "policyArea": null,
+    "subjects": [],
+    "matchedOn": [
+      "curation"
+    ],
+    "theme": "Charters & Resolution",
+    "core": true,
+    "stage": 2,
+    "stageKey": "committee",
+    "status": "Reported by Committee; on Union Calendar No. 64",
+    "latestActionText": "Reported by Committee; on Union Calendar No. 64",
+    "introducedDate": "Jan 16, 2025",
+    "lastDate": "2025-04-02",
+    "actions": [],
+    "summary": "Eases the path for de novo banks, a 3-year capital phase-in, relief for rural de novos, and faster review of business-plan changes, to reverse the collapse in new-bank charters.",
+    "summarySource": "human",
+    "provisions": [
+      "Directs the banking agencies to establish a 3-year phase-in for de novo institutions to meet federal capital standards.",
+      "Provides targeted relief for de novo rural community banks.",
+      "Sets a 30-day clock on business-plan-change requests during the phase-in, with automatic approval if the agency misses it.",
+      "Requires a joint agency study on the causes of low de novo formation."
+    ],
+    "related": [
+      {
+        "no": "Sec. 101 of H.R. 6955",
+        "relationship": "Related",
+        "url": ""
+      },
+      {
+        "no": "S. 113 (Senate companion)",
+        "relationship": "Related",
+        "url": ""
+      }
+    ],
+    "src": "https://www.congress.gov/bill/119th-congress/house-bill/478",
+    "crsSummaryUrl": "https://www.congress.gov/bill/119th-congress/house-bill/478",
+    "disposition": "in_flight",
+    "enacted": {
+      "isLaw": false,
+      "publicLaw": null,
+      "enactedDate": null,
+      "textUrl": null
+    },
+    "tracked": true,
+    "pinned": true,
+    "review": {
+      "theme": true,
+      "content": true
+    },
+    "vehicle": false,
+    "updateDate": null,
+    "lastRefreshed": "2026-07-01T17:27:35Z"
+  },
+  {
+    "id": "119-hr-976",
+    "slug": "repeal1071",
+    "congress": 119,
+    "type": "hr",
+    "number": 976,
+    "no": "H.R. 976",
+    "title": "1071 Repeal to Protect Small Business Lending Act",
+    "officialTitle": null,
+    "chamber": "House",
+    "sponsor": "Rep. Roger Williams (R-TX)",
+    "party": "R",
+    "bipartisan": false,
+    "cosponsorsCount": null,
+    "committee": "Financial Services",
+    "committees": [],
+    "policyArea": null,
+    "subjects": [],
+    "matchedOn": [
+      "curation"
+    ],
+    "theme": "Lending Data (1071)",
+    "core": true,
+    "stage": 2,
+    "stageKey": "committee",
+    "status": "Reported by Committee",
+    "latestActionText": "Reported by Committee",
+    "introducedDate": "Feb 4, 2025",
+    "lastDate": "2025-04-02",
+    "actions": [],
+    "summary": "The maximalist counterpart to the Small LENDER Act, repeals the §1071 small-business-lending data-collection statute outright.",
+    "summarySource": "human",
+    "provisions": [
+      "Repeals the small-business-loan data-collection requirements added to ECOA by Dodd-Frank §1071.",
+      "Eliminates mandatory collection/reporting of application disposition, loan type/amount, and applicant census tract, revenue, race, sex, and ethnicity."
+    ],
+    "related": [
+      {
+        "no": "H.R. 941 (Small LENDER Act)",
+        "relationship": "Related",
+        "url": ""
+      }
+    ],
+    "src": "https://www.congress.gov/bill/119th-congress/house-bill/976",
+    "crsSummaryUrl": "https://www.congress.gov/bill/119th-congress/house-bill/976",
+    "disposition": "in_flight",
+    "enacted": {
+      "isLaw": false,
+      "publicLaw": null,
+      "enactedDate": null,
+      "textUrl": null
+    },
+    "tracked": true,
+    "pinned": true,
+    "review": {
+      "theme": true,
+      "content": true
+    },
+    "vehicle": false,
+    "updateDate": null,
+    "lastRefreshed": "2026-07-01T17:27:35Z"
+  },
+  {
+    "id": "119-hr-8395",
+    "slug": "pace",
+    "congress": 119,
+    "type": "hr",
+    "number": 8395,
+    "no": "H.R. 8395",
+    "title": "PACE Act of 2026",
+    "officialTitle": null,
+    "chamber": "House",
+    "sponsor": "Rep. Young Kim (R-CA) & Rep. Sam Liccardo (D-CA)",
+    "party": "R",
+    "bipartisan": true,
+    "cosponsorsCount": null,
+    "committee": "Financial Services",
+    "committees": [],
+    "policyArea": null,
+    "subjects": [],
+    "matchedOn": [
+      "curation"
+    ],
+    "theme": "Payments",
+    "core": true,
+    "stage": 1,
+    "stageKey": "introduced",
+    "status": "Introduced; referred to committee",
+    "latestActionText": "Introduced; referred to committee",
+    "introducedDate": "Apr 21, 2026",
+    "lastDate": "2026-04-21",
+    "actions": [],
+    "summary": "Payments Access and Consumer Efficiency Act, creates an optional federal 'registered covered provider' status at the OCC for nonbank payment firms, with a pathway to direct Federal Reserve payment-rail access.",
+    "summarySource": "human",
+    "provisions": [
+      "Establishes an optional OCC-administered federal supervisory framework for qualifying nonbank payment providers.",
+      "Lets a registered provider holding 40+ state money-transmitter licenses operate nationwide; provides a pathway to apply for a Fed payments reserve account (Fedwire, FedNow, FedACH).",
+      "Requires 1:1 reserves, risk-management, recordkeeping, and consumer-protection standards.",
+      "Adds an insolvency framework prioritizing customer payment obligations over general creditors."
+    ],
+    "related": [
+      {
+        "no": "GENIUS Act (stablecoin framework)",
+        "relationship": "Related",
+        "url": ""
+      },
+      {
+        "no": "OCC federal payments-charter history",
+        "relationship": "Related",
+        "url": ""
+      }
+    ],
+    "src": "https://www.congress.gov/bill/119th-congress/house-bill/8395",
+    "crsSummaryUrl": "https://www.congress.gov/bill/119th-congress/house-bill/8395",
+    "disposition": "in_flight",
+    "enacted": {
+      "isLaw": false,
+      "publicLaw": null,
+      "enactedDate": null,
+      "textUrl": null
+    },
+    "tracked": true,
+    "pinned": true,
+    "review": {
+      "theme": true,
+      "content": true
+    },
+    "vehicle": false,
+    "updateDate": null,
+    "lastRefreshed": "2026-07-01T17:27:35Z"
+  },
+  {
+    "id": "119-hr-8413",
+    "slug": "secure",
+    "congress": 119,
+    "type": "hr",
+    "number": 8413,
+    "no": "H.R. 8413",
+    "title": "SECURE Data Act",
+    "officialTitle": null,
+    "chamber": "House",
+    "sponsor": "Rep. John Joyce (R-PA), Vice Chair, Energy & Commerce",
+    "party": "R",
+    "bipartisan": false,
+    "cosponsorsCount": null,
+    "committee": "Energy & Commerce / Judiciary",
+    "committees": [],
+    "policyArea": null,
+    "subjects": [],
+    "matchedOn": [
+      "curation"
+    ],
+    "theme": "Data Privacy",
+    "core": true,
+    "stage": 1,
+    "stageKey": "introduced",
+    "status": "Introduced; referred to E&C and Judiciary",
+    "latestActionText": "Introduced; referred to E&C and Judiciary",
+    "introducedDate": "Apr 21, 2026",
+    "lastDate": "2026-04-21",
+    "actions": [],
+    "summary": "The first comprehensive national consumer-privacy framework of the 119th Congress, establishing data rights enforced by the FTC and state AGs, with federal preemption of state privacy law.",
+    "summarySource": "human",
+    "provisions": [
+      "Creates consumer rights to access, correct, delete, and port personal data and to opt out of targeted advertising, sales, and consequential profiling.",
+      "FTC and state AGs share enforcement; a 45-day cure period precedes formal action; no private right of action.",
+      "Exempts financial institutions and data covered by the Gramm-Leach-Bliley Act, instead covered by the companion GUARD Act.",
+      "Exempts HIPAA-covered entities, nonprofits, and higher-education institutions to avoid duplicating sector rules."
+    ],
+    "related": [
+      {
+        "no": "H.R. 8398 (GUARD Financial Data Act, the GLBA half)",
+        "relationship": "Related",
+        "url": ""
+      }
+    ],
+    "src": "https://www.congress.gov/bill/119th-congress/house-bill/8413",
+    "crsSummaryUrl": "https://www.congress.gov/bill/119th-congress/house-bill/8413",
+    "disposition": "in_flight",
+    "enacted": {
+      "isLaw": false,
+      "publicLaw": null,
+      "enactedDate": null,
+      "textUrl": null
+    },
+    "tracked": true,
+    "pinned": true,
+    "review": {
+      "theme": true,
+      "content": true
+    },
+    "vehicle": false,
+    "updateDate": null,
+    "lastRefreshed": "2026-07-01T17:27:35Z"
+  },
+  {
+    "id": "119-hr-8398",
+    "slug": "guard",
+    "congress": 119,
+    "type": "hr",
+    "number": 8398,
+    "no": "H.R. 8398",
+    "title": "GUARD Financial Data Act",
+    "officialTitle": null,
+    "chamber": "House",
+    "sponsor": "Rep. Bill Huizenga (R-MI), with Hill & Steil",
+    "party": "R",
+    "bipartisan": false,
+    "cosponsorsCount": null,
+    "committee": "Financial Services",
+    "committees": [],
+    "policyArea": null,
+    "subjects": [],
+    "matchedOn": [
+      "curation"
+    ],
+    "theme": "Data Privacy",
+    "core": true,
+    "stage": 1,
+    "stageKey": "introduced",
+    "status": "Introduced; referred to committee",
+    "latestActionText": "Introduced; referred to committee",
+    "introducedDate": "Apr 21, 2026",
+    "lastDate": "2026-04-21",
+    "actions": [],
+    "summary": "Guidelines for Use, Access, and Responsible Disclosure of Financial Data, modernizes Title V of the Gramm-Leach-Bliley Act as the financial-sector half of the privacy package.",
+    "summarySource": "human",
+    "provisions": [
+      "Adds a data-minimization duty: collection/disclosure of nonpublic personal information limited to what is adequate, relevant, and reasonably necessary.",
+      "Provides a continuing consumer opt-out right and limits on use of consumer access credentials.",
+      "Requires affirmative opt-in consent before sensitive personal information is disclosed.",
+      "Preempts state laws in the financial-activity space; directs consideration of effects on small institutions (approx. <=$15M)."
+    ],
+    "related": [
+      {
+        "no": "H.R. 8413 (SECURE Data Act, the non-GLBA half)",
+        "relationship": "Related",
+        "url": ""
+      },
+      {
+        "no": "Dodd-Frank §1033 open-banking rule",
+        "relationship": "Related",
+        "url": ""
+      }
+    ],
+    "src": "https://www.congress.gov/bill/119th-congress/house-bill/8398",
+    "crsSummaryUrl": "https://www.congress.gov/bill/119th-congress/house-bill/8398",
+    "disposition": "in_flight",
+    "enacted": {
+      "isLaw": false,
+      "publicLaw": null,
+      "enactedDate": null,
+      "textUrl": null
+    },
+    "tracked": true,
+    "pinned": true,
+    "review": {
+      "theme": true,
+      "content": true
+    },
+    "vehicle": false,
+    "updateDate": null,
+    "lastRefreshed": "2026-07-01T17:27:35Z"
+  },
+  {
+    "id": "119-s-3889",
+    "slug": "alfa",
+    "congress": 119,
+    "type": "s",
+    "number": 3889,
+    "no": "S. 3889",
+    "title": "American Lending Fairness Act of 2026",
+    "officialTitle": null,
+    "chamber": "Senate",
+    "sponsor": "Sen. Bernie Moreno (R-OH); House companion Rep. Warren Davidson (R-OH)",
+    "party": "R",
+    "bipartisan": false,
+    "cosponsorsCount": null,
+    "committee": "Banking, Housing & Urban Affairs",
+    "committees": [],
+    "policyArea": null,
+    "subjects": [],
+    "matchedOn": [
+      "curation"
+    ],
+    "theme": "State Authority & Preemption",
+    "core": true,
+    "stage": 1,
+    "stageKey": "introduced",
+    "status": "Introduced; referred to Senate Banking",
+    "latestActionText": "Introduced; referred to Senate Banking",
+    "introducedDate": "Feb 12, 2026",
+    "lastDate": "2026-02-12",
+    "actions": [],
+    "summary": "Restores nationwide interest-rate exportation parity for state-chartered banks by limiting a state's DIDMCA opt-out to loans made by its own chartered institutions.",
+    "summarySource": "human",
+    "provisions": [
+      "Amends FDI Act §27 (12 U.S.C. 1831d) and the Federal Credit Union Act on rate exportation.",
+      "Provides that a state's opt-out from federal rate preemption applies only to loans made by institutions that state chartered, not to out-of-state state banks/credit unions.",
+      "Repeals §525 of DIDMCA (1980) and addresses the legal effect of prior state opt-outs."
+    ],
+    "related": [
+      {
+        "no": "S. 3721 (Empowering States' Rights, opposite approach)",
+        "relationship": "Related",
+        "url": ""
+      },
+      {
+        "no": "NAIB v. Weiser (10th Cir. 2025)",
+        "relationship": "Related",
+        "url": ""
+      }
+    ],
+    "src": "https://www.congress.gov/bill/119th-congress/senate-bill/3889",
+    "crsSummaryUrl": "https://www.congress.gov/bill/119th-congress/senate-bill/3889",
+    "disposition": "in_flight",
+    "enacted": {
+      "isLaw": false,
+      "publicLaw": null,
+      "enactedDate": null,
+      "textUrl": null
+    },
+    "tracked": true,
+    "pinned": true,
+    "review": {
+      "theme": true,
+      "content": true
+    },
+    "vehicle": false,
+    "updateDate": null,
+    "lastRefreshed": "2026-07-01T17:27:35Z"
+  },
+  {
+    "id": "119-s-3721",
+    "slug": "esrpc",
+    "congress": 119,
+    "type": "s",
+    "number": 3721,
+    "no": "S. 3721",
+    "title": "Empowering States' Rights To Protect Consumers Act of 2026",
+    "officialTitle": null,
+    "chamber": "Senate",
+    "sponsor": "Sen. Sheldon Whitehouse (D-RI), with Warren, Reed & Merkley",
+    "party": "D",
+    "bipartisan": false,
+    "cosponsorsCount": null,
+    "committee": "Banking, Housing & Urban Affairs",
+    "committees": [],
+    "policyArea": null,
+    "subjects": [],
+    "matchedOn": [
+      "curation"
+    ],
+    "theme": "State Authority & Preemption",
+    "core": true,
+    "stage": 1,
+    "stageKey": "introduced",
+    "status": "Introduced; referred to Senate Banking",
+    "latestActionText": "Introduced; referred to Senate Banking",
+    "introducedDate": "Jan 29, 2026",
+    "lastDate": "2026-01-29",
+    "actions": [],
+    "summary": "The consumer-side pole of the rate-preemption fight: amends the Truth in Lending Act to let states set the maximum APR on consumer-credit transactions in their borders.",
+    "summarySource": "human",
+    "provisions": [
+      "Amends TILA to empower states to set maximum annual percentage rates on consumer credit transactions.",
+      "Aims to close the 'bank exemption' that lets out-of-state state banks export rates above local caps.",
+      "Targets so-called rent-a-bank arrangements used to exceed state usury limits."
+    ],
+    "related": [
+      {
+        "no": "S. 3889 (American Lending Fairness, opposite approach)",
+        "relationship": "Related",
+        "url": ""
+      },
+      {
+        "no": "DIDMCA opt-outs (CO, IA, OR)",
+        "relationship": "Related",
+        "url": ""
+      }
+    ],
+    "src": "https://www.congress.gov/bill/119th-congress/senate-bill/3721",
+    "crsSummaryUrl": "https://www.congress.gov/bill/119th-congress/senate-bill/3721",
+    "disposition": "in_flight",
+    "enacted": {
+      "isLaw": false,
+      "publicLaw": null,
+      "enactedDate": null,
+      "textUrl": null
+    },
+    "tracked": true,
+    "pinned": true,
+    "review": {
+      "theme": true,
+      "content": true
+    },
+    "vehicle": false,
+    "updateDate": null,
+    "lastRefreshed": "2026-07-01T17:27:35Z"
+  }
+]
