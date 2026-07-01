@@ -1,0 +1,10 @@
+# secrets
+.env
+docket-build/.env
+.env.local
+
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
