@@ -268,6 +268,23 @@ body{background:radial-gradient(60% 28% at 50% 0%, rgba(59,180,255,.08), transpa
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,500&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
+<style>
+/* Archive + mode-toggle accents. Uses existing CSS variables so it tracks both themes. */
+.modetoggle{display:inline-flex;gap:0;border:1px solid var(--rule-strong);border-radius:3px;overflow:hidden;margin:2px 0 16px;}
+.modetoggle button{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  background:var(--paper-2);color:var(--ink-faint);border:none;padding:9px 16px;cursor:pointer;transition:all .15s;}
+.modetoggle button + button{border-left:1px solid var(--rule-strong);}
+.modetoggle button:hover{color:var(--ink);}
+.modetoggle button.on{background:var(--ink);color:var(--paper);font-weight:600;}
+.bill.enacted{border-left-color:var(--accent);border-left-width:5px;}
+.bill.died{border-left-color:var(--ink-faint);opacity:.94;}
+.status.enacted-badge{color:var(--accent);border:1px solid var(--accent);background:transparent;font-weight:700;}
+.status.died-badge{color:var(--ink-faint);border:1px solid var(--rule-strong);background:transparent;}
+.outcome-pill{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:5px 10px;border-radius:2px;margin-bottom:10px;}
+.outcome-pill.en{color:var(--accent);border:1px solid var(--accent);}
+.outcome-pill.di{color:var(--ink-faint);border:1px solid var(--rule-strong);}
+.lawlink{display:inline-block;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.05em;color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent);}
+</style>
 <body>
 <div class="wrap">
 
@@ -282,12 +299,17 @@ body{background:radial-gradient(60% 28% at 50% 0%, rgba(59,180,255,.08), transpa
     <div class="dispatchtag">Dispatch № 20 · Reform Trackers · The Wire Room</div>
 
     <h1 class="title">The Legislative <span class="amp">Docket</span></h1>
-    <p class="deck">A working catalogue of the bank, payments, data, digital-asset &amp; housing bills moving through the 119th Congress — <em>read from the primary source, with conclusions front-loaded</em> and filed through the lens of the dual banking system.</p>
+    <p class="deck" id="deck">A working catalogue of the bank, payments, data, digital-asset &amp; housing bills moving through the 119th Congress — <em>read from the primary source, with conclusions front-loaded</em> and filed through the lens of the dual banking system.</p>
 
-    <div class="byline">
+    <div class="modetoggle" role="tablist" aria-label="View">
+      <button id="mode-docket" class="on" role="tab" aria-selected="true">Live docket</button>
+      <button id="mode-archive" role="tab" aria-selected="false">Closed record</button>
+    </div>
+
+    <div class="byline" id="byline">
       <span><b id="billcount">0</b> measures</span>
       <span>·</span>
-      <span><b>9</b> subjects · <b>3</b> stages live</span>
+      <span id="bylinemid"><b>9</b> subjects · <b>3</b> stages live</span>
       <span>·</span>
       <span>Rev. <b>June 2026</b></span>
       <span>·</span>
@@ -313,7 +335,7 @@ body{background:radial-gradient(60% 28% at 50% 0%, rgba(59,180,255,.08), transpa
     <p class="filterlab">Filter by subject</p>
     <div class="chips" id="themechips"></div>
 
-    <p class="filterlab">Filter by stage &amp; chamber</p>
+    <p class="filterlab" id="metalab">Filter by stage &amp; chamber</p>
     <div class="chips" id="metachips"></div>
 
     <div class="resultline">
@@ -335,7 +357,8 @@ body{background:radial-gradient(60% 28% at 50% 0%, rgba(59,180,255,.08), transpa
     <div class="fnotes">
       <b>About this dispatch.</b> A working catalogue of financial-services legislation in the 119th Congress, maintained by a practitioner across state and federal supervision. Each entry is keyed to its primary source on Congress.gov; status reflects the most recent recorded action as of the revision date. Omnibus vehicles — chiefly the Main&nbsp;Street Capital Access Act — are flagged because several stand-alone bills here also travel inside them.<br>
       <b>Read with care.</b> Legislative posture changes on the wire; verify against the live Congress.gov record before relying on any item. Companion measures, substitute amendments, and committee-reported variants may differ materially from introduced text. Not legal advice.<br><br>
-      <b>Stage legend —</b> ① Introduced / referred · ② Reported or advanced from committee · ③ Passed chamber of origin · ④ Acting in the second chamber · ⑤ Enacted.
+      <b>Stage legend —</b> ① Introduced / referred · ② Reported or advanced from committee · ③ Passed chamber of origin · ④ Acting in the second chamber · ⑤ Enacted.<br>
+      <b>Closed record —</b> Toggle to the closed record for bills that have finished: ★ enacted into law (with public-law citation) or † expired with the Congress. A bill that passed both chambers but is not yet signed stays on the live docket.
     </div>
     <div class="setin">Filed from the wire room · <a href="#top">↑ back to top</a> · Set in Archivo, Inter &amp; JetBrains Mono</div>
   </footer>
@@ -344,12 +367,14 @@ body{background:radial-gradient(60% 28% at 50% 0%, rgba(59,180,255,.08), transpa
 
 <script>
 /* ============================================================
-   DATA — 119th Congress financial-services measures
-   stage: 1=introduced 2=committee 3=passed-origin 4=cross-chamber 5=enacted
+   The Docket + Closed Record — one page, two modes.
+   docket bills: disposition "in_flight"; archive bills: "enacted"/"died".
    ============================================================ */
-let BILLS = [];
+let DOCKET = [], ARCHIVE = [];
+let mode = "docket";            // "docket" | "archive"
+let BILLS = [];                 // active list
 
-/* ---------- stage helpers ---------- */
+/* ---------- stage helpers (docket) ---------- */
 const STAGE_CLASS = {1:"introduced",2:"committee",3:"passed",4:"cross",5:"cross"};
 const STAGE_BILLCLASS = {1:"s-introduced",2:"s-committee",3:"s-passed",4:"s-cross",5:"s-cross"};
 const TRACK_LABELS = ["Intro","Cmte","Floor","2nd","Law"];
@@ -358,7 +383,9 @@ const THEMES = [
   "Supervisory Relief","Charters & Resolution","Deposits","Lending Data (1071)",
   "State Authority & Preemption","Payments","Data Privacy","Digital Assets","Housing"
 ];
-const META = [
+
+/* ---------- meta filters per mode ---------- */
+const META_DOCKET = [
   {key:"stage4", label:"Acting in 2nd chamber", test:b=>b.stage>=4},
   {key:"stage3", label:"Passed a chamber", test:b=>b.stage===3},
   {key:"stage2", label:"In committee", test:b=>b.stage===2},
@@ -368,6 +395,35 @@ const META = [
   {key:"bipartisan", label:"Bipartisan", test:b=>b.bipartisan},
   {key:"vehicle", label:"Omnibus vehicles", test:b=>b.vehicle}
 ];
+const META_ARCHIVE = [
+  {key:"enacted", label:"Enacted", test:b=>b.disposition==="enacted"},
+  {key:"died", label:"Expired", test:b=>b.disposition==="died"},
+  {key:"house", label:"House", test:b=>b.chamber==="House"||b.chamber==="Both"},
+  {key:"senate", label:"Senate", test:b=>b.chamber==="Senate"||b.chamber==="Both"},
+  {key:"bipartisan", label:"Bipartisan", test:b=>b.bipartisan},
+  {key:"vehicle", label:"Omnibus vehicles", test:b=>b.vehicle}
+];
+let META = META_DOCKET;
+
+/* ---------- sort options per mode ---------- */
+const SORTS = {
+  docket: [["stage","Furthest along"],["recent","Most recent action"],["theme","By subject"],["number","Bill number"]],
+  archive:[["closed","Most recently closed"],["outcome","Enacted first"],["theme","By subject"],["number","Bill number"]]
+};
+
+/* ---------- archive helpers ---------- */
+const isEnacted  = b => b.disposition === "enacted";
+const isTerminal = b => b.disposition === "enacted" || b.disposition === "died";
+function closedDate(b){
+  return (b.enacted && b.enacted.enactedDate) || b.diedDate || b.archivedDate || b.lastDate || "";
+}
+function outcomeLabel(b){
+  if(isEnacted(b)){
+    const pl = b.enacted && b.enacted.publicLaw;
+    return pl ? `★ ${pl}` : "★ Enacted";
+  }
+  return `† Expired with the ${b.diedCongress||119}th`;
+}
 
 /* ---------- state ---------- */
 let activeThemes = new Set();
@@ -430,21 +486,23 @@ function matches(b){
     if(m && !m.test(b)) return false;
   }
   if(query){
-    const hay = (b.no+" "+b.title+" "+b.sponsor+" "+b.summary+" "+b.theme+" "+b.committee+" "+(b.provisions||[]).join(" ")+" "+(b.related||[]).join(" ")).toLowerCase();
+    const hay = (b.no+" "+b.title+" "+b.sponsor+" "+b.summary+" "+b.theme+" "+b.committee+" "+(b.provisions||[]).join(" ")+" "+(b.related||[]).map(r=>typeof r==='string'?r:r.no).join(" ")).toLowerCase();
     if(!hay.includes(query)) return false;
   }
   return true;
 }
 function sortBills(list){
   const arr = [...list];
-  if(sortMode==="stage") arr.sort((a,b)=> b.stage-a.stage || b.lastDate.localeCompare(a.lastDate));
-  else if(sortMode==="recent") arr.sort((a,b)=> b.lastDate.localeCompare(a.lastDate));
-  else if(sortMode==="theme") arr.sort((a,b)=> THEMES.indexOf(a.theme)-THEMES.indexOf(b.theme) || b.stage-a.stage);
+  if(sortMode==="stage") arr.sort((a,b)=> b.stage-a.stage || (b.lastDate||"").localeCompare(a.lastDate||""));
+  else if(sortMode==="recent") arr.sort((a,b)=> (b.lastDate||"").localeCompare(a.lastDate||""));
+  else if(sortMode==="closed") arr.sort((a,b)=> closedDate(b).localeCompare(closedDate(a)));
+  else if(sortMode==="outcome") arr.sort((a,b)=> (isEnacted(b)-isEnacted(a)) || closedDate(b).localeCompare(closedDate(a)));
+  else if(sortMode==="theme") arr.sort((a,b)=> THEMES.indexOf(a.theme)-THEMES.indexOf(b.theme) || (isTerminal(a)?closedDate(b).localeCompare(closedDate(a)):b.stage-a.stage));
   else if(sortMode==="number") arr.sort((a,b)=> a.no.localeCompare(b.no, undefined, {numeric:true}));
   return arr;
 }
 
-/* ---------- render ---------- */
+/* ---------- render: cards ---------- */
 function trackHTML(stage){
   let h="";
   for(let i=1;i<=5;i++){
@@ -454,12 +512,14 @@ function trackHTML(stage){
   }
   return h;
 }
-function billHTML(b){
+function crsNote(b){
+  return b.summarySource==='crs' ? `<p style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;color:var(--ink-faint);margin:4px 0 10px;">Summary via Congressional Research Service · <a href="${b.crsSummaryUrl||b.src}" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent);">source</a></p>` : '';
+}
+function docketCardHTML(b){
   const sc = STAGE_CLASS[b.stage];
   const bc = STAGE_BILLCLASS[b.stage];
   const prov = (b.provisions||[]).map(p=>`<li>${p}</li>`).join("");
   const rel = (b.related||[]).map(r=>`<span class="rel">${typeof r==='string'?r:r.no}</span>`).join("");
-  const srcnote = b.summarySource==='crs' ? `<p style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;color:var(--ink-faint);margin:4px 0 10px;">Summary via Congressional Research Service · <a href="${b.crsSummaryUrl||b.src}" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent);">source</a></p>` : '';
   return `
   <article class="bill ${bc} ${b.vehicle?'vehicle':''}" data-id="${b.id}">
     <div class="bhead" role="button" tabindex="0">
@@ -474,7 +534,7 @@ function billHTML(b){
         <div class="cardtags">
           <span class="tg">${b.chamber==='Both'?'House + Senate':b.chamber}</span>
           <span class="tg">${b.committee}</span>
-          <span class="tg">Filed ${(String(b.introduced).match(/\d{4}/)||['—'])[0]}</span>
+          <span class="tg">Filed ${(String(b.introducedDate||b.introduced).match(/\d{4}/)||['—'])[0]}</span>
           ${b.vehicle?'<span class="tg" style="color:var(--accent);border-color:var(--accent);">Omnibus vehicle</span>':''}
         </div>
       </div>
@@ -490,7 +550,7 @@ function billHTML(b){
       <div class="detailpad">
         <div class="dgrid">
           <div>
-            <div class="dsec"><h4>What it would do</h4><p>${b.summary||'Summary not yet available.'}</p>${srcnote}</div>
+            <div class="dsec"><h4>What it would do</h4><p>${b.summary||'Summary not yet available.'}</p>${crsNote(b)}</div>
             ${prov?`<div class="dsec"><h4>Key provisions</h4><ul class="prov">${prov}</ul></div>`:''}
             ${b.significance?`<div class="dsec"><h4>Where it stands</h4><p>${b.significance}</p></div>`:''}
           </div>
@@ -514,19 +574,95 @@ function billHTML(b){
     </div>
   </article>`;
 }
+function archiveCardHTML(b){
+  const prov = (b.provisions||[]).map(p=>`<li>${p}</li>`).join("");
+  const rel = (b.related||[]).map(r=>`<span class="rel">${typeof r==='string'?r:r.no}</span>`).join("");
+  const en = isEnacted(b);
+  const badgeClass = en ? "enacted-badge" : "died-badge";
+  const pl = (b.enacted && b.enacted.publicLaw) || null;
+  const enDate = (b.enacted && b.enacted.enactedDate) || null;
+  const lawUrl = (b.enacted && b.enacted.textUrl) || null;
+  const outcomeRows = en
+    ? `<dt>Outcome</dt><dd>Enacted into law</dd>
+       ${pl?`<dt>Public law</dt><dd>${pl}</dd>`:''}
+       <dt>Enacted</dt><dd>${enDate||'—'}</dd>`
+    : `<dt>Outcome</dt><dd>Expired with the ${b.diedCongress||119}th Congress</dd>
+       <dt>Closed</dt><dd>${(String(b.diedDate||b.archivedDate).match(/\d{4}-\d{2}-\d{2}/)||['—'])[0]}</dd>`;
+  return `
+  <article class="bill ${b.disposition} ${b.vehicle?'vehicle':''}" data-id="${b.id}">
+    <div class="bhead" role="button" tabindex="0">
+      <div class="bmain">
+        <div class="billno">${b.no} ${b.vehicle?'<span class="vehbadge">Omnibus</span>':''} <span style="color:var(--ink-faint);font-weight:400;">· ${b.theme}</span></div>
+        <h3 class="stitle">${b.title}</h3>
+        <p class="summ">${b.summary}</p>
+        <div class="meta">
+          <span class="party ${b.bipartisan?'BI':b.party}">${b.bipartisan?'Bipartisan':(b.party==='R'?'Republican':'Democratic')}</span>
+          <span class="dot">●</span><span>${b.sponsor}</span>
+        </div>
+        <div class="cardtags">
+          <span class="tg">${b.chamber==='Both'?'House + Senate':b.chamber}</span>
+          <span class="tg">${b.committee}</span>
+          <span class="tg">Filed ${(String(b.introducedDate||b.introduced).match(/\d{4}/)||['—'])[0]}</span>
+          ${b.vehicle?'<span class="tg" style="color:var(--accent);border-color:var(--accent);">Omnibus vehicle</span>':''}
+        </div>
+      </div>
+      <div class="bside">
+        <div class="status ${badgeClass}">${outcomeLabel(b)}</div>
+        <div>
+          <div class="track">${trackHTML(en?5:b.stage)}</div>
+          <div class="tracklabs">${TRACK_LABELS.map((l,i)=>`<span style="${i+1<=(en?5:b.stage)?'color:var(--ink-soft);font-weight:600':''}">${l}</span>`).join("")}</div>
+        </div>
+      </div>
+    </div>
+    <div class="detail">
+      <div class="detailpad">
+        <div class="dgrid">
+          <div>
+            <div class="dsec"><h4>What it ${en?'does':'would have done'}</h4><p>${b.summary||'Summary not available.'}</p>${crsNote(b)}</div>
+            ${prov?`<div class="dsec"><h4>Key provisions</h4><ul class="prov">${prov}</ul></div>`:''}
+            ${b.significance?`<div class="dsec"><h4>Where it landed</h4><p>${b.significance}</p></div>`:''}
+          </div>
+          <div>
+            <div class="factbox">
+              <span class="outcome-pill ${en?'en':'di'}">${en?'Enacted':'Expired'}</span>
+              <dl>
+                <dt>Bill</dt><dd>${b.no}</dd>
+                <dt>Subject</dt><dd>${b.theme}</dd>
+                <dt>Chamber</dt><dd>${b.chamber}</dd>
+                <dt>Committee</dt><dd>${b.committee}</dd>
+                ${outcomeRows}
+              </dl>
+            </div>
+            ${b.angle?`<div class="angle"><div class="at">◆ Dual-banking lens</div><p>${b.angle}</p></div>`:''}
+            ${rel?`<div class="relbox"><h4 class="dsec" style="margin:18px 0 9px;border-bottom:1px solid var(--rule);padding-bottom:5px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);">Related &amp; companion measures</h4>${rel}</div>`:''}
+            <a class="srclink" href="${b.src}" target="_blank" rel="noopener">↗ View on Congress.gov</a>
+            ${en&&lawUrl?`<br><a class="lawlink" href="${lawUrl}" target="_blank" rel="noopener">↗ Read the enacted law</a>`:''}
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>`;
+}
+function billHTML(b){ return isTerminal(b) ? archiveCardHTML(b) : docketCardHTML(b); }
 
 function render(){
   const filtered = BILLS.filter(matches);
   const sorted = sortBills(filtered);
   if(sorted.length===0){
-    billsEl.innerHTML = `<div class="empty">No measures match these filters. Try clearing one.</div>`;
+    let msg;
+    if(BILLS.length===0 && mode==="archive"){
+      msg = 'Nothing has closed yet. Bills appear here once they are enacted into law or expire with the Congress.';
+    } else {
+      msg = mode==="archive" ? 'No closed measures match these filters. Try clearing one.' : 'No measures match these filters. Try clearing one.';
+    }
+    billsEl.innerHTML = `<div class="empty">${msg}</div>`;
   } else {
-    billsEl.innerHTML = sorted.map((b,i)=>billHTML(b)).join("");
+    billsEl.innerHTML = sorted.map(billHTML).join("");
     billsEl.querySelectorAll(".bill").forEach((el,i)=>{ el.style.animationDelay = (i*45)+"ms"; });
     attachHandlers();
   }
-  const n = sorted.length;
-  $("#resultcount").textContent = `Showing ${n} of ${BILLS.length} measures`;
+  const noun = mode==="archive" ? "closed measures" : "measures";
+  $("#resultcount").textContent = `Showing ${sorted.length} of ${BILLS.length} ${noun}`;
   const anyFilter = activeThemes.size||activeMeta.size||query;
   $("#clearbtn").style.display = anyFilter ? "inline":"none";
 }
@@ -552,28 +688,73 @@ function attachHandlers(){
   });
 }
 
+/* ---------- mode switch ---------- */
+function rebuildSort(){
+  const sel = $("#sort");
+  sel.innerHTML = SORTS[mode].map(([v,l])=>`<option value="${v}">Sort · ${l}</option>`).join("");
+  sortMode = SORTS[mode][0][0];
+  sel.value = sortMode;
+}
+function applyModeCopy(){
+  const en = ARCHIVE.filter(isEnacted).length, di = ARCHIVE.length - en;
+  if(mode==="archive"){
+    $(".title").innerHTML = 'The Closed <span class="amp">Record</span>';
+    $("#deck").innerHTML = 'Bills from the 119th Congress that reached the end of the line — <em>enacted into law or expired with the Congress</em> — kept as a permanent record and filed through the lens of the dual banking system.';
+    $("#metalab").innerHTML = "Filter by outcome &amp; chamber";
+    $("#billcount").textContent = ARCHIVE.length;
+    $("#bylinemid").innerHTML = `<b>${en}</b> enacted · <b>${di}</b> expired`;
+  } else {
+    $(".title").innerHTML = 'The Legislative <span class="amp">Docket</span>';
+    $("#deck").innerHTML = 'A working catalogue of the bank, payments, data, digital-asset &amp; housing bills moving through the 119th Congress — <em>read from the primary source, with conclusions front-loaded</em> and filed through the lens of the dual banking system.';
+    $("#metalab").innerHTML = "Filter by stage &amp; chamber";
+    $("#billcount").textContent = DOCKET.length;
+    $("#bylinemid").innerHTML = `<b>9</b> subjects · <b>3</b> stages live`;
+  }
+}
+function setMode(m){
+  mode = m;
+  BILLS = (mode==="archive") ? ARCHIVE : DOCKET;
+  META  = (mode==="archive") ? META_ARCHIVE : META_DOCKET;
+  activeThemes.clear(); activeMeta.clear(); query=""; showAll=false;
+  $("#search").value = "";
+  $("#mode-docket").classList.toggle("on", mode==="docket");
+  $("#mode-archive").classList.toggle("on", mode==="archive");
+  $("#mode-docket").setAttribute("aria-selected", mode==="docket");
+  $("#mode-archive").setAttribute("aria-selected", mode==="archive");
+  applyModeCopy();
+  rebuildSort();
+  buildChips();
+  render();
+}
+
 /* ---------- wiring ---------- */
 $("#search").addEventListener("input", e=>{ query = e.target.value.trim().toLowerCase(); render(); });
 $("#sort").addEventListener("change", e=>{ sortMode = e.target.value; render(); });
 $("#clearbtn").addEventListener("click", ()=>{
-  activeThemes.clear(); activeMeta.clear(); query=""; sortMode="stage";
-  $("#search").value=""; $("#sort").value="stage";
+  activeThemes.clear(); activeMeta.clear(); query="";
+  rebuildSort();
+  $("#search").value="";
   document.querySelectorAll(".chip.on").forEach(c=>c.classList.remove("on"));
-  render();
+  buildChips(); render();
 });
+$("#mode-docket").addEventListener("click", ()=>{ if(mode!=="docket") setMode("docket"); });
+$("#mode-archive").addEventListener("click", ()=>{ if(mode!=="archive") setMode("archive"); });
 
+async function getJSON(url){
+  const r = await fetch(url, {cache:'no-store'});
+  if(!r.ok) throw new Error(r.status);
+  return r.json();
+}
 async function boot(){
   try{
-    const res = await fetch('docket-build/data/docket.json', {cache:'no-store'});
-    if(!res.ok) throw new Error(res.status);
-    BILLS = await res.json();
+    DOCKET = await getJSON('docket-build/data/docket.json');
   }catch(e){
     billsEl.innerHTML = `<div class="empty">Could not load the docket (docket-build/data/docket.json). ${e}</div>`;
     return;
   }
-  $("#billcount").textContent = BILLS.length;
-  buildChips();
-  render();
+  try{ ARCHIVE = await getJSON('docket-build/data/archive.json'); }
+  catch(e){ ARCHIVE = []; }
+  setMode("docket");
 }
 boot();
 </script>
