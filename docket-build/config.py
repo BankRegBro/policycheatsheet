@@ -92,9 +92,13 @@ SALIENCE = {
 # ---- Phase 2 discovery budget ----
 # Committee bill lists can run to hundreds; salience needs per-bill detail calls.
 # One discovery run hydrates at most this many NEW candidates, most-recently-acted
-# first, then keeps only those that clear jurisdiction + salience. Bounds the call
-# budget: ~DISCOVERY_CAP * 5 endpoints per run, well under the hourly cap.
-DISCOVERY_CAP = 40
+# first. Bounds the call budget: ~DISCOVERY_CAP * ~5 endpoints per run.
+DISCOVERY_CAP = 80
+
+# When False, discovery keeps every in-scope committee bill (a live "what's moving"
+# feed you scroll through). When True, it keeps only salient bills (15+ cosponsors,
+# reported, floor action, or a companion) - the old curated-queue behavior.
+DISCOVERY_SALIENCE = False
 
 # ---- Stage model (mirrors the existing tool) ----
 # 1 introduced  2 committee  3 passed-origin  4 cross-chamber  5 enacted
