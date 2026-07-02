@@ -303,7 +303,6 @@ body{background:radial-gradient(60% 28% at 50% 0%, rgba(59,180,255,.08), transpa
 
     <div class="modetoggle" role="tablist" aria-label="View">
       <button id="mode-docket" class="on" role="tab" aria-selected="true">Live docket</button>
-      <button id="mode-untriaged" role="tab" aria-selected="false">Untriaged</button>
       <button id="mode-archive" role="tab" aria-selected="false">Closed record</button>
     </div>
 
@@ -667,12 +666,12 @@ function untriagedCardHTML(b){
   <article class="bill ${bc} untriaged" data-id="${b.id}">
     <div class="bhead" role="button" tabindex="0">
       <div class="bmain">
-        <div class="billno">${b.no} <span style="color:var(--ink-faint);font-weight:400;">· ${b.theme}</span></div>
+        <div class="billno">${b.no} <span class="tg" style="border-color:var(--accent);color:var(--accent);font-size:9px;padding:1px 6px;vertical-align:middle;">AUTO</span> <span style="color:var(--ink-faint);font-weight:400;">· ${b.theme}</span></div>
         <h3 class="stitle">${b.title||'(untitled)'}</h3>
         ${summ?`<p class="summ">${summ}</p>`:`<p class="summ" style="color:var(--ink-faint);font-style:italic;">No summary provided yet.</p>`}
         <div class="cardtags">
           <span class="tg">${b.chamber||''}</span>
-          ${matched?`<span class="tg">matched: ${matched}</span>`:''}
+          ${matched?`<span class="tg">${matched}</span>`:''}
         </div>
       </div>
       <div class="bside">
@@ -687,14 +686,15 @@ function untriagedCardHTML(b){
       <div class="detailpad">
         <div class="dsec"><h4>Summary${b.summarySource==='crs'?' · via CRS':''}</h4><p>${full||'No summary available yet.'}</p></div>
         <a class="srclink" href="${b.src}" target="_blank" rel="noopener">↗ View on Congress.gov</a>
-        <p style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;color:var(--ink-faint);margin:10px 0 0;">Auto-discovered · not yet tracked. Add to curation.json to promote it onto the live docket.</p>
+        <p style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;color:var(--ink-faint);margin:10px 0 0;">Auto-pulled from committee records. Not individually curated.</p>
       </div>
     </div>
   </article>`;
 }
 function billHTML(b){
-  if(mode==="untriaged") return untriagedCardHTML(b);
-  return isTerminal(b) ? archiveCardHTML(b) : docketCardHTML(b);
+  if(isTerminal(b)) return archiveCardHTML(b);
+  if(b.tracked===false) return untriagedCardHTML(b);  // auto-discovered, minimal card
+  return docketCardHTML(b);
 }
 
 function render(){
@@ -760,27 +760,22 @@ function applyModeCopy(){
     $("#metalab").innerHTML = "Filter by outcome &amp; chamber";
     $("#billcount").textContent = ARCHIVE.length;
     $("#bylinemid").innerHTML = `<b>${en}</b> enacted · <b>${di}</b> expired`;
-  } else if(mode==="untriaged"){
-    $(".title").innerHTML = 'The Untriaged <span class="amp">Queue</span>';
-    $("#deck").innerHTML = 'Bills auto-discovered from the House Financial Services and Senate Banking dockets that clear the jurisdiction and salience tests but are <em>not yet curated</em>. Scan them and promote the ones worth tracking.';
-    $("#metalab").innerHTML = "Filter by stage &amp; chamber";
-    $("#billcount").textContent = UNTRIAGED.length;
-    $("#bylinemid").innerHTML = `<b>${UNTRIAGED.length}</b> awaiting review`;
   } else {
+    const disc = DOCKET.filter(b=>b.tracked===false).length;
     $(".title").innerHTML = 'The Legislative <span class="amp">Docket</span>';
-    $("#deck").innerHTML = 'A working catalogue of the bank, payments, data, digital-asset &amp; housing bills moving through the 119th Congress — <em>read from the primary source, with conclusions front-loaded</em> and filed through the lens of the dual banking system.';
+    $("#deck").innerHTML = 'Every bank, payments, data, digital-asset &amp; housing bill moving through the 119th Congress — <em>curated entries plus everything auto-pulled from the House Financial Services and Senate Banking dockets</em>, read from the primary source.';
     $("#metalab").innerHTML = "Filter by stage &amp; chamber";
     $("#billcount").textContent = DOCKET.length;
-    $("#bylinemid").innerHTML = `<b>9</b> subjects · <b>3</b> stages live`;
+    $("#bylinemid").innerHTML = disc ? `<b>${DOCKET.length-disc}</b> curated · <b>${disc}</b> auto-discovered` : `<b>9</b> subjects · <b>3</b> stages live`;
   }
 }
 function setMode(m){
   mode = m;
-  BILLS = (mode==="archive") ? ARCHIVE : (mode==="untriaged") ? UNTRIAGED : DOCKET;
+  BILLS = (mode==="archive") ? ARCHIVE : DOCKET;
   META  = (mode==="archive") ? META_ARCHIVE : META_DOCKET;
   activeThemes.clear(); activeMeta.clear(); query=""; showAll=false;
   $("#search").value = "";
-  ["docket","untriaged","archive"].forEach(k=>{
+  ["docket","archive"].forEach(k=>{
     const btn = $("#mode-"+k);
     btn.classList.toggle("on", mode===k);
     btn.setAttribute("aria-selected", mode===k);
@@ -802,7 +797,6 @@ $("#clearbtn").addEventListener("click", ()=>{
   buildChips(); render();
 });
 $("#mode-docket").addEventListener("click", ()=>{ if(mode!=="docket") setMode("docket"); });
-$("#mode-untriaged").addEventListener("click", ()=>{ if(mode!=="untriaged") setMode("untriaged"); });
 $("#mode-archive").addEventListener("click", ()=>{ if(mode!=="archive") setMode("archive"); });
 
 async function getJSON(url){
@@ -811,14 +805,22 @@ async function getJSON(url){
   return r.json();
 }
 async function boot(){
+  let curated = [];
   try{
-    DOCKET = await getJSON('docket-build/data/docket.json');
+    curated = await getJSON('docket-build/data/docket.json');
   }catch(e){
     billsEl.innerHTML = `<div class="empty">Could not load the docket (docket-build/data/docket.json). ${e}</div>`;
     return;
   }
   try{ ARCHIVE = await getJSON('docket-build/data/archive.json'); } catch(e){ ARCHIVE = []; }
-  try{ UNTRIAGED = await getJSON('docket-build/data/untriaged.json'); } catch(e){ UNTRIAGED = []; }
+  let discovered = [];
+  try{ discovered = await getJSON('docket-build/data/untriaged.json'); } catch(e){ discovered = []; }
+
+  // Live docket = curated entries + auto-discovered bills. Curated wins on id clash.
+  const seen = new Set(curated.map(b=>b.id));
+  const extra = (discovered||[]).filter(b=>b && b.id && !seen.has(b.id));
+  DOCKET = curated.concat(extra);
+
   setMode("docket");
 }
 boot();
