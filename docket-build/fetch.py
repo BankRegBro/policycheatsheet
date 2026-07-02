@@ -88,6 +88,7 @@ class Congress:
                 out.append({
                     "type": t,
                     "number": n,
+                    "congress": b.get("congress"),
                     "lastDate": la.get("actionDate", ""),
                     "latestActionText": la.get("text", ""),
                     "title": b.get("title", ""),
@@ -452,8 +453,8 @@ def hydrate_discovered(api, ref):
     in_scope, matched = X.jurisdiction_match(committees, policy_area, subjects, title)
     if not in_scope:
         return None
-    # Salience gate (don't surface introduced-and-parked messaging bills).
-    if not X.is_salient(cosponsors, actions, related, stage):
+    # Salience gate is optional. Off = keep every in-scope bill (live feed).
+    if C.DISCOVERY_SALIENCE and not X.is_salient(cosponsors, actions, related, stage):
         return None
 
     b = base_from_discovery(ref, title)
@@ -505,8 +506,11 @@ def discover(api, curation, cap=None):
     refs = {}
     for chamber, code in (("house", C.COMMITTEES["house"]), ("senate", C.COMMITTEES["senate"])):
         listed = api.committee_bills(chamber, code)
-        print(f"  {chamber}/{code}: {len(listed)} bills referred")
-        for r in listed:
+        # The committee endpoint returns bills across ALL congresses; keep this one.
+        this_cong = [r for r in listed
+                     if r.get("congress") is None or str(r.get("congress")) == str(C.CONGRESS)]
+        print(f"  {chamber}/{code}: {len(listed)} referred, {len(this_cong)} in the {C.CONGRESS}th")
+        for r in this_cong:
             key = (r["type"], r["number"])
             if key in known:
                 continue
